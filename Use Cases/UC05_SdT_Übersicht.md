@@ -8,7 +8,7 @@ Du hast Dir mit Zwei Freunden zusammen einen Traum erfüllt und Dein Hobby zu De
 
 In der Geschäftsführung Eures Start-Up bist Du für die Finanzen, das Personal und die Technik zuständig. Karl kümmert sich um die Stücke für die Auktionen (Bewertung, Verhandlung mit Verkäufern), Vasili um die Logistik (Transport, Einlagerung und Versand der Stücke). Während Ihr in den ersten Jahren nur in Deutschland tätig war, ist Euer Kundenkreis jetzt auf die ganze EU (insbesondere Belgien, Frankreich und Spanien), Großbritannien und die USA angewachsen, vereinzelt auch aus Japan und Südkorea. In den USA habt Ihr enge Geschäftsverbindungen mit der Firma "Heritage Auctions" (https://www.ha.com/)
 
-Ihr seid Euch einig: "Wir müssen wa mit KI machen." Eine externe Beraterin hat mit Euch und weiteren fünf Teamleitern erste Use Case herausgearbeitet und priorisiert:
+Ihr seid Euch einig: "Wir müssen was mit KI machen." Eine externe Beraterin hat mit Euch und weiteren fünf Teamleitern erste Use Case herausgearbeitet und priorisiert:
 
 - Automatisierung der Einbuchung von Belegen (OCR, Betrugsprüfung, Kontierung, Berechnung der Wechselkurse)
 - On-Boarding neuer Mitarbeiterinnen und Mitarbeiter (es gibt gerade in den Lagern viele Teitarbeitskräfte, z.B. Studierende, die nur ein paar Wochen in den Ferien für SdT arbeiten und rasch Informationen über Arbeitszeiten, Versicherung, Krankmeldung, Arbeitssicherheit usw. brauchen - für den Einstellungsprozess habt Ihr Euch https://aws.amazon.com/de/products/connect/talent/ als Beispiel genommen).
