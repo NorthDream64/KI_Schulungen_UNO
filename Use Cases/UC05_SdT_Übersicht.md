@@ -4,7 +4,7 @@
 
 ## Szenario
 
-Du hast Dir mit Zwei Freunden zusammen einen Traum erfüllt und Dein Hobby zu Deinem Beruf gemacht. Seit Jahren habt Ihr schon sog. "Collectibles" selbst gesammelt (Fußballbilder, Comics, Musikalben, Memorabila), dann Stücke von anderen Sammlern in Kommission genommen und verkauft, schließlich eine regelmäßige on-line-Auktion eingerichtet. Auf Eurer Webseite bietet Ihr zweimal täglich Stücke zum Versteigern an - die Preise rangieren von wenigen € für ein Comic-Heft bis zu vielen Tausend €, beispielsweise für eine Originalgitarre von Bob Dylan.
+Du hast Dir mit zwei Freunden zusammen einen Traum erfüllt und Dein Hobby zu Deinem Beruf gemacht. Seit Jahren habt Ihr schon sog. "Collectibles" selbst gesammelt (Fußballbilder, Comics, Musikalben, Memorabila), dann Stücke von anderen Sammlern in Kommission genommen und verkauft, schließlich eine regelmäßige on-line-Auktion eingerichtet. Auf Eurer Webseite bietet Ihr zweimal täglich Stücke zum Versteigern an - die Preise rangieren von wenigen € für ein Comic-Heft bis zu vielen Tausend €, beispielsweise für eine Originalgitarre von Bob Dylan.
 
 In der Geschäftsführung Eures Start-Up bist Du für die Finanzen, das Personal und die Technik zuständig. Karl kümmert sich um die Stücke für die Auktionen (Bewertung, Verhandlung mit Verkäufern), Vasili um die Logistik (Transport, Einlagerung und Versand der Stücke). Während Ihr in den ersten Jahren nur in Deutschland tätig war, ist Euer Kundenkreis jetzt auf die ganze EU (insbesondere Belgien, Frankreich und Spanien), Großbritannien und die USA angewachsen, vereinzelt auch aus Japan und Südkorea. In den USA habt Ihr enge Geschäftsverbindungen mit der Firma "Heritage Auctions" (https://www.ha.com/)
 
