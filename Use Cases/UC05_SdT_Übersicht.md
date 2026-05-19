@@ -11,7 +11,9 @@ In der Geschäftsführung Eures Start-Up bist Du für die Finanzen, das Personal
 Ihr seid Euch einig: "Wir müssen was mit KI machen." Eine externe Beraterin hat mit Euch und weiteren fünf Teamleitern erste Use Case herausgearbeitet und priorisiert:
 
 - Automatisierung der Einbuchung von Rechnungen und Belegen (OCR, Betrugsprüfung, Kontierung, Berechnung der Wechselkurse)
-- 
+  
+- Scannen einschlägiger Sammlerforen in den sozialen Medien: Sowohl Eure Kunden als auch die Leute, von denen Ihr "Collectibles" kauft, sind  häufig auf Facebook oder Instagram, aber auf in exotischen Foren und Chatgruppen unterwegs. Ihr geht davon aus, dass die Teilnehmer dieser Gruppen und Foren kein Problem damit haben werden, wenn ihr als "stille Zuhörer" ihren Austausch mitbekommt (die Foren sind öffentlich bzw. Ihr seid privat ohnehin schon Mitglied in den wichtigsten), habt Euch dazu aber noch keine fachliche Meinung eingeholt.
+  
 - On-Boarding neuer Mitarbeiterinnen und Mitarbeiter: Es gibt gerade in den Lagern viele Teitarbeitskräfte, z.B. Studierende, die nur ein paar Wochen in den Ferien für SdT arbeiten und rasch Informationen über Arbeitszeiten, Versicherung, Krankmeldung, Arbeitssicherheit usw. brauchen - für den Einstellungsprozess habt Ihr Euch https://aws.amazon.com/de/products/connect/talent/ als Beispiel genommen.
 
 - Abschätzung der vermutlichen Verkaufspreise (dies ist die zentrale Anwendung für SdT: Je besser der mögliche Erlös in einer Auktion abgeschätzt werden kann, desto attraktiver kann der Mindestpreis sein, zu dem Ihr ein Stück in Kommission nehmt. Lager- und Versicherungskosten sind ein bedeutender Kostenblock: Da möchtet Ihr keine zu teuren Stücke zu lange im Regal haben, weil sie sich nicht verkaufen. Bisher habt Ihr historische Daten über die Unterschiede zwischen Kommissionspreis und tatsächlichem Auktionspreis; gerade Karl, der oft seinem Instinkt vertraut, glaubt, dass er Trends mithilfe von KI und Machine Learning erkennen kann, z.B. weil bestimmte „Collectibles" abhängig von Alterskohorten im Preis steigen, da Menschen mit Mitte 30 wieder Sammlungen wie Pokémon aufnehmen, die sie als Jugendliche begonnen haben)
