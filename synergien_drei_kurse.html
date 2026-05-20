@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: transparent; color: #1a1a2e; font-size: 13px; padding: 16px; }
+h2.sr-only { position: absolute; width:1px; height:1px; overflow:hidden; clip:rect(0,0,0,0); }
+
+.title { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
+.subtitle { font-size: 11px; color: #666; margin-bottom: 18px; }
+
+/* Pairwise synergy bars */
+.pair-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 20px; }
+.pair-card { background: #f8f8fc; border-radius: 9px; padding: 12px 14px; border: 1px solid #e8e8f0; }
+.pair-title { font-size: 11px; font-weight: 700; color: #333; margin-bottom: 6px; }
+.pair-bar-track { background: #e8e8f0; border-radius: 6px; height: 12px; overflow: hidden; margin-bottom: 4px; }
+.pair-bar-fill { height: 100%; border-radius: 6px; }
+.pair-pct { font-size: 15px; font-weight: 800; }
+.pair-note { font-size: 10px; color: #888; margin-top: 4px; line-height: 1.4; }
+
+/* Topic matrix */
+.matrix-wrap { overflow-x: auto; margin-bottom: 20px; }
+table.matrix { width: 100%; border-collapse: collapse; font-size: 11px; }
+table.matrix th { background: #1F1F26; color: #fff; padding: 7px 8px; text-align: left; font-size: 10px; font-weight: 600; letter-spacing: .04em; white-space: nowrap; }
+table.matrix th:first-child { min-width: 200px; }
+table.matrix td { padding: 5px 8px; border-bottom: 1px solid #f0f0f5; vertical-align: middle; }
+table.matrix tr:hover td { background: #f8f8fc; }
+.topic-label { font-weight: 500; }
+.topic-sub { font-size: 9.5px; color: #888; display: block; }
+.chip { display: inline-block; font-size: 9px; padding: 2px 7px; border-radius: 100px; font-weight: 700; white-space: nowrap; }
+.chip-all  { background: #d4edda; color: #1a6e2e; }
+.chip-kb   { background: #e8f4fd; color: #1a5276; }
+.chip-km   { background: #fce8d0; color: #a04000; }
+.chip-mat  { background: #f0eaf7; color: #5b2d8e; }
+.chip-kbkm { background: #d6eaf8; color: #1a5276; }
+.chip-kbmat{ background: #e8f4fd; color: #5b2d8e; }
+.chip-kmmat{ background: #eafaf1; color: #1e8449; }
+
+.lens-badge { font-size: 9.5px; padding: 2px 8px; border-radius: 100px; font-weight: 700; display: inline-block; }
+.lens-kb  { background: #e8f4fd; color: #1a5276; }
+.lens-km  { background: #fce8d0; color: #a04000; }
+.lens-mat { background: #f0eaf7; color: #5b2d8e; }
+
+/* Strategy box */
+.strategy { background: #f8f8fc; border-left: 4px solid #5DAAB0; border-radius: 0 8px 8px 0; padding: 12px 16px; margin-bottom: 16px; }
+.strategy-title { font-size: 12px; font-weight: 700; color: #333; margin-bottom: 8px; }
+.strategy-row { display: flex; gap: 10px; flex-wrap: wrap; }
+.strategy-item { flex: 1; min-width: 160px; background: #fff; border-radius: 7px; padding: 8px 10px; border: 1px solid #e8e8f0; }
+.strategy-item-title { font-size: 10px; font-weight: 700; margin-bottom: 4px; }
+.strategy-item-body { font-size: 10px; color: #555; line-height: 1.5; }
+
+/* Legend */
+.legend { display: flex; gap: 10px; flex-wrap: wrap; font-size: 10px; color: #666; margin-bottom: 14px; }
+.legend-item { display: flex; align-items: center; gap: 4px; }
+</style>
+</head>
+<body>
+<h2 class="sr-only">Synergieanalyse zwischen KI-Beauftragter, KI-Manager und Manager angewandte Transformation</h2>
+
+<div class="title">Synergieanalyse — Drei KI-Kurse</div>
+<div class="subtitle">KI-Beauftragter (KB) · KI-Manager (KM) · Manager angewandte Transformation (MAT) · je 17 Schulungstage plus Zertifizierungsprüfung TÜV plus Projektarbeit </div>
+
+<!-- Pairwise synergies -->
+<div class="pair-grid">
+  <div class="pair-card">
+    <div class="pair-title">KB ↔ KM</div>
+    <div class="pair-bar-track"><div class="pair-bar-fill" style="width:55%;background:linear-gradient(90deg,#2471a3,#7b5ea7)"></div></div>
+    <div class="pair-pct" style="color:#2471a3">~55%</div>
+    <div class="pair-note">ISO 42001, Risikomanagement, QS, Stakeholder, Change, Governance, Agenten, Prüfung — verschieden tief.<br>KB fokussiert Recht/Compliance, KM operativ/technisch.</div>
+  </div>
+  <div class="pair-card">
+    <div class="pair-title">KB ↔ MAT</div>
+    <div class="pair-bar-track"><div class="pair-bar-fill" style="width:62%;background:linear-gradient(90deg,#2471a3,#5b2d8e)"></div></div>
+    <div class="pair-pct" style="color:#5b2d8e">~62%</div>
+    <div class="pair-note">MAT verweist explizit auf KB T09, T11–T14, T16 als „parallele Inhalte". Gleiche Themen, aber MAT nutzt vollst. UC-Storylines als Kontext.</div>
+  </div>
+  <div class="pair-card">
+    <div class="pair-title">KM ↔ MAT</div>
+    <div class="pair-bar-track"><div class="pair-bar-fill" style="width:70%;background:linear-gradient(90deg,#c45e00,#5b2d8e)"></div></div>
+    <div class="pair-pct" style="color:#1e8449">~70%</div>
+    <div class="pair-note">Strukturell sehr ähnlich: Daten, MLOps, Training, Monitoring, Agenten, Governance, Roadmap, CDR, Prüfung. KM operativer, MAT strategisch-transformativ.</div>
+  </div>
+</div>
+
+<!-- 3-way -->
+<div style="background:#d4edda;border-radius:9px;padding:10px 16px;margin-bottom:18px;display:flex;align-items:center;gap:16px;flex-wrap:wrap">
+  <div style="font-size:22px;font-weight:800;color:#1a6e2e">~45%</div>
+  <div>
+    <div style="font-size:12px;font-weight:700;color:#1a6e2e">Drei-Wege-Synergie (alle Kurse)</div>
+    <div style="font-size:11px;color:#2d8544;line-height:1.5">~9 Themenblöcke (von 20 Tagen je Kurs) sind in allen drei Kursen vorhanden: ISO 42001, Risikomanagement, Qualitätssicherung, Datenmanagement, Stakeholder-Management, Change Management, KI-Governance/Roadmap, Prompting/Generative KI, KI-Agenten, Kursformat (TÜV-Prüfung/Projektarbeit)</div>
+  </div>
+</div>
+
+<!-- Legend -->
+<div class="legend">
+  <div class="legend-item"><span class="chip chip-all">Alle 3</span> In allen Kursen</div>
+  <div class="legend-item"><span class="chip chip-kbkm">KB + KM</span></div>
+  <div class="legend-item"><span class="chip chip-kbmat">KB + MAT</span></div>
+  <div class="legend-item"><span class="chip chip-kmmat">KM + MAT</span></div>
+  <div class="legend-item"><span class="chip chip-kb">Nur KB</span></div>
+  <div class="legend-item"><span class="chip chip-km">Nur KM</span></div>
+  <div class="legend-item"><span class="chip chip-mat">Nur MAT</span></div>
+</div>
+
+<!-- Topic matrix -->
+<div class="matrix-wrap">
+<table class="matrix">
+<thead>
+<tr>
+  <th>Themenblock</th>
+  <th>Vorkommt in</th>
+  <th>KB-Fokus (Compliance)</th>
+  <th>KM-Fokus (Operativ)</th>
+  <th>MAT-Fokus (Transformation)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td class="topic-label">KI-Grundlagen<span class="topic-sub">ML, DL, NLP, LLMs</span></td>
+  <td><span class="chip chip-all">Alle 3</span></td>
+  <td>Compliance-Kontext · Rolle KI-Beauftragter</td>
+  <td>Operativer Fokus · Einsatzfelder</td>
+  <td>Strategischer Nutzen · Management-Perspektive</td>
+</tr>
+<tr>
+  <td class="topic-label">ISO/IEC 42001<span class="topic-sub">KI-Managementsystem</span></td>
+  <td><span class="chip chip-all">Alle 3</span></td>
+  <td>Überblick + Integration ISO 9001/27001 (T07)</td>
+  <td>Aufbau, Betrieb, Wirksamkeit (T02+T12)</td>
+  <td>Review/Gesamtüberblick (T17)</td>
+</tr>
+<tr>
+  <td class="topic-label">EU AI Act<span class="topic-sub">Risikoklassen, Pflichten</span></td>
+  <td><span class="chip chip-all">Alle 3</span></td>
+  <td>Deep-Dive: 3 Tage (T03–T06), Art. 3/16/23–26</td>
+  <td>Überblick, Betreiberpflichten Art. 26 (T01)</td>
+  <td>ROI-Kontext + DSGVO×KI-VO Schnittstelle (T02, T12)</td>
+</tr>
+<tr>
+  <td class="topic-label">Risikomanagement<span class="topic-sub">Bias, Fehler, Ethik</span></td>
+  <td><span class="chip chip-all">Alle 3</span></td>
+  <td>Risikomatrix, ALARP, Maßnahmenplanung (T09–T10)</td>
+  <td>Bias-Metriken, Fairness-Tests, Modellfehler (T11)</td>
+  <td>Detective/Preventive/Corrective, OWASP Agentic (T11–T12)</td>
+</tr>
+<tr>
+  <td class="topic-label">Qualitätssicherung<span class="topic-sub">KPIs, Abnahme, Monitoring</span></td>
+  <td><span class="chip chip-all">Alle 3</span></td>
+  <td>Abnahmeprozesse, Testdaten, Bias-Prüfung (T12–T14)</td>
+  <td>KPIs, Shadow Deploy, Canary, A/B-Tests (T11)</td>
+  <td>ISO 5338/25059, Abnahmestrategien detailliert (T12)</td>
+</tr>
+<tr>
+  <td class="topic-label">Datenmanagement<span class="topic-sub">Qualität, Governance</span></td>
+  <td><span class="chip chip-all">Alle 3</span></td>
+  <td>FAIR-Prinzipien, Datenintegrität, KI-VO Art. 10 (T15)</td>
+  <td>Datenqualität, ETL/ELT, Datenpipelines (T06)</td>
+  <td>6 Dimensionen, Azure Data Factory, Data Governance (T06)</td>
+</tr>
+<tr>
+  <td class="topic-label">Stakeholder-Management<span class="topic-sub">Analyse, Kommunikation</span></td>
+  <td><span class="chip chip-all">Alle 3</span></td>
+  <td>Einfluss-Interesse-Matrix, Kommunikationsplan (T13)</td>
+  <td>Mendelow-Matrix, Kommunikationsmatrix (T04)</td>
+  <td>Vollständige Mendelow + Kommunikationsplan mit Personas (T13)</td>
+</tr>
+<tr>
+  <td class="topic-label">Change Management<span class="topic-sub">Kotter, ADKAR, Widerstände</span></td>
+  <td><span class="chip chip-all">Alle 3</span></td>
+  <td>3 Widerstandstypen, Kotter, ADKAR, Changeplan (T16–T17)</td>
+  <td>Widerstände im KI-Betrieb, CDR-Kontext (T17)</td>
+  <td>Kübler-Ross, Kotter, ADKAR, Schulungskonzept verknüpft (T14, T16)</td>
+</tr>
+<tr>
+  <td class="topic-label">KI-Governance &amp; Roadmap<span class="topic-sub">Org-Strukturen, Reifegradmodelle</span></td>
+  <td><span class="chip chip-all">Alle 3</span></td>
+  <td>Governance-Frameworks, NIST AI RMF, KI-Inventar (T08, T17 Exkurs)</td>
+  <td>Zentral/dezentral/föderiert, RACI, GAP-Analyse (T15–T16)</td>
+  <td>BCG Deploy-Reshape-Invent, Deloitte 4 Reifestufen, 12-Monats-Roadmap (T15, T16)</td>
+</tr>
+<tr>
+  <td class="topic-label">Prompting / Generative KI<span class="topic-sub">Prompt Engineering</span></td>
+  <td><span class="chip chip-all">Alle 3</span></td>
+  <td>Zero/Few-Shot, CoT, Prompt-Bibliothek (T02)</td>
+  <td>Chain-of-Thought, Bild/Video, Datenpipelines (T07)</td>
+  <td>LLMs, Diffusion, Modellauswahl je Einsatzbereich (T04)</td>
+</tr>
+<tr>
+  <td class="topic-label">KI-Agenten<span class="topic-sub">Human-in-the-Loop</span></td>
+  <td><span class="chip chip-all">Alle 3</span></td>
+  <td>Exkurs: Haftungsebene, Kontrollverlust (T09)</td>
+  <td>Autonomiegrade, HitL vs. HotL, Wettbewerbsvorteil (T10)</td>
+  <td>Mollick-Zitat, OWASP Agentic Top 10, Projektintegration (T10)</td>
+</tr>
+<tr>
+  <td class="topic-label">MLOps &amp; Modelltraining<span class="topic-sub">Deployment, Training, Drift</span></td>
+  <td><span class="chip chip-kmmat">KM + MAT</span></td>
+  <td>—</td>
+  <td>Canary/Blue-Green, Train/Test-Split, Drift (T08–T10)</td>
+  <td>Azure-Stack, Pokémon-Effekt, Rollback-Planung (T08–T10)</td>
+</tr>
+<tr>
+  <td class="topic-label">Schulungskonzepte<span class="topic-sub">KI-Kompetenz Art. 4</span></td>
+  <td><span class="chip chip-kbmat">KB + MAT</span></td>
+  <td>Lernziele, E-Learning, Wirksamkeitsmessung (T14)</td>
+  <td>Kurz in KM T17 erwähnt</td>
+  <td>Kübler-Ross-Integration, Zielgruppenkonzept, Automatisierungsbias (T14)</td>
+</tr>
+<tr>
+  <td class="topic-label">DSGVO deep / DSFA<span class="topic-sub">Art. 5, 9, 28, 35, 46</span></td>
+  <td><span class="chip chip-kbmat">KB + MAT</span></td>
+  <td>DSFA, AVV, Drittlandtransfer, Datenethik (T11)</td>
+  <td>—</td>
+  <td>DSFA-Bedarfsprüfung, Privacy-by-Design, UC-03d (T12)</td>
+</tr>
+<tr>
+  <td class="topic-label">ROI-Bewertung &amp; Use-Case-Identifikation<span class="topic-sub">Business Case, Impact/Effort</span></td>
+  <td><span class="chip chip-kmmat">KM + MAT</span></td>
+  <td>—</td>
+  <td>ROI-Kalkulation, Use-Case-Canvas (T03–T05)</td>
+  <td>ROI-Quantifizierung, KI-Anwendungsfall-Steckbrief (T02, T05)</td>
+</tr>
+<tr>
+  <td class="topic-label">Agile Methoden<span class="topic-sub">Scrum, Kanban, KVP</span></td>
+  <td><span class="chip chip-kmmat">KM + MAT</span></td>
+  <td>—</td>
+  <td>Sprint-Planung, Kanban-Board, KVP/PDCA (T13–T14)</td>
+  <td>Scrum für KI, Definition of Done, iterative Zyklen (T13)</td>
+</tr>
+<tr>
+  <td class="topic-label">EU AI Act: Konformitätsbewertung &amp; Akteursrollen<span class="topic-sub">Art. 3/16/23–26, Anhang IV</span></td>
+  <td><span class="chip chip-kb">Nur KB</span></td>
+  <td>Art. 43, Post-Market-Monitoring, Meldepflichten, Anbieter vs. Betreiber vs. Einführer (T04–T06)</td>
+  <td>—</td>
+  <td>—</td>
+</tr>
+<tr>
+  <td class="topic-label">M365 / Azure-Stack<span class="topic-sub">Copilot, Azure AI, Power Automate</span></td>
+  <td><span class="chip chip-mat">Nur MAT</span></td>
+  <td>—</td>
+  <td>—</td>
+  <td>Azure AI Services, Copilot Studio, Power Automate, Make-or-Buy (T07)</td>
+</tr>
+<tr>
+  <td class="topic-label">CDR / Nachhaltigkeit<span class="topic-sub">ESG, CO₂, Verantwortung</span></td>
+  <td><span class="chip chip-kmmat">KM + MAT</span></td>
+  <td>—</td>
+  <td>Energieverbrauch, ESG, CDR als Wettbewerbsfaktor (T17)</td>
+  <td>ESG-Anforderungen, CO₂-Fußabdruck, ISO 42001-Verbindung (T17)</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<!-- Strategy -->
+<div class="strategy">
+  <div class="strategy-title">Empfehlung für die Kursvorbereitung: 3-Ebenen-Ansatz</div>
+  <div class="strategy-row">
+    <div class="strategy-item">
+      <div class="strategy-item-title" style="color:#1a6e2e">① Gemeinsamer Kern (~45%)</div>
+      <div class="strategy-item-body">Eine Version der Grundmaterialien (PPTX, Hand-Out) für: ISO 42001, Risikomanagement-Grundlagen, Datenmanagement, Change-Management-Modelle (Kotter, ADKAR), KI-Agenten, Governance-Grundbegriffe. Quelle: KI-Beauftragter T09–T10, T16–T17 als Master-Vorlage.</div>
+    </div>
+    <div class="strategy-item">
+      <div class="strategy-item-title" style="color:#c45e00">② Kursspezifische Linse (~30%)</div>
+      <div class="strategy-item-body">Gleiche Folie — andere Fragestellung: KB fragt „Was muss/darf ich?", KM fragt „Wie manage ich das?", MAT fragt „Wie setze ich es konkret um?". Unterschiedliche Use Cases je Kurs machen Wiederholungen für Multi-Kursteilnehmer trotzdem wertvoll.</div>
+    </div>
+    <div class="strategy-item">
+      <div class="strategy-item-title" style="color:#5b2d8e">③ Kurs-Exklusiva (~25%)</div>
+      <div class="strategy-item-body">KB: EU AI Act Deep-Dive (Konformität, Akteursrollen, Meldepflichten) — kein Pendant in anderen Kursen. KM: Agile/Scrum, Budget, externe Partner. MAT: Azure/M365-Stack, KI-Anwendungsfall-Steckbrief-Methodik. Diese Inhalte neu entwickeln — kein Synergiepotenzial.</div>
+    </div>
+  </div>
+</div>
+
+<div style="font-size:10px;color:#999;text-align:center;padding-top:4px">Hinweis: MAT verweist in den Kursplan-Notizen explizit auf KB T09, T11–T14, T16 als „parallele Inhalte" — dies bestätigt die Synergiestrategie.</div>
+</body>
+</html>
