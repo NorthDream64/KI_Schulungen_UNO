@@ -76,6 +76,8 @@ body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--paper);
 .uc-tag.uc2 { background: #e8edf7; color: var(--w2); } .uc-tag.uc2.active { background: var(--w2); color: #fff; }
 .uc-tag.uc3 { background: #f5ece8; color: var(--w3); } .uc-tag.uc3.active { background: var(--w3); color: #fff; }
 .uc-tag.uc4 { background: #f0eaf7; color: var(--w4); } .uc-tag.uc4.active { background: var(--w4); color: #fff; }
+.uc-tag.uc5 { background: #ede8f4; color: #5b2d8e; } .uc-tag.uc5.active { background: #5b2d8e; color: #fff; }
+.uc-tag.uc6 { background: #e8f4f8; color: #0a4a7a; } .uc-tag.uc6.active { background: #0a4a7a; color: #fff; }
 
 /* STATUS + PROGRESS */
 .status-badge { display: inline-block; font-size: 0.6rem; font-weight: 700; padding: 2px 7px; border-radius: 100px; text-transform: uppercase; letter-spacing: .06em; white-space: nowrap; }
@@ -164,6 +166,8 @@ body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--paper);
   <span style="color:var(--w2)">■ UC-02 WellSeal</span>
   <span style="color:var(--w3)">■ UC-03 Krankenhaus St. Ulrich</span>
   <span style="color:var(--w4)">■ UC-04 Gutbau AG</span>
+  <span style="color:#5b2d8e">■ UC-05 SdT GmbH (Collectibles)</span>
+  <span style="color:#0a4a7a">■ UC-06 Aktiv-Invest (AI) GmbH</span>
   &nbsp;|&nbsp;
   <em>Klick auf ▼ öffnet Zeitplan · 💾 nach Änderungen speichern</em>
 </div>
@@ -463,7 +467,7 @@ function saveAll() {
       quiz:    !!document.getElementById('cb_q_'+d.id)?.checked,
       pptx:    !!document.getElementById('cb_p_'+d.id)?.checked,
       notes:   document.getElementById('nt_'+d.id)?.value || '',
-      uc: ['uc1','uc2','uc3','uc4'].filter(u => document.getElementById('uc_'+u+'_'+d.id)?.classList.contains('active'))
+      uc: ['uc1','uc2','uc3','uc4','uc5','uc6'].filter(u => document.getElementById('uc_'+u+'_'+d.id)?.classList.contains('active'))
     };
   }));
   try {
@@ -557,7 +561,7 @@ function render() {
       const badgeCls = vPct===100?'status-done':vPct>0?'status-wip':'status-empty';
       const badgeTxt = vPct===100?'Fertig':vPct>0?'In Arbeit':'Leer';
       const barCol = vPct===100?'var(--done)':vPct>=50?'#ffc107':vPct>0?'#fd7e14':'#e0e0e0';
-      const ucLabels = {uc1:'UC-01',uc2:'UC-02',uc3:'UC-03',uc4:'UC-04'};
+      const ucLabels = {uc1:'UC-01',uc2:'UC-02',uc3:'UC-03',uc4:'UC-04',uc5:'UC-05 SdT',uc6:'UC-06 Aktiv-Invest'};
 
       html += `<div class="day-card" id="card_${d.id}">
         <div class="day-top">
@@ -573,7 +577,7 @@ function render() {
             <div class="cb-item"><input type="checkbox" id="cb_p_${d.id}" ${s.pptx?'checked':''} onchange="updateRow('${d.id}');updateSummary()"><label>PPTX</label></div>
           </div>
           <div class="uc-field">
-            ${['uc1','uc2','uc3','uc4'].map(u=>`<span id="uc_${u}_${d.id}" class="uc-tag ${u}${(s.uc||[]).includes(u)?' active':''}" onclick="toggleUC(this,'${d.id}')">${ucLabels[u]}</span>`).join('')}
+            ${['uc1','uc2','uc3','uc4','uc5','uc6'].map(u=>`<span id="uc_${u}_${d.id}" class="uc-tag ${u}${(s.uc||[]).includes(u)?' active':''}" onclick="toggleUC(this,'${d.id}')">${ucLabels[u]}</span>`).join('')}
           </div>
           <span class="status-badge ${badgeCls}" id="bdg_${d.id}">${badgeTxt}</span>
           <div style="min-width:80px">
