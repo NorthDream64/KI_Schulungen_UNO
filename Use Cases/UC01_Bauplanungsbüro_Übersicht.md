@@ -5,7 +5,7 @@
 **Bauplanungsbüro Dr. Seika**
 Kleines Planungsbüro im Bauwesen (KMU).
 
-**Mitarbeitende:** 15
+**Mitarbeitende:** 40
 **Branche:** Bauwesen / Planungsdienstleistungen
 **Rechtsform:** Büro unter Leitung von Dr. Seika (Inhaberin / Geschäftsführerin)
 
