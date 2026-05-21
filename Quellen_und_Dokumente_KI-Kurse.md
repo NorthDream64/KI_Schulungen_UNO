@@ -18,6 +18,8 @@
 | https://aesia.digital.gob.es/en/guides | AESIA | Checklisten, Umsetzungshilfen | Spanien Spanish Agency for the Supervision of Artificial Intelligence  |
 | https://www.dpo-consulting.com/blog/high-risk-ai-systems | DPO Consulting | Cyber Security, Data Protection | Großbritannien Bewertung von Hoch-Risko-Systemen |
 | https://www.dsn-group.de/kuenstliche-intelligenz/ki-pruefschema-fuer-hochrisiko | DSN Gruppe | Prüfschemata | Deutschland Bewertung von Hoch-Risko-Systemen |
+| https://www.edpb.europa.eu/edpb_en | European Data Protection Board (edpb) | Richtliniensammlung | EU |
+| https://www.aisi.gov.uk/ | AI Security Institute (AISI) | Forschung | Grossbritannien KI-Sicherheit |
 
 
 ### 1.2 Rolle des KI-Beauftragten
