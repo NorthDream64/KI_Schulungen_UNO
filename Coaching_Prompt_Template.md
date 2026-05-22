@@ -177,4 +177,4 @@ Nach 2–3 Sparring-Sitzungen mit verschiedenen Varianten merkst du:
 
 ---
 
-*alfatraining · KI-Beauftragte:r · Coaching-Prompt-Template · Mai 2026*
+*Ulrich Nord · KI-Beauftragte:r · Coaching-Prompt-Template · Juni 2026*
