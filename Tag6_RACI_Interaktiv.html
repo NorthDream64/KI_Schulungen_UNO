@@ -19,6 +19,12 @@
       --a-bg: #fef3c7;
       --a-text: #92400e;
       --a-border: #fbbf24;
+      --c-bg: #ede9fe;
+      --c-text: #5b21b6;
+      --c-border: #c4b5fd;
+      --i-bg: #dcfce7;
+      --i-text: #166534;
+      --i-border: #86efac;
       --warn-bg: #fef2f2;
       --warn-text: #991b1b;
       --warn-border: #fca5a5;
@@ -148,6 +154,8 @@
     }
     .pill-r { background: var(--r-bg); color: var(--r-text); border-color: var(--r-border); }
     .pill-a { background: var(--a-bg); color: var(--a-text); border-color: var(--a-border); }
+    .pill-c { background: var(--c-bg); color: var(--c-text); border-color: var(--c-border); }
+    .pill-i { background: var(--i-bg); color: var(--i-text); border-color: var(--i-border); }
     .pill-empty {
       background: #f1f5f9;
       color: #94a3b8;
@@ -331,6 +339,8 @@
       tbody tr.has-a { background: #fffbeb !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
       .pill-r { background: #dbeafe !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
       .pill-a { background: #fef3c7 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .pill-c { background: #ede9fe !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .pill-i { background: #dcfce7 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
     }
   </style>
 </head>
@@ -356,9 +366,11 @@
   <div class="instr-box">
     <div class="instr-icon">👆</div>
     <div class="instr-text">
-      <strong>Klick auf eine Zelle</strong> wechselt die Rolle: <strong>leer → R → A → leer</strong>.<br>
+      <strong>Klick auf eine Zelle</strong> wechselt die Rolle: <strong>leer → R → A → C → I → leer</strong>.<br>
       <strong>R</strong> (Responsible) = wer führt die Tätigkeit aus — mehrere pro Zeile möglich.<br>
       <strong>A</strong> (Accountable) = wer trägt die Verantwortung — <strong>max. 1 pro Tätigkeit</strong>.<br>
+      <strong>C</strong> (Consulted) = wer wird vorher befragt / gibt Input — mehrere möglich.<br>
+      <strong>I</strong> (Informed) = wer wird über das Ergebnis informiert — mehrere möglich.<br>
       Zellen ohne Eintrag bedeuten: dieser Akteur hat bei dieser Tätigkeit keine Rolle.
     </div>
   </div>
@@ -367,12 +379,16 @@
     <div class="legend">
       <div class="legend-item"><div class="pill pill-r">R</div> Responsible</div>
       <div class="legend-item"><div class="pill pill-a">A</div> Accountable</div>
+      <div class="legend-item"><div class="pill pill-c">C</div> Consulted</div>
+      <div class="legend-item"><div class="pill pill-i">I</div> Informed</div>
       <div class="legend-item"><div class="pill pill-empty">—</div> Keine Rolle</div>
     </div>
     <div class="stats-bar">
-      <div class="stat-chip">R gesetzt: <span id="count-r">0</span></div>
-      <div class="stat-chip">A gesetzt: <span id="count-a">0</span></div>
-      <div class="stat-chip">Tätigkeiten vollständig (≥1 A): <span id="count-complete">0</span> / 11</div>
+      <div class="stat-chip">R: <span id="count-r">0</span></div>
+      <div class="stat-chip">A: <span id="count-a">0</span></div>
+      <div class="stat-chip">C: <span id="count-c">0</span></div>
+      <div class="stat-chip">I: <span id="count-i">0</span></div>
+      <div class="stat-chip">Tätigkeiten mit A: <span id="count-complete">0</span> / 11</div>
     </div>
   </div>
 
@@ -490,7 +506,7 @@
     }
   ];
 
-  // state[taskIndex][actorIndex] ∈ { '', 'R', 'A' }
+  // state[taskIndex][actorIndex] ∈ { '', 'R', 'A', 'C', 'I' }
   const state = TASKS.map(() => ACTORS.map(() => ''));
 
   // ── RENDER ────────────────────────────────────────
@@ -537,6 +553,12 @@
         } else if (val === 'A') {
           pill.classList.add('pill-a');
           pill.textContent = 'A';
+        } else if (val === 'C') {
+          pill.classList.add('pill-c');
+          pill.textContent = 'C';
+        } else if (val === 'I') {
+          pill.classList.add('pill-i');
+          pill.textContent = 'I';
         } else {
           pill.classList.add('pill-empty');
           pill.textContent = '—';
@@ -562,8 +584,12 @@
       next = 'R';
     } else if (current === 'R') {
       next = 'A';
+    } else if (current === 'A') {
+      next = 'C';
+    } else if (current === 'C') {
+      next = 'I';
     } else {
-      // A → leer
+      // I → leer
       next = '';
     }
 
@@ -582,16 +608,20 @@
 
   // ── STATS ─────────────────────────────────────────
   function updateStats() {
-    let countR = 0, countA = 0, countComplete = 0;
+    let countR = 0, countA = 0, countC = 0, countI = 0, countComplete = 0;
     state.forEach(row => {
       row.forEach(v => {
         if (v === 'R') countR++;
         if (v === 'A') countA++;
+        if (v === 'C') countC++;
+        if (v === 'I') countI++;
       });
       if (row.includes('A')) countComplete++;
     });
     document.getElementById('count-r').textContent = countR;
     document.getElementById('count-a').textContent = countA;
+    document.getElementById('count-c').textContent = countC;
+    document.getElementById('count-i').textContent = countI;
     document.getElementById('count-complete').textContent = countComplete;
   }
 
