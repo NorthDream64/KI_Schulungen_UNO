@@ -1,0 +1,1039 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KI-Nachrichten: Gesamtüberblick (Mai 2026)</title>
+  <style>
+    /* ───── RESET & BASE ───── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      background: #f0f2f5;
+      color: #1a1a2e;
+      line-height: 1.65;
+    }
+
+    /* ───── TOP HEADER ───── */
+    .top-header {
+      background: linear-gradient(135deg, #0d1b2a 0%, #1b3a5c 55%, #2563eb 100%);
+      color: #fff;
+      padding: 1.6rem 1.5rem 1rem;
+      text-align: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 8px rgba(0,0,0,.25);
+    }
+    .top-header h1 { font-size: 1.25rem; font-weight: 700; }
+    .top-header .sub { font-size: 0.8rem; opacity: 0.75; margin-top: 0.2rem; }
+
+    /* ───── TAB NAV ───── */
+    .tab-nav {
+      display: flex;
+      justify-content: center;
+      gap: 0.4rem;
+      margin-top: 0.8rem;
+      flex-wrap: wrap;
+    }
+    .tab-btn {
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.25);
+      color: #fff;
+      padding: 0.35rem 0.85rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all .15s;
+      white-space: nowrap;
+    }
+    .tab-btn:hover { background: rgba(255,255,255,0.22); }
+    .tab-btn.active {
+      background: #fff;
+      color: #1b3a5c;
+    }
+    .new-badge {
+      display: inline-block;
+      background: #ef4444;
+      color: #fff;
+      font-size: 0.62rem;
+      padding: 0.05rem 0.35rem;
+      border-radius: 8px;
+      margin-left: 0.3rem;
+      vertical-align: middle;
+      font-weight: 700;
+    }
+
+    /* ───── TAB PANELS ───── */
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
+    /* ───── CONTAINER ───── */
+    .container {
+      max-width: 920px;
+      margin: 0 auto;
+      padding: 1.4rem 1rem 3rem;
+    }
+
+    /* ───── WEEK LABEL ───── */
+    .week-label {
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+      margin-bottom: 1.2rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 3px solid #2563eb;
+    }
+    .week-label h2 { font-size: 1.15rem; font-weight: 700; color: #0d1b2a; }
+    .week-label .period {
+      font-size: 0.8rem;
+      color: #64748b;
+      background: #e2e8f0;
+      padding: 0.2rem 0.6rem;
+      border-radius: 10px;
+    }
+
+    /* ───── ALERT BOXES ───── */
+    .alert {
+      padding: 0.9rem 1.1rem;
+      border-radius: 8px;
+      margin-bottom: 0.9rem;
+      font-size: 0.9rem;
+      line-height: 1.55;
+    }
+    .alert-red  { background: #fff0f0; border-left: 4px solid #dc2626; color: #7f1d1d; }
+    .alert-blue { background: #eff6ff; border-left: 4px solid #2563eb; color: #1e3a5f; }
+    .alert-yellow { background: #fffbeb; border-left: 4px solid #f59e0b; color: #78350f; }
+    .alert-green { background: #f0fdf4; border-left: 4px solid #16a34a; color: #14532d; }
+    .alert strong { display: block; margin-bottom: 0.2rem; font-size: 0.92rem; }
+    .alert a { color: inherit; text-decoration: underline; font-size: 0.85rem; }
+
+    /* ───── SECTION TITLE ───── */
+    .section-title {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: #1b3a5c;
+      margin: 1.6rem 0 0.7rem;
+      padding-bottom: 0.3rem;
+      border-bottom: 2px solid #e2e8f0;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+
+    /* ───── PRIORITY TABLE ───── */
+    .prio-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #fff;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 1px 4px rgba(0,0,0,.07);
+      font-size: 0.85rem;
+      margin-bottom: 1rem;
+    }
+    .prio-table th {
+      background: #1b3a5c;
+      color: #fff;
+      padding: 0.6rem 0.85rem;
+      text-align: left;
+      font-weight: 600;
+    }
+    .prio-table td {
+      padding: 0.55rem 0.85rem;
+      border-bottom: 1px solid #f0f4f8;
+      vertical-align: top;
+    }
+    .prio-table tr:last-child td { border-bottom: none; }
+    .prio-table tr:hover td { background: #f8fafc; }
+
+    /* ───── BADGES ───── */
+    .badge {
+      display: inline-block;
+      padding: 0.18rem 0.5rem;
+      border-radius: 12px;
+      font-size: 0.74rem;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+    .b-hoch    { background: #fee2e2; color: #b91c1c; }
+    .b-mittel  { background: #fef9c3; color: #92400e; }
+    .b-niedrig { background: #d1fae5; color: #065f46; }
+
+    /* ───── DEADLINES TABLE ───── */
+    .dl-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #fff;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 1px 4px rgba(0,0,0,.07);
+      font-size: 0.84rem;
+      margin-bottom: 1rem;
+    }
+    .dl-table th {
+      background: #1b3a5c;
+      color: #fff;
+      padding: 0.55rem 0.85rem;
+      text-align: left;
+      font-weight: 600;
+    }
+    .dl-table td {
+      padding: 0.5rem 0.85rem;
+      border-bottom: 1px solid #f0f4f8;
+      vertical-align: top;
+    }
+    .dl-table tr:last-child td { border-bottom: none; }
+    .date-cell { font-weight: 700; color: #dc2626; white-space: nowrap; }
+    .tr-urgent { background: #fff0f0; }
+    .tr-soon   { background: #fff7ed; }
+
+    /* ───── CARD GRID ───── */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+      gap: 0.9rem;
+      margin-bottom: 0.5rem;
+    }
+    .card {
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 1px 4px rgba(0,0,0,.07);
+      overflow: hidden;
+    }
+    .card-hd {
+      padding: 0.6rem 0.9rem;
+      font-size: 0.76rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      color: #fff;
+    }
+    .hd-reg    { background: #dc2626; }
+    .hd-gov    { background: #1b3a5c; }
+    .hd-tool   { background: #6366f1; }
+    .hd-data   { background: #0891b2; }
+    .hd-cert   { background: #059669; }
+    .hd-nist   { background: #0d9488; }
+    .hd-ethik  { background: #7c3aed; }
+    .hd-ms     { background: #2563eb; }
+
+    .card-bd {
+      padding: 0.85rem 0.9rem;
+      font-size: 0.85rem;
+    }
+    .card-bd p  { margin-bottom: 0.4rem; color: #374151; }
+    .card-bd ul { padding-left: 1rem; color: #374151; }
+    .card-bd ul li { margin-bottom: 0.25rem; }
+    .card-bd a  { color: #2563eb; text-decoration: none; font-size: 0.82rem; }
+    .card-bd a:hover { text-decoration: underline; }
+    .src { display: block; margin-top: 0.45rem; font-size: 0.78rem; color: #64748b; }
+    .date-pill {
+      display: inline-block;
+      background: #f1f5f9;
+      border-radius: 10px;
+      font-size: 0.72rem;
+      color: #64748b;
+      padding: 0.1rem 0.5rem;
+      margin-bottom: 0.4rem;
+    }
+    .trainer-note {
+      background: #fffbea;
+      border: 1px solid #fcd34d;
+      border-radius: 6px;
+      padding: 0.5rem 0.7rem;
+      font-size: 0.8rem;
+      color: #92400e;
+      margin-top: 0.5rem;
+    }
+    .trainer-note::before { content: "🎓 "; }
+
+    /* ───── WEEK DIVIDER ───── */
+    .week-footer {
+      margin-top: 1.5rem;
+      padding: 0.7rem 1rem;
+      background: #e2e8f0;
+      border-radius: 8px;
+      font-size: 0.78rem;
+      color: #64748b;
+      text-align: center;
+    }
+
+    /* ───── PAGE FOOTER ───── */
+    .page-footer {
+      background: #0d1b2a;
+      color: #9ca3af;
+      text-align: center;
+      padding: 1rem 1.5rem;
+      font-size: 0.77rem;
+      margin-top: 1rem;
+    }
+    .page-footer a { color: #60a5fa; }
+
+    @media (max-width: 600px) {
+      .top-header h1 { font-size: 1rem; }
+      .card-grid { grid-template-columns: 1fr; }
+      .prio-table, .dl-table { font-size: 0.78rem; }
+      .tab-btn { font-size: 0.75rem; padding: 0.28rem 0.65rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════
+     TOP HEADER + TAB NAVIGATION
+════════════════════════════════════════════════ -->
+<div class="top-header">
+  <h1>🤖 KI-Nachrichten Gesamtüberblick — Mai 2026</h1>
+  <p class="sub">Kursrelevante Entwicklungen für KI-Beauftragte &amp; KI-Manager | automatisch recherchiert</p>
+  <div class="tab-nav">
+    <button class="tab-btn active" onclick="showTab('w25', this)">
+      25. Mai <span class="new-badge">NEU</span>
+    </button>
+    <button class="tab-btn" onclick="showTab('w18', this)">18. Mai</button>
+    <button class="tab-btn" onclick="showTab('w11', this)">11. Mai</button>
+    <button class="tab-btn" onclick="showTab('w05', this)">5. Mai</button>
+    <button class="tab-btn" onclick="showTab('fristen', this)">📅 Fristenübersicht</button>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════
+     PANEL: 25. MAI 2026
+════════════════════════════════════════════════ -->
+<div id="w25" class="tab-panel active">
+<div class="container">
+
+  <div class="week-label">
+    <h2>📋 Wochenbericht 25. Mai 2026</h2>
+    <span class="period">Neu seit 18. Mai 2026</span>
+  </div>
+
+  <!-- ALERTS -->
+  <div class="alert alert-red">
+    <strong>🔴 EU AI Act: Politische Einigung zum Digital Omnibus — 7. Mai 2026</strong>
+    Rat und Europäisches Parlament haben sich auf ein Vereinfachungspaket geeinigt. Hochrisiko-Fristen werden erheblich verschoben. Formale Annahme bis <strong>Juli 2026</strong> erwartet. <em>Achtung: Art. 4 (KI-Kompetenzpflicht), Art. 5 (Verbote) und Art. 50 (Transparenzpflichten) bleiben unverändert in Kraft.</em>
+    <a href="https://www.consilium.europa.eu/en/press/press-releases/2026/05/07/artificial-intelligence-council-and-parliament-agree-to-simplify-and-streamline-rules/" target="_blank">→ Consilium: Pressemitteilung</a>
+  </div>
+  <div class="alert alert-blue">
+    <strong>🔵 GPAI Enforcement startet am 2. August 2026 — ~10 Wochen</strong>
+    Ab 2. August 2026 kann das EU AI Office gegenüber Anbietern von Allzweck-KI-Modellen mit Durchsetzungsmaßnahmen vorgehen. Für Modelle vor August 2025: Übergangsfrist bis 2027.
+    <a href="https://digital-strategy.ec.europa.eu/en/policies/contents-code-gpai" target="_blank">→ EU Kommission: GPAI Code of Practice</a>
+  </div>
+
+  <!-- PRIORITY TABLE -->
+  <div class="section-title">📊 Prioritäten dieser Woche</div>
+  <table class="prio-table">
+    <thead><tr><th>Thema</th><th>Priorität</th><th>Kursrelevanz</th></tr></thead>
+    <tbody>
+      <tr><td><strong>EU AI Act Digital Omnibus (7. Mai)</strong> — neue Fristen, KMU-Erleichterungen</td><td><span class="badge b-hoch">🔴 Hoch</span></td><td>Kursanpassung nötig (Regulierungsmodul)</td></tr>
+      <tr><td><strong>GPAI Enforcement ab Aug. 2026</strong> — AI Office startet Durchsetzung</td><td><span class="badge b-hoch">🔴 Hoch</span></td><td>GPAI-Modul &amp; Hochrisiko-Klassifikation</td></tr>
+      <tr><td><strong>BSI: SBOM für KI</strong> — Whitepaper KI-Lieferkette (12. Mai)</td><td><span class="badge b-mittel">🟡 Mittel</span></td><td>IT-Sicherheit / Dokumentationspflichten</td></tr>
+      <tr><td><strong>McKinsey State of AI 2026</strong> — Agentische KI, Skalierungslücke</td><td><span class="badge b-mittel">🟡 Mittel</span></td><td>Strategie-Modul: aktuelle Marktzahlen</td></tr>
+      <tr><td><strong>Agentische KI in HR &amp; Compliance</strong> — Unternehmensbeispiele</td><td><span class="badge b-mittel">🟡 Mittel</span></td><td>Use-Case-Modul Praxisbeispiele</td></tr>
+      <tr><td><strong>Microsoft 365 Copilot 2026</strong> — neue Governance-Controls</td><td><span class="badge b-niedrig">🟢 Niedrig</span></td><td>Optional: Copilot-Modul</td></tr>
+    </tbody>
+  </table>
+
+  <!-- CARDS -->
+  <div class="section-title">📌 Detailmeldungen</div>
+  <div class="card-grid">
+
+    <div class="card">
+      <div class="card-hd hd-reg">🇪🇺 EU AI Act — Digital Omnibus</div>
+      <div class="card-bd">
+        <span class="date-pill">7. Mai 2026</span>
+        <p>Am 7. Mai 2026 einigten sich Rat und EP auf das <strong>Digital Omnibus on AI</strong>-Paket.</p>
+        <ul>
+          <li>Hochrisiko Annex III → 2. Dez. 2027 (war: Aug. 2026)</li>
+          <li>Annex I (Produkte) → 2. Aug. 2028</li>
+          <li>KMU-Erleichterungen auf Mid-Caps ≤ 750 MA / ≤ 150 Mio. € ausgedehnt</li>
+          <li>Neues Verbot: „Nudifier"-KI ab 2. Dez. 2026</li>
+          <li><strong>Art. 4 KI-Kompetenzpflicht bleibt unverändert!</strong></li>
+        </ul>
+        <div class="trainer-note">Fristen-Folien, Checklisten und KMU-Szenarien sofort aktualisieren.</div>
+        <a class="src" href="https://paloubis.com/2026/05/politische-einigung-zum-digital-omnibus-on-ai-vom-7-mai-2026-was-unternehmen-jetzt-wissen-muessen/" target="_blank">→ paloubis.com Analyse</a>
+        <a class="src" href="https://www.insideprivacy.com/artificial-intelligence/eu-ai-act-update-timeline-relief-targeted-simplification-and-new-prohibitions/" target="_blank">→ InsidePrivacy: Vollanalyse</a>
+        <a class="src" href="https://www.lw.com/en/insights/ai-act-update-eu-resolves-to-change-rules-and-extend-deadlines" target="_blank">→ Latham &amp; Watkins</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-hd hd-reg">📋 GPAI Code of Practice</div>
+      <div class="card-bd">
+        <span class="date-pill">Enforcement: 2. Aug. 2026</span>
+        <p>Der GPAI Code (Juli 2025) gilt für alle Anbieter großer KI-Modelle. Ab <strong>2. August 2026</strong> startet die Durchsetzung durch das EU AI Office.</p>
+        <ul>
+          <li>Kap. 1+2 (Transparenz, Copyright): alle GPAI-Anbieter</li>
+          <li>Kap. 3 (Sicherheit): nur bei systemischem Risiko</li>
+          <li>Modelle vor Aug. 2025: Übergangsfrist bis Aug. 2027</li>
+        </ul>
+        <a class="src" href="https://code-of-practice.ai/" target="_blank">→ Volltext: code-of-practice.ai</a>
+        <a class="src" href="https://artificialintelligenceact.eu/code-of-practice-overview/" target="_blank">→ Überblick: artificialintelligenceact.eu</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-hd hd-gov">🛡️ BSI: SBOM für KI-Systeme</div>
+      <div class="card-bd">
+        <span class="date-pill">12. Mai 2026</span>
+        <p>BSI-Guidance: <em>Software Bill of Materials (SBOM) for AI</em> — Mindestelemente für Transparenz in KI-Lieferketten.</p>
+        <ul>
+          <li>Praxisleitfaden für KI-Supply-Chain-Sicherheit</li>
+          <li>Relevant für Hochrisiko-KI-Dokumentation (Art. 11 ff.)</li>
+        </ul>
+        <p style="color:#7f1d1d;font-size:0.82rem;">⚠️ BSI warnte Apr. 2026 vor KI-gestützten Phishing-Kampagnen gegen Politik &amp; Medien.</p>
+        <a class="src" href="https://www.bsi.bund.de/SharedDocs/Downloads/EN/BSI/KI/SBOM-for-AI_minimum-elements.html" target="_blank">→ BSI: SBOM for AI</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-hd hd-data">📈 McKinsey State of AI 2026</div>
+      <div class="card-bd">
+        <p>McKinseys aktueller Bericht zeigt Adoption ohne Skalierung.</p>
+        <ul>
+          <li><strong>88 %</strong> nutzen KI in mind. einer Funktion</li>
+          <li>Nur <strong>1/3</strong> skaliert unternehmensweit</li>
+          <li><strong>62 %</strong> experimentieren mit Agenten, 23 % skalieren</li>
+          <li>Top-Barriere: Sicherheits- &amp; Risikobedenken (64 %)</li>
+          <li>Je 1 $ Technologie → 5 $ in Menschen investieren</li>
+          <li>RAI-Reifegrad Ø 2,3 (2025: 2,0)</li>
+        </ul>
+        <a class="src" href="https://www.mckinsey.com/capabilities/tech-and-ai/our-insights/tech-forward/state-of-ai-trust-in-2026-shifting-to-the-agentic-era" target="_blank">→ McKinsey: State of AI Trust 2026</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-hd hd-tool">🤖 Agentische KI: HR &amp; Compliance</div>
+      <div class="card-bd">
+        <p>Agentische KI automatisiert Ende-zu-Ende-Prozesse ohne menschliche Zwischenschritte.</p>
+        <ul>
+          <li>AMD: <strong>80 %</strong> schnellere HR-Anfragenbearbeitung</li>
+          <li>Onboarding: <strong>60–70 %</strong> kürzere Time-to-Productivity</li>
+          <li>Compliance: Pflichtschulungen, Audit-Trails, Zertifikatsmanagement</li>
+          <li>Pflicht: RBAC, Red-Teaming, Human-in-the-Loop</li>
+        </ul>
+        <a class="src" href="https://www.valuex2.com/agentic-ai-hr-systems-guide-2026/" target="_blank">→ Agentic AI in HR: 2026 Guide</a>
+        <a class="src" href="https://gloat.com/blog/agentic-ai-in-hr/" target="_blank">→ Gloat: Agentic AI in HR</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-hd hd-ms">💼 Microsoft 365 Copilot 2026</div>
+      <div class="card-bd">
+        <p>Signifikante KI-Upgrades für M365 in 2026:</p>
+        <ul>
+          <li>Copilot in Teams: Echtzeit-Transkription &amp; Action Items</li>
+          <li>Copilot in Excel: Natural Language Data Analysis</li>
+          <li>Copilot Pages: Multi-Quellen-Dokumente</li>
+          <li>Copilot Studio: Custom Agent Builder (No-Code)</li>
+          <li>Neue IT-Admin Governance-Controls</li>
+        </ul>
+        <a class="src" href="https://adoption.microsoft.com/en-us/copilot/essential-guide/" target="_blank">→ Microsoft: Essential Guide Copilot Adoption</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-hd hd-gov">🏛️ KI-Governance: Handlungsdruck</div>
+      <div class="card-bd">
+        <p>Aktuelle Studien zeigen trotz wachsendem Druck niedrige Governance-Reife.</p>
+        <ul>
+          <li><strong>54 %</strong> der Vorstände: KI-Governance nicht unter Top-5</li>
+          <li><strong>63 %</strong> können agentische Systeme nicht abschalten</li>
+          <li>Empfehlung: ISO 42001 + NIST AI RMF + EU AI Act kombinieren</li>
+        </ul>
+        <a class="src" href="https://consulting.tuv.com/aktuelles/ki-im-fokus/ki-governance-system-aufbau" target="_blank">→ TÜV: KI-Governance in 5 Schritten</a>
+        <a class="src" href="https://www.kiteworks.com/de/cybersecurity-risikomanagement/ai-governance-boards-2026-chaos/" target="_blank">→ Kiteworks: KI-Governance 2026</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-hd hd-cert">🎓 Zertifizierung &amp; Standards</div>
+      <div class="card-bd">
+        <ul>
+          <li><strong>ISO/IEC 42001</strong>: TÜV Rheinland &amp; TÜV SÜD bieten Audits an</li>
+          <li>„ISO 42001 Professional (TÜV)": blockchain-gesichert, ISO 17024-konform</li>
+          <li>Neu: „Interner KI-Auditor (TÜV)" als eigenständiger Kurs</li>
+          <li>Kombinierter Ansatz empfohlen: ISO 42001 + NIST AI RMF + EU AI Act</li>
+        </ul>
+        <a class="src" href="https://certification.tuv.com/de/de/audits-zertifizierungen/zertifiziernugen-it-security-datenschutz/iso-42001/" target="_blank">→ TÜV: ISO 42001 Zertifizierung</a>
+        <a class="src" href="https://akademie.tuv.com/weiterbildungen/interner-ki-auditor-tuev-31589716" target="_blank">→ TÜV: Interner KI-Auditor (neu)</a>
+      </div>
+    </div>
+
+  </div><!-- /card-grid -->
+  <div class="week-footer">Erstellt: 25. Mai 2026 | Stichtag: 18. Mai 2026 | automatisch via Claude Cowork</div>
+
+</div><!-- /container -->
+</div><!-- /tab-panel w25 -->
+
+
+<!-- ══════════════════════════════════════════════
+     PANEL: 18. MAI 2026
+════════════════════════════════════════════════ -->
+<div id="w18" class="tab-panel">
+<div class="container">
+
+  <div class="week-label">
+    <h2>📋 Wochenbericht 18. Mai 2026</h2>
+    <span class="period">Woche 12.–18. Mai 2026</span>
+  </div>
+
+  <div class="alert alert-red">
+    <strong>🚨 KRITISCH: EU AI Act Omnibus — politische Einigung vom 7. Mai 2026</strong>
+    Fristen für Hochrisiko-KI (Annex III): <strong>2. Dezember 2027</strong>. Produktintegrierte Systeme (Annex I): <strong>2. August 2028</strong>. Wasserzeichen-Pflicht: <strong>2. Dezember 2026</strong>. KMU-Erleichterungen bis 750 MA / 150 Mio. € Umsatz. Neue Verbotsklasse: Deepfake-Nudifier. <strong>Alle Kursfolien zu Fristen und Risikoklassifizierung sofort überarbeiten.</strong>
+    <a href="https://www.consilium.europa.eu/en/press/press-releases/2026/05/07/artificial-intelligence-council-and-parliament-agree-to-simplify-and-streamline-rules/" target="_blank">→ Ratspressemitteilung</a>
+  </div>
+  <div class="alert alert-red">
+    <strong>🔔 KRITISCH: Art. 50 AI Act Leitlinienentwurf — Kommentierung bis 3. Juni 2026</strong>
+    Am 7. Mai 2026 veröffentlichte die EU-Kommission einen Entwurf zu Transparenzpflichten für KI (Art. 50). Betrifft Chatbots, generierte Inhalte und Deepfakes. Kommentierungsfrist läuft bis <strong>3. Juni 2026</strong>.
+    <a href="https://www.gesundheitsdatenschutz.org/blog/index.php/2026/05/10/art-50-ki-verordnung-entwurf-der-leitlinien-zur-umsetzung-der-transparenzpflichten-fur-ki-systeme/" target="_blank">→ Analyse Art. 50 Leitlinienentwurf</a>
+  </div>
+  <div class="alert alert-blue">
+    <strong>ℹ️ INFO: Bundesnetzagentur als nationale KI-Aufsichtsbehörde bestätigt</strong>
+    Das Bundeskabinett hat am 11. Februar 2026 die Bundesnetzagentur als nationale Marktüberwachungsbehörde für den AI Act benannt.
+    <a href="https://www.haufe.de/recht/ai-act-ki-gesetz-der-eu_226_685760.html" target="_blank">→ Haufe: AI Act Deutschland</a>
+  </div>
+  <div class="alert alert-blue">
+    <strong>ℹ️ INFO: EDPB — Durchsetzungsschwerpunkt 2026 &amp; neue Forschungsleitlinien</strong>
+    EDPB fokussiert 2026 auf Art. 12–14 DSGVO (Transparenz). Neue Leitlinien zur KI-gestützten Forschung vom 15. April 2026 (Konsultation bis 25. Juni 2026).
+    <a href="https://www.edpb.europa.eu/our-work-tools/our-documents/topic/artificial-intelligence_en" target="_blank">→ EDPB: KI &amp; Datenschutz</a>
+  </div>
+
+  <div class="section-title">📊 Prioritäten</div>
+  <table class="prio-table">
+    <thead><tr><th>Thema</th><th>Priorität</th><th>Kursrelevanz</th></tr></thead>
+    <tbody>
+      <tr><td>EU AI Act Omnibus (7. Mai): Fristen, KMU-Schwellenwerte</td><td><span class="badge b-hoch">🔴 Hoch</span></td><td>Zeitplan, Risikoklassen, KMU-Checkliste</td></tr>
+      <tr><td>Art. 50 Leitlinienentwurf Transparenzpflichten (Kommentierung bis 3. Juni)</td><td><span class="badge b-hoch">🔴 Hoch</span></td><td>Transparenz- und GPAI-Kapitel ergänzen</td></tr>
+      <tr><td>Bundesnetzagentur als nationale Marktüberwachungsbehörde</td><td><span class="badge b-hoch">🔴 Hoch</span></td><td>Governance-Kapitel Deutschland</td></tr>
+      <tr><td>BSI: SBOM for AI — G7-Mindestanforderungen</td><td><span class="badge b-mittel">🟡 Mittel</span></td><td>Risikomanagement: KI-Lieferketten</td></tr>
+      <tr><td>EDPB-Leitlinien: Personendaten in Forschung (Konsultation bis 25. Juni)</td><td><span class="badge b-mittel">🟡 Mittel</span></td><td>DSGVO+KI Schnittmengen</td></tr>
+      <tr><td>McKinsey State of AI Trust 2026 — Agentic AI als neue Ära</td><td><span class="badge b-mittel">🟡 Mittel</span></td><td>Change-Management-Modul: Adoptionsdaten</td></tr>
+      <tr><td>Stanford AI Index 2026 — Marktdaten, Transparenzrückgang</td><td><span class="badge b-mittel">🟡 Mittel</span></td><td>Grundlagenmodul Statistiken erneuern</td></tr>
+      <tr><td>Microsoft Copilot 2026: Autonome Agenten, Work IQ</td><td><span class="badge b-niedrig">🟢 Niedrig</span></td><td>M365-Praxismodul aktualisieren</td></tr>
+      <tr><td>KI in HR 2026: Recruiting, Onboarding, HR-Agenten</td><td><span class="badge b-niedrig">🟢 Niedrig</span></td><td>Use-Case-Sammlung: HR-Beispiele</td></tr>
+    </tbody>
+  </table>
+
+  <div class="section-title">📌 Detailmeldungen</div>
+  <div class="card-grid">
+
+    <div class="card">
+      <div class="card-hd hd-reg">🇪🇺 Omnibus: Neue Fristen &amp; KMU</div>
+      <div class="card-bd">
+        <span class="date-pill">7. Mai 2026</span>
+        <ul>
+          <li><strong>Hochrisiko Anh. III:</strong> 2. Dez. 2027 (war: 2. Aug. 2026)</li>
+          <li><strong>Produktintegriert (Anh. I):</strong> 2. Aug. 2028</li>
+          <li><strong>Wasserzeichen:</strong> 2. Dez. 2026</li>
+          <li><strong>KMU-Grenze:</strong> 750 MA / 150 Mio. € Umsatz</li>
+          <li><strong>Neu verboten:</strong> KI-generierte intime Bilder ohne Einwilligung</li>
+          <li>Vereinfachung „Safety Component": Performance-Optimierung fällt heraus</li>
+        </ul>
+        <div class="trainer-note">Fristen-Folien, Risikoklassen, KMU-Checkliste sofort aktualisieren.</div>
+        <a class="src" href="https://www.consilium.europa.eu/en/press/press-releases/2026/05/07/artificial-intelligence-council-and-parliament-agree-to-simplify-and-streamline-rules/" target="_blank">→ EU-Rat Pressemitteilung</a>
+        <a class="src" href="https://www.dastra.eu/en/blog/simpler-safer-stricter-where-it-counts-inside-the-eu-ai-omnibus-deal/60025" target="_blank">→ Dastra-Analyse</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-hd hd-reg">📝 Art. 50 Transparenzleitlinien</div>
+      <div class="card-bd">
+        <span class="date-pill">7. Mai 2026 — Konsultation bis 3. Jun.</span>
+        <p>EU-Kommission veröffentlichte Leitlinienentwurf zu Art. 50 AI Act (Transparenzpflichten für KI-Systeme). Betrifft v.a. Chatbots, generierte Inhalte, Deepfakes.</p>
+        <div class="trainer-note">GPAI-Kapitel und Transparenz-Modul ergänzen; Konsultationsprozess als Praxisbeispiel nutzen.</div>
+        <a class="src" href="https://artificialintelligenceact.eu/implementation-timeline/" target="_blank">→ AI Act Explorer: Timeline</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-hd hd-gov">🏛️ Bundesnetzagentur als Aufsicht</div>
+      <div class="card-bd">
+        <span class="date-pill">11. Feb. 2026 (Kabinettsbeschluss)</span>
+        <p>Die Bundesnetzagentur ist nun national zuständige Marktüberwachungs- und notifizierende Behörde für den AI Act. Klare Zuständigkeit in Deutschland erstmals geregelt.</p>
+        <div class="trainer-note">Governance-Kapitel „Deutschland-Umsetzung" mit Behördenstruktur aktualisieren.</div>
+        <a class="src" href="https://www.haufe.de/recht/ai-act-ki-gesetz-der-eu_226_685760.html" target="_blank">→ Haufe: AI Act Deutschland</a>
+        <a class="src" href="https://consulting.tuv.com/aktuelles/ki-im-fokus/eu-ai-act-2026-zwischenstand" target="_blank">→ TÜV: AI Act Zwischenstand</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-hd hd-gov">🛡️ BSI: SBOM for AI (G7)</div>
+      <div class="card-bd">
+        <span class="date-pill">April 2026</span>
+        <p>BSI unter G7-Federführung: Mindestanforderungen für <strong>Software Bill of Materials (SBOM) for AI</strong> — verbessert Transparenz und Cybersicherheit in der KI-Lieferkette.</p>
+        <p style="font-size:0.82rem;color:#6b7280;">21. IT-Sicherheitskongress April 2026: Nur 19 % der Nutzer prüfen KI-Inhalte auf Quellen.</p>
+        <div class="trainer-note">Risikomanagement-Modul: KI-Lieferkette und Supply Chain Security ergänzen.</div>
+        <a class="src" href="https://www.bsi.bund.de/SharedDocs/Downloads/EN/BSI/KI/SBOM-for-AI_minimum-elements.html" target="_blank">→ BSI: SBOM for AI</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-hd hd-gov">📊 EDPB: DSGVO + KI-Forschung</div>
+      <div class="card-bd">
+        <span class="date-pill">15. April 2026 — Konsultation bis 25. Jun.</span>
+        <p>EDPB Guidelines 1/2026 zur Verarbeitung personenbezogener Daten in der Forschung. Bei KI-gestützter Forschung: DSFA (DPIA) nach Art. 35 DSGVO fast immer erforderlich.</p>
+        <a class="src" href="https://datamatters.sidley.com/2026/05/12/scientific-research-and-the-gdpr-edpb-issues-long-awaited-guidelines/" target="_blank">→ Sidley: EDPB-Analyse</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-hd hd-data">📈 Stanford AI Index 2026</div>
+      <div class="card-bd">
+        <ul>
+          <li>KI-Modelle übertreffen Menschen auf PhD-Niveau</li>
+          <li>US Private Investments: <strong>$285,9 Mrd.</strong> (23× China)</li>
+          <li>Gen-AI Adoption: <strong>53 %</strong> Weltbevölkerung (schneller als PC/Internet)</li>
+          <li><strong>88 %</strong> org. Adoption; 4 von 5 Studierende nutzen Gen-AI</li>
+          <li>Transparency Index: sank von 58 auf <strong>40 Punkte</strong></li>
+        </ul>
+        <div class="trainer-note">Statistiken aktualisieren; Transparenzrückgang für Governance-Diskussion nutzen.</div>
+        <a class="src" href="https://hai.stanford.edu/ai-index/2026-ai-index-report" target="_blank">→ Stanford HAI AI Index 2026</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-hd hd-ms">💼 Microsoft Copilot: Autonome Agenten</div>
+      <div class="card-bd">
+        <span class="date-pill">Mai 2026</span>
+        <p>Copilot entwickelt sich vom reaktiven Assistenten zum <strong>autonomen digitalen Mitarbeiter</strong>:</p>
+        <ul>
+          <li><strong>Work IQ:</strong> Lernt aus vergangenen Projekten und Kommunikation</li>
+          <li>Teams: KI-Ergebnisse direkt in Gruppen-Chats</li>
+          <li>Word / Excel / PowerPoint: Direkte Bearbeitungen (nicht nur Vorschläge)</li>
+          <li>Copilot Studio Wave 1 2026: Custom Workflow-Bots</li>
+        </ul>
+        <a class="src" href="https://borncity.com/news/microsoft-365-copilot-wird-zum-autonomen-arbeits-agenten/" target="_blank">→ BornCity: Copilot als Arbeits-Agent</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-hd hd-tool">🤖 KI in HR: Intelligente Agenten</div>
+      <div class="card-bd">
+        <ul>
+          <li>Recruiting: KI identifiziert Talente (LinkedIn/GitHub) und spricht aktiv an</li>
+          <li>Onboarding: Automatisierte FAQ-Bots, Terminkoordination</li>
+          <li>Workforce Planning: KI übernimmt standardisierbare Prozessschritte</li>
+          <li>Pflicht: DSGVO, Fairness- und Bias-Prüfung</li>
+        </ul>
+        <div class="trainer-note">HR-Use-Cases mit HITL-Konzept ausbauen.</div>
+        <a class="src" href="https://hr-tech.de/hr-insights/blog-news/ki-in-hr-2026-wie-intelligente-hr-agenten-den-arbeitsalltag-im-mittelstand-revolutionieren/" target="_blank">→ HR-Tech: KI in HR 2026</a>
+      </div>
+    </div>
+
+  </div>
+  <div class="week-footer">Erstellt: 18. Mai 2026 | Stichtag: 11. Mai 2026 | automatisch via Claude Cowork</div>
+
+</div>
+</div><!-- /tab-panel w18 -->
+
+
+<!-- ══════════════════════════════════════════════
+     PANEL: 11. MAI 2026
+════════════════════════════════════════════════ -->
+<div id="w11" class="tab-panel">
+<div class="container">
+
+  <div class="week-label">
+    <h2>📋 Wochenbericht 11. Mai 2026</h2>
+    <span class="period">Woche 5.–11. Mai 2026</span>
+  </div>
+
+  <div class="alert alert-red">
+    <strong>🔴 KRITISCH — EU AI Act: Politische Einigung auf Fristenänderungen (7. Mai 2026)</strong>
+    Eigenständige HRAI-Systeme bis <strong>2. Dezember 2027</strong>, in Produkte integrierte bis <strong>2. August 2028</strong>. Wasserzeichen-Pflicht auf <strong>2. Dezember 2026</strong> vorgezogen. Schulungsunterlagen zu Fristen und Compliance-Zeitplänen sofort aktualisieren.
+    <a href="https://www.consilium.europa.eu/en/press/press-releases/2026/05/07/artificial-intelligence-council-and-parliament-agree-to-simplify-and-streamline-rules/" target="_blank">→ EU-Rat Pressemitteilung</a>
+  </div>
+  <div class="alert alert-red">
+    <strong>🔴 KRITISCH — BSI: NIS2 Durchgriff startet Mai 2026 + C5:2026 in Kraft</strong>
+    BSI veröffentlichte am 1. Mai 2026 den Cloud-Sicherheitsstandard <strong>C5:2026</strong> (inkl. Quanten-Kryptographie). BSI warnt: Moderne KI-Modelle entdecken Sicherheitslücken automatisiert und generieren Angriffe. BSI fordert Deutsches AI Security &amp; Safety Institut.
+    <a href="https://borncity.com/news/bsi-veroeffentlicht-c52026-cloud-sicherheit-mit-quanten-kryptographie/" target="_blank">→ C5:2026 Meldung</a>
+  </div>
+  <div class="alert alert-blue">
+    <strong>🔵 INFO — EDSB: Neue DPIA-Vorlage + KI-Transparenz-Konsultation (8. Mai)</strong>
+    Neues DPIA-Template für KI-spezifische Datenschutz-Folgenabschätzungen. Öffentliche Konsultation zu Transparenzpflichten läuft.
+    <a href="https://www.edpb.europa.eu/our-work-tools/general-guidance/guidelines-recommendations-best-practices_en" target="_blank">→ EDPB Guidelines</a>
+  </div>
+
+  <div class="section-title">📊 Prioritäten</div>
+  <table class="prio-table">
+    <thead><tr><th>Priorität</th><th>Thema</th><th>Kursmodul</th><th>Handlungsbedarf</th></tr></thead>
+    <tbody>
+      <tr><td><span class="badge b-hoch">🔴 Hoch</span></td><td>EU AI Act Fristenänderungen (7. Mai)</td><td>Regulierung &amp; Compliance</td><td>Zeitplan-Folie sofort aktualisieren</td></tr>
+      <tr><td><span class="badge b-hoch">🔴 Hoch</span></td><td>BSI C5:2026 + NIS2-Durchgriff</td><td>IT-Sicherheit &amp; KI-Risiken</td><td>Cloud-Sicherheits-Modul anpassen</td></tr>
+      <tr><td><span class="badge b-hoch">🔴 Hoch</span></td><td>EDSB DPIA-Vorlage + KI-Transparenz-Konsultation</td><td>Datenschutz &amp; DSGVO</td><td>Vorlage als Übungsmaterial integrieren</td></tr>
+      <tr><td><span class="badge b-mittel">🟡 Mittel</span></td><td>Microsoft 365 E7 / Agent 365 GA (1. Mai)</td><td>Praxis: M365 Copilot</td><td>Features und Lizenzmodell aktualisieren</td></tr>
+      <tr><td><span class="badge b-mittel">🟡 Mittel</span></td><td>NIST Cyber AI Profile (Feb.) + Critical Infra-Profil (Apr.)</td><td>KI-Risikomanagement</td><td>Frameworks-Übersicht ergänzen</td></tr>
+      <tr><td><span class="badge b-mittel">🟡 Mittel</span></td><td>McKinsey State of AI 2026</td><td>KI-Strategie &amp; Change</td><td>Statistiken und Zitate aktualisieren</td></tr>
+      <tr><td><span class="badge b-mittel">🟡 Mittel</span></td><td>Stanford AI Index 2026</td><td>KI-Grundlagen &amp; Markt</td><td>Kennzahlen-Folien aktualisieren</td></tr>
+      <tr><td><span class="badge b-niedrig">🟢 Niedrig</span></td><td>TÜV-Studie: KI-Kompetenzbedarf ohne klare Strategie</td><td>Rolle KI-Beauftragter</td><td>Argument für Zertifizierung stärken</td></tr>
+      <tr><td><span class="badge b-niedrig">🟢 Niedrig</span></td><td>KI in HR: Nutzungsanstieg auf 43 % (SHRM 2026)</td><td>KI Use Cases</td><td>Fallbeispiele und Statistiken ergänzen</td></tr>
+    </tbody>
+  </table>
+
+  <div class="section-title">📌 Detailmeldungen</div>
+  <div class="card-grid">
+
+    <div class="card">
+      <div class="card-hd hd-reg">🇪🇺 Digital Omnibus: Einigung</div>
+      <div class="card-bd">
+        <span class="date-pill">7. Mai 2026</span>
+        <ul>
+          <li><strong>Hochrisiko (eigenständig):</strong> 2. Dez. 2027</li>
+          <li><strong>Produktintegriert:</strong> 2. Aug. 2028</li>
+          <li><strong>Wasserzeichen:</strong> 2. Dez. 2026</li>
+          <li><strong>KI-Sandboxen:</strong> bis 2. Aug. 2027</li>
+          <li>Neues Verbot: non-konsensuales intimes Bildmaterial per KI</li>
+          <li>KMU-Erleichterungen auf kleine Mid-Caps ausgedehnt</li>
+        </ul>
+        <div class="trainer-note">Alle Zeitplan-Folien, Compliance-Checklisten und Hochrisiko-Szenarien aktualisieren.</div>
+        <a class="src" href="https://www.consilium.europa.eu/en/press/press-releases/2026/05/07/artificial-intelligence-council-and-parliament-agree-to-simplify-and-streamline-rules/" target="_blank">→ EU-Rat Pressemitteilung</a>
+        <a class="src" href="https://iapp.org/news/a/eu-agrees-to-amend-ai-act-clarifies-overlap-with-machinery-rules" target="_blank">→ IAPP Analyse</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-hd hd-gov">🛡️ BSI: C5:2026 &amp; KI-Cyberangriffe</div>
+      <div class="card-bd">
+        <span class="date-pill">1. Mai 2026</span>
+        <ul>
+          <li>C5:2026 trat in Kraft — erstmals mit Quanten-Kryptographie-Anforderungen</li>
+          <li>BSI: KI-Modelle entdecken Sicherheitslücken und generieren Angriffe automatisiert</li>
+          <li>BSI fordert Gründung eines Deutschen AI Security &amp; Safety Institutes</li>
+          <li>NIS2: BSI startet aktiven Durchgriff ab Mai 2026</li>
+        </ul>
+        <div class="trainer-note">Cloud-Sicherheits- und NIS2-Abschnitt aktualisieren; C5:2026 als IT-Governance-Beispiel.</div>
+        <a class="src" href="https://borncity.com/news/bsi-veroeffentlicht-c52026-cloud-sicherheit-mit-quanten-kryptographie/" target="_blank">→ C5:2026 Meldung</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-hd hd-ms">💼 M365 E7 &amp; Agent 365 GA</div>
+      <div class="card-bd">
+        <span class="date-pill">1. Mai 2026</span>
+        <ul>
+          <li><strong>Agent 365:</strong> Allgemein verfügbar, 15 $/User/Monat</li>
+          <li>Outlook: Natürlichsprachliche Befehle für Kalender &amp; E-Mail</li>
+          <li>Teams: Echtzeit-Übersetzung + automatische Spracherkennung</li>
+          <li>Copilot Studio: benutzerdefinierte Workflow-Bots ohne Code</li>
+          <li>Neues Admin-Dashboard für Nutzungs- und Kostenanalyse</li>
+        </ul>
+        <div class="trainer-note">Agent 365 als Praxisbeispiel für autonome KI-Agenten einsetzen.</div>
+        <a class="src" href="https://techcommunity.microsoft.com/blog/agent-365-blog/what%E2%80%99s-new-in-agent-365-may-2026/4516340" target="_blank">→ What's New in Agent 365: May 2026</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-hd hd-nist">🔧 NIST: Cyber AI Profile</div>
+      <div class="card-bd">
+        <span class="date-pill">Feb./Apr. 2026</span>
+        <ul>
+          <li><strong>Feb. 2026:</strong> NIST IR 8596 — Cyber AI Profile (Erweiterung CSF 2.0 für KI-Risiken)</li>
+          <li><strong>7. Apr. 2026:</strong> AI RMF Profil für Kritische Infrastrukturen</li>
+          <li><strong>8. Apr. 2026:</strong> Generative AI Profile aktualisiert</li>
+          <li>RMF 1.1 mit erweiterten Profilen angekündigt</li>
+        </ul>
+        <div class="trainer-note">NIST-Framework-Übersicht um Cyber AI Profile ergänzen.</div>
+        <a class="src" href="https://kpmg.com/us/en/articles/2026/cybersecurity-nist-draft-cybersecurity-framework-for-ai-reg-alert.html" target="_blank">→ KPMG: Cyber AI Profile</a>
+        <a class="src" href="https://www.nist.gov/itl/ai-risk-management-framework" target="_blank">→ NIST AI RMF</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-hd hd-cert">🎓 ISO 42001 &amp; Governance</div>
+      <div class="card-bd">
+        <ul>
+          <li>ISO 42001 gilt 2026 als Referenzstandard für KI-Managementsysteme im EU AI Act Kontext</li>
+          <li>TÜV Rheinland bietet ISO 42001-Kurse (1.960–2.600 € netto)</li>
+          <li>TÜV-Studie: 40 % sehen wachsenden KI-Kompetenzbedarf — ohne klare Weiterbildungsstrategie</li>
+        </ul>
+        <div class="trainer-note">ISO 42001 als operative Compliance-Grundlage positionieren, nicht nur Zusatzzertifizierung.</div>
+        <a class="src" href="https://akademie.tuv.com/weiterbildungen/iso-42001-bedeutung-und-anwendung-der-ki-norm-tuev-30295950" target="_blank">→ TÜV: ISO 42001 Kurs</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-hd hd-data">📊 McKinsey + Stanford 2026</div>
+      <div class="card-bd">
+        <p><strong>McKinsey State of AI Trust:</strong></p>
+        <ul>
+          <li>RAI-Reifegrad Ø 2,3 (2025: 2,0); nur 39 % berichten EBIT-Effekte</li>
+          <li>1 $ Technologie → 5 $ in People &amp; Change</li>
+        </ul>
+        <p style="margin-top:0.5rem;"><strong>Stanford AI Index 2026:</strong></p>
+        <ul>
+          <li>Global KI-Investitionen 2025: <strong>581 Mrd. USD</strong> (+130 %)</li>
+          <li>53 % Weltbevölkerung nutzen Gen-AI</li>
+          <li>59 % weltweit optimistisch gegenüber KI (2025: 52 %)</li>
+        </ul>
+        <a class="src" href="https://hai.stanford.edu/ai-index/2026-ai-index-report" target="_blank">→ Stanford AI Index 2026</a>
+        <a class="src" href="https://www.mckinsey.com/capabilities/tech-and-ai/our-insights/tech-forward/state-of-ai-trust-in-2026-shifting-to-the-agentic-era" target="_blank">→ McKinsey: AI Trust 2026</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-hd hd-tool">🤖 KI in HR (SHRM 2026)</div>
+      <div class="card-bd">
+        <ul>
+          <li>KI-Nutzung in HR: <strong>43 %</strong> (2024: 26 %); stärkster Anstieg Führungsebene (73 %)</li>
+          <li>Recruiting 27 %, HR Tech 21 %, L&amp;D 17 %, Employee Experience 14 %</li>
+          <li>Back-Office: Vendor-Onboarding, Payroll-Abgleich, Vertragsmanagement via Agenten</li>
+          <li>Goldstandard 2026: Human-in-the-Loop für sensitive Entscheidungen</li>
+        </ul>
+        <div class="trainer-note">HR-Use-Cases und HITL-Konzept ausbauen.</div>
+        <a class="src" href="https://www.shrm.org/topics-tools/research/state-of-ai-hr-2026/full-report" target="_blank">→ SHRM: State of AI in HR 2026</a>
+      </div>
+    </div>
+
+  </div>
+  <div class="week-footer">Erstellt: 11. Mai 2026 | Stichtag: 5. Mai 2026 | automatisch via Claude Cowork</div>
+
+</div>
+</div><!-- /tab-panel w11 -->
+
+
+<!-- ══════════════════════════════════════════════
+     PANEL: 5. MAI 2026
+════════════════════════════════════════════════ -->
+<div id="w05" class="tab-panel">
+<div class="container">
+
+  <div class="week-label">
+    <h2>📋 Wochenbericht 5. Mai 2026</h2>
+    <span class="period">Woche 28. April – 5. Mai 2026</span>
+  </div>
+
+  <div class="alert alert-red">
+    <strong>⚠️ Dringend: Digital Omnibus Trilog am 28. April 2026 gescheitert</strong>
+    Ohne Einigung galt zunächst der Original-AI-Act mit Frist <strong>2. August 2026</strong> für alle Hochrisiko-Systeme. Streitpunkt: Konformitätsbewertungsarchitektur für KI in regulierten Produkten. Ein dritter Trilog war für den 13. Mai 2026 anberaumt. <em>Hinweis: Einigung erfolgte am 7. Mai 2026 — siehe Wochenberichte 11. und 18. Mai.</em>
+    <a href="https://www.twobirds.com/en/insights/2026/germany/digital-omnibus-on-ai-trilogue-stalls-ahead-of-the-ai-act-deadline" target="_blank">→ Bird &amp; Bird: Trilog Analyse</a>
+  </div>
+  <div class="alert alert-green">
+    <strong>📌 Neu: BSI-Cybersicherheitsmonitor 2026 erschien am 11. Mai 2026</strong>
+    Schwerpunkt: „Online-Betrug &amp; Künstliche Intelligenz" — direkt als Kursmaterial nutzbar.
+  </div>
+
+  <div class="section-title">📊 Prioritäten</div>
+  <table class="prio-table">
+    <thead><tr><th>Priorität</th><th>Thema</th><th>Maßnahme</th></tr></thead>
+    <tbody>
+      <tr><td><span class="badge b-hoch">🔴 Hoch</span></td><td>Digital Omnibus / AI-Act-Fristen</td><td>Vorbehalt in alle betroffenen Folien (Einigung abwarten — erfolgte 7. Mai)</td></tr>
+      <tr><td><span class="badge b-hoch">🔴 Hoch</span></td><td>AI Literacy (Art. 4)</td><td>Behördliche Prüfungen ab August / Herbst 2026 ergänzen</td></tr>
+      <tr><td><span class="badge b-mittel">🟡 Mittel</span></td><td>M365 Copilot — Agentische KI</td><td>April/Mai-Updates in Tag-8-Modul (Claude in Word, Agent 365 Security)</td></tr>
+      <tr><td><span class="badge b-mittel">🟡 Mittel</span></td><td>Stanford AI Index 2026 (53 % GenAI-Adoption)</td><td>Als aktualisierte Datenquelle in Grundlagenmodul nutzen</td></tr>
+      <tr><td><span class="badge b-mittel">🟡 Mittel</span></td><td>McKinsey AI Trust 2026</td><td>RAI-Reifegrad-Daten in Governance-Module integrieren</td></tr>
+      <tr><td><span class="badge b-mittel">🟡 Mittel</span></td><td>NIST AI RMF — KRITIS-Profil (April 2026)</td><td>In Risikomanagement-Module einarbeiten</td></tr>
+      <tr><td><span class="badge b-niedrig">🟢 Niedrig</span></td><td>AlgorithmWatch Meldestelle für algorithmische Diskriminierung</td><td>Als Fallbeispiel HR-Diskriminierungsmodul</td></tr>
+      <tr><td><span class="badge b-niedrig">🟢 Niedrig</span></td><td>BSI Cybersicherheitsmonitor 2026 (erschien 11. Mai)</td><td>Als frisches Datenmaterial einplanen</td></tr>
+    </tbody>
+  </table>
+
+  <div class="section-title">📌 Detailmeldungen</div>
+  <div class="card-grid">
+
+    <div class="card">
+      <div class="card-hd hd-reg">🇪🇺 EU AI Act: Trilog &amp; Fristen</div>
+      <div class="card-bd">
+        <span class="date-pill">28. April 2026</span>
+        <p>Laufende Fristen laut Original-AI-Act (Stand 5. Mai 2026):</p>
+        <ul>
+          <li>✅ AI Literacy (Art. 4): seit 2. Feb. 2025 in Kraft</li>
+          <li>✅ GPAI-Regeln: seit 2. Aug. 2025 in Kraft</li>
+          <li>⏳ <strong>2. Aug. 2026:</strong> Vollständige Anwendbarkeit inkl. Hochrisiko</li>
+          <li>⚠️ 2. Dez. 2027 / 2. Aug. 2028: nur bei Omnibus-Einigung</li>
+        </ul>
+        <p style="font-size:0.82rem;color:#64748b;margin-top:0.4rem;"><em>Aktuell: Einigung erfolgte am 7. Mai 2026.</em></p>
+        <div class="trainer-note">Solange Omnibus nicht im Amtsblatt: darf nicht als beschlossene Sache dargestellt werden.</div>
+        <a class="src" href="https://artificialintelligenceact.eu/implementation-timeline/" target="_blank">→ EU AI Act Explorer: Timeline</a>
+        <a class="src" href="https://consulting.tuv.com/aktuelles/ki-im-fokus/digital-omnibus-ki-verordnung-fristen" target="_blank">→ TÜV Consulting: Neue Fristen</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-hd hd-reg">📋 AI Literacy (Art. 4): Enforcement</div>
+      <div class="card-bd">
+        <span class="date-pill">Prüfungen ab Aug. / Herbst 2026</span>
+        <p>AI-Literacy-Pflicht gilt seit 2. Feb. 2025. Ab <strong>August 2026</strong> beginnen Aufsichtsbehörden mit Prüfungen.</p>
+        <ul>
+          <li>Gilt für alle Mitarbeitenden mit KI-Nutzung im Arbeitskontext</li>
+          <li>Unabhängig von der Risikoklasse des eingesetzten Systems</li>
+          <li>Jährliche Auffrischungen empfohlen</li>
+        </ul>
+        <a class="src" href="https://skill-sprinters.de/blog/compliance/ai-literacy-pflicht-bleibt-august-2026/" target="_blank">→ Skill-Sprinters: AI Literacy Pflicht</a>
+        <a class="src" href="https://www.ihk.de/schleswig-holstein/standortpolitik/sicherheit/ai-act-literacy-ki-schulungspflicht-6434794" target="_blank">→ IHK: AI Act &amp; Schulungspflicht</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-hd hd-ms">💼 M365 Copilot: Neue Features</div>
+      <div class="card-bd">
+        <span class="date-pill">Anfang Mai 2026</span>
+        <p><strong>Agent 365 (Mai 2026):</strong> Neue Sicherheitsfunktionen — Prompt-Injection-Schutz, Threat Intelligence Filtering, URL-Filterung, Blockierung nicht genehmigter Agent-Ausführungen.</p>
+        <p><strong>April 2026:</strong> Claude-Modell in Word wählbar. Copilot Call Delegation für Teams. Überarbeitete mobile App.</p>
+        <p><strong>März 2026:</strong> Agentischer Copilot in Excel/Word/PowerPoint (mehrstufige eigenständige Aktionen).</p>
+        <a class="src" href="https://techcommunity.microsoft.com/blog/agent-365-blog/what%E2%80%99s-new-in-agent-365-may-2026/4516340" target="_blank">→ What's New in Agent 365: May 2026</a>
+        <a class="src" href="https://techcommunity.microsoft.com/blog/microsoft365copilotblog/from-draft-to-done-agentic-copilot-in-excel-word-and-powerpoint/4500196" target="_blank">→ Agentic Copilot in Excel/Word/PPT</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-hd hd-nist">🔧 NIST AI RMF 2026</div>
+      <div class="card-bd">
+        <span class="date-pill">Feb./Apr. 2026</span>
+        <ul>
+          <li><strong>7. Apr.:</strong> NIST Konzeptpapier „Trustworthy AI in Critical Infrastructure"</li>
+          <li><strong>8. Apr.:</strong> Generative AI Profile (NIST-AI-600-1) aktualisiert</li>
+          <li><strong>Feb. 2026:</strong> NIST IR 8596 Cyber AI Profile — Erweiterung CSF 2.0</li>
+          <li>RMF 1.1 für 2026 angekündigt</li>
+        </ul>
+        <a class="src" href="https://www.nist.gov/itl/ai-risk-management-framework" target="_blank">→ NIST AI RMF Hauptseite</a>
+        <a class="src" href="https://kpmg.com/us/en/articles/2026/cybersecurity-nist-draft-cybersecurity-framework-for-ai-reg-alert.html" target="_blank">→ KPMG: Analyse Cyber AI Profile</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-hd hd-gov">🏛️ KI-Governance: Governance-Gap</div>
+      <div class="card-bd">
+        <span class="date-pill">Logicalis CIO Report 2026</span>
+        <ul>
+          <li>Nur <strong>14 %</strong> haben KI-Governance-Verantwortung auf Führungsebene klar geregelt</li>
+          <li>Nur <strong>37 %</strong> der CIOs haben vollständige Sichtbarkeit auf alle KI-Tools</li>
+          <li>94,5 % nutzen KI in Lieferanten- oder Risikomanagement-Prozessen</li>
+        </ul>
+        <a class="src" href="https://www.digital-chiefs.de/ki-governance-2026-nur-14-prozent-haben-geklaert-wer-die-verantwortung-traegt/" target="_blank">→ Digital-Chiefs: KI-Governance 2026</a>
+        <a class="src" href="https://www.digital-chiefs.de/logicalis-cio-report-2026-shadow-ai-governance-ki-sichtbarkeit/" target="_blank">→ Logicalis CIO Report 2026</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-hd hd-ethik">⚖️ Ethik: AlgorithmWatch 2026</div>
+      <div class="card-bd">
+        <span class="date-pill">Jahresschwerpunkt 2026</span>
+        <p>AlgorithmWatch: „KI für das Gemeinwohl" als Jahresschwerpunkt. Neue Meldestelle für algorithmische Diskriminierung gestartet.</p>
+        <ul>
+          <li>Diskriminierung durch KI in Bewerbungsprozessen</li>
+          <li>Forderung nach Gruppenklagerechten (AGG)</li>
+          <li>Forderung nach unabhängigen Audit-Verfahren</li>
+        </ul>
+        <a class="src" href="https://algorithmwatch.org/de/ki_fuer_gemeinwohl/" target="_blank">→ AlgorithmWatch: 2026 Schwerpunkt</a>
+        <a class="src" href="https://algorithmwatch.org/de/diskriminierung-durch-ki-in-der-personalauswahl/" target="_blank">→ Diskriminierung in der Personalauswahl</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-hd hd-data">📈 Stanford AI Index 2026</div>
+      <div class="card-bd">
+        <span class="date-pill">20. April 2026</span>
+        <ul>
+          <li>Gen-AI-Adoption: <strong>53 %</strong> der Weltbevölkerung (schneller als PC oder Internet)</li>
+          <li>Beste Modelle: >50 % auf „Humanity's Last Exam"</li>
+          <li>USA und China wechseln KI-Führung; Anthropic-Modell: nur 2,7 % vor Konkurrenz</li>
+          <li>Kritische Themen: Umweltkosten, mangelnde Transparenz, ungleiche Nutzenverteilung</li>
+        </ul>
+        <a class="src" href="https://hai.stanford.edu/ai-index/2026-ai-index-report" target="_blank">→ Stanford HAI AI Index 2026</a>
+        <a class="src" href="https://hai.stanford.edu/news/inside-the-ai-index-12-takeaways-from-the-2026-report" target="_blank">→ 12 Key Takeaways</a>
+      </div>
+    </div>
+
+  </div>
+  <div class="week-footer">Erstellt: 5. Mai 2026 | Stichtag: 28. April 2026 | automatisch via Claude Cowork</div>
+
+</div>
+</div><!-- /tab-panel w05 -->
+
+
+<!-- ══════════════════════════════════════════════
+     PANEL: FRISTENÜBERSICHT (KONSOLIDIERT)
+════════════════════════════════════════════════ -->
+<div id="fristen" class="tab-panel">
+<div class="container">
+
+  <div class="week-label">
+    <h2>📅 Konsolidierte Fristenübersicht</h2>
+    <span class="period">Stand: 25. Mai 2026 — nach Digital Omnibus</span>
+  </div>
+
+  <div class="alert alert-yellow">
+    <strong>⚠️ Rechtlicher Status: Politische Einigung, noch keine formale Gesetzeskraft</strong>
+    Der Digital Omnibus (7. Mai 2026) hat den Status einer provisorischen politischen Einigung. Die formale Annahme durch EP und Rat mit anschließender Veröffentlichung im EU-Amtsblatt wird bis <strong>Juli 2026</strong> erwartet. Erst danach entfalten die neuen Fristen Rechtskraft.
+  </div>
+
+  <div class="section-title">📌 Aktueller Fristenkalender (alle Fristen)</div>
+  <table class="dl-table">
+    <thead>
+      <tr>
+        <th>Datum</th>
+        <th>Regelung / Meilenstein</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td class="date-cell">2. Feb. 2025</td><td>AI Literacy-Pflicht (Art. 4) — gilt für ALLE Mitarbeitenden mit KI-Nutzung, unabhängig von Risikoklasse</td><td>✅ In Kraft</td></tr>
+      <tr><td class="date-cell">2. Aug. 2025</td><td>GPAI-Regeln, KI-Governance-Rahmen in Kraft; Code of Practice veröffentlicht</td><td>✅ In Kraft</td></tr>
+      <tr class="tr-urgent"><td class="date-cell">2. Aug. 2026</td><td><strong>GPAI Enforcement durch EU AI Office</strong> — Durchsetzungsmaßnahmen für neue Modelle (seit Aug. 2025)</td><td>⚠️ ~10 Wochen</td></tr>
+      <tr class="tr-soon"><td class="date-cell">Aug.–Herb. 2026</td><td>Behördliche Prüfungen zur AI Literacy-Pflicht (Art. 4)</td><td>⏳ Bald</td></tr>
+      <tr class="tr-soon"><td class="date-cell">2. Dez. 2026</td><td>Transparenzpflichten für KI-generierte Inhalte (Wasserzeichen, Provenienz-Markierung); Neues Verbot: „Nudifier"-KI (non-consensual intimate images)</td><td>⏳ ~6 Monate</td></tr>
+      <tr><td class="date-cell">Juli 2026</td><td>Formale Annahme Digital Omnibus durch EP und Rat erwartet</td><td>📋 Ausstehend</td></tr>
+      <tr><td class="date-cell">2. Aug. 2027</td><td><strong>Hochrisiko-KI Annex III</strong> (eigenständige Systeme): volle Konformitätspflicht<br><em style="font-size:0.8rem;color:#64748b;">Neu terminiert — war urspr. 2. Aug. 2026</em></td><td>🔄 Neu</td></tr>
+      <tr><td class="date-cell">2. Aug. 2027</td><td>Nationale KI-Regulierungs-Sandboxes: Einrichtung durch Behörden</td><td>🔄 Neu</td></tr>
+      <tr><td class="date-cell">2. Aug. 2027</td><td>GPAI-Compliance für Modelle vor Aug. 2025 (Übergangsfrist)</td><td>🔄 Übergangsfrist</td></tr>
+      <tr><td class="date-cell">2. Aug. 2028</td><td><strong>Hochrisiko-KI Annex I</strong> (in regulierten Produkten integriert: Medizingeräte, Fahrzeuge, Maschinenbau): volle Pflichten<br><em style="font-size:0.8rem;color:#64748b;">Neu terminiert — war urspr. 2. Aug. 2027</em></td><td>🔄 Neu</td></tr>
+    </tbody>
+  </table>
+
+  <div class="section-title">🗓️ Offene Konsultationsfristen</div>
+  <table class="dl-table">
+    <thead><tr><th>Frist</th><th>Konsultation / Kommentierung</th><th>Zuständig</th></tr></thead>
+    <tbody>
+      <tr class="tr-urgent"><td class="date-cell">3. Juni 2026</td><td>Art. 50 AI Act — Leitlinienentwurf Transparenzpflichten</td><td>EU Kommission</td></tr>
+      <tr><td class="date-cell">25. Juni 2026</td><td>EDPB Guidelines 1/2026 — Verarbeitung Personendaten in wissenschaftlicher Forschung</td><td>EDPB</td></tr>
+    </tbody>
+  </table>
+
+  <div class="section-title">🏛️ Behördenstruktur Deutschland (Stand Mai 2026)</div>
+  <table class="dl-table">
+    <thead><tr><th>Funktion</th><th>Behörde</th><th>Notiz</th></tr></thead>
+    <tbody>
+      <tr><td>Nationale Marktüberwachungsbehörde (AI Act)</td><td><strong>Bundesnetzagentur</strong></td><td>Kabinettsbeschluss 11. Feb. 2026</td></tr>
+      <tr><td>Notifizierende Behörde (Hochrisiko-KI)</td><td><strong>Bundesnetzagentur</strong></td><td>Kabinettsbeschluss 11. Feb. 2026</td></tr>
+      <tr><td>Datenschutz (DSGVO + AI Act)</td><td>Bundesbeauftragte für Datenschutz (BfDI) + Länderbehörden</td><td>koordiniert via DSK</td></tr>
+      <tr><td>KI-Sicherheit (Cybersicherheit)</td><td>BSI — Bundesamt für Sicherheit in der Informationstechnik</td><td>C5:2026 in Kraft seit Mai 2026</td></tr>
+    </tbody>
+  </table>
+
+  <div class="week-footer">Konsolidiert aus allen Wochenberichten Mai 2026 | Stand: 25. Mai 2026</div>
+
+</div>
+</div><!-- /tab-panel fristen -->
+
+
+<!-- ══════════════════════════════════════════════
+     PAGE FOOTER
+════════════════════════════════════════════════ -->
+<div class="page-footer">
+  <p>KI-Nachrichten Gesamtüberblick | Erstellt und gepflegt durch automatisierten Scheduled Task via Claude (Cowork-Modus)</p>
+  <p style="margin-top:0.3rem;">Maintainer: Ulrich Nord · <a href="mailto:u.nord@pm-diagnostik.de">u.nord@pm-diagnostik.de</a> · pm-diagnostik.de</p>
+  <p style="margin-top:0.3rem;opacity:0.6;font-size:0.72rem;">Kein Rechtsbeistand. Alle Angaben ohne Gewähr. Quellenlinks führen zu externen Seiten — Inhalte können sich ändern. Originalquellen vor Verwendung prüfen.</p>
+</div>
+
+
+<!-- ══════════════════════════════════════════════
+     TAB SWITCH JAVASCRIPT
+════════════════════════════════════════════════ -->
+<script>
+  function showTab(tabId, btn) {
+    // Hide all panels
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    // Deactivate all buttons
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    // Show selected
+    document.getElementById(tabId).classList.add('active');
+    btn.classList.add('active');
+    // Scroll to top
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+</script>
+
+</body>
+</html>
