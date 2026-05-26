@@ -130,6 +130,7 @@
 | https://www.microsoft.com/de-de/customers/search?q=k%C3%BCnstliche+intelligenz | Microsoft | KI-Use Cases und Praxisbeispiele |
 | https://platform.claude.com/docs/en/about-claude/use-case-guides/overview | Anthropic (Claude) | KI-Use Cases und Praxisbeispiele |
 | https://www.uipath.com/resources/automation-case-studies | UIPath (RPA) | Use Cases Robotic Process Automation |
+| https://github.com/neurawork-git/n8n-autopilot | Neuraworks | Beispiel für n8n-Autoamtion (GitHub) |
 
 ### 5.2 KI Newsletter & Podcasts
 | URL | Name | Typ | Schlagwörter |
