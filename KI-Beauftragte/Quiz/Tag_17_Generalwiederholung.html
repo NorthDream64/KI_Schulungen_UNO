@@ -1174,6 +1174,8 @@ function sendResult(score, total, pct) {
     );
   });
   var st = document.getElementById('submit-status');
+  st.className = 'submit-status sending';
+  st.textContent = 'Übertrage 1 von ' + toSend.length + ' …';
   var idx = 0;
   function sendNext() {
     if (idx >= toSend.length) {
@@ -1181,9 +1183,10 @@ function sendResult(score, total, pct) {
       st.textContent = '✓ ' + toSend.length + ' Antworten übermittelt (' + new Date().toLocaleTimeString('de-DE') + ')';
       return;
     }
+    st.textContent = 'Übertrage ' + (idx + 1) + ' von ' + toSend.length + ' …';
     fetch(toSend[idx], { mode: 'no-cors' })
       .catch(function() {})
-      .then(function() { idx++; setTimeout(sendNext, 400); });
+      .then(function() { idx++; setTimeout(sendNext, 100); });
   }
   sendNext();
 }
