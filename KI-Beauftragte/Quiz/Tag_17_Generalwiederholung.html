@@ -1,0 +1,1177 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lernkontrolle &middot; Tag 17 &middot; Generalwiederholung</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Playfair+Display:wght@600&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink:#1a1a18;--paper:#f5f2ec;--card:#fff;--rule:#d5d0c5;--muted:#888880;
+  --accent:#2a4a8a;--accent-soft:#e8edf7;
+  --correct:#2a7a50;--correct-bg:#eaf5ee;--correct-border:#a0d8b8;
+  --wrong:#9a2a2a;--wrong-bg:#faeaea;--wrong-border:#d8a0a0;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'DM Sans',sans-serif;background:var(--paper);color:var(--ink);line-height:1.65;font-size:15px;}
+a{color:var(--accent);}
+.site-header{border-bottom:2px solid var(--ink);padding:1.8rem 2rem 1.4rem;max-width:820px;margin:0 auto;}
+.eyebrow{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:var(--muted);margin-bottom:.5rem;}
+.site-header h1{font-family:'Playfair Display',serif;font-size:clamp(1.5rem,4vw,2.1rem);line-height:1.15;margin-bottom:.4rem;}
+.header-meta{font-size:12px;color:var(--muted);display:flex;gap:1rem;flex-wrap:wrap;}
+.header-meta span::before{content:"&middot; ";}
+.header-meta span:first-child::before{content:"";}
+.main{max-width:820px;margin:0 auto;padding:1.8rem 2rem 4rem;}
+.setup-card{background:var(--card);border:1px solid var(--rule);border-radius:12px;padding:2rem;max-width:480px;margin:0 auto;}
+.setup-card h2{font-family:'Playfair Display',serif;font-size:1.3rem;margin-bottom:1.2rem;}
+.field-label{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:.35rem;}
+.setup-input{width:100%;border:1px solid var(--rule);border-radius:8px;padding:.6rem .9rem;font-family:'DM Sans',sans-serif;font-size:14px;background:var(--paper);outline:none;color:var(--ink);transition:border-color .15s;}
+.setup-input:focus{border-color:var(--ink);}
+.setup-info{background:var(--accent-soft);border:1px solid #c0d0e8;border-radius:8px;padding:.9rem 1.1rem;margin-bottom:1.2rem;font-size:13px;color:var(--ink);line-height:1.6;}
+.btn-start{width:100%;padding:.75rem;background:var(--ink);color:#fff;border:none;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:500;cursor:pointer;margin-top:1rem;transition:background .15s;}
+.btn-start:hover{background:#333;}
+.quiz-header-strip{display:flex;gap:.6rem;align-items:center;margin-bottom:1.4rem;flex-wrap:wrap;}
+.strip-tag{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;padding:4px 12px;border-radius:100px;background:var(--accent-soft);color:var(--accent);}
+.strip-name{font-size:13px;color:var(--muted);margin-left:auto;}
+.progress-bar{height:3px;background:var(--rule);border-radius:2px;margin-bottom:1.2rem;}
+.progress-fill{height:100%;background:var(--ink);border-radius:2px;transition:width .3s;}
+.progress-label{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);margin-bottom:.5rem;}
+.scenario-box{background:var(--accent-soft);border:1px solid #c0d0e8;border-left:3px solid var(--accent);border-radius:0 8px 8px 0;padding:.9rem 1.1rem;margin-bottom:1.2rem;}
+.scenario-label{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:.3rem;}
+.scenario-text{font-size:13px;color:var(--ink);line-height:1.6;}
+.week-divider{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);border-top:1px solid var(--rule);padding-top:.8rem;margin:1.5rem 0 .8rem;}
+.q-card{background:var(--card);border:1px solid var(--rule);border-radius:12px;padding:1.5rem;margin-bottom:1rem;}
+.q-num{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:.6rem;}
+.q-text{font-size:15px;font-weight:500;line-height:1.55;margin-bottom:.5rem;}
+.q-hint{font-size:12px;color:var(--muted);margin-bottom:.9rem;font-style:italic;}
+.opt-list{display:flex;flex-direction:column;gap:.5rem;}
+.opt{display:flex;align-items:flex-start;gap:.7rem;padding:.75rem 1rem;border:1px solid var(--rule);border-radius:8px;cursor:pointer;background:#fdfdfb;transition:all .12s;-webkit-user-select:none;user-select:none;}
+.opt:hover:not(.disabled){border-color:#888;background:#f5f2ec;}
+.opt.selected{background:var(--accent-soft);border-color:#8090b8;}
+.opt.disabled{cursor:default;}
+.opt.correct-sel{background:var(--correct-bg);border-color:var(--correct-border);}
+.opt.wrong-sel{background:var(--wrong-bg);border-color:var(--wrong-border);}
+.opt.missed{background:var(--wrong-bg);border-color:var(--wrong-border);}
+.opt-cb{width:18px;height:18px;min-width:18px;border:1.5px solid #bbb;border-radius:4px;flex-shrink:0;margin-top:2px;display:flex;align-items:center;justify-content:center;transition:all .12s;}
+.opt-cb.chk{background:var(--ink);border-color:var(--ink);}
+.opt-cb.chk::after{content:'';display:block;width:8px;height:8px;background:#fff;border-radius:2px;}
+.opt.correct-sel .opt-cb{background:var(--correct);border-color:var(--correct);}
+.opt.correct-sel .opt-cb::after{content:'\2713';color:#fff;font-size:11px;background:none;width:auto;height:auto;}
+.opt.wrong-sel .opt-cb{background:var(--wrong);border-color:var(--wrong);}
+.opt.wrong-sel .opt-cb::after{content:'\2717';color:#fff;font-size:11px;background:none;width:auto;height:auto;}
+.opt.missed .opt-cb{background:var(--wrong);border-color:var(--wrong);}
+.opt.missed .opt-cb::after{content:'\2192';color:#fff;font-size:11px;background:none;width:auto;height:auto;}
+.opt-text{font-size:14px;line-height:1.5;}
+.feedback{border-radius:8px;padding:.9rem 1.1rem;margin-top:.9rem;}
+.feedback.fb-ok{background:var(--correct-bg);border:1px solid var(--correct-border);}
+.feedback.fb-wrong{background:var(--wrong-bg);border:1px solid var(--wrong-border);}
+.fb-title{font-weight:500;font-size:14px;margin-bottom:.4rem;}
+.fb-ok .fb-title{color:var(--correct);}
+.fb-wrong .fb-title{color:var(--wrong);}
+.fb-text{font-size:13px;line-height:1.65;color:#444;margin-bottom:.5rem;}
+.fb-source{font-size:12px;color:var(--muted);border-top:1px solid var(--rule);padding-top:.5rem;}
+.btn{display:inline-flex;align-items:center;padding:.55rem 1.2rem;border:1px solid var(--rule);border-radius:8px;background:none;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;cursor:pointer;color:var(--ink);transition:all .15s;}
+.btn:hover{background:var(--paper);border-color:#888;}
+.btn-full{width:100%;justify-content:center;padding:.7rem;font-size:15px;margin-top:1rem;}
+.btn-submit{background:#2a5c3f;color:#fff;border-color:#2a5c3f;}
+.btn-submit:hover{background:#1e4530;}
+.btn-submit:disabled{background:#aaa;border-color:#aaa;cursor:not-allowed;}
+.result-block{max-width:600px;margin:0 auto;text-align:center;}
+.result-grade{font-family:'Playfair Display',serif;font-size:4.5rem;line-height:1;margin-bottom:.3rem;}
+.result-label{font-size:1.1rem;font-weight:500;margin-bottom:.3rem;}
+.result-sub{font-size:13px;color:var(--muted);margin-bottom:1.5rem;}
+.stats-row{display:flex;justify-content:center;gap:1rem;flex-wrap:wrap;margin-bottom:1.5rem;}
+.stat{background:var(--card);border:1px solid var(--rule);border-radius:10px;padding:.9rem 1.2rem;text-align:center;min-width:90px;}
+.stat-n{font-size:1.8rem;font-weight:500;}
+.stat-l{font-size:11px;color:var(--muted);margin-top:2px;}
+.comp-title{font-size:13px;font-weight:500;text-align:left;margin-bottom:.8rem;}
+.comp-row{margin-bottom:.7rem;text-align:left;}
+.comp-labels{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-bottom:3px;}
+.comp-track{height:4px;background:var(--rule);border-radius:2px;}
+.comp-fill{height:100%;border-radius:2px;}
+.fill-ok{background:var(--correct);}
+.fill-wrong{background:var(--wrong);}
+.submit-status{display:none;font-size:12px;margin-top:.5rem;padding:.4rem .8rem;border-radius:6px;}
+.submit-status.sending{display:block;background:#fffbe8;color:#806a00;border:1px solid #d0c060;}
+.submit-status.success{display:block;background:var(--correct-bg);color:var(--correct);border:1px solid var(--correct-border);}
+.submit-status.error{display:block;background:var(--wrong-bg);color:var(--wrong);border:1px solid var(--wrong-border);}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="eyebrow">Alfatraining &middot; KI-Zertifikatskurse &middot; Tag 17</div>
+  <h1>Gro&szlig;e Lernkontrolle<br>Generalwiederholung</h1>
+  <div class="header-meta">
+    <span>50 Fragen &middot; alle vier Wochen</span>
+    <span>Eine oder mehrere Antworten k&ouml;nnen richtig sein</span>
+    <span>Use Case: WellSeal GmbH &mdash; Dichtungssystemhersteller</span>
+  </div>
+</header>
+
+<main class="main">
+
+<div id="setup-section">
+  <div class="setup-card">
+    <h2>Generalwiederholung starten</h2>
+    <div class="setup-info">
+      50 Fragen aus allen vier Wochen &mdash; EU AI Act, ISO 42001, DSGVO, Datenqualit&auml;t und Change Management. Kein Bewertungsdruck. Ehrliche Selbstdiagnose.
+    </div>
+    <div style="margin-bottom:1rem;">
+      <span class="field-label">Dein Name (oder Teilnehmer-Nummer)</span>
+      <input type="text" id="participant-name" class="setup-input" placeholder="z. B. Teilnehmer-07 oder Vorname">
+    </div>
+    <button class="btn-start" onclick="startQuiz()">Quiz starten &rarr;</button>
+  </div>
+</div>
+
+<div id="quiz-section" style="display:none">
+  <div class="quiz-header-strip" id="quiz-header-strip"></div>
+  <div class="progress-label" id="progress-label"></div>
+  <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+  <div class="scenario-box">
+    <div class="scenario-label">Fallbeispiel &middot; Gilt f&uuml;r alle Fragen</div>
+    <div class="scenario-text">Du bist KI-Beauftragte:r bei der WellSeal GmbH &mdash; einem mittelst&auml;ndischen Hersteller von Dichtungssystemen mit rund 850 Mitarbeitenden an Standorten in Deutschland und Polen. Das Unternehmen setzt KI ein f&uuml;r automatisierte Qualit&auml;tskontrolle (Vision-KI), Predictive Maintenance, HR-Vorauswahl und einen Kundendienst-Chatbot. Du verantwortest die KI-Governance, die regulatorische Konformit&auml;t nach EU AI Act und DSGVO sowie das interne Change Management.</div>
+  </div>
+  <div id="questions-container"></div>
+  <div style="margin-top:1.5rem">
+    <button class="btn btn-submit btn-full" id="btn-submit" onclick="submitQuiz()" disabled>Auswertung anzeigen &rarr;</button>
+  </div>
+  <div class="submit-status" id="submit-status"></div>
+</div>
+
+<div id="results-section" style="display:none">
+  <div class="result-block">
+    <div class="result-grade" id="result-grade"></div>
+    <div class="result-label" id="result-label"></div>
+    <div class="result-sub" id="result-sub"></div>
+    <div class="stats-row" id="stats-row"></div>
+    <div class="comp-title">Kompetenzprofil nach Themenbereich</div>
+    <div id="comp-bars"></div>
+    <div style="margin-top:.8rem;display:flex;justify-content:center;">
+      <button class="btn" onclick="location.reload()">Neu starten</button>
+    </div>
+  </div>
+  <hr style="border:none;border-top:1px solid var(--rule);margin:2rem 0">
+  <h2 style="font-family:'Playfair Display',serif;font-size:1.2rem;margin-bottom:1rem">Detailauswertung</h2>
+  <div id="review-container"></div>
+</div>
+
+</main>
+
+<script>
+var APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwTfP8ygOun58rmvY9hQXFmPEgVyxppQGEPYjar1e78N6uanaGHuzBNOyU5P4kgvmz7/exec';
+
+/* ═══════════════════════════════════════════════════════════════════
+   QBANK — 50 Fragen · Generalwiederholung alle vier Wochen
+   Verteilung: 8×1r (16%) + 20×2r (40%) + 22×3r (44%)
+   ─────────────────────────────────────────────────────────────────
+   WOCHE 1 (Q 0–11):  Akteursrollen · Risikoklassen · Art.4 · Verbote
+   WOCHE 2 (Q12–24):  Konformitätsbewertung · Transparenz · ISO 42001 · Agenten
+   WOCHE 3 (Q25–36):  DSGVO · QS-Methoden · Datenqualität · FAIR · Art.10
+   WOCHE 4 (Q37–49):  Change Management · Kotter · ADKAR · Widerstandstypen
+   ═══════════════════════════════════════════════════════════════════ */
+
+var QBANK = [
+
+/* ─── WOCHE 1 · Q0–Q11 ─────────────────────────────────────────── */
+
+  /* Q0 · 1r */
+  {
+    week: 1,
+    q: 'WellSeal GmbH kauft ein Vision-KI-System zur Qualitätskontrolle von einem externen Softwareanbieter und setzt es in der Produktion ein. Welche Rolle nimmt WellSeal gemäß EU AI Act ein?',
+    cat: 'Akteursrollen · EU AI Act',
+    opts: [
+      'Anbieter — weil WellSeal das System kauft und anschließend betreibt',
+      'Betreiber (Deployer) — weil WellSeal das System in eigenem Namen und eigener Verantwortung einsetzt',
+      'Nutzer — weil die Produktionsmitarbeitenden das System im Alltag bedienen',
+      'Importeur — weil das System von einem externen Anbieter stammt'
+    ],
+    correct: [1],
+    exp: 'Der EU AI Act unterscheidet klar: Anbieter ist, wer ein KI-System entwickelt und in Verkehr bringt. Betreiber (Deployer) ist, wer ein fremdes System in eigener Verantwortung für eigene Zwecke einsetzt. WellSeal kauft und betreibt — das ist die Betreiber-Rolle. Die Mitarbeitenden sind Nutzer im alltagssprachlichen Sinn, aber keine Akteure im Sinne des AI Act.',
+    src: 'EU AI Act, Art. 3 Nr. 3 und Nr. 4 · https://eur-lex.europa.eu/legal-content/DE/TXT/?uri=CELEX:32024R1689'
+  },
+
+  /* Q1 · 1r */
+  {
+    week: 1,
+    q: 'Art. 4 EU AI Act verpflichtet Betreiber wie WellSeal zur Sicherstellung von KI-Kompetenz. Was ist der genaue Regelungsinhalt dieser Norm?',
+    cat: 'Art. 4 KI-VO · KI-Kompetenz',
+    opts: [
+      'Alle Mitarbeitenden müssen eine externe KI-Zertifizierung bei einer anerkannten Stelle nachweisen',
+      'Betreiber müssen sicherstellen, dass Mitarbeitende im Umgang mit KI ausreichend kompetent sind — angepasst an ihre konkrete Aufgabe',
+      'Art. 4 schreibt vor, dass mindestens eine Person mit KI-Hochschulabschluss im Unternehmen beschäftigt sein muss',
+      'Art. 4 betrifft ausschließlich Anbieter von Hochrisiko-KI — Betreiber sind von dieser Norm ausgenommen'
+    ],
+    correct: [1],
+    exp: 'Art. 4 EU AI Act fordert KI-Kompetenz (AI Literacy) für Mitarbeitende — aber ausdrücklich angemessen und kontextbezogen: Wer ein KI-System genehmigt, braucht andere Kenntnisse als wer es täglich bedient. Es gibt keine Vorgabe zur externen Zertifizierung und keine Hochschulabschluss-Pflicht. Die Norm gilt für Anbieter und Betreiber gleichermaßen.',
+    src: 'EU AI Act, Art. 4 · https://eur-lex.europa.eu/legal-content/DE/TXT/?uri=CELEX:32024R1689'
+  },
+
+  /* Q2 · 2r */
+  {
+    week: 1,
+    q: 'WellSeals HR-Vorauswahlsystem filtert Bewerbungen nach Qualifikationsmerkmalen. Welche zwei Aussagen zur Einordnung nach EU AI Act sind korrekt?',
+    cat: 'Risikoklassen · HR-KI',
+    opts: [
+      'Das System ist Hochrisiko-KI gemäß Anhang III Nr. 4, weil es Beschäftigungsentscheidungen beeinflusst',
+      'Als Betreiber muss WellSeal eine Grundrechte-Folgenabschätzung durchführen (Art. 27)',
+      'Da Menschen die endgültige Einstellungsentscheidung treffen, ist kein Hochrisiko-Status gegeben',
+      'Die Risikoklasse bestimmt ausschließlich der Anbieter — WellSeal hat keine eigene Prüfpflicht'
+    ],
+    correct: [0, 1],
+    exp: 'HR-Vorauswahlsysteme, die Bewerbungen filtern oder priorisieren, fallen unter Hochrisiko-KI nach Anhang III Nr. 4 EU AI Act — unabhängig davon, ob Menschen die endgültige Entscheidung treffen. Der Mensch entscheidet am Ende, aber das KI-System bestimmt, welche Bewerbungen er überhaupt zu sehen bekommt. Art. 27 EU AI Act verpflichtet Betreiber solcher Systeme zu einer Grundrechte-Folgenabschätzung.',
+    src: 'EU AI Act, Anhang III Nr. 4 · Art. 27 · https://eur-lex.europa.eu/legal-content/DE/TXT/?uri=CELEX:32024R1689'
+  },
+
+  /* Q3 · 2r */
+  {
+    week: 1,
+    q: 'Welche zwei Merkmale kennzeichnen ein System als Hochrisiko-KI nach EU AI Act?',
+    cat: 'Hochrisiko-KI · Merkmale',
+    opts: [
+      'Das System trifft oder beeinflusst maßgeblich Entscheidungen über Menschen in vulnerablen Situationen oder mit erheblichen Auswirkungen',
+      'Das System ist in einem der in Anhang III gelisteten Anwendungsbereiche eingesetzt',
+      'Das System ist besonders teuer oder komplex in Entwicklung und Betrieb',
+      'Das System wird von mehr als 100 Mitarbeitenden täglich genutzt'
+    ],
+    correct: [0, 1],
+    exp: 'Hochrisiko-KI nach Anhang III entsteht durch die Kombination: (1) Einsatz in einem der definierten Hochrisikobereiche (z.B. Beschäftigung, kritische Infrastruktur, Bildung, Strafverfolgung) und (2) signifikanter Einfluss auf Entscheidungen, die Grundrechte oder Sicherheit berühren. Kosten, Komplexität und Nutzerzahl sind keine Kriterien des EU AI Act.',
+    src: 'EU AI Act, Art. 6 · Anhang III · https://eur-lex.europa.eu/legal-content/DE/TXT/?uri=CELEX:32024R1689'
+  },
+
+  /* Q4 · 2r */
+  {
+    week: 1,
+    q: 'WellSeal überlegt, ein System einzuführen, das das allgemeine Verhalten von Mitarbeitenden bewertet und zu einem internen "Performance-Score" zusammenführt, der Beförderungsentscheidungen beeinflusst. Welche zwei Aussagen sind korrekt?',
+    cat: 'Verbotene KI · Art. 5 EU AI Act',
+    opts: [
+      'Ein solches System könnte unter das Verbot des Social Scorings fallen, wenn es allgemeines Sozialverhalten über einen Zeitraum bewertet',
+      'WellSeal muss prüfen, ob das System unter Art. 5 EU AI Act (verbotene Praktiken) fällt — unabhängig von Mitarbeiterzustimmung',
+      'Social Scoring ist nur für staatliche Behörden verboten — private Unternehmen sind grundsätzlich ausgenommen',
+      'Das System ist erlaubt, wenn Mitarbeitende schriftlich einwilligen und der Betriebsrat zustimmt'
+    ],
+    correct: [0, 1],
+    exp: 'Art. 5 EU AI Act verbietet Social-Scoring-Systeme, die Personen aufgrund ihres allgemeinen Sozialverhaltens über einen Zeitraum bewerten und in unabhängigen Bereichen benachteiligen. Das Verbot gilt auch für private Akteure, nicht nur für Behörden. Einwilligung der Betroffenen hebt das Verbot nicht auf. WellSeal muss prüfen, ob der Performance-Score echte Arbeitsleistung oder allgemeines Verhalten bewertet.',
+    src: 'EU AI Act, Art. 5 Abs. 1 lit. c · https://eur-lex.europa.eu/legal-content/DE/TXT/?uri=CELEX:32024R1689'
+  },
+
+  /* Q5 · 2r */
+  {
+    week: 1,
+    q: 'Welche zwei Aufgaben gehören zum Kernprofil des KI-Beauftragten, wie er im EU AI Act-Kontext verstanden wird?',
+    cat: 'KI-Beauftragter · Rolle und Aufgaben',
+    opts: [
+      'KI-Systeme im Unternehmen identifizieren, klassifizieren und das Compliance-Risiko bewerten',
+      'Die gesetzliche Haftung des Betreibers übernehmen, sobald ein KI-System im Einsatz ist',
+      'Betreiberpflichten für Hochrisiko-KI koordinieren und intern sicherstellen',
+      'Technische Dokumentation für alle eingesetzten KI-Systeme selbst erstellen'
+    ],
+    correct: [0, 2],
+    exp: 'Der KI-Beauftragte koordiniert und begleitet — er übernimmt nicht die rechtliche Haftung (die verbleibt beim Betreiber als Organisation). Kernaufgaben sind: Bestandsaufnahme, Klassifikation, Risikodiagnose und Koordination der Betreiberpflichten. Die technische Dokumentation erstellt der Anbieter — der KI-BA fordert sie an und prüft sie, erstellt sie aber nicht selbst.',
+    src: 'EU AI Act, Art. 26 (Betreiberpflichten) · https://eur-lex.europa.eu/legal-content/DE/TXT/?uri=CELEX:32024R1689'
+  },
+
+  /* Q6 · 2r */
+  {
+    week: 1,
+    q: 'Der externe Anbieter von WellSeals Qualitätskontroll-KI hat das System auf dem EU-Markt bereitgestellt. Welche zwei Pflichten treffen ihn als Anbieter nach EU AI Act?',
+    cat: 'Anbieter-Pflichten · EU AI Act',
+    opts: [
+      'Erstellung und Pflege der technischen Dokumentation nach Anhang IV EU AI Act',
+      'Registrierung des Systems in der EU-Datenbank, wenn es als Hochrisiko-KI klassifiziert ist (Art. 71)',
+      'Sicherstellen, dass WellSeal als Betreiber das System korrekt und bestimmungsgemäß anwendet',
+      'Übernahme der Betreiberpflichten nach Art. 26, sobald WellSeal das System in Betrieb nimmt'
+    ],
+    correct: [0, 1],
+    exp: 'Anbieter von Hochrisiko-KI müssen: (1) technische Dokumentation nach Anhang IV erstellen und aktuell halten, (2) das System in der EU-Datenbank registrieren (Art. 71). Die Überwachung der korrekten Anwendung beim Betreiber ist Aufgabe des Betreibers selbst — nicht des Anbieters. Die Betreiberpflichten gehen nicht auf den Anbieter über.',
+    src: 'EU AI Act, Art. 16, Art. 71 · Anhang IV · https://eur-lex.europa.eu/legal-content/DE/TXT/?uri=CELEX:32024R1689'
+  },
+
+  /* Q7 · 3r */
+  {
+    week: 1,
+    q: 'WellSeals HR-Vorauswahlsystem ist als Hochrisiko-KI eingestuft. Welche drei Betreiberpflichten greifen nach Art. 26 EU AI Act?',
+    cat: 'Betreiberpflichten · Hochrisiko-KI',
+    opts: [
+      'Sicherstellen, dass das System gemäß der Gebrauchsanweisung des Anbieters eingesetzt wird',
+      'Menschliche Aufsicht über das System gewährleisten — eine natürliche Person prüft und kann Entscheidungen des Systems aufheben',
+      'Das System in der EU-Datenbank als Betreiber registrieren (Art. 49)',
+      'Alle Bewerberinnen und Bewerber automatisch und vollständig über jeden Schritt der KI-Analyse informieren'
+    ],
+    correct: [0, 1, 2],
+    exp: 'Art. 26 EU AI Act listet die Betreiberpflichten für Hochrisiko-KI: (1) systemkonforme Nutzung nach Anbieteranweisung, (2) menschliche Aufsicht sicherstellen — eine Person muss in der Lage sein, Entscheidungen zu verstehen und aufzuheben, (3) Registrierung in der EU-Datenbank (Art. 49). Die Informationspflicht gegenüber Bewerbern ergibt sich aus Art. 50 und DSGVO Art. 22 — nicht unmittelbar aus Art. 26.',
+    src: 'EU AI Act, Art. 26, Art. 49 · https://eur-lex.europa.eu/legal-content/DE/TXT/?uri=CELEX:32024R1689'
+  },
+
+  /* Q8 · 3r */
+  {
+    week: 1,
+    q: 'WellSeal prüft vier neue KI-Projekte. Welche drei Zuordnungen zu Risikoklassen sind nach EU AI Act korrekt?',
+    cat: 'Risikoklassen · Zuordnung',
+    opts: [
+      'KI-System zur Kreditwürdigkeitsprüfung von Geschäftskunden — Hochrisiko (Anhang III Nr. 5)',
+      'Textgenerierungs-KI für Marketing-E-Mails ohne automatisierte Entscheidungen — Minimal Risk',
+      'Kundendienst-Chatbot ohne automatisierte Entscheidungsfunktion — Hochrisiko wegen Kundenkontakt',
+      'KI-System zur Erkennung von Sicherheitsrisiken in der Produktion kritischer Infrastruktur — potenziell Hochrisiko (Anhang III Nr. 2)'
+    ],
+    correct: [0, 1, 3],
+    exp: 'Kreditwürdigkeitsprüfung fällt unter Anhang III Nr. 5 (Zugang zu wichtigen privaten Dienstleistungen). Marketing-Text-KI ohne Entscheidungsfunktion ist typischerweise Minimal Risk. Ein Chatbot allein ist kein Hochrisiko-System — Kundenkontakt allein reicht nicht. Sicherheitserkennung in kritischer Infrastruktur kann Hochrisiko sein (Anhang III Nr. 2), wenn sie Sicherheitskomponenten betrifft.',
+    src: 'EU AI Act, Anhang III · https://eur-lex.europa.eu/legal-content/DE/TXT/?uri=CELEX:32024R1689'
+  },
+
+  /* Q9 · 3r */
+  {
+    week: 1,
+    q: 'Welche drei Praktiken sind nach Art. 5 EU AI Act verboten?',
+    cat: 'Verbotene KI · Art. 5 Abgrenzung',
+    opts: [
+      'Einsatz von KI zur unterschwelligen Beeinflussung von Personen unterhalb der Wahrnehmungsschwelle',
+      'Biometrische Echtzeit-Fernidentifikation in öffentlich zugänglichen Räumen (ohne gesetzlich definierte Ausnahmen)',
+      'Scoring-Systeme, die allgemeines Sozialverhalten bewerten und Nachteile in unabhängigen Lebensbereichen erzeugen',
+      'Prädiktive KI-Systeme für Personalplanung in Unternehmen mit mehr als 250 Mitarbeitenden'
+    ],
+    correct: [0, 1, 2],
+    exp: 'Art. 5 EU AI Act verbietet: (1) Subliminal Manipulation — unterschwellige Beeinflussung unter der Wahrnehmungsschwelle, (2) biometrische Echtzeit-Identifikation in öffentlichen Räumen (mit engen gesetzlichen Ausnahmen), (3) Social Scoring durch öffentliche Stellen und vergleichbare Praktiken, die Personen nach allgemeinem Sozialverhalten diskriminieren. Prädiktive Personalplanung ist nicht verboten — sie kann Hochrisiko-KI sein, aber kein Verbotsfall nach Art. 5.',
+    src: 'EU AI Act, Art. 5 · https://eur-lex.europa.eu/legal-content/DE/TXT/?uri=CELEX:32024R1689'
+  },
+
+  /* Q10 · 3r */
+  {
+    week: 1,
+    q: 'Welche drei Aussagen zu den Betreiberpflichten nach Art. 26 EU AI Act sind korrekt?',
+    cat: 'Betreiberpflichten · Vollständige Pflichtenliste',
+    opts: [
+      'Betreiber müssen die Protokollierungsdaten (Logs), die das Hochrisiko-System automatisch erzeugt, aufbewahren, soweit sie unter ihrer Kontrolle stehen',
+      'Betreiber müssen bei erheblichem Risiko für Grundrechte eine Grundrechte-Folgenabschätzung durchführen (Art. 27)',
+      'Betreiber müssen menschliche Aufsicht sicherstellen und dürfen keine vollautomatischen Entscheidungen ohne Oversight-Funktion treffen',
+      'Betreiber übernehmen automatisch die CE-Kennzeichnungspflicht vom Anbieter, sobald sie ein System in Betrieb nehmen'
+    ],
+    correct: [0, 1, 2],
+    exp: 'Art. 26 EU AI Act verpflichtet Betreiber von Hochrisiko-KI zu: (1) Aufbewahrung der systemeigenen Protokolldaten (soweit unter eigener Kontrolle), (2) Grundrechte-Folgenabschätzung bei erheblichem Risiko (Art. 27), (3) Sicherstellung menschlicher Aufsicht. Die CE-Kennzeichnung ist ausschließlich Aufgabe des Anbieters — sie geht nicht durch Inbetriebnahme auf den Betreiber über.',
+    src: 'EU AI Act, Art. 26, Art. 27 · https://eur-lex.europa.eu/legal-content/DE/TXT/?uri=CELEX:32024R1689'
+  },
+
+  /* Q11 · 3r */
+  {
+    week: 1,
+    q: 'Du startest als KI-Beauftragter bei WellSeal. Welche drei Maßnahmen sind für die erste Bestandsaufnahme unverzichtbar?',
+    cat: 'KI-Governance · Bestandsaufnahme',
+    opts: [
+      'Alle KI-Systeme inventarisieren — bekannte und potenziell unbekannte (Shadow-KI)',
+      'Für jedes System prüfen: Wer ist der Anbieter — und welche Risikoklasse hat das System?',
+      'Sofort für alle Systeme gleichzeitig eine Grundrechte-Folgenabschätzung erstellen',
+      'Für jedes Hochrisiko-System prüfen, ob CE-Kennzeichnung vorliegt und technische Dokumentation zugänglich ist'
+    ],
+    correct: [0, 1, 3],
+    exp: 'Die erste Aufgabe als KI-BA ist eine vollständige Bestandsaufnahme: (1) Alle Systeme erfassen — auch nicht offiziell genehmigte, (2) Risikoklasse und Anbieter identifizieren, (3) bei Hochrisiko: CE-Kennzeichnung und Dokumentation prüfen. Eine Grundrechte-Folgenabschätzung ist erst dann Pflicht, wenn ein konkretes Hochrisiko-System identifiziert ist und erhebliches Grundrechtsrisiko besteht — sie ist keine unmittelbare Erstmaßnahme für alle Systeme.',
+    src: 'EU AI Act, Art. 26 · https://eur-lex.europa.eu/legal-content/DE/TXT/?uri=CELEX:32024R1689'
+  },
+
+/* ─── WOCHE 2 · Q12–Q24 ────────────────────────────────────────── */
+
+  /* Q12 · 1r */
+  {
+    week: 2,
+    q: 'WellSeal entwickelt selbst ein Hochrisiko-KI-System zur Qualitätskontrolle. Wer führt in den meisten Fällen die Konformitätsbewertung für Hochrisiko-KI nach Anhang III EU AI Act durch?',
+    cat: 'Konformitätsbewertung · Verfahren',
+    opts: [
+      'Ausschließlich eine notifizierte Stelle (Notified Body) — das ist für alle Hochrisiko-Systeme Pflicht',
+      'Der Anbieter selbst — durch interne Konformitätsbewertung nach dem Verfahren des EU AI Act',
+      'Die EU-Kommission über ein zentrales Zulassungsverfahren in Brüssel',
+      'Die nationale Marktüberwachungsbehörde, bevor das System in Betrieb genommen wird'
+    ],
+    correct: [1],
+    exp: 'Für die meisten Hochrisiko-KI-Systeme nach Anhang III gilt: interne Konformitätsbewertung durch den Anbieter selbst (Selbstbewertung). Eine notifizierte Stelle ist nur in bestimmten Fällen zwingend — insbesondere wenn das System unter Anhang I (bereits regulierte Produkte wie Medizinprodukte oder Fahrzeuge) fällt. Diese Unterscheidung wird in Prüfungen häufig falsch beantwortet.',
+    src: 'EU AI Act, Art. 43 · https://eur-lex.europa.eu/legal-content/DE/TXT/?uri=CELEX:32024R1689'
+  },
+
+  /* Q13 · 1r */
+  {
+    week: 2,
+    q: 'Was regelt die ISO/IEC 42001?',
+    cat: 'ISO 42001 · KI-Managementsystem',
+    opts: [
+      'Technische Standards für die Entwicklung von KI-Algorithmen und Modellarchitekturen',
+      'Ein Managementsystem für verantwortungsvollen KI-Einsatz in Organisationen — analog zu ISO 9001 und ISO 27001',
+      'Die Zertifizierungsanforderungen für KI-Beauftragte in Europa',
+      'Die Anforderungen an Trainingsdaten für KI-Systeme in regulierten Branchen'
+    ],
+    correct: [1],
+    exp: 'ISO/IEC 42001 ist ein Managementsystem-Standard für KI — er folgt der High-Level-Structure (HLS), die auch ISO 9001 (Qualität) und ISO 27001 (Informationssicherheit) nutzen. Er beschreibt, wie eine Organisation KI verantwortungsvoll einführen, steuern und kontinuierlich verbessern kann. Er ist kein technischer Algorithmus-Standard und keine Zertifizierung für Personen.',
+    src: 'ISO/IEC 42001:2023 · https://www.iso.org/standard/81230.html'
+  },
+
+  /* Q14 · 2r */
+  {
+    week: 2,
+    q: 'Welche zwei Aussagen zur CE-Kennzeichnung von Hochrisiko-KI nach EU AI Act sind korrekt?',
+    cat: 'CE-Kennzeichnung · Konformitätsbewertung',
+    opts: [
+      'Die CE-Kennzeichnung zeigt, dass das System die Anforderungen des EU AI Act erfüllt',
+      'Ohne abgeschlossene Konformitätsbewertung darf die CE-Kennzeichnung nicht angebracht werden',
+      'Betreiber bringen die CE-Kennzeichnung an, nachdem sie das System in Betrieb genommen haben',
+      'Die CE-Kennzeichnung ersetzt die EU-Konformitätserklärung vollständig'
+    ],
+    correct: [0, 1],
+    exp: 'Die CE-Kennzeichnung bei Hochrisiko-KI bestätigt die Konformität mit dem EU AI Act. Sie darf erst nach abgeschlossener Konformitätsbewertung angebracht werden. Zuständig ist der Anbieter — nicht der Betreiber. Die CE-Kennzeichnung ersetzt die EU-Konformitätserklärung nicht — beide sind erforderlich und ergänzen sich.',
+    src: 'EU AI Act, Art. 48, Art. 49 · https://eur-lex.europa.eu/legal-content/DE/TXT/?uri=CELEX:32024R1689'
+  },
+
+  /* Q15 · 2r */
+  {
+    week: 2,
+    q: 'WellSeal betreibt einen Kundendienst-Chatbot. Welche zwei Transparenzpflichten nach Art. 50 EU AI Act greifen?',
+    cat: 'Art. 50 · Transparenzpflichten',
+    opts: [
+      'Nutzer müssen informiert werden, dass sie mit einem KI-System interagieren — und nicht mit einem Menschen',
+      'Die Information darf spätestens am Ende des Gesprächs gegeben werden',
+      'Die Information muss zu Beginn der Interaktion klar und verständlich gegeben werden',
+      'Die Informationspflicht gilt nur dann, wenn der Chatbot automatisierte Entscheidungen trifft'
+    ],
+    correct: [0, 2],
+    exp: 'Art. 50 EU AI Act verpflichtet Betreiber von Chatbots und virtuellen Assistenten zur Offenlegung der KI-Natur — zu Beginn der Interaktion, nicht erst am Ende. Die Pflicht gilt unabhängig davon, ob das System automatisierte Entscheidungen trifft. Das Ziel ist, dass Menschen von Anfang an wissen, mit wem (oder was) sie kommunizieren.',
+    src: 'EU AI Act, Art. 50 · https://eur-lex.europa.eu/legal-content/DE/TXT/?uri=CELEX:32024R1689'
+  },
+
+  /* Q16 · 2r */
+  {
+    week: 2,
+    q: 'Welche zwei Aussagen zum Verhältnis zwischen ISO/IEC 42001 und EU AI Act sind korrekt?',
+    cat: 'ISO 42001 · Verhältnis zu EU AI Act',
+    opts: [
+      'Eine ISO 42001-Zertifizierung befreit nicht von den gesetzlichen Pflichten nach EU AI Act',
+      'ISO 42001 kann als Governance-Rahmen dienen und die Konformität nach EU AI Act strukturell unterstützen',
+      'ISO 42001 ist der europäische Umsetzungsstandard des EU AI Act — beide Regelwerke sind inhaltlich identisch',
+      'Unternehmen mit ISO 42001-Zertifizierung gelten automatisch als EU AI Act-konform'
+    ],
+    correct: [0, 1],
+    exp: 'ISO 42001 und EU AI Act sind komplementär, nicht identisch. Die ISO-Zertifizierung bietet ein Governance-Rahmenwerk, das die AI-Act-Konformität strukturell unterstützen kann — aber sie ersetzt die gesetzlichen Pflichten nicht. Es gibt keine automatische Gleichsetzung: Ein zertifiziertes Unternehmen muss dennoch alle spezifischen Anforderungen des EU AI Act erfüllen.',
+    src: 'ISO/IEC 42001:2023 · EU AI Act · https://www.iso.org/standard/81230.html'
+  },
+
+  /* Q17 · 2r */
+  {
+    week: 2,
+    q: 'WellSeal plant, ein eigenes Hochrisiko-KI-System zu entwickeln. Welche zwei Schritte sind Teil des Konformitätsbewertungsverfahrens nach EU AI Act?',
+    cat: 'Konformitätsbewertung · Ablauf',
+    opts: [
+      'Prüfung der technischen Dokumentation gegen die Anforderungen des EU AI Act (Anhang IV)',
+      'Implementierung eines Qualitätsmanagementsystems nach Art. 17 EU AI Act',
+      'Vorab-Genehmigung durch die EU-KI-Behörde (AI Office) in Brüssel',
+      'Abnahme durch den Betriebsrat als gesetzliches Mitbestimmungsorgan'
+    ],
+    correct: [0, 1],
+    exp: 'Das Konformitätsbewertungsverfahren nach EU AI Act umfasst: (1) Überprüfung, ob die technische Dokumentation (Anhang IV) vollständig ist und alle gesetzlichen Anforderungen nachweist, und (2) ein Qualitätsmanagementsystem nach Art. 17. Eine Vorab-Genehmigung durch das AI Office existiert nicht — das Verfahren ist selbstgetragen. Der Betriebsrat hat Mitbestimmungsrechte, ist aber kein Teil des EU-AI-Act-Konformitätsverfahrens.',
+    src: 'EU AI Act, Art. 17, Art. 43 · Anhang IV · https://eur-lex.europa.eu/legal-content/DE/TXT/?uri=CELEX:32024R1689'
+  },
+
+  /* Q18 · 2r */
+  {
+    week: 2,
+    q: 'WellSeal erwägt den Einsatz eines KI-Agenten für die Lieferkettenkoordination. Welche zwei Aussagen charakterisieren einen KI-Agenten korrekt?',
+    cat: 'KI-Agenten · Grundlagen',
+    opts: [
+      'Ein KI-Agent handelt autonom auf Basis von Wahrnehmungen — ohne für jede Einzelaktion explizite menschliche Anweisung',
+      'KI-Agenten können andere Tools, APIs oder Systeme aufrufen, um ihre Aufgabe eigenständig zu erfüllen',
+      'Ein KI-Agent ist immer ein physischer Roboter — rein software-basierte Systeme sind keine Agenten',
+      'KI-Agenten unterliegen grundsätzlich nicht dem EU AI Act, da sie noch keine Marktreife erreicht haben'
+    ],
+    correct: [0, 1],
+    exp: 'KI-Agenten zeichnen sich durch Autonomie und Werkzeugnutzung aus: Sie nehmen Informationen wahr, planen und handeln eigenständig — ohne Schritt-für-Schritt-Anweisung. Sie können andere Systeme (APIs, Datenbanken, Kalender) aufrufen. Software-Agenten ohne Roboterkörper sind die häufigere Form. Art. 50 Abs. 2 EU AI Act enthält bereits spezifische Transparenzpflichten für Agenten.',
+    src: 'EU AI Act, Art. 50 Abs. 2 · https://eur-lex.europa.eu/legal-content/DE/TXT/?uri=CELEX:32024R1689'
+  },
+
+  /* Q19 · 3r */
+  {
+    week: 2,
+    q: 'WellSeal entwickelt ein Hochrisiko-KI-System. Welche drei Elemente gehören zur technischen Dokumentation nach Anhang IV EU AI Act?',
+    cat: 'Technische Dokumentation · Anhang IV',
+    opts: [
+      'Beschreibung des KI-Systems — Zweck, Systemarchitektur, Eingabe-/Ausgabe-Logik',
+      'Angaben zu den Trainingsdaten — Herkunft, Eigenschaften, Vorverarbeitungsschritte',
+      'Risikomanagement-Dokumentation — identifizierte Risiken und getroffene Maßnahmen',
+      'Vollständiger Quellcode des Systems — als Pflichtbestandteil für die CE-Kennzeichnung'
+    ],
+    correct: [0, 1, 2],
+    exp: 'Anhang IV EU AI Act listet die Mindestanforderungen für technische Dokumentation: (1) Systembeschreibung mit Zweck und Architektur, (2) Trainingsdaten-Dokumentation, (3) Risikomanagement-Dokumentation. Der vollständige Quellcode ist keine Pflichtangabe nach Anhang IV — er verlangt eine Beschreibung der Funktionsweise, nicht den Code selbst.',
+    src: 'EU AI Act, Anhang IV · https://eur-lex.europa.eu/legal-content/DE/TXT/?uri=CELEX:32024R1689'
+  },
+
+  /* Q20 · 3r */
+  {
+    week: 2,
+    q: 'Art. 50 EU AI Act enthält Transparenzpflichten für KI-Systeme. Welche drei Aussagen sind korrekt?',
+    cat: 'Art. 50 · Transparenzpflichten vollständig',
+    opts: [
+      'KI-generierte Inhalte (Bilder, Videos, Texte, Audio) müssen als maschinell erzeugt gekennzeichnet werden',
+      'Betreiber von Chatbots und virtuellen Assistenten müssen die KI-Natur zu Beginn der Interaktion offenlegen',
+      'Für biometrische KI in öffentlichen Räumen gilt Art. 50 nicht — dort gilt ausschließlich Art. 5',
+      'Tiefgefälschte Inhalte (Deepfakes), die reale Personen darstellen, müssen als solche kenntlich gemacht werden'
+    ],
+    correct: [0, 1, 3],
+    exp: 'Art. 50 EU AI Act regelt: (1) Kennzeichnungspflicht für KI-generierte Inhalte (Bilder, Videos, Audio, Texte), (2) Offenlegungspflicht bei Chatbots und Interaktionssystemen zu Beginn der Interaktion, (3) Kennzeichnungspflicht für Deepfakes, die reale Personen darstellen. Art. 5 und Art. 50 schließen sich nicht gegenseitig aus — beide können gleichzeitig gelten.',
+    src: 'EU AI Act, Art. 50 · https://eur-lex.europa.eu/legal-content/DE/TXT/?uri=CELEX:32024R1689'
+  },
+
+  /* Q21 · 3r */
+  {
+    week: 2,
+    q: 'Welche drei Elemente sind Bestandteil eines KI-Managementsystems nach ISO/IEC 42001?',
+    cat: 'ISO 42001 · Kernanforderungen',
+    opts: [
+      'KI-Politik (AI Policy) — dokumentierte Grundsätze und Ziele für verantwortungsvollen KI-Einsatz',
+      'Risikobeurteilung für KI-Systeme — systematische Identifikation und Bewertung KI-spezifischer Risiken',
+      'Kontinuierliche Verbesserung — regelmäßige Überprüfung und Anpassung des Managementsystems',
+      'Verpflichtende externe Auditierung durch eine ISO-akkreditierte Stelle im Jahresrhythmus'
+    ],
+    correct: [0, 1, 2],
+    exp: 'ISO 42001 folgt der High-Level-Structure (HLS) und umfasst: (1) KI-Politik als dokumentiertes Bekenntnis zur verantwortungsvollen KI-Nutzung, (2) Risikobeurteilung für KI-spezifische Risiken, (3) kontinuierliche Verbesserung des Managementsystems (Plan-Do-Check-Act). Externe Auditierung ist keine ISO-42001-Pflicht im Jahresrhythmus — Überwachungsaudits finden im Zertifizierungsrahmen statt, aber ohne diese starre Frequenz.',
+    src: 'ISO/IEC 42001:2023 · https://www.iso.org/standard/81230.html'
+  },
+
+  /* Q22 · 3r */
+  {
+    week: 2,
+    q: 'WellSeal plant einen KI-Agenten für die Bestellabwicklung, der autonom Lieferanten kontaktieren und Bestellungen auslösen kann. Welche drei Risiken und Governance-Anforderungen sind zu beachten?',
+    cat: 'KI-Agenten · Risiken und Governance',
+    opts: [
+      'Autonome Vertragsabschlüsse durch den Agenten können rechtliche Haftungsfragen aufwerfen',
+      'Art. 50 Abs. 2 EU AI Act verpflichtet dazu, dass der Agent seine KI-Natur gegenüber Interaktionspartnern offenlegt',
+      'Ein Human-in-the-Loop-Rahmen muss definieren, ab welcher Entscheidungsgröße oder welchem Risiko Menschen eingreifen',
+      'KI-Agenten dürfen nur eingesetzt werden, wenn alle Lieferanten vorab schriftlich zugestimmt haben'
+    ],
+    correct: [0, 1, 2],
+    exp: 'Autonome KI-Agenten erzeugen: (1) Haftungsrisiken bei automatischen Vertragsakten, (2) Transparenzpflicht nach Art. 50 Abs. 2 (Offenlegung der KI-Natur gegenüber Interaktionspartnern), (3) die Notwendigkeit klarer Eskalationsregeln (Human-in-the-Loop-Grenzen). Eine schriftliche Zustimmungspflicht aller Lieferanten existiert im EU AI Act nicht.',
+    src: 'EU AI Act, Art. 50 Abs. 2 · https://eur-lex.europa.eu/legal-content/DE/TXT/?uri=CELEX:32024R1689'
+  },
+
+  /* Q23 · 3r */
+  {
+    week: 2,
+    q: 'WellSeal ist Anbieter eines Hochrisiko-KI-Systems. Welche drei Schritte gehören zum vollständigen Konformitätsbewertungsverfahren?',
+    cat: 'Konformitätsbewertung · Vollständiger Ablauf',
+    opts: [
+      'Erstellung der technischen Dokumentation nach Anhang IV EU AI Act',
+      'Implementierung eines Qualitätsmanagementsystems nach Art. 17 EU AI Act',
+      'Ausstellung der EU-Konformitätserklärung nach Art. 47 EU AI Act',
+      'Vorabgenehmigung durch die nationale Marktüberwachungsbehörde (Bundesnetzagentur)'
+    ],
+    correct: [0, 1, 2],
+    exp: 'Das Konformitätsbewertungsverfahren für Hochrisiko-KI umfasst: (1) technische Dokumentation (Anhang IV), (2) Qualitätsmanagementsystem (Art. 17), (3) EU-Konformitätserklärung (Art. 47). Eine Vorabgenehmigung durch die Bundesnetzagentur oder eine andere Behörde ist nicht vorgesehen — das Verfahren ist selbstgetragen und endet mit dem Anbringen der CE-Kennzeichnung.',
+    src: 'EU AI Act, Art. 17, Art. 43, Art. 47 · Anhang IV · https://eur-lex.europa.eu/legal-content/DE/TXT/?uri=CELEX:32024R1689'
+  },
+
+  /* Q24 · 3r */
+  {
+    week: 2,
+    q: 'Wann ist eine notifizierte Stelle (Notified Body) für die Konformitätsbewertung von Hochrisiko-KI zwingend? Welche drei Aussagen sind korrekt?',
+    cat: 'Notifizierte Stelle · Abgrenzung',
+    opts: [
+      'Eine notifizierte Stelle ist zwingend, wenn das KI-System unter Anhang I EU AI Act fällt (Sicherheitskomponenten bereits regulierter Produkte)',
+      'Fehlende interne Fachkompetenz des Anbieters begründet automatisch die Pflicht zur Einschaltung einer notifizierten Stelle',
+      'Die notifizierte Stelle prüft in diesen Fällen entweder das Qualitätsmanagementsystem oder die Produktkonformität',
+      'Für Hochrisiko-Systeme nach Anhang III ist die interne Bewertung in der Regel ausreichend — die notifizierte Stelle ist dort optional'
+    ],
+    correct: [0, 2, 3],
+    exp: 'Eine notifizierte Stelle ist zwingend für KI-Systeme nach Anhang I (Sicherheitskomponenten von bereits regulierten Produkten wie Medizinprodukten). Für Anhang-III-Systeme ist die interne Bewertung die Regel — eine notifizierte Stelle ist dort optional, nicht Pflicht. Mangelnde interne Kompetenz begründet keine gesetzliche Notified-Body-Pflicht. Die notifizierte Stelle prüft wahlweise das QMS oder die Produktkonformität (Art. 44).',
+    src: 'EU AI Act, Art. 43, Art. 44 · https://eur-lex.europa.eu/legal-content/DE/TXT/?uri=CELEX:32024R1689'
+  },
+
+/* ─── WOCHE 3 · Q25–Q36 ────────────────────────────────────────── */
+
+  /* Q25 · 1r */
+  {
+    week: 3,
+    q: 'WellSeals HR-KI verarbeitet Bewerberdaten im Rahmen des Einstellungsverfahrens. Auf welche Rechtsgrundlage stützt sich diese Verarbeitung nach DSGVO typischerweise?',
+    cat: 'DSGVO · Rechtsgrundlage',
+    opts: [
+      'Art. 6 Abs. 1 lit. b DSGVO — Vertragsanbahnung: Verarbeitung ist für vorvertragliche Maßnahmen erforderlich',
+      'Art. 6 Abs. 1 lit. a DSGVO — Einwilligung: Die Bewerber haben ausdrücklich zugestimmt',
+      'Art. 9 DSGVO — besondere Kategorien: Bewerberdaten gelten immer als besondere Kategorie',
+      'DSGVO gilt für Bewerberdaten nicht — diese fallen ausschließlich unter das Arbeitsrecht'
+    ],
+    correct: [0],
+    exp: 'Die Verarbeitung von Bewerberdaten im Einstellungsverfahren stützt sich typischerweise auf Art. 6 Abs. 1 lit. b DSGVO — die Verarbeitung ist für vorvertragliche Maßnahmen erforderlich, die auf Anfrage der betroffenen Person erfolgen. Einwilligung (lit. a) ist im Beschäftigungsverhältnis problematisch, da echte Freiwilligkeit kaum gewährleistet ist. DSGVO gilt selbstverständlich auch für Bewerberdaten.',
+    src: 'DSGVO, Art. 6 Abs. 1 lit. b · https://eur-lex.europa.eu/legal-content/DE/TXT/?uri=CELEX:32016R0679'
+  },
+
+  /* Q26 · 1r */
+  {
+    week: 3,
+    q: 'Was bedeutet das „R" in den FAIR-Datenprinzipien?',
+    cat: 'FAIR-Prinzipien · Grundlagen',
+    opts: [
+      'Reliable — Daten müssen zuverlässig und fehlerfrei sein',
+      'Reusable — Daten sind mit ausreichenden Metadaten versehen, um von anderen wiederverwendet werden zu können',
+      'Regulated — Daten entsprechen allen geltenden regulatorischen Anforderungen',
+      'Redundant — Daten werden mehrfach gesichert, um Datenverlust zu verhindern'
+    ],
+    correct: [1],
+    exp: 'FAIR steht für Findable (auffindbar), Accessible (zugänglich), Interoperable (interoperabel) und Reusable (wiederverwendbar). Reusable bedeutet, dass Daten mit ausreichenden Metadaten und klaren Nutzungsbedingungen versehen sind, sodass sie von anderen Systemen und Personen korrekt und nachhaltig genutzt werden können. Die anderen Optionen entstammen nicht dem FAIR-Prinzip.',
+    src: 'Wilkinson et al. (2016): The FAIR Guiding Principles for scientific data management · Scientific Data · https://doi.org/10.1038/sdata.2016.18'
+  },
+
+  /* Q27 · 2r */
+  {
+    week: 3,
+    q: 'WellSeal entwickelt ein Hochrisiko-KI-System zur Fehlererkennung. Welche zwei Anforderungen stellt Art. 10 EU AI Act an die Trainingsdaten?',
+    cat: 'Art. 10 EU AI Act · Trainingsdaten',
+    opts: [
+      'Trainingsdaten müssen für den vorgesehenen Zweck relevant und repräsentativ sein',
+      'Trainingsdaten dürfen keinerlei personenbezogene Daten enthalten',
+      'Trainingsdaten müssen auf bekannte Vorurteile (Biases) untersucht und diese müssen behandelt werden',
+      'Trainingsdaten müssen öffentlich zugänglich sein — proprietäre Datensätze sind nicht zulässig'
+    ],
+    correct: [0, 2],
+    exp: 'Art. 10 EU AI Act fordert: Trainingsdaten müssen relevant, repräsentativ und auf Biases geprüft sein — und erkannte Biases müssen behandelt werden. Personenbezogene Daten dürfen enthalten sein, wenn die DSGVO-Anforderungen erfüllt sind. Öffentlich zugängliche Daten sind keine Pflicht — proprietäre Datensätze sind erlaubt.',
+    src: 'EU AI Act, Art. 10 · https://eur-lex.europa.eu/legal-content/DE/TXT/?uri=CELEX:32024R1689'
+  },
+
+  /* Q28 · 2r */
+  {
+    week: 3,
+    q: 'WellSeal setzt ein KI-System zur Analyse von Mitarbeiterleistungsdaten ein. Welche zwei DSGVO-Anforderungen sind besonders relevant?',
+    cat: 'DSGVO · KI-Verarbeitung',
+    opts: [
+      'Eine Datenschutz-Folgenabschätzung (DSFA) ist Pflicht, wenn das System voraussichtlich hohes Risiko für die Rechte Betroffener erzeugt',
+      'Mitarbeitende haben ein Recht auf Auskunft über die verarbeiteten Daten und die Logik der Entscheidung (Art. 15 und Art. 22 DSGVO)',
+      'Da Mitarbeiterdaten intern bleiben, ist keine Rechtsgrundlage nach Art. 6 DSGVO erforderlich',
+      'KI-Systeme zur Leistungsanalyse fallen grundsätzlich unter Art. 9 DSGVO (besondere Kategorien personenbezogener Daten)'
+    ],
+    correct: [0, 1],
+    exp: 'Wenn ein KI-System Mitarbeiterleistung analysiert und hohes Risiko für Betroffene erzeugt, ist eine DSFA nach Art. 35 DSGVO Pflicht. Art. 15 DSGVO gibt Auskunftsrecht — Art. 22 gibt bei ausschließlich automatisierten Entscheidungen das Recht auf menschliche Überprüfung und Erklärung. Eine Rechtsgrundlage nach Art. 6 ist immer erforderlich. Leistungsdaten sind keine besonderen Kategorien nach Art. 9, es sei denn, sie umfassen explizit Gesundheitsdaten.',
+    src: 'DSGVO, Art. 15, Art. 22, Art. 35 · https://eur-lex.europa.eu/legal-content/DE/TXT/?uri=CELEX:32016R0679'
+  },
+
+  /* Q29 · 2r */
+  {
+    week: 3,
+    q: 'WellSeal prüft Produktionsdaten für das Training eines Predictive-Maintenance-Modells. Welche zwei Datenqualitätskriterien sind nach Art. 10 EU AI Act und guter Praxis besonders wichtig?',
+    cat: 'Datenqualität · Kriterien',
+    opts: [
+      'Repräsentativität — der Datensatz deckt die relevante Varianz der Betriebszustände ab, inkl. seltener Fehlerzustände',
+      'Vollständigkeit — es gibt keine systematischen Lücken, die bestimmte Maschinenzustände ausblenden',
+      'Aktualität — nur Daten aus den letzten 30 Tagen dürfen für das Training verwendet werden',
+      'Globalität — Daten aus mindestens drei verschiedenen Länderstandorten müssen vorhanden sein'
+    ],
+    correct: [0, 1],
+    exp: 'Repräsentativität und Vollständigkeit sind zwei der zentralen Qualitätsdimensionen für KI-Trainingsdaten. Fehlt Repräsentativität, lernt das Modell aus verzerrten Mustern. Fehlt Vollständigkeit, kann es seltene Maschinenzustände (z.B. Frühphasen eines Defekts) nicht erkennen. Aktualität ist ein Qualitätsmerkmal, aber eine starre 30-Tage-Grenze existiert nicht. Globalität ist kein Kriterium des EU AI Act.',
+    src: 'EU AI Act, Art. 10 · https://eur-lex.europa.eu/legal-content/DE/TXT/?uri=CELEX:32024R1689'
+  },
+
+  /* Q30 · 2r */
+  {
+    week: 3,
+    q: 'WellSeal will die Qualität seines Vision-KI-Systems systematisch sichern. Welche zwei QS-Methoden sind für KI-Systeme besonders geeignet?',
+    cat: 'QS-Methoden · KI-Systeme',
+    opts: [
+      'Testdaten-Splitting (Train/Validation/Test) — zur Überprüfung der Generalisierbarkeit des Modells',
+      'Cross-Validation — zur Bewertung der Modellstabilität über verschiedene Datenteilmengen',
+      'Manuelle Code-Reviews allein — da KI-Systeme wie klassische Software getestet werden können',
+      'Beta-Tests mit ausgewählten Endnutzern — ausreichend für den Konformitätsnachweis nach EU AI Act'
+    ],
+    correct: [0, 1],
+    exp: 'Train/Validation/Test-Split und Cross-Validation sind Standard-QS-Methoden für KI-Modelle. Sie prüfen, ob das Modell auf ungesehenen Daten generalisiert und kein Overfitting vorliegt. Manuelle Code-Reviews allein reichen bei KI nicht — das Verhalten entsteht aus Daten, nicht nur aus Code. Beta-Tests allein sind keine vollständige QS und reichen für den Konformitätsnachweis nicht aus.',
+    src: 'EU AI Act, Art. 9 (Risikomanagement), Art. 10 · https://eur-lex.europa.eu/legal-content/DE/TXT/?uri=CELEX:32024R1689'
+  },
+
+  /* Q31 · 2r */
+  {
+    week: 3,
+    q: 'WellSeal hat Produktionsdaten in verschiedenen Abteilungen — jede mit eigener Datenbankstruktur und ohne gemeinsame Metadaten. Welche zwei FAIR-Prinzipien werden verletzt?',
+    cat: 'FAIR-Prinzipien · Anwendung',
+    opts: [
+      'Findable — Daten sind ohne gemeinsame Metadaten und Identifier nicht auffindbar',
+      'Interoperable — fehlende gemeinsame Standards verhindern die sinnvolle Datenzusammenführung',
+      'Accessible — die Daten sind nicht öffentlich zugänglich und damit nicht FAIR-konform',
+      'Reusable — Daten fehlen die Lizenzbedingungen für externe Nutzung durch Dritte'
+    ],
+    correct: [0, 1],
+    exp: 'Wenn Daten in Silos ohne gemeinsame Metadaten liegen, werden Findable (keine einheitliche Suchbarkeit) und Interoperable (keine gemeinsamen Datenstandards für Zusammenführung) verletzt. Accessible bedeutet im FAIR-Kontext nicht "öffentlich" — es geht um authentifizierte, zugängliche Zugriffsmechanismen, nicht öffentliche Verfügbarkeit. Reusable betrifft primär Metadaten und Nutzungsbedingungen, nicht die Silostruktur.',
+    src: 'Wilkinson et al. (2016): The FAIR Guiding Principles · Scientific Data · https://doi.org/10.1038/sdata.2016.18'
+  },
+
+  /* Q32 · 3r */
+  {
+    week: 3,
+    q: 'Welche drei Anforderungen stellt Art. 10 EU AI Act an Daten für Hochrisiko-KI-Systeme?',
+    cat: 'Art. 10 EU AI Act · Vollständige Anforderungen',
+    opts: [
+      'Daten müssen relevant für den konkreten Anwendungszweck des Systems sein',
+      'Daten müssen frei von bekannten Fehlern und Verzerrungen sein — oder diese müssen dokumentiert und behandelt werden',
+      'Daten müssen vollständig sein — keine systematischen Lücken, die relevante Szenarien ausblenden',
+      'Daten dürfen nicht älter als zwei Jahre sein — um Konzeptdrift systematisch zu verhindern'
+    ],
+    correct: [0, 1, 2],
+    exp: 'Art. 10 EU AI Act fordert für Hochrisiko-KI: (1) Relevanz — Daten müssen dem Anwendungszweck entsprechen, (2) Fehlerfreiheit bzw. Bias-Behandlung — bekannte Verzerrungen müssen erkannt und behandelt werden, (3) Vollständigkeit — keine systematischen Lücken. Eine Zwei-Jahres-Grenze existiert im EU AI Act nicht — Aktualität ist ein Qualitätsmerkmal, aber ohne starre Frist.',
+    src: 'EU AI Act, Art. 10 · https://eur-lex.europa.eu/legal-content/DE/TXT/?uri=CELEX:32024R1689'
+  },
+
+  /* Q33 · 3r */
+  {
+    week: 3,
+    q: 'WellSeals HR-KI trifft eine Vorauswahl-Empfehlung. Bewerber fragen nach ihren Rechten. Welche drei DSGVO-Rechte sind relevant?',
+    cat: 'DSGVO · Betroffenenrechte',
+    opts: [
+      'Auskunftsrecht (Art. 15 DSGVO) — der Bewerber kann erfahren, welche Daten über ihn verarbeitet werden',
+      'Recht auf Erklärung und menschliche Überprüfung bei automatisierten Entscheidungen (Art. 22 DSGVO)',
+      'Recht auf Löschung (Art. 17 DSGVO) — der Bewerber kann Löschung seiner Daten nach Abschluss des Prozesses verlangen',
+      'Recht auf Datenübertragbarkeit zu einem konkurrierenden Unternehmen, das dieselbe Stelle ausschreibt'
+    ],
+    correct: [0, 1, 2],
+    exp: 'Bewerber haben: (1) Auskunftsrecht nach Art. 15 DSGVO — welche Daten, welche Logik, (2) bei ausschließlich automatisierten Entscheidungen das Recht auf menschliche Überprüfung und Erklärung (Art. 22), (3) Löschungsrecht nach Art. 17, wenn die Daten nicht mehr für den Zweck benötigt werden. Das Recht auf Datenübertragbarkeit (Art. 20) gilt für vertragsbasierte Verarbeitung — im Bewerbungskontext ist die Übertragung zu Konkurrenten nicht vorgesehen.',
+    src: 'DSGVO, Art. 15, Art. 17, Art. 22 · https://eur-lex.europa.eu/legal-content/DE/TXT/?uri=CELEX:32016R0679'
+  },
+
+  /* Q34 · 3r */
+  {
+    week: 3,
+    q: 'Wann ist eine Datenschutz-Folgenabschätzung (DSFA) nach Art. 35 DSGVO für ein KI-System bei WellSeal Pflicht? Welche drei Auslöser sind korrekt?',
+    cat: 'DSFA · Datenschutz-Folgenabschätzung',
+    opts: [
+      'Systematische und umfangreiche Verarbeitung personenbezogener Daten auf Basis automatisierter Entscheidungen mit erheblicher Wirkung',
+      'Verarbeitung besonderer Kategorien personenbezogener Daten (Art. 9 DSGVO) in großem Umfang',
+      'Jedes neue KI-System, unabhängig von Zweck und Risiko — DSFA ist bei KI grundsätzlich immer Pflicht',
+      'Systematische Überwachung öffentlich zugänglicher Bereiche in großem Umfang'
+    ],
+    correct: [0, 1, 3],
+    exp: 'Art. 35 DSGVO nennt konkrete DSFA-Auslöser: (1) automatisierte Entscheidungen mit erheblichen Auswirkungen auf Personen, (2) umfangreiche Verarbeitung besonderer Kategorien (Gesundheit, Biometrie, Religion etc.), (3) systematische Überwachung öffentlicher Bereiche. Eine DSFA ist nicht für jedes KI-System Pflicht — der Gesetzgeber setzt sie an Risikoschwellen.',
+    src: 'DSGVO, Art. 35 · https://eur-lex.europa.eu/legal-content/DE/TXT/?uri=CELEX:32016R0679'
+  },
+
+  /* Q35 · 3r */
+  {
+    week: 3,
+    q: 'WellSeals HR-KI wurde auf historischen Einstellungsdaten trainiert. In der Vergangenheit wurden kaum Frauen in technische Positionen eingestellt. Welche drei Aussagen zum Bias-Risiko sind korrekt?',
+    cat: 'Bias · Datenqualität',
+    opts: [
+      'Das Modell kann systematisch Bewerbungen von Frauen niedriger bewerten — weil "Erfolg" historisch männlich definiert war',
+      'Bias in Trainingsdaten überträgt sich auf Modellentscheidungen — ohne aktive Gegenmaßnahmen',
+      'Art. 10 EU AI Act verpflichtet zur Bias-Diagnose und aktiven Behandlung bei Hochrisiko-KI',
+      'Wenn der Algorithmus keine Geschlechtsangabe als direkten Input hat, ist das System automatisch unvoreingenommen'
+    ],
+    correct: [0, 1, 2],
+    exp: 'Historische Daten können strukturelle Diskriminierung reproduzieren. Ein Modell, das auf Erfolgsmustern der Vergangenheit trainiert wurde, lernt, dass "Erfolg" mit bestimmten Profilen assoziiert ist. Art. 10 EU AI Act fordert aktive Bias-Diagnose und -behandlung. Der Ausschluss des Merkmals "Geschlecht" reicht nicht — andere Merkmale (z.B. Lücken im Lebenslauf) können als Proxy-Variablen wirken.',
+    src: 'EU AI Act, Art. 10 · https://eur-lex.europa.eu/legal-content/DE/TXT/?uri=CELEX:32024R1689'
+  },
+
+  /* Q36 · 3r */
+  {
+    week: 3,
+    q: 'WellSeal will eine KI-Datengovernance einrichten. Welche drei Elemente sind unverzichtbar?',
+    cat: 'Datengovernance · Organisatorische Anforderungen',
+    opts: [
+      'Daten-Ownership: Für jeden Datensatz gibt es eine verantwortliche Person oder Rolle',
+      'Klassifikationsschema: Daten werden nach Sensitivität und Verarbeitungsrisiko kategorisiert',
+      'Rezertifizierung: Alle Datensätze werden quartalsweise von der Rechtsabteilung einzeln genehmigt',
+      'Lösch- und Aufbewahrungskonzept: Klare Regeln, wie lange welche Daten für welchen Zweck gespeichert werden'
+    ],
+    correct: [0, 1, 3],
+    exp: 'Eine vollständige Datengovernance braucht: (1) klare Verantwortlichkeiten (Data Ownership), (2) Klassifikation nach Risiko und Sensitivität, (3) Lösch- und Aufbewahrungsregeln (DSGVO-Compliance). Quartalsweise Rechtsabteilungs-Genehmigungen für alle Datensätze sind kein Standard-Element und wären in dieser Form nicht praktikabel — Governance arbeitet mit Richtlinien und Prozessen, nicht mit Einzelgenehmigungen.',
+    src: 'DSGVO, Art. 5 (Grundsätze) · EU AI Act, Art. 10 · https://eur-lex.europa.eu/legal-content/DE/TXT/?uri=CELEX:32016R0679'
+  },
+
+/* ─── WOCHE 4 · Q37–Q49 ────────────────────────────────────────── */
+
+  /* Q37 · 1r */
+  {
+    week: 4,
+    q: 'Kotter beschreibt 8 Stufen für erfolgreichen Wandel. Was ist laut Kotter die häufigste Ursache für das Scheitern von Veränderungsprojekten?',
+    cat: 'Kotter · 8-Stufen-Modell',
+    opts: [
+      'Fehlende Technologie — die eingesetzten Systeme sind noch nicht ausgereift genug für den Wandel',
+      'Überspringen von Stufe 1 — fehlende Dringlichkeit, die beim Team wirklich ankommt und gefühlt wird',
+      'Zu viele Change-Agenten — die Kommunikation wird unübersichtlich und inkonsistent',
+      'Zu schnelle Skalierung — Unternehmen gehen in Phase 3, bevor Phase 1 wirklich abgeschlossen ist'
+    ],
+    correct: [1],
+    exp: 'Kotter identifiziert "nicht genug Dringlichkeit erzeugen" als häufigsten Fehler. Führungskräfte sind selbst längst überzeugt und gehen davon aus, dass ihr Team das auch ist. Das ist ein Irrtum: Ohne gefühlte Dringlichkeit folgt niemand der Vision — egal wie überzeugend sie formuliert ist. Alle anderen Fehler sind nachrangig.',
+    src: 'Kotter, J. (1996): Leading Change · Harvard Business Review Press · https://www.hbs.edu/faculty/Pages/item.aspx?num=191'
+  },
+
+  /* Q38 · 1r */
+  {
+    week: 4,
+    q: 'Was ist das Kernprinzip des ADKAR-Modells?',
+    cat: 'ADKAR · Grundlagen',
+    opts: [
+      'Organisationsweiter Wandel entsteht, wenn genug Mitarbeitende die Projektmanagement-Grundlagen beherrschen',
+      'Organisationsweiter Wandel ist die Summe erfolgreicher individueller Veränderungen — jeder Mensch durchläuft fünf Stufen',
+      'Wandel entsteht primär durch Top-down-Kommunikation — der Vorstand muss zuerst überzeugt sein',
+      'ADKAR ist ein technisches Framework speziell für die Einführung von Softwaresystemen'
+    ],
+    correct: [1],
+    exp: 'ADKARs Grundprinzip: Organisationaler Wandel ist die Summe individueller Veränderungen. Jede Person durchläuft Awareness (Bewusstsein) → Desire (Wunsch) → Knowledge (Wissen) → Ability (Fähigkeit) → Reinforcement (Verstärkung). Wer diese Sequenz für Individuen versteht, kann gezielte Maßnahmen statt Gießkannen-Kommunikation einsetzen.',
+    src: 'Hiatt, J. (2006): ADKAR · Prosci · https://www.prosci.com/adkar'
+  },
+
+  /* Q39 · 2r */
+  {
+    week: 4,
+    q: 'Bei WellSeal lehnt ein Produktionsleiter die neue Qualitätskontroll-KI ab: „Das System kennt unsere Maschinen nicht — ich vertraue meiner Erfahrung." Welche zwei Aussagen zum Widerstand und zur richtigen Reaktion sind korrekt?',
+    cat: 'Widerstandsdimensionen · Diagnose',
+    opts: [
+      'Es handelt sich um rationalen Widerstand — ein sachlich begründeter Einwand gegen die Systemqualität',
+      'Richtiger Umgang: den Einwand ernst nehmen und mit Pilotdaten oder gezielten Testläufen adressieren',
+      'Es handelt sich um emotionalen Widerstand — der Leiter hat Angst um seinen Job',
+      'Richtiger Umgang: die Entscheidung autoritär durchsetzen — rationaler Widerstand hat keine Berechtigung'
+    ],
+    correct: [0, 1],
+    exp: 'Der Einwand ist inhaltlich begründet — das ist rationaler Widerstand. Rationale Widerstände haben oft einen wahren Kern und sollten nie abgetan werden. Der richtige Umgang: zuhören, den Einwand ernst nehmen, mit Pilotdaten oder einer Testphase antworten. Autoritäre Durchsetzung erzeugt Widerstand in anderen Dimensionen (emotional, politisch) ohne den rationalen Einwand zu lösen.',
+    src: 'Kotter, J. (1996): Leading Change · https://www.hbs.edu/faculty/Pages/item.aspx?num=191'
+  },
+
+  /* Q40 · 2r */
+  {
+    week: 4,
+    q: 'WellSeal kündigt die KI-Einführung per E-Mail an und startet zwei Wochen später den Rollout. Welche zwei Kotter-Fehler werden gemacht?',
+    cat: 'Kotter · Häufige Fehler',
+    opts: [
+      'Stufe 1 übersprungen: Dringlichkeit wurde nicht aufgebaut — eine Ankündigungs-E-Mail erzeugt kein Gefühl der Notwendigkeit',
+      'Stufe 4 übersprungen: Die Vision wurde nicht kommuniziert — eine E-Mail ist kein Kommunikationsplan für den Wandel',
+      'Stufe 7 übersprungen: Erfolge wurden nicht gefeiert — der Start ist zu unspektakulär',
+      'Stufe 6 übersprungen: Es wurden keine kurzfristigen Wins generiert vor dem Rollout'
+    ],
+    correct: [0, 1],
+    exp: 'Zwei klassische Kotter-Fehler: (1) Dringlichkeit (Stufe 1) nicht aufgebaut — eine Ankündigungs-E-Mail informiert, erzeugt aber kein Gefühl der Notwendigkeit. (2) Vision (Stufe 4) nicht kommuniziert — warum macht WellSeal das, wohin führt das, was bedeutet es für die Mitarbeitenden? Stufe 7 (Erfolge feiern) ist noch nicht relevant — der Rollout hat noch nicht begonnen.',
+    src: 'Kotter, J. (1996): Leading Change · https://www.hbs.edu/faculty/Pages/item.aspx?num=191'
+  },
+
+  /* Q41 · 2r */
+  {
+    week: 4,
+    q: 'Ein WellSeal-Mitarbeitender sagt: „Ich weiß, warum wir das einführen, und ich will es — aber ich weiß nicht, wie ich das System richtig bediene." Wo stockt er im ADKAR-Modell, und was ist die richtige Maßnahme?',
+    cat: 'ADKAR · Diagnose und Maßnahmen',
+    opts: [
+      'Er stockt bei K (Knowledge) — er hat Awareness und Desire, braucht jetzt Wissen und Schulung',
+      'Die richtige Maßnahme ist ein gezieltes Schulungsangebot — kein weiteres Kommunizieren des "Warum"',
+      'Er stockt bei A (Ability) — er hat das Wissen theoretisch, kann es aber noch nicht anwenden',
+      'Er hat alle ADKAR-Stufen abgeschlossen — kein weiterer Handlungsbedarf'
+    ],
+    correct: [0, 1],
+    exp: 'Die Person hat A (Awareness) und D (Desire). Aber sie weiß nicht, wie sie das System bedient — das ist ein K-Problem (Knowledge). Die richtige nächste Maßnahme ist Schulung, nicht weiteres Kommunizieren oder Motivation. ADKAR hilft dabei, die richtige Intervention zur richtigen Zeit einzusetzen — und nicht vorwegzugreifen.',
+    src: 'Hiatt, J. (2006): ADKAR · Prosci · https://www.prosci.com/adkar'
+  },
+
+  /* Q42 · 2r */
+  {
+    week: 4,
+    q: 'Du entwickelst die Change Story für WellSeals KI-Einführung. Welche zwei Merkmale muss sie zwingend haben?',
+    cat: 'Change Story · Merkmale',
+    opts: [
+      'Eine ehrliche Begründung, warum der Ist-Zustand nicht nachhaltig ist — ohne das entsteht keine Dringlichkeit',
+      'Eine konkrete Beschreibung, was die Veränderung für die Mitarbeitenden persönlich bedeutet',
+      'Ausschließlich positive Formulierungen — Risiken und Schwierigkeiten werden nicht erwähnt',
+      'Fokus auf technische Details des KI-Systems — Mitarbeitende wollen wissen, wie die Algorithmen funktionieren'
+    ],
+    correct: [0, 1],
+    exp: 'Eine gute Change Story hat zwei Kernelemente: (1) Die ehrliche Begründung für den Wandel — warum ist der Ist-Zustand nicht mehr haltbar? Ohne das entsteht keine Dringlichkeit. (2) Die persönliche Bedeutung für die Mitarbeitenden — konkret: Was verändert sich für mich in meiner täglichen Arbeit? Nur positive Botschaften oder technische Details sind keine Change-Story-Elemente.',
+    src: 'McKinsey & Company (2023): The secret sauce for successful transformations · https://www.mckinsey.com/capabilities/transformation/our-insights/the-secret-sauce-for-successful-transformations'
+  },
+
+  /* Q43 · 2r */
+  {
+    week: 4,
+    q: 'WellSeal will ein Change-Agenten-Netzwerk für die KI-Einführung aufbauen. Welche zwei Prinzipien sind entscheidend für den Erfolg?',
+    cat: 'Change-Agenten · Aufbau und Rolle',
+    opts: [
+      'Change-Agenten entstehen durch Überzeugung — nicht durch Ernennung von oben',
+      'Change-Agenten brauchen echten Einfluss — sie müssen Feedback einbringen und Kritik äußern dürfen',
+      'Change-Agenten müssen aus der IT-Abteilung kommen — sie benötigen technisches KI-Wissen',
+      'Change-Agenten werden durch Zusatzvergütung motiviert — ohne finanzielle Anerkennung funktioniert das Netzwerk nicht'
+    ],
+    correct: [0, 1],
+    exp: 'Die zwei Schlüsselprinzipien: Überzeugung statt Ernennung — die richtigen Personen identifizieren, nicht Rollen verteilen. Echter Einfluss — ohne die Möglichkeit, Feedback einzubringen und gehört zu werden, wird das Netzwerk zur Alibiveranstaltung. IT-Hintergrund ist kein Muss — Meinungsführer aus Fachabteilungen sind oft wirksamer. Finanzielle Entschädigung ist nicht der entscheidende Motivator.',
+    src: 'Prosci (2024): Change Agent Networks · https://www.prosci.com/resources/articles/change-agent-networks'
+  },
+
+  /* Q44 · 3r */
+  {
+    week: 4,
+    q: 'WellSeal hat den KI-Rollout abgeschlossen. Alle Systeme laufen. Einige Mitarbeitende nutzen aber alte Prozesse noch parallel. Was beschreibt das Lewin-Modell für diese Situation, und welche drei Maßnahmen sind richtig?',
+    cat: 'Lewin · 3-Phasen-Modell',
+    opts: [
+      'Das Unternehmen ist in der Refreeze-Phase — neues Verhalten muss zur neuen Norm werden',
+      'Parallelnutzung alter Prozesse ist ein Warnsignal für unvollständigen Wandel — kein Erfolgssignal',
+      'Alte Prozesse müssen offiziell abgeschaltet werden — Rückfall-Optionen verhindern das Refreeze',
+      'In der Refreeze-Phase ist Führungsunterstützung nicht mehr nötig — das System läuft dann von selbst'
+    ],
+    correct: [0, 1, 2],
+    exp: 'Lewin: Nach Unfreeze (Auftauen) und Change (Übergang) kommt Refreeze — das neue Verhalten verankern. Parallelnutzung alter Prozesse zeigt, dass Refreeze nicht abgeschlossen ist. Richtige Maßnahmen: (1) alte Prozesse offiziell abschalten, (2) neues Verhalten sichtbar anerkennen und stärken, (3) Führungskräfte als Vorbilder einsetzen. Refreeze braucht aktive Führungsaufmerksamkeit — es passiert nicht von allein.',
+    src: 'Lewin, K. (1947): Frontiers in Group Dynamics · Human Relations · https://doi.org/10.1177/001872674700100103'
+  },
+
+  /* Q45 · 3r */
+  {
+    week: 4,
+    q: 'Du willst den Change-Erfolg der KI-Einführung bei WellSeal messen. Welche drei KPIs sind für das Change Management sinnvoll?',
+    cat: 'KPIs · Change Management',
+    opts: [
+      'Nutzungsquote der neuen KI-Systeme in den ersten 60 Tagen nach Go-Live',
+      'Anzahl und Qualität der Mitarbeiterfeedbacks — inklusive Verbesserungsvorschläge aus der Fläche',
+      'Mitarbeiterzufriedenheitsscore (Pulse Survey) zur neuen KI-gestützten Arbeitsumgebung',
+      'Kurs-Abschlussquote der verpflichtenden Schulungsmodule als primärer Erfolgsindikator'
+    ],
+    correct: [0, 1, 2],
+    exp: 'Aussagekräftige Change-KPIs messen, was in der Praxis passiert: Nutzungsquote (wird das System wirklich genutzt?), Feedback-Volumen und -Qualität (sind Mitarbeitende engagiert oder passiv?), Pulse-Survey-Score (wie fühlt sich der Wandel an?). Schulungs-Abschlussquoten messen Compliance — sie sagen wenig darüber aus, ob das Gelernte tatsächlich angewandt wird, und sind kein primärer Change-KPI.',
+    src: 'Prosci (2024): Change Management Best Practices · https://www.prosci.com/resources/articles/change-management-best-practices'
+  },
+
+  /* Q46 · 3r */
+  {
+    week: 4,
+    q: 'Bei WellSeal äußern drei Gruppen Widerstand: (A) Ein Teamleiter sagt "Das System ist ungenau." (B) Eine Mitarbeiterin sagt "Ich habe Angst, meinen Job zu verlieren." (C) Ein Abteilungsleiter sagt "Das wurde über meinen Kopf hinweg entschieden." Welche drei Interventionen sind korrekt zugeordnet?',
+    cat: 'Widerstand · Diagnose und Intervention',
+    opts: [
+      'Für (A): Pilotdaten zeigen und Systemgenauigkeit konkret belegen — rationaler Widerstand braucht Fakten',
+      'Für (B): Ehrliches Gespräch über Jobveränderungen führen — emotionaler Widerstand braucht Empathie und Klarheit',
+      'Für (C): Den Abteilungsleiter in zukünftige Entscheidungen einbinden — politischer Widerstand braucht echten Einfluss',
+      'Für alle drei: dieselbe standardisierte Kommunikation — eine gute Change Story löst alle Widerstandstypen'
+    ],
+    correct: [0, 1, 2],
+    exp: 'Die drei Widerstandsdimensionen brauchen unterschiedliche Interventionen: Rationaler Widerstand (A) → Fakten, Pilotdaten, Belege. Emotionaler Widerstand (B) → empathisches Gespräch, ehrliche Aussagen zur Jobentwicklung. Politischer Widerstand (C) → Einbindung in Entscheidungsprozesse, echten Einfluss geben. Eine einheitliche Change-Story-Kommunikation löst keine dieser Dimensionen vollständig — sie ist Voraussetzung, kein Allheilmittel.',
+    src: 'Kotter, J. (1996): Leading Change · https://www.hbs.edu/faculty/Pages/item.aspx?num=191'
+  },
+
+  /* Q47 · 3r */
+  {
+    week: 4,
+    q: 'WellSeal kombiniert Kotter und ADKAR für die KI-Einführung. Welche drei Aussagen beschreiben die Kombination korrekt?',
+    cat: 'Modellkombination · Kotter + ADKAR',
+    opts: [
+      'Kotter gibt den organisationsweiten Rahmen — ADKAR steuert, was auf der individuellen Ebene getan wird',
+      'Kotter-Stufe 1 (Dringlichkeit) und ADKAR-Awareness zielen auf dasselbe ab und können synchron kommuniziert werden',
+      'ADKAR-Desire ist die häufigste Schwachstelle — wer diesen Schritt überspringt, hat später Nutzungsprobleme',
+      'Die Modelle sollten strikt getrennt eingesetzt werden — ein kombinierter Einsatz erzeugt Verwirrung'
+    ],
+    correct: [0, 1, 2],
+    exp: 'Kotter und ADKAR sind komplementär: Kotter liefert die Makrostruktur für den Rollout, ADKAR das Mikro-Werkzeug für individuelle Gespräche. Kotter-Stufe 1 und ADKAR-Awareness können synchron eingesetzt werden. Der häufigste Fehler: Desire (D) überspringen und direkt schulen — das erzeugt hohe Schulungsquoten bei niedriger Nutzung. Kombinierter Einsatz ist Best Practice, nicht Verwirrung.',
+    src: 'Hiatt, J. (2006): ADKAR · Prosci · https://www.prosci.com/adkar · Kotter, J. (1996): Leading Change · https://www.hbs.edu/faculty/Pages/item.aspx?num=191'
+  },
+
+  /* Q48 · 3r */
+  {
+    week: 4,
+    q: 'WellSeal startet einen KI-Pilot in zwei Produktionsbereichen. Welche drei Change-Management-Maßnahmen sind beim Pilotstart unverzichtbar?',
+    cat: 'Pilotprojekt · Change Management',
+    opts: [
+      'Skalierungsplan: Was passiert, wenn der Pilot erfolgreich ist — wie und wann wird auf alle Bereiche ausgerollt?',
+      'Feedback-Kanal: Mitarbeitende in den Pilot-Bereichen können Probleme und Ideen direkt melden',
+      'Rollback-Option: Wenn der Pilot scheitert, kann der alte Prozess ohne Nachteile wiederhergestellt werden',
+      'Vollständige Governance: Alle Richtlinien und Prozesse müssen vor Pilotstart final verabschiedet sein'
+    ],
+    correct: [0, 1, 2],
+    exp: 'Beim Pilotstart sind drei Dinge unverzichtbar: (1) Skalierungsplan — Erfolg muss definiert sein, bevor er eintritt. (2) Feedback-Kanal — Piloten ohne Rückmeldung sind blind. (3) Rollback-Option — psychologische Sicherheit für Mitarbeitende: Das Alte ist noch da, wenn nötig. Vollständige Governance vor Pilotstart ist unrealistisch — der Pilot liefert die Erkenntnisse, die Governance braucht.',
+    src: 'Prosci (2024): Change Management Best Practices · https://www.prosci.com/resources/articles/change-management-best-practices'
+  },
+
+  /* Q49 · 3r */
+  {
+    week: 4,
+    q: 'WellSeal erlebt nach dem KI-Rollout anhaltende Resistenz. Mitarbeitende nutzen das System nur, wenn es erzwungen wird. Welche drei Ursachen und Gegenmaßnahmen sind korrekt?',
+    cat: 'KI-Resistenz · Ursachen und Umgang',
+    opts: [
+      'Fehlende ADKAR-Desire: Das persönliche "Warum" wurde nicht überzeugend transportiert — Nachholbedarf durch persönliche Gespräche',
+      'Fehlende Psychological Safety: Mitarbeitende haben Angst, Fehler im Umgang mit dem System sichtbar zu machen',
+      'Fehlendes Reinforcement: Positive Nutzung wird nicht anerkannt — wer das System gut nutzt, erhält keine Rückmeldung',
+      'Das Problem liegt ausschließlich bei der Technologie — eine bessere Benutzeroberfläche würde die Resistenz vollständig lösen'
+    ],
+    correct: [0, 1, 2],
+    exp: 'Anhaltende KI-Resistenz hat selten ausschließlich technische Ursachen. Die drei häufigen Change-Ursachen: (1) Desire fehlt — das persönliche "Warum" wurde nie überzeugend vermittelt. (2) Fehlende Psychological Safety — wer Fehler oder Unsicherheiten sichtbar macht, befürchtet Nachteile. (3) Kein Reinforcement — gute Nutzung wird ignoriert. UX-Verbesserungen helfen, lösen aber keine motivationalen und organisationalen Blockaden allein.',
+    src: 'Hiatt, J. (2006): ADKAR · Prosci · https://www.prosci.com/adkar'
+  }
+
+]; // end QBANK
+
+/* ─── State ─────────────────────────────────────────────────────── */
+var state = { name: '', questions: [], selections: [] };
+
+function startQuiz() {
+  state.name = document.getElementById('participant-name').value.trim() || 'Anonym';
+  state.questions = shuffle(QBANK.slice());
+  state.selections = state.questions.map(function(){ return []; });
+  document.getElementById('setup-section').style.display = 'none';
+  document.getElementById('quiz-section').style.display = 'block';
+  var strip = document.getElementById('quiz-header-strip');
+  strip.innerHTML = '<span class="strip-tag">KI-Beauftragte:r</span><span class="strip-tag">Generalwiederholung</span><span class="strip-name">' + escHtml(state.name) + '</span>';
+  renderQuestions();
+}
+
+function shuffle(arr) {
+  for (var i = arr.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var t = arr[i]; arr[i] = arr[j]; arr[j] = t;
+  }
+  return arr;
+}
+
+function shuffleIndexes(n) {
+  var arr = [];
+  for (var i = 0; i < n; i++) arr.push(i);
+  return shuffle(arr);
+}
+
+function renderQuestions() {
+  var container = document.getElementById('questions-container');
+  container.innerHTML = '';
+  var total = state.questions.length;
+  var weekShown = {};
+  state.questions.forEach(function(q, qi) {
+    var nCorrect = q.correct.length;
+    var hint = nCorrect === 1 ? 'Genau eine Antwort ist richtig.' : 'Mehrere Antworten können richtig sein.';
+    var shuffledIdx = shuffleIndexes(q.opts.length);
+    var card = document.createElement('div');
+    card.className = 'q-card';
+    card.id = 'qcard-' + qi;
+    card.innerHTML = '<div class="q-num">Frage ' + (qi+1) + ' von ' + total + ' · ' + escHtml(q.cat) + '</div>'
+      + '<div class="q-text">' + escHtml(q.q) + '</div>'
+      + '<div class="q-hint">' + hint + '</div>'
+      + '<div class="opt-list" id="opts-' + qi + '"></div>';
+    container.appendChild(card);
+    var optList = document.getElementById('opts-' + qi);
+    shuffledIdx.forEach(function(origIdx) {
+      var opt = document.createElement('div');
+      opt.className = 'opt';
+      opt.dataset.qi = qi;
+      opt.dataset.oi = origIdx;
+      opt.innerHTML = '<div class="opt-cb" id="cb-'+qi+'-'+origIdx+'"></div>'
+        + '<div class="opt-text">' + escHtml(q.opts[origIdx]) + '</div>';
+      opt.addEventListener('click', function() { toggleOpt(qi, origIdx); });
+      optList.appendChild(opt);
+    });
+  });
+  updateProgress();
+  checkSubmitReady();
+}
+
+function toggleOpt(qi, oi) {
+  var sel = state.selections[qi];
+  var idx = sel.indexOf(oi);
+  if (idx === -1) { sel.push(oi); } else { sel.splice(idx, 1); }
+  var allOpts = document.querySelectorAll('#opts-' + qi + ' .opt');
+  allOpts.forEach(function(el) {
+    var elOi = parseInt(el.dataset.oi);
+    var isSelected = sel.indexOf(elOi) !== -1;
+    el.classList.toggle('selected', isSelected);
+    var cb = document.getElementById('cb-' + qi + '-' + elOi);
+    cb.classList.toggle('chk', isSelected);
+  });
+  checkSubmitReady();
+  updateProgress();
+}
+
+function checkSubmitReady() {
+  var allAnswered = state.selections.every(function(s){ return s.length > 0; });
+  document.getElementById('btn-submit').disabled = !allAnswered;
+}
+
+function updateProgress() {
+  var answered = state.selections.filter(function(s){ return s.length > 0; }).length;
+  var total = state.questions.length;
+  document.getElementById('progress-label').textContent = answered + ' von ' + total + ' Fragen beantwortet';
+  document.getElementById('progress-fill').style.width = (answered / total * 100) + '%';
+}
+
+function submitQuiz() {
+  var score = 0;
+  var catMap = {};
+  state.questions.forEach(function(q, qi) {
+    var sel = state.selections[qi].slice().sort();
+    var cor = q.correct.slice().sort();
+    var ok = sel.length === cor.length && sel.every(function(v,i){ return v === cor[i]; });
+    if (ok) score++;
+    if (!catMap[q.cat]) catMap[q.cat] = { ok: 0, total: 0 };
+    catMap[q.cat].total++;
+    if (ok) catMap[q.cat].ok++;
+
+    var card = document.getElementById('qcard-' + qi);
+    var allOpts = card.querySelectorAll('.opt');
+    allOpts.forEach(function(el) {
+      el.classList.add('disabled');
+      var elOi = parseInt(el.dataset.oi);
+      var isSelected = sel.indexOf(elOi) !== -1;
+      var isCorrect = cor.indexOf(elOi) !== -1;
+      if (isSelected && isCorrect) el.classList.add('correct-sel');
+      else if (isSelected && !isCorrect) el.classList.add('wrong-sel');
+      else if (!isSelected && isCorrect) el.classList.add('missed');
+      el.classList.remove('selected');
+    });
+
+    var fb = document.createElement('div');
+    fb.className = 'feedback ' + (ok ? 'fb-ok' : 'fb-wrong');
+    fb.innerHTML = '<div class="fb-title">' + (ok ? '✓ Richtig' : '✗ Nicht vollständig richtig') + '</div>'
+      + '<div class="fb-text">' + escHtml(q.exp) + '</div>'
+      + (q.src ? '<div class="fb-source">Quelle: ' + escHtml(q.src) + '</div>' : '');
+    card.appendChild(fb);
+  });
+
+  document.getElementById('btn-submit').style.display = 'none';
+  var total = state.questions.length;
+  var pct = Math.round(score / total * 100);
+  var grade = pct >= 80 ? '✓✓' : pct >= 60 ? '✓' : '✗';
+  var label = pct >= 80 ? 'Sehr gut' : pct >= 60 ? 'Bestanden' : 'Noch einmal';
+  var sub = score + ' von ' + total + ' Fragen vollständig richtig (' + pct + ' %)';
+  document.getElementById('result-grade').textContent = grade;
+  document.getElementById('result-label').textContent = label;
+  document.getElementById('result-sub').textContent = sub;
+  document.getElementById('stats-row').innerHTML =
+    '<div class="stat"><div class="stat-n">' + score + '</div><div class="stat-l">Richtig</div></div>' +
+    '<div class="stat"><div class="stat-n">' + (total-score) + '</div><div class="stat-l">Fehler</div></div>' +
+    '<div class="stat"><div class="stat-n">' + pct + '%</div><div class="stat-l">Ergebnis</div></div>';
+
+  var bars = document.getElementById('comp-bars');
+  bars.innerHTML = '';
+  Object.keys(catMap).forEach(function(cat) {
+    var d = catMap[cat];
+    var p = Math.round(d.ok / d.total * 100);
+    bars.innerHTML += '<div class="comp-row"><div class="comp-labels"><span>' + escHtml(cat) + '</span><span>' + d.ok + '/' + d.total + '</span></div>'
+      + '<div class="comp-track"><div class="comp-fill ' + (p>=60?'fill-ok':'fill-wrong') + '" style="width:' + p + '%"></div></div></div>';
+  });
+
+  var reviewHtml = '';
+  state.questions.forEach(function(q, qi) {
+    var sel = state.selections[qi].slice().sort();
+    var cor = q.correct.slice().sort();
+    var ok = sel.length === cor.length && sel.every(function(v,i){ return v === cor[i]; });
+    reviewHtml += '<div style="margin-bottom:1.2rem;padding:1rem;background:var(--card);border:1px solid var(--rule);border-radius:10px;">'
+      + '<div style="font-family:\'DM Mono\',monospace;font-size:10px;color:var(--muted);margin-bottom:.4rem;">Frage ' + (qi+1) + ' · ' + escHtml(q.cat) + '</div>'
+      + '<div style="font-size:14px;font-weight:500;margin-bottom:.5rem;">' + escHtml(q.q) + '</div>'
+      + '<div style="font-size:12px;color:' + (ok?'var(--correct)':'var(--wrong)') + ';font-weight:500;">' + (ok ? '✓ Vollständig richtig' : '✗ Nicht vollständig richtig') + '</div>'
+      + '</div>';
+  });
+  document.getElementById('review-container').innerHTML = reviewHtml;
+  document.getElementById('results-section').style.display = 'block';
+  document.getElementById('results-section').scrollIntoView({ behavior: 'smooth' });
+
+  sendResult(score, total, pct);
+}
+
+function sendResult(score, total, pct) {
+  var payload = {
+    tag: 'Tag17', thema: 'Generalwiederholung',
+    name: state.name, rolle: 'KI-Beauftragte:r', stufe: 'Gemischt',
+    richtig: score, gesamt: total, prozent: pct,
+    timestamp: new Date().toISOString()
+  };
+  var st = document.getElementById('submit-status');
+  st.className = 'submit-status sending';
+  st.textContent = 'Ergebnis wird übertragen…';
+  fetch(APPS_SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) })
+    .then(function(r){ return r.json(); })
+    .then(function(){
+      st.className = 'submit-status success';
+      st.textContent = 'Ergebnis gespeichert.';
+    })
+    .catch(function(){
+      st.className = 'submit-status error';
+      st.textContent = 'Ergebnis konnte nicht übertragen werden.';
+    });
+}
+
+function escHtml(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+</script>
+</body>
+</html>
