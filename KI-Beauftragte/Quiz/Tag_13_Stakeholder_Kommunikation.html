@@ -541,7 +541,7 @@ function renderQuestions() {
   var total = state.questions.length;
   state.questions.forEach(function(q, qi) {
     var nCorrect = q.correct.length;
-    var hint = nCorrect === 1 ? 'Genau eine Antwort ist richtig.' : 'Mehrere Antworten können richtig sein.';
+    var hint = 'Eine oder mehrere Antworten können richtig sein.';
     var shuffledIdx = shuffleIndexes(q.opts.length);
     var card = document.createElement('div');
     card.className = 'q-card';
@@ -687,7 +687,6 @@ function sendResult(score, total, pct) {
   st.className = 'submit-status sending';
   st.textContent = 'Ergebnis wird übertragen…';
   fetch(APPS_SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) })
-    .then(function(r){ return r.json(); })
     .then(function(){
       st.className = 'submit-status success';
       st.textContent = 'Ergebnis gespeichert.';
