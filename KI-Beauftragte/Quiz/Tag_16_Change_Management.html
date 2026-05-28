@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lernkontrolle &middot; Tag 16 &middot; Change Management</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Playfair+Display:wght@600&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink:#1a1a18;--paper:#f5f2ec;--card:#fff;--rule:#d5d0c5;--muted:#888880;
+  --accent:#2a4a8a;--accent-soft:#e8edf7;
+  --role-a:#2a5c3f;--role-a-soft:#e8f2ec;
+  --role-b:#7a3a2a;--role-b-soft:#f5ece8;
+  --level-1:#5a3a7a;--level-1-soft:#f0eaf7;
+  --level-2:#0a5a7a;--level-2-soft:#e0eff7;
+  --correct:#2a7a50;--correct-bg:#eaf5ee;--correct-border:#a0d8b8;
+  --wrong:#9a2a2a;--wrong-bg:#faeaea;--wrong-border:#d8a0a0;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'DM Sans',sans-serif;background:var(--paper);color:var(--ink);line-height:1.65;font-size:15px;}
+a{color:var(--accent);}
+.site-header{border-bottom:2px solid var(--ink);padding:1.8rem 2rem 1.4rem;max-width:820px;margin:0 auto;}
+.eyebrow{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:var(--muted);margin-bottom:.5rem;}
+.site-header h1{font-family:'Playfair Display',serif;font-size:clamp(1.5rem,4vw,2.1rem);line-height:1.15;margin-bottom:.4rem;}
+.header-meta{font-size:12px;color:var(--muted);display:flex;gap:1rem;flex-wrap:wrap;}
+.header-meta span::before{content:"&middot; ";}
+.header-meta span:first-child::before{content:"";}
+.main{max-width:820px;margin:0 auto;padding:1.8rem 2rem 4rem;}
+.setup-card{background:var(--card);border:1px solid var(--rule);border-radius:12px;padding:2rem;max-width:540px;margin:0 auto;}
+.setup-card h2{font-family:'Playfair Display',serif;font-size:1.3rem;margin-bottom:1.2rem;}
+.field-label{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:.35rem;}
+.setup-input{width:100%;border:1px solid var(--rule);border-radius:8px;padding:.6rem .9rem;font-family:'DM Sans',sans-serif;font-size:14px;background:var(--paper);outline:none;color:var(--ink);transition:border-color .15s;}
+.setup-input:focus{border-color:var(--ink);}
+.setup-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.2rem;}
+@media(max-width:480px){.setup-grid{grid-template-columns:1fr;}}
+.role-btns,.level-btns{display:flex;gap:.5rem;}
+.sel-btn{flex:1;padding:.55rem .6rem;border:1px solid var(--rule);border-radius:8px;background:none;font-family:'DM Sans',sans-serif;font-size:13px;cursor:pointer;text-align:center;transition:all .15s;color:var(--ink);}
+.sel-btn.active-a{background:var(--role-a-soft);border-color:var(--role-a);color:var(--role-a);font-weight:500;}
+.sel-btn.active-b{background:var(--role-b-soft);border-color:var(--role-b);color:var(--role-b);font-weight:500;}
+.sel-btn.active-1{background:var(--level-1-soft);border-color:var(--level-1);color:var(--level-1);font-weight:500;}
+.sel-btn.active-2{background:var(--level-2-soft);border-color:var(--level-2);color:var(--level-2);font-weight:500;}
+.hint-text{font-size:12px;color:var(--muted);margin-top:.3rem;display:block;}
+.btn-start{width:100%;padding:.75rem;background:var(--ink);color:#fff;border:none;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:500;cursor:pointer;margin-top:1rem;transition:background .15s;}
+.btn-start:hover{background:#333;}
+.btn-start:disabled{background:#aaa;cursor:not-allowed;}
+.quiz-header-strip{display:flex;gap:.6rem;align-items:center;margin-bottom:1.4rem;flex-wrap:wrap;}
+.strip-tag{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;padding:4px 12px;border-radius:100px;}
+.strip-role-a{background:var(--role-a-soft);color:var(--role-a);}
+.strip-role-b{background:var(--role-b-soft);color:var(--role-b);}
+.strip-level-1{background:var(--level-1-soft);color:var(--level-1);}
+.strip-level-2{background:var(--level-2-soft);color:var(--level-2);}
+.strip-name{font-size:13px;color:var(--muted);margin-left:auto;}
+.progress-bar{height:3px;background:var(--rule);border-radius:2px;margin-bottom:1.2rem;}
+.progress-fill{height:100%;background:var(--ink);border-radius:2px;transition:width .3s;}
+.progress-label{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);margin-bottom:.5rem;}
+.scenario-box{background:var(--accent-soft);border:1px solid #c0d0e8;border-left:3px solid var(--accent);border-radius:0 8px 8px 0;padding:.9rem 1.1rem;margin-bottom:1.2rem;}
+.scenario-label{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:.3rem;}
+.scenario-text{font-size:13px;color:var(--ink);line-height:1.6;}
+.q-card{background:var(--card);border:1px solid var(--rule);border-radius:12px;padding:1.5rem;margin-bottom:1rem;}
+.q-num{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:.6rem;}
+.q-text{font-size:15px;font-weight:500;line-height:1.55;margin-bottom:.5rem;}
+.q-hint{font-size:12px;color:var(--muted);margin-bottom:.9rem;font-style:italic;}
+.opt-list{display:flex;flex-direction:column;gap:.5rem;}
+.opt{display:flex;align-items:flex-start;gap:.7rem;padding:.75rem 1rem;border:1px solid var(--rule);border-radius:8px;cursor:pointer;background:#fdfdfb;transition:all .12s;-webkit-user-select:none;user-select:none;}
+.opt:hover:not(.disabled){border-color:#888;background:#f5f2ec;}
+.opt.selected{background:var(--accent-soft);border-color:#8090b8;}
+.opt.disabled{cursor:default;}
+.opt.correct-sel{background:var(--correct-bg);border-color:var(--correct-border);}
+.opt.wrong-sel{background:var(--wrong-bg);border-color:var(--wrong-border);}
+.opt.missed{background:var(--wrong-bg);border-color:var(--wrong-border);}
+.opt-cb{width:18px;height:18px;min-width:18px;border:1.5px solid #bbb;border-radius:4px;flex-shrink:0;margin-top:2px;display:flex;align-items:center;justify-content:center;transition:all .12s;}
+.opt-cb.chk{background:var(--ink);border-color:var(--ink);}
+.opt-cb.chk::after{content:'';display:block;width:8px;height:8px;background:#fff;border-radius:2px;}
+.opt.correct-sel .opt-cb{background:var(--correct);border-color:var(--correct);}
+.opt.correct-sel .opt-cb::after{content:'\2713';color:#fff;font-size:11px;background:none;width:auto;height:auto;}
+.opt.wrong-sel .opt-cb{background:var(--wrong);border-color:var(--wrong);}
+.opt.wrong-sel .opt-cb::after{content:'\2717';color:#fff;font-size:11px;background:none;width:auto;height:auto;}
+.opt.missed .opt-cb{background:var(--wrong);border-color:var(--wrong);}
+.opt.missed .opt-cb::after{content:'\2192';color:#fff;font-size:11px;background:none;width:auto;height:auto;}
+.opt-text{font-size:14px;line-height:1.5;}
+.feedback{border-radius:8px;padding:.9rem 1.1rem;margin-top:.9rem;}
+.feedback.fb-ok{background:var(--correct-bg);border:1px solid var(--correct-border);}
+.feedback.fb-wrong{background:var(--wrong-bg);border:1px solid var(--wrong-border);}
+.fb-title{font-weight:500;font-size:14px;margin-bottom:.4rem;}
+.fb-ok .fb-title{color:var(--correct);}
+.fb-wrong .fb-title{color:var(--wrong);}
+.fb-text{font-size:13px;line-height:1.65;color:#444;margin-bottom:.5rem;}
+.fb-source{font-size:12px;color:var(--muted);border-top:1px solid var(--rule);padding-top:.5rem;}
+.nav-row{display:flex;align-items:center;gap:.6rem;margin-top:1rem;}
+.btn{display:inline-flex;align-items:center;padding:.55rem 1.2rem;border:1px solid var(--rule);border-radius:8px;background:none;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;cursor:pointer;color:var(--ink);transition:all .15s;}
+.btn:hover{background:var(--paper);border-color:#888;}
+.btn:disabled{opacity:.3;cursor:not-allowed;}
+.btn-full{width:100%;justify-content:center;padding:.7rem;font-size:15px;margin-top:1rem;}
+.btn-submit{background:#2a5c3f;color:#fff;border-color:#2a5c3f;}
+.btn-submit:hover{background:#1e4530;}
+.result-block{max-width:600px;margin:0 auto;text-align:center;}
+.result-grade{font-family:'Playfair Display',serif;font-size:4.5rem;line-height:1;margin-bottom:.3rem;}
+.result-label{font-size:1.1rem;font-weight:500;margin-bottom:.3rem;}
+.result-sub{font-size:13px;color:var(--muted);margin-bottom:1.5rem;}
+.stats-row{display:flex;justify-content:center;gap:1rem;flex-wrap:wrap;margin-bottom:1.5rem;}
+.stat{background:var(--card);border:1px solid var(--rule);border-radius:10px;padding:.9rem 1.2rem;text-align:center;min-width:90px;}
+.stat-n{font-size:1.8rem;font-weight:500;}
+.stat-l{font-size:11px;color:var(--muted);margin-top:2px;}
+.comp-title{font-size:13px;font-weight:500;text-align:left;margin-bottom:.8rem;}
+.comp-row{margin-bottom:.7rem;text-align:left;}
+.comp-labels{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-bottom:3px;}
+.comp-track{height:4px;background:var(--rule);border-radius:2px;}
+.comp-fill{height:100%;border-radius:2px;}
+.fill-ok{background:var(--correct);}
+.fill-wrong{background:var(--wrong);}
+.submit-status{display:none;font-size:12px;margin-top:.5rem;padding:.4rem .8rem;border-radius:6px;}
+.submit-status.sending{display:block;background:#fffbe8;color:#806a00;border:1px solid #d0c060;}
+.submit-status.success{display:block;background:var(--correct-bg);color:var(--correct);border:1px solid var(--correct-border);}
+.submit-status.error{display:block;background:var(--wrong-bg);color:var(--wrong);border:1px solid var(--wrong-border);}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="eyebrow">Alfatraining &middot; KI-Zertifikatskurse &middot; Tag 16</div>
+  <h1>Lernkontrolle<br>Change Management</h1>
+  <div class="header-meta">
+    <span>5 Fragen je Rolle &amp; Stufe</span>
+    <span>Eine oder mehrere Antworten k&ouml;nnen richtig sein</span>
+    <span>Use Case: FrischMarkt GmbH Hannover &mdash; Lebensmitteleinzelhandel</span>
+  </div>
+</header>
+
+<main class="main">
+
+<div id="setup-section">
+  <div class="setup-card">
+    <h2>Bitte w&auml;hle deine Rolle und Schwierigkeitsstufe</h2>
+    <div style="margin-bottom:1rem;">
+      <span class="field-label">Dein Name (oder Teilnehmer-Nummer)</span>
+      <input type="text" id="participant-name" class="setup-input" placeholder="z. B. Teilnehmer-07 oder Vorname">
+    </div>
+    <div class="setup-grid">
+      <div>
+        <span class="field-label">Rolle</span>
+        <div class="role-btns">
+          <button class="sel-btn" id="btn-role-a" onclick="selectRole('a')">KI-Beauftragte:r</button>
+          <button class="sel-btn" id="btn-role-b" onclick="selectRole('b')">F&uuml;hrungskraft</button>
+        </div>
+        <span class="hint-text">W&auml;hle deine Rolle im Unternehmen</span>
+      </div>
+      <div>
+        <span class="field-label">Schwierigkeitsstufe</span>
+        <div class="level-btns">
+          <button class="sel-btn" id="btn-level-1" onclick="selectLevel('1')">Anf&auml;nger</button>
+          <button class="sel-btn" id="btn-level-2" onclick="selectLevel('2')">Fortgeschrittene</button>
+        </div>
+        <span class="hint-text">Anf&auml;nger = Definitionen &middot; Fortgeschr. = Szenarien</span>
+      </div>
+    </div>
+    <button class="btn-start" id="btn-start" onclick="startQuiz()" disabled>Quiz starten &rarr;</button>
+  </div>
+</div>
+
+<div id="quiz-section" style="display:none">
+  <div class="quiz-header-strip" id="quiz-header-strip"></div>
+  <div class="progress-label" id="progress-label"></div>
+  <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+  <div class="scenario-box">
+    <div class="scenario-label">Fallbeispiel &middot; Gilt f&uuml;r alle Fragen</div>
+    <div class="scenario-text" id="scenario-text"></div>
+  </div>
+  <div id="questions-container"></div>
+  <div class="nav-row" style="margin-top:1.5rem">
+    <button class="btn btn-submit btn-full" id="btn-submit" onclick="submitQuiz()" disabled>Auswertung anzeigen &rarr;</button>
+  </div>
+  <div class="submit-status" id="submit-status"></div>
+</div>
+
+<div id="results-section" style="display:none">
+  <div class="result-block">
+    <div class="result-grade" id="result-grade"></div>
+    <div class="result-label" id="result-label"></div>
+    <div class="result-sub" id="result-sub"></div>
+    <div class="stats-row" id="stats-row"></div>
+    <div class="comp-title">Kompetenzprofil</div>
+    <div id="comp-bars"></div>
+    <div style="margin-top:.8rem;display:flex;justify-content:center;">
+      <button class="btn" onclick="location.reload()">Neu starten</button>
+    </div>
+  </div>
+  <hr style="border:none;border-top:1px solid var(--rule);margin:2rem 0">
+  <h2 style="font-family:'Playfair Display',serif;font-size:1.2rem;margin-bottom:1rem">Detailauswertung</h2>
+  <div id="review-container"></div>
+</div>
+
+</main>
+
+<script>
+var APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwTfP8ygOun58rmvY9hQXFmPEgVyxppQGEPYjar1e78N6uanaGHuzBNOyU5P4kgvmz7/exec';
+
+var SCENARIOS = {
+  a: 'Du bist KI-Beauftragte:r bei der FrischMarkt GmbH Hannover — einem mittelständischen Lebensmitteleinzelhändler mit 12 Filialen und rund 380 Mitarbeitenden. Das Unternehmen führt ein KI-gestütztes Bestellsystem und ein KI-Tool zur Schichtplanung ein. Du verantwortest das Change Management und die regulatorische Governance gemäß Art. 4 KI-VO.',
+  b: 'Du bist Filialleiterin oder Filialleiter bei der FrischMarkt GmbH Hannover. In deiner Filiale mit 28 Mitarbeitenden wird das neue KI-Bestellsystem und das KI-gestützte Schichtplanungstool eingeführt. Du trägst Verantwortung dafür, dass dein Team die Systeme annimmt und aktiv nutzt.'
+};
+
+var QBANK = {
+
+/* ─────────────────────────────────────────────────────────────────
+   KI-BEAUFTRAGTE:R · ANFÄNGER
+   Verteilung: Q1=1r · Q2=2r · Q3=2r · Q4=3r · Q5=3r
+   ───────────────────────────────────────────────────────────────── */
+a1: [
+  {
+    q: 'Klaus, Lagerleiter in einer FrischMarkt-Filiale, sagt: „Bio-Tomaten reifen anders als konventionelle — das System kennt das nicht, ich bestelle lieber selbst." Welche Widerstandsdimension liegt hier vor?',
+    cat: 'Widerstandsdimensionen · Diagnose',
+    opts: [
+      'Rational — Klaus formuliert einen sachlich begründeten Einwand gegen die Systemqualität',
+      'Emotional — Klaus hat Angst, seinen Job zu verlieren',
+      'Politisch — Klaus möchte seine bisherige Entscheidungshoheit nicht abgeben',
+      'Keiner der Dimensionen — es handelt sich um technisches Feedback'
+    ],
+    correct: [0],
+    exp: 'Klaus formuliert einen sachlich begründeten Einwand: Das System könnte bestimmte Produkteigenschaften nicht korrekt abbilden. Das ist rationaler Widerstand — er basiert auf einer inhaltlichen Überzeugung, nicht auf Angst oder Machtkalkül. Rationale Widerstände sind oft berechtigt und müssen mit Daten und Pilotbelegen adressiert werden — nicht mit Empathie oder Druck.',
+    src: 'Kotter, J. (1996): Leading Change · Harvard Business Review Press · https://www.hbs.edu/faculty/Pages/item.aspx?num=191'
+  },
+  {
+    q: 'Das Rollout des KI-Bestellsystems steht bevor. Welche zwei Aussagen beschreiben Kotters Stufe 1 (Dringlichkeit) korrekt?',
+    cat: 'Kotter · Stufe 1 Dringlichkeit',
+    opts: [
+      'Dringlichkeit muss beim Team als gefühlte Notwendigkeit ankommen — nicht nur als Ankündigung von oben',
+      'Ohne gefühlte Dringlichkeit folgt niemand der Vision — egal wie überzeugend sie formuliert ist',
+      'Dringlichkeit entsteht automatisch, wenn die Geschäftsführung das Projekt offiziell startet',
+      'Kotter empfiehlt, Stufe 1 zu überspringen, wenn die Marktlage ohnehin alle überzeugt'
+    ],
+    correct: [0,1],
+    exp: 'Der häufigste Fehler im Kotter-Modell: Führungskräfte überspringen Stufe 1, weil sie selbst längst überzeugt sind — und davon ausgehen, dass alle anderen das auch sind. Sie tun es nicht. Dringlichkeit muss beim Team als echte, gefühlte Notwendigkeit ankommen. Eine offizielle Projektankündigung erzeugt keine Dringlichkeit — sie informiert nur. Kotter betont ausdrücklich, dass ohne gefühlte Dringlichkeit keine Vision wirkt.',
+    src: 'Kotter, J. (1996): Leading Change · Harvard Business Review Press · https://www.hbs.edu/faculty/Pages/item.aspx?num=191'
+  },
+  {
+    q: 'Tobias, Teamleiter Frischetheke, hat alle Info-Mails gelesen (ADKAR: Awareness ✓), sagt aber: „Ich sehe nicht, warum ich das nutzen soll — mein System funktioniert." Welche zwei Maßnahmen sind jetzt richtig?',
+    cat: 'ADKAR · Desire',
+    opts: [
+      'Tobias in eine Schulung einschreiben — dann versteht er das System besser und nutzt es',
+      'Persönliches Gespräch führen — zuhören, was hinter „mein System funktioniert" steckt',
+      'Tobias in die Pilotgruppe einladen und ihm die Möglichkeit geben, das System selbst auszuprobieren',
+      'Tobias erklären, dass die Nutzung ab Go-Live verpflichtend ist'
+    ],
+    correct: [1,2],
+    exp: 'Tobias hat ein Desire-Problem (ADKAR Stufe D). Er weiß, was kommt — er will es nur nicht. Schulung (ADKAR Stufe K) wäre der falsche nächste Schritt: ohne Desire verpufft jede Schulung. Richtig ist: zuhören (persönliches Gespräch) und erleben lassen (Pilotgruppe). Zwang löst das Desire-Problem nicht — er verfestigt Widerstand.',
+    src: 'Hiatt, J. (2006): ADKAR — A Model for Change in Business, Government and our Community · Prosci Learning Center · https://www.prosci.com/adkar'
+  },
+  {
+    q: 'Du formulierst die Change Story für den Rollout bei FrischMarkt. Welche drei Merkmale muss eine überzeugende Change Story haben?',
+    cat: 'Change Story · Merkmale',
+    opts: [
+      'Ehrliche Begründung, warum der Ist-Zustand nicht haltbar ist',
+      'Ausschließlich positive Formulierungen — Risiken und Nachteile nicht erwähnen',
+      'Konkrete Aussage, was die Veränderung für die Mitarbeitenden bedeutet',
+      'Klare Antwort auf die Frage: Warum jetzt — und nicht erst in zwei Jahren?'
+    ],
+    correct: [0,2,3],
+    exp: 'Eine Change Story braucht drei Kernelemente: die ehrliche Begründung für den Veränderungsbedarf (Ist-Zustand ist nicht haltbar), die konkrete Bedeutung für die Betroffenen (Was verändert sich für mich?), und die Antwort auf die Zeitfrage (Warum jetzt?). Zu glatte oder ausschließlich positive Botschaften verlieren Vertrauen — gerade bei erfahrenen Mitarbeitenden, die Unternehmenskommunikation kennen.',
+    src: 'McKinsey & Company (2023): The \'secret sauce\' for successful transformations · https://www.mckinsey.com/capabilities/transformation/our-insights/the-secret-sauce-for-successful-transformations'
+  },
+  {
+    q: 'Vier Wochen nach dem Pilot-Start willst du den Change-Erfolg messen. Welche drei KPIs sind für das Change Management bei FrischMarkt sinnvoll?',
+    cat: 'KPIs · Change Management',
+    opts: [
+      'Nutzungsquote des KI-Bestellsystems in den Pilot-Filialen',
+      'Anzahl der Fehler-Meldungen und Verbesserungsvorschläge aus den Filialen',
+      'Zufriedenheitsbewertung der Geschäftsführung mit dem Projektfortschritt',
+      'Shadow-KI-Rate — wie viele Mitarbeitende nutzen nicht genehmigte KI-Tools für Bestellungen?'
+    ],
+    correct: [0,1,3],
+    exp: 'Sinnvolle Change-KPIs messen, was in den Filialen tatsächlich passiert: Nutzungsquote zeigt, ob das System angenommen wird. Fehler-Meldungen und Verbesserungsvorschläge zeigen Engagement — keine Meldungen sind ein Warnsignal, keine Erfolgsanzeige. Shadow-KI-Rate misst, ob Mitarbeitende das System umgehen. Die Zufriedenheit der Geschäftsführung ist kein Change-KPI — sie misst Projektzufriedenheit, nicht Veränderungserfolg.',
+    src: 'Prosci (2024): Change Management Best Practices · https://www.prosci.com/resources/articles/change-management-best-practices'
+  }
+],
+
+/* ─────────────────────────────────────────────────────────────────
+   KI-BEAUFTRAGTE:R · FORTGESCHRITTENE
+   Verteilung: Q1=1r · Q2=2r · Q3=2r · Q4=3r · Q5=3r
+   ───────────────────────────────────────────────────────────────── */
+a2: [
+  {
+    q: 'Vier Wochen nach dem Rollout läuft das System in allen 12 Filialen. Das Lewin-Modell beschreibt drei Phasen. In welcher Phase ist FrischMarkt jetzt — und was ist die nächste Aufgabe?',
+    cat: 'Lewin · Phasen',
+    opts: [
+      'Unfreeze — die Organisation muss jetzt erst die Notwendigkeit der Veränderung erkennen',
+      'Change — der Übergang läuft, Unsicherheiten müssen begleitet werden',
+      'Refreeze — das neue Verhalten ist etabliert und muss jetzt als neue Norm verankert werden',
+      'Lewin ist für diesen Fall nicht anwendbar, weil es kein klassischer Wandel ist'
+    ],
+    correct: [2],
+    exp: 'Wenn das System nach vier Wochen in allen Filialen läuft und genutzt wird, ist die Change-Phase abgeschlossen. Die Aufgabe ist jetzt Refreeze: das neue Verhalten verankern, Rückfälle in alte Routinen verhindern, die neue Nutzungsweise als Normalzustand etablieren. Das passiert durch Routinen, Erfolgsfeiern, sichtbare Führungsunterstützung und das Aufheben von Rückfall-Optionen.',
+    src: 'Lewin, K. (1947): Frontiers in Group Dynamics · Human Relations · https://doi.org/10.1177/001872674700100103'
+  },
+  {
+    q: 'Bezirksleiter Uwe sagt in der Steuerungsrunde: „Das Schichtplanungssystem wurde nicht mit den Filialleiterinnen abgestimmt — wir hätten das gemeinsam entscheiden müssen." Welche zwei Aussagen beschreiben diesen Widerstand und die richtige Reaktion korrekt?',
+    cat: 'Widerstandsdimensionen · Politisch',
+    opts: [
+      'Es handelt sich um politischen Widerstand — Uwe verteidigt den Entscheidungsprozess als Machtressource',
+      'Frühzeitige Einbindung der Filialleitungen hätte diesen Widerstand wahrscheinlich verhindert',
+      'Der Widerstand ist emotional — Uwe ist persönlich verletzt, nicht informiert worden zu sein',
+      'Die richtige Reaktion ist, Uwe mit Fakten zu überzeugen, warum das System besser ist'
+    ],
+    correct: [0,1],
+    exp: 'Uwes Einwand richtet sich nicht gegen das System — er richtet sich gegen den Prozess. Das ist politischer Widerstand: die Entscheidungshoheit und der Einfluss wurden nicht respektiert. Der Einwand ist berechtigt — frühzeitige Einbindung der Filialleitungen in den Entscheidungsprozess hätte genau das verhindert. Mit Fakten über die Systemqualität zu antworten ist der falsche Ansatz: er adressiert die Sachebene, obwohl das Problem auf der Prozessebene liegt.',
+    src: 'Kotter, J. (1996): Leading Change · Harvard Business Review Press · https://www.hbs.edu/faculty/Pages/item.aspx?num=191'
+  },
+  {
+    q: 'Du kombinierst Kotter und ADKAR für den Rollout bei FrischMarkt. Welche zwei Aussagen beschreiben die Kombination korrekt?',
+    cat: 'Modellkombination · Kotter + ADKAR',
+    opts: [
+      'Kotter strukturiert den organisationsweiten Wandel — ADKAR steuert, was bei einzelnen Schlüsselpersonen getan werden muss',
+      'ADKAR-Awareness entspricht inhaltlich Kotters Stufe 1 (Dringlichkeit) — beide zielen darauf ab, dass die Notwendigkeit verstanden wird',
+      'Kotter und ADKAR sind nicht kombinierbar, weil sie unterschiedliche Zeitskalen haben',
+      'ADKAR ersetzt Kotter vollständig, sobald ein Unternehmen kleiner als 500 Mitarbeitende hat'
+    ],
+    correct: [0,1],
+    exp: 'Kotter und ADKAR sind komplementär: Kotter gibt die Gesamtstruktur für den organisationsweiten Veränderungsprozess — Kotter-Stufe 1 (Dringlichkeit) und ADKAR-A (Awareness) zielen inhaltlich auf dasselbe ab und können synchronisiert werden. ADKAR fokussiert auf die individuelle Ebene — ideal für Schlüsselpersonen wie einzelne Filialleitungen, die individuelle Unterstützung brauchen. Beide lassen sich sehr gut kombinieren und sind nicht konkurrierend.',
+    src: 'Hiatt, J. (2006): ADKAR · Prosci · https://www.prosci.com/adkar · Kotter, J. (1996): Leading Change · https://www.hbs.edu/faculty/Pages/item.aspx?num=191'
+  },
+  {
+    q: 'Sandra, Kassiererin in Filiale 7, nutzt das neue Bestellsystem als erste in ihrer Filiale intensiv und erklärt Kolleginnen spontan, wie es funktioniert. Welche drei Aussagen beschreiben den richtigen Umgang mit Sandra als Change-Agentin?',
+    cat: 'Change-Agenten · Aktivierung',
+    opts: [
+      'Sandra offiziell als Change-Agentin einladen und ihr eine konkrete Rolle im Rollout geben',
+      'Sandras Erfahrungen aktiv in Steuerungsrunden einbringen lassen — ihr Feedback zählt',
+      'Abwarten — Sandra wird das ohnehin von selbst weitertragen, ohne dass man eingreifen muss',
+      'Peer-Vorbilder wie Sandra überzeugen erfahrungsgemäß mehr als Führungsmandate'
+    ],
+    correct: [0,1,3],
+    exp: 'Sandra ist ein Change-Agent — nicht durch Ernennung, sondern durch ihre Überzeugung und ihr Verhalten. Abwarten ist der falsche Ansatz: ohne Einladung und Ermächtigung verlieren engagierte Mitarbeitende das Interesse oder wechseln den Arbeitgeber (BCG: aktivste KI-Nutzer sind gleichzeitig größte Fluktuationsrisiken). Richtig ist: offiziell einladen, echten Einfluss geben (Feedback in Steuerungsrunden), und nutzen, dass Peer-Vorbilder organisationsweit mehr überzeugen als Topdown-Kommunikation.',
+    src: 'BCG (2025): How to Win with AI at the Frontline · https://www.bcg.com/publications/2025/winning-with-ai-frontline · Prosci (2024): Change Management Best Practices · https://www.prosci.com'
+  },
+  {
+    q: 'Das KI-Bestellsystem soll trotz unvollständiger Datenlage (Lieferantendaten aus drei Filialen fehlen noch) eingeführt werden. Welche drei Aussagen sind aus Change-Management- und Datenperspektive korrekt?',
+    cat: 'Change Management · Datenqualität · Rollout',
+    opts: [
+      'Den Rollout für die betroffenen Filialen stoppen — ein System mit lückenhafter Datenbasis erzeugt falsches Vertrauen',
+      'Die fehlenden Lieferantendaten als Data Owner benennen und klare Verantwortung für die Vervollständigung festlegen',
+      'Den Rollout in allen Filialen starten — Datenlücken lassen sich parallel schließen',
+      'Die Datenvollständigkeit als Change-KPI definieren und in der Steuerungsrunde eskalieren'
+    ],
+    correct: [0,1,3],
+    exp: 'Ein KI-System mit lückenhafter Datenbasis kann schlechter sein als keines — wenn die fehlenden Daten genau die Fälle abdecken, die in der Praxis auftreten. Falsche Empfehlungen des Systems zerstören Vertrauen und Change-Akzeptanz dauerhaft. Die richtige Reaktion: Rollout in betroffenen Filialen stoppen, Verantwortung für Datenvervollständigung klar benennen (Data Owner), und Datenvollständigkeit als messbaren KPI in der Steuerungsrunde führen. Paralleles Arbeiten ohne Stopp ist in diesem Fall fahrlässig.',
+    src: 'EU KI-VO Art. 10 · https://eur-lex.europa.eu/legal-content/DE/TXT/?uri=CELEX%3A32024R1689 · Prosci (2024): Change Management Best Practices · https://www.prosci.com'
+  }
+],
+
+/* ─────────────────────────────────────────────────────────────────
+   FÜHRUNGSKRAFT / MANAGER:IN · ANFÄNGER
+   Verteilung: Q1=1r · Q2=2r · Q3=3r · Q4=3r · Q5=3r
+   ───────────────────────────────────────────────────────────────── */
+b1: [
+  {
+    q: 'Maria, Kassierin in deiner Filiale, sagt bei jeder Gelegenheit: „Ich komme einfach nicht dazu, das neue System auszuprobieren." Welche Widerstandsdimension liegt hier vor?',
+    cat: 'Widerstandsdimensionen · Diagnose',
+    opts: [
+      'Emotional — Marias Aussage verdeckt wahrscheinlich Unsicherheit oder Angst vor dem Neuen',
+      'Rational — Maria hat zu wenig Kapazität und braucht mehr Arbeitszeit für die Einarbeitung',
+      'Politisch — Maria möchte nicht, dass ihr Schichtplan durch KI bestimmt wird',
+      'Technisch — das System ist zu kompliziert für Marias Kenntnisstand'
+    ],
+    correct: [0],
+    exp: 'Wiederholte Aussagen wie „Ich komme nicht dazu" sind ein klassisches Muster für emotionalen Widerstand: das eigentliche Thema (Unsicherheit, Angst vor Bedeutungsverlust, Gefühl des Übergangenwerdens) wird nicht direkt ausgesprochen. Die Aussage ist ein Proxy — kein ehrlicher Zeitbericht. Der richtige erste Schritt ist zuhören, nicht argumentieren oder mehr Zeit einplanen.',
+    src: 'Prosci (2024): Understanding Resistance to Change · https://www.prosci.com/resources/articles/understanding-resistance-to-change'
+  },
+  {
+    q: 'BCG zeigt: Wo Führungskräfte KI-Nutzung sichtbar unterstützen, steigen positive Einschätzungen bei Frontline-Mitarbeitenden von 15 auf 55 Prozent. Welche zwei konkreten Verhaltensweisen gehören dazu?',
+    cat: 'Führungsrolle · Change Management',
+    opts: [
+      'Das neue Bestellsystem selbst aktiv nutzen und das im Filialteam sichtbar machen',
+      'Alle Mitarbeitenden verpflichten, täglich eine Stunde mit dem System zu üben',
+      'Mitarbeitende ermutigen, das System auch dann zu nutzen, wenn es mal einen Fehler macht',
+      'Das System nur in der ersten Woche nutzen — danach wieder auf die alte Methode zurückgehen'
+    ],
+    correct: [0,2],
+    exp: 'Der BCG-Befund ist eindeutig: sichtbare Führungsunterstützung vervierfacht die positiven Einschätzungen. Das bedeutet konkret: du nutzt das System selbst — nicht im Hintergrund, sondern sichtbar. Und du signalisierst, dass Fehler beim Lernen normal sind — Mitarbeitende, die Angst haben, Fehler zu machen, werden das System nicht wirklich ausprobieren. Verpflichtende Übungszeiten lösen keine Akzeptanzprobleme — sie erzeugen Resentment.',
+    src: 'BCG (2025): How to Win with AI at the Frontline · https://www.bcg.com/publications/2025/winning-with-ai-frontline'
+  },
+  {
+    q: 'Als Filialleitung bist du Teil des Change-Prozesses. Welche drei Aufgaben aus dem Kotter-Modell fallen in deinen Verantwortungsbereich?',
+    cat: 'Kotter · Führungsrolle',
+    opts: [
+      'Dringlichkeit im Filialteam kommunizieren — Stufe 1: Warum müssen wir das jetzt angehen?',
+      'Change-Agenten im Team identifizieren und persönlich einladen — Stufe 2: Wer trägt die Veränderung?',
+      'Die technische Spezifikation des KI-Systems verantworten und den Anbieter auswählen',
+      'Kurzfristige Erfolge feiern und sichtbar machen — Stufe 6: Was hat schon funktioniert?'
+    ],
+    correct: [0,1,3],
+    exp: 'Als Filialleitung bist du die entscheidende Schnittstelle zwischen der Unternehmensleitung und dem Team. Deine Kotter-Aufgaben: Dringlichkeit verständlich machen (Stufe 1), Change-Agenten im Team finden und einladen (Stufe 2), und kleine Erfolge aktiv feiern (Stufe 6). Die technische Verantwortung für das System liegt bei IT und KI-BA — nicht bei dir als Führungskraft.',
+    src: 'Kotter, J. (1996): Leading Change · Harvard Business Review Press · https://www.hbs.edu/faculty/Pages/item.aspx?num=191'
+  },
+  {
+    q: 'Josef, 57 Jahre, 24 Jahre Berufserfahrung bei FrischMarkt, nutzt das neue Schichtplanungstool gar nicht — sagt aber auch nichts dagegen. Wie gehst du als Filialleitung mit Josef um?',
+    cat: 'Widerstand · Erfahrene Mitarbeitende',
+    opts: [
+      'Josef unter vier Augen ansprechen — schweigendes Nicht-Nutzen ist ein Signal, das Aufmerksamkeit verdient',
+      'Josef zuhören, ohne sofort zu argumentieren — was steckt wirklich hinter dem Schweigen?',
+      'Josef mit einer Deadline konfrontieren: Bis Freitag muss er das System einmal genutzt haben',
+      'Josefs 24 Jahre Erfahrung würdigen und ihn als Ressource für das Team positionieren — nicht als Problem'
+    ],
+    correct: [0,1,3],
+    exp: 'Schweigendes Nicht-Nutzen ist selten Gleichgültigkeit — es ist meist verdeckter Widerstand oder Angst. Josef braucht ein persönliches Gespräch, echtes Zuhören (nicht Argumentieren), und eine Rollenperspektive: seine Erfahrung ist eine Ressource für das Team, kein Auslaufmodell. Eine Deadline ohne Gespräch erzeugt Trotz — sie löst das eigentliche Problem nicht.',
+    src: 'Prosci (2024): Understanding Resistance to Change · https://www.prosci.com/resources/articles/understanding-resistance-to-change'
+  },
+  {
+    q: 'Welche drei Aussagen beschreiben deine Rolle als Filialleitung im Change-Prozess korrekt?',
+    cat: 'Führungsrolle · Change Management',
+    opts: [
+      'Du bist die entscheidende Schnittstelle — was du tust und sagst, formt, wie dein Team die Einführung erlebt',
+      'Dein eigenes Engagement überträgt sich auf dein Team — positiv wie negativ',
+      'Deine Hauptaufgabe ist die technische Qualitätssicherung des KI-Systems',
+      'Frühe Widerstandsdiagnose im Team spart später deutlich mehr Aufwand als nachträgliche Problemlösung'
+    ],
+    correct: [0,1,3],
+    exp: 'Als Filialleitung bist du der wichtigste Change-Faktor in deiner Filiale — nicht die KI-BA-Abteilung, nicht die Geschäftsführung. Dein Verhalten setzt den Ton. Wer als Führungskraft selbst das System nutzt und Begeisterung zeigt, zieht andere mit. Wer skeptisch ist, überträgt Skepsis. Frühe Diagnose ist günstiger als nachträgliches Krisenmanagement. Technische Qualitätssicherung ist nicht deine Aufgabe.',
+    src: 'BCG (2025): How to Win with AI at the Frontline · https://www.bcg.com/publications/2025/winning-with-ai-frontline · Prosci (2024): Change Management Best Practices · https://www.prosci.com'
+  }
+],
+
+/* ─────────────────────────────────────────────────────────────────
+   FÜHRUNGSKRAFT / MANAGER:IN · FORTGESCHRITTENE
+   Verteilung: Q1=2r · Q2=2r · Q3=2r · Q4=3r · Q5=3r
+   ───────────────────────────────────────────────────────────────── */
+b2: [
+  {
+    q: 'Du bist Bezirksleiterin und verantwortest den Rollout des KI-Bestellsystems in allen 12 Filialen. Du willst ADKAR nutzen, um den Stand in jeder Filiale zu beurteilen. Welche zwei Aussagen beschreiben die richtige Anwendung?',
+    cat: 'ADKAR · Führungsebene',
+    opts: [
+      'Jede Filialleitung muss individuell durch ADKAR bewertet werden — der Stand kann filialweise stark abweichen',
+      'Awareness lässt sich durch ein Kick-off-Meeting für alle 12 Filialleiterinnen gleichzeitig adressieren',
+      'ADKAR ist nur auf Einzelpersonen anwendbar — für 12 Filialen braucht man Kotter',
+      'Sobald Awareness vorhanden ist, kann die Schulung für alle Filialen gleichzeitig starten'
+    ],
+    correct: [0,1],
+    exp: 'ADKAR ist auf die individuelle Ebene ausgerichtet — jede Filialleitung kann sich an einem anderen Punkt der Sequenz befinden. Filiale 3 ist vielleicht schon bei Desire, Filiale 9 hat noch nicht Awareness. Awareness lässt sich durch ein gemeinsames Kick-off adressieren — aber Desire, Knowledge und Ability brauchen individuelle Begleitung. Sobald jemand Awareness hat, bedeutet das nicht, dass Desire vorhanden ist — die Sequenz ist strikt.',
+    src: 'Hiatt, J. (2006): ADKAR · Prosci Learning Center · https://www.prosci.com/adkar'
+  },
+  {
+    q: 'Filiale 4 (Filialleiterin: Marco) hatte nach dem Rollout eine Nutzungsquote von 40 % — deutlich unter dem Ziel von 70 %. Marco erklärt: „Das System macht viel Sinn, ich habe das dem Team auch so gesagt." Welche zwei Probleme liegen wahrscheinlich vor?',
+    cat: 'Change Management · Führungsdiagnose',
+    opts: [
+      'Marcos Selbstwahrnehmung als aktiver Unterstützer deckt sich möglicherweise nicht mit dem, was das Team tatsächlich wahrnimmt (Confirmation Bias)',
+      'Die Nutzungsquote von 40 % zeigt, dass das System technisch zu komplex ist',
+      'Marco hat das System selbst wahrscheinlich zu selten genutzt — fehlende Vorbildfunktion',
+      'Das Team wurde nicht ausreichend bezahlt, um das System zu nutzen'
+    ],
+    correct: [0,2],
+    exp: 'Führungskräfte unterschätzen systematisch, wie viel ihr eigenes sichtbares Verhalten zählt. Marco „sagt" dem Team, dass das System Sinn macht — aber hat er es auch selbst regelmäßig genutzt und das sichtbar gemacht? BCG: Wo Führungskräfte KI-Nutzung sichtbar unterstützen, steigen positive Einschätzungen von 15 auf 55 Prozent. Und: Confirmation Bias ist ein häufiges Muster — Führungskräfte interpretieren eigene Kommunikation als wirksamer, als sie tatsächlich war.',
+    src: 'BCG (2025): How to Win with AI at the Frontline · https://www.bcg.com/publications/2025/winning-with-ai-frontline'
+  },
+  {
+    q: 'Du entwickelst die Change Story für die Filialleiterinnen und Filialleiter der FrischMarkt GmbH. Welche zwei Elemente sind unverzichtbar?',
+    cat: 'Change Story · Führungsebene',
+    opts: [
+      'Eine ehrliche Begründung, warum der Ist-Zustand (manuelle Bestellung, manueller Schichtplan) nicht mehr ausreicht',
+      'Eine klare Aussage, was die Veränderung konkret für die Filialleitungen bedeutet — Chancen und Herausforderungen',
+      'Eine Liste aller technischen Features des KI-Systems, damit die Filialleitungen informiert sind',
+      'Ausschließlich positive Botschaften — Unsicherheiten werden in der Implementierungsphase geklärt'
+    ],
+    correct: [0,1],
+    exp: 'Eine Change Story muss ehrlich sein — Filialleitungen mit jahrelanger Berufserfahrung durchschauen Werbebotschaften sofort. Die zwei unverzichtbaren Elemente: erstens eine ehrliche Begründung, warum das Alte nicht mehr reicht (sonst fehlt Dringlichkeit), und zweitens eine konkrete Aussage, was sich für die Filialleitungen persönlich verändert — was besser wird, was anfangs schwieriger wird. Feature-Listen sind kein Change-Story-Element. Ausschließlich positive Botschaften zerstören Vertrauen.',
+    src: 'McKinsey & Company (2023): The \'secret sauce\' for successful transformations · https://www.mckinsey.com/capabilities/transformation/our-insights/the-secret-sauce-for-successful-transformations'
+  },
+  {
+    q: 'Du willst ein Change-Agenten-Netzwerk aus Filialleiterinnen und -leitern aufbauen. Welche drei Aussagen beschreiben den richtigen Aufbau?',
+    cat: 'Change-Agenten · Aufbau',
+    opts: [
+      'Change-Agenten entstehen durch Überzeugung — nicht durch Ernennung; die richtigen Personen identifizieren',
+      'Persönliche Einladung statt generischer E-Mail — „Ich würde gern deine Perspektive hören"',
+      'Change-Agenten müssen für ihre Rolle finanziell zusätzlich entschädigt werden, sonst funktioniert es nicht',
+      'Echten Einfluss geben: Feedback einbringen, Kritik äußern dürfen — sonst verlieren sie das Interesse'
+    ],
+    correct: [0,1,3],
+    exp: 'Der entscheidende Unterschied zwischen einem echten Change-Agenten-Netzwerk und einem formalen Gremium: Überzeugung statt Ernennung. Wer persönlich eingeladen wird und echten Einfluss bekommt, ist ein Change-Agent. Wer ernannt wird und Protokolle unterschreiben soll, ist ein Widerstand in Wartestellung. Finanzielle Entschädigung ist in der Regel nicht ausschlaggebend — Einfluss, Anerkennung und das Gefühl, etwas bewegen zu können, sind die stärkeren Motive.',
+    src: 'Prosci (2024): Change Agent Network · https://www.prosci.com/resources/articles/change-agent-networks · BCG (2025): How to Win with AI at the Frontline · https://www.bcg.com/publications/2025/winning-with-ai-frontline'
+  },
+  {
+    q: 'Als erfahrene Führungskraft willst du Kotter und ADKAR kombinieren. Welche drei Aussagen beschreiben die Kombination für den Rollout in deinen Filialen korrekt?',
+    cat: 'Modellkombination · Kotter + ADKAR',
+    opts: [
+      'Kotter gibt die organisationsweite Struktur — ADKAR steuert, was du für einzelne Schlüsselpersonen tust',
+      'Kotter-Stufe 1 (Dringlichkeit) und ADKAR-Awareness lassen sich synchronisieren — beide zielen auf dasselbe ab',
+      'ADKAR-Desire ist die häufigste Schwachstelle — wer diesen Schritt überspringt, hat später Nutzungsprobleme',
+      'Die beiden Modelle sollten strikt getrennt eingesetzt werden — eine Kombination erzeugt Verwirrung'
+    ],
+    correct: [0,1,2],
+    exp: 'Kotter und ADKAR sind komplementär, nicht konkurrierend. Kotter gibt dir die Gesamtstruktur für den Rollout über alle 12 Filialen. ADKAR gibt dir das Werkzeug für das individuelle Gespräch mit einer Filialleitung, die noch bei D stockt. Kotter-Stufe 1 und ADKAR-Awareness decken denselben Schritt ab und können synchron kommuniziert werden. Und der häufigste Fehler: Desire (D) überspringen und direkt mit Schulung (K) beginnen — das erzeugt hohe Schulungsquoten, aber niedrige Nutzungsraten.',
+    src: 'Hiatt, J. (2006): ADKAR · Prosci · https://www.prosci.com/adkar · Kotter, J. (1996): Leading Change · https://www.hbs.edu/faculty/Pages/item.aspx?num=191'
+  }
+]
+
+}; // end QBANK
+
+/* ─── State ─────────────────────────────────────────────── */
+var state = { role: null, level: null, name: '', questions: [], selections: [] };
+
+function selectRole(r) {
+  state.role = r;
+  document.getElementById('btn-role-a').className = 'sel-btn' + (r==='a'?' active-a':'');
+  document.getElementById('btn-role-b').className = 'sel-btn' + (r==='b'?' active-b':'');
+  checkReady();
+}
+function selectLevel(l) {
+  state.level = l;
+  document.getElementById('btn-level-1').className = 'sel-btn' + (l==='1'?' active-1':'');
+  document.getElementById('btn-level-2').className = 'sel-btn' + (l==='2'?' active-2':'');
+  checkReady();
+}
+function checkReady() {
+  document.getElementById('btn-start').disabled = !(state.role && state.level);
+}
+
+function startQuiz() {
+  state.name = document.getElementById('participant-name').value.trim() || 'Anonym';
+  var key = state.role + state.level;
+  state.questions = shuffle(QBANK[key].slice());
+  state.selections = state.questions.map(function(){ return []; });
+  document.getElementById('setup-section').style.display = 'none';
+  document.getElementById('quiz-section').style.display = 'block';
+  var strip = document.getElementById('quiz-header-strip');
+  var roleLabel = state.role==='a' ? 'KI-Beauftragte:r' : 'Führungskraft';
+  var levelLabel = state.level==='1' ? 'Anfänger' : 'Fortgeschrittene';
+  var roleClass = state.role==='a' ? 'strip-role-a' : 'strip-role-b';
+  var levelClass = state.level==='1' ? 'strip-level-1' : 'strip-level-2';
+  strip.innerHTML = '<span class="strip-tag '+roleClass+'">'+roleLabel+'</span><span class="strip-tag '+levelClass+'">'+levelLabel+'</span><span class="strip-name">'+escHtml(state.name)+'</span>';
+  document.getElementById('scenario-text').textContent = SCENARIOS[state.role];
+  renderQuestions();
+}
+
+function shuffle(arr) {
+  for (var i = arr.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var t = arr[i]; arr[i] = arr[j]; arr[j] = t;
+  }
+  return arr;
+}
+
+function renderQuestions() {
+  var container = document.getElementById('questions-container');
+  container.innerHTML = '';
+  var total = state.questions.length;
+  state.questions.forEach(function(q, qi) {
+    var nCorrect = q.correct.length;
+    var hint = nCorrect === 1 ? 'Genau eine Antwort ist richtig.' : 'Mehrere Antworten können richtig sein.';
+    var shuffledIdx = shuffleIndexes(q.opts.length);
+    var card = document.createElement('div');
+    card.className = 'q-card';
+    card.id = 'qcard-' + qi;
+    card.innerHTML = '<div class="q-num">Frage ' + (qi+1) + ' von ' + total + ' · ' + escHtml(q.cat) + '</div>'
+      + '<div class="q-text">' + escHtml(q.q) + '</div>'
+      + '<div class="q-hint">' + hint + '</div>'
+      + '<div class="opt-list" id="opts-' + qi + '"></div>';
+    container.appendChild(card);
+    var optList = document.getElementById('opts-' + qi);
+    shuffledIdx.forEach(function(origIdx) {
+      var opt = document.createElement('div');
+      opt.className = 'opt';
+      opt.dataset.qi = qi;
+      opt.dataset.oi = origIdx;
+      opt.innerHTML = '<div class="opt-cb" id="cb-'+qi+'-'+origIdx+'"></div>'
+        + '<div class="opt-text">' + escHtml(q.opts[origIdx]) + '</div>';
+      opt.addEventListener('click', function() { toggleOpt(qi, origIdx); });
+      optList.appendChild(opt);
+    });
+  });
+  updateProgress();
+  checkSubmitReady();
+}
+
+function shuffleIndexes(n) {
+  var arr = [];
+  for (var i = 0; i < n; i++) arr.push(i);
+  return shuffle(arr);
+}
+
+function toggleOpt(qi, oi) {
+  var sel = state.selections[qi];
+  var idx = sel.indexOf(oi);
+  if (idx === -1) { sel.push(oi); } else { sel.splice(idx, 1); }
+  var allOpts = document.querySelectorAll('#opts-' + qi + ' .opt');
+  allOpts.forEach(function(el) {
+    var elOi = parseInt(el.dataset.oi);
+    var isSelected = sel.indexOf(elOi) !== -1;
+    el.classList.toggle('selected', isSelected);
+    var cb = document.getElementById('cb-' + qi + '-' + elOi);
+    cb.classList.toggle('chk', isSelected);
+  });
+  checkSubmitReady();
+  updateProgress();
+}
+
+function checkSubmitReady() {
+  var allAnswered = state.selections.every(function(s){ return s.length > 0; });
+  document.getElementById('btn-submit').disabled = !allAnswered;
+}
+
+function updateProgress() {
+  var answered = state.selections.filter(function(s){ return s.length > 0; }).length;
+  var total = state.questions.length;
+  document.getElementById('progress-label').textContent = answered + ' von ' + total + ' Fragen beantwortet';
+  document.getElementById('progress-fill').style.width = (answered / total * 100) + '%';
+}
+
+function submitQuiz() {
+  var score = 0;
+  var catMap = {};
+  state.questions.forEach(function(q, qi) {
+    var sel = state.selections[qi].slice().sort();
+    var cor = q.correct.slice().sort();
+    var ok = sel.length === cor.length && sel.every(function(v,i){ return v === cor[i]; });
+    if (ok) score++;
+    if (!catMap[q.cat]) catMap[q.cat] = { ok: 0, total: 0 };
+    catMap[q.cat].total++;
+    if (ok) catMap[q.cat].ok++;
+
+    var card = document.getElementById('qcard-' + qi);
+    var allOpts = card.querySelectorAll('.opt');
+    allOpts.forEach(function(el) {
+      el.classList.add('disabled');
+      var elOi = parseInt(el.dataset.oi);
+      var isSelected = sel.indexOf(elOi) !== -1;
+      var isCorrect = cor.indexOf(elOi) !== -1;
+      if (isSelected && isCorrect) el.classList.add('correct-sel');
+      else if (isSelected && !isCorrect) el.classList.add('wrong-sel');
+      else if (!isSelected && isCorrect) el.classList.add('missed');
+      el.classList.remove('selected');
+    });
+
+    var fb = document.createElement('div');
+    fb.className = 'feedback ' + (ok ? 'fb-ok' : 'fb-wrong');
+    fb.innerHTML = '<div class="fb-title">' + (ok ? '✓ Richtig' : '✗ Nicht vollständig richtig') + '</div>'
+      + '<div class="fb-text">' + escHtml(q.exp) + '</div>'
+      + (q.src ? '<div class="fb-source">Quelle: ' + escHtml(q.src) + '</div>' : '');
+    card.appendChild(fb);
+  });
+
+  document.getElementById('btn-submit').style.display = 'none';
+  var total = state.questions.length;
+  var pct = Math.round(score / total * 100);
+  var grade = pct >= 80 ? '✓✓' : pct >= 60 ? '✓' : '✗';
+  var label = pct >= 80 ? 'Sehr gut' : pct >= 60 ? 'Bestanden' : 'Wiederholen';
+  var sub = score + ' von ' + total + ' Fragen vollständig richtig (' + pct + ' %)';
+  document.getElementById('result-grade').textContent = grade;
+  document.getElementById('result-label').textContent = label;
+  document.getElementById('result-sub').textContent = sub;
+  document.getElementById('stats-row').innerHTML =
+    '<div class="stat"><div class="stat-n">' + score + '</div><div class="stat-l">Richtig</div></div>' +
+    '<div class="stat"><div class="stat-n">' + (total-score) + '</div><div class="stat-l">Fehler</div></div>' +
+    '<div class="stat"><div class="stat-n">' + pct + '%</div><div class="stat-l">Ergebnis</div></div>';
+
+  var bars = document.getElementById('comp-bars');
+  bars.innerHTML = '';
+  Object.keys(catMap).forEach(function(cat) {
+    var d = catMap[cat];
+    var p = Math.round(d.ok / d.total * 100);
+    bars.innerHTML += '<div class="comp-row"><div class="comp-labels"><span>' + escHtml(cat) + '</span><span>' + d.ok + '/' + d.total + '</span></div>'
+      + '<div class="comp-track"><div class="comp-fill ' + (p>=60?'fill-ok':'fill-wrong') + '" style="width:' + p + '%"></div></div></div>';
+  });
+
+  var reviewHtml = '';
+  state.questions.forEach(function(q, qi) {
+    var sel = state.selections[qi].slice().sort();
+    var cor = q.correct.slice().sort();
+    var ok = sel.length === cor.length && sel.every(function(v,i){ return v === cor[i]; });
+    reviewHtml += '<div style="margin-bottom:1.2rem;padding:1rem;background:var(--card);border:1px solid var(--rule);border-radius:10px;">'
+      + '<div style="font-family:\'DM Mono\',monospace;font-size:10px;color:var(--muted);margin-bottom:.4rem;">Frage ' + (qi+1) + ' · ' + escHtml(q.cat) + '</div>'
+      + '<div style="font-size:14px;font-weight:500;margin-bottom:.5rem;">' + escHtml(q.q) + '</div>'
+      + '<div style="font-size:12px;color:' + (ok?'var(--correct)':'var(--wrong)') + ';font-weight:500;">' + (ok ? '✓ Vollständig richtig' : '✗ Nicht vollständig richtig') + '</div>'
+      + '</div>';
+  });
+  document.getElementById('review-container').innerHTML = reviewHtml;
+  document.getElementById('results-section').style.display = 'block';
+  document.getElementById('results-section').scrollIntoView({ behavior: 'smooth' });
+
+  sendResult(score, total, pct);
+}
+
+function sendResult(score, total, pct) {
+  var roleLabel = state.role==='a' ? 'KI-Beauftragte:r' : 'Fuehrungskraft';
+  var levelLabel = state.level==='1' ? 'Anfaenger' : 'Fortgeschrittene';
+  var payload = {
+    tag: 'Tag16', thema: 'Change Management',
+    name: state.name, rolle: roleLabel, stufe: levelLabel,
+    richtig: score, gesamt: total, prozent: pct,
+    timestamp: new Date().toISOString()
+  };
+  var st = document.getElementById('submit-status');
+  st.className = 'submit-status sending';
+  st.textContent = 'Ergebnis wird übertragen…';
+  fetch(APPS_SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) })
+    .then(function(r){ return r.json(); })
+    .then(function(){
+      st.className = 'submit-status success';
+      st.textContent = 'Ergebnis gespeichert.';
+    })
+    .catch(function(){
+      st.className = 'submit-status error';
+      st.textContent = 'Ergebnis konnte nicht übertragen werden.';
+    });
+}
+
+function escHtml(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+</script>
+</body>
+</html>
