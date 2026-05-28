@@ -675,26 +675,46 @@ function submitQuiz() {
 }
 
 function sendResult(score, total, pct) {
-  var roleLabel = state.role==='a' ? 'KI-Beauftragter' : 'Operativer Manager';
-  var levelLabel = state.level==='1' ? 'Anfaenger' : 'Fortgeschrittene';
-  var payload = {
-    tag: 'Tag12', thema: 'QS und Abnahmeprozesse',
-    name: state.name, rolle: roleLabel, stufe: levelLabel,
-    richtig: score, gesamt: total, prozent: pct,
-    timestamp: new Date().toISOString()
-  };
+  var role  = state.role === 'a' ? 'KI-Beauftragte:r' : 'Operativer Manager';
+  var stufe = state.level === '1' ? 'Anfänger' : 'Fortgeschrittene';
+  var TAG_NR = 12;
+  var THEMA  = 'QS und Abnahmeprozesse';
+  var letters = ['A','B','C','D'];
+  var toSend = [];
+  state.questions.forEach(function(q, i) {
+    var selIndices  = state.selections[i].slice().sort();
+    var corrIndices = q.correct.slice().sort();
+    var isFull      = selIndices.join(',') === corrIndices.join(',');
+    var gewaehlt    = selIndices.map(function(idx) { return letters[idx]; }).join(',') || '-';
+    var korrekt     = corrIndices.map(function(idx) { return letters[idx]; }).join(',');
+    var ergebnis    = isFull ? 'RICHTIG' : 'FALSCH';
+    toSend.push(
+      APPS_SCRIPT_URL
+      + '?tab='        + encodeURIComponent('KI-Beauftragter')
+      + '&teilnehmer=' + encodeURIComponent(state.name)
+      + '&tag='        + TAG_NR
+      + '&thema='      + encodeURIComponent(THEMA)
+      + '&stufe='      + encodeURIComponent(stufe + ' · ' + role)
+      + '&frage_nr='   + (i + 1)
+      + '&frage_text=' + encodeURIComponent(q.q.substring(0, 80))
+      + '&gewaehlt='   + encodeURIComponent(gewaehlt)
+      + '&korrekt='    + encodeURIComponent(korrekt)
+      + '&ergebnis='   + encodeURIComponent(ergebnis)
+    );
+  });
   var st = document.getElementById('submit-status');
-  st.className = 'submit-status sending';
-  st.textContent = 'Ergebnis wird übertragen…';
-  fetch(APPS_SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload), mode: 'no-cors' })
-    .then(function(){
+  var idx = 0;
+  function sendNext() {
+    if (idx >= toSend.length) {
       st.className = 'submit-status success';
-      st.textContent = 'Ergebnis gespeichert.';
-    })
-    .catch(function(){
-      st.className = 'submit-status error';
-      st.textContent = 'Ergebnis konnte nicht übertragen werden.';
-    });
+      st.textContent = '✓ ' + toSend.length + ' Antworten übermittelt (' + new Date().toLocaleTimeString('de-DE') + ')';
+      return;
+    }
+    fetch(toSend[idx], { mode: 'no-cors' })
+      .catch(function() {})
+      .then(function() { idx++; setTimeout(sendNext, 400); });
+  }
+  sendNext();
 }
 
 function escHtml(s) {
