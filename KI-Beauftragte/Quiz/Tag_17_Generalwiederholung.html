@@ -1175,17 +1175,24 @@ function sendResult(score, total, pct) {
   });
   var st = document.getElementById('submit-status');
   st.className = 'submit-status sending';
-  st.textContent = 'Übertrage 1 von ' + toSend.length + ' …';
+  st.textContent = 'Übertrage 1 von ' + toSend.length + ' — Seite bitte offen lassen …';
+  var transferDone = false;
+  function beforeUnloadGuard(e) {
+    if (!transferDone) { e.preventDefault(); e.returnValue = ''; }
+  }
+  window.addEventListener('beforeunload', beforeUnloadGuard);
   var idx = 0;
   function sendNext() {
     if (idx >= toSend.length) {
+      transferDone = true;
+      window.removeEventListener('beforeunload', beforeUnloadGuard);
       st.className = 'submit-status success';
       st.textContent = '✓ ' + toSend.length + ' Antworten übermittelt (' + new Date().toLocaleTimeString('de-DE') + ')';
       return;
     }
-    st.textContent = 'Übertrage ' + (idx + 1) + ' von ' + toSend.length + ' …';
+    st.textContent = 'Übertrage ' + (idx + 1) + ' von ' + toSend.length + ' — Seite bitte offen lassen …';
     fetch(toSend[idx], { mode: 'no-cors' })
-      .catch(function(err) { console.warn('[Tag17] fetch catch idx=' + idx, err); })
+      .catch(function() {})
       .then(function() { idx++; setTimeout(sendNext, 200); });
   }
   sendNext();
