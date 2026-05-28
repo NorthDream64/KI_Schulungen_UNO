@@ -1185,8 +1185,8 @@ function sendResult(score, total, pct) {
     }
     st.textContent = 'Übertrage ' + (idx + 1) + ' von ' + toSend.length + ' …';
     fetch(toSend[idx], { mode: 'no-cors' })
-      .catch(function() {})
-      .then(function() { idx++; setTimeout(sendNext, 100); });
+      .catch(function(err) { console.warn('[Tag17] fetch catch idx=' + idx, err); })
+      .then(function() { idx++; setTimeout(sendNext, 200); });
   }
   sendNext();
 }
