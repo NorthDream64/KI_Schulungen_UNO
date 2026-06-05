@@ -5,7 +5,7 @@
 
 ## Das Unternehmen
 
-**Aktiv-Invest (AI) GmbH**, München  
+**AIktiv-Invest (AI) GmbH**, München  
 Spezialisierter Venture-Capital-Fonds mit Fokus auf KI-getriebene Geschäftsmodelle  
 Gründung: 2021 · Mitarbeitende: 8 (Investment-Team) · Fondvolumen: 15 Mio. EUR  
 Zielvolumen 2029: 100 Mio. EUR · Finanzierung durch private Anleger
