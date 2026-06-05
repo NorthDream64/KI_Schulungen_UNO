@@ -1,4 +1,4 @@
-# UC-06b: Aktiv-Invest (AI) GmbH — KI-Modelle verstehen und bewerten
+# UC-06b: AIktiv-Invest (AI) GmbH — KI-Modelle verstehen und bewerten
 
 ---
 
@@ -10,7 +10,7 @@ Du kannst den KI-Typ hinter einer Geschäftsidee identifizieren, die typischen D
 
 ## Szenario
 
-Du bist Portfoliomanager:in der **Aktiv-Invest (AI) GmbH**. Die folgenden fünf Unternehmen bewerben sich um eine Beteiligung. Jedes behauptet, KI als zentralen Bestandteil seines Geschäftsmodells einzusetzen.
+Du bist Portfoliomanager:in der **AIktiv-Invest (AI) GmbH**. Die folgenden fünf Unternehmen bewerben sich um eine Beteiligung. Jedes behauptet, KI als zentralen Bestandteil seines Geschäftsmodells einzusetzen.
 
 Deine Aufgabe ist nicht, das Unternehmen technisch zu validieren — das ist Aufgabe der späteren Due Diligence. Deine Aufgabe ist es, *die richtigen Fragen zu stellen*: Welche KI steckt wirklich dahinter? Was muss das Unternehmen besitzen oder können, damit die Technologie funktioniert? Und wo sind die Schwachstellen?
 

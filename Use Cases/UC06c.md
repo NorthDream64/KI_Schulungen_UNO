@@ -1,10 +1,10 @@
-# UC-06c: Aktiv-Invest (AI) GmbH — KI-gestütztes Portfoliomonitoring
+# UC-06c: AIktiv-Invest (AI) GmbH — KI-gestütztes Portfoliomonitoring
 
 ---
 
 ## Szenario
 
-Du bist Portfoliomanager:in der **Aktiv-Invest (AI) GmbH**. Das KI-Screening-System für neue Proposals läuft seit sechs Monaten erfolgreich. Jetzt steht das nächste Problem: das **laufende Monitoring** der sechs Portfoliounternehmen.
+Du bist Portfoliomanager:in der **AIktiv-Invest (AI) GmbH**. Das KI-Screening-System für neue Proposals läuft seit sechs Monaten erfolgreich. Jetzt steht das nächste Problem: das **laufende Monitoring** der sechs Portfoliounternehmen.
 
 Julia Romberg (CFO) hat ein klares Bild davon, was sie braucht: *„Ich will bei jedem Quartalsbericht sofort sehen, welche Beteiligungen Alarm schlagen — ohne drei Tage händische Pivot-Tabellen."*
 

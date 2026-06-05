@@ -1,4 +1,4 @@
-# Aktiv-Invest (AI) GmbH
+# AIktiv-Invest (AI) GmbH
 > ⚠️ Fiktives Unternehmen — alle Namen und Details sind für Schulungszwecke erstellt
 
 ---
@@ -109,7 +109,7 @@ Proposal eingehend (15–20/Monat)
 
 ## Regulatorischer Rahmen
 
-Die Aktiv-Invest (AI) GmbH ist als Kapitalverwaltungsgesellschaft (KVG) nach **KAGB** reguliert — in der vereinfachten Form als registrierter AIFM (unter der AIFMD-Schwelle). Relevante Anforderungen:
+Die AIktiv-Invest (AI) GmbH ist als Kapitalverwaltungsgesellschaft (KVG) nach **KAGB** reguliert — in der vereinfachten Form als registrierter AIFM (unter der AIFMD-Schwelle). Relevante Anforderungen:
 
 | Regulierung | Implikation für KI |
 |---|---|

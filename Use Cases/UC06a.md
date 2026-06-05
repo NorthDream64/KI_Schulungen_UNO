@@ -1,10 +1,10 @@
-# UC-06a: Aktiv-Invest (AI) GmbH — Go/No-Go-Screening
+# UC-06a: AIktiv-Invest (AI) GmbH — Go/No-Go-Screening
 
 ---
 
 ## Szenario
 
-Du bist Portfoliomanager:in der **Aktiv-Invest (AI) GmbH**, einem Hamburger Venture-Capital-Fonds mit Fokus auf KI-Investitionen. Das Fondvolumen liegt heute bei 15 Mio. EUR, soll aber nach den Wünschen der Geschäftsführerin in den nächsten vier Jahren auf 100 Mio. EUR wachsen.
+Du bist Portfoliomanager:in der **AIktiv-Invest (AI) GmbH**, einem Hamburger Venture-Capital-Fonds mit Fokus auf KI-Investitionen. Das Fondvolumen liegt heute bei 15 Mio. EUR, soll aber nach den Wünschen der Geschäftsführerin in den nächsten vier Jahren auf 100 Mio. EUR wachsen.
 
 Monatlich landen **15–20 Investitionsvorschläge** auf Deinem Schreibtisch — von Gründerteams, Co-Investoren und Deal-Sourcing-Plattformen. Jeder dieser Proposals muss zunächst in einer **Go/No-Go-Entscheidung (Phase 1)** vorqualifiziert werden, bevor aufwendige Detailanalysen starten.
 
@@ -39,7 +39,7 @@ Wie stellst Du sicher, dass das System als Entscheidungsunterstützung — nicht
 Was könnte bei einem KI-gestützten Screening schief gehen? Benenne mindestens zwei konkrete Risiken und wie Du ihnen begegnest.
 
 **⑥ ROI berechnen**
-Berechne den **Return on Investment (ROI)** für die Einführung des KI-gestützten Screening-Systems bei der Aktiv-Invest (AI) GmbH. Nutze dafür das **ROI-Template (Excel)** oder den **interaktiven ROI-Rechner (HTML)** als Werkzeug. Die detaillierte Rechnung findest Du in den Schritten 1–6 am Ende dieses Dokuments.
+Berechne den **Return on Investment (ROI)** für die Einführung des KI-gestützten Screening-Systems bei der AIktiv-Invest (AI) GmbH. Nutze dafür das **ROI-Template (Excel)** oder den **interaktiven ROI-Rechner (HTML)** als Werkzeug. Die detaillierte Rechnung findest Du in den Schritten 1–6 am Ende dieses Dokuments.
 
 ---
 
@@ -152,7 +152,7 @@ Formuliere eine Management-Empfehlung für Dr. Vogt mit den **7 Business-Case-Ba
 
 ## Ergebnisdokumentation
 
-Trage Deine Ergebnisse in das **ROI-Template** ein (Dateiname: `ROI_UC06_AktivInvest_v1.xlsx`) und halte die Eckdaten im **Steckbrief §4** fest.
+Trage Deine Ergebnisse in das **ROI-Template** ein (Dateiname: `ROI_UC06_AIktivInvest_v1.xlsx`) und halte die Eckdaten im **Steckbrief §4** fest.
 
 Ziel: Du kannst Dr. Vogt in einem 10-Minuten-Gespräch sagen, ob das Projekt wirtschaftlich ist — und warum.
 
