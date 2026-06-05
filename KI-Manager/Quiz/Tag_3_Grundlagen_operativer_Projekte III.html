@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Lernkontrolle · KI-Manager Tag 3 · Rollenabgrenzung, Use-Case &amp; Stakeholder</title>
+<title>Lernkontrolle · KI-Manager Tag 3 · Rollenabgrenzung &amp; Anwendungsfallidentifikation</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Playfair+Display:wght@600&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -193,8 +193,8 @@ a{color:var(--accent);}
 /* ═══ SZENARIEN ═══════════════════════════════════════════════ */
 
 var SCENARIOS = {
-  a: 'Sie sind KI-Manager:in bei der SolidFinanz AG. Dr. Hofer hat Sie beauftragt, die KI-Governance-Rollen zu definieren, drei Use-Case-Ideen zu priorisieren und die relevanten Stakeholder für das Kredit-Scoring-Projekt (UC-A) zu managen. Auslöser war ein Shadow-KI-Vorfall. Die Bank ist BaFin-reguliert und baut gerade ISO 27001 auf.',
-  b: 'Sie leiten das Projekt zur Einführung eines KI-gestützten Kredit-Scoring-Systems bei der SolidFinanz AG. Als Projektleiter:in koordinieren Sie die Stakeholder, erstellen den Kommunikationsplan und steuern das Projekt durch den Machbarkeitscheck. Ihr Team umfasst Neumann (Fachbereich), Dr. Lenz (DSB) und Kern (CISO).'
+  a: 'Sie sind KI-Manager:in bei der SolidFinanz AG. Dr. Hofer hat Sie beauftragt, die KI-Governance-Rollen zu definieren und drei Use-Case-Ideen zu identifizieren und zu bewerten. Auslöser war ein Shadow-KI-Vorfall in der Kreditabteilung. Die Bank ist BaFin-reguliert und baut gerade ISO 27001 auf.',
+  b: 'Sie leiten als Projektleiter:in ein KI-Pilotprojekt bei der SolidFinanz AG. Ihre Aufgabe ist es, die richtige Use-Case-Wahl zu begründen, den Machbarkeitscheck durchzuführen und das Projekt methodisch sauber aufzusetzen. Sie koordinieren zwischen IT, Fachbereich und Governance.'
 };
 
 var QBANK = {
@@ -202,7 +202,7 @@ var QBANK = {
 /* ─── KI-Manager:in · Anfänger · 1r,2r,2r,3r,3r ─── */
 a1: [
   {
-    q: 'Was ist der zentrale Unterschied zwischen KI-Manager:in und KI-Beauftragtem in einem Unternehmen?',
+    q: 'Was ist die primäre Aufgabe der KI-Manager:in im Vergleich zum KI-Beauftragten?',
     opts: [
       'Die KI-Manager:in setzt operativ um und koordiniert KI-Projekte — der KI-Beauftragte prüft, ob die Umsetzung normkonform und ethisch korrekt ist',
       'KI-Manager:in und KI-Beauftragter haben identische Aufgaben — der Unterschied ist nur der Titel',
@@ -210,55 +210,55 @@ a1: [
       'Die KI-Manager:in prüft unabhängig, ob KI-Systeme korrekt eingesetzt werden'
     ],
     correct: [0],
-    exp: 'Die KI-Manager:in setzt operativ um (Responsible) — der KI-Beauftragte überwacht und sichert Compliance (Accountable für Korrektheit). Beide brauchen einander. Die KI-Manager:in ist nicht für Prüfung zuständig — das ist Aufgabe des KI-Beauftragten.',
+    exp: 'Die KI-Manager:in setzt operativ um (Macher) — der KI-Beauftragte überwacht und sichert Compliance (Wächter). Beide Rollen sind komplementär. Die KI-Manager:in ist nicht für Prüfung zuständig — das ist Aufgabe des KI-Beauftragten.',
     src: 'KIM Tag 3 HandOut · Rollenabgrenzung'
   },
   {
-    q: 'Welche Aussagen zur Stakeholder-Analyse mit der Mendelow-Matrix sind korrekt?',
+    q: 'Welche Aussagen zur Rollenabgrenzung der drei KI-Governance-Rollen sind korrekt?',
     opts: [
-      'Stakeholder mit hoher Macht und hohem Interesse (Q1) müssen aktiv gemanagt und regelmäßig eingebunden werden',
-      'Stakeholder mit niedriger Macht und hohem Interesse (Q3) können vollständig ignoriert werden',
-      'Die Matrix ist dynamisch — Stakeholder können zwischen Quadranten wechseln, wenn sich Projektumstände ändern',
-      'Alle Stakeholder bekommen dieselbe Kommunikation und denselben Einbindungsaufwand'
+      'Die KI-Manager:in gehört zur 2. Linie of Defense — sie koordiniert Governance-Regeln und eskaliert Risiken',
+      'Der KI-Auditor:in gehört zur 3. Linie of Defense — er prüft unabhängig, ob 1. und 2. Linie funktionieren',
+      'KI-Auditor:in und KI-Manager:in können in Personalunion besetzt werden, wenn die Person unabhängig agiert',
+      'Fachbereiche, die KI-Systeme nutzen, gehören zur 1. Linie of Defense'
     ],
-    correct: [0,2],
-    exp: 'Q1-Stakeholder (hohe Macht, hohes Interesse) müssen aktiv gemanagt werden. Die Matrix ist dynamisch: Neumann in Q3 kann zu Q1 werden, wenn er aktiv opponiert. Q3-Stakeholder werden informiert, nicht ignoriert. Alle Stakeholder dieselbe Kommunikation zu geben ist ein typischer Fehler.',
-    src: 'KIM Tag 3 HandOut · Mendelow-Matrix'
+    correct: [0,1],
+    exp: '1. Linie = operative Ausführung (Fachbereiche). 2. Linie = Governance (KI-Manager:in, KI-BA, DSB). 3. Linie = unabhängige Prüfung (KI-Auditor:in). Die Personalunion KI-Auditor:in + KI-Manager:in ist nicht möglich — Auditor:in darf nie eigene Arbeit prüfen.',
+    src: 'KIM Tag 3 HandOut · Three-Lines-of-Defense'
   },
   {
     q: 'SolidFinanz plant drei KI-Projekte. Welche Zuordnung zur Impact/Effort-Matrix ist korrekt?',
     opts: [
-      'Kredit-Scoring: Hoher Impact (Kerngeschäft, BaFin-relevant) — mittlerer Effort (bestehende Datenbasis) → Quick Win oder strategisches Projekt',
-      'Support-Chatbot: Mittlerer Impact (intern) — niedriger Effort (kein Hochrisiko) → Quick Win oder Experiment',
-      'Betrugserkennung: Niedriger Impact — hoher Effort → sofort umsetzen',
+      'Kredit-Scoring (UC-A): Hoher Impact (Kerngeschäft, BaFin-relevant) — mittlerer Effort (bestehende Datenbasis) → Strategisches Projekt',
+      'Support-Chatbot (UC-C): Mittlerer Impact (intern) — niedriger Effort (kein Hochrisiko) → Quick Win oder Experiment',
+      'Betrugserkennung (UC-B): Niedriger Impact — hoher Effort → sofort umsetzen',
       'Kredit-Scoring: Niedriger Impact — niedriger Effort → sofort umsetzen ohne Prüfung'
     ],
     correct: [0,1],
-    exp: 'Kredit-Scoring: hoch/mittel → Quick Win oder strategisch (jetzt starten). Chatbot: mittel/niedrig → Quick Win (parallel). Betrugserkennung: hoch/hoch → strategisches Projekt nach UC-A. Niedriger Impact bei Kredit-Scoring wäre falsch — es ist regulatorisch kritisch.',
+    exp: 'Kredit-Scoring: hoch/mittel → Strategisches Projekt. Chatbot: mittel/niedrig → Quick Win. Betrugserkennung: hoch/hoch → Strategisches Projekt nach UC-A, nicht sofort. Kredit-Scoring hat hohen Impact wegen BaFin-Relevanz und Kerngeschäft.',
     src: 'KIM Tag 3 HandOut · Impact/Effort-Matrix'
   },
   {
-    q: 'Welche Maßnahmen helfen, Neumann (Kreditabteilung) von einem skeptischen Stakeholder zu einem Unterstützer des KI-Projekts zu entwickeln?',
+    q: 'Welche Aussagen zum Use-Case-Canvas als Arbeitswerkzeug sind korrekt?',
     opts: [
-      'Neumann in die Definition der Abnahmekriterien für das Kredit-Scoring-Modell einbeziehen — Co-Design erhöht Eigenverantwortung',
-      'Neumann mit einem Executive-Briefing von Dr. Hofer überzeugen, da er als CEO mehr Autorität hat',
-      'Einen Pilotbetrieb anbieten, bei dem Neumann das System im echten Betrieb testen kann, bevor es produktiv geht',
-      'Regelmäßige wöchentliche Working Sessions mit Neumann einrichten, um seine Bedenken frühzeitig zu adressieren'
+      'Feld ① (Prozess) muss den IST-Zustand beschreiben — nicht den Wunsch-Zustand oder den SOLL-Zustand',
+      'Feld ⑨ (Akzeptanz) muss messbare Erfolgskriterien enthalten, z. B. konkrete KPIs mit Zeithorizont',
+      'Der Canvas ist ein einmaliges Dokument, das zu Projektbeginn erstellt und danach nicht mehr verändert wird',
+      'Feld ⑦ (Stakeholder) nennt nur interne Beteiligte — externe Betroffene wie Kunden sind separat zu dokumentieren'
     ],
-    correct: [0,2,3],
-    exp: 'Co-Design, Pilotbetrieb und regelmäßige Working Sessions sind die wirksamen Maßnahmen. Neumann hat rationale Bedenken (Black Box) und emotionale (Kontrollverlust) — beide brauchen aktive Einbindung, nicht hierarchischen Druck. Ein CEO-Briefing allein löst operationale Widerstände nicht.',
-    src: 'KIM Tag 3 HandOut · Widerstand managen'
+    correct: [0,1],
+    exp: 'Feld ① beschreibt den IST-Prozess (ehrlich, nicht geschönt). Feld ⑨ braucht messbare Kriterien (KPI + Datum + Stichprobe). Der Canvas ist ein lebendes Dokument. Feld ⑦ schließt alle Betroffenen ein — auch externe wie Kreditnehmer.',
+    src: 'KIM Tag 3 HandOut · Use-Case-Canvas'
   },
   {
-    q: 'Welche Aussagen zum Machbarkeitscheck für einen KI-Use-Case sind korrekt?',
+    q: 'Welche Aussagen zum Machbarkeitscheck für den Use Case Kredit-Scoring (UC-A) bei SolidFinanz sind korrekt?',
     opts: [
-      'Ein Use Case mit einer roten Flagge im Machbarkeitscheck ist nicht zwangsläufig gestoppt — er braucht einen dokumentierten Mitigationsplan',
-      'Der Machbarkeitscheck prüft ausschließlich technische Kriterien — regulatorische Compliance ist Aufgabe der Rechtsabteilung',
-      'Eine fehlende Erklärbarkeit des Modells ist bei Kredit-Scoring-Systemen eine kritische rote Flagge wegen EU AI Act Art. 13',
-      'Datenverfügbarkeit muss in drei Dimensionen geprüft werden: technisch, Qualität und rechtliche Nutzbarkeit'
+      'Eine rote Flagge im Machbarkeitscheck bedeutet nicht automatisch Projektstopp — sie erfordert einen Mitigationsplan',
+      'Kredit-Scoring fällt unter EU AI Act Anhang III Nr. 5b (Hochrisiko-KI) — eine Konformitätsbewertung ist vor Go-Live Pflicht',
+      'Die Dimension Compliance spielt beim Machbarkeitscheck keine Rolle, da sie erst bei Go-Live relevant wird',
+      'Wenn die Datenverfügbarkeit unklar ist, sollte das Projekt sofort gestoppt werden'
     ],
-    correct: [0,2,3],
-    exp: 'Ein Machbarkeitscheck-Veto stoppt nicht — er fordert einen Mitigationsplan. Compliance ist eine der vier Dimensionen, keine externe Aufgabe. Fehlende Erklärbarkeit bei Kredit-Scoring ist kritisch (EU AI Act Art. 13, Anhang III Nr. 5b). Datenverfügbarkeit hat drei Dimensionen: technisch, Qualität, Recht.',
+    correct: [0,1,2],
+    exp: 'Ein Veto ist kein Stopp-Signal — es fordert einen Mitigationsplan. Kredit-Scoring ist definitiv Hochrisiko-KI (Anhang III Nr. 5b). FALSCH: Compliance ist von Tag 1 an relevant, nicht erst bei Go-Live. Bei unklarer Datenverfügbarkeit: prüfen und Mitigationsplan erstellen, nicht sofort stoppen.',
     src: 'KIM Tag 3 HandOut · Machbarkeitscheck'
   }
 ],
@@ -266,192 +266,192 @@ a1: [
 /* ─── KI-Manager:in · Fortgeschrittene · 2r,1r,3r,2r,3r ─── */
 a2: [
   {
-    q: 'Bei SolidFinanz übernimmt CISO Kern auch die Rolle des KI-Beauftragten. Welche Aussagen zu dieser Kombination sind korrekt?',
+    q: 'Bei SolidFinanz soll CISO Kern auch die Rolle des KI-Beauftragten übernehmen. Welche Aussagen zu dieser Kombination sind korrekt?',
     opts: [
       'Die Kombination ist strukturell problematisch: Kern verantwortet IT-Sicherheitsmaßnahmen, die der KI-Beauftragte unabhängig prüfen müsste',
       'Die Kombination ist zulässig und empfehlenswert, da CISO und KI-Beauftragter denselben Fokus auf Risikominimierung haben',
-      'In kleinen Organisationen kann die Kombination mit dokumentiertem Interessenkonflikt-Management akzeptiert werden',
+      'In kleinen Organisationen kann die Kombination akzeptiert werden, wenn ein Interessenkonflikt-Management dokumentiert ist',
       'Die Kombination ist nach ISO 42001 ausdrücklich verboten'
     ],
     correct: [0,2],
-    exp: 'Der Interessenkonflikt ist strukturell: Kern verantwortet Sicherheitsmaßnahmen — der KI-Beauftragte soll diese prüfen. ISO 42001 verbietet Personalunion nicht explizit, fordert aber Unabhängigkeit. In kleinen Organisationen ist ein dokumentierter Kompromiss möglich. Das ist kein absolutes Verbot, aber ein klares Risiko.',
+    exp: 'Der Interessenkonflikt ist strukturell: Kern verantwortet Sicherheitsmaßnahmen — der KI-Beauftragte soll diese prüfen. ISO 42001 verbietet Personalunion nicht explizit, fordert aber Unabhängigkeit. In kleinen Organisationen ist ein dokumentierter Kompromiss möglich. Kein absolutes Verbot.',
     src: 'KIM Tag 3 HandOut · Personalunion'
   },
   {
-    q: 'Was ist das zentrale Unterschiedsmerkmal zwischen KIM-Stakeholder-Management und KIB-Stakeholder-Management?',
+    q: 'Welches Einbindungsmodell für die KI-Manager:in ist für SolidFinanz am sinnvollsten?',
     opts: [
-      'Die KIM-Perspektive fokussiert auf Überzeugung und politische Durchsetzung: Wer muss überzeugt werden, damit das Projekt genehmigt und erfolgreich umgesetzt wird?',
-      'Die KIM-Perspektive ist ausschließlich technisch — Stakeholder-Management ist Aufgabe des KI-Beauftragten',
-      'Beide Perspektiven sind identisch — Mendelow-Matrix und Kommunikationsmatrix werden in gleicher Weise angewendet',
-      'Die KIB-Perspektive dient Compliance-Kartierung — die KIM-Perspektive dient Machtanalyse und Einfluss-Strategie'
+      'Stabsstelle direkt bei Dr. Hofer: maximale Unabhängigkeit, direkte GF-Anbindung, kann CISO/DSB/Fachbereich koordinieren ohne Weisungsgebundenheit',
+      'Linienfunktion unter dem CISO: direkter Infrastrukturzugang, enge Abstimmung bei Sicherheitsfragen',
+      'Linienfunktion unter dem CFO: enge Verbindung zu finanziellen Risiken',
+      'Matrix-Funktion ohne feste Zuordnung: maximale Flexibilität'
     ],
-    correct: [3],
-    exp: 'KIB kartiert Stakeholder aus Compliance-Sicht: Wer hat Rechte, wer muss informiert werden? KIM analysiert Macht und Einfluss: Wer kann das Projekt stoppen oder beschleunigen? Beide nutzen Mendelow — aber mit anderem strategischen Ziel. In der KIM-Perspektive ist Stakeholder-Management ein politisches Instrument.',
-    src: 'KIM Tag 3 HandOut · KIM vs. KIB Stakeholder'
+    correct: [0],
+    exp: 'Stabsstelle bei Dr. Hofer ist für eine BaFin-regulierte Bank mit regulatorischem Druck die stärkste Variante: Unabhängigkeit von IT und Fachbereich, direkte Eskalationsmöglichkeit, Sichtbarkeit beim Vorstand. Linienfunktionen schränken Unabhängigkeit ein; Matrix ohne Weisungsbefugnis ist oft wirkungslos.',
+    src: 'KIM Tag 3 HandOut · Einbindungsmodelle'
   },
   {
-    q: 'Der Machbarkeitscheck für UC-A (Kredit-Scoring) zeigt eine rote Flagge: Das Modell ist eine Black Box ohne Erklärbarkeit. Welche Reaktionen sind korrekt?',
+    q: 'Welche Aussagen zu den häufigsten Fehlern beim Ausfüllen des Use-Case-Canvas sind korrekt?',
     opts: [
-      'Das Projekt sofort abbrechen — eine Black-Box-KI bei Kredit-Scoring ist nach EU AI Act generell verboten',
-      'Explainability-Analyse durchführen (z. B. LIME/SHAP), um nachträgliche Erklärbarkeit technisch zu ermöglichen',
-      'Konformitätsbewertung nach EU AI Act Art. 43 beauftragen — für Hochrisiko-KI ist das ein Pflichtschritt',
-      'Technische Dokumentation der Entscheidungslogik nachholen — Art. 13 EU AI Act fordert Transparenz gegenüber Betroffenen'
+      'Feld ① (Prozess) wird oft verschönert statt ehrlich beschrieben — der IST-Zustand sollte Schwächen zeigen dürfen',
+      'Feld ⑨ (Akzeptanz) bleibt häufig vage: „Das System soll gut laufen" ist kein Akzeptanzkriterium',
+      'Feld ⑦ (Stakeholder) sollte ausschließlich interne Stakeholder enthalten, da externe keine Projektmacht haben',
+      'Das Ausfüllen des Canvas ist eine einmalige Aufgabe zu Projektbeginn — spätere Anpassungen entwerten das Dokument'
     ],
-    correct: [1,2,3],
-    exp: 'Ein Veto stoppt nicht — er fordert Mitigationsmaßnahmen. Erklärbarkeit ist technisch nachrüstbar (LIME/SHAP). Konformitätsbewertung ist für Hochrisiko-KI (Anhang III Nr. 5b) zwingend. Art. 13 verlangt, dass Kreditnehmer informiert werden können. Black Box ist nicht verboten, aber ohne Erklärbarkeitslösung nicht betreibbar.',
-    src: 'KIM Tag 3 HandOut · Machbarkeitscheck · EU AI Act'
+    correct: [0,1],
+    exp: 'IST-Prozess muss ehrlich sein (Fehler ①). Akzeptanzkriterien müssen messbar sein — „soll gut laufen" ist kein Kriterium (Fehler ⑨). Feld ⑦ schließt externe Stakeholder wie Kreditnehmer und Aufsichtsbehörden ausdrücklich ein. Der Canvas ist ein lebendes Dokument — Anpassungen sind erwünscht.',
+    src: 'KIM Tag 3 HandOut · Canvas-Fehler'
   },
   {
-    q: 'Welche Aussagen zur Kommunikationsmatrix für KI-Projekte sind korrekt?',
+    q: 'Welche Aussagen zur Impact/Effort-Matrix als Priorisierungswerkzeug sind korrekt?',
     opts: [
-      'Alle Stakeholder erhalten dieselbe Kommunikation — das sichert Konsistenz und verhindert Missverständnisse',
-      'Für Dr. Hofer (CEO) eignen sich kurze Executive Briefings monatlich — strategischer Überblick, keine technischen Details',
-      'Der Betriebsrat sollte erst nach der Implementierung informiert werden, um keine Widerstände zu erzeugen',
-      'Neumann (Fachbereich) braucht wöchentliche operative Working Sessions — er kennt den Prozess am besten und soll Abnahmekriterien mitgestalten'
+      'Quick Wins (hoher Impact, niedriger Effort) sollten sofort gestartet werden — sie schaffen politisches Momentum und Vertrauensaufbau',
+      'Die Matrix gibt eine bindende Entscheidung vor — ein Use Case in Q3 (Sackgasse) darf nicht weiterverfolgt werden',
+      'Strategische Projekte (hoher Impact, hoher Effort) erfordern sorgfältige Planung, nicht sofortigen Start',
+      'Der Support-Chatbot (UC-C) bei SolidFinanz eignet sich als Quick Win, weil er kein Hochrisiko-KI-System ist'
     ],
-    correct: [1,3],
-    exp: 'Stakeholder brauchen zielgruppenspezifische Kommunikation, nicht eine-für-alle. Dr. Hofer: kurze Briefings, strategisch. Neumann: operative Working Sessions, Co-Design. Betriebsrat VOR Implementierung einbinden — nicht danach (§ 87 BetrVG). Einheitliche Kommunikation ist ein typischer Fehler.',
-    src: 'KIM Tag 3 HandOut · Kommunikationsmatrix'
+    correct: [0,2,3],
+    exp: 'Quick Wins sofort starten: Vertrauen aufbauen, Momentum schaffen ✓. Die Matrix ist kein Befehl — sie ist eine Empfehlung. Auch Q3-Projekte können aus strategischen Gründen weiterverfolgt werden. Strategische Projekte brauchen Planung, keine sofortige Umsetzung ✓. UC-C als Quick Win: kein Hochrisiko, niedrige Kosten, schnelle Umsetzung ✓.',
+    src: 'KIM Tag 3 HandOut · Impact/Effort-Matrix'
   },
   {
-    q: 'Welche Aussagen zu § 87 BetrVG und KI-gestütztem Kredit-Scoring sind korrekt?',
+    q: 'Welche Aussagen zur Datenverfügbarkeit als Voraussetzung für KI-Projekte sind korrekt?',
     opts: [
-      'Das KI-System löst keine Mitbestimmungsrechte aus, weil es ausschließlich Kreditnehmer — keine Mitarbeitenden — bewertet',
-      'Wenn das System protokolliert, welche Kreditanträge Sachbearbeiter:innen überstimmen, greift das Mitbestimmungsrecht aus § 87 Abs. 1 Nr. 6 BetrVG',
-      'Der Betriebsrat muss vor Projektbeginn eingebunden werden, nicht erst nach der Implementierung',
-      'Eine Betriebsvereinbarung ist nicht erforderlich, wenn das Unternehmen eine schriftliche Datenschutzrichtlinie hat — diese ersetzt die Mitbestimmung'
+      'Datenverfügbarkeit hat drei Dimensionen: technische Verfügbarkeit, Datenqualität und rechtliche Nutzbarkeit',
+      'Historische Kreditentscheidungsdaten können Bias enthalten, da sie vergangene Diskriminierungsmuster widerspiegeln',
+      'Wenn Daten rechtlich nicht nutzbar sind, muss das Projekt immer gestoppt werden',
+      'Bei SolidFinanz UC-A sind die Kredithistorie-Daten technisch vorhanden, aber 3 Jahre alt — eine Qualitätsprüfung ist nötig'
     ],
-    correct: [1,2],
-    exp: 'Das System löst Mitbestimmungsrechte aus, sobald es Override-Entscheidungen protokolliert. § 87 Abs. 1 Nr. 6 BetrVG greift bei technischen Systemen zur Leistungskontrolle. Betriebsrat VOR Projektbeginn einbinden. Eine Datenschutzrichtlinie ersetzt NICHT die Mitbestimmung — sie sind separate Pflichten., sobald es das Verhalten von Mitarbeitenden (Override-Entscheidungen von Neumann) aufzeichnet. § 87 Abs. 1 Nr. 6 BetrVG greift bei technischen Systemen zur Leistungs-/Verhaltenskontrolle. Betriebsrat muss VOR Projektbeginn eingebunden werden — nachträgliche Einbindung erzeugt Konflikte.',
-    src: 'KIM Tag 3 HandOut · § 87 BetrVG'
+    correct: [0,1,3],
+    exp: 'Drei Dimensionen: technisch, qualitativ, rechtlich ✓. Historical Bias ist ein reales Risiko bei Kreditdaten ✓. Rechtlich nicht nutzbare Daten erfordern Mitigationsmaßnahmen (z.B. Anonymisierung, neue Rechtsgrundlage) — kein automatischer Projektstopp. UC-A Daten: vorhanden aber veraltet ✓.',
+    src: 'KIM Tag 3 HandOut · Datenverfügbarkeit'
   }
 ],
 
 /* ─── Projektleiter:in · Anfänger · 2r,3r,1r,2r,3r ─── */
 b1: [
   {
-    q: 'Als Projektleiter:in des UC-A-Projekts bei SolidFinanz: Welche Aufgaben gehören zu Ihrer Rolle im Stakeholder-Management?',
+    q: 'Als Projektleiter:in des UC-A-Projekts bei SolidFinanz: Welche Aussagen zur Rollenabgrenzung in Ihrem Projekt sind korrekt?',
     opts: [
-      'Alle relevanten Stakeholder identifizieren, nach Macht und Interesse einordnen und gezielt kommunizieren',
-      'Den Betriebsrat erst informieren, wenn das Projekt genehmigt ist — um keine Widerstände auszulösen',
-      'Für Neumann (Fachbereich) regelmäßige Working Sessions einrichten, damit er die Abnahmekriterien mitgestaltet',
-      'Ausschließlich Dr. Hofer (CEO) als Stakeholder managen — alle anderen Stakeholder sind nachgeordnet'
+      'Sie sind in der 1. Linie: Sie nutzen KI-Systeme operativ und melden Risiken an die KI-Manager:in',
+      'Die KI-Manager:in koordiniert das Projekt und ist in der 2. Linie for Defense verantwortlich',
+      'Als Projektleiter:in haben Sie dieselbe Rolle wie die KI-Beauftragte — beide prüfen Compliance',
+      'Der KI-Auditor:in kann Sie als Projektleiter:in vertreten, wenn Sie verhindert sind'
     ],
-    correct: [0,2],
-    exp: 'Projektleiter:innen managen aktiv alle relevanten Stakeholder: Identifikation, Priorisierung nach Mendelow, zielgruppengerechte Kommunikation. Neumann als Fachbereichs-Experte muss Co-Design-Möglichkeiten bekommen. Betriebsrat VOR Projektbeginn einbinden. Nur den CEO zu managen wäre ein Fehler — Neumann kann das Projekt praktisch blockieren.',
-    src: 'KIM Tag 3 HandOut · Stakeholder-Management'
+    correct: [0,1],
+    exp: 'Projektleiter:innen operieren in der 1. Linie — sie führen aus und melden. KI-Manager:in ist 2. Linie — sie koordiniert Governance. Projektleiter:in und KI-Beauftragter haben völlig verschiedene Rollen. KI-Auditor:in prüft unabhängig — er vertritt keine operative Rolle.',
+    src: 'KIM Tag 3 HandOut · Rollenabgrenzung'
   },
   {
-    q: 'Für das Kredit-Scoring-Projekt (UC-A) sollen Sie einen Use-Case-Canvas erstellen. Welche Aussagen zu den Canvas-Feldern sind korrekt?',
+    q: 'Für UC-A sollen Sie einen Use-Case-Canvas erstellen. Welche Aussagen zu den Canvas-Feldern sind korrekt?',
     opts: [
-      'Feld ① (Prozess): Beschreibt den IST-Prozess, nicht den Wunsch-Prozess — was wirklich passiert, nicht was im Handbuch steht',
-      'Feld ⑦ (Stakeholder): Ist das Auftaktsignal für die Mendelow-Analyse — wer ist betroffen, und wer hat Einfluss?',
-      'Feld ⑨ (Akzeptanz): Muss messbare Erfolgskriterien enthalten — z. B. Ausfallquote –15 %, Bearbeitungszeit –30 %',
-      'Feld ⑥ (Risiken): Sollte ausschließlich technische Risiken enthalten — regulatorische Risiken sind separat zu behandeln'
+      'Feld ① (Prozess): Beschreibt den IST-Prozess der Kreditprüfung bei SolidFinanz — nicht den zukünftigen KI-gestützten Prozess',
+      'Feld ③ (KI-Typ): Kredit-Scoring ist Supervised Learning (Classification) — das Modell lernt aus historischen Kreditentscheidungen',
+      'Feld ⑨ (Akzeptanz): „Das System soll besser sein als heute" ist ein ausreichendes Akzeptanzkriterium',
+      'Feld ⑥ (Risiken): Sollte nur technische Risiken enthalten, da regulatorische Risiken separat dokumentiert werden'
     ],
-    correct: [0,1,2],
-    exp: 'Der IST-Prozess zeigt Realität, nicht Wunsch. Feld ⑦ leitet zur Mendelow-Analyse über — der Canvas ist der Auftakt. Akzeptanzkriterien müssen messbar sein. Feld ⑥ enthält ALLE Risiken: technisch, regulatorisch, ethisch, reputativ. Nur technische Risiken zu nennen ist ein häufiger Canvas-Fehler.',
+    correct: [0,1],
+    exp: 'Feld ① = IST-Beschreibung (ehrlich) ✓. Feld ③ = Supervised Learning ist korrekt für Kredit-Scoring ✓. Feld ⑨: „besser als heute" ist kein messbares Kriterium — konkrete KPIs mit Datum sind Pflicht. Feld ⑥ enthält ALLE Risiken: technisch, regulatorisch, ethisch.',
     src: 'KIM Tag 3 HandOut · Use-Case-Canvas'
   },
   {
-    q: 'Dr. Lenz (DSB) warnt, dass das Kredit-Scoring-Modell möglicherweise eine Datenschutz-Folgenabschätzung (DSFA) nach DSGVO Art. 35 erfordert. Was beschreibt den Sachverhalt korrekt?',
+    q: 'Kredit-Scoring ist nach EU AI Act Anhang III Nr. 5b als Hochrisiko-KI eingestuft. Was bedeutet das für den Machbarkeitscheck?',
     opts: [
-      'Eine DSFA ist bei automatisierten Einzelentscheidungen mit erheblichen Auswirkungen auf Personen zwingend erforderlich',
-      'Kreditscoring ohne menschliche Überprüfung ist eine automatisierte Einzelentscheidung im Sinne von DSGVO Art. 22',
-      'Die DSFA ist freiwillig und kann nach Go-Live nachgeholt werden',
-      'Bei Hochrisiko-KI-Systemen (EU AI Act Anhang III) ist eine DSFA gemäß DSGVO Art. 35 in der Regel obligatorisch'
+      'Das Projekt ist verboten und darf nicht weiterverfolgt werden',
+      'Das Projekt ist erlaubt, aber eine Konformitätsbewertung nach EU AI Act Art. 43 ist vor Go-Live Pflicht',
+      'Hochrisiko-KI erfordert Human Oversight — vollautomatische Kreditentscheidungen sind nicht zulässig',
+      'Die Hochrisiko-Einstufung macht das Projekt wirtschaftlich unrentabel'
     ],
-    correct: [0,3],
-    exp: 'DSGVO Art. 35 fordert eine DSFA bei systematischen Beurteilungen mit erheblichen Auswirkungen. Bei Hochrisiko-KI nach EU AI Act (Anhang III) ist eine DSFA in der Regel obligatorisch (Synergieeffekt). Kreditscoring fällt unter Art. 22 DSGVO. Die DSFA muss VOR Go-Live vorliegen. bei systematischen und umfassenden Beurteilungen, die rechtliche oder ähnliche Auswirkungen haben — Kreditscoring fällt darunter. DSGVO Art. 22 regelt automatisierte Einzelentscheidungen. Die DSFA muss VOR dem Go-Live vorliegen — nicht danach. Bei Hochrisiko-KI ist sie in der Regel verpflichtend, nicht fakultativ.',
-    src: 'KIM Tag 3 HandOut · DSGVO · Machbarkeitscheck'
+    correct: [1],
+    exp: 'Hochrisiko-KI ist ERLAUBT — aber mit erheblichen Pflichten: Konformitätsbewertung (Art. 43), Human Oversight (Art. 14), Transparenz (Art. 13), Logging (Art. 12), Post-Market-Monitoring (Art. 72). Das Projekt ist nicht verboten. Wirtschaftlichkeit ist eine separate Frage.',
+    src: 'KIM Tag 3 HandOut · Machbarkeitscheck · EU AI Act'
   },
   {
-    q: 'Sie bereiten den Machbarkeitscheck für UC-A vor. Welche Aspekte müssen Sie in der Dimension Compliance besonders prüfen?',
+    q: 'Als Projektleiter:in empfehlen Sie, zuerst den Support-Chatbot (UC-C) als Quick Win zu starten. Welche Argumente unterstützen diese Empfehlung?',
     opts: [
-      'Ob das Kredit-Scoring-System als Hochrisiko-KI nach EU AI Act Anhang III Nr. 5b einzustufen ist',
-      'Ob eine Datenschutz-Folgenabschätzung (DSFA) nach DSGVO Art. 35 durchgeführt werden muss',
-      'Ob das Modell ausreichend erklärbar ist, um die Transparenzpflicht nach Art. 13 EU AI Act zu erfüllen',
-      'Ob das Modell die Mindestgenauigkeit von 95 % laut EU AI Act erreicht'
+      'UC-C ist kein Hochrisiko-KI-System — weniger regulatorische Auflagen, schnellere Umsetzung',
+      'UC-C hat mittleren Impact und niedrigen Effort — idealer Kandidat für einen Beweis, dass KI bei SolidFinanz funktioniert',
+      'UC-C hat höheren strategischen Wert als UC-A — deshalb sollte es zuerst umgesetzt werden',
+      'Ein erfolgreicher Quick Win schafft politisches Momentum und erleichtert das Budget-Gespräch für UC-A'
     ],
-    correct: [0,1,2],
-    exp: 'Drei zentrale Compliance-Checks: (1) Hochrisiko-Einstufung nach Anhang III — Kredit-Scoring ist Nr. 5b. (2) DSFA-Pflicht — bei automatisierten Entscheidungen mit Personenauswirkung. (3) Erklärbarkeit — Art. 13 EU AI Act fordert Transparenz. Es gibt keine pauschale 95%-Genauigkeitspflicht im EU AI Act.',
-    src: 'KIM Tag 3 HandOut · Machbarkeitscheck Compliance'
+    correct: [0,1],
+    exp: 'Kein Hochrisiko → weniger Compliance-Aufwand, schnellere Umsetzung ✓. Mittlerer Impact / niedriger Effort = Quick Win ✓. UC-A (Kredit-Scoring) hat höheren strategischen Wert — UC-C ist nicht wichtiger, aber schneller umzusetzen. Momentum für UC-A ist ein weicher Nutzen, kein primäres Argument.',
+    src: 'KIM Tag 3 HandOut · Quick Win'
   },
   {
-    q: 'Neumann lehnt das Kredit-Scoring-System ab. Welche Strategien sind für eine Projektleiterin am wirksamsten?',
+    q: 'Der Machbarkeitscheck für UC-A zeigt: Die Trainingsdaten sind 3 Jahre alt und möglicherweise biased. Welche Maßnahmen sind korrekt?',
     opts: [
-      'Neumann bitten, die Abnahmekriterien des Systems selbst zu formulieren — das schafft Eigenverantwortung und Investition',
-      'Dr. Hofer auffordern, Neumann per Direktive zur Mitarbeit zu zwingen',
-      'Einen Pilotbetrieb im kleinen Maßstab anbieten, bei dem Neumann das System ohne Produktivauswirkungen testen kann',
-      'Neumann in die technische Architektur des Modells einweihen, damit er die Erklärbarkeit selbst beurteilen kann'
+      'Eine Bias-Analyse der historischen Kreditentscheidungen durchführen, bevor das Modell trainiert wird',
+      'Das Projekt sofort stoppen — veraltete und möglicherweise biased Daten machen UC-A unrealisierbar',
+      'EU AI Act Art. 10 fordert für Hochrisiko-KI repräsentative und fehlerfreie Trainingsdaten',
+      'Den DSB (Dr. Lenz) einbeziehen, da Kreditnehmer-Daten als Trainingsdaten DSGVO-relevant sind'
     ],
     correct: [0,2,3],
-    exp: 'Co-Design (Abnahmekriterien formulieren), Pilotbetrieb und technisches Briefing zur Erklärbarkeit sind wirksame Strategien. Hierarchischen Druck per Direktive einzusetzen ist kontraproduktiv — es erzeugt politischen Widerstand und verhindert echte Akzeptanz. Neumann muss überzeugt, nicht gezwungen werden.',
-    src: 'KIM Tag 3 HandOut · Widerstand managen'
+    exp: 'Bias-Analyse vor Training ist eine konkrete Mitigationsmaßnahme ✓. Veraltete Daten sind ein Risiko, aber kein Projektstopp — sie erfordern Qualitätsprüfung und ggf. Nacherhebung. EU AI Act Art. 10 verlangt repräsentative Daten für Hochrisiko-KI ✓. Dr. Lenz einbeziehen wegen DSGVO ✓.',
+    src: 'KIM Tag 3 HandOut · Datenverfügbarkeit · EU AI Act Art. 10'
   }
 ],
 
 /* ─── Projektleiter:in · Fortgeschrittene · 3r,2r,1r,3r,2r ─── */
 b2: [
   {
-    q: 'Sie erstellen die Mendelow-Matrix für UC-A. Welche Einordnungen der SolidFinanz-Personas sind korrekt?',
+    q: 'Als Projektleiter:in erstellen Sie die Mendelow-Matrix für UC-A. Welche Einordnung der SolidFinanz-Personas ist korrekt?',
     opts: [
-      'Dr. Hofer (CEO): Q1 — hohe Macht (Budgetentscheidung), hohes Interesse (KI-Governance-Initiative)',
-      'Kern (CISO): Q2 — hohe Macht (IT-Infrastruktur), niedriges Interesse (KI nicht Kernthema) → Strategie: Zufriedenstellen',
-      'Neumann (Kreditabteilung): Eindeutig Q4 — niedrige Macht, niedrig Interesse → beobachten',
-      'Dr. Lenz (DSB): Q3 — mittlere Macht (DSFA-Freigabe kritisch), hohes Interesse (DSGVO-Compliance) → informieren und einbinden'
+      'Dr. Hofer (CEO): hohe Macht (Budgetentscheidung) + hohes Interesse (KI-Governance-Initiative) → Q1: eng einbinden',
+      'Neumann (Kreditabteilung): mittlere Macht (kann System im Alltag sabotieren) + hohes Interesse (direkt betroffen) → Q3 oder Q1',
+      'Dr. Lenz (DSB): niedrige Macht + mittleres Interesse → Q2: zufriedenstellen',
+      'Kern (CISO): hohe Macht (IT-Infrastruktur) + niedriges Interesse (KI nicht Kernthema) → Q2: zufriedenstellen'
     ],
     correct: [0,1,3],
-    exp: 'Dr. Hofer = Q1 (Budget + Interesse) ✓. Kern = Q2 (Infrastrukturmacht, aber wenig KI-Interesse) ✓. Neumann ist NICHT Q4 — er ist Q3 mit hohem Interesse (direkt betroffen), kann aber durch aktiven Widerstand zu Q1 werden. Dr. Lenz = Q3 ✓. Neumann als Q4 zu kategorisieren wäre ein strategischer Fehler.',
+    exp: 'Dr. Hofer = Q1 ✓. Neumann ist Q3 (mittlere operative Macht, hohes Interesse) — kann aber zu Q1 werden bei aktivem Widerstand ✓. Dr. Lenz hat mittlere Macht (DSFA-Freigabe ist kritisch) — eher Q3 als Q2. Kern = Q2 ✓ (IT-Macht, aber wenig KI-Eigeninteresse).',
+    src: 'KIM Tag 3 HandOut · Mendelow-Matrix'
+  },
+  {
+    q: 'Welche Aussagen zur Rollenverantwortung für den Machbarkeitscheck bei UC-A sind korrekt?',
+    opts: [
+      'Die KI-Manager:in koordiniert den Machbarkeitscheck und ist für die Vollständigkeit verantwortlich',
+      'Der DSB (Dr. Lenz) muss bei der Compliance-Dimension des Machbarkeitschecks konsultiert werden',
+      'Die Compliance-Dimension muss erst unmittelbar vor Go-Live geprüft werden',
+      'Der Machbarkeitscheck ist ausschließlich Aufgabe der IT-Abteilung'
+    ],
+    correct: [0,1],
+    exp: 'KI-Manager:in koordiniert und verantwortet den Machbarkeitscheck ✓. Dr. Lenz ist bei Compliance (DSGVO, EU AI Act) zwingend Consulted ✓. Compliance MUSS vor dem Budget-Commitment geprüft werden, nicht erst vor Go-Live. Der Machbarkeitscheck ist eine Cross-funktionale Aufgabe.',
+    src: 'KIM Tag 3 HandOut · Machbarkeitscheck · Rollen'
+  },
+  {
+    q: 'Welches Muster zeigt die Mendelow-Matrix für SolidFinanz UC-A — und was folgt daraus?',
+    opts: [
+      'Es gibt drei Q1-Stakeholder (Dr. Hofer, Betriebsrat, IT-Leitung) — das ist außergewöhnlich viele und erfordert intensive Koordination',
+      'Neumann ist formal Q3, kann aber durch aktiven Widerstand zu Q1 werden — das macht ihn zum kritischsten Stakeholder',
+      'Q2-Stakeholder (Vorstand, CISO) dürfen nach der Einordnung ignoriert werden, da ihr Interesse niedrig ist',
+      'Die Mendelow-Einordnung ist statisch — sie verändert sich während des Projektverlaufs nicht'
+    ],
+    correct: [0,1],
+    exp: 'Mehrere Q1-Stakeholder gleichzeitig sind anspruchsvoll — intensive Steuerungsarbeit nötig ✓. Neumann als potenzieller Q1 ist das zentrale Managementrisiko bei UC-A ✓. Q2-Stakeholder werden zufriedengestellt, nicht ignoriert. Die Matrix ist dynamisch — Stakeholder wechseln Quadranten (z.B. Betriebsrat kann von Q2 zu Q1 springen).',
     src: 'KIM Tag 3 HandOut · Mendelow-Matrix SolidFinanz'
   },
   {
-    q: 'Als Projektleiterin bereiten Sie das Stage-1-Audit für ISO 42001 vor. Welche Nachweise sind für die Rollenklarheit relevant?',
+    q: 'Sie bereiten die Präsentation der Use-Case-Bewertung für Dr. Hofer vor. Welche Aussagen zur Priorisierungsempfehlung sind korrekt?',
     opts: [
-      'Schriftliche Rollenbeschreibungen für KI-Beauftragten, KI-Manager:in und KI-Auditor:in nach ISO 42001 Kl. 5.3',
-      'Nachweise, dass die Rollen kommuniziert und verstanden wurden — z. B. Schulungsdokumentation',
-      'Mündliche Bestätigung der Geschäftsführung, dass alle Rollen bekannt sind',
-      'RACI-Matrix für die wesentlichen KI-Governance-Aufgaben, inklusive Eskalationswegen'
+      'UC-A (Kredit-Scoring) sollte als strategisches Projekt gestartet werden — nicht als sofortiger Quick Win',
+      'UC-C (Support-Chatbot) eignet sich als paralleler Quick Win: niedriger Effort, schnelle Sichtbarkeit, kein Hochrisiko',
+      'UC-B (Betrugserkennung) sollte vor UC-A gestartet werden, da das Verlustpräventionspotenzial höher ist',
+      'UC-A hat hohen regulatorischen Handlungsdruck (BaFin, EU AI Act) — das erhöht seinen strategischen Impact'
+    ],
+    correct: [0,1,3],
+    exp: 'UC-A ist strategisches Projekt, kein Quick Win (6+ Monate, regulatorische Prüfung) ✓. UC-C als Quick Win parallel starten ✓. UC-B hat hohen Impact, aber auch hohen Effort (neues System, Echtzeit) — es kommt nach UC-A. UC-As regulatorischer Handlungsdruck erhöht seinen strategischen Wert ✓.',
+    src: 'KIM Tag 3 HandOut · Priorisierung'
+  },
+  {
+    q: 'Welche Aussagen zur Verbindung zwischen Use-Case-Canvas und dem KI-Anwendungsfall-Steckbrief sind korrekt?',
+    opts: [
+      'Canvas-Felder ①②⑦⑨ liefern den Hauptinhalt für Steckbrief-Abschnitt 1 (Anwendungsfall-Übersicht)',
+      'Canvas-Felder ③④⑧ liefern den Hauptinhalt für Steckbrief-Abschnitt 2 (KI-System-Profil)',
+      'Der Canvas und der Steckbrief sind voneinander unabhängige Werkzeuge mit völlig verschiedenen Zwecken',
+      'Der Steckbrief-Abschnitt 4 (Geschäftlicher Mehrwert) entspricht Canvas-Feld ⑤ (Nutzen)'
     ],
     correct: [0,1],
-    exp: 'ISO 42001 Kl. 5.3 fordert: schriftliche Rollenzuweisung + kommuniziert + verstanden. Schriftliche Beschreibungen und Kommunikationsnachweise (Schulung) sind prüfungsrelevant. Mündliche Bestätigung reicht nicht — Dokumente sind Pflicht. Eine RACI-Matrix ergänzt, ist aber nicht explizit gefordert.',
-    src: 'KIM Tag 3 HandOut · ISO 42001 Kl. 5.3'
-  },
-  {
-    q: 'Welches Einbindungsmodell für die KI-Manager:in ist für SolidFinanz am sinnvollsten?',
-    opts: [
-      'Stabsstelle direkt bei Dr. Hofer: Unabhängigkeit, direkte GF-Anbindung, kann CISO/DSB/Fachbereich koordinieren ohne Weisungsgebundenheit',
-      'Linienfunktion unter CISO Kern: Direkter Infrastrukturzugang, enge Abstimmung bei Sicherheitsfragen',
-      'Linienfunktion unter Neumann (Kreditabteilung): Enge Verbindung zum Hauptanwendungsbereich',
-      'Matrix-Funktion ohne feste Zuordnung: Maximale Flexibilität'
-    ],
-    correct: [0],
-    exp: 'Stabsstelle bei Dr. Hofer ist für SolidFinanz die stärkste Variante: Unabhängigkeit von IT und Fachbereich, direkte Eskalationsmöglichkeit, Sichtbarkeit beim Vorstand. Linienfunktion unter CISO schränkt Unabhängigkeit gegenüber IT-Entscheidungen ein. Linienfunktion unter Neumann wäre problematisch (Fachbereich = 1. Linie). Matrix ohne Weisungsbefugnis ist oft wirkungslos.',
-    src: 'KIM Tag 3 HandOut · Einbindungsmodelle'
-  },
-  {
-    q: 'Sie koordinieren den § 87 BetrVG-Prozess für UC-A. Welche Aussagen sind korrekt?',
-    opts: [
-      'Der Betriebsrat muss vor dem Projektstart eingebunden werden, nicht erst nach der Implementierung',
-      'Das Kredit-Scoring-System fällt unter § 87 Abs. 1 Nr. 6 BetrVG, wenn es Override-Entscheidungen der Sachbearbeiter:innen protokolliert',
-      'Eine Betriebsvereinbarung ist erforderlich, bevor das System produktiv gesetzt werden darf',
-      'Der Betriebsrat kann das KI-System grundsätzlich blockieren — ein Widerspruchsrecht ist gesetzlich nicht vorgesehen'
-    ],
-    correct: [0,1,2],
-    exp: 'Betriebsrat VOR Projektbeginn einbinden ✓. Override-Protokollierung löst § 87 Abs. 1 Nr. 6 aus ✓. Betriebsvereinbarung vor Go-Live ✓. Das BetrVG gibt dem Betriebsrat kein absolutes Vetorecht — bei Nichteinigung gibt es Einigungsstelle (§ 76 BetrVG). „Grundsätzlich blockieren" ist daher falsch.',
-    src: 'KIM Tag 3 HandOut · § 87 BetrVG'
-  },
-  {
-    q: 'Der Machbarkeitscheck für UC-A zeigt: Die Trainingsdaten sind 3 Jahre alt und enthalten möglicherweise Bias gegenüber bestimmten Postleitzahlen. Welche Maßnahmen sind korrekt?',
-    opts: [
-      'Eine Bias-Analyse der historischen Kreditentscheidungen durchführen, bevor das Modell trainiert wird',
-      'Die Daten sind 3 Jahre alt — das Modell wird deshalb automatisch veraltet und muss erst neu trainiert werden',
-      'EU AI Act Art. 10 fordert, dass Trainingsdaten für Hochrisiko-KI repräsentativ, fehlerfrei und vollständig sein müssen',
-      'Die DSB einbeziehen, da Postleitzahlen als Proxy für ethnische Zugehörigkeit diskriminierungsrelevant sein können'
-    ],
-    correct: [0,2,3],
-    exp: 'Bias-Analyse vor Training ist zwingend. EU AI Act Art. 10 verlangt repräsentative und fehlerfreie Trainingsdaten für Hochrisiko-KI. Postleitzahl als Ethnizitäts-Proxy ist ein bekanntes Diskriminierungsrisiko — DSB muss einbezogen werden. Veraltete Daten bedeuten nicht automatisch Neutraining — zuerst Qualitätsprüfung, dann Entscheidung.',
-    src: 'KIM Tag 3 HandOut · Datenverfügbarkeit · EU AI Act Art. 10'
+    exp: 'Canvas → Steckbrief: Feld ① (Prozess) → Abschn. 1 Prozessbeschreibung; Feld ② (Problem) → Abschn. 1 Problemstellung; Feld ③ (KI-Typ) → Abschn. 2 KI-System-Typ; Feld ④ (Daten) → Abschn. 2 Datenquellen ✓. Canvas und Steckbrief sind komplementär, nicht unabhängig. Abschnitt 4 (Mehrwert) entspricht Feld ⑤ + quantifiziertem ROI.',
+    src: 'KIM Tag 3 HandOut · Canvas und Steckbrief'
   }
 ]
 
