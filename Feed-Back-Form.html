@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>3-W-Feedback</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --w1: #1a3a2a;
+      --w2: #2c4a5a;
+      --w3: #3a2a4a;
+      --cream: #f5f0e8;
+      --ink: #1a1a1a;
+      --muted: #6b6560;
+      --radius: 4px;
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--cream);
+      color: var(--ink);
+      min-height: 100vh;
+      padding: 2rem 1rem 4rem;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 3rem;
+      animation: fadeDown 0.7s ease both;
+    }
+
+    header h1 {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+      color: var(--ink);
+    }
+
+    header h1 em {
+      font-style: italic;
+      color: var(--w1);
+    }
+
+    header p.subtitle {
+      margin-top: 0.75rem;
+      font-size: 0.95rem;
+      color: var(--muted);
+      font-weight: 300;
+      max-width: 520px;
+      margin-inline: auto;
+      line-height: 1.6;
+    }
+
+    header p.subtitle a {
+      color: var(--w2);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+      max-width: 1100px;
+      margin: 0 auto 2.5rem;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+      display: flex;
+      flex-direction: column;
+      animation: fadeUp 0.6s ease both;
+    }
+    .card:nth-child(1) { animation-delay: 0.1s; }
+    .card:nth-child(2) { animation-delay: 0.2s; }
+    .card:nth-child(3) { animation-delay: 0.3s; }
+
+    .card-header {
+      padding: 1.4rem 1.5rem 1rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+    }
+
+    .card:nth-child(1) .card-header { background: var(--w1); }
+    .card:nth-child(2) .card-header { background: var(--w2); }
+    .card:nth-child(3) .card-header { background: var(--w3); }
+
+    .card-num {
+      font-family: 'DM Serif Display', serif;
+      font-size: 2.4rem;
+      color: rgba(255,255,255,0.25);
+      line-height: 1;
+      flex-shrink: 0;
+      margin-top: -4px;
+    }
+
+    .card-title-block {}
+
+    .card-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.55rem;
+      color: #fff;
+      letter-spacing: -0.01em;
+    }
+
+    .card-prompt {
+      margin-top: 0.3rem;
+      font-size: 0.78rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: rgba(255,255,255,0.6);
+    }
+
+    .card-body {
+      padding: 1.2rem 1.5rem;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 0.9rem;
+    }
+
+    .card-desc {
+      font-size: 0.88rem;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    .card-desc strong {
+      color: var(--ink);
+      font-weight: 500;
+    }
+
+    .card-desc a {
+      color: var(--w2);
+      text-decoration: underline;
+      text-underline-offset: 2px;
+      font-size: 0.82rem;
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 130px;
+      border: 1.5px solid #e0dbd4;
+      border-radius: var(--radius);
+      padding: 0.85rem 1rem;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.92rem;
+      color: var(--ink);
+      background: #faf8f4;
+      resize: vertical;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      line-height: 1.6;
+    }
+
+    textarea:focus {
+      outline: none;
+      border-color: var(--w2);
+      box-shadow: 0 0 0 3px rgba(44,74,90,0.1);
+      background: #fff;
+    }
+
+    .card:nth-child(1) textarea:focus { border-color: var(--w1); box-shadow: 0 0 0 3px rgba(26,58,42,0.1); }
+    .card:nth-child(3) textarea:focus { border-color: var(--w3); box-shadow: 0 0 0 3px rgba(58,42,74,0.1); }
+
+    .actions {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      animation: fadeUp 0.6s ease 0.5s both;
+    }
+
+    button {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 500;
+      padding: 0.75rem 2rem;
+      border-radius: var(--radius);
+      cursor: pointer;
+      transition: all 0.2s;
+      border: none;
+    }
+
+    .btn-print {
+      background: var(--ink);
+      color: #fff;
+    }
+    .btn-print:hover { background: #333; transform: translateY(-1px); }
+
+    .btn-clear {
+      background: transparent;
+      color: var(--muted);
+      border: 1.5px solid #ccc;
+    }
+    .btn-clear:hover { border-color: var(--ink); color: var(--ink); }
+
+    .btn-copy {
+      background: var(--w2);
+      color: #fff;
+    }
+    .btn-copy:hover { background: #1e3545; transform: translateY(-1px); }
+
+    .toast {
+      position: fixed;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: var(--ink);
+      color: #fff;
+      padding: 0.6rem 1.4rem;
+      border-radius: 100px;
+      font-size: 0.85rem;
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.3s ease;
+    }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+    footer {
+      text-align: center;
+      margin-top: 3rem;
+      font-size: 0.78rem;
+      color: #aaa;
+      animation: fadeUp 0.6s ease 0.6s both;
+    }
+    footer a { color: #aaa; }
+
+    @keyframes fadeDown {
+      from { opacity: 0; transform: translateY(-16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @media print {
+      body { background: #fff; padding: 1rem; }
+      header p.subtitle, .actions, footer, .card-desc a { display: none; }
+      .cards { gap: 1rem; }
+      .card { box-shadow: none; border: 1px solid #ddd; page-break-inside: avoid; }
+      textarea { border: 1px solid #ccc; background: #fff; min-height: 160px; }
+      button { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Feedback nach dem <em>3-W-Modell</em></h1>
+  <p class="subtitle">
+    Strukturiertes Feedback — Wahrnehmung, Wirkung, Wunsch.<br/>
+    Basierend auf dem <a href="https://www.ccl.org/articles/leading-effectively-articles/closing-the-gap-between-intent-vs-impact-sbii/" target="_blank">SBI-Framework des Center for Creative Leadership</a> und der <a href="https://www.gewaltfreie-kommunikation.de/themen/die-vier-schritte-der-gfk/" target="_blank">Gewaltfreien Kommunikation (GFK) nach M. Rosenberg</a>.
+  </p>
+</header>
+
+<div class="cards">
+
+  <div class="card">
+    <div class="card-header">
+      <div class="card-num">1</div>
+      <div class="card-title-block">
+        <div class="card-title">Wahrnehmung</div>
+        <div class="card-prompt">Was habe ich beobachtet?</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <p class="card-desc">
+        Beschreibe <strong>konkret und wertungsfrei</strong>, was du gesehen, gehört oder erlebt hast — ohne Interpretation oder Bewertung. Die Wahrnehmung entspricht dem <em>Behavior</em> im <a href="https://www.ccl.org/articles/leading-effectively-articles/closing-the-gap-between-intent-vs-impact-sbii/" target="_blank">SBI-Modell des CCL</a>.<br/>
+        <em>Beispiel: „Ich habe bemerkt, dass du während der Übung mehrfach nachgefragt hast …"</em>
+      </p>
+      <textarea id="w1" placeholder="Was genau habe ich wahrgenommen? (Fakten, keine Bewertung)"></textarea>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <div class="card-num">2</div>
+      <div class="card-title-block">
+        <div class="card-title">Wirkung</div>
+        <div class="card-prompt">Wie hat es auf mich gewirkt?</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <p class="card-desc">
+        Formuliere als <strong>Ich-Botschaft</strong>, welche Wirkung das Beobachtete auf dich hatte — emotional oder inhaltlich. Dies entspricht dem <em>Impact</em> im SBI-Modell und dem <em>Gefühl</em> in der <a href="https://www.gewaltfreie-kommunikation.de/themen/die-vier-schritte-der-gfk/" target="_blank">GFK nach Rosenberg</a>.<br/>
+        <em>Beispiel: „Das hat mich gefreut, weil es zeigt, dass du aktiv mitdenkst …"</em>
+      </p>
+      <textarea id="w2" placeholder="Wie hat mich das berührt, überrascht oder beeinflusst? (Ich-Botschaft)"></textarea>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <div class="card-num">3</div>
+      <div class="card-title-block">
+        <div class="card-title">Wunsch</div>
+        <div class="card-prompt">Was wünsche ich mir künftig?</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <p class="card-desc">
+        Formuliere <strong>konstruktiv und konkret</strong>, was du dir für die Zukunft wünschst — positiv und handlungsorientiert. Entspricht der <em>Bitte</em> in der GFK: umsetzbar, spezifisch, nicht fordernd. Vgl. <a href="https://www.rosenbergnvc.com/nvc-model" target="_blank">Rosenberg NVC Model</a>.<br/>
+        <em>Beispiel: „Ich würde mir wünschen, dass wir bei der nächsten Übung … ausprobieren."</em>
+      </p>
+      <textarea id="w3" placeholder="Was wünsche ich mir für die nächste Situation? (konkret, positiv formuliert)"></textarea>
+    </div>
+  </div>
+
+</div>
+
+<div class="actions">
+  <button class="btn-print" onclick="window.print()">🖨 Drucken / Als PDF speichern</button>
+  <button class="btn-copy" onclick="copyText()">📋 Text kopieren</button>
+  <button class="btn-clear" onclick="clearAll()">✕ Felder leeren</button>
+</div>
+
+<footer>
+  3-W-Modell · Feedback-Tool · Quellen:
+  <a href="https://www.ccl.org/articles/leading-effectively-articles/closing-the-gap-between-intent-vs-impact-sbii/" target="_blank">CCL / SBI-Modell</a> ·
+  <a href="https://www.gewaltfreie-kommunikation.de/themen/die-vier-schritte-der-gfk/" target="_blank">GFK nach Rosenberg</a>
+</footer>
+
+<div class="toast" id="toast">Text kopiert ✓</div>
+
+<script>
+  function clearAll() {
+    if (confirm('Alle Felder leeren?')) {
+      ['w1','w2','w3'].forEach(id => document.getElementById(id).value = '');
+    }
+  }
+
+  function copyText() {
+    const labels = ['WAHRNEHMUNG', 'WIRKUNG', 'WUNSCH'];
+    const ids = ['w1','w2','w3'];
+    const text = ids.map((id, i) => {
+      const val = document.getElementById(id).value.trim();
+      return `${labels[i]}:\n${val || '(leer)'}`;
+    }).join('\n\n');
+
+    navigator.clipboard.writeText(text).then(() => {
+      const t = document.getElementById('toast');
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 2500);
+    });
+  }
+</script>
+
+</body>
+</html>
