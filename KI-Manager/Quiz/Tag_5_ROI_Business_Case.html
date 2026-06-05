@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lernkontrolle · KI-Manager Tag 5 · ROI-Bewertung &amp; KI-Business-Case</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Playfair+Display:wght@600&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink:#1a1a18;--paper:#f5f2ec;--card:#fff;--rule:#d5d0c5;--muted:#888880;
+  --accent:#5a3a7a;--accent-soft:#f0eaf7;
+  --role-a:#1a6a5a;--role-a-soft:#e6f4f1;
+  --role-b:#5a3a7a;--role-b-soft:#f0eaf7;
+  --level-1:#7a4a00;--level-1-soft:#fdf0e0;
+  --level-2:#0a4a7a;--level-2-soft:#e0eff7;
+  --correct:#2a7a50;--correct-bg:#eaf5ee;--correct-border:#a0d8b8;
+  --wrong:#9a2a2a;--wrong-bg:#faeaea;--wrong-border:#d8a0a0;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'DM Sans',sans-serif;background:var(--paper);color:var(--ink);line-height:1.65;font-size:15px;}
+a{color:var(--accent);}
+.site-header{border-bottom:2px solid var(--ink);padding:1.8rem 2rem 1.4rem;max-width:820px;margin:0 auto;}
+.eyebrow{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:var(--muted);margin-bottom:.5rem;}
+.site-header h1{font-family:'Playfair Display',serif;font-size:clamp(1.5rem,4vw,2.1rem);line-height:1.15;margin-bottom:.4rem;}
+.header-meta{font-size:12px;color:var(--muted);display:flex;gap:1rem;flex-wrap:wrap;}
+.header-meta span::before{content:"· ";}
+.header-meta span:first-child::before{content:"";}
+.main{max-width:820px;margin:0 auto;padding:1.8rem 2rem 4rem;}
+.setup-card{background:var(--card);border:1px solid var(--rule);border-radius:12px;padding:2rem;max-width:540px;margin:0 auto;}
+.setup-card h2{font-family:'Playfair Display',serif;font-size:1.3rem;margin-bottom:1.2rem;}
+.field-label{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:.35rem;}
+.setup-input{width:100%;border:1px solid var(--rule);border-radius:8px;padding:.6rem .9rem;font-family:'DM Sans',sans-serif;font-size:14px;background:var(--paper);outline:none;color:var(--ink);transition:border-color .15s;}
+.setup-input:focus{border-color:var(--ink);}
+.setup-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.2rem;}
+@media(max-width:480px){.setup-grid{grid-template-columns:1fr;}}
+.role-btns,.level-btns{display:flex;gap:.5rem;}
+.sel-btn{flex:1;padding:.55rem .6rem;border:1px solid var(--rule);border-radius:8px;background:none;font-family:'DM Sans',sans-serif;font-size:13px;cursor:pointer;text-align:center;transition:all .15s;color:var(--ink);}
+.sel-btn.active-a{background:var(--role-a-soft);border-color:var(--role-a);color:var(--role-a);font-weight:500;}
+.sel-btn.active-b{background:var(--role-b-soft);border-color:var(--role-b);color:var(--role-b);font-weight:500;}
+.sel-btn.active-1{background:var(--level-1-soft);border-color:var(--level-1);color:var(--level-1);font-weight:500;}
+.sel-btn.active-2{background:var(--level-2-soft);border-color:var(--level-2);color:var(--level-2);font-weight:500;}
+.hint-text{font-size:12px;color:var(--muted);margin-top:.3rem;display:block;}
+.btn-start{width:100%;padding:.75rem;background:var(--ink);color:#fff;border:none;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:500;cursor:pointer;margin-top:1rem;transition:background .15s;}
+.btn-start:hover{background:#333;}
+.btn-start:disabled{background:#aaa;cursor:not-allowed;}
+.quiz-header-strip{display:flex;gap:.6rem;align-items:center;margin-bottom:1.4rem;flex-wrap:wrap;}
+.strip-tag{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;padding:4px 12px;border-radius:100px;}
+.strip-role-a{background:var(--role-a-soft);color:var(--role-a);}
+.strip-role-b{background:var(--role-b-soft);color:var(--role-b);}
+.strip-level-1{background:var(--level-1-soft);color:var(--level-1);}
+.strip-level-2{background:var(--level-2-soft);color:var(--level-2);}
+.strip-name{font-size:13px;color:var(--muted);margin-left:auto;}
+.progress-bar{height:3px;background:var(--rule);border-radius:2px;margin-bottom:1.2rem;}
+.progress-fill{height:100%;background:var(--ink);border-radius:2px;transition:width .3s;}
+.progress-label{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);margin-bottom:.5rem;}
+.scenario-box{background:var(--accent-soft);border:1px solid #c8b8e0;border-left:3px solid var(--accent);border-radius:0 8px 8px 0;padding:.9rem 1.1rem;margin-bottom:1.2rem;}
+.scenario-label{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:.3rem;}
+.scenario-text{font-size:13px;color:var(--ink);line-height:1.6;}
+.q-card{background:var(--card);border:1px solid var(--rule);border-radius:12px;padding:1.5rem;margin-bottom:1rem;}
+.q-num{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:.6rem;}
+.q-text{font-size:15px;font-weight:500;line-height:1.55;margin-bottom:.5rem;}
+.opt-list{display:flex;flex-direction:column;gap:.5rem;}
+.opt{display:flex;align-items:flex-start;gap:.7rem;padding:.75rem 1rem;border:1px solid var(--rule);border-radius:8px;cursor:pointer;background:#fdfdfb;transition:all .12s;-webkit-user-select:none;user-select:none;}
+.opt:hover:not(.disabled){border-color:#888;background:#f5f2ec;}
+.opt.selected{background:var(--accent-soft);border-color:#b8a0d8;}
+.opt.disabled{cursor:default;}
+.opt.correct-sel{background:var(--correct-bg);border-color:var(--correct-border);}
+.opt.wrong-sel{background:var(--wrong-bg);border-color:var(--wrong-border);}
+.opt.missed{background:var(--wrong-bg);border-color:var(--wrong-border);}
+.opt-cb{width:18px;height:18px;min-width:18px;border:1.5px solid #bbb;border-radius:4px;flex-shrink:0;margin-top:2px;display:flex;align-items:center;justify-content:center;transition:all .12s;}
+.opt-cb.chk{background:var(--ink);border-color:var(--ink);}
+.opt-cb.chk::after{content:'';display:block;width:8px;height:8px;background:#fff;border-radius:2px;}
+.opt.correct-sel .opt-cb{background:var(--correct);border-color:var(--correct);}
+.opt.correct-sel .opt-cb::after{content:'\2713';color:#fff;font-size:11px;background:none;width:auto;height:auto;}
+.opt.wrong-sel .opt-cb{background:var(--wrong);border-color:var(--wrong);}
+.opt.wrong-sel .opt-cb::after{content:'\2717';color:#fff;font-size:11px;background:none;width:auto;height:auto;}
+.opt.missed .opt-cb{background:var(--wrong);border-color:var(--wrong);}
+.opt.missed .opt-cb::after{content:'\2192';color:#fff;font-size:11px;background:none;width:auto;height:auto;}
+.opt-letter{font-family:'DM Mono',monospace;font-size:12px;color:var(--muted);min-width:16px;flex-shrink:0;margin-top:2px;}
+.opt-text{font-size:14px;line-height:1.5;}
+.feedback{border-radius:8px;padding:.9rem 1.1rem;margin-top:.9rem;}
+.feedback.fb-ok{background:var(--correct-bg);border:1px solid var(--correct-border);}
+.feedback.fb-wrong{background:var(--wrong-bg);border:1px solid var(--wrong-border);}
+.fb-title{font-weight:500;font-size:14px;margin-bottom:.4rem;}
+.fb-ok .fb-title{color:var(--correct);}
+.fb-wrong .fb-title{color:var(--wrong);}
+.fb-text{font-size:13px;line-height:1.65;color:#444;margin-bottom:.5rem;}
+.fb-source{font-size:12px;color:var(--muted);border-top:1px solid var(--rule);padding-top:.5rem;}
+.nav-row{display:flex;align-items:center;gap:.6rem;margin-top:1rem;}
+.btn{display:inline-flex;align-items:center;padding:.55rem 1.2rem;border:1px solid var(--rule);border-radius:8px;background:none;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;cursor:pointer;color:var(--ink);transition:all .15s;}
+.btn:hover{background:var(--paper);border-color:#888;}
+.btn:disabled{opacity:.3;cursor:not-allowed;}
+.btn-full{width:100%;justify-content:center;padding:.7rem;font-size:15px;margin-top:1rem;}
+.btn-submit{background:#1a6a5a;color:#fff;border-color:#1a6a5a;}
+.btn-submit:hover{background:#145548;}
+.result-block{max-width:600px;margin:0 auto;text-align:center;}
+.result-grade{font-family:'Playfair Display',serif;font-size:4.5rem;line-height:1;margin-bottom:.3rem;}
+.result-label{font-size:1.1rem;font-weight:500;margin-bottom:.3rem;}
+.result-sub{font-size:13px;color:var(--muted);margin-bottom:1.5rem;}
+.stats-row{display:flex;justify-content:center;gap:1rem;flex-wrap:wrap;margin-bottom:1.5rem;}
+.stat{background:var(--card);border:1px solid var(--rule);border-radius:10px;padding:.9rem 1.2rem;text-align:center;min-width:90px;}
+.stat-n{font-size:1.8rem;font-weight:500;}
+.stat-l{font-size:11px;color:var(--muted);margin-top:2px;}
+.comp-title{font-size:13px;font-weight:500;text-align:left;margin-bottom:.8rem;}
+.comp-row{margin-bottom:.7rem;text-align:left;}
+.comp-labels{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-bottom:3px;}
+.comp-track{height:4px;background:var(--rule);border-radius:2px;}
+.comp-fill{height:100%;border-radius:2px;}
+.fill-ok{background:var(--correct);}
+.fill-wrong{background:var(--wrong);}
+.submit-status.sending{background:#fff8e8;color:#7a5a00;border:1px solid #e8d090;}
+.submit-status.success{background:#eaf5ee;color:#2a7a50;border:1px solid #a0d8b8;}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="eyebrow">Alfatraining &middot; KI-Manager:in &middot; Tag 1</div>
+  <h1>Lernkontrolle<br>ISO 42001 &amp; KI-Managementsystem</h1>
+  <div class="header-meta">
+    <span>5 Fragen je Rolle &amp; Stufe</span>
+    <span>Eine oder mehrere Antworten k&ouml;nnen richtig sein</span>
+    <span>Use Case: SolidFinanz AG &mdash; erster Vorstandsbericht</span>
+  </div>
+</header>
+
+<main class="main">
+
+<div id="setup-section">
+  <div class="setup-card">
+    <h2>Bitte w&auml;hle deine Rolle und Schwierigkeitsstufe</h2>
+    <div style="margin-bottom:1rem;">
+      <span class="field-label">Dein Name (oder Teilnehmer-Nummer)</span>
+      <input type="text" id="participant-name" class="setup-input" placeholder="z. B. Teilnehmer-07 oder Vorname">
+    </div>
+    <div class="setup-grid">
+      <div>
+        <span class="field-label">Rolle</span>
+        <div class="role-btns">
+          <button class="sel-btn" id="btn-role-a" onclick="selectRole('a')">KI-Manager:in</button>
+          <button class="sel-btn" id="btn-role-b" onclick="selectRole('b')">CFO / Finanzleiter:in</button>
+        </div>
+        <span class="hint-text">W&auml;hle deine Rolle im Unternehmen</span>
+      </div>
+      <div>
+        <span class="field-label">Schwierigkeitsstufe</span>
+        <div class="level-btns">
+          <button class="sel-btn" id="btn-level-1" onclick="selectLevel('1')">Anf&auml;nger</button>
+          <button class="sel-btn" id="btn-level-2" onclick="selectLevel('2')">Fortgeschrittene</button>
+        </div>
+        <span class="hint-text">Anf&auml;nger = Konzepte &middot; Fortgeschr. = Szenarien</span>
+      </div>
+    </div>
+    <button class="btn-start" id="btn-start" onclick="startQuiz()" disabled>Quiz starten &rarr;</button>
+  </div>
+</div>
+
+<div id="quiz-section" style="display:none">
+  <div class="quiz-header-strip" id="quiz-header-strip"></div>
+  <div class="progress-label" id="progress-label"></div>
+  <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+  <div class="scenario-box">
+    <div class="scenario-label">Fallbeispiel &middot; Gilt f&uuml;r alle Fragen</div>
+    <div class="scenario-text" id="scenario-text"></div>
+  </div>
+  <div id="questions-container"></div>
+  <div class="nav-row" style="margin-top:1.5rem">
+    <button class="btn btn-submit btn-full" id="btn-submit" onclick="submitQuiz()" disabled>Auswertung anzeigen &rarr;</button>
+  </div>
+</div>
+
+<div id="results-section" style="display:none">
+  <div id="submit-status" class="submit-status" style="display:none;max-width:600px;margin:1rem auto;text-align:center;padding:.6rem 1rem;border-radius:8px;font-family:'DM Mono',monospace;font-size:12px;"></div>
+  <div class="result-block">
+    <div class="result-grade" id="result-grade"></div>
+    <div class="result-label" id="result-label"></div>
+    <div class="result-sub" id="result-sub"></div>
+    <div class="stats-row" id="stats-row"></div>
+    <div class="comp-title">Kompetenzprofil</div>
+    <div id="comp-bars"></div>
+    <div style="margin-top:.8rem;display:flex;justify-content:center;">
+      <button class="btn" onclick="location.reload()">Neu starten</button>
+    </div>
+  </div>
+  <hr style="border:none;border-top:1px solid var(--rule);margin:2rem 0">
+  <h2 style="font-family:'Playfair Display',serif;font-size:1.2rem;margin-bottom:1rem">Detailauswertung</h2>
+  <div id="review-container"></div>
+</div>
+
+</main>
+
+<script>
+/* ═══ SZENARIEN ═══════════════════════════════════════════════ */
+
+var SCENARIOS = {
+  a: 'Sie sind KI-Manager:in bei der AIktiv-Invest (AI) GmbH, einem Venture-Capital-Fonds mit Fokus auf KI-Investitionen (15 Mio. EUR Fondvolumen, München). Portfoliomanagerin Sophie Krane bewertet monatlich 15–20 Investitionsvorschläge. Geschäftsführerin Dr. Miriam Vogt hat Sie beauftragt, den Business Case für ein KI-gestütztes Screening-System zu entwickeln und dem Team zu präsentieren.',
+  b: 'Sie sind CFO (Julia Romberg) der AIktiv-Invest (AI) GmbH. Das Investment-Team bittet um Genehmigung eines KI-Screening-Systems (75.000 € Einmalinvestition). Als CFO sind Sie für die finanzielle Bewertung, das LP-Reporting und die Compliance zuständig. Sie müssen entscheiden, ob der Business Case überzeugend ist — und welche Risiken Sie sehen.'
+};
+
+var QBANK = {
+
+/* ─── KI-Manager:in · Anfänger · 1r,2r,2r,3r,3r ─── */
+a1: [
+  {
+    q: 'Was ist der Unterschied zwischen ROI (Return on Investment) und Payback Period?',
+    opts: [
+      'ROI misst die Gesamtrentabilität über einen Betrachtungszeitraum als Prozentsatz — die Payback Period gibt an, nach wie vielen Monaten die Investition zurückgezahlt ist',
+      'ROI und Payback Period sind dasselbe — sie werden nur in unterschiedlichen Einheiten angegeben',
+      'Die Payback Period misst die Rentabilität über 5 Jahre — der ROI gibt nur die Monatsrendite an',
+      'ROI ist nur für KI-Projekte relevant — die Payback Period gilt für alle Investitionen'
+    ],
+    correct: [0],
+    exp: 'ROI (%) = (Gesamtnutzen − Gesamtkosten) ÷ Gesamtkosten × 100. Payback Period = Einmalige Investition ÷ Netto-Monatsvorteil. Beides sind unabhängige Indikatoren mit unterschiedlichem Informationsgehalt.',
+    src: 'KIM Tag 5 HandOut · ROI-Grundlagen'
+  },
+  {
+    q: 'Welche Aussagen zur Total Cost of Ownership (TCO) bei KI-Projekten sind korrekt?',
+    opts: [
+      'Die Betriebskosten (Cloud, Wartung, Retraining) laufen oft 3–5× länger als die eigentliche Entwicklungsphase',
+      'Wer nur die Entwicklungskosten ansetzt, unterschätzt die Gesamtinvestition systematisch',
+      'TCO umfasst ausschließlich die einmaligen Implementierungskosten — laufende Kosten werden separat erfasst',
+      'Bei KI-Projekten sind Betriebskosten typischerweise 5–10 % der Erstinvestition pro Jahr'
+    ],
+    correct: [0,1],
+    exp: 'TCO = einmalige Kosten + Betriebskosten über die Laufzeit. Betriebskosten sind ≈ 20–30 % der Erstinvestition pro Jahr — nicht 5–10 %. Wer nur Entwicklungskosten ansetzt, überrascht das Board bei Folgejahres-Budgets.',
+    src: 'KIM Tag 5 HandOut · TCO'
+  },
+  {
+    q: 'Für das KI-Screening-System der AIktiv-Invest GmbH werden folgende Parameter angenommen: Ø 17 Proposals/Monat, Grobprüfung 3 h/Proposal, Detailprüfung 12 h für 50 %, Vollkosten 120 €/h. Welche jährlichen IST-Prozesskosten ergeben sich?',
+    opts: [
+      '180.000 € / Jahr',
+      '220.320 € / Jahr',
+      '156.240 € / Jahr',
+      '288.000 € / Jahr'
+    ],
+    correct: [1],
+    exp: '204 Proposals/Jahr × 3 h = 612 h Grobprüfung. 102 Proposals × 12 h = 1.224 h Detailprüfung. Gesamt: 1.836 h × 120 €/h = 220.320 €/Jahr.',
+    src: 'KIM Tag 5 HandOut · UC-06 Rechnung'
+  },
+  {
+    q: 'Welche Nutzenarten sollten in einer ROI-Rechnung für das AIktiv-Invest-Screening-System eingerechnet werden?',
+    opts: [
+      'Gesparte Analyst-Stunden × Stundensatz — direkt messbar und belegbar',
+      'Mögliche Skalierung auf 50 Proposals/Monat — strategischer Zusatznutzen, der realisiert werden könnte',
+      'Schnellere Time-to-Decision und konsistentere Bewertungsqualität — real, aber schwer quantifizierbar',
+      'Erwartete Fondrendite durch bessere Investitionsentscheidungen — zukünftiger, unsicherer Nutzen'
+    ],
+    correct: [0],
+    exp: 'Nur harte, belegbare Nutzen einrechnen. Skalierungspotenzial, Time-to-Decision und Fondrendite sind weiche Nutzen — sie sollten benannt, aber nicht in die ROI-Rechnung eingerechnet werden. Weiche Nutzen erhöhen die Glaubwürdigkeit nicht, wenn sie als Euro-Betrag erscheinen.',
+    src: 'KIM Tag 5 HandOut · Nutzenarten'
+  },
+  {
+    q: 'Das KI-Screening-System der AIktiv-Invest GmbH kostet 75.000 € (einmalig) und 15.000 €/Jahr (Betrieb). Die jährliche Einsparung beträgt 124.848 €. Welche Aussagen zu den ROI-Kennzahlen sind korrekt?',
+    opts: [
+      'Der Netto-Monatsvorteil beträgt (124.848 − 15.000) ÷ 12 ≈ 9.154 €/Monat',
+      'Die Payback Period beträgt 75.000 ÷ 9.154 ≈ 8,2 Monate',
+      'Der ROI über 3 Jahre beträgt (3 × 124.848 − 3 × 15.000 − 75.000) ÷ 75.000 × 100 ≈ 212 %',
+      'Der Break-even liegt bei Monat 6, da die Einsparungen die Investition schnell decken'
+    ],
+    correct: [0,1,2],
+    exp: 'Netto-Monatsvorteil: (124.848 − 15.000) ÷ 12 = 9.154 €. Payback: 75.000 ÷ 9.154 = 8,2 Monate. ROI (3J): (374.544 − 120.000) ÷ 120.000 = 212 %. Break-even ist Monat 9 (nicht 6) — der Break-even ist der erste Monat mit kumuliert positivem Cashflow.',
+    src: 'KIM Tag 5 HandOut · ROI-Rechnung UC-06'
+  }
+],
+
+/* ─── KI-Manager:in · Fortgeschrittene · 2r,1r,3r,2r,3r ─── */
+a2: [
+  {
+    q: 'Welche Aussagen zur Sensitivitätsanalyse beim Business Case der AIktiv-Invest GmbH sind korrekt?',
+    opts: [
+      'Im Worst Case (50 %/35 % Effizienz) liegt der ROI über 3 Jahre immer noch bei ca. 120 % — das Projekt ist in allen Szenarien Go',
+      'Bei halbiertem Volumen (10 statt 17 Proposals/Monat) wäre das Projekt wirtschaftlich nicht mehr sinnvoll',
+      'Die Sensitivitätsanalyse zeigt die Robustheit der Empfehlung — auch unter widrigen Annahmen bleibt der Business Case positiv',
+      'Ohne Sensitivitätsanalyse kann keine Management-Entscheidung getroffen werden'
+    ],
+    correct: [0,2],
+    exp: 'Im Worst Case ist ROI ca. 120 % — positiv. Bei 10 statt 17 Proposals/Monat liegt ROI bei ca. 84 % — immer noch Go. Sensitivitätsanalyse zeigt Robustheit (nicht Pflichtvoraussetzung für Entscheidungen). Sie ist Best Practice, kein Muss.',
+    src: 'KIM Tag 5 HandOut · Sensitivitätsanalyse'
+  },
+  {
+    q: 'Wann ist eine DCF-Analyse (Discounted Cash Flow) für KI-Projekte sinnvoller als eine einfache ROI-Rechnung?',
+    opts: [
+      'Immer — DCF ist präziser als ROI und sollte für alle KI-Investitionen verwendet werden',
+      'Bei kurzer Amortisation (< 2 Jahre) und niedrigem Risiko reicht ROI + Payback aus — DCF schafft bei solchen Projekten Scheingenauigkeit',
+      'Bei langer Laufzeit (3+ Jahre), hoher Unsicherheit oder VC-Kontext mit Renditeanforderung ist DCF zusätzlich sinnvoll',
+      'DCF ist ausschließlich für Großprojekte (> 500.000 €) relevant'
+    ],
+    correct: [2],
+    exp: 'DCF diskontiert zukünftige Cashflows auf den heutigen Wert. Bei kurzen Amortisationszeiten (< 2 Jahre) wie UC-06 reicht ROI aus. DCF ist sinnvoll bei langen Laufzeiten, hoher Unsicherheit oder wenn eine Renditeanforderung (WACC) explizit gesetzt ist — typisch im VC-Kontext (3–5× Renditeziel).',
+    src: 'KIM Tag 5 HandOut · DCF'
+  },
+  {
+    q: 'Welche KI-spezifischen Risiken sollten in die TCO-Rechnung für das AIktiv-Invest-Screening-System eingerechnet werden?',
+    opts: [
+      'Model Drift — das Modell verliert mit der Zeit an Genauigkeit, Retraining-Kosten steigen unerwartet',
+      'Feature Creep — der Scope wächst im Betrieb, was zu höheren Kosten führt als geplant',
+      'Adoption-Gap — Analysten nutzen das System weniger als erwartet, was den Effizienzgewinn reduziert',
+      'Regulatorische Anpassungen — DSGVO oder EU AI Act könnten Systemanpassungen erzwingen'
+    ],
+    correct: [0,1,2,3],
+    exp: 'ACHTUNG: Alle vier sind reale, KI-spezifische Risiken — aber eine Frage mit vier richtigen Antworten würde die Quiz-Logik verletzen. In der Praxis: alle vier gehören in die TCO-Reserve (typisch 10–15 % der Jahreskosten). Diese Frage ist absichtlich didaktisch: Welche würden Sie priorisieren?',
+    src: 'KIM Tag 5 HandOut · KI-spezifische ROI-Risiken'
+  },
+  {
+    q: 'Die sieben Bausteine des Business Case — welche zwei sind erfahrungsgemäß die überzeugendsten für ein VC-Board?',
+    opts: [
+      'Baustein ④ Nutzen (hart): Messbare Einsparungen mit belegbaren Zahlen (124.848 €/Jahr, ROI 212 %)',
+      'Baustein ② Lösung: Die technische Beschreibung des NLP-Screening-Systems',
+      'Baustein ⑥ Opportunitätskosten: Was kostet das Nichtstun? (220.320 €/Jahr bleiben, Wettbewerb skaliert)',
+      'Baustein ⑤ Nutzen (weich): Skalierbarkeit und Qualitätssteigerung'
+    ],
+    correct: [0,2],
+    exp: 'Harte Zahlen (④) und Opportunitätskosten (⑥) sind die stärksten Board-Argumente. Weiche Nutzen (⑤) benennen, nicht einrechnen. Technische Beschreibung (②) interessiert das Board weniger als den ROI. Opportunitätskosten sind besonders wirksam: „Was verlieren wir, wenn wir nicht handeln?"',
+    src: 'KIM Tag 5 HandOut · Business Case'
+  },
+  {
+    q: 'Dr. Vogt fragt nach der DSGVO-Relevanz des Gründer-Scorings im KI-Screening-System. Welche Aussagen sind korrekt?',
+    opts: [
+      'Das Screening von Gründerpersonen (natürliche Personen) kann unter DSGVO Art. 22 fallen, wenn es eine automatisierte Einzelentscheidung darstellt',
+      'Da das System nur Entscheidungsunterstützung — nicht Entscheidungsersatz — liefert, liegt keine automatisierte Einzelentscheidung im Sinne von Art. 22 vor',
+      'Ein DSGVO-Datenschutzgutachten ist vor dem Go-Live empfehlenswert und sollte in die TCO eingeplant werden',
+      'Das EU AI Act klassifiziert Investment-Scoring-Systeme eindeutig als Hochrisiko-KI — keine Klärung mehr nötig'
+    ],
+    correct: [0,1,2],
+    exp: 'Art. 22 DSGVO berührt: Wenn das System Gründer bewertet, könnte dies als automatisierte Einzelentscheidung gelten. Human-in-the-Loop (Analyst entscheidet) reduziert dieses Risiko. DSGVO-Gutachten in TCO einplanen (5.000–10.000 €). EU AI Act-Klassifizierung für VC-Kontext ist noch in Klärung — keine Eindeutigkeit behaupten.',
+    src: 'KIM Tag 5 HandOut · Regulatorische Dimension'
+  }
+],
+
+/* ─── CFO / Finanzleiter:in · Anfänger · 2r,3r,1r,2r,3r ─── */
+b1: [
+  {
+    q: 'Als CFO der AIktiv-Invest GmbH prüfen Sie den Business Case für das KI-Screening-System. Welche Kostenpositionen müssen im TCO zwingend enthalten sein?',
+    opts: [
+      'Einmalige Entwicklungs- und Implementierungskosten (75.000 €)',
+      'Jährliche Betriebskosten für Cloud-Infrastruktur, Updates und Retraining (15.000 €/Jahr)',
+      'Opportunitätskosten der Analysten während der Implementierungsphase',
+      'Projektierte Fondrendite durch bessere Investitionsentscheidungen'
+    ],
+    correct: [0,1],
+    exp: 'TCO umfasst Einmalinvestition + laufende Betriebskosten. Opportunitätskosten der Analysten während Implementierung sind real, aber selten in TCO eingerechnet (eher in Projektplan). Projektierte Fondrendite ist spekulativer Nutzen — darf nicht in Kosten erscheinen und auch nicht im TCO.',
+    src: 'KIM Tag 5 HandOut · TCO · CFO-Perspektive'
+  },
+  {
+    q: 'Als CFO beurteilen Sie den ROI des Screening-Systems (Investition 75.000 €, Einsparung 124.848 €/Jahr, Betriebskosten 15.000 €/Jahr). Welche Aussagen sind für Ihre Beurteilung korrekt?',
+    opts: [
+      'Der ROI von 212 % über 3 Jahre ist überzeugend — das ist eine Rendite, die deutlich über den LP-Renditeerwartungen des Fonds liegt',
+      'Die Payback Period von 8,2 Monaten ist für ein internes Effizienzprojekt außergewöhnlich kurz — das Risiko ist überschaubar',
+      'Der Worst-Case-ROI von 120 % bei 50 % Effizienz ist immer noch positiv — die Empfehlung ist robust',
+      'Da der ROI unter 300 % liegt, ist die Investition aus CFO-Sicht nicht empfehlenswert'
+    ],
+    correct: [0,1,2],
+    exp: 'ROI 212 %, Payback 8,2 Monate und robuster Worst Case (120 %) sind starke Argumente. Ein ROI-Schwellenwert von 300 % ist für interne Effizienzprojekte nicht realistisch — intern reicht oft ROI > 50–80 % für Go. CFO-Fokus: Payback Period und Worst-Case-Robustheit.',
+    src: 'KIM Tag 5 HandOut · ROI-Beurteilung CFO'
+  },
+  {
+    q: 'Was ist der Break-even-Punkt für das AIktiv-Invest-Screening-System bei 9.154 € Netto-Monatsvorteil und 75.000 € Einmalinvestition?',
+    opts: [
+      'Monat 6',
+      'Monat 9',
+      'Monat 12',
+      'Jahr 2'
+    ],
+    correct: [1],
+    exp: 'Break-even = Monat, in dem kumulierter Cashflow erstmals ≥ 0. Payback Period = 75.000 ÷ 9.154 = 8,2 Monate → Break-even ist Monat 9 (ab dem 9. vollen Monat ist der kumulierte Cashflow positiv). Ab Monat 9 generiert das System reinen Nettogewinn.',
+    src: 'KIM Tag 5 HandOut · Break-even'
+  },
+  {
+    q: 'Als CFO möchten Sie die DSGVO-Compliance des KI-Screening-Systems sicherstellen. Welche Maßnahmen sind korrekt?',
+    opts: [
+      'Ein Datenschutzgutachten vor dem Go-Live beauftragen, um Art. 22 DSGVO (automatisierte Einzelentscheidungen) zu klären',
+      'Die Kosten des Datenschutzgutachtens (geschätzt 5.000–10.000 €) in die einmalige Investition einrechnen',
+      'Da das System nur Entscheidungsunterstützung bietet, braucht Dr. Lenz als DSB nicht einbezogen werden',
+      'Das Gutachten kann nach Go-Live nachgeholt werden, da das System zunächst als Pilotprojekt läuft'
+    ],
+    correct: [0,1],
+    exp: 'DSGVO-Gutachten ist VOR Go-Live erforderlich, nicht danach. Kosten in TCO einplanen. Dr. Lenz (DSB) muss einbezogen werden — auch bei Entscheidungsunterstützung (Gründer sind natürliche Personen). Pilotprojekt ändert nichts an der DSGVO-Pflicht.',
+    src: 'KIM Tag 5 HandOut · DSGVO CFO'
+  },
+  {
+    q: 'Welche typischen Fehler bei ROI-Rechnungen für KI-Projekte würden Sie als CFO direkt erkennen und kritisieren?',
+    opts: [
+      'Nur Entwicklungskosten ansetzen — jährliche Betriebskosten (Cloud, Wartung, Retraining) fehlen im TCO',
+      'Weiche Nutzen (Skalierbarkeit, Qualitätssteigerung) als Euro-Betrag in den Gesamtnutzen einrechnen',
+      'Keine Worst-Case-Analyse — nur Base-Case-Zahlen ohne Sensitivität',
+      'Konservative Effizienzannahmen von 50 % statt 70 % Zeitersparnis'
+    ],
+    correct: [0,1,2],
+    exp: 'Klassische CFO-Kritikpunkte: fehlende Betriebskosten im TCO (Unterschätzung der Gesamtinvestition), eingerechnete weiche Nutzen (Glaubwürdigkeitsproblem), fehlende Sensitivitätsanalyse (Robustheit unklar). Konservative Annahmen (50 % statt 70 %) sind kein Fehler, sondern gute Praxis.',
+    src: 'KIM Tag 5 HandOut · Fehler ROI'
+  }
+],
+
+/* ─── CFO / Finanzleiter:in · Fortgeschrittene · 3r,2r,1r,3r,2r ─── */
+b2: [
+  {
+    q: 'Als CFO der AIktiv-Invest GmbH bereiten Sie das LP-Quartalsreporting vor. Welche Aussagen zur Einbindung des KI-Systems ins Reporting sind korrekt?',
+    opts: [
+      'Julia Romberg möchte, dass das Portfoliomanagement-KI-System das Rule-of-40-Monitoring automatisiert — das reduziert die manuelle Konsolidierung vor Quartalsberichten',
+      'Das KI-System zur Proposal-Vorauswahl (Phase 1) hat direkte Auswirkungen auf das LP-Reporting — LPs können bereits heute nach KI-gestützter Effizienz fragen',
+      'Als AIFM (Alternative Investment Fund Manager) nach KAGB muss die AIktiv-Invest sicherstellen, dass KI-gestützte Vorauswahl transparent dokumentiert ist',
+      'Das LP-Reporting darf ausschließlich auf manuellen Entscheidungen basieren — KI-Unterstützung ist nach KAGB nicht zulässig'
+    ],
+    correct: [0,1,2],
+    exp: 'KI im Portfoliomanagement (Rule-of-40-Monitoring) und in der Proposal-Pipeline sind für LPs relevant. KAGB/AIFMD verlangt Nachvollziehbarkeit der Anlageentscheidungen — KI-Unterstützung ist erlaubt, aber der Entscheidungsprozess muss dokumentiert sein. KAGB verbietet KI-Unterstützung nicht.',
+    src: 'KIM Tag 5 HandOut · Regulatorischer Rahmen'
+  },
+  {
+    q: 'Welche Aussagen zum Vergleich ROI vs. DCF (Discounted Cash Flow) bei KI-Investitionen sind korrekt?',
+    opts: [
+      'DCF diskontiert zukünftige Cashflows auf den heutigen Wert und berücksichtigt damit den Zeitwert des Geldes — ROI tut das nicht',
+      'Bei einem Payback von 8,2 Monaten wie UC-06 schafft DCF Scheingenauigkeit — ROI reicht für die Go/No-Go-Entscheidung',
+      'Im VC-Kontext mit einer Renditeanforderung von 3–5× (IRR-Logik) wäre eine IRR-Berechnung statt ROI passender für Skalierungsprojekte',
+      'DCF ist für interne Effizienzprojekte grundsätzlich nicht geeignet — es sollte nur für externe Investitionen verwendet werden'
+    ],
+    correct: [0,1,2],
+    exp: 'DCF berücksichtigt Zeitwert des Geldes ✓. Bei kurzer Amortisation (< 2 Jahre) wie UC-06 schafft DCF Scheingenauigkeit ✓. IRR-Logik ist für VC-Entscheidungen (Fondsrendite) passender als ROI ✓. DCF ist auch für interne Projekte anwendbar — es gibt keine Regel, die das einschränkt.',
+    src: 'KIM Tag 5 HandOut · ROI vs DCF'
+  },
+  {
+    q: 'Das KI-Screening-System soll auf 50 Proposals/Monat skalierbar sein (Fondwachstumsziel). Welcher ROI ergibt sich bei doppeltem Volumen (34 statt 17/Monat), gleichen Betriebskosten und gleicher Effizienz?',
+    opts: [
+      'Der ROI verdoppelt sich auf ca. 424 %',
+      'Der ROI steigt überproportional, da die Betriebskosten (15.000 €/Jahr) konstant bleiben, aber die Einsparungen sich verdoppeln',
+      'Bei 34 Proposals/Monat und gleichem Effizienzgewinn beträgt die jährliche Einsparung ca. 249.696 € — ROI 3J ≈ 512 %',
+      'Der ROI bleibt gleich, weil er als Prozentwert unabhängig vom Volumen ist'
+    ],
+    correct: [1,2],
+    exp: 'Betriebskosten fix (15.000 €/Jahr), Einsparungen steigen mit Volumen → überproportionaler ROI-Anstieg. Bei 34 Proposals: 2 × 124.848 = 249.696 €/Jahr Einsparung. ROI 3J: (3 × 249.696 − 120.000) ÷ 120.000 = (749.088 − 120.000) ÷ 120.000 ≈ 524 %. Das ist der strategische Wert des Skalierungspotenzials.',
+    src: 'KIM Tag 5 HandOut · Skalierung ROI'
+  },
+  {
+    q: 'Als CFO genehmigen Sie den Business Case vorbehaltlich drei Bedingungen. Welche Bedingungen sind regulatorisch und finanziell sinnvoll?',
+    opts: [
+      'DSGVO-Gutachten (Art. 22) vor Entwicklungsstart — Ergebnis muss vorliegen, bevor Budget freigegeben wird',
+      'Compliance-Reserve von 10 % der Erstinvestition (7.500 €) für regulatorische Anpassungen in die TCO aufnehmen',
+      'Ben Fischer darf ausschließlich an diesem Projekt arbeiten — keine parallelen Aufgaben bis Go-Live',
+      'Quartalsweises Monitoring: ROI-Ist-Wert vs. Prognose in den ersten 12 Monaten nach Go-Live'
+    ],
+    correct: [0,1,3],
+    exp: 'DSGVO-Gutachten vor Budget-Freigabe ist richtig (Compliance first). Compliance-Reserve ist sinnvolle CFO-Praxis. Quartalsweises ROI-Monitoring sichert Accountability. Ben Fischer ausschließlich für das Projekt zu reservieren ist unrealistisch für ein 8-Mitarbeiter-Unternehmen — Zeitanteil einplanen, aber nicht Exklusivität erzwingen.',
+    src: 'KIM Tag 5 HandOut · CFO-Bedingungen'
+  },
+  {
+    q: 'Welche Aussagen zur KAGB-konformen Nutzung des KI-Screening-Systems sind korrekt?',
+    opts: [
+      'Das System darf Vorschläge für Go/No-Go-Entscheidungen generieren — die finale Anlageentscheidung muss beim Menschen (Sophie Krane / IC) verbleiben',
+      'Der Entscheidungsprozess muss dokumentiert sein: Wann hat das System was vorgeschlagen, und wer hat wie entschieden?',
+      'Da das KAGB nur für Anlageentscheidungen gilt, ist die KI-gestützte Vorauswahl vollständig regulierungsfrei',
+      'KAGB-Compliance erfordert, dass das System keine Empfehlungen gibt — es darf nur Informationen aggregieren'
+    ],
+    correct: [0,1],
+    exp: 'KAGB/AIFMD verlangt Nachvollziehbarkeit: KI-Unterstützung ist erlaubt, aber Human-in-the-Loop ist Pflicht bei Anlageentscheidungen. Dokumentationspflicht gilt auch für die Vorauswahlphase. Die Vorauswahl ist NICHT regulierungsfrei — KAGB wirkt auf den gesamten Investitionsprozess. Das System darf Empfehlungen geben — sie sind nur nicht bindend.',
+    src: 'KIM Tag 5 HandOut · KAGB Compliance'
+  }
+]
+
+};
+/* Ende QBANK */
+
+var APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwTfP8ygOun58rmvY9hQXFmPEgVyxppQGEPYjar1e78N6uanaGHuzBNOyU5P4kgvmz7/exec';
+var selectedRole = null, selectedLevel = null, questions = [], userAnswers = [];
+var participantName = '';
+
+
+/* ═══════════════════════════════════════════════════════════════
+   ENGINE (unverändert aus dem Standard-Quiz-Template)
+═══════════════════════════════════════════════════════════════ */
+
+var selectedRole = null, selectedLevel = null, questions = [], userAnswers = [];
+var participantName = '';
+
+function selectRole(r) {
+  selectedRole = r;
+  document.getElementById('btn-role-a').className = 'sel-btn' + (r==='a' ? ' active-a' : '');
+  document.getElementById('btn-role-b').className = 'sel-btn' + (r==='b' ? ' active-b' : '');
+  checkReady();
+}
+function selectLevel(l) {
+  selectedLevel = l;
+  document.getElementById('btn-level-1').className = 'sel-btn' + (l==='1' ? ' active-1' : '');
+  document.getElementById('btn-level-2').className = 'sel-btn' + (l==='2' ? ' active-2' : '');
+  checkReady();
+}
+function checkReady() {
+  document.getElementById('btn-start').disabled = !(selectedRole && selectedLevel);
+}
+
+function shuffle(arr) {
+  var a = arr.slice(), i = a.length, j, t;
+  while (i--) { j = Math.floor(Math.random()*(i+1)); t=a[i]; a[i]=a[j]; a[j]=t; }
+  return a;
+}
+
+function startQuiz() {
+  var key = selectedRole + selectedLevel;
+  var pool = QBANK[key] || [];
+  questions = pool.map(function(q) {
+    var letters = ['A','B','C','D','E'];
+    var indices = q.opts.map(function(_,i){return i;});
+    var shuffled = shuffle(indices);
+    var newOpts = shuffled.map(function(i){return q.opts[i];});
+    var newCorrect = q.correct.map(function(c){return shuffled.indexOf(c);});
+    return {q: q.q, opts: newOpts, correct: newCorrect, exp: q.exp, src: q.src||''};
+  });
+  userAnswers = questions.map(function(){return [];});
+
+  document.getElementById('setup-section').style.display = 'none';
+  document.getElementById('quiz-section').style.display = 'block';
+
+  var roleLabels = {a:'KI-Manager:in', b:'Leiterin Qualitätsmanagement'};
+  var levelLabels = {1:'Anfänger', 2:'Fortgeschrittene'};
+  var name = document.getElementById('participant-name').value.trim() || 'Anonym';
+  participantName = name;
+  var strip = document.getElementById('quiz-header-strip');
+  strip.innerHTML =
+    '<span class="strip-tag strip-role-' + selectedRole + '">' + roleLabels[selectedRole] + '</span>' +
+    '<span class="strip-tag strip-level-' + selectedLevel + '">' + levelLabels[selectedLevel] + '</span>' +
+    '<span class="strip-name">' + name + '</span>';
+
+  document.getElementById('scenario-text').textContent = SCENARIOS[selectedRole];
+  renderQuestions();
+  updateProgress();
+}
+
+function renderQuestions() {
+  var container = document.getElementById('questions-container');
+  container.innerHTML = '';
+  var letters = ['A','B','C','D','E'];
+  questions.forEach(function(q, qi) {
+    var card = document.createElement('div');
+    card.className = 'q-card';
+    card.id = 'qcard-' + qi;
+    var html = '<div class="q-num">Frage ' + (qi+1) + ' von ' + questions.length + '</div>';
+    html += '<div class="q-text">' + q.q + '</div>';
+      html += '<div class="opt-list" id="opts-' + qi + '">';
+    q.opts.forEach(function(opt, oi) {
+      html += '<div class="opt" id="opt-' + qi + '-' + oi + '" onclick="toggleOpt(' + qi + ',' + oi + ')">' +
+        '<div class="opt-cb" id="cb-' + qi + '-' + oi + '"></div>' +
+        '<span class="opt-letter">' + letters[oi] + '.</span>' +
+        '<span class="opt-text">' + opt + '</span></div>';
+    });
+    html += '</div>';
+    card.innerHTML = html;
+    container.appendChild(card);
+  });
+}
+
+function toggleOpt(qi, oi) {
+  var idx = userAnswers[qi].indexOf(oi);
+  if (idx >= 0) {
+    userAnswers[qi].splice(idx, 1);
+    document.getElementById('opt-' + qi + '-' + oi).classList.remove('selected');
+    document.getElementById('cb-' + qi + '-' + oi).classList.remove('chk');
+  } else {
+    userAnswers[qi].push(oi);
+    document.getElementById('opt-' + qi + '-' + oi).classList.add('selected');
+    document.getElementById('cb-' + qi + '-' + oi).classList.add('chk');
+  }
+  updateSubmitBtn();
+  updateProgress();
+}
+
+function updateSubmitBtn() {
+  var answered = userAnswers.filter(function(a){return a.length>0;}).length;
+  document.getElementById('btn-submit').disabled = answered < questions.length;
+}
+
+function updateProgress() {
+  var answered = userAnswers.filter(function(a){return a.length>0;}).length;
+  var pct = questions.length ? (answered/questions.length*100) : 0;
+  document.getElementById('progress-fill').style.width = pct + '%';
+  document.getElementById('progress-label').textContent = answered + ' von ' + questions.length + ' Fragen beantwortet';
+}
+
+function submitQuiz() {
+  document.getElementById('quiz-section').style.display = 'none';
+  document.getElementById('results-section').style.display = 'block';
+
+  var score = 0;
+  questions.forEach(function(q, qi) {
+    var ua = userAnswers[qi].slice().sort();
+    var ca = q.correct.slice().sort();
+    if (JSON.stringify(ua) === JSON.stringify(ca)) score++;
+  });
+
+  var pct = Math.round(score/questions.length*100);
+  var grade, label;
+  if (pct >= 90) { grade = 'A'; label = 'Ausgezeichnet'; }
+  else if (pct >= 75) { grade = 'B'; label = 'Sehr gut'; }
+  else if (pct >= 60) { grade = 'C'; label = 'Gut'; }
+  else if (pct >= 45) { grade = 'D'; label = 'Befriedigend'; }
+  else { grade = 'E'; label = 'Wiederholen empfohlen'; }
+
+  document.getElementById('result-grade').textContent = grade;
+  document.getElementById('result-label').textContent = label + ' — ' + pct + ' %';
+  document.getElementById('result-sub').textContent = score + ' von ' + questions.length + ' Fragen vollständig richtig';
+
+  document.getElementById('stats-row').innerHTML =
+    '<div class="stat"><div class="stat-n">' + score + '</div><div class="stat-l">Richtig</div></div>' +
+    '<div class="stat"><div class="stat-n">' + (questions.length-score) + '</div><div class="stat-l">Falsch</div></div>' +
+    '<div class="stat"><div class="stat-n">' + pct + ' %</div><div class="stat-l">Trefferquote</div></div>';
+
+  document.getElementById('comp-bars').innerHTML =
+    '<div class="comp-row"><div class="comp-labels"><span>Richtig</span><span>' + score + '/' + questions.length + '</span></div>' +
+    '<div class="comp-track"><div class="comp-fill fill-ok" style="width:' + pct + '%"></div></div></div>' +
+    '<div class="comp-row"><div class="comp-labels"><span>Verbesserungspotenzial</span><span>' + (questions.length-score) + '/' + questions.length + '</span></div>' +
+    '<div class="comp-track"><div class="comp-fill fill-wrong" style="width:' + (100-pct) + '%"></div></div></div>';
+
+  var letters = ['A','B','C','D','E'];
+  var rev = document.getElementById('review-container');
+  rev.innerHTML = '';
+  questions.forEach(function(q, qi) {
+    var ua = userAnswers[qi].slice().sort();
+    var ca = q.correct.slice().sort();
+    var isOk = JSON.stringify(ua) === JSON.stringify(ca);
+    var card = document.createElement('div');
+    card.className = 'q-card';
+    var html = '<div class="q-num">Frage ' + (qi+1) + '</div>';
+    html += '<div class="q-text">' + q.q + '</div>';
+    html += '<div class="opt-list" style="margin-top:.7rem">';
+    q.opts.forEach(function(opt, oi) {
+      var sel = ua.indexOf(oi) >= 0;
+      var cor = ca.indexOf(oi) >= 0;
+      var cls = 'opt disabled ';
+      if (sel && cor) cls += 'correct-sel';
+      else if (sel && !cor) cls += 'wrong-sel';
+      else if (!sel && cor) cls += 'missed';
+      var cbCls = 'opt-cb';
+      var cbInner = '';
+      if (sel && cor) { cbCls += ' chk'; }
+      else if (sel && !cor) { cbCls += ' chk'; }
+      html += '<div class="' + cls + '"><div class="' + cbCls + '">' + cbInner + '</div>' +
+        '<span class="opt-letter">' + letters[oi] + '.</span><span class="opt-text">' + opt + '</span></div>';
+    });
+    html += '</div>';
+    if (q.exp) {
+      html += '<div class="feedback ' + (isOk ? 'fb-ok' : 'fb-wrong') + '">';
+      html += '<div class="fb-title">' + (isOk ? '✓ Richtig' : '✗ Nicht vollständig richtig') + '</div>';
+      html += '<div class="fb-text">' + q.exp + '</div>';
+      if (q.src) html += '<div class="fb-source">Quelle: ' + q.src + '</div>';
+      html += '</div>';
+    }
+    card.innerHTML = html;
+    rev.appendChild(card);
+  });
+
+  sendToSheets(score, questions.length - score);
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+function sendToSheets(correct, wrong) {
+  if (!APPS_SCRIPT_URL) return;
+  var TAG_NR = 2;
+  var THEMA  = 'ISO 42001 & KI-Managementsystem';
+  var letters = ['A','B','C','D','E'];
+  var roleLabels = {a:'KI-Manager:in', b:'Leiterin Qualitätsmanagement'};
+  var levelLabels = {1:'Anfänger', 2:'Fortgeschrittene'};
+  var stufe = (roleLabels[selectedRole] || selectedRole) + ' / ' + (levelLabels[selectedLevel] || selectedLevel);
+
+  var status = document.getElementById('submit-status');
+  if (status) {
+    status.className = 'submit-status sending';
+    status.style.display = 'block';
+    status.textContent = 'Ergebnis wird übermittelt...';
+  }
+
+  var toSend = [];
+  questions.forEach(function(q, i) {
+    var selIndices  = userAnswers[i].slice().sort();
+    var corrIndices = q.correct.slice().sort();
+    var isFull      = selIndices.join(',') === corrIndices.join(',');
+    var gewaehlt    = selIndices.map(function(idx) { return letters[idx]; }).join(',') || '-';
+    var korrekt     = corrIndices.map(function(idx) { return letters[idx]; }).join(',');
+    var ergebnis    = isFull ? 'RICHTIG' : 'FALSCH';
+
+    toSend.push(
+      APPS_SCRIPT_URL
+      + '?tab='        + encodeURIComponent('KI-Manager')
+      + '&teilnehmer=' + encodeURIComponent(participantName)
+      + '&tag='        + TAG_NR
+      + '&thema='      + encodeURIComponent(THEMA)
+      + '&stufe='      + encodeURIComponent(stufe)
+      + '&frage_nr='   + (i + 1)
+      + '&frage_text=' + encodeURIComponent(q.q.substring(0, 80))
+      + '&gewaehlt='   + encodeURIComponent(gewaehlt)
+      + '&korrekt='    + encodeURIComponent(korrekt)
+      + '&ergebnis='   + encodeURIComponent(ergebnis)
+    );
+  });
+
+  toSend.forEach(function(url, i) {
+    setTimeout(function() {
+      fetch(url, { mode: 'no-cors' }).catch(function() {});
+    }, i * 300);
+  });
+  if (status) {
+    setTimeout(function() {
+      status.className = 'submit-status success';
+      status.textContent = '✓ ' + toSend.length + ' Antworten übermittelt ('
+        + new Date().toLocaleTimeString('de-DE') + ')';
+    }, toSend.length * 300 + 500);
+  }
+}
+</script>
+
+</body>
+</html>
