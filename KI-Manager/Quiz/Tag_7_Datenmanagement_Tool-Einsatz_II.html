@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lernkontrolle · KI-Manager Tag 7 · Datenmanagement &amp; Tool-Einsatz II</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Playfair+Display:wght@600&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink:#1a1a18;--paper:#f5f2ec;--card:#fff;--rule:#d5d0c5;--muted:#888880;
+  --accent:#5a3a7a;--accent-soft:#f0eaf7;
+  --role-a:#1a6a5a;--role-a-soft:#e6f4f1;
+  --role-b:#5a3a7a;--role-b-soft:#f0eaf7;
+  --level-1:#7a4a00;--level-1-soft:#fdf0e0;
+  --level-2:#0a4a7a;--level-2-soft:#e0eff7;
+  --correct:#2a7a50;--correct-bg:#eaf5ee;--correct-border:#a0d8b8;
+  --wrong:#9a2a2a;--wrong-bg:#faeaea;--wrong-border:#d8a0a0;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'DM Sans',sans-serif;background:var(--paper);color:var(--ink);line-height:1.65;font-size:15px;}
+a{color:var(--accent);}
+.site-header{border-bottom:2px solid var(--ink);padding:1.8rem 2rem 1.4rem;max-width:820px;margin:0 auto;}
+.eyebrow{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:var(--muted);margin-bottom:.5rem;}
+.site-header h1{font-family:'Playfair Display',serif;font-size:clamp(1.5rem,4vw,2.1rem);line-height:1.15;margin-bottom:.4rem;}
+.header-meta{font-size:12px;color:var(--muted);display:flex;gap:1rem;flex-wrap:wrap;}
+.header-meta span::before{content:"· ";}
+.header-meta span:first-child::before{content:"";}
+.main{max-width:820px;margin:0 auto;padding:1.8rem 2rem 4rem;}
+.setup-card{background:var(--card);border:1px solid var(--rule);border-radius:12px;padding:2rem;max-width:540px;margin:0 auto;}
+.setup-card h2{font-family:'Playfair Display',serif;font-size:1.3rem;margin-bottom:1.2rem;}
+.field-label{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:.35rem;}
+.setup-input{width:100%;border:1px solid var(--rule);border-radius:8px;padding:.6rem .9rem;font-family:'DM Sans',sans-serif;font-size:14px;background:var(--paper);outline:none;color:var(--ink);transition:border-color .15s;}
+.setup-input:focus{border-color:var(--ink);}
+.setup-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.2rem;}
+@media(max-width:480px){.setup-grid{grid-template-columns:1fr;}}
+.role-btns,.level-btns{display:flex;gap:.5rem;}
+.sel-btn{flex:1;padding:.55rem .6rem;border:1px solid var(--rule);border-radius:8px;background:none;font-family:'DM Sans',sans-serif;font-size:13px;cursor:pointer;text-align:center;transition:all .15s;color:var(--ink);}
+.sel-btn.active-a{background:var(--role-a-soft);border-color:var(--role-a);color:var(--role-a);font-weight:500;}
+.sel-btn.active-b{background:var(--role-b-soft);border-color:var(--role-b);color:var(--role-b);font-weight:500;}
+.sel-btn.active-1{background:var(--level-1-soft);border-color:var(--level-1);color:var(--level-1);font-weight:500;}
+.sel-btn.active-2{background:var(--level-2-soft);border-color:var(--level-2);color:var(--level-2);font-weight:500;}
+.hint-text{font-size:12px;color:var(--muted);margin-top:.3rem;display:block;}
+.btn-start{width:100%;padding:.75rem;background:var(--ink);color:#fff;border:none;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:500;cursor:pointer;margin-top:1rem;transition:background .15s;}
+.btn-start:hover{background:#333;}
+.btn-start:disabled{background:#aaa;cursor:not-allowed;}
+.quiz-header-strip{display:flex;gap:.6rem;align-items:center;margin-bottom:1.4rem;flex-wrap:wrap;}
+.strip-tag{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;padding:4px 12px;border-radius:100px;}
+.strip-role-a{background:var(--role-a-soft);color:var(--role-a);}
+.strip-role-b{background:var(--role-b-soft);color:var(--role-b);}
+.strip-level-1{background:var(--level-1-soft);color:var(--level-1);}
+.strip-level-2{background:var(--level-2-soft);color:var(--level-2);}
+.strip-name{font-size:13px;color:var(--muted);margin-left:auto;}
+.progress-bar{height:3px;background:var(--rule);border-radius:2px;margin-bottom:1.2rem;}
+.progress-fill{height:100%;background:var(--ink);border-radius:2px;transition:width .3s;}
+.progress-label{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);margin-bottom:.5rem;}
+.scenario-box{background:var(--accent-soft);border:1px solid #c8b8e0;border-left:3px solid var(--accent);border-radius:0 8px 8px 0;padding:.9rem 1.1rem;margin-bottom:1.2rem;}
+.scenario-label{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:.3rem;}
+.scenario-text{font-size:13px;color:var(--ink);line-height:1.6;}
+.q-card{background:var(--card);border:1px solid var(--rule);border-radius:12px;padding:1.5rem;margin-bottom:1rem;}
+.q-num{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:.6rem;}
+.q-sc{font-size:13px;color:#555;font-style:italic;border-left:3px solid var(--accent);padding:.4rem .8rem;margin-bottom:.5rem;background:var(--accent-soft);border-radius:0 6px 6px 0;}
+.q-text{font-size:15px;font-weight:500;line-height:1.55;margin-bottom:.5rem;}
+.opt-list{display:flex;flex-direction:column;gap:.5rem;}
+.opt{display:flex;align-items:flex-start;gap:.7rem;padding:.75rem 1rem;border:1px solid var(--rule);border-radius:8px;cursor:pointer;background:#fdfdfb;transition:all .12s;-webkit-user-select:none;user-select:none;}
+.opt:hover:not(.disabled){border-color:#888;background:#f5f2ec;}
+.opt.selected{background:var(--accent-soft);border-color:#b8a0d8;}
+.opt.disabled{cursor:default;}
+.opt.correct-sel{background:var(--correct-bg);border-color:var(--correct-border);}
+.opt.wrong-sel{background:var(--wrong-bg);border-color:var(--wrong-border);}
+.opt.missed{background:var(--wrong-bg);border-color:var(--wrong-border);}
+.opt-cb{width:18px;height:18px;min-width:18px;border:1.5px solid #bbb;border-radius:4px;flex-shrink:0;margin-top:2px;display:flex;align-items:center;justify-content:center;transition:all .12s;}
+.opt-cb.chk{background:var(--ink);border-color:var(--ink);}
+.opt-cb.chk::after{content:'';display:block;width:8px;height:8px;background:#fff;border-radius:2px;}
+.opt.correct-sel .opt-cb{background:var(--correct);border-color:var(--correct);}
+.opt.correct-sel .opt-cb::after{content:'\2713';color:#fff;font-size:11px;background:none;width:auto;height:auto;}
+.opt.wrong-sel .opt-cb{background:var(--wrong);border-color:var(--wrong);}
+.opt.wrong-sel .opt-cb::after{content:'\2717';color:#fff;font-size:11px;background:none;width:auto;height:auto;}
+.opt.missed .opt-cb{background:var(--wrong);border-color:var(--wrong);}
+.opt.missed .opt-cb::after{content:'\2192';color:#fff;font-size:11px;background:none;width:auto;height:auto;}
+.opt-letter{font-family:'DM Mono',monospace;font-size:12px;color:var(--muted);min-width:16px;flex-shrink:0;margin-top:2px;}
+.opt-text{font-size:14px;line-height:1.5;}
+.feedback{border-radius:8px;padding:.9rem 1.1rem;margin-top:.9rem;}
+.feedback.fb-ok{background:var(--correct-bg);border:1px solid var(--correct-border);}
+.feedback.fb-wrong{background:var(--wrong-bg);border:1px solid var(--wrong-border);}
+.fb-title{font-weight:500;font-size:14px;margin-bottom:.4rem;}
+.fb-ok .fb-title{color:var(--correct);}
+.fb-wrong .fb-title{color:var(--wrong);}
+.fb-text{font-size:13px;line-height:1.65;color:#444;margin-bottom:.5rem;}
+.fb-source{font-size:12px;color:var(--muted);border-top:1px solid var(--rule);padding-top:.5rem;}
+.nav-row{display:flex;align-items:center;gap:.6rem;margin-top:1rem;}
+.btn{display:inline-flex;align-items:center;padding:.55rem 1.2rem;border:1px solid var(--rule);border-radius:8px;background:none;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;cursor:pointer;color:var(--ink);transition:all .15s;}
+.btn:hover{background:var(--paper);border-color:#888;}
+.btn:disabled{opacity:.3;cursor:not-allowed;}
+.btn-full{width:100%;justify-content:center;padding:.7rem;font-size:15px;margin-top:1rem;}
+.btn-submit{background:#1a6a5a;color:#fff;border-color:#1a6a5a;}
+.btn-submit:hover{background:#145548;}
+.result-block{max-width:600px;margin:0 auto;text-align:center;}
+.result-grade{font-family:'Playfair Display',serif;font-size:4.5rem;line-height:1;margin-bottom:.3rem;}
+.result-label{font-size:1.1rem;font-weight:500;margin-bottom:.3rem;}
+.result-sub{font-size:13px;color:var(--muted);margin-bottom:1.5rem;}
+.stats-row{display:flex;justify-content:center;gap:1rem;flex-wrap:wrap;margin-bottom:1.5rem;}
+.stat{background:var(--card);border:1px solid var(--rule);border-radius:10px;padding:.9rem 1.2rem;text-align:center;min-width:90px;}
+.stat-n{font-size:1.8rem;font-weight:500;}
+.stat-l{font-size:11px;color:var(--muted);margin-top:2px;}
+.comp-title{font-size:13px;font-weight:500;text-align:left;margin-bottom:.8rem;}
+.comp-row{margin-bottom:.7rem;text-align:left;}
+.comp-labels{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-bottom:3px;}
+.comp-track{height:4px;background:var(--rule);border-radius:2px;}
+.comp-fill{height:100%;border-radius:2px;}
+.fill-ok{background:var(--correct);}
+.fill-wrong{background:var(--wrong);}
+.submit-status.sending{background:#fff8e8;color:#7a5a00;border:1px solid #e8d090;}
+.submit-status.success{background:#eaf5ee;color:#2a7a50;border:1px solid #a0d8b8;}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="eyebrow">Alfatraining &middot; KI-Manager:in &middot; Tag 7</div>
+  <h1>Lernkontrolle<br>Datenmanagement &amp; Tool-Einsatz II</h1>
+  <div class="header-meta">
+    <span>5 Fragen je Rolle &amp; Stufe</span>
+    <span>Eine oder mehrere Antworten k&ouml;nnen richtig sein</span>
+    <span>Use Case: AIktiv-Invest (AI) GmbH &mdash; Datenpipelines &amp; Prompting UC-06</span>
+  </div>
+</header>
+
+<main class="main">
+
+<div id="setup-section">
+  <div class="setup-card">
+    <h2>Bitte w&auml;hle deine Rolle und Schwierigkeitsstufe</h2>
+    <div style="margin-bottom:1rem;">
+      <span class="field-label">Dein Name (oder Teilnehmer-Nummer)</span>
+      <input type="text" id="participant-name" class="setup-input" placeholder="z. B. Teilnehmer-07 oder Vorname">
+    </div>
+    <div class="setup-grid">
+      <div>
+        <span class="field-label">Rolle</span>
+        <div class="role-btns">
+          <button class="sel-btn" id="btn-role-a" onclick="selectRole('a')">KI-Manager:in</button>
+          <button class="sel-btn" id="btn-role-b" onclick="selectRole('b')">IT-/Data-Verantwortliche:r</button>
+        </div>
+        <span class="hint-text">W&auml;hle deine Rolle im Unternehmen</span>
+      </div>
+      <div>
+        <span class="field-label">Schwierigkeitsstufe</span>
+        <div class="level-btns">
+          <button class="sel-btn" id="btn-level-1" onclick="selectLevel('1')">Anf&auml;nger</button>
+          <button class="sel-btn" id="btn-level-2" onclick="selectLevel('2')">Fortgeschrittene</button>
+        </div>
+        <span class="hint-text">Anf&auml;nger = Konzepte &middot; Fortgeschr. = Szenarien</span>
+      </div>
+    </div>
+    <button class="btn-start" id="btn-start" onclick="startQuiz()" disabled>Quiz starten &rarr;</button>
+  </div>
+</div>
+
+<div id="quiz-section" style="display:none">
+  <div class="quiz-header-strip" id="quiz-header-strip"></div>
+  <div class="progress-label" id="progress-label"></div>
+  <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+  <div class="scenario-box">
+    <div class="scenario-label">Fallbeispiel &middot; Gilt f&uuml;r alle Fragen</div>
+    <div class="scenario-text" id="scenario-text"></div>
+  </div>
+  <div id="questions-container"></div>
+  <div class="nav-row" style="margin-top:1.5rem">
+    <button class="btn btn-submit btn-full" id="btn-submit" onclick="submitQuiz()" disabled>Auswertung anzeigen &rarr;</button>
+  </div>
+</div>
+
+<div id="results-section" style="display:none">
+  <div id="submit-status" class="submit-status" style="display:none;max-width:600px;margin:1rem auto;text-align:center;padding:.6rem 1rem;border-radius:8px;font-family:'DM Mono',monospace;font-size:12px;"></div>
+  <div class="result-block">
+    <div class="result-grade" id="result-grade"></div>
+    <div class="result-label" id="result-label"></div>
+    <div class="result-sub" id="result-sub"></div>
+    <div class="stats-row" id="stats-row"></div>
+    <div class="comp-title">Kompetenzprofil</div>
+    <div id="comp-bars"></div>
+    <div style="margin-top:.8rem;display:flex;justify-content:center;">
+      <button class="btn" onclick="location.reload()">Neu starten</button>
+    </div>
+  </div>
+  <hr style="border:none;border-top:1px solid var(--rule);margin:2rem 0">
+  <h2 style="font-family:'Playfair Display',serif;font-size:1.2rem;margin-bottom:1rem">Detailauswertung</h2>
+  <div id="review-container"></div>
+</div>
+
+</main>
+
+<script>
+var SCENARIOS = {
+  a: 'Du bist KI-Manager:in bei der AIktiv-Invest (AI) GmbH, einem Venture-Capital-Fonds (15 Mio. EUR, München). Nach dem Daten-Audit (Tag 6) planst du nun die konkreten Datenpipelines: Wie gelangen Sophies Proposal-Daten, Markus\' CRM-Daten und die Investment-Komitee-Unterlagen sauber, aktuell und nachvollziehbar in die KI-Systeme — und wie verhindert ihr, dass aus drei Datensilos drei widersprüchliche KI-Antworten entstehen?',
+  b: 'Du bist Markus Reiner, IT-/Data-Verantwortlicher bei der AIktiv-Invest (AI) GmbH. Du verwaltest die CRM-Daten des Investment-Teams, kümmerst dich um den Richtlinien-Bot für interne Compliance-Fragen und richtest gemeinsam mit der KI-Managerin die zentrale Datenpipeline ein. Dabei stellst du dir täglich die Frage: Woher kommen die Daten, wie aktuell müssen sie sein — und wer trägt eigentlich die Verantwortung, wenn etwas schiefläuft?'
+};
+
+var QBANK = {
+
+/* ─── KI-Manager:in · Anfänger · 2r,3r,1r,2r,3r ─── */
+a1: [
+  {
+    sc: 'Die KI-Managerin erklärt dem Team den Unterschied zwischen ETL und ELT anhand der AIktiv-Invest-Datenflüsse.',
+    q: 'Welche Aussagen zu ETL und ELT sind korrekt?',
+    opts: [
+      'Bei ETL werden Daten zuerst bereinigt (Transform) und erst danach in die Zielumgebung geladen (Load) — sinnvoll, wenn Rohdaten im Ziel unbrauchbar wären',
+      'ETL eignet sich für AIktiv-Invests Finanzkennzahlen aus Pitch Decks, weil Begriffe und Währungen (EUR/USD, ARR/MRR) vor der Speicherung vereinheitlicht werden müssen',
+      'ELT bedeutet, dass Daten überhaupt nicht mehr transformiert werden müssen — die KI arbeitet ausschließlich mit Rohdaten',
+      'Die Wahl zwischen ETL und ELT hängt nicht von der Datenqualität ab, sondern ausschließlich vom Budget des Unternehmens'
+    ],
+    correct: [0,1],
+    exp: 'Bei ETL erfolgt die Bereinigung vor dem Laden — sinnvoll, wenn Rohdaten im Zielsystem unbrauchbar wären, etwa bei uneinheitlichen Finanzkennzahlen aus Pitch Decks. Bei ELT entfällt die Transformation nicht — sie verschiebt sich nur in die Zielumgebung und nutzt deren Rechenleistung. Die Entscheidung zwischen beiden Wegen richtet sich vor allem danach, ob mit den Rohdaten sinnvoll gearbeitet werden kann — nicht primär nach dem Budget.',
+    src: 'Google Cloud Dataflow · cloud.google.com/dataflow/docs/overview · AWS — Batch vs. Real-Time Ingestion · docs.aws.amazon.com/whitepapers/latest/building-data-lakes/batch-vs-real-time-ingestion.html'
+  },
+  {
+    sc: 'Die KI-Managerin kartiert die drei Datensilos bei AIktiv-Invest: Sophies Proposal-Daten, Markus\' CRM-Daten und die Investment-Komitee-Unterlagen.',
+    q: 'Welche Aussagen zum Datensilo-Problem bei AIktiv-Invest treffen zu?',
+    opts: [
+      'Eine KI sieht nur die Daten, auf die sie Zugriff hat — getrennte Silos führen zu unvollständigen oder widersprüchlichen Ergebnissen',
+      'Eine Datenpipeline kann als Integrationslayer wirken, der eine einheitliche Sicht schafft, ohne die Quellsysteme selbst zu verändern',
+      'Data Warehouse, Data Lake und Data Mesh sind drei unterschiedliche Architekturansätze, um das Silo-Problem zu adressieren — zentral, roh-zentral bzw. dezentral-domänenverantwortlich',
+      'Datensilos entstehen ausschließlich durch technische Inkompatibilität — organisatorische Ursachen spielen keine Rolle'
+    ],
+    correct: [0,1,2],
+    exp: 'Eine KI kann nur sehen, wozu sie Zugriff hat — getrennte Silos erzeugen Insel-Ergebnisse ✓. Eine Pipeline als Integrationslayer schafft eine einheitliche Sicht, ohne Quellsysteme anzufassen ✓. Data Warehouse (zentral), Data Lake (roh, zentral) und Data Mesh (dezentral, domänenverantwortlich) sind die drei gängigen Architekturantworten ✓. Silos entstehen jedoch genauso oft aus organisatorischen Gründen — etwa wenn Teams ihre Daten nicht teilen wollen oder Verantwortlichkeiten unklar sind.',
+    src: 'Martin Fowler — Data Mesh Principles · martinfowler.com/articles/data-mesh-principles.html · Google Cloud — Enterprise Data Mesh · docs.cloud.google.com/architecture/blueprints/deploy_enterprise_data_mesh'
+  },
+  {
+    sc: 'Markus fragt, ob das Scoring-Modell für Proposals in Echtzeit aktualisiert werden muss oder ob eine nächtliche Aktualisierung ausreicht.',
+    q: 'Welche Aussage zu Batch- und Echtzeitverarbeitung bei AIktiv-Invest ist korrekt?',
+    opts: [
+      'Für das Scoring-Modell reicht eine nächtliche Batch-Aktualisierung der Proposal-Daten — Echtzeitverarbeitung wäre hier unnötig aufwändig und teuer',
+      'Echtzeitverarbeitung ist immer die bessere Wahl, weil sie generell günstiger ist als Batch-Verarbeitung',
+      'Batch-Verarbeitung bedeutet, dass Daten gar nicht aktualisiert werden, sondern dauerhaft im Ausgangszustand bleiben',
+      'Die Wahl zwischen Batch und Echtzeit hat keinen Einfluss auf die Kosten oder Komplexität eines Systems'
+    ],
+    correct: [0],
+    exp: 'Für das Scoring-Modell genügt eine nächtliche Aktualisierung der Proposal-Daten — Echtzeitverarbeitung wäre hier unnötig aufwändig ✓. Echtzeitverarbeitung ist nicht generell günstiger — im Gegenteil, sie erhöht typischerweise Kosten und Komplexität. Batch bedeutet nicht „keine Aktualisierung", sondern Aktualisierung in festen Intervallen. Die Wahl zwischen Batch und Echtzeit beeinflusst Kosten und Komplexität erheblich — das ist gerade der Kern der Entscheidung.',
+    src: 'Google Cloud Dataflow · cloud.google.com/dataflow/docs/overview · AWS — Batch vs. Real-Time Ingestion · docs.aws.amazon.com/whitepapers/latest/building-data-lakes/batch-vs-real-time-ingestion.html'
+  },
+  {
+    sc: 'Markus richtet ein tägliches Dashboard ein, das überwacht, ob die Datenpipeline noch zuverlässig funktioniert.',
+    q: 'Welche zwei Signale gehören laut Data-Observability-Konzept zum sinnvollen Mindestprogramm für AIktiv-Invest?',
+    opts: [
+      'Frische — sind Sophies Proposal-Scores von heute oder bereits eine Woche alt?',
+      'Vollständigkeit — kommen so viele Datensätze an wie erwartet, oder fehlen plötzlich große Anteile der Financial-Model-Uploads?',
+      'Geschmack — wie „angenehm" empfinden die Nutzer:innen die Datenoberfläche im Alltag?',
+      'Originalität — enthält die Pipeline ausschließlich Daten, die noch nirgendwo sonst verwendet wurden?'
+    ],
+    correct: [0,1],
+    exp: 'Frische (sind die Daten aktuell?) und Vollständigkeit (kommen so viele Datensätze wie erwartet an?) bilden laut Monte Carlo Data das sinnvolle Mindestprogramm für ein tägliches Observability-Dashboard ✓. „Geschmack" und „Originalität" sind keine der fünf etablierten Data-Observability-Signale — die tatsächlichen weiteren Signale sind Struktur, Verteilung und Herkunft.',
+    src: 'Monte Carlo Data — What is Data Observability? (2026) · montecarlo.ai/blog-what-is-data-observability/'
+  },
+  {
+    sc: 'Im Strategie-Meeting diskutiert das Team, wer bei AIktiv-Invest welche Verantwortung für die Datenpipelines trägt.',
+    q: 'Welche Aussagen zu den drei Pipeline-Governance-Rollen bei AIktiv-Invest sind korrekt?',
+    opts: [
+      'Der Data Owner entscheidet über die Nutzung der Daten und trägt die Compliance-Verantwortung — bei AIktiv-Invest etwa Markus für den Richtlinien-Bot und Sophie für die Proposal-Daten',
+      'Der Data Steward pflegt die Daten aktiv — sorgt für Aktualität, Vollständigkeit und Korrektheit, etwa durch Aktualisierung des Compliance-Handbuchs',
+      'Der Pipeline-Betrieb überwacht den technischen Datenfluss und reagiert auf Ausfälle — bei AIktiv-Invest könnte das ein IT-Dienstleister oder die Azure-Automatisierung übernehmen',
+      'Diese drei Rollen sind reine Theorie — in der Praxis braucht jede funktionierende Pipeline nur eine einzige verantwortliche Person'
+    ],
+    correct: [0,1,2],
+    exp: 'Data Owner (Nutzungsentscheidung &amp; Compliance-Verantwortung) ✓, Data Steward (aktive Datenpflege) ✓ und Pipeline-Betrieb (technische Überwachung) ✓ sind die drei Rollen, die laut DAMA besetzt sein müssen — und bei AIktiv-Invest jeweils unterschiedlichen Personen zugeordnet sind. Pipelines scheitern in der Praxis gerade häufig daran, dass diese Verantwortlichkeiten NICHT klar verteilt, sondern auf eine einzelne Person reduziert oder ganz vergessen werden.',
+    src: 'DAMA — Data Management Body of Knowledge (DMBOK) · dama.org/cpages/body-of-knowledge'
+  },
+],
+
+/* ─── KI-Manager:in · Fortgeschrittene · 2r,1r,3r,2r,3r ─── */
+a2: [
+  {
+    sc: 'Markus möchte die Chat-Logs des Richtlinien-Bots und die E-Mail-Kommunikation mit Gründer:innen in die zentrale Datenpipeline einspeisen.',
+    q: 'Welche Aussagen zur DSGVO-Pflicht bei personenbezogenen Daten in der AIktiv-Invest-Pipeline sind korrekt?',
+    opts: [
+      'Für personenbezogene Daten wie Chat-Logs oder E-Mails muss der Data Owner eine Rechtsgrundlage nach Art. 6 DSGVO dokumentieren, bevor die Anbindung erfolgt',
+      'Ohne dokumentierte Rechtsgrundlage darf die Anbindung personenbezogener Daten an die Pipeline nicht erfolgen',
+      'Sobald Daten in eine technische Pipeline eingespeist werden, verlieren sie automatisch ihren Personenbezug und unterliegen nicht mehr der DSGVO',
+      'Die DSGVO gilt nur für Daten von Kund:innen — interne Kommunikation der Mitarbeitenden ist grundsätzlich ausgenommen'
+    ],
+    correct: [0,1],
+    exp: 'Der Data Owner muss vor der Anbindung personenbezogener Daten (Chat-Logs, E-Mails) eine Rechtsgrundlage nach Art. 6 DSGVO dokumentieren ✓ — ohne diese Grundlage ist keine Anbindung zulässig ✓. Daten verlieren ihren Personenbezug nicht automatisch durch die technische Verarbeitung — Pseudonymisierung oder Anonymisierung müsste aktiv und nachweisbar erfolgen. Die DSGVO unterscheidet nicht kategorisch zwischen Kund:innen- und Mitarbeitendendaten — beide sind personenbezogene Daten im Sinne der Verordnung.',
+    src: 'DSGVO Art. 6 · gdpr-info.eu/art-6-gdpr/ · DAMA — DMBOK · dama.org/cpages/body-of-knowledge'
+  },
+  {
+    sc: 'Sophie und Markus überlegen, mit welcher Prompt-Technik der Pipeline-Bot ein konsistentes Auftreten bekommt — feste Tonalität, festes Antwortschema, festgelegte Kompetenzgrenzen.',
+    q: 'Welche Prompt-Technik ist für dieses Ziel am besten geeignet?',
+    opts: [
+      'Rollenbasiertes Prompting — ein System-Prompt definiert die Persona des Bots inklusive Ton, Antwortschema und Kompetenzgrenzen dauerhaft',
+      'Zero-Shot-Prompting — jede Anfrage wird ohne jeglichen Kontext direkt an das Modell gestellt',
+      'Few-Shot-Prompting — drei zufällig ausgewählte Beispielantworten werden bei jeder neuen Anfrage neu erfunden',
+      'Chain-of-Thought-Prompting — der Bot zeigt bei jeder Antwort seinen vollständigen Denkweg öffentlich an, unabhängig von der Fragestellung'
+    ],
+    correct: [0],
+    exp: 'Rollenbasiertes Prompting eignet sich für Bots mit festem Verhalten — der System-Prompt legt Persona, Ton, Schema und Kompetenz dauerhaft fest ✓. Zero-Shot eignet sich eher für klar definierte Einzelaufgaben ohne Notwendigkeit einer konsistenten Persona. Few-Shot bedeutet, vorab feste (nicht „zufällig neu erfundene") Beispiele bereitzustellen, an denen sich das Modell orientiert. Chain-of-Thought dient der Nachvollziehbarkeit komplexer Denkprozesse — nicht der Festlegung einer Bot-Persona.',
+    src: 'Prompting Guide — DAIR.AI · promptingguide.ai · DeepLearning.AI – Prompt Engineering · deeplearning.ai'
+  },
+  {
+    sc: 'Bevor das Team eine hochriskante Aufgabe an die KI delegiert — etwa eine erste Einschätzung zu einem Investitionsvorschlag —, erinnert die KI-Managerin an das Prinzip des Meta-Promptings.',
+    q: 'Welche Aussagen zum Meta-Prompting („Sechs Sätze vor dem Prompt") sind korrekt?',
+    opts: [
+      'Sätze wie „Wenn du dir unsicher bist, sag es. Rate nicht." zielen darauf ab, das Risiko von Halluzinationen zu verringern',
+      'Die Aufforderung „Zeige mir deine Annahmen, bevor du antwortest" macht mögliche Fehlinterpretationen sichtbar, bevor sie sich in der Antwort fortsetzen',
+      'Meta-Prompting eignet sich besonders als Sicherheitsnetz für hochriskante Aufgaben — nicht nur für Routineanfragen',
+      'Die Qualität eines KI-Outputs hängt ausschließlich vom finalen Prompt ab — was vorher gesagt wird, hat keinen Einfluss auf das Ergebnis'
+    ],
+    correct: [0,1,2],
+    exp: '„Wenn du dir unsicher bist, sag es. Rate nicht." reduziert nachweislich Halluzinationen ✓, „Zeige mir deine Annahmen" macht Fehlinterpretationen frühzeitig sichtbar ✓, und gerade bei hochriskanten Aufgaben (z. B. Investitionsbewertungen) dient Meta-Prompting als Sicherheitsnetz ✓. Die Kernidee von Meta-Prompting ist jedoch genau das Gegenteil der vierten Aussage: Die Qualität eines Outputs hängt maßgeblich davon ab, was VOR dem eigentlichen Prompt gesagt wird.',
+    src: 'Bruckhuisen — aifluesterfee.de · aifluesterfee.de · Prompting Guide — DAIR.AI · promptingguide.ai'
+  },
+  {
+    sc: 'Die KI-Managerin schlägt vor, die drei Datensilos langfristig nicht in einem zentralen Data Warehouse, sondern als Data Mesh zu organisieren — jede Domäne bleibt für ihre eigenen Daten verantwortlich.',
+    q: 'Welche Aussagen zur Architekturentscheidung Data Mesh vs. zentrales Data Warehouse bei AIktiv-Invest sind korrekt?',
+    opts: [
+      'Ein Data Mesh überträgt die Verantwortung für Datenqualität an die jeweilige Domäne — Sophie bliebe für Proposal-Daten, Markus für CRM-Daten zuständig',
+      'Ein zentrales Data Warehouse bündelt Daten an einem Ort und kann so eine einheitliche Sicht erzeugen, erfordert dafür aber zentrale Pflege- und Steuerungsressourcen',
+      'Ein Data Mesh ist für Unternehmen mit nur drei Datensilos technisch unmöglich umzusetzen',
+      'Die Entscheidung zwischen Data Mesh und Data Warehouse ist eine rein technische Frage ohne organisatorische Implikationen'
+    ],
+    correct: [0,1],
+    exp: 'Ein Data Mesh überträgt Verantwortung dezentral an die jeweilige Domäne ✓ — bei AIktiv-Invest blieben Sophie und Markus für ihre jeweiligen Daten zuständig. Ein zentrales Data Warehouse erzeugt eine einheitliche Sicht, braucht dafür aber zentrale Pflegeressourcen ✓. Ein Data Mesh ist nicht an eine Mindestanzahl von Silos gebunden — die Größe ist kein Ausschlusskriterium. Und gerade die Verantwortungsverteilung macht die Entscheidung zu einer stark organisatorischen Frage, nicht nur einer technischen.',
+    src: 'Martin Fowler — Data Mesh Principles · martinfowler.com/articles/data-mesh-principles.html · Google Cloud — Enterprise Data Mesh · docs.cloud.google.com/architecture/blueprints/deploy_enterprise_data_mesh'
+  },
+  {
+    sc: 'Im Reflexionsblock diskutiert die Gruppe, wo Prompting an seine Grenzen stößt — gerade beim Einsatz externer KI-Modelle für AIktiv-Invest-Daten.',
+    q: 'Welche Aussagen zu den Grenzen von Prompting-Techniken treffen zu?',
+    opts: [
+      'Halluzinationen können auch bei sorgfältig formulierten Prompts auftreten — das Modell kann plausibel klingende, aber falsche Informationen erzeugen',
+      'Jedes Sprachmodell hat ein begrenztes Kontextfenster — sehr lange Pitch Decks oder Financial Models können nicht vollständig „auf einmal" verarbeitet werden',
+      'Werden vertrauliche AIktiv-Invest-Daten an ein externes Modell übermittelt, müssen Datenschutz- und Vertraulichkeitsfragen vorab geklärt sein',
+      'Eine ausreichend gute Prompt-Formulierung schließt Halluzinationen und Kontextfenster-Limits vollständig aus'
+    ],
+    correct: [0,1,2],
+    exp: 'Halluzinationen ✓, begrenzte Kontextfenster ✓ und Datenschutzfragen bei externen Modellen ✓ sind reale, dokumentierte Grenzen von Prompting-Techniken — sie lassen sich abmildern (z. B. durch Meta-Prompting oder Chunking), aber nicht durch Formulierung allein vollständig beseitigen. Die vierte Aussage widerspricht der fachlichen Realität: Auch der beste Prompt eliminiert diese strukturellen Grenzen nicht.',
+    src: 'Prompting Guide — DAIR.AI · promptingguide.ai · DSGVO Art. 5 · gdpr-info.eu/art-5-gdpr/'
+  },
+],
+
+/* ─── IT-/Data-Verantwortliche:r · Anfänger · 3r,2r,1r,3r,2r ─── */
+b1: [
+  {
+    sc: 'Markus Reiner öffnet das CRM-System von AIktiv-Invest und stellt fest: Es gibt doppelte Founder-Einträge, keine Verknüpfung zu Sophies Proposal-Daten, und ein Teil der Daten stammt aus alten Tabellen-Exporten.',
+    q: 'Welche DAMA-Qualitätsprobleme erkennt Markus in diesem CRM-Bestand direkt?',
+    opts: [
+      'Eindeutigkeit — doppelte Founder-Einträge erschweren die KI-gestützte Zuordnung von Proposals zu Personen',
+      'Konsistenz — Daten aus unterschiedlichen Export-Generationen folgen vermutlich unterschiedlichen Schemata',
+      'Vollständigkeit — fehlende Verknüpfung zu Sophies Proposal-Daten bedeutet, dass relevante Informationen für das Screening nicht zusammengeführt werden können',
+      'Aktualität — jedes CRM-System ist nach spätestens einem Jahr automatisch veraltet, unabhängig vom Pflegeaufwand'
+    ],
+    correct: [0,1,2],
+    exp: 'Eindeutigkeit (doppelte Founder-Einträge) ✓, Konsistenz (unterschiedliche Export-Schemata) ✓ und Vollständigkeit (fehlende Verknüpfung relevanter Datenquellen) ✓ sind die direkt erkennbaren DAMA-Probleme. Aktualität ist keine pauschale Funktion der Zeit — ein gut gepflegtes CRM kann auch nach Jahren aktuell sein, ein vernachlässigtes nach Wochen veraltet.',
+    src: 'DAMA International – DMBOK · dama.org/cpages/body-of-knowledge'
+  },
+  {
+    sc: 'Markus soll entscheiden, wie die Finanzkennzahlen aus den Pitch Decks (teils in USD, teils mit ARR/MRR/Revenue als Begriff) in die zentrale Datenbank gelangen.',
+    q: 'Welche Aussagen zur Datenaufbereitung dieser Finanzkennzahlen sind korrekt?',
+    opts: [
+      'Ein ETL-Ansatz ist hier sinnvoll, weil Begriffe und Währungen vor der Speicherung vereinheitlicht werden müssen — sonst sind die Rohdaten im Zielsystem nicht direkt nutzbar',
+      'Eine Mapping-Tabelle (z. B. ARR, MRR, Revenue Run-Rate → einheitliche Kennzahl in EUR) reduziert das Risiko von Fehlinterpretationen im Scoring-Modell',
+      'Da die KI ohnehin „lernt", ist eine Vereinheitlichung der Begriffe vor der Verarbeitung überflüssig',
+      'Währungsunterschiede sind in der Praxis vernachlässigbar, solange alle Beträge im selben Dokument stehen'
+    ],
+    correct: [0,1],
+    exp: 'ETL ist hier sinnvoll, weil die Rohdaten (unterschiedliche Begriffe, Währungen) im Zielsystem sonst unbrauchbar wären ✓ — eine Mapping-Tabelle reduziert das Risiko von Fehlinterpretationen im Scoring deutlich ✓. Die KI „lernt" nicht automatisch korrekte Vereinheitlichung — uneinheitliche Eingaben führen zu „Garbage in, garbage out". Und Währungsunterschiede sind keineswegs vernachlässigbar — ein Vergleich von USD- und EUR-Werten ohne Umrechnung verfälscht jedes Scoring-Ergebnis.',
+    src: 'Google Cloud Dataflow · cloud.google.com/dataflow/docs/overview · DAMA — DMBOK · dama.org/cpages/body-of-knowledge'
+  },
+  {
+    sc: 'Markus plant die Aktualisierungsintervalle für den Richtlinien-Bot, der internen Analyst:innen Compliance- und Prozessfragen beantwortet.',
+    q: 'Welche Aussage zur passenden Aktualisierungsstrategie für den Richtlinien-Bot ist korrekt?',
+    opts: [
+      'Eine wöchentliche Batch-Aktualisierung reicht in der Regel aus, weil sich interne Richtlinien selten kurzfristig ändern',
+      'Der Richtlinien-Bot benötigt zwingend Echtzeitverarbeitung, weil jede Sekunde Verzögerung zu Compliance-Verstößen führen würde',
+      'Die Aktualisierungsfrequenz eines Bots hat keinen Zusammenhang mit der Änderungsfrequenz der zugrunde liegenden Inhalte',
+      'Batch-Verarbeitung ist für interne Wissens-Bots grundsätzlich ungeeignet'
+    ],
+    correct: [0],
+    exp: 'Eine wöchentliche Batch-Aktualisierung genügt, weil sich interne Richtlinien selten kurzfristig ändern ✓ — Echtzeit wäre hier unnötiger Mehraufwand. Die Aktualisierungsfrequenz sollte sich gerade an der Änderungshäufigkeit der Inhalte orientieren — das ist der Kern der Entscheidung, nicht ein irrelevanter Faktor. Batch-Verarbeitung ist für viele interne Wissens-Bots sogar die naheliegende, kosteneffiziente Wahl.',
+    src: 'Google Cloud Dataflow · cloud.google.com/dataflow/docs/overview · AWS — Batch vs. Real-Time Ingestion · docs.aws.amazon.com/whitepapers/latest/building-data-lakes/batch-vs-real-time-ingestion.html'
+  },
+  {
+    sc: 'Markus bemerkt, dass das CRM-Importskript seit der letzten Anbieter-Aktualisierung das Feld „Company Stage" in „Funding Stage" umbenannt hat — das bisherige Mapping bricht.',
+    q: 'Welche Data-Observability-Signale helfen Markus, solche Probleme frühzeitig zu erkennen?',
+    opts: [
+      'Struktur — hat sich das Datenformat oder die Feldbezeichnung verändert, sodass bestehende Mappings nicht mehr greifen?',
+      'Herkunft — woher stammen die Daten, und auf welcher Verarbeitungsstufe wurde der Fehler eingebracht?',
+      'Verteilung — liegen die eintreffenden Werte noch im erwarteten Wertebereich, oder häufen sich plötzlich leere oder untypische Einträge?',
+      'Beliebtheit — wie oft wird ein Datensatz von den Analyst:innen angeklickt?'
+    ],
+    correct: [0,1,2],
+    exp: 'Struktur (Format-/Feldänderungen erkennen) ✓, Herkunft (Fehlerquelle lokalisieren) ✓ und Verteilung (Werte im Normalbereich?) ✓ sind drei der fünf etablierten Data-Observability-Signale — genau die, die bei einer stillen Feldumbenennung greifen. „Beliebtheit" ist kein Data-Observability-Signal; die tatsächlichen weiteren Signale sind Frische und Vollständigkeit.',
+    src: 'Monte Carlo Data — What is Data Observability? (2026) · montecarlo.ai/blog-what-is-data-observability/'
+  },
+  {
+    sc: 'Dr. Vogt fragt Markus, wer eigentlich dafür sorgt, dass das Compliance-Handbuch in der Pipeline aktuell bleibt und wer die Verantwortung für dessen Nutzung trägt.',
+    q: 'Welche Aussagen zur Rollenverteilung in der Pipeline-Governance sind korrekt?',
+    opts: [
+      'Der Data Owner trägt die Compliance-Verantwortung und entscheidet, wofür die Daten genutzt werden dürfen',
+      'Der Data Steward sorgt aktiv dafür, dass Inhalte wie das Compliance-Handbuch aktuell, vollständig und korrekt bleiben',
+      'Markus kann diese Rollen formal nicht ausfüllen, weil sie ausschließlich der Geschäftsführung vorbehalten sind',
+      'Sobald eine Pipeline technisch eingerichtet ist, erübrigt sich die Frage nach Governance-Rollen'
+    ],
+    correct: [0,1],
+    exp: 'Der Data Owner trägt die Compliance-Verantwortung und entscheidet über die Nutzung ✓, der Data Steward pflegt Inhalte aktiv ✓ — beide Rollen sind bei AIktiv-Invest klar zugeordnet (z. B. Markus als Data Owner für den Richtlinien-Bot). Diese Rollen sind nicht der Geschäftsführung vorbehalten — sie können je nach Organisation unterschiedlich verteilt sein. Und gerade der technische Betrieb einer Pipeline ersetzt nicht die Frage, WER inhaltlich verantwortlich ist — im Gegenteil, das ist die häufigste Ursache für scheiternde Pipelines.',
+    src: 'DAMA — Data Management Body of Knowledge (DMBOK) · dama.org/cpages/body-of-knowledge'
+  },
+],
+
+/* ─── IT-/Data-Verantwortliche:r · Fortgeschrittene · 2r,3r,2r,3r,3r ─── */
+b2: [
+  {
+    sc: 'Markus entwirft die zentrale Datenpipeline für AIktiv-Invest und muss für jede Datenquelle entscheiden, ob ETL oder ELT der passendere Ansatz ist.',
+    q: 'Welche Aussagen zur Entscheidung zwischen ETL und ELT für die AIktiv-Invest-Pipeline sind korrekt?',
+    opts: [
+      'Für die Finanzkennzahlen aus Pitch Decks spricht vieles für ETL, weil uneinheitliche Begriffe und Währungen vor der Nutzung bereinigt werden müssen',
+      'Für Rohdaten, die das Scoring-Modell später in unterschiedlichen Auswertungsperspektiven benötigt, kann ELT sinnvoll sein, weil die Transformation flexibel in der Zielumgebung erfolgt',
+      'Die Entscheidung zwischen ETL und ELT ist branchenweit gesetzlich vorgeschrieben und liegt nicht im Ermessen des Unternehmens',
+      'ETL und ELT schließen sich in einer Pipeline gegenseitig aus — ein Unternehmen darf nur einen der beiden Ansätze verwenden'
+    ],
+    correct: [0,1],
+    exp: 'ETL passt zu den Finanzkennzahlen, weil eine Vereinheitlichung vor der Nutzung zwingend nötig ist ✓; ELT passt zu Rohdaten, die später flexibel und mehrfach ausgewertet werden sollen, weil die Transformation in der leistungsfähigen Zielumgebung erfolgt ✓. Es gibt keine gesetzliche Vorschrift, die ETL oder ELT verbindlich festlegt — die Wahl ist eine architektonische Entscheidung. Und beide Ansätze können in derselben Pipeline für unterschiedliche Datenquellen parallel genutzt werden.',
+    src: 'Google Cloud Dataflow · cloud.google.com/dataflow/docs/overview · Azure Data Architecture Guide · learn.microsoft.com/de-de/azure/architecture/data-guide/'
+  },
+  {
+    sc: 'Markus bereitet die Dokumentation vor, die belegt, auf welcher Rechtsgrundlage personenbezogene Daten (Gründer-CVs, Chat-Logs, E-Mail-Threads) in die zentrale Pipeline einfließen.',
+    q: 'Welche Aussagen zur datenschutzrechtlichen Absicherung der AIktiv-Invest-Pipeline sind korrekt?',
+    opts: [
+      'Für jede Kategorie personenbezogener Daten in der Pipeline muss eine Rechtsgrundlage nach Art. 6 DSGVO dokumentiert und dem Data Owner zugeordnet sein',
+      'Die Dokumentation der Rechtsgrundlage ist Voraussetzung für die Anbindung — ohne sie darf die jeweilige Datenquelle nicht eingebunden werden',
+      'Auch innerhalb eines Unternehmens (z. B. Chat-Logs zwischen Mitarbeitenden) bleiben die Daten personenbezogen und unterliegen der DSGVO',
+      'Eine einmal erteilte Rechtsgrundlage gilt automatisch für alle zukünftigen, auch ganz anderen Verwendungszwecke derselben Daten'
+    ],
+    correct: [0,1,2],
+    exp: 'Für jede Datenkategorie ist eine dokumentierte Rechtsgrundlage nach Art. 6 DSGVO erforderlich ✓, sie ist Voraussetzung für die Anbindung ✓, und auch interne Kommunikation bleibt personenbezogen und DSGVO-relevant ✓. Eine erteilte Rechtsgrundlage gilt jedoch NICHT automatisch für jeden neuen Zweck — das Prinzip der Zweckbindung (Art. 5 DSGVO) verlangt, dass jede neue Verwendung erneut geprüft und ggf. neu legitimiert wird.',
+    src: 'DSGVO Art. 5 + Art. 6 · gdpr-info.eu/art-6-gdpr/ · DAMA — DMBOK · dama.org/cpages/body-of-knowledge'
+  },
+  {
+    sc: 'Markus möchte verhindern, dass AIktiv-Invest sich durch die Azure-Implementierung der Pipeline langfristig in eine technische Sackgasse manövriert.',
+    q: 'Welche Maßnahmen reduzieren das Vendor-Lock-in-Risiko in der von Markus geplanten Pipeline?',
+    opts: [
+      'Strukturierte Daten in offenen Standardformaten wie CSV oder Parquet ablegen, die auf verschiedenen Cloud- und On-Premise-Plattformen lauffähig sind',
+      'Eine vertragliche Klausel mit dem Cloud-Anbieter vereinbaren, die das Recht auf Datenexport in Standardformaten sichert',
+      'Ausschließlich proprietäre Formate des gewählten Anbieters nutzen, um maximale Kompatibilität innerhalb des eigenen Ökosystems zu erreichen',
+      'Vendor Lock-in lässt sich technisch grundsätzlich nicht verringern, sobald ein Cloud-Anbieter gewählt wurde'
+    ],
+    correct: [0,1],
+    exp: 'Offene Standardformate wie CSV/Parquet ✓ und vertragliche Exportklauseln ✓ sind etablierte Maßnahmen zur Reduktion von Vendor-Lock-in-Risiken. Ausschließlich proprietäre Formate zu nutzen verstärkt die Abhängigkeit eher, als sie zu verringern — das ist das Gegenteil einer Lock-in-Strategie. Und Lock-in-Risiken lassen sich sehr wohl technisch und vertraglich verringern — die Wahl eines Anbieters ist kein unumkehrbarer Zustand.',
+    src: 'PMI PMBOK® Guide (Risk Management) · pmi.org/pmbok-guide-standards · Azure Data Architecture Guide · learn.microsoft.com/de-de/azure/architecture/data-guide/'
+  },
+  {
+    sc: 'Markus diskutiert mit der KI-Managerin, ob AIktiv-Invest langfristig auf ein Data Mesh umstellen sollte, bei dem Sophie und er jeweils Verantwortung für ihre Domänen-Daten tragen.',
+    q: 'Welche Aussagen zur Abwägung zwischen Data Mesh und zentralisierter Architektur bei AIktiv-Invest sind zutreffend?',
+    opts: [
+      'Ein Data Mesh würde die Verantwortung für Datenqualität dorthin verlagern, wo die fachliche Expertise liegt — Sophie für Proposal-Daten, Markus für CRM-Daten',
+      'Eine zentrale Architektur erleichtert eine unternehmensweit einheitliche Sicht, verlangt im Gegenzug aber dauerhafte zentrale Pflege- und Steuerungsressourcen',
+      'Bei einem kleinen Unternehmen wie AIktiv-Invest mit wenigen, klar abgrenzbaren Domänen kann auch eine zentralisierte Lösung praktikabel und ressourcenschonender sein',
+      'Die Architekturwahl betrifft ausschließlich die IT-Abteilung — fachliche Teams müssen daran nicht beteiligt werden'
+    ],
+    correct: [0,1,2],
+    exp: 'Ein Data Mesh verlagert Verantwortung dorthin, wo die fachliche Nähe am größten ist ✓; eine zentrale Architektur erzeugt Einheitlichkeit, kostet aber dauerhafte Pflegeressourcen ✓; und gerade bei kleinen Unternehmen mit wenigen Domänen kann eine zentralisierte Lösung sogar die pragmatischere Wahl sein ✓ — Architektur ist kein Selbstzweck, sondern muss zur Unternehmensgröße passen. Die vierte Aussage ist falsch: Architekturentscheidungen mit Auswirkung auf Datenverantwortung betreffen zwingend auch die fachlichen Teams (Sophie, Dr. Vogt) — sie lassen sich nicht rein technisch entscheiden.',
+    src: 'Martin Fowler — Data Mesh Principles · martinfowler.com/articles/data-mesh-principles.html · Google Cloud — Enterprise Data Mesh · docs.cloud.google.com/architecture/blueprints/deploy_enterprise_data_mesh'
+  },
+  {
+    sc: 'Markus testet, mit welcher Prompt-Strategie der Pipeline-Bot Statusberichte für das Investment-Komitee am zuverlässigsten erstellt — inklusive nachvollziehbarer Risikobewertung.',
+    q: 'Welche Aussagen zur Auswahl geeigneter Prompt-Techniken für den Pipeline-Bot treffen zu?',
+    opts: [
+      'Für klar definierte Statusabfragen („Wie viele Proposals sind aktuell in Phase 2?") eignet sich Zero-Shot-Prompting — eine Direktanweisung ohne Beispiel reicht meist aus',
+      'Für Risikoeinschätzungen, die eine nachvollziehbare Argumentation erfordern, ist Chain-of-Thought-Prompting sinnvoll, weil der Denkweg in Etappen sichtbar wird',
+      'Eine Kombination aus rollenbasiertem Prompting (feste Persona) und Meta-Prompting (Sicherheitsnetz „Rate nicht, wenn unsicher") kann die Zuverlässigkeit hochriskanter Aussagen erhöhen',
+      'Für jede Bot-Anfrage sollte stets dieselbe einzelne Technik verwendet werden — Mischformen verschlechtern grundsätzlich die Ergebnisqualität'
+    ],
+    correct: [0,1,2],
+    exp: 'Zero-Shot für klare Statusabfragen ✓, Chain-of-Thought für nachvollziehbare Risikoeinschätzungen ✓ und die Kombination aus rollenbasiertem Prompting und Meta-Prompting als Sicherheitsnetz ✓ sind alle sinnvolle, in der Praxis bewährte Strategien. Die Prompt-Techniken schließen sich nicht gegenseitig aus — im Gegenteil: Gerade die Kombination je nach Aufgabentyp ist der empfohlene Ansatz, keine Verschlechterung.',
+    src: 'Prompting Guide — DAIR.AI · promptingguide.ai · Bruckhuisen — aifluesterfee.de · aifluesterfee.de'
+  },
+]
+
+};
+
+var APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwTfP8ygOun58rmvY9hQXFmPEgVyxppQGEPYjar1e78N6uanaGHuzBNOyU5P4kgvmz7/exec';
+var selectedRole = null, selectedLevel = null, questions = [], userAnswers = [];
+var participantName = '';
+
+function selectRole(r) {
+  selectedRole = r;
+  document.getElementById('btn-role-a').className = 'sel-btn' + (r==='a' ? ' active-a' : '');
+  document.getElementById('btn-role-b').className = 'sel-btn' + (r==='b' ? ' active-b' : '');
+  checkReady();
+}
+function selectLevel(l) {
+  selectedLevel = l;
+  document.getElementById('btn-level-1').className = 'sel-btn' + (l==='1' ? ' active-1' : '');
+  document.getElementById('btn-level-2').className = 'sel-btn' + (l==='2' ? ' active-2' : '');
+  checkReady();
+}
+function checkReady() {
+  document.getElementById('btn-start').disabled = !(selectedRole && selectedLevel);
+}
+
+function shuffle(arr) {
+  var a = arr.slice(), i = a.length, j, t;
+  while (i--) { j = Math.floor(Math.random()*(i+1)); t=a[i]; a[i]=a[j]; a[j]=t; }
+  return a;
+}
+
+function startQuiz() {
+  var key = selectedRole + selectedLevel;
+  var pool = QBANK[key] || [];
+  questions = pool.map(function(q) {
+    var indices = q.opts.map(function(_,i){return i;});
+    var shuffled = shuffle(indices);
+    var newOpts = shuffled.map(function(i){return q.opts[i];});
+    var newCorrect = q.correct.map(function(c){return shuffled.indexOf(c);});
+    return {q: q.q, sc: q.sc||'', opts: newOpts, correct: newCorrect, exp: q.exp, src: q.src||''};
+  });
+  userAnswers = questions.map(function(){return [];});
+
+  document.getElementById('setup-section').style.display = 'none';
+  document.getElementById('quiz-section').style.display = 'block';
+
+  var roleLabels = {a:'KI-Manager:in', b:'IT-/Data-Verantwortliche:r'};
+  var levelLabels = {1:'Anfänger', 2:'Fortgeschrittene'};
+  var name = document.getElementById('participant-name').value.trim() || 'Anonym';
+  participantName = name;
+  var strip = document.getElementById('quiz-header-strip');
+  strip.innerHTML =
+    '<span class="strip-tag strip-role-' + selectedRole + '">' + roleLabels[selectedRole] + '</span>' +
+    '<span class="strip-tag strip-level-' + selectedLevel + '">' + levelLabels[selectedLevel] + '</span>' +
+    '<span class="strip-name">' + name + '</span>';
+
+  document.getElementById('scenario-text').textContent = SCENARIOS[selectedRole];
+  renderQuestions();
+  updateProgress();
+}
+
+function renderQuestions() {
+  var container = document.getElementById('questions-container');
+  container.innerHTML = '';
+  var letters = ['A','B','C','D','E'];
+  questions.forEach(function(q, qi) {
+    var card = document.createElement('div');
+    card.className = 'q-card';
+    card.id = 'qcard-' + qi;
+    var html = '<div class="q-num">Frage ' + (qi+1) + ' von ' + questions.length + '</div>';
+    if (q.sc) html += '<div class="q-sc">' + q.sc + '</div>';
+    html += '<div class="q-text">' + q.q + '</div>';
+    html += '<div class="opt-list" id="opts-' + qi + '">';
+    q.opts.forEach(function(opt, oi) {
+      html += '<div class="opt" id="opt-' + qi + '-' + oi + '" onclick="toggleOpt(' + qi + ',' + oi + ')">' +
+        '<div class="opt-cb" id="cb-' + qi + '-' + oi + '"></div>' +
+        '<span class="opt-letter">' + letters[oi] + '.</span>' +
+        '<span class="opt-text">' + opt + '</span></div>';
+    });
+    html += '</div>';
+    card.innerHTML = html;
+    container.appendChild(card);
+  });
+}
+
+function toggleOpt(qi, oi) {
+  var idx = userAnswers[qi].indexOf(oi);
+  if (idx >= 0) {
+    userAnswers[qi].splice(idx, 1);
+    document.getElementById('opt-' + qi + '-' + oi).classList.remove('selected');
+    document.getElementById('cb-' + qi + '-' + oi).classList.remove('chk');
+  } else {
+    userAnswers[qi].push(oi);
+    document.getElementById('opt-' + qi + '-' + oi).classList.add('selected');
+    document.getElementById('cb-' + qi + '-' + oi).classList.add('chk');
+  }
+  updateSubmitBtn();
+  updateProgress();
+}
+
+function updateSubmitBtn() {
+  var answered = userAnswers.filter(function(a){return a.length>0;}).length;
+  document.getElementById('btn-submit').disabled = answered < questions.length;
+}
+
+function updateProgress() {
+  var answered = userAnswers.filter(function(a){return a.length>0;}).length;
+  var pct = questions.length ? (answered/questions.length*100) : 0;
+  document.getElementById('progress-fill').style.width = pct + '%';
+  document.getElementById('progress-label').textContent = answered + ' von ' + questions.length + ' Fragen beantwortet';
+}
+
+function submitQuiz() {
+  document.getElementById('quiz-section').style.display = 'none';
+  document.getElementById('results-section').style.display = 'block';
+
+  var score = 0;
+  questions.forEach(function(q, qi) {
+    var ua = userAnswers[qi].slice().sort();
+    var ca = q.correct.slice().sort();
+    if (JSON.stringify(ua) === JSON.stringify(ca)) score++;
+  });
+
+  var pct = Math.round(score/questions.length*100);
+  var grade, label;
+  if (pct >= 90) { grade = 'A'; label = 'Ausgezeichnet'; }
+  else if (pct >= 75) { grade = 'B'; label = 'Sehr gut'; }
+  else if (pct >= 60) { grade = 'C'; label = 'Gut'; }
+  else if (pct >= 45) { grade = 'D'; label = 'Befriedigend'; }
+  else { grade = 'E'; label = 'Wiederholen empfohlen'; }
+
+  document.getElementById('result-grade').textContent = grade;
+  document.getElementById('result-label').textContent = label + ' — ' + pct + ' %';
+  document.getElementById('result-sub').textContent = score + ' von ' + questions.length + ' Fragen vollständig richtig';
+
+  document.getElementById('stats-row').innerHTML =
+    '<div class="stat"><div class="stat-n">' + score + '</div><div class="stat-l">Richtig</div></div>' +
+    '<div class="stat"><div class="stat-n">' + (questions.length-score) + '</div><div class="stat-l">Falsch</div></div>' +
+    '<div class="stat"><div class="stat-n">' + pct + ' %</div><div class="stat-l">Trefferquote</div></div>';
+
+  document.getElementById('comp-bars').innerHTML =
+    '<div class="comp-row"><div class="comp-labels"><span>Richtig</span><span>' + score + '/' + questions.length + '</span></div>' +
+    '<div class="comp-track"><div class="comp-fill fill-ok" style="width:' + pct + '%"></div></div></div>' +
+    '<div class="comp-row"><div class="comp-labels"><span>Verbesserungspotenzial</span><span>' + (questions.length-score) + '/' + questions.length + '</span></div>' +
+    '<div class="comp-track"><div class="comp-fill fill-wrong" style="width:' + (100-pct) + '%"></div></div></div>';
+
+  var letters = ['A','B','C','D','E'];
+  var rev = document.getElementById('review-container');
+  rev.innerHTML = '';
+  questions.forEach(function(q, qi) {
+    var ua = userAnswers[qi].slice().sort();
+    var ca = q.correct.slice().sort();
+    var isOk = JSON.stringify(ua) === JSON.stringify(ca);
+    var card = document.createElement('div');
+    card.className = 'q-card';
+    var html = '<div class="q-num">Frage ' + (qi+1) + '</div>';
+    if (q.sc) html += '<div class="q-sc">' + q.sc + '</div>';
+    html += '<div class="q-text">' + q.q + '</div><div class="opt-list">';
+    q.opts.forEach(function(opt, oi) {
+      var isCorrect = ca.indexOf(oi) >= 0;
+      var isSelected = ua.indexOf(oi) >= 0;
+      var cls = 'opt disabled';
+      if (isCorrect && isSelected) cls += ' correct-sel';
+      else if (!isCorrect && isSelected) cls += ' wrong-sel';
+      else if (isCorrect && !isSelected) cls += ' missed';
+      var cbCls = 'opt-cb';
+      if (isCorrect && isSelected) cbCls += ' chk';
+      else if (!isCorrect && isSelected) cbCls += ' chk';
+      html += '<div class="' + cls + '"><div class="' + cbCls + '"></div>' +
+        '<span class="opt-letter">' + letters[oi] + '.</span>' +
+        '<span class="opt-text">' + opt + '</span></div>';
+    });
+    html += '</div>';
+    var fbCls = isOk ? 'fb-ok' : 'fb-wrong';
+    var fbTitle = isOk ? '✓ Richtig' : '✗ Nicht vollständig richtig';
+    html += '<div class="feedback ' + fbCls + '"><div class="fb-title">' + fbTitle + '</div>' +
+      '<div class="fb-text">' + q.exp + '</div>';
+    if (q.src) html += '<div class="fb-source">Quelle: ' + q.src + '</div>';
+    html += '</div>';
+    card.innerHTML = html;
+    rev.appendChild(card);
+  });
+}
+</script>
+</body>
+</html>
