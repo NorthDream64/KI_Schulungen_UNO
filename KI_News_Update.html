@@ -1,426 +1,243 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>KI-News Update | 7. Juni 2026</title>
-  <style>
-    :root {
-      --primary: #1a237e;
-      --secondary: #283593;
-      --accent: #3949ab;
-      --red: #c62828;
-      --red-light: #ffebee;
-      --blue: #1565c0;
-      --blue-light: #e3f2fd;
-      --purple: #6a1b9a;
-      --purple-light: #f3e5f5;
-      --green: #2e7d32;
-      --green-light: #e8f5e9;
-      --orange: #e65100;
-      --orange-light: #fff3e0;
-      --grey: #455a64;
-      --grey-light: #eceff1;
-      --text: #212121;
-      --text-muted: #607d8b;
-      --border: #cfd8dc;
-    }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-      background: #f5f7fa;
-      color: var(--text);
-      line-height: 1.6;
-    }
-    header {
-      background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
-      color: white;
-      padding: 28px 20px 22px;
-      text-align: center;
-    }
-    header .icon { font-size: 2.5rem; display: block; margin-bottom: 8px; }
-    header h1 { font-size: 1.8rem; font-weight: 700; margin-bottom: 4px; }
-    header .subtitle { opacity: 0.85; font-size: 0.95rem; }
-    header .stichtag-badge {
-      display: inline-block;
-      margin-top: 12px;
-      background: rgba(255,255,255,0.2);
-      border: 1px solid rgba(255,255,255,0.4);
-      border-radius: 20px;
-      padding: 5px 18px;
-      font-size: 0.9rem;
-      font-weight: 600;
-    }
-    .container { max-width: 960px; margin: 0 auto; padding: 24px 16px 48px; }
-    .section { background: white; border-radius: 10px; margin-bottom: 24px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); overflow: hidden; }
-    .section-header {
-      padding: 16px 20px;
-      display: flex; align-items: center; gap: 10px;
-      font-size: 1.05rem; font-weight: 700;
-      border-bottom: 1px solid var(--border);
-    }
-    .section-header.red { background: var(--red); color: white; }
-    .section-header.blue { background: var(--blue); color: white; }
-    .section-header.purple { background: var(--purple); color: white; }
-    .section-header.green { background: var(--green); color: white; }
-    .section-header.orange { background: var(--orange); color: white; }
-    .section-header.grey { background: var(--grey); color: white; }
-    .section-header.dark { background: var(--primary); color: white; }
-    .section-body { padding: 20px; }
-
-    /* Alert boxes */
-    .alert { border-radius: 8px; padding: 16px 18px; margin-bottom: 14px; display: flex; gap: 14px; align-items: flex-start; }
-    .alert.critical { background: var(--red-light); border-left: 4px solid var(--red); }
-    .alert.info { background: var(--blue-light); border-left: 4px solid var(--blue); }
-    .alert.warning { background: var(--orange-light); border-left: 4px solid var(--orange); }
-    .alert-icon { font-size: 1.4rem; flex-shrink: 0; margin-top: 1px; }
-    .alert-content h3 { font-size: 0.95rem; font-weight: 700; margin-bottom: 5px; }
-    .alert-content p { font-size: 0.88rem; color: var(--grey); }
-    .alert-content a { color: var(--blue); text-decoration: none; }
-    .alert-content a:hover { text-decoration: underline; }
-
-    /* Priority table */
-    table { width: 100%; border-collapse: collapse; font-size: 0.87rem; }
-    th { background: var(--grey-light); text-align: left; padding: 10px 12px; font-weight: 600; color: var(--grey); border-bottom: 2px solid var(--border); }
-    td { padding: 10px 12px; border-bottom: 1px solid var(--border); vertical-align: top; }
-    tr:last-child td { border-bottom: none; }
-    tr:hover td { background: #fafafa; }
-    .badge { display: inline-block; border-radius: 12px; padding: 2px 10px; font-size: 0.78rem; font-weight: 600; white-space: nowrap; }
-    .badge.high { background: #ffcdd2; color: #b71c1c; }
-    .badge.medium { background: #fff9c4; color: #f57f17; }
-    .badge.low { background: #c8e6c9; color: #1b5e20; }
-    a { color: var(--blue); text-decoration: none; }
-    a:hover { text-decoration: underline; }
-
-    /* Card articles */
-    .article { border: 1px solid var(--border); border-radius: 8px; padding: 16px; margin-bottom: 16px; }
-    .article:last-child { margin-bottom: 0; }
-    .article-meta { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 8px; }
-    .tag { display: inline-block; border-radius: 4px; padding: 2px 8px; font-size: 0.76rem; font-weight: 600; }
-    .tag.red { background: var(--red-light); color: var(--red); }
-    .tag.blue { background: var(--blue-light); color: var(--blue); }
-    .tag.purple { background: var(--purple-light); color: var(--purple); }
-    .tag.green { background: var(--green-light); color: var(--green); }
-    .tag.orange { background: var(--orange-light); color: var(--orange); }
-    .tag.grey { background: var(--grey-light); color: var(--grey); }
-    .article h3 { font-size: 0.98rem; font-weight: 700; margin-bottom: 6px; }
-    .article p { font-size: 0.88rem; color: var(--grey); margin-bottom: 8px; }
-    .article .links { font-size: 0.83rem; }
-    .article .links a { margin-right: 12px; }
-
-    /* Timeline table */
-    .timeline-table { width: 100%; border-collapse: collapse; font-size: 0.87rem; }
-    .timeline-table th { background: var(--primary); color: white; padding: 10px 12px; text-align: left; }
-    .timeline-table td { padding: 10px 12px; border-bottom: 1px solid var(--border); vertical-align: top; }
-    .timeline-table tr:last-child td { border-bottom: none; }
-    .deadline-critical { color: var(--red); font-weight: 700; }
-    .deadline-soon { color: var(--orange); font-weight: 700; }
-    .deadline-future { color: var(--grey); }
-
-    /* Empfehlungen */
-    .rec-item { padding: 12px 0; border-bottom: 1px solid var(--border); display: flex; gap: 10px; align-items: flex-start; font-size: 0.88rem; }
-    .rec-item:last-child { border-bottom: none; }
-    .rec-icon { flex-shrink: 0; font-size: 1.1rem; }
-
-    .note-box { background: var(--grey-light); border-left: 4px solid var(--grey); border-radius: 6px; padding: 12px 16px; font-size: 0.86rem; color: var(--grey); margin-top: 6px; }
-
-    footer {
-      background: var(--primary);
-      color: rgba(255,255,255,0.8);
-      text-align: center;
-      padding: 18px 16px;
-      font-size: 0.82rem;
-    }
-    footer strong { color: white; }
-
-    @media (max-width: 640px) {
-      header h1 { font-size: 1.4rem; }
-      table, .timeline-table { font-size: 0.8rem; }
-      th, td { padding: 8px; }
-      .section-body { padding: 14px; }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KI-News Update | 8. Juni 2026</title>
+<style>
+  :root{
+    --red:#d64545; --red-bg:#fdecec; --red-border:#f5b8b8;
+    --blue:#2f6fb0; --blue-bg:#e9f2fb; --blue-border:#b9d6f0;
+    --purple:#7a4fb5; --purple-bg:#f1eaf9; --purple-border:#d4bdee;
+    --gray:#5a6470; --gray-bg:#f3f4f6; --border:#e2e5e9;
+    --high:#d64545; --mid:#d6a437; --low:#3f9b56;
+  }
+  *{box-sizing:border-box;}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    margin:0; padding:0; background:#f5f6f8; color:#2b303a; line-height:1.55;
+  }
+  .wrap{max-width:920px; margin:0 auto; padding:18px;}
+  header{
+    background:linear-gradient(135deg,#2f6fb0,#7a4fb5);
+    color:#fff; border-radius:14px; padding:28px 24px; margin-bottom:22px;
+  }
+  header .emoji{font-size:2.2em;}
+  header h1{margin:6px 0 4px; font-size:1.7em;}
+  header .sub{opacity:.92; font-size:.97em;}
+  header .stand{
+    display:inline-block; margin-top:12px; background:rgba(255,255,255,.18);
+    border-radius:8px; padding:6px 14px; font-weight:600; font-size:.95em;
+  }
+  h2{font-size:1.25em; margin:34px 0 14px; padding-bottom:6px; border-bottom:2px solid var(--border);}
+  .card{
+    background:#fff; border:1px solid var(--border); border-radius:12px;
+    padding:18px 20px; margin-bottom:16px; box-shadow:0 1px 3px rgba(0,0,0,.04);
+  }
+  .card h3{margin:6px 0 8px; font-size:1.08em;}
+  .tag{
+    display:inline-block; font-size:.74em; font-weight:700; text-transform:uppercase;
+    letter-spacing:.03em; border-radius:6px; padding:3px 9px; margin:0 6px 8px 0;
+  }
+  .tag.red{background:var(--red-bg); color:var(--red); border:1px solid var(--red-border);}
+  .tag.blue{background:var(--blue-bg); color:var(--blue); border:1px solid var(--blue-border);}
+  .tag.purple{background:var(--purple-bg); color:var(--purple); border:1px solid var(--purple-border);}
+  .tag.gray{background:var(--gray-bg); color:var(--gray); border:1px solid var(--border);}
+  .alert{
+    border-radius:10px; padding:16px 18px; margin-bottom:14px; border:1px solid;
+  }
+  .alert.crit{background:var(--red-bg); border-color:var(--red-border);}
+  .alert.info{background:var(--blue-bg); border-color:var(--blue-border);}
+  .alert h3{margin:4px 0 8px; font-size:1.05em;}
+  .alert p{margin:0 0 6px;}
+  .links a{margin-right:10px; font-size:.92em;}
+  a{color:var(--blue); text-decoration:none;}
+  a:hover{text-decoration:underline;}
+  table{width:100%; border-collapse:collapse; margin:10px 0 6px; font-size:.93em;}
+  th, td{text-align:left; padding:9px 10px; border-bottom:1px solid var(--border); vertical-align:top;}
+  th{background:var(--gray-bg); font-weight:700;}
+  .badge{display:inline-block; border-radius:5px; padding:2px 8px; font-size:.85em; font-weight:700; white-space:nowrap;}
+  .badge.hoch{background:var(--red-bg); color:var(--high); border:1px solid var(--red-border);}
+  .badge.mittel{background:#fdf6e3; color:var(--mid); border:1px solid #f0dfa8;}
+  .badge.niedrig{background:#e9f7ed; color:var(--low); border:1px solid #bfe3c9;}
+  .status{display:inline-block; border-radius:5px; padding:2px 8px; font-size:.85em; font-weight:600; background:var(--gray-bg); color:var(--gray);}
+  ul{margin:8px 0; padding-left:22px;}
+  li{margin-bottom:4px;}
+  footer{
+    margin-top:30px; padding:18px 20px; border-top:1px solid var(--border);
+    font-size:.86em; color:var(--gray); text-align:center;
+  }
+  @media (max-width:640px){
+    header{padding:20px 16px;}
+    .card{padding:14px 16px;}
+    table{font-size:.85em;}
+    th, td{padding:7px 6px;}
+  }
+</style>
 </head>
 <body>
+<div class="wrap">
 
 <header>
-  <span class="icon">🤖</span>
+  <div class="emoji">🤖</div>
   <h1>KI-News Update</h1>
-  <div class="subtitle">Automatisierter Wochenbericht | KI-Schulungsmaterial</div>
-  <div class="stichtag-badge">Neu seit 3. Juni 2026 &nbsp;·&nbsp; Stand: 7. Juni 2026</div>
+  <div class="sub">Automatisierter Wochenbericht | KI-Schulungsmaterial</div>
+  <div class="stand">Neu seit 3. Juni 2026 · Stand: 8. Juni 2026</div>
 </header>
 
-<div class="container">
+<h2>⚡ Dringende Hinweise</h2>
 
-  <!-- 1. Dringende Hinweise -->
-  <div class="section">
-    <div class="section-header red">⚡ Dringende Hinweise</div>
-    <div class="section-body">
-
-      <div class="alert critical">
-        <div class="alert-icon">🚨</div>
-        <div class="alert-content">
-          <h3>Marktverschiebung: Anthropic/Claude überholt OpenAI bei Enterprise-Adoption</h3>
-          <p>Laut dem Ramp AI Index (Datenbasis: über 50.000 US-Unternehmen, Stand Mai 2026) liegt Anthropic mit 34,4 % Enterprise-Adoption erstmals vor OpenAI/ChatGPT (32,3 %). Claudes Marktanteil wuchs binnen eines Jahres um 627 %, während OpenAI nahezu stagnierte (+0,3 %). Anthropic erreichte zudem eine annualisierte Umsatzrate von rund 47 Mrd. USD (Ende Mai 2026). Für Schulungsinhalte zur „Tool-Landschaft" ist dies ein direkt relevanter Stand der Marktführerschaft.<br>
-          <a href="https://borncity.com/news/enterprise-ki-anthropic-ueberholt-openai-bei-unternehmens-adoption/">BornCity: Enterprise-KI Anthropic überholt OpenAI</a> | <a href="https://www.ad-hoc-news.de/wissenschaft/claude-waechst-627-percent-anthropic-verdraengt-openai-an-der-spitze/69441476">ad-hoc-news: Claude wächst 627 %</a> | <a href="https://en.cryptonomist.ch/2026/06/05/anthropic-claude-enterprise-ai-adoption/">Cryptonomist (EN)</a></p>
-        </div>
-      </div>
-
-      <div class="alert info">
-        <div class="alert-icon">ℹ️</div>
-        <div class="alert-content">
-          <h3>Google launcht Gemini Enterprise (5. Juni 2026): neue eigenständige KI-Agenten-Plattform</h3>
-          <p>Google Cloud hat „Gemini Enterprise" als eigenständige Plattform für KI-Agenten im Unternehmenseinsatz gestartet — inkl. Agent Development Kit, Agent Studio, RAG-Engine und Anbindung an Microsoft 365, Salesforce und SAP. Preise ab 21 €/Nutzer (Business) bzw. 30 € (Enterprise); erste Kunden u. a. Figma, Klarna, Virgin Voyages. Direkt relevant für Vergleichsmodule „KI-Plattformen für Unternehmen" (neben Copilot, Claude, Gemini).<br>
-          <a href="https://borncity.com/news/gemini-enterprise-google-startet-ki-agenten-plattform-am-5-juni/">BornCity: Gemini Enterprise Start</a> | <a href="https://www.ad-hoc-news.de/wissenschaft/gemini-enterprise-google-startet-ki-plattform-fuer-unternehmen/69492855">ad-hoc-news</a> | <a href="https://cloud.google.com/gemini-enterprise">Google Cloud (offiziell)</a></p>
-        </div>
-      </div>
-
-      <div class="alert info">
-        <div class="alert-icon">ℹ️</div>
-        <div class="alert-content">
-          <h3>EU stellt „Paket für technologische Souveränität" vor (3. Juni 2026)</h3>
-          <p>Die EU-Kommission präsentierte am 3. Juni 2026 ein Maßnahmenpaket gegen die technologische Abhängigkeit von US-Anbietern: Chips Act 2.0, Cloud and AI Development Act sowie eine Open-Source-Strategie. Ziel: Verdreifachung der europäischen Rechenzentrumskapazität binnen 5–7 Jahren und ein einheitlicher EU-Rahmen zur Bewertung von „Cloud- und KI-Souveränität". Hintergrund: rund 264 Mrd. € jährliche EU-Ausgaben für US-Technologie, AWS/Azure/Google Cloud kontrollieren über 70 % des EU-Cloud-Markts. Ergänzt den AI Act um eine industriepolitische Dimension — relevant für Module zu „EU-Digitalstrategie" und „Internationale KI-Regulierung".<br>
-          <a href="https://germany.representation.ec.europa.eu/news/chips-cloud-open-source-und-ki-eu-kommission-legt-paket-zur-technologischen-souveranitat-vor-2026-06-03_de">EU-Kommission (Vertretung Deutschland)</a> | <a href="https://digital-strategy.ec.europa.eu/en/policies/cloud-and-ai-development-act">Digital Strategy: Cloud and AI Development Act</a> | <a href="https://borncity.com/news/cloud-and-ai-development-act-eu-bricht-us-dominanz-auf/">BornCity</a></p>
-        </div>
-      </div>
-
-    </div>
+<div class="alert crit">
+  <h3>🚨 EU AI Act – Konsultation zu Hochrisiko-KI-Leitlinien endet bereits am 23. Juni 2026 (15 Tage!)</h3>
+  <p>Die EU-Kommission hatte am 19. Mai 2026 erstmals konkrete Entwurfs-Leitlinien zur Einstufung von Hochrisiko-KI-Systemen (Art. 6 i. V. m. Anhang III) veröffentlicht. Eine begleitende Analyse vom 3./7. Juni 2026 macht deutlich: <strong>KI im Recruiting und Personalmanagement rückt klar in den Hochrisiko-Fokus</strong> – CV-Screening, Bewerber-Ranking, Matching, Video-Assessments, Leistungsbewertung, Schichtplanung und Kündigungsprozesse können betroffen sein. Eine rein menschliche Endentscheidung reicht laut Kommission <em>nicht</em> aus, um aus dem Hochrisiko-Bereich herauszufallen – entscheidend ist der tatsächliche Einfluss der KI auf die Entscheidungsvorbereitung ("Human Oversight" als zentraler Compliance-Faktor).</p>
+  <div class="links">
+    <a href="https://www.ki-im-personalwesen.de/neue-eu-leitlinien-ki-im-recruiting-und-personalmanagement-rueckt-in-den-hochrisiko-bereich/" target="_blank">KI im Personalwesen: Analyse</a>
+    <a href="https://digital-strategy.ec.europa.eu/en/library/draft-commission-guidelines-classification-high-risk-ai-systems" target="_blank">EU-Kommission: Leitlinien-Entwurf</a>
+    <a href="https://artificialintelligenceact.eu/de/annex/3/" target="_blank">AI Act Explorer: Anhang III</a>
   </div>
+</div>
 
-  <!-- 2. Empfehlungen für Kursaktualisierungen -->
-  <div class="section">
-    <div class="section-header dark">🎓 Empfehlungen für Kursaktualisierungen</div>
-    <div class="section-body">
-      <div class="rec-item"><span class="rec-icon">📝</span><span><strong>Marktlandschaft KI-Tools aktualisieren:</strong> Ramp-AI-Index-Zahlen (Claude 34,4 % vs. ChatGPT 32,3 % Enterprise-Adoption) in Vergleichsmodule „KI-Tools im Unternehmenseinsatz" einarbeiten — Begründung der Marktführerschaft (Zuverlässigkeit, Long-Context, Instruktionstreue) als Diskussionsgrundlage nutzen.</span></div>
-      <div class="rec-item"><span class="rec-icon">📝</span><span><strong>Gemini Enterprise als dritte große Plattform</strong> neben Microsoft 365 Copilot und Claude in Vergleichs- und Auswahlübungen integrieren; Preismodell (21 €/30 € pro Nutzer) als Praxisbeispiel für Kostenvergleiche heranziehen.</span></div>
-      <div class="rec-item"><span class="rec-icon">📝</span><span><strong>EU-Industriepolitik ergänzen:</strong> „Cloud and AI Development Act" und Chips Act 2.0 im Modul „EU-Digitalstrategie / Internationale Regulierung" als Beispiel dafür einführen, dass KI-Politik zunehmend mit digitaler Souveränität und Standortpolitik verknüpft wird (Ergänzung zum AI Act, nicht Ersatz).</span></div>
-      <div class="rec-item"><span class="rec-icon">📝</span><span><strong>Praxisbeispiel „Claude Design":</strong> die neue Browser-Funktion zur automatisierten Foliengenerierung (2Slides-Integration, 7 Folien in 30–60 Sek.) eignet sich als anschauliches Use-Case-Beispiel für Schulungen zu Produktivität und Prompting.</span></div>
-      <div class="rec-item"><span class="rec-icon">📝</span><span><strong>Transparenzpflichten konkretisieren:</strong> YouTubes Ausweitung der Deepfake-Erkennung als praxisnahes Beispiel für Content-Moderation im Kontext der Art.-50-Kennzeichnungspflichten (Frist 2. August 2026) nutzen.</span></div>
-    </div>
+<div class="alert crit">
+  <h3>🚨 KI-Kostenschock weitet sich aus – Microsoft schränkt sogar internen Einsatz von Claude Code ein</h3>
+  <p>Seit Ende Mai/Anfang Juni 2026 häufen sich Berichte über außer Kontrolle geratene KI-Nutzungskosten: Laut einem Bericht vom 6. Juni 2026 schränkt Microsoft die Nutzung von Anthropic Claude Code bei eigenen Entwicklern aus Kostengründen ein und verlagert alles auf Copilot; ein nicht namentlich genanntes Unternehmen (Gerüchten zufolge Amazon) soll laut einem Berater einen Monat lang 500 Mio. US-Dollar für KI-Nutzung "verbrannt" haben, weil keine Nutzungsgrenzen definiert waren; das Robotaxi-Unternehmen Uber hat sein KI-Jahresbudget 2026 bereits in einem Monat aufgebraucht. Für Unternehmen mit KI-Rollouts wird Kostenkontrolle damit zu einer zentralen Governance-Aufgabe – ergänzend zur bereits in der Vorwoche gemeldeten Copilot-Token-Abrechnung seit 1. Juni 2026.</p>
+  <div class="links">
+    <a href="https://borncity.com/blog/2026/06/06/zerschellt-der-ki-traum-an-den-gigantischen-token-kosten/" target="_blank">BornCity: Zerschellt der KI-Traum an den Token-Kosten? (6.6.)</a>
+    <a href="https://www.tomshardware.com/tech-industry/artificial-intelligence/ai-costs-begin-to-bite-as-agents-may-increase-token-demand-by-24-times-says-goldman-sachs-report-uber-and-microsoft-among-companies-feeling-the-bite-of-tokenized-billing" target="_blank">Tom's Hardware: Goldman-Sachs-Analyse zu Token-Bedarf</a>
   </div>
+</div>
 
-  <!-- 3. Prioritätsübersicht -->
-  <div class="section">
-    <div class="section-header dark">📊 Prioritätsübersicht dieser Woche</div>
-    <div class="section-body">
-      <table>
-        <tr><th>Thema</th><th>Priorität</th><th>Kursrelevanz</th><th>Quelle</th></tr>
-        <tr>
-          <td>Anthropic/Claude überholt OpenAI bei Enterprise-Adoption (Ramp AI Index)</td>
-          <td><span class="badge high">🔴 Hoch</span></td>
-          <td>KI-Tools-Vergleich, Marktlandschaft</td>
-          <td><a href="https://borncity.com/news/enterprise-ki-anthropic-ueberholt-openai-bei-unternehmens-adoption/">BornCity</a></td>
-        </tr>
-        <tr>
-          <td>Google launcht Gemini Enterprise – eigenständige Agenten-Plattform (5. Juni)</td>
-          <td><span class="badge high">🔴 Hoch</span></td>
-          <td>KI-Tools, Unternehmensplattformen</td>
-          <td><a href="https://www.ad-hoc-news.de/wissenschaft/gemini-enterprise-google-startet-ki-plattform-fuer-unternehmen/69492855">ad-hoc-news</a></td>
-        </tr>
-        <tr>
-          <td>EU-Paket für technologische Souveränität: Cloud and AI Development Act &amp; Chips Act 2.0 (3. Juni)</td>
-          <td><span class="badge medium">🟡 Mittel</span></td>
-          <td>EU-Digitalstrategie, Internat. Regulierung</td>
-          <td><a href="https://digital-strategy.ec.europa.eu/en/policies/cloud-and-ai-development-act">EU-Kommission</a></td>
-        </tr>
-        <tr>
-          <td>Google Cloud &amp; IBM: Milliarden-Partnerschaft für Agenten-Plattformen (4. Juni)</td>
-          <td><span class="badge medium">🟡 Mittel</span></td>
-          <td>KI-Ökosystem, Unternehmenskooperationen</td>
-          <td><a href="https://www.ad-hoc-news.de/wissenschaft/gemini-enterprise-agent-platform-google-und-ibm-starten-milliarden-deal/69486488">ad-hoc-news</a></td>
-        </tr>
-        <tr>
-          <td>Claude Design: automatisierte Präsentationserstellung im Browser (seit 5. Juni)</td>
-          <td><span class="badge medium">🟡 Mittel</span></td>
-          <td>KI-Tools, Praxisbeispiele Produktivität</td>
-          <td><a href="https://borncity.com/news/claude-design-anthropic-bringt-ki-praesentationen-in-den-browser/">BornCity</a></td>
-        </tr>
-        <tr>
-          <td>OpenAI erweitert Codex um rollenspezifische Branchen-Plugins (5. Juni)</td>
-          <td><span class="badge low">🟢 Niedrig</span></td>
-          <td>KI-Tools, Branchenanwendungen</td>
-          <td><a href="https://borncity.com/news/">BornCity</a></td>
-        </tr>
-        <tr>
-          <td>YouTube weitet Deepfake-Erkennung auf Entertainment-Branche aus (5. Juni)</td>
-          <td><span class="badge low">🟢 Niedrig</span></td>
-          <td>Transparenzpflichten, Content-Moderation</td>
-          <td><a href="https://borncity.com/news/">BornCity</a></td>
-        </tr>
-      </table>
-    </div>
+<div class="alert info">
+  <h3>ℹ️ Kritische Stimmen zu Microsofts Agenten-Strategie nach Build 2026</h3>
+  <p>Nur wenige Tage nach der Vorstellung des Autopiloten "Microsoft Scout" auf der Build 2026 erschien am 4. Juni 2026 ein pointiert-kritischer Kommentar, der dem neuen KI-Assistenten grundlegende handwerkliche Schwächen attestiert. Für Schulungsmodule zu Microsoft-KI-Tools empfiehlt sich, neben den Hersteller-Ankündigungen auch unabhängige Einschätzungen zur Praxistauglichkeit zu thematisieren.</p>
+  <div class="links">
+    <a href="https://borncity.com/blog/2026/06/04/microsofts-ki-assistent-scout-sie-koennen-es-einfach-nicht/" target="_blank">BornCity: Microsofts KI-Assistent Scout – Kommentar (4.6.)</a>
   </div>
+</div>
 
-  <!-- 4. EU AI Act & Regulierung -->
-  <div class="section">
-    <div class="section-header red">🔴 EU AI Act &amp; Regulierung</div>
-    <div class="section-body">
+<h2>🎓 Empfehlungen für Kursaktualisierungen</h2>
+<div class="card">
+  <ul>
+    <li>📝 <strong>Modul "KI im HR/Recruiting"</strong>: Die neuen Hochrisiko-Leitlinien (Konsultation bis 23. Juni 2026) konkret in Compliance- und KI-Beauftragten-Module einbauen – insbesondere die Klarstellung, dass eine menschliche Endentscheidung allein nicht aus dem Hochrisiko-Bereich befreit ("Human Oversight" als Nachweispflicht).</li>
+    <li>📝 <strong>Modul "KI-Governance &amp; Kostenkontrolle"</strong>: Token-Kosten-Eskalation (Copilot, Claude Code, Amazon/Uber-Beispiele) als neues Praxisbeispiel für "Governance vor Rollout" aufnehmen – Budgetlimits, Nutzungsrichtlinien und Monitoring als konkrete Handlungsempfehlung positionieren.</li>
+    <li>📝 <strong>Modul "Microsoft 365 &amp; Copilot"</strong>: Build-2026-Ankündigungen (Scout, Solara, Project Polaris) um eine kritische Gegenperspektive ergänzen, damit Teilnehmende Hersteller-Narrative und unabhängige Einschätzungen einordnen können.</li>
+    <li>📝 <strong>Modul "Agentic AI in der Praxis"</strong>: SAP-Beispiel (SuccessFactors Release 1H 2026 mit "agentic KI"/Joule, Start 2. Juni 2026) als aktuelles Praxisbeispiel für Agentic-AI-Integration in HR-Suiten ergänzen.</li>
+    <li>📝 <strong>Frist-Tracking</strong>: Konsultationsende 23. Juni 2026 (Hochrisiko-Leitlinien) als neuen Merkposten in den Regulatorischen Zeitplan aufnehmen – ergänzend zur bereits bekannten Art.-50-Frist (2. August 2026).</li>
+  </ul>
+</div>
 
-      <div class="article">
-        <div class="article-meta"><span class="tag red">Neu</span><span class="tag grey">Industriepolitik</span><span class="tag grey">3. Juni 2026</span></div>
-        <h3>EU-Kommission stellt „Paket für technologische Souveränität" vor: Cloud and AI Development Act &amp; Chips Act 2.0</h3>
-        <p>Am 3. Juni 2026 präsentierte die EU-Kommission ein Maßnahmenpaket, das die Abhängigkeit von US-Technologieanbietern verringern soll. Kernstück ist der „Cloud and AI Development Act", der einen einheitlichen EU-weiten Bewertungsrahmen für „Cloud- und KI-Souveränität" einführen und die europäische Rechenzentrumskapazität binnen 5–7 Jahren verdreifachen soll. Begleitet wird das Paket vom „Chips Act 2.0", einer Open-Source-Strategie sowie einer Roadmap für Digitalisierung und KI im Energiesektor. Hintergrund: AWS, Microsoft Azure und Google Cloud kontrollieren zusammen über 70 % des EU-Cloud-Markts; die EU gibt jährlich rund 264 Mrd. € für US-Technologie aus. Das Paket ergänzt den AI Act um eine industrie- und standortpolitische Dimension, ohne bestehende regulatorische Pflichten zu verändern.</p>
-        <div class="links">
-          <a href="https://germany.representation.ec.europa.eu/news/chips-cloud-open-source-und-ki-eu-kommission-legt-paket-zur-technologischen-souveranitat-vor-2026-06-03_de">EU-Kommission (Vertretung DE)</a>
-          <a href="https://digital-strategy.ec.europa.eu/en/policies/cloud-and-ai-development-act">Digital Strategy: Cloud and AI Development Act</a>
-          <a href="https://www.ad-hoc-news.de/wissenschaft/cloud-and-ai-development-act-eu-reduziert-264-milliarden-abhaengigkeit/69485907">ad-hoc-news</a>
-          <a href="https://www.bitkom.org/Presse/Presseinformation/Bitkom-zum-EU-Tech-Sovereignty-Package">Bitkom-Stellungnahme</a>
-        </div>
-      </div>
+<h2>📊 Prioritätsübersicht dieser Woche</h2>
+<div class="card">
+<table>
+<thead><tr><th>Thema</th><th>Priorität</th><th>Kursrelevanz</th><th>Quelle</th></tr></thead>
+<tbody>
+<tr><td>Hochrisiko-KI-Leitlinien: HR/Recruiting im Fokus, Konsultation bis 23. Juni</td><td><span class="badge hoch">🔴 Hoch</span></td><td>KI-Beauftragter, Compliance, HR</td><td><a href="https://www.ki-im-personalwesen.de/neue-eu-leitlinien-ki-im-recruiting-und-personalmanagement-rueckt-in-den-hochrisiko-bereich/" target="_blank">KI im Personalwesen</a></td></tr>
+<tr><td>KI-Kostenschock: Microsoft schränkt Claude Code ein, Amazon/Uber-Beispiele</td><td><span class="badge hoch">🔴 Hoch</span></td><td>Governance, Kostenkontrolle, KI-Tools</td><td><a href="https://borncity.com/blog/2026/06/06/zerschellt-der-ki-traum-an-den-gigantischen-token-kosten/" target="_blank">BornCity (6.6.)</a></td></tr>
+<tr><td>Kritische Einschätzung zu Microsoft Scout nach Build 2026</td><td><span class="badge mittel">🟡 Mittel</span></td><td>M365 Copilot, KI in der Praxis</td><td><a href="https://borncity.com/blog/2026/06/04/microsofts-ki-assistent-scout-sie-koennen-es-einfach-nicht/" target="_blank">BornCity (4.6.)</a></td></tr>
+<tr><td>SAP SuccessFactors Release 1H 2026 mit Agentic AI (Joule)</td><td><span class="badge mittel">🟡 Mittel</span></td><td>KI in der Praxis, HR-Tools</td><td><a href="https://www.it-boltwise.de/arbeitsmarkt-2026-ki-regeln-entgelttransparenz-und-neue-hr-compliance.html" target="_blank">it-boltwise</a></td></tr>
+<tr><td>Code of Practice Art. 50 – Konsultation am 3. Juni geschlossen, finale Version im Juni erwartet</td><td><span class="badge mittel">🟡 Mittel</span></td><td>KI-Compliance, Transparenz</td><td><a href="https://digital-strategy.ec.europa.eu/en/consultations/consultation-draft-guidelines-transparency-obligations-under-ai-act" target="_blank">EU-Kommission</a></td></tr>
+<tr><td>"Human Oversight" als zentraler Compliance-Faktor in HR-Governance-Diskussion</td><td><span class="badge niedrig">🟢 Niedrig</span></td><td>Governance, Risikomanagement</td><td><a href="https://www.bitkom.org/Bitkom/Publikationen/DORA-DS-GVO-und-KI-VO-als-einheitlicher-Compliance-Rahmen-fuer-Versicherungsunternehmen" target="_blank">Bitkom-Leitfaden</a></td></tr>
+</tbody>
+</table>
+</div>
 
-      <div class="article">
-        <div class="article-meta"><span class="tag orange">Status-Update</span><span class="tag grey">Art. 50 KI-VO</span><span class="tag grey">Frist 2. Aug. 2026</span></div>
-        <h3>Code of Practice zu Transparenzpflichten (Art. 50): finale Version weiterhin ausstehend</h3>
-        <p>Zum Stichtag dieses Berichts (7. Juni 2026) liegt noch keine bestätigte finale Fassung des Code of Practice zur Kennzeichnung KI-generierter Inhalte vor — obwohl diese „Anfang Juni 2026" erwartet wurde. Der zweite Entwurf (5. März 2026) bleibt damit weiterhin die maßgebliche Arbeitsgrundlage; parallel läuft eine Konsultation der Kommission zu begleitenden Leitlinien (Frist 3. Juni 2026). Mit der Anwendungsfrist am 2. August 2026 verbleiben rund acht Wochen für Unternehmen, ihre Kennzeichnungsprozesse vorzubereiten — die Veröffentlichung der finalen Fassung sollte in den kommenden Tagen engmaschig beobachtet werden.</p>
-        <div class="links">
-          <a href="https://digital-strategy.ec.europa.eu/en/consultations/consultation-draft-guidelines-transparency-obligations-under-ai-act">EU-Kommission: Konsultation Transparenzleitlinien</a>
-          <a href="https://www.twobirds.com/en/insights/2026/taking-the-eu-ai-act-to-practice-reading-the-commissions-draft-article-50-guidelines">Bird &amp; Bird: Draft Art. 50 Guidelines</a>
-          <a href="https://www.insideglobaltech.com/2026/05/12/10-takeaways-european-commission-draft-guidelines-on-ai-transparency-under-the-eu-ai-act/">Inside Global Tech: 10 Takeaways</a>
-        </div>
-      </div>
+<h2>🔴 EU AI Act &amp; Regulierung</h2>
 
-    </div>
+<div class="card">
+  <span class="tag red">Kritisch</span><span class="tag gray">Konsultation bis 23.06.</span><span class="tag gray">Anhang III</span>
+  <h3>Hochrisiko-KI-Leitlinien: Recruiting und Personalmanagement rücken in den Fokus</h3>
+  <p>Die am 19. Mai 2026 vorgelegten Entwurfs-Leitlinien der EU-Kommission zur Klassifizierung von Hochrisiko-KI-Systemen (Art. 6 Abs. 2 i. V. m. Anhang III) wurden in einer ausführlichen Analyse vom 3./7. Juni 2026 für den HR-Bereich konkretisiert. Die Kommission verfolgt einen <strong>funktionalen Ansatz</strong>: Maßgeblich ist nicht die Bezeichnung eines Systems, sondern dessen tatsächlicher Einfluss auf Beschäftigte und arbeitsbezogene Entscheidungen. Betroffen sein können CV-Screening, Bewerber-Ranking, Matching-Systeme, Video-Assessments, automatisierte Eignungsbewertungen sowie – im laufenden Arbeitsverhältnis – Leistungsbewertung, Aufgaben-/Schichtzuweisung, Beförderungs- und Trennungsprozesse. Neue gesetzliche Pflichten entstehen dadurch nicht, wohl aber mehr Klarheit über die Aufsichtspraxis. Die Konsultation läuft noch bis zum <strong>23. Juni 2026</strong>.</p>
+  <div class="links">
+    <a href="https://www.ki-im-personalwesen.de/neue-eu-leitlinien-ki-im-recruiting-und-personalmanagement-rueckt-in-den-hochrisiko-bereich/" target="_blank">KI im Personalwesen: Vollständige Analyse</a>
+    <a href="https://digital-strategy.ec.europa.eu/en/library/draft-commission-guidelines-classification-high-risk-ai-systems" target="_blank">EU-Kommission: Leitlinien-Entwurf (Konsultation)</a>
+    <a href="https://www.heise.de/news/Bruessel-ordnet-Algorithmen-EU-Kommission-konkretisiert-die-Hochrisiko-KI-11301376.html" target="_blank">heise: Brüssel ordnet Algorithmen</a>
   </div>
+</div>
 
-  <!-- 5. KI-Tools & Unternehmensanwendungen -->
-  <div class="section">
-    <div class="section-header blue">🔵 KI-Tools &amp; Unternehmensanwendungen</div>
-    <div class="section-body">
-
-      <div class="article">
-        <div class="article-meta"><span class="tag blue">Marktführerschaft</span><span class="tag grey">Ramp AI Index</span><span class="tag grey">Mai/Juni 2026</span></div>
-        <h3>Anthropic überholt OpenAI bei Enterprise-Adoption – Claude jetzt Marktführer</h3>
-        <p>Der Ramp AI Index (Auswertung von Daten aus über 50.000 US-Unternehmen, Stand Mai 2026) zeigt erstmals Anthropic vor OpenAI: Claude erreicht 34,4 % Enterprise-Adoption gegenüber 32,3 % für ChatGPT. Während Anthropic seinen Marktanteil binnen eines Jahres mehr als versiebenfachte (+627 %), wuchs OpenAI nur marginal (+0,3 %); ChatGPTs Anteil sank von 80 % auf 60 %. Als Treiber werden Zuverlässigkeit, lange Kontextfenster und instruktionstreues Verhalten in Produktivumgebungen genannt — Claude wird zunehmend Standardwahl für neue Entwicklungsprojekte, insbesondere im Coding-Bereich. Begleitend meldete Anthropic eine annualisierte Umsatzrate (ARR) von rund 47 Mrd. USD (Ende Mai 2026) und liegt damit deutlich vor OpenAI (24–25 Mrd. USD im April).</p>
-        <div class="links">
-          <a href="https://borncity.com/news/enterprise-ki-anthropic-ueberholt-openai-bei-unternehmens-adoption/">BornCity</a>
-          <a href="https://www.ad-hoc-news.de/wissenschaft/claude-waechst-627-percent-anthropic-verdraengt-openai-an-der-spitze/69441476">ad-hoc-news: Claude wächst 627 %</a>
-          <a href="https://exxpress.at/economy/claude-auf-vormarsch-anthropic-ueberholt-openai-und-rueckt-an-die-weltspitze/">exxpress.at</a>
-          <a href="https://en.cryptonomist.ch/2026/06/05/anthropic-claude-enterprise-ai-adoption/">Cryptonomist (EN)</a>
-        </div>
-      </div>
-
-      <div class="article">
-        <div class="article-meta"><span class="tag blue">Plattform-Launch</span><span class="tag grey">Google Cloud</span><span class="tag grey">5. Juni 2026</span></div>
-        <h3>Gemini Enterprise: Google startet eigenständige KI-Agenten-Plattform für Unternehmen</h3>
-        <p>Am 5. Juni 2026 launchte Google „Gemini Enterprise" als eigenständige Cloud-Plattform speziell für den Einsatz von KI-Agenten im Unternehmen. Sie umfasst ein Agent Development Kit (ADK), Agent Studio, eine Retrieval-Augmented-Generation-Engine mit Vektorsuche sowie Observability-, Evaluations- und Gateway-Funktionen für den Enterprise-Einsatz. Anbindungen an Microsoft 365, Salesforce und SAP sind vorgesehen; Preise beginnen bei 21 €/Nutzer (Business) bzw. 30 € (Enterprise). Frühe Kunden sind u. a. Figma, Klarna und Virgin Voyages. Einen Tag zuvor (4. Juni) hatten Google Cloud und IBM eine milliardenschwere strategische Partnerschaft angekündigt — IBM baut dafür eine eigene „Google Cloud Practice" mit tausenden zertifizierten Beraterinnen und Beratern auf.</p>
-        <div class="links">
-          <a href="https://borncity.com/news/gemini-enterprise-google-startet-ki-agenten-plattform-am-5-juni/">BornCity</a>
-          <a href="https://www.ad-hoc-news.de/wissenschaft/gemini-enterprise-google-startet-ki-plattform-fuer-unternehmen/69492855">ad-hoc-news: Launch</a>
-          <a href="https://www.ad-hoc-news.de/wissenschaft/gemini-enterprise-agent-platform-google-und-ibm-starten-milliarden-deal/69486488">ad-hoc-news: Google &amp; IBM Deal</a>
-          <a href="https://cloud.google.com/gemini-enterprise">Google Cloud (offiziell)</a>
-        </div>
-      </div>
-
-      <div class="article">
-        <div class="article-meta"><span class="tag blue">Praxisbeispiel</span><span class="tag grey">Anthropic</span><span class="tag grey">seit 5. Juni 2026</span></div>
-        <h3>Claude Design: Anthropic bringt automatisierte KI-Präsentationserstellung in den Browser</h3>
-        <p>Seit dem 5. Juni 2026 ermöglicht eine neue Schnittstelle zwischen Claude Code und dem 2Slides-Model-Context-Protocol (MCP) die automatisierte Erstellung von PowerPoint-Präsentationen direkt im Browser — eine siebenseitige Präsentation entsteht in 30 bis 60 Sekunden. Eignet sich als konkretes, leicht nachvollziehbares Beispiel für Schulungsmodule zu Produktivitätssteigerung und MCP-gestützten Workflows.</p>
-        <div class="links">
-          <a href="https://borncity.com/news/claude-design-anthropic-bringt-ki-praesentationen-in-den-browser/">BornCity</a>
-        </div>
-      </div>
-
-      <div class="article">
-        <div class="article-meta"><span class="tag green">Branchenfokus</span><span class="tag grey">OpenAI</span><span class="tag grey">5. Juni 2026</span></div>
-        <h3>OpenAI erweitert Codex um sechs rollenspezifische Branchen-Plugins</h3>
-        <p>OpenAI hat seine Codex-Plattform am 5. Juni 2026 um sechs rollenspezifische Plugins für Datenanalyse, Vertrieb und Investmentbanking erweitert — ein weiteres Indiz für den Trend zu branchenspezifisch zugeschnittenen KI-Agenten statt generischer Assistenzsysteme.</p>
-        <div class="links">
-          <a href="https://borncity.com/news/">BornCity (Newsübersicht)</a>
-        </div>
-      </div>
-
-    </div>
+<div class="card">
+  <span class="tag gray">Update</span><span class="tag gray">Art. 50</span>
+  <h3>Code of Practice zu Transparenzpflichten: Konsultation am 3. Juni geschlossen – finale Version weiter im Juni erwartet</h3>
+  <p>Ergänzend zur bereits bekannten Frist (Transparenzpflichten ab 2. August 2026): Die zielgerichtete Konsultation der Kommission zu den Entwurfs-Leitlinien für Art.-50-Transparenzpflichten endete am 3. Juni 2026 – also genau am Stichtag des letzten Berichts. Parallel dazu hatten sich die EU-Mitgesetzgeber bereits am 7. Mai 2026 auf eine gezielte Übergangsregel für Art. 50 Abs. 2 (Machine-readable Marking) geeinigt: Systeme, die vor dem 2. August 2026 auf dem Markt sind, erhalten bis 2. Dezember 2026 Aufschub – die übrigen drei Transparenzpflichten (Art. 50 Abs. 1, 3, 4) gelten dagegen ohne Übergangsfrist ab dem 2. August. Die finale Version des Code of Practice bleibt für Juni 2026 angekündigt.</p>
+  <div class="links">
+    <a href="https://digital-strategy.ec.europa.eu/en/consultations/consultation-draft-guidelines-transparency-obligations-under-ai-act" target="_blank">EU-Kommission: Konsultation Transparenz-Leitlinien</a>
+    <a href="https://www.insideglobaltech.com/2026/05/12/10-takeaways-european-commission-draft-guidelines-on-ai-transparency-under-the-eu-ai-act/" target="_blank">Inside Global Tech: 10 Takeaways</a>
+    <a href="https://www.twobirds.com/en/insights/2026/taking-the-eu-ai-act-to-practice-reading-the-commissions-draft-article-50-guidelines" target="_blank">Bird &amp; Bird: Praxis-Lesart der Leitlinien</a>
   </div>
+</div>
 
-  <!-- 6. Governance, Risikomanagement & Zertifizierung -->
-  <div class="section">
-    <div class="section-header purple">🟣 Governance, Risikomanagement &amp; Zertifizierung</div>
-    <div class="section-body">
+<h2>🔵 KI-Tools &amp; Unternehmensanwendungen</h2>
 
-      <div class="article">
-        <div class="article-meta"><span class="tag purple">Content-Moderation</span><span class="tag grey">YouTube</span><span class="tag grey">5. Juni 2026</span></div>
-        <h3>YouTube weitet Deepfake-Erkennung auf die Entertainment-Branche aus</h3>
-        <p>Als Reaktion auf die zunehmende Verbreitung synthetischer Medien hat YouTube am 5. Juni 2026 angekündigt, seine Deepfake-Erkennung gezielt auf die Entertainment-Branche auszuweiten. Ein praxisnahes Beispiel dafür, wie Plattformbetreiber technische Vorkehrungen treffen, die mit den ab 2. August 2026 geltenden Kennzeichnungspflichten nach Art. 50 KI-VO korrespondieren — geeignet zur Veranschaulichung von „Detection vs. Disclosure" in Compliance-Modulen.</p>
-        <div class="links">
-          <a href="https://borncity.com/news/">BornCity (Newsübersicht)</a>
-        </div>
-      </div>
-
-      <div class="note-box">
-        ℹ️ <strong>Kein wesentlicher neuer Zertifizierungs-Impuls diese Woche:</strong> Über die bereits in der Vorwoche behandelten Themen (ISO/IEC 42001 als De-facto-Standard während der EU-Normenlücke; geförderter TÜV-Rheinland-KI-Manager-Kurs ab 15. Juni 2026) hinaus wurden keine neuen, kursrelevanten Governance- oder Zertifizierungs-Meldungen seit dem 3. Juni 2026 identifiziert. Die strukturelle „Governance-Lücke" (ca. 75 % KI-Nutzung am Arbeitsplatz vs. nur ein Drittel mit formalen Richtlinien, SPS/WORKTECH Academy, Frühjahr 2026) bleibt als Dauerthema relevant, ist aber keine Neuigkeit dieser Woche.
-        <br><br>
-        Quelle (Hintergrund, nicht „neu"): <a href="https://www.it-boltwise.de/ki-governance-luecke-2026-75-nutzen-ki-nur-33-haben-richtlinien.html">IT-Boltwise: KI-Governance-Lücke 2026</a>
-      </div>
-
-    </div>
+<div class="card">
+  <span class="tag blue">Kostenwarnung</span><span class="tag gray">Eskalation</span>
+  <h3>KI-Token-Kosten eskalieren: Microsoft, Amazon und Uber als Warnbeispiele</h3>
+  <p>Der bereits in der Vorwoche gemeldete Wechsel von GitHub Copilot auf Token-Abrechnung (seit 1. Juni 2026) entwickelt sich laut einem Bericht vom 6. Juni 2026 zu einem branchenweiten Muster: Microsoft soll die Nutzung von Anthropic Claude Code bei eigenen Entwicklern aus Kostengründen einschränken und stattdessen auf Copilot verweisen. Ein Berater berichtete von einem Unternehmen (Gerüchten zufolge Amazon), das wegen fehlender Nutzungsgrenzen 500 Mio. US-Dollar in einem Monat für KI-Nutzung ausgegeben haben soll – ein internes "KI-Leaderboard" wurde inzwischen abgeschafft. Das Robotaxi-Unternehmen Uber habe sein KI-Jahresbudget 2026 bereits nach einem Monat aufgebraucht. Eine Goldman-Sachs-Analyse warnt zudem, dass agentenbasierte Systeme den Token-Bedarf um das bis zu 24-Fache steigern könnten.</p>
+  <div class="links">
+    <a href="https://borncity.com/blog/2026/06/06/zerschellt-der-ki-traum-an-den-gigantischen-token-kosten/" target="_blank">BornCity: Zerschellt der KI-Traum an den Token-Kosten?</a>
+    <a href="https://www.tomshardware.com/tech-industry/artificial-intelligence/ai-costs-begin-to-bite-as-agents-may-increase-token-demand-by-24-times-says-goldman-sachs-report-uber-and-microsoft-among-companies-feeling-the-bite-of-tokenized-billing" target="_blank">Tom's Hardware: Goldman-Sachs-Report zu Token-Bedarf</a>
   </div>
+</div>
 
-  <!-- 7. Regulatorischer Zeitplan -->
-  <div class="section">
-    <div class="section-header dark">📅 Regulatorischer Zeitplan (unverändert seit letztem Update)</div>
-    <div class="section-body">
-      <table class="timeline-table">
-        <tr><th>Datum</th><th>Verpflichtung</th><th>Zielgruppe</th><th>Status</th></tr>
-        <tr>
-          <td>Gilt bereits</td>
-          <td>Verbote (unzulässige KI) &amp; GPAI-Pflichten</td>
-          <td>Alle Anbieter &amp; Betreiber</td>
-          <td class="deadline-future">✅ In Kraft</td>
-        </tr>
-        <tr>
-          <td>Juni 2026</td>
-          <td>Code of Practice Art. 50 (Transparenz KI-Inhalte) — finale Version weiterhin ausstehend</td>
-          <td>Anbieter generativer KI</td>
-          <td class="deadline-soon">🔄 Verzögert sich</td>
-        </tr>
-        <tr>
-          <td class="deadline-critical">2. August 2026</td>
-          <td>Transparenzpflichten Art. 50 (Kennzeichnung KI-generierter Inhalte)</td>
-          <td>Anbieter &amp; Deployer generativer KI</td>
-          <td class="deadline-critical">⏰ ~8 Wochen!</td>
-        </tr>
-        <tr>
-          <td>2. Dezember 2026</td>
-          <td>Machine-readable Marking Art. 50 Abs. 2; Nudifier-App-Verbot</td>
-          <td>Anbieter generativer KI</td>
-          <td class="deadline-future">⏳ Läuft</td>
-        </tr>
-        <tr>
-          <td>1. Januar 2027</td>
-          <td>Colorado AI Act (SB 26-189) tritt in Kraft — USA</td>
-          <td>Unternehmen mit US-Geschäft</td>
-          <td class="deadline-future">📋 Geplant</td>
-        </tr>
-        <tr>
-          <td>Q1 2027</td>
-          <td>EU-Amtsblatt-Referenzierung harmonisierter Normen (frühestens)</td>
-          <td>Alle KI-Anbieter</td>
-          <td class="deadline-future">🔄 Verzögert</td>
-        </tr>
-        <tr>
-          <td>2. Dezember 2027</td>
-          <td>Hochrisiko-KI Anhang III (eigenständige Systeme)</td>
-          <td>Anbieter &amp; Betreiber Hochrisiko-KI</td>
-          <td class="deadline-future">📋 Verschoben</td>
-        </tr>
-        <tr>
-          <td>2. August 2028</td>
-          <td>Hochrisiko-KI in regulierten Produkten (Anhang I)</td>
-          <td>Hersteller (CE-Produkte)</td>
-          <td class="deadline-future">📋 Verschoben</td>
-        </tr>
-      </table>
-      <div class="note-box" style="margin-top: 14px;">
-        ℹ️ Der Zeitplan blieb gegenüber dem letzten Update (Stand 3. Juni 2026) inhaltlich unverändert. Einzige Aktualisierung: Die Frist bis zur Anwendung der Transparenzpflichten (2. August 2026) verkürzt sich auf rund acht Wochen, und die finale Fassung des Code of Practice ist trotz ursprünglicher Erwartung „Anfang Juni" weiterhin nicht veröffentlicht.
-      </div>
-    </div>
+<div class="card">
+  <span class="tag blue">Microsoft</span><span class="tag gray">Kommentar</span>
+  <h3>Microsofts Autopilot "Scout": Erste kritische Reaktionen nach Build 2026</h3>
+  <p>Nur zwei Tage nach der Vorstellung von "Microsoft Scout" auf der Build-2026-Konferenz erschien am 4. Juni 2026 ein pointiert-kritischer Kommentar, der dem neuen Autopilot-Agenten grundlegende Schwächen in der Umsetzung attestiert. Für Schulungen empfiehlt sich, Hersteller-Ankündigungen und unabhängige Praxis-Einschätzungen bewusst gegenüberzustellen, um realistische Erwartungen an Agenten-Tools zu vermitteln.</p>
+  <div class="links">
+    <a href="https://borncity.com/blog/2026/06/04/microsofts-ki-assistent-scout-sie-koennen-es-einfach-nicht/" target="_blank">BornCity: Microsofts KI-Assistent Scout – Kommentar</a>
   </div>
+</div>
 
+<div class="card">
+  <span class="tag blue">Neu</span><span class="tag gray">HR-Tools</span><span class="tag gray">Agentic AI</span>
+  <h3>SAP SuccessFactors Release 1H 2026: "Agentic KI" hält Einzug in die HR-Suite</h3>
+  <p>SAP startete am 2. Juni 2026 das SuccessFactors-Release 1H 2026. Im Mittelpunkt steht der Ausbau von "agentic KI" über die gesamte Suite hinweg – darunter das Joule-Wissensnetzwerk, intelligente Frage-Antwort-Funktionen für Lernmodule sowie eine native Integration mit SmartRecruiters. Das Release ist ein konkretes Praxisbeispiel dafür, wie Agentic-AI-Funktionen aktuell in etablierte Unternehmenssoftware integriert werden – und zugleich ein Anlass, um die im selben Zeitraum diskutierten Hochrisiko-Einstufungen für HR-KI (siehe oben) direkt mit einem realen Tool zu verknüpfen.</p>
+  <div class="links">
+    <a href="https://www.it-boltwise.de/arbeitsmarkt-2026-ki-regeln-entgelttransparenz-und-neue-hr-compliance.html" target="_blank">it-boltwise: Arbeitsmarkt 2026 – KI-Regeln &amp; HR-Compliance</a>
+  </div>
+</div>
+
+<h2>🟣 Governance, Risikomanagement &amp; Zertifizierung</h2>
+
+<div class="card">
+  <span class="tag purple">Governance</span><span class="tag gray">Human Oversight</span>
+  <h3>"Human Oversight" wird zum zentralen Nachweis-Kriterium für KI-Compliance</h3>
+  <p>Im Zuge der Diskussion um die neuen Hochrisiko-Leitlinien rückt ein Aspekt in den Vordergrund, der für alle Compliance-Module relevant ist: Eine wirksame menschliche Aufsicht beginnt nicht erst bei der Freigabe eines KI-Ergebnisses, sondern bereits bei Auswahl, Konfiguration und laufender Überwachung der eingesetzten Systeme. Unternehmen müssen nachvollziehen können, welche Daten verwendet werden, wie Bewertungen zustande kommen und ob Entscheidungslogiken überprüfbar bleiben – andernfalls entsteht ein Governance-Risiko, selbst wenn formal eine menschliche Endentscheidung vorgesehen ist. Ein Bitkom-Leitfaden zu DORA, DSGVO und KI-VO beschreibt "wirksame menschliche Kontrolle" entsprechend als zentralen Baustein eines integrierten Compliance-Rahmens über mehrere Regelwerke hinweg.</p>
+  <div class="links">
+    <a href="https://www.ki-im-personalwesen.de/neue-eu-leitlinien-ki-im-recruiting-und-personalmanagement-rueckt-in-den-hochrisiko-bereich/" target="_blank">KI im Personalwesen: Human Oversight als Compliance-Faktor</a>
+    <a href="https://www.bitkom.org/Bitkom/Publikationen/DORA-DS-GVO-und-KI-VO-als-einheitlicher-Compliance-Rahmen-fuer-Versicherungsunternehmen" target="_blank">Bitkom: DORA, DSGVO &amp; KI-VO als Compliance-Rahmen</a>
+  </div>
+</div>
+
+<div class="card">
+  <span class="tag purple">Kostenkontrolle</span><span class="tag gray">als Governance-Aufgabe</span>
+  <h3>Kostenkontrolle wird zur expliziten Governance-Pflicht</h3>
+  <p>Die in dieser Woche gemeldeten Kostenschocks (siehe oben) verschieben den Schwerpunkt der KI-Governance-Diskussion: Neben rechtlicher Compliance (EU AI Act, DSGVO) rückt nun auch die <strong>wirtschaftliche Steuerung</strong> von KI-Einsätzen – Nutzungsrichtlinien, Budgetlimits, Monitoring und Eskalationsprozesse – als eigenständiges Governance-Thema in den Vordergrund. Für KI-Beauftragte und KI-Manager ergibt sich daraus ein konkretes neues Handlungsfeld jenseits der reinen Rechtskonformität.</p>
+  <div class="links">
+    <a href="https://borncity.com/blog/2026/06/06/zerschellt-der-ki-traum-an-den-gigantischen-token-kosten/" target="_blank">BornCity: Hintergrundbericht zur Kostenexplosion</a>
+  </div>
+</div>
+
+<h2>📅 Regulatorischer Zeitplan (aktualisiert)</h2>
+<div class="card">
+<table>
+<thead><tr><th>Datum</th><th>Verpflichtung / Ereignis</th><th>Zielgruppe</th><th>Status</th></tr></thead>
+<tbody>
+<tr><td>Gilt bereits</td><td>Verbote (unzulässige KI) &amp; GPAI-Pflichten</td><td>Alle Anbieter &amp; Betreiber</td><td><span class="status">✅ In Kraft</span></td></tr>
+<tr><td><strong>23. Juni 2026</strong></td><td>Konsultationsende Hochrisiko-KI-Leitlinien (Art. 6 / Anhang III, inkl. HR/Recruiting)</td><td>Anbieter &amp; Betreiber Hochrisiko-KI, HR</td><td><span class="status">⏰ Neu – 15 Tage!</span></td></tr>
+<tr><td>Juni 2026</td><td>Code of Practice Art. 50 (Transparenz KI-Inhalte) – finale Version erwartet (Konsultation seit 3.6. geschlossen)</td><td>Anbieter generativer KI</td><td><span class="status">🔄 Erwartet</span></td></tr>
+<tr><td>2. August 2026</td><td>Transparenzpflichten Art. 50 Abs. 1, 3, 4 (Kennzeichnung KI-generierter Inhalte) – ohne Übergangsfrist</td><td>Anbieter &amp; Deployer generativer KI</td><td><span class="status">⏰ Frist rückt näher</span></td></tr>
+<tr><td>2. Dezember 2026</td><td>Machine-readable Marking Art. 50 Abs. 2 (Übergangsregel vom 7.5.2026); Nudifier-App-Verbot</td><td>Anbieter generativer KI</td><td><span class="status">⏳ Läuft</span></td></tr>
+<tr><td>1. Januar 2027</td><td>Colorado AI Act (SB 26-189) tritt in Kraft – USA</td><td>Unternehmen mit US-Geschäft</td><td><span class="status">📋 Geplant</span></td></tr>
+<tr><td>Q1 2027</td><td>EU-Amtsblatt-Referenzierung harmonisierter Normen (frühestens, prEN 18286 gescheitert)</td><td>Alle KI-Anbieter</td><td><span class="status">🔄 Verzögert</span></td></tr>
+<tr><td>2. Dezember 2027</td><td>Hochrisiko-KI Anhang III (eigenständige Systeme)</td><td>Anbieter &amp; Betreiber Hochrisiko-KI</td><td><span class="status">📋 Verschoben</span></td></tr>
+<tr><td>2. August 2028</td><td>Hochrisiko-KI in regulierten Produkten (Anhang I)</td><td>Hersteller (CE-Produkte)</td><td><span class="status">📋 Verschoben</span></td></tr>
+</tbody>
+</table>
 </div>
 
 <footer>
-  <strong>Erstellt:</strong> 7. Juni 2026 (automatisierter Lauf) | <strong>Stichtag:</strong> 3. Juni 2026 | <strong>Quellen:</strong> EU-Kommission / digital-strategy.ec.europa.eu, artificialintelligenceact.eu, BornCity, ad-hoc-news.de, Ramp AI Index, Google Cloud, Bitkom, IT-Boltwise, Bird &amp; Bird
+  <strong>Erstellt:</strong> 8. Juni 2026 (automatisierter Lauf) | <strong>Stichtag (neu seit):</strong> 3. Juni 2026 |
+  <strong>Quellen:</strong> EU-Kommission / digital-strategy.ec.europa.eu, EU AI Act Explorer (artificialintelligenceact.eu), KI im Personalwesen, BornCity, Bitkom, heise online, Tom's Hardware, Inside Global Tech, Bird &amp; Bird, it-boltwise
 </footer>
 
+</div>
 </body>
 </html>
