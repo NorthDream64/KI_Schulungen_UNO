@@ -6,7 +6,7 @@
 
 Das Bauplanungsbüro Dr. Seika hat das zugekaufte KI-System mit eigenen Kalkulationsdaten **fine-getuned**. Mit eigenen Projektdaten und Expertenschätzungen liefert das Modell jetzt automatisierte Preisvorschläge für Nachträge. Das System prüft nicht mehr nur Verträge — es kalkuliert Preise.
 
-Das System funktioniert so gut, dass auf einer Branchenmesse drei Geschäftsführer befreundeter Bauplanungsbüros fragen: *„Können wir euer System auch nutzen? Wir würden 500 € pro Monat zahlen."*
+Das System funktioniert so gut, dass auf einer Branchenmesse drei Geschäftsführer befreundeter Bauplanungsbüros fragen: *„Können wir euer System auch nutzen? Wir würden 5000 € pro Monat zahlen."*
 
 Die Geschäftsführung sieht eine zweite Einnahmequelle und plant, das Tool als **„Akies"** als SaaS-Angebot zu vermarkten — mit eigenem Namen, eigener Marke, monatlicher Abrechnung. Marco Brandt, der KI-Beauftragte, soll eine Empfehlung aussprechen.
 
