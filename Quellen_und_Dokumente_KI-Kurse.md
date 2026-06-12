@@ -140,6 +140,15 @@
 
 ---
 
+## 🏥 KI im Gesundheitswesen
+
+| URL / Angabe | Name | Typ | Schlagwörter |
+|---|---|---|---|
+| https://www.nature.com/articles/s44360-026-00117-x | Costa-Gomes et al. — „Use of generative AI chatbots for personal health-related questions", Nature Health, April 2026 | Peer-Review-Studie | LLMs, Gesundheitsanfragen, Triage, Chatbots, UC-03b |
+| Paywall — kein öffentlicher Link · Titel: „Hospitals are stuck in a deadly doom loop", The Economist, April 2026 | The Economist — Doom Loop | Fachmedium (Tier-2) | Krankenhaus, Überlastung, Wartezeiten, Doom Loop, UC-03, Art. 10 Bias-Risiko |
+
+---
+
 ## 📚 Literaturhinweise
 
 | Publikation | Autor(en) | Jahr |
