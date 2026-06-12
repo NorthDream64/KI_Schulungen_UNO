@@ -5,10 +5,10 @@
 
 ## Das Unternehmen
 
-**Arventis GmbH**, Hamburg  
+**Arventis GmbH**, Bremen  
 Mittelständischer B2B-Dienstleister (Personalberatung, HR-Outsourcing, betriebliche Weiterbildung)  
 Gründung: 1997 · Mitarbeitende: ca. 920 (davon ~140 in IT, HR-Ops, Finance) · Jahresumsatz: ~€115 Mio.  
-Standorte: Hamburg (HQ), Frankfurt, München, Wien  
+Standorte: Bremen (HQ), Frankfurt, München, Wien  
 Gesellschafterstruktur: inhabergeführt (2 Gesellschafter), kein Börsengang geplant
 
 **Geschäftsmodell:**  
@@ -38,10 +38,10 @@ Arventis begleitet mittelständische und große Unternehmen bei Personalauswahl,
 ### Thomas Bergmann — Geschäftsführer (CEO)
 54 Jahre. Mitgründer, vertrieblich geprägt. Hat die digitale Transformation immer als „notwendiges Übel" behandelt — die drei SaaS-Plattformen wurden auf Drängen des CFO eingeführt. Versteht KI primär als Vertriebsthema: *„Wenn KI uns hilft, Angebote schneller zu schreiben und Kunden besser zu betreuen, bin ich dabei. Alles andere ist Infrastruktur — Mikes Thema."*
 
-### Michael Kunz — CFO / Prokurist (die Kursrolle)
+### Michael Kunz — CFO / Prokurist
 48 Jahre. Kaufmännisch-strategisch, kein Technikexperte, aber analytisch stark. Hat die SaaS-Konsolidierung 2021 verantwortet und kennt jeden Cent im Lizenzbudget. Bekommt gerade die Angebote der drei Anbieter für KI-Add-ons auf den Tisch — und reagiert mit zunehmendem Unbehagen: *„Wir zahlen fast eine Million Euro im Jahr für drei Plattformen, die uns jetzt nochmal extra für KI zur Kasse bitten. Gleichzeitig lese ich, dass Anwaltskanzleien mit Harvey alles selbst bauen. Was ist da los — und was sollen wir tun?"* Er hat einen KI-Beauftragten beauftragt, ihm bis zum Quartalsmeeting eine belastbare Entscheidungsgrundlage zu liefern.
 
-### Jana Voß — KI-Beauftragte (die Kursrolle im KIB)
+### Jana Voß — KI-Beauftragte
 36 Jahre. Senior Consultant, seit drei Jahren im Unternehmen. Abschluss BWL + Weiterbildung Data Analytics. Hat den KIB-Kurs absolviert und ist seit Januar 2026 nominierte KI-Beauftragte (Teilzeit, ~30 % ihrer Stelle). Versteht technische Konzepte, ist aber keine Entwicklerin. Arbeitet eng mit dem IT-Leiter zusammen. *„Ich soll dem CFO sagen, ob wir unsere drei Millionen-Euro-Lieferanten rausschmeißen oder nicht. Das ist keine technische Frage — das ist eine Risikofrage."*
 
 ### Dirk Haase — IT-Leiter
