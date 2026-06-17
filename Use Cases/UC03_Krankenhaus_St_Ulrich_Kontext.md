@@ -28,7 +28,7 @@ Kardiologe, 30 Jahre Klinik-Erfahrung. Skeptisch gegenüber KI in der Diagnose (
 **Birgit Klassen — Pflegedienstleiterin**  
 Erfahrene Krankenpflegerin, seit 20 Jahren im Haus. Repräsentiert den größten Personalblock. Burnout im Team ist ihr Hauptthema. Offen für KI, wenn sie echte Entlastung bringt — misstrauisch gegenüber "Technik, die uns überwachen soll".
 
-**Markus Brandt — IT-Leiter**  
+**Peter Miese — IT-Leiter**  
 Zuständig für SAP, Krankenhausinformationssystem (KIS) und die neue EPA-Anbindung. Überlastet. Hat Bedenken zur Cybersicherheit — Krankenhäuser sind häufiges Angriffsziel. Kein Datenschutzbeauftragter im Haus (extern beauftragt).
 
 **Sie — KI-Beauftragter:in (neue Stelle)**  
