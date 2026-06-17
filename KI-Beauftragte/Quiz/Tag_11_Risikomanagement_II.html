@@ -120,7 +120,7 @@ a{color:var(--accent);}
   <div class="eyebrow">Alfatraining &middot; KI-Zertifikatskurse &middot; Tag 11</div>
   <h1>Lernkontrolle<br>Risikomanagement II</h1>
   <div class="header-meta">
-    <span>7 Fragen (weil wir Freitag kein Quiz hatten) je Rolle &amp; Stufe</span>
+    <span>5 Fragen je Rolle &amp; Stufe</span>
     <span>Eine oder mehrere Antworten k&ouml;nnen richtig sein</span>
     <span>Use Cases: Risikomanagement &amp; Datenschutz &mdash; Fall Zhou, Hangzhou 2026</span>
   </div>
@@ -201,21 +201,11 @@ var SCENARIOS = {
 
 var QBANK = {
 
-/* KI-Beauftragter Anfänger — Verteilung: 2r, 2r, 1r, 3r, 3r */
+/* KI-Beauftragter Anfänger — 5 Fragen (Einfach×3, Mittel×2) */
+/* Entfernt: RPZ-Basics (Tag-9-Overlap), Art.-9-Grundlagen (Tag-9-Overlap) */
 a1: [
   {
-    q: 'Was beschreibt die Risiko-Prioritäts-Zahl (RPZ) im FMEA-Ansatz korrekt?',
-    opts: [
-      'RPZ ergibt sich aus Auftreten (A) × Bedeutung (B) × Entdeckung (E) — drei unabhängige Faktoren, jeweils auf einer Skala von 1 bis 10',
-      'RPZ ergibt sich aus Auftreten + Bedeutung + Entdeckung — Addition der drei Faktoren ist die gängige Methode',
-      'Der Wertebereich der RPZ liegt zwischen 1 und 1.000 — bei einem Wert über 125 sind Maßnahmen in der Regel erforderlich',
-      'Entdeckung (E) beschreibt, wie wahrscheinlich das Risiko eintritt — hoher E-Wert bedeutet hohes Auftreten'
-    ],
-    correct: [0,2],
-    exp: 'RPZ = A × B × E. A = Auftreten (Eintrittswahrscheinlichkeit, 1–10), B = Bedeutung (Schadenshöhe, 1–10), E = Entdeckung (1 = immer erkannt, 10 = nicht erkennbar). Wertebereich 1–1.000. Faustregel: < 50 niedrig, 50–125 mittel, > 125 hoch (Maßnahmen erforderlich). Bei B ≥ 9 sind unabhängig vom RPZ-Wert immer Maßnahmen zu prüfen.',
-    src: 'Risikoregister_KI-Beauftragte_Template.xlsx · A-B-E-Skala'
-  },
-  {
+    schwierigkeit: 'Einfach',
     q: 'Was beschreibt das ALARP-Prinzip korrekt?',
     opts: [
       'Risiken müssen so weit wie vernünftigerweise durchführbar reduziert werden — nicht zwingend auf null',
@@ -228,6 +218,7 @@ a1: [
     src: 'EU AI Act Art. 9 · https://artificialintelligenceact.eu/article/9/'
   },
   {
+    schwierigkeit: 'Einfach',
     q: 'Welche der vier Maßnahmenkategorien beschreibt die Entscheidung, ein Risiko bewusst einzugehen, weil der Aufwand zur Reduktion den Nutzen nicht rechtfertigt?',
     opts: [
       'Vermeiden — die risikoauslösende Handlung wird unterlassen',
@@ -240,6 +231,7 @@ a1: [
     src: 'EU AI Act Art. 9 · NIST AI RMF'
   },
   {
+    schwierigkeit: 'Mittel',
     q: 'Das Logistikunternehmen plant, 12 Disponenten durch ein KI-System zu ersetzen. Welche Risiken gehören in eine vollständige Risikomatrix?',
     opts: [
       'Rechtsrisiko: In Deutschland ist "KI-bedingte Rationalisierung" kein automatisch anerkannter Kündigungsgrund — der Fall Zhou zeigt die rechtliche Angreifbarkeit',
@@ -252,18 +244,7 @@ a1: [
     src: 'NPR · Zhou-Fall · KSchG · https://www.npr.org/2026/05/01/nx-s1-5807131/tech-worker-china-ai'
   },
   {
-    q: 'EU AI Act Art. 9 stellt Anforderungen an das Risikomanagementsystem. Welche Aussagen sind korrekt?',
-    opts: [
-      'Das System muss kontinuierlich betrieben werden — nicht nur einmalig bei der Einführung des KI-Systems',
-      'Bekannte und vorhersehbare Risiken müssen identifiziert, bewertet und mit Maßnahmen belegt sein',
-      'Restrisiken müssen dokumentiert und begründet sein — sie sind erlaubt, aber nicht verschweigbar',
-      'Art. 9 fordert, dass alle Risiken vollständig eliminiert werden — Restrisiken sind grundsätzlich unzulässig'
-    ],
-    correct: [0,1,2],
-    exp: 'Art. 9 EU AI Act verlangt ein lebendiges, nicht einmaliges Risikomanagementsystem: kontinuierlicher Betrieb, vollständige Identifikation bekannter und vorhersehbarer Risiken, Maßnahmenplanung und Dokumentation von Restrisiken. Option D ist falsch: Art. 9 verlangt kein Nullrisiko, sondern Transparenz und verhältnismäßige Maßnahmen.',
-    src: 'EU AI Act Art. 9 · https://artificialintelligenceact.eu/article/9/'
-  },
-  {
+    schwierigkeit: 'Mittel',
     q: 'Du prüfst, ob für das KI-Dispositionssystem eine Datenschutz-Folgenabschätzung (DSFA) nach DSGVO Art. 35 erforderlich ist. Welche Aussagen über DSFA-Trigger sind korrekt?',
     opts: [
       'Eine DSFA ist zwingend, wenn das System automatisierte Entscheidungen trifft, die erhebliche Auswirkungen auf Mitarbeitende haben — das ist ein gesetzlicher Auslöser nach Art. 35 DSGVO',
@@ -276,6 +257,7 @@ a1: [
     src: 'DSGVO Art. 35 · KI-VO Anhang III Nr. 4 · https://gdpr-info.eu/art-35-gdpr/'
   },
   {
+    schwierigkeit: 'Einfach',
     q: 'Das Dispositionssystem übermittelt Leistungsdaten der Disponenten zur Modelloptimierung an den KI-Anbieter. Welche Datenschutzpflicht wird dadurch ausgelöst?',
     opts: [
       'Ein Auftragsverarbeitungsvertrag (AVV) nach DSGVO Art. 28 ist zwingend erforderlich, weil ein externer Dienstleister im Auftrag Zugriff auf personenbezogene Daten erhält',
@@ -289,37 +271,15 @@ a1: [
   }
 ],
 
-/* KI-Beauftragter Fortgeschrittene — Verteilung: 2r, 1r, 2r, 3r, 3r */
+/* KI-Beauftragter Fortgeschrittene — 5 Fragen (Mittel×2, Komplex×3) */
+/* Entfernt: RPZ-Berechnung Szenario (Tag-9-Overlap), Art.-9-kontinuierlich Erklärung (Tag-9-Overlap) */
 a2: [
   {
-    q: 'Ein KI-Risiko im Dispositionssystem wird bewertet: Auftreten A = 4, Bedeutung B = 7, Entdeckung E = 5. Welche Schlüsse sind korrekt?',
-    opts: [
-      'Der RPZ beträgt 140 (4 × 7 × 5) — das liegt über dem Schwellenwert von 125 und signalisiert: Maßnahmen sind erforderlich',
-      'Der RPZ beträgt 16 (4 + 7 + 5) — Addition ist die korrekte Methode zur Berechnung',
-      'Ein RPZ von 140 bedeutet nicht automatisch Projektabbruch — die vier Maßnahmenkategorien müssen geprüft werden',
-      'Die Entdeckung (E = 5) ist der unwichtigste Faktor — nur Auftreten und Bedeutung bestimmen die Dringlichkeit'
-    ],
-    correct: [0,2],
-    exp: 'RPZ = 4 × 7 × 5 = 140. Der Schwellenwert von 125 ist überschritten — Maßnahmen sind erforderlich. RPZ 140 bedeutet aber kein automatisches Projektverbot: Die vier Kategorien (Vermeiden, Mindern, Übertragen, Akzeptieren) müssen geprüft werden. Entdeckung ist kein unwichtiger Faktor: Wird E von 5 auf 2 gesenkt (besseres Monitoring), fällt der RPZ von 140 auf 56 — das ist bereits im mittleren Bereich.',
-    src: 'Risikoregister_KI-Beauftragte_Template.xlsx · A-B-E-Skala · https://www.nber.org/papers/w33867'
-  },
-  {
-    q: 'EU AI Act Art. 9 fordert ein "kontinuierliches" Risikomanagementsystem. Was unterscheidet das von einer einmaligen Bewertung?',
-    opts: [
-      'Das System muss nach Software-Aktualisierungen, nach Vorfällen und in regelmäßigen Abständen erneut bewertet werden',
-      'Kontinuierlich bedeutet: tägliche Neubewertung aller identifizierten Risiken',
-      'Kontinuierlich bezieht sich nur auf Hochrisiko-Systeme in der Gesundheitsversorgung — bei Logistik-KI reicht eine einmalige Bewertung',
-      'Nach Art. 9 ist eine jährliche Überprüfung als feste Frist vorgegeben'
-    ],
-    correct: [0],
-    exp: 'Art. 9 verlangt einen fortlaufenden Prozess: Neubewertung nach Systemaktualisierungen, nach Vorfällen und regelmäßig — ohne feste jährliche Frist. Die Norm gilt für alle Hochrisiko-KI-Systeme, nicht nur im Gesundheitsbereich. Ein Dispositionssystem kann unter Anhang III fallen, wenn es bei Personalentscheidungen eingesetzt wird.',
-    src: 'EU AI Act Art. 9 · https://artificialintelligenceact.eu/article/9/'
-  },
-  {
+    schwierigkeit: 'Mittel',
     q: 'Das Unternehmen erwägt, das Rechtsrisiko zu "übertragen". Welche Aussagen beschreiben diese Maßnahmenkategorie korrekt?',
     opts: [
-      'Übertragen kann durch Versicherung erfolgen — z. B. Haftpflichtversicherung für die Kosten eines Rechtsstreits',
-      'Übertragen kann durch vertragliche Regelungen erfolgen — z. B. Haftungsklauseln gegenüber dem KI-Anbieter',
+      'Übertragen kann durch Versicherung erfolgen — z. B. Haftpflichtversicherung für die Kosten eines Rechtsstreits',
+      'Übertragen kann durch vertragliche Regelungen erfolgen — z. B. Haftungsklauseln gegenüber dem KI-Anbieter',
       'Durch Übertragen verschwindet das Risiko vollständig — der Versicherer oder Partner trägt dann alle Konsequenzen',
       'Übertragen ist immer die kostengünstigste und bevorzugte Maßnahmenkategorie'
     ],
@@ -328,6 +288,7 @@ a2: [
     src: 'EU AI Act Art. 9 · NIST AI RMF · https://airc.nist.gov/'
   },
   {
+    schwierigkeit: 'Mittel',
     q: 'Eine vollständige Risikodokumentation nach EU AI Act Art. 9 für das Dispositions-KI-System umfasst welche Elemente?',
     opts: [
       'Identifizierte Risiken mit Beschreibung und Bewertung nach A (Auftreten), B (Bedeutung) und E (Entdeckung)',
@@ -340,18 +301,20 @@ a2: [
     src: 'EU AI Act Art. 9 · Risikoregister_KI-Beauftragte_Template.xlsx · https://artificialintelligenceact.eu/article/9/'
   },
   {
-    q: 'Das NBER-Paper (Wang & Wong 2025) prognostiziert langfristig 23 % Beschäftigungsverlust durch KI, mit der Hälfte davon in den ersten 5 Jahren. Wie hilft dieses Wissen bei der strategischen Risikobewertung?',
+    schwierigkeit: 'Komplex',
+    q: 'Das NBER-Paper (Wang & Wong 2025) prognostiziert langfristig 23 % Beschäftigungsverlust durch KI, mit der Hälfte davon in den ersten 5 Jahren. Wie hilft dieses Wissen bei der strategischen Risikobewertung?',
     opts: [
       'Es liefert eine empirische Grundlage für die Einschätzung der Bedeutung (B) bei Personalrisiken — das Risiko ist quantifizierbar',
       'Es unterstützt die Bewertung des Auftretens (A): Das Risiko ist strukturell und systematisch — nicht zufällig',
-      'Die 23 %-Prognose gilt exakt für jedes Unternehmen — sie kann direkt als absolute Zahl in die Matrix eingetragen werden',
+      'Die 23 %-Prognose gilt exakt für jedes Unternehmen — sie kann direkt als absolute Zahl in die Matrix eingetragen werden',
       'Es zeigt, dass KI-bedingte Personalrisiken langfristig wirken — was die Zeitdimension der Maßnahmenplanung beeinflusst'
     ],
     correct: [0,1,3],
-    exp: 'Das NBER-Paper liefert drei Inputs für die Risikobewertung: Bedeutung/B (23 % Verlust gibt eine Größenordnung), Auftreten/A (strukturell und systematisch = hohe Eintrittswahrscheinlichkeit) und Zeitdimension (Maßnahmen müssen einen 5-Jahres-Horizont abdecken). Option C ist falsch: Die 23 % sind ein globaler Modell-Durchschnitt — individuelle Abweichungen sind erheblich.',
+    exp: 'Das NBER-Paper liefert drei Inputs für die Risikobewertung: Bedeutung/B (23 % Verlust gibt eine Größenordnung), Auftreten/A (strukturell und systematisch = hohe Eintrittswahrscheinlichkeit) und Zeitdimension (Maßnahmen müssen einen 5-Jahres-Horizont abdecken). Option C ist falsch: Die 23 % sind ein globaler Modell-Durchschnitt — individuelle Abweichungen sind erheblich.',
     src: 'NBER w33867 · https://www.nber.org/papers/w33867/w33867.pdf'
   },
   {
+    schwierigkeit: 'Komplex',
     q: 'Du wendest die Drei-Ebenen-DSFA-Checkliste auf das Dispositionssystem an. Das System wertet Standortdaten und Routenleistung der Disponenten aus — und dient als Grundlage für den geplanten Stellenabbau. Welche Ebenen lösen eine DSFA aus?',
     opts: [
       'Ebene 1 (Art. 35 Abs. 1 DSGVO): Die umfangreiche Verarbeitung von Beschäftigtendaten für eine Entscheidung mit erheblichen Auswirkungen (Stellenabbau) begründet DSFA-Pflicht',
@@ -364,6 +327,7 @@ a2: [
     src: 'DSGVO Art. 35 · KI-VO Anhang III Nr. 4 · https://gdpr-info.eu/art-35-gdpr/'
   },
   {
+    schwierigkeit: 'Komplex',
     q: 'Der Datenschutzbeauftragte fragt, ob eine DSFA nach DSGVO Art. 35 ausreicht oder ob auch eine FRIA nach KI-VO Art. 27 durchgeführt werden muss. Was ist die präzise Antwort als KIB?',
     opts: [
       'Eine vollständig durchgeführte DSFA ersetzt die FRIA — Doppelinstrumente sind bürokratisch nicht zumutbar',
@@ -377,21 +341,11 @@ a2: [
   }
 ],
 
-/* Operativer Manager Anfänger — Verteilung: 2r, 3r, 1r, 2r, 3r */
+/* Operativer Manager Anfänger — 5 Fragen (Einfach×2, Mittel×3) */
+/* Entfernt: A/B/E-Faktoren-Basics (Tag-9-Overlap), Risikoregister-Inhalt (Tag-9-Overlap) */
 b1: [
   {
-    q: 'Was beschreiben die drei Faktoren A, B und E in der FMEA-Risikobewertung?',
-    opts: [
-      'A = Auftreten: Wie häufig oder wahrscheinlich tritt das Risiko auf? — Skala 1 (praktisch nie) bis 10 (nahezu immer)',
-      'B = Bedeutung: Wie schwerwiegend sind die Folgen? — Skala 1 (rein kosmetisch) bis 10 (katastrophal/existenzbedrohend)',
-      'E = Entdeckung: Je höher der Wert, desto leichter erkennbar ist das Risiko — E = 10 bedeutet "immer sofort erkannt"',
-      'Die drei Faktoren werden addiert — RPZ = A + B + E mit einem Wertebereich von 3 bis 30'
-    ],
-    correct: [0,1],
-    exp: 'A (Auftreten) und B (Bedeutung) sind intuitiv verständlich. E (Entdeckung) funktioniert invers: E = 1 bedeutet "immer automatisch erkannt oder verhindert" — E = 10 bedeutet "nicht erkennbar, keine Kontrollen". Die Faktoren werden multipliziert (nicht addiert): RPZ = A × B × E, Wertebereich 1–1.000.',
-    src: 'Risikoregister_KI-Beauftragte_Template.xlsx · A-B-E-Skala'
-  },
-  {
+    schwierigkeit: 'Mittel',
     q: 'Das Gericht in Hangzhou hat die KI-bedingte Entlassung von Zhou für rechtswidrig erklärt. Welche operativen Risiken ergeben sich daraus für ein deutsches Unternehmen, das Ähnliches plant?',
     opts: [
       'Rechtsrisiko: Das Kündigungsschutzgesetz (KSchG) schützt Arbeitnehmer vor Kündigungen ohne soziale Rechtfertigung — KI allein ist kein anerkannter Kündigungsgrund',
@@ -404,6 +358,7 @@ b1: [
     src: 'KSchG · § 111 BetrVG · NPR · https://www.npr.org/2026/05/01/nx-s1-5807131/tech-worker-china-ai'
   },
   {
+    schwierigkeit: 'Einfach',
     q: 'Das Unternehmen entscheidet, dass KI nur Entscheidungen vorbereiten darf — die finale Dispositionsentscheidung bleibt immer beim Menschen. Welche Maßnahmenkategorie ist das?',
     opts: [
       'Vermeiden — die Risikoquelle wird vollständig eliminiert',
@@ -416,6 +371,7 @@ b1: [
     src: 'EU AI Act Art. 14 · https://artificialintelligenceact.eu/article/14/'
   },
   {
+    schwierigkeit: 'Mittel',
     q: 'Was gehört zu einer sorgfältigen operativen Maßnahmenplanung, bevor KI-bedingte Umstrukturierungen eingeleitet werden?',
     opts: [
       'HR und Rechtsabteilung konsultieren — insbesondere zur Frage, ob betriebsbedingte Kündigungen rechtssicher begründbar sind',
@@ -428,18 +384,7 @@ b1: [
     src: 'KSchG · § 111 BetrVG · NPR-Fall Zhou'
   },
   {
-    q: 'Was gehört in ein Risikoregister für die geplante KI-Einführung im Logistikunternehmen?',
-    opts: [
-      'Beschreibung jedes identifizierten Risikos mit Risikoart (technisch, rechtlich, operativ, reputativ)',
-      'Bewertung nach A (Auftreten), B (Bedeutung), E (Entdeckung) und berechneter RPZ = A × B × E',
-      'Verantwortliche Person für jede Maßnahme und geplanter Umsetzungstermin',
-      'Eine Garantie-Erklärung, dass nach Umsetzung der Maßnahmen keine Risiken mehr bestehen'
-    ],
-    correct: [0,1,2],
-    exp: 'Ein vollständiges Risikoregister enthält: Risikoidentifikation und -art, Bewertung nach dem A-B-E-Schema (RPZ = A × B × E), und Maßnahmenplanung mit Verantwortlichen und Terminen. Eine Nullrisiko-Garantie ist weder möglich noch gefordert — Restrisiken werden dokumentiert und begründet akzeptiert.',
-    src: 'Risikoregister_KI-Beauftragte_Template.xlsx · EU AI Act Art. 9'
-  },
-  {
+    schwierigkeit: 'Einfach',
     q: 'Das Unternehmen beauftragt einen externen KI-Anbieter, der für Optimierungszwecke Zugriff auf Fahrt- und Leistungsdaten der Disponenten erhält. Was ist aus Datenschutzsicht zwingend erforderlich?',
     opts: [
       'Ein Auftragsverarbeitungsvertrag (AVV) nach DSGVO Art. 28 — er regelt, zu welchen Zwecken und unter welchen Bedingungen der Anbieter die Daten verarbeiten darf',
@@ -452,6 +397,7 @@ b1: [
     src: 'DSGVO Art. 28 · https://gdpr-info.eu/art-28-gdpr/'
   },
   {
+    schwierigkeit: 'Mittel',
     q: 'Das Unternehmen informiert die zwölf Disponenten im bestehenden Arbeitsvertrag mit einem Standardsatz über den möglichen Einsatz von KI-Systemen. Reicht das für die Transparenzpflichten aus?',
     opts: [
       'Ja — der Mitarbeitende hat den Vertrag unterschrieben und gilt damit als ausreichend informiert',
@@ -465,21 +411,24 @@ b1: [
   }
 ],
 
-/* Operativer Manager Fortgeschrittene — Verteilung: 2r, 1r, 3r, 2r, 3r */
+/* Operativer Manager Fortgeschrittene — 5 Fragen (Mittel×3, Komplex×2) */
+/* Entfernt: SCC/TIA Drittland (DSGVO-Spezialthema, passt besser zu Tag 8), DSGVO-vs-KI-VO-Kumulationsprinzip (allgemeines Rechtsprinzip) */
 b2: [
   {
+    schwierigkeit: 'Mittel',
     q: 'Das Unternehmen überlegt zwischen "Vermeiden" und "Mindern" beim Rechtsrisiko aus dem Zhou-Fall. Was beschreibt den Unterschied korrekt?',
     opts: [
-      'Vermeiden bedeutet: Die risikoauslösende Entscheidung wird nicht getroffen — z. B. kein KI-bedingter Stellenabbau',
+      'Vermeiden bedeutet: Die risikoauslösende Entscheidung wird nicht getroffen — z. B. kein KI-bedingter Stellenabbau',
       'Mindern bedeutet: Das Risiko bleibt bestehen, wird aber durch Sozialplan, Umschulungen oder Betriebsvereinbarung reduziert',
       'Mindern ist immer die bessere Wahl, weil Vermeiden den KI-Einsatz vollständig verhindert',
       'Vermeiden ist nie eine zulässige Option — kein Unternehmen muss auf KI-Einführung verzichten'
     ],
     correct: [0,1],
-    exp: 'Vermeiden bedeutet: Die risikoauslösende Handlung wird nicht vorgenommen — kein vollständiger Stellenabbau, z. B. nur Umschulung und Neubesetzung. Mindern bedeutet: KI wird eingesetzt, aber das Risiko wird durch begleitende Maßnahmen reduziert. Weder Vermeiden noch Mindern ist prinzipiell "besser" — der Aufwand muss im Verhältnis zur Risikoreduktion stehen (ALARP).',
+    exp: 'Vermeiden bedeutet: Die risikoauslösende Handlung wird nicht vorgenommen — kein vollständiger Stellenabbau, z. B. nur Umschulung und Neubesetzung. Mindern bedeutet: KI wird eingesetzt, aber das Risiko wird durch begleitende Maßnahmen reduziert. Weder Vermeiden noch Mindern ist prinzipiell "besser" — der Aufwand muss im Verhältnis zur Risikoreduktion stehen (ALARP).',
     src: 'EU AI Act Art. 9 · NIST AI RMF'
   },
   {
+    schwierigkeit: 'Mittel',
     q: 'Das Unternehmen entscheidet, das Rechtsrisiko zu "akzeptieren", weil die geschätzten Prozesskosten überschaubar sind. Was muss dabei zwingend dokumentiert sein?',
     opts: [
       'Die Begründung, warum das Restrisiko als tragbar eingestuft wird — mit nachvollziehbarer Bewertung von A, B und E sowie dem berechneten RPZ',
@@ -492,10 +441,11 @@ b2: [
     src: 'EU AI Act Art. 9 · Risikoregister_KI-Beauftragte_Template.xlsx'
   },
   {
-    q: 'Das Rechtsrisiko aus dem Zhou-Fall wird bewertet: A = 5, B = 8, E = 6 — das ergibt RPZ = 240. Welche strategischen Überlegungen zur Maßnahmenplanung sind korrekt?',
+    schwierigkeit: 'Komplex',
+    q: 'Das Rechtsrisiko aus dem Zhou-Fall wird bewertet: A = 5, B = 8, E = 6 — das ergibt RPZ = 240. Welche strategischen Überlegungen zur Maßnahmenplanung sind korrekt?',
     opts: [
       'Maßnahmen zur Senkung von A (Auftreten): Rechtsberatung, Sozialplan, Betriebsvereinbarung machen die Kündigung rechtssicherer und reduzieren die Eintrittswahrscheinlichkeit',
-      'Maßnahmen zur Senkung von E (Entdeckung): Regelmäßige Compliance-Checks und juristische Audits senken den E-Wert — von E = 6 auf E = 2 würde den RPZ von 240 auf 80 reduzieren',
+      'Maßnahmen zur Senkung von E (Entdeckung): Regelmäßige Compliance-Checks und juristische Audits senken den E-Wert — von E = 6 auf E = 2 würde den RPZ von 240 auf 80 reduzieren',
       'ALARP bedeutet hier: Maßnahmen sind sinnvoll, solange ihr Aufwand in vernünftigem Verhältnis zur RPZ-Reduktion steht',
       'Ein RPZ von 240 bedeutet automatisch Projektabbruch — alle weiteren Maßnahmen sind überflüssig'
     ],
@@ -504,6 +454,7 @@ b2: [
     src: 'EU AI Act Art. 9 · ALARP · Risikoregister_KI-Beauftragte_Template.xlsx'
   },
   {
+    schwierigkeit: 'Mittel',
     q: 'Das Unternehmen diskutiert, ob § 87 BetrVG (Mitbestimmungsrechte) als Risiko in die Matrix aufgenommen werden soll. Welche Perspektiven sind korrekt?',
     opts: [
       'Verstöße gegen Mitbestimmungsrechte können Einigungsstellenverfahren und Unterlassungsansprüche auslösen — das ist ein messbares Compliance-Risiko',
@@ -516,40 +467,17 @@ b2: [
     src: '§ 87 BetrVG · § 111 BetrVG'
   },
   {
+    schwierigkeit: 'Komplex',
     q: 'Das NBER-Paper prognostiziert strukturelle, langfristige KI-bedingte Beschäftigungsverluste — mit der Hälfte davon in den ersten 5 Jahren. Was bedeutet das für die operative Maßnahmenplanung?',
     opts: [
       'Der Zeithorizont der Maßnahmen muss der strukturellen Natur des Risikos entsprechen — einmalige Maßnahmen bei der Einführung reichen nicht',
       'Sozialplan und Umschulungskonzepte sollten den 5-Jahres-Horizont abbilden — nicht nur die unmittelbaren Stellen',
-      'Die 23 %-Prognose ist ein globaler Modell-Durchschnitt — für das eigene Unternehmen kann der Wert je nach Automatisierungsgrad deutlich abweichen',
+      'Die 23 %-Prognose ist ein globaler Modell-Durchschnitt — für das eigene Unternehmen kann der Wert je nach Automatisierungsgrad deutlich abweichen',
       'Weil KI-Risiken langfristig wirken, muss die Risikomatrix erst in drei Jahren erstellt werden — eine sofortige Bewertung ist verfrüht'
     ],
     correct: [0,1,2],
-    exp: 'Die NBER-Prognose hat drei operative Konsequenzen: Der Maßnahmen-Zeithorizont muss zum strukturellen Risiko passen (nicht nur zur Einführungsphase). Sozialpläne müssen den 5-Jahres-Horizon einschließen. Gleichzeitig ist die 23 % kein fixer Wert — Unternehmen mit hohem Automatisierungsgrad können stärker betroffen sein. Option D ist falsch: Eine Risikomatrix sollte sofort erstellt werden — Risiken entstehen ab dem Moment der Projektentscheidung.',
+    exp: 'Die NBER-Prognose hat drei operative Konsequenzen: Der Maßnahmen-Zeithorizont muss zum strukturellen Risiko passen (nicht nur zur Einführungsphase). Sozialpläne müssen den 5-Jahres-Horizont einschließen. Gleichzeitig ist die 23 % kein fixer Wert — Unternehmen mit hohem Automatisierungsgrad können stärker betroffen sein. Option D ist falsch: Eine Risikomatrix sollte sofort erstellt werden — Risiken entstehen ab dem Moment der Projektentscheidung.',
     src: 'NBER w33867 · https://www.nber.org/papers/w33867/w33867.pdf'
-  },
-  {
-    q: 'Der KI-Anbieter hat Entwicklungsteams in Indien, die gelegentlich auf Systemdaten zugreifen, in denen auch Mitarbeiterdaten enthalten sind. Welche Schritte sind aus DSGVO-Sicht erforderlich?',
-    opts: [
-      'Kein Handlungsbedarf — Indien gilt durch ein bilaterales Rahmenabkommen als sicheres Drittland im Sinne der DSGVO',
-      'Standardvertragsklauseln (SCC) nach DSGVO Art. 46 sind als geeignete Garantie für die Übermittlung in Drittländer ohne Angemessenheitsbeschluss zu vereinbaren',
-      'Zusätzlich zu den SCC ist ein Transfer Impact Assessment (TIA) erforderlich — eine Einzelfallprüfung, ob die SCC angesichts der Rechtslage in Indien tatsächlich wirksam sind',
-      'Eine Übermittlung in Drittländer ohne Angemessenheitsbeschluss ist generell und ausnahmslos verboten'
-    ],
-    correct: [1,2],
-    exp: 'Indien hat keinen EU-Angemessenheitsbeschluss. Drittstaatenübermittlungen sind nicht generell verboten, aber nur unter bestimmten Bedingungen zulässig. Als geeignete Garantie kommen Standardvertragsklauseln (SCC) nach Art. 46 DSGVO in Frage. Nach dem Schrems-II-Urteil des EuGH ist zusätzlich ein Transfer Impact Assessment (TIA) erforderlich — eine Prüfung, ob das lokale Recht im Empfängerland die Wirksamkeit der SCC unterläuft. In Indien können Behörden unter bestimmten Rechtsgrundlagen auf Daten zugreifen — das ist im TIA zu dokumentieren und zu bewerten.',
-    src: 'DSGVO Art. 46 · EuGH Schrems II (C-311/18) · https://gdpr-info.eu/art-46-gdpr/'
-  },
-  {
-    q: 'Die Rechtsabteilung erklärt: „Wir haben alle DSGVO-Anforderungen für das KI-Dispositionssystem erfüllt — damit sind wir auch KI-VO-konform." Ist diese Aussage korrekt?',
-    opts: [
-      'Ja — DSGVO und KI-VO sind inhaltlich aufeinander abgestimmt; Erfüllung der DSGVO erfüllt automatisch die KI-VO',
-      'Nein — beide Regelwerke gelten kumulativ: Die Erfüllung der DSGVO ersetzt keine KI-VO-Pflichten',
-      'Nein — die KI-VO fügt eigenständige Pflichten hinzu, die über die DSGVO hinausgehen: Art. 9 (Risikomanagementsystem), Art. 14 (menschliche Aufsicht), Art. 26 (Betreiberpflichten)',
-      'Ja — für Systeme außerhalb des Gesundheitsbereichs ist die KI-VO datenschutzrechtlich ohne Relevanz'
-    ],
-    correct: [1,2],
-    exp: 'Das Kumulationsprinzip gilt: DSGVO und KI-VO sind zwei eigenständige Rechtsrahmen, die beide eingehalten werden müssen. DSGVO-Konformität erzeugt keine KI-VO-Konformität. Die KI-VO stellt eigene, weitergehende Anforderungen: Art. 9 verlangt ein eigenständiges Risikomanagementsystem, Art. 14 definiert Anforderungen an menschliche Aufsicht, Art. 26 legt Betreiberpflichten fest, die über DSGVO-Anforderungen hinausgehen. Das Dispositionssystem im Beschäftigungsbereich ist ein potenzielles Hochrisiko-System — beide Rechtsrahmen müssen separat geprüft werden.',
-    src: 'DSGVO Art. 5 · KI-VO Art. 9, 14, 26 · https://artificialintelligenceact.eu/article/26/'
   }
 ]
 
@@ -737,4 +665,4 @@ function sendToSheets(correct,wrong) {
 }
 </script>
 </body>
-</html>
+</html>                                    
