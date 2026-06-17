@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Regeln für Folienerstellung · KI-Beauftragter / KI-Manager · alfatraining</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+    color: #1a1a1a;
+    background: #f8f7f4;
+    padding: 2rem 1rem;
+  }
+  .page { max-width: 900px; margin: 0 auto; }
+
+  .page-header { margin-bottom: 2rem; }
+  .page-header h1 { font-size: 20px; font-weight: 500; color: #1a1a1a; margin-bottom: 4px; }
+  .page-header p { font-size: 13px; color: #888; }
+
+  .section { margin-bottom: 2rem; }
+  .section-label {
+    font-size: 10px; font-weight: 500; letter-spacing: .1em; text-transform: uppercase;
+    color: #aaa; margin-bottom: .65rem;
+  }
+
+  .grid { display: grid; gap: 12px; }
+  .grid-4 { grid-template-columns: repeat(4, 1fr); }
+  .grid-5 { grid-template-columns: repeat(5, 1fr); }
+  .grid-2 { grid-template-columns: 1fr 1fr; gap: 16px; }
+
+  .metric {
+    background: #eeecea; border-radius: 8px; padding: .85rem 1rem;
+  }
+  .metric-label { font-size: 11px; color: #888; margin-bottom: 4px; }
+  .metric-val { font-size: 20px; font-weight: 500; color: #1a1a1a; line-height: 1.2; }
+  .metric-sub { font-size: 11px; color: #999; margin-top: 3px; }
+
+  .card {
+    background: #fff; border: 0.5px solid #e0ded8; border-radius: 12px;
+    padding: 1rem 1.1rem;
+  }
+  .card-head {
+    font-size: 12px; font-weight: 500; color: #1a1a1a;
+    margin-bottom: .4rem; display: flex; align-items: center; gap: 7px;
+  }
+  .card-head .icon { color: #1D9E75; font-size: 15px; }
+  .card-head .icon-purple { color: #7F77DD; }
+  .card-head .icon-blue { color: #378ADD; }
+  .card-desc { font-size: 11px; color: #888; margin-bottom: .65rem; line-height: 1.5; }
+
+  /* mini mockup */
+  .mock {
+    background: #f8f7f4; border: 0.5px solid #e0ded8; border-radius: 6px;
+    padding: 7px 9px;
+  }
+  .mock-title { font-size: 9px; font-weight: 500; color: #555; margin-bottom: 5px; font-family: monospace; }
+  .mock-row { display: flex; gap: 3px; margin: 3px 0; }
+  .mock-cell { height: 9px; border-radius: 2px; background: #d5d3cc; flex: 1; }
+  .mock-cell.accent { background: #5DCAA5; opacity: .8; }
+  .mock-cell.wide { flex: 2; }
+  .mock-cell.narrow { flex: .5; }
+  .mock-quote {
+    border-left: 2px solid #1D9E75; padding: 3px 7px;
+    font-size: 9px; color: #777; font-style: italic; margin: 4px 0;
+  }
+  .mock-rule { height: 7px; background: #d5d3cc; border-radius: 2px; margin: 5px 0; width: 65%; }
+  .mock-box {
+    border: 1px dashed #d0cec8; border-radius: 4px;
+    padding: 4px 7px; margin: 4px 0; font-size: 9px; color: #777;
+  }
+  .mock-tag {
+    display: inline-block; font-size: 9px; padding: 1px 5px;
+    border-radius: 3px; margin: 2px 2px 0 0;
+  }
+  .mock-tag.teal { background: #E1F5EE; color: #0F6E56; }
+  .mock-tag.amber { background: #FAEEDA; color: #854F0B; }
+  .mock-tag.gray { background: #eeecea; color: #666; border: 0.5px solid #d5d3cc; }
+  .mock-num { display: flex; align-items: center; gap: 5px; margin: 3px 0; }
+  .mock-circle {
+    width: 13px; height: 13px; border-radius: 50%; background: #1D9E75; opacity: .85;
+    flex-shrink: 0; font-size: 7px; color: #fff;
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  .badge {
+    display: inline-flex; align-items: center; gap: 4px;
+    font-size: 10px; padding: 2px 7px; border-radius: 6px; margin-top: 7px;
+  }
+  .badge.teal { background: #E1F5EE; color: #0F6E56; }
+  .badge.amber { background: #FAEEDA; color: #854F0B; }
+  .badge + .badge { margin-left: 4px; }
+
+  /* rule rows */
+  .rule-row {
+    display: flex; align-items: flex-start; gap: 10px;
+    padding: 7px 0; border-bottom: 0.5px solid #eeecea; font-size: 13px;
+  }
+  .rule-row:last-child { border-bottom: none; }
+  .rule-label { font-weight: 500; color: #1a1a1a; min-width: 145px; flex-shrink: 0; }
+  .rule-val { color: #555; line-height: 1.5; }
+
+  /* avoid list */
+  .avoid-item {
+    display: flex; align-items: flex-start; gap: 8px;
+    padding: 6px 0; border-bottom: 0.5px solid #eeecea;
+    font-size: 13px; color: #555;
+  }
+  .avoid-item:last-child { border-bottom: none; }
+  .avoid-x { color: #A32D2D; font-size: 14px; flex-shrink: 0; margin-top: 2px; font-weight: 500; }
+
+  /* flow bar */
+  .flow { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; padding: .4rem 0; }
+  .flow-step {
+    background: #eeecea; border-radius: 8px; padding: 6px 12px;
+    font-size: 12px; font-weight: 500; color: #1a1a1a;
+    display: flex; align-items: center; gap: 5px;
+  }
+  .flow-step .num { color: #1D9E75; font-weight: 500; }
+  .flow-arrow { color: #bbb; font-size: 14px; }
+
+  @media (max-width: 640px) {
+    .grid-4 { grid-template-columns: repeat(2, 1fr); }
+    .grid-5 { grid-template-columns: repeat(2, 1fr); }
+    .grid-2 { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="page-header">
+    <h1>Regeln für Folienerstellung</h1>
+    <p>KI-Beauftragter · KI-Manager · alfatraining · TÜV Rheinland Zertifizierung &nbsp;·&nbsp; Stand: 2026-06-17</p>
+  </div>
+
+  <!-- Harte Constraints -->
+  <div class="section">
+    <p class="section-label">Harte Constraints</p>
+    <div class="grid grid-4">
+      <div class="metric">
+        <p class="metric-label">Visuelle Elemente</p>
+        <p class="metric-val">max. 3</p>
+        <p class="metric-sub">pro Folie</p>
+      </div>
+      <div class="metric">
+        <p class="metric-label">Folienanzahl</p>
+        <p class="metric-val">25–30</p>
+        <p class="metric-sub">pro Schulungstag</p>
+      </div>
+      <div class="metric">
+        <p class="metric-label">Anrede</p>
+        <p class="metric-val">Du-Form</p>
+        <p class="metric-sub">nie Sie-Form</p>
+      </div>
+      <div class="metric">
+        <p class="metric-label">TÜV-Marker</p>
+        <p class="metric-val">🎯</p>
+        <p class="metric-sub">auf prüfungsrelevanten Folien</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Folientypen -->
+  <div class="section">
+    <p class="section-label">Folientypen — Einsatz und Muster</p>
+    <div class="grid grid-5">
+
+      <div class="card">
+        <p class="card-head">
+          <svg class="icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/><line x1="9" y1="9" x2="9" y2="21"/></svg>
+          Tabellen-Folie
+        </p>
+        <p class="card-desc">Für Vergleiche, Frameworks, Skalen. Max. 5 Zeilen + 3 Spalten sichtbar.</p>
+        <div class="mock">
+          <p class="mock-title">## Überschrift</p>
+          <div class="mock-row"><div class="mock-cell accent narrow"></div><div class="mock-cell accent"></div><div class="mock-cell accent"></div></div>
+          <div class="mock-row"><div class="mock-cell narrow"></div><div class="mock-cell"></div><div class="mock-cell"></div></div>
+          <div class="mock-row"><div class="mock-cell narrow"></div><div class="mock-cell"></div><div class="mock-cell"></div></div>
+          <div class="mock-row"><div class="mock-cell narrow"></div><div class="mock-cell"></div><div class="mock-cell"></div></div>
+        </div>
+        <div><span class="badge teal">✓ Framework-Vergleich</span></div>
+        <div><span class="badge teal">✓ A-B-E-Skala</span></div>
+      </div>
+
+      <div class="card">
+        <p class="card-head">
+          <svg class="icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21c3 0 7-1 7-8V5c0-1.25-.756-2.017-2-2H4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V20c0 1 0 1 1 1z"/><path d="M15 21c3 0 7-1 7-8V5c0-1.25-.757-2.017-2-2h-4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2h.75c0 2.25.25 4-2.75 4v3c0 1 0 1 1 1z"/></svg>
+          Zitat + Faustregel
+        </p>
+        <p class="card-desc">Für Kernaussagen, externe Belege. Zitat kursiv, Faustregel fett darunter.</p>
+        <div class="mock">
+          <p class="mock-title">## Überschrift</p>
+          <div class="mock-quote">„Zitat aus Quelle (Autor, Jahr)"</div>
+          <div style="margin: 5px 0 3px; font-size: 9px; color: #999;">Faustregel:</div>
+          <div class="mock-rule"></div>
+        </div>
+        <div><span class="badge teal">✓ Quellen-Pflicht Tier-1</span></div>
+      </div>
+
+      <div class="card">
+        <p class="card-head">
+          <svg class="icon icon-purple" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+          Übungs-Folie
+        </p>
+        <p class="card-desc">Für Mini-Reflexionen (10 Min.) und Gruppenarbeiten. Immer mit Phasenstruktur.</p>
+        <div class="mock">
+          <p class="mock-title">## Kurze Reflexion · 10 Min. ✏️</p>
+          <div class="mock-box">Aufgabenstellung in kursiv</div>
+          <div style="margin-top: 4px;"><span class="mock-tag gray">Phase 1 · 5 Min.</span></div>
+          <div><span class="mock-tag gray">Phase 2 · 5 Min.</span></div>
+        </div>
+        <div><span class="badge amber">⏱ nach jedem Block</span></div>
+      </div>
+
+      <div class="card">
+        <p class="card-head">
+          <svg class="icon icon-blue" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          UC-Anker-Folie
+        </p>
+        <p class="card-desc">Verbindet abstrakte Theorie mit dem Tages-Use-Case. Hält den roten Faden.</p>
+        <div class="mock">
+          <p class="mock-title">## [Konzept] · Was bedeutet das für [UC]?</p>
+          <div class="mock-row"><div class="mock-cell narrow accent"></div><div class="mock-cell wide"></div></div>
+          <div class="mock-row"><div class="mock-cell narrow accent"></div><div class="mock-cell wide"></div></div>
+          <div class="mock-row"><div class="mock-cell narrow accent"></div><div class="mock-cell wide"></div></div>
+        </div>
+        <div><span class="badge teal">✓ nach jeder Theorie-Folie</span></div>
+      </div>
+
+      <div class="card">
+        <p class="card-head">
+          <svg class="icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+          Kernbotschaften
+        </p>
+        <p class="card-desc">Schlussteil: nummerierte Punkte, jeweils mit Prüfungsmarkierung falls relevant.</p>
+        <div class="mock">
+          <p class="mock-title">## Kernbotschaften Tag N</p>
+          <div class="mock-num"><div class="mock-circle">①</div><div class="mock-rule" style="margin:0;flex:1"></div></div>
+          <div class="mock-num"><div class="mock-circle">②</div><div class="mock-rule" style="margin:0;flex:1"></div></div>
+          <div class="mock-num"><div class="mock-circle">③</div><div class="mock-rule" style="margin:0;flex:1"></div></div>
+          <div style="margin-top: 4px;"><span class="mock-tag teal">Prüfung</span> <span class="mock-tag amber">🎯</span></div>
+        </div>
+        <div><span class="badge teal">✓ immer vorletzter Block</span></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Sprachregeln + Verbote -->
+  <div class="section">
+    <div class="grid grid-2">
+
+      <div>
+        <p class="section-label">Sprachregeln</p>
+        <div class="card" style="padding: .75rem 1rem;">
+          <div class="rule-row"><span class="rule-label">Anrede</span><span class="rule-val">Du-Form — „Du kannst…", „Dein Ziel…"</span></div>
+          <div class="rule-row"><span class="rule-label">Prüfungsmarker</span><span class="rule-val">🎯 + Text „TÜV-Prüfungsrelevant" auf der Folie</span></div>
+          <div class="rule-row"><span class="rule-label">Quiz-Erklärungen</span><span class="rule-val">Nie „wie Option A sagt" — Shuffle macht Buchstaben bedeutungslos</span></div>
+          <div class="rule-row"><span class="rule-label">Quellen</span><span class="rule-val">Nur Tier-1 (EU-Texte, NIST, ISO, peer-reviewed)</span></div>
+          <div class="rule-row"><span class="rule-label">TÜV-Fragen</span><span class="rule-val">Nie 1:1 übernehmen — eigene Formulierung Pflicht (Verpflichtungserklärung)</span></div>
+          <div class="rule-row"><span class="rule-label">Use-Case-Verankerung</span><span class="rule-val">Jeder Tag hat einen UC — auf jeder Theorie-Folie verankern</span></div>
+          <div class="rule-row"><span class="rule-label">Quiz-Mindestanzahl</span><span class="rule-val">20 Fragen pro Tag (kein Quiz an Freitagen)</span></div>
+        </div>
+      </div>
+
+      <div>
+        <p class="section-label">Nicht erlaubt</p>
+        <div class="card" style="padding: .75rem 1rem;">
+          <div class="avoid-item"><span class="avoid-x">✕</span><span>Reine Textwände ohne visuelle Strukturierung</span></div>
+          <div class="avoid-item"><span class="avoid-x">✕</span><span>Mehr als 3 visuelle Elemente pro Folie</span></div>
+          <div class="avoid-item"><span class="avoid-x">✕</span><span>Blöcke &gt; 90 Min. ohne eingebettete Übung</span></div>
+          <div class="avoid-item"><span class="avoid-x">✕</span><span>TÜV-Fragen unverändert übernehmen</span></div>
+          <div class="avoid-item"><span class="avoid-x">✕</span><span>Sie-Form in Materialien oder Folien</span></div>
+          <div class="avoid-item"><span class="avoid-x">✕</span><span>Theorie ohne UC-Anker (Use Case nicht verlieren)</span></div>
+          <div class="avoid-item"><span class="avoid-x">✕</span><span>Quiz unter 20 Fragen pro Tag</span></div>
+          <div class="avoid-item"><span class="avoid-x">✕</span><span>Nicht-Tier-1-Quellen in HandOuts oder Gamma</span></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Tages-Strukturmuster -->
+  <div class="section" style="margin-bottom: 0;">
+    <p class="section-label">Tages-Strukturmuster (Pflicht-Reihenfolge)</p>
+    <div class="flow">
+      <div class="flow-step"><span class="num">①</span> Rückblick + UC-Einstieg</div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-step"><span class="num">②</span> Block 1 + Mini-Übung</div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-step"><span class="num">③</span> Block 2 + Mini-Übung</div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-step"><span class="num">④</span> Praxisblock</div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-step"><span class="num">⑤</span> Kernbotschaften + Ausblick</div>
+    </div>
+    <p style="font-size:12px;color:#aaa;margin-top:.75rem;">
+      Kein Quiz an Freitagen (Tag 5, 10, 15, 20) &nbsp;·&nbsp; Gamma-Dateien als <code style="font-size:11px;background:#eeecea;padding:1px 5px;border-radius:3px">TagN_Gamma.md</code> (Marp-Markdown)
+    </p>
+  </div>
+
+</div>
+</body>
+</html>
