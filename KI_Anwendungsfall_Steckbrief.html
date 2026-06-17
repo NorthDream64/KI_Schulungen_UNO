@@ -226,6 +226,38 @@ hr.divider{border:none;border-top:1px solid var(--rule);margin:1rem 0;}
   .form-card{break-inside:avoid;border:1px solid #ddd;margin-bottom:0.4rem;}
   body{font-size:10.5pt;}
 }
+/* ── RACI Pills (Abschnitt 6) ─────────────────────────── */
+.raci-pill{display:inline-flex;align-items:center;justify-content:center;
+  width:1.7rem;height:1.7rem;border-radius:5px;
+  font-size:11px;font-weight:800;cursor:pointer;user-select:none;
+  border:2px solid transparent;transition:transform .1s;}
+.raci-pill:hover{transform:scale(1.1);}
+.raci-empty{background:#f1f5f9;color:#94a3b8;border-color:#e2e8f0;font-size:10px;}
+.raci-r{background:#dbeafe;color:#1d4ed8;border-color:#93c5fd;}
+.raci-a{background:#fef3c7;color:#92400e;border-color:#fbbf24;}
+.raci-c{background:#ede9fe;color:#5b21b6;border-color:#c4b5fd;}
+.raci-i{background:#dcfce7;color:#166534;border-color:#86efac;}
+.raci-tbl{width:100%;border-collapse:collapse;font-size:0.82rem;margin-top:0.5rem;}
+.raci-tbl th{background:var(--navy);color:#fff;padding:0.5rem 0.5rem;font-family:var(--font-mono);font-size:0.58rem;letter-spacing:0.1em;text-transform:uppercase;text-align:center;}
+.raci-tbl th:first-child,.raci-tbl th:nth-child(2){text-align:left;}
+.raci-tbl td{border:1px solid var(--rule);padding:0.35rem 0.5rem;vertical-align:middle;}
+.raci-tbl td.raci-cell{text-align:center;cursor:pointer;padding:0.3rem;}
+.raci-tbl tr:nth-child(even){background:rgba(0,0,0,0.02);}
+.raci-tbl .raci-inp{font-size:0.82rem;border:none;background:transparent;width:100%;font-family:var(--font-body);color:var(--ink);}
+.raci-tbl .raci-inp:focus{outline:1px dashed var(--teal);border-radius:2px;}
+.raci-example-wrap{margin-top:1.2rem;background:#f8f9fb;border:1.5px solid #e2e6ec;border-radius:8px;overflow:hidden;}
+.raci-example-head{background:#1e293b;color:#f8fafc;padding:0.55rem 1rem;font-family:var(--font-mono);font-size:0.62rem;letter-spacing:0.08em;text-transform:uppercase;display:flex;align-items:center;gap:0.6rem;}
+.raci-tbl-ex{width:100%;border-collapse:collapse;}
+.raci-tbl-ex th{background:#1e293b;color:#f8fafc;padding:0.55rem 0.45rem;font-size:0.58rem;font-weight:700;text-align:center;letter-spacing:0.04em;text-transform:uppercase;}
+.raci-tbl-ex th:nth-child(2),.raci-tbl-ex th:nth-child(3){text-align:left;}
+.raci-tbl-ex td{border-bottom:1px solid #e2e6ec;padding:0.5rem 0.45rem;vertical-align:middle;font-size:0.78rem;}
+.raci-tbl-ex td:nth-child(1){color:#6b7280;font-weight:700;text-align:center;white-space:nowrap;}
+.raci-tbl-ex td:nth-child(3){font-size:0.7rem;color:#6b7280;white-space:nowrap;}
+.raci-tbl-ex .rc{text-align:center;cursor:pointer;user-select:none;padding:0.3rem;}
+.raci-tbl-ex .rc .raci-pill{margin:0 auto;transition:transform .1s;}
+.raci-tbl-ex .rc:hover .raci-pill{transform:scale(1.12);}
+.raci-sec-ex td{background:#334155;color:#e2e8f0;font-size:0.62rem;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;padding:0.4rem 0.8rem;}
+
 </style>
 </head>
 <body>
@@ -238,7 +270,7 @@ hr.divider{border:none;border-top:1px solid var(--rule);margin:1rem 0;}
   <div class="tb-actions">
     <button class="btn btn-ghost btn-sm" onclick="saveForm()">💾 Speichern</button>
     <button class="btn btn-ghost btn-sm" onclick="window.print()">🖨 Drucken</button>
-    <button class="btn btn-ghost btn-sm" onclick="goTo(14)">☑ Vollständigkeit</button>
+    <button class="btn btn-ghost btn-sm" onclick="goTo(15)">☑ Vollständigkeit</button>
     <button class="btn btn-ghost btn-sm" onclick="clearForm()">✕ Zurücksetzen</button>
   </div>
 </div>
@@ -255,25 +287,27 @@ hr.divider{border:none;border-top:1px solid var(--rule);margin:1rem 0;}
   <div class="step-sep">›</div>
   <div class="step" id="step-5" onclick="goTo(5)"><div class="step-num">5</div><div class="step-label">Stakeholder</div></div>
   <div class="step-sep">›</div>
-  <div class="step" id="step-6" onclick="goTo(6)"><div class="step-num">6</div><div class="step-label">Recht &amp; Compliance</div></div>
+  <div class="step" id="step-6" onclick="goTo(6)"><div class="step-num">6</div><div class="step-label">RACI-Matrix</div></div>
   <div class="step-sep">›</div>
-  <div class="step" id="step-7" onclick="goTo(7)"><div class="step-num">7</div><div class="step-label">Risikoregister</div></div>
+  <div class="step" id="step-7" onclick="goTo(7)"><div class="step-num">7</div><div class="step-label">Recht &amp; Compliance</div></div>
   <div class="step-sep">›</div>
-  <div class="step" id="step-8" onclick="goTo(8)"><div class="step-num">8</div><div class="step-label">Daten &amp; QS</div></div>
+  <div class="step" id="step-8" onclick="goTo(8)"><div class="step-num">8</div><div class="step-label">Risikoregister</div></div>
   <div class="step-sep">›</div>
-  <div class="step" id="step-9" onclick="goTo(9)"><div class="step-num">9</div><div class="step-label">Konformität</div></div>
+  <div class="step" id="step-9" onclick="goTo(9)"><div class="step-num">9</div><div class="step-label">Daten &amp; QS</div></div>
   <div class="step-sep">›</div>
-  <div class="step" id="step-10" onclick="goTo(10)"><div class="step-num">10</div><div class="step-label">Standards</div></div>
+  <div class="step" id="step-10" onclick="goTo(10)"><div class="step-num">10</div><div class="step-label">Konformität</div></div>
   <div class="step-sep">›</div>
-  <div class="step" id="step-11" onclick="goTo(11)"><div class="step-num">11</div><div class="step-label">Governance</div></div>
+  <div class="step" id="step-11" onclick="goTo(11)"><div class="step-num">11</div><div class="step-label">Standards</div></div>
   <div class="step-sep">›</div>
-  <div class="step" id="step-12" onclick="goTo(12)"><div class="step-num">12</div><div class="step-label">Einführung &amp; Change</div></div>
+  <div class="step" id="step-12" onclick="goTo(12)"><div class="step-num">12</div><div class="step-label">Governance</div></div>
   <div class="step-sep">›</div>
-  <div class="step" id="step-13" onclick="goTo(13)"><div class="step-num">13</div><div class="step-label">Bewertungsausgang</div></div>
+  <div class="step" id="step-13" onclick="goTo(13)"><div class="step-num">13</div><div class="step-label">Einführung &amp; Change</div></div>
   <div class="step-sep">›</div>
-  <div class="step" id="step-14" onclick="goTo(14)"><div class="step-num">☑</div><div class="step-label">Vollständigkeit</div></div>
+  <div class="step" id="step-14" onclick="goTo(14)"><div class="step-num">14</div><div class="step-label">Bewertungsausgang</div></div>
   <div class="step-sep">›</div>
-  <div class="step" id="step-15" onclick="goTo(15)"><div class="step-num">A</div><div class="step-label">Anhang: ISO 42001</div></div>
+  <div class="step" id="step-15" onclick="goTo(15)"><div class="step-num">☑</div><div class="step-label">Vollständigkeit</div></div>
+  <div class="step-sep">›</div>
+  <div class="step" id="step-16" onclick="goTo(16)"><div class="step-num">A</div><div class="step-label">Anhang: ISO 42001</div></div>
 </div>
 
 <div id="app">
@@ -284,7 +318,7 @@ hr.divider{border:none;border-top:1px solid var(--rule);margin:1rem 0;}
 ════════════════════════════════════════════════════════════════ -->
 <div class="form-section active" id="section-1">
   <div class="section-header" style="border-left-color:var(--s1)">
-    <div class="section-tag">Abschnitt 1 von 13</div>
+    <div class="section-tag">Abschnitt 1 von 14</div>
     <h2>Anwendungsfall-Übersicht</h2>
     <p>Beschreiben Sie das KI-Vorhaben, das zu lösende Problem und die betroffenen Nutzerinnen und Nutzer präzise und verständlich.</p>
   </div>
@@ -377,7 +411,7 @@ hr.divider{border:none;border-top:1px solid var(--rule);margin:1rem 0;}
 
   <div class="section-nav">
     <div></div>
-    <div class="section-counter">Abschnitt 1 von 13</div>
+    <div class="section-counter">Abschnitt 1 von 14</div>
     <button class="btn btn-primary" onclick="goTo(2)">Weiter: KI-System-Profil →</button>
   </div>
 </div>
@@ -388,7 +422,7 @@ hr.divider{border:none;border-top:1px solid var(--rule);margin:1rem 0;}
 ════════════════════════════════════════════════════════════════ -->
 <div class="form-section" id="section-2">
   <div class="section-header" style="border-left-color:var(--s2)">
-    <div class="section-tag">Abschnitt 2 von 13</div>
+    <div class="section-tag">Abschnitt 2 von 14</div>
     <h2>KI-System-Profil</h2>
     <p>Technische Einordnung, Akteursrolle gemäß EU AI Act und Deployment-Kontext.</p>
   </div>
@@ -496,7 +530,7 @@ hr.divider{border:none;border-top:1px solid var(--rule);margin:1rem 0;}
 
   <div class="section-nav">
     <button class="btn btn-outline" onclick="goTo(1)">← Zurück</button>
-    <div class="section-counter">Abschnitt 2 von 13</div>
+    <div class="section-counter">Abschnitt 2 von 14</div>
     <button class="btn btn-primary" onclick="goTo(3)">Weiter: Ziele & Scope →</button>
   </div>
 </div>
@@ -507,7 +541,7 @@ hr.divider{border:none;border-top:1px solid var(--rule);margin:1rem 0;}
 ════════════════════════════════════════════════════════════════ -->
 <div class="form-section" id="section-3">
   <div class="section-header" style="border-left-color:var(--s3)">
-    <div class="section-tag">Abschnitt 3 von 13</div>
+    <div class="section-tag">Abschnitt 3 von 14</div>
     <h2>Ziele &amp; Scope-Abgrenzung</h2>
     <p>SMART-Ziele, Scope des Vorhabens (In-Scope / Out-of-Scope), kritische Erfolgsfaktoren und strategische Einbettung in die Unternehmens-KI-Strategie.</p>
   </div>
@@ -562,7 +596,7 @@ hr.divider{border:none;border-top:1px solid var(--rule);margin:1rem 0;}
 
   <div class="section-nav">
     <button class="btn btn-outline" onclick="goTo(2)">← Zurück</button>
-    <div class="section-counter">Abschnitt 3 von 13</div>
+    <div class="section-counter">Abschnitt 3 von 14</div>
     <button class="btn btn-primary" onclick="goTo(4)">Weiter: Geschäftlicher Mehrwert →</button>
   </div>
 </div>
@@ -573,7 +607,7 @@ hr.divider{border:none;border-top:1px solid var(--rule);margin:1rem 0;}
 ════════════════════════════════════════════════════════════════ -->
 <div class="form-section" id="section-4">
   <div class="section-header" style="border-left-color:var(--s4)">
-    <div class="section-tag">Abschnitt 4 von 13</div>
+    <div class="section-tag">Abschnitt 4 von 14</div>
     <h2>Geschäftlicher Mehrwert</h2>
     <p>Quantifizierung des Nutzens, ROI-Bewertung und strategische Priorisierung für die Go/No-Go-Entscheidung. Literatur: <a href="https://www.mckinsey.com/capabilities/quantumblack/our-insights/the-state-of-ai" target="_blank">McKinsey State of AI</a>.</p>
   </div>
@@ -672,7 +706,7 @@ hr.divider{border:none;border-top:1px solid var(--rule);margin:1rem 0;}
 
   <div class="section-nav">
     <button class="btn btn-outline" onclick="goTo(3)">← Zurück</button>
-    <div class="section-counter">Abschnitt 4 von 13</div>
+    <div class="section-counter">Abschnitt 4 von 14</div>
     <button class="btn btn-primary" onclick="goTo(5)">Weiter: Stakeholder &amp; Kommunikation →</button>
   </div>
 </div>
@@ -683,7 +717,7 @@ hr.divider{border:none;border-top:1px solid var(--rule);margin:1rem 0;}
 ════════════════════════════════════════════════════════════════ -->
 <div class="form-section" id="section-5">
   <div class="section-header" style="border-left-color:var(--s5)">
-    <div class="section-tag">Abschnitt 5 von 13</div>
+    <div class="section-tag">Abschnitt 5 von 14</div>
     <h2>Stakeholder &amp; Kommunikation</h2>
     <p>Systematische Stakeholder-Analyse nach Mendelow (1991)</a>, Betriebsrats-Einbindung (§ 87 BetrVG), DSB/DPO-Einbindung und Kommunikationsmatrix.
   </div>
@@ -796,8 +830,131 @@ hr.divider{border:none;border-top:1px solid var(--rule);margin:1rem 0;}
 
   <div class="section-nav">
     <button class="btn btn-outline" onclick="goTo(4)">← Zurück</button>
-    <div class="section-counter">Abschnitt 5 von 13</div>
-    <button class="btn btn-primary" onclick="goTo(6)">Weiter: Recht &amp; Compliance →</button>
+    <div class="section-counter">Abschnitt 5 von 14</div>
+    <button class="btn btn-primary" onclick="goTo(6)">Weiter: RACI-Matrix →</button>
+  </div>
+</div>
+
+
+<!-- ════════════════════════════════════════════════════════════════
+     ABSCHNITT 6 — RACI-MATRIX  [NEU 2026]
+════════════════════════════════════════════════════════════════ -->
+<div class="form-section" id="section-6">
+  <div class="section-header" style="border-left-color:var(--s6)">
+    <div class="section-tag">Abschnitt 6 von 14</div>
+    <h2>RACI-Matrix</h2>
+    <p>Verantwortlichkeiten für den KI-Einsatz klären: Wer führt aus (<strong>R</strong>), wer trägt Gesamtverantwortung (<strong>A</strong> — max. 1 pro Zeile), wer wird konsultiert (<strong>C</strong>), wer wird informiert (<strong>I</strong>)? Klick auf eine Zelle wechselt die Rolle.</p>
+  </div>
+
+  <div class="form-card">
+    <div class="field-group">
+      <label>🗂 Use Case dieser RACI-Matrix</label>
+      <input type="text" id="raci-uc-name" style="max-width:520px" placeholder="Eigenen Use Case eingeben …">
+    </div>
+  </div>
+
+  <div class="form-card">
+    <div style="display:flex;gap:1.4rem;flex-wrap:wrap;align-items:center;margin-bottom:0.9rem">
+      <span style="font-size:0.8rem;font-weight:600;color:#555">Legende:</span>
+      <span style="font-size:0.8rem;display:flex;align-items:center;gap:0.4rem"><span class="raci-pill raci-r">R</span> <strong>Responsible</strong> — wer führt aus</span>
+      <span style="font-size:0.8rem;display:flex;align-items:center;gap:0.4rem"><span class="raci-pill raci-a">A</span> <strong>Accountable</strong> — wer trägt die Verantwortung (max. 1)</span>
+      <span style="font-size:0.8rem;display:flex;align-items:center;gap:0.4rem"><span class="raci-pill raci-c">C</span> <strong>Consulted</strong> — wer wird vorab befragt</span>
+      <span style="font-size:0.8rem;display:flex;align-items:center;gap:0.4rem"><span class="raci-pill raci-i">I</span> <strong>Informed</strong> — wer wird informiert</span>
+    </div>
+    <div class="alert alert-info" style="margin:0"><p>Klick auf eine Zelle wechselt die Rolle: <strong>leer → R → A → C → I → leer</strong>. Die Spaltenköpfe (Akteur 1–6) sind editierbar — trage die Rollen deiner Organisation ein.</p></div>
+  </div>
+
+  <div class="form-card">
+    <h4>Eigene RACI-Zuordnung — 3 Zeilen zum Befüllen</h4>
+    <div style="overflow-x:auto">
+      <table class="raci-tbl">
+        <thead>
+          <tr>
+            <th style="width:3%;text-align:center">#</th>
+            <th style="width:34%;text-align:left">Tätigkeit</th>
+            <th><input class="raci-inp" type="text" value="Akteur 1"></th>
+            <th><input class="raci-inp" type="text" value="Akteur 2"></th>
+            <th><input class="raci-inp" type="text" value="Akteur 3"></th>
+            <th><input class="raci-inp" type="text" value="Akteur 4"></th>
+            <th><input class="raci-inp" type="text" value="Akteur 5"></th>
+            <th><input class="raci-inp" type="text" value="Akteur 6"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="text-align:center;color:#94a3b8;font-weight:700">1</td>
+            <td><input class="raci-inp" type="text" placeholder="Tätigkeit beschreiben …"></td>
+            <td class="raci-cell" onclick="cycleRaci(this)"><span class="raci-pill raci-empty">—</span></td>
+            <td class="raci-cell" onclick="cycleRaci(this)"><span class="raci-pill raci-empty">—</span></td>
+            <td class="raci-cell" onclick="cycleRaci(this)"><span class="raci-pill raci-empty">—</span></td>
+            <td class="raci-cell" onclick="cycleRaci(this)"><span class="raci-pill raci-empty">—</span></td>
+            <td class="raci-cell" onclick="cycleRaci(this)"><span class="raci-pill raci-empty">—</span></td>
+            <td class="raci-cell" onclick="cycleRaci(this)"><span class="raci-pill raci-empty">—</span></td>
+          </tr>
+          <tr>
+            <td style="text-align:center;color:#94a3b8;font-weight:700">2</td>
+            <td><input class="raci-inp" type="text" placeholder="Tätigkeit beschreiben …"></td>
+            <td class="raci-cell" onclick="cycleRaci(this)"><span class="raci-pill raci-empty">—</span></td>
+            <td class="raci-cell" onclick="cycleRaci(this)"><span class="raci-pill raci-empty">—</span></td>
+            <td class="raci-cell" onclick="cycleRaci(this)"><span class="raci-pill raci-empty">—</span></td>
+            <td class="raci-cell" onclick="cycleRaci(this)"><span class="raci-pill raci-empty">—</span></td>
+            <td class="raci-cell" onclick="cycleRaci(this)"><span class="raci-pill raci-empty">—</span></td>
+            <td class="raci-cell" onclick="cycleRaci(this)"><span class="raci-pill raci-empty">—</span></td>
+          </tr>
+          <tr>
+            <td style="text-align:center;color:#94a3b8;font-weight:700">3</td>
+            <td><input class="raci-inp" type="text" placeholder="Tätigkeit beschreiben …"></td>
+            <td class="raci-cell" onclick="cycleRaci(this)"><span class="raci-pill raci-empty">—</span></td>
+            <td class="raci-cell" onclick="cycleRaci(this)"><span class="raci-pill raci-empty">—</span></td>
+            <td class="raci-cell" onclick="cycleRaci(this)"><span class="raci-pill raci-empty">—</span></td>
+            <td class="raci-cell" onclick="cycleRaci(this)"><span class="raci-pill raci-empty">—</span></td>
+            <td class="raci-cell" onclick="cycleRaci(this)"><span class="raci-pill raci-empty">—</span></td>
+            <td class="raci-cell" onclick="cycleRaci(this)"><span class="raci-pill raci-empty">—</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="raci-example-wrap">
+    <div class="raci-example-head">
+      <span style="font-size:1rem">📋</span>
+      <span>Beispiel · RACI-Matrix Hochrisiko-KI · 23 Tätigkeiten (EU AI Act)</span>
+      <span style="margin-left:auto;font-size:0.55rem;opacity:0.7;white-space:nowrap">Klick auf Zelle wechselt Rolle · Quelle: EU AI Act 2024/1689</span>
+    </div>
+    <div class="alert alert-info" style="border-radius:0;border-left:none;border-right:none;border-top:none;font-size:0.84rem">
+      <p><strong>Hochrisiko-Klassifizierungspfad (Art. 6 KI-VO):</strong><br>
+      <strong>Art. 6(1) → Anhang I</strong>: Das KI-System ist Sicherheitskomponente eines Produkts, das unter EU-Produktsicherheitsrecht fällt (z. B. Medizinprodukt nach MDR 2017/745, Maschine nach VO 2023/1230).<br>
+      <strong>Art. 6(2) → Anhang III</strong>: Das KI-System gehört einem der acht gelisteten Anwendungsbereiche an (z. B. Biometrie, Beschäftigung, Kredit, Diagnostik).</p>
+      <p style="margin-top:0.4rem"><strong>Zum Beispiel:</strong> Die Akteurskürzel sind typisch für ein Krankenhaus — passe sie für deine Organisation an. Aufgaben, die primär beim Anbieter liegen, können beim Betreiber leer bleiben.</p>
+    </div>
+    <div style="overflow-x:auto">
+      <table class="raci-tbl-ex">
+        <thead>
+          <tr>
+            <th style="width:3%">#</th>
+            <th style="width:36%;text-align:left">Tätigkeit</th>
+            <th style="width:13%;text-align:left">Quelle</th>
+            <th style="width:8%">KL</th>
+            <th style="width:8%">CISO</th>
+            <th style="width:8%">KIB</th>
+            <th style="width:8%">DSB</th>
+            <th style="width:8%">FA</th>
+            <th style="width:8%">xDL</th>
+          </tr>
+        </thead>
+        <tbody id="raci-ex-body"></tbody>
+      </table>
+    </div>
+    <div style="padding:0.65rem 1rem;background:#fffbeb;border-top:1px solid #fde68a;font-size:0.75rem;color:#78350f;line-height:1.6">
+      <strong>KL</strong> Klinikleitung &nbsp;·&nbsp; <strong>CISO</strong> IT-/Sicherheitsleitung &nbsp;·&nbsp; <strong>KIB</strong> KI-Beauftragter &nbsp;·&nbsp; <strong>DSB</strong> Datenschutzbeauftragter &nbsp;·&nbsp; <strong>FA</strong> Fachabteilung &nbsp;·&nbsp; <strong>xDL</strong> Externer Dienstleister
+    </div>
+  </div>
+
+  <div class="section-nav">
+    <button class="btn btn-outline" onclick="goTo(5)">← Zurück</button>
+    <div class="section-counter">Abschnitt 6 von 14</div>
+    <button class="btn btn-primary" onclick="goTo(7)">Weiter: Recht &amp; Compliance →</button>
   </div>
 </div>
 
@@ -805,9 +962,9 @@ hr.divider{border:none;border-top:1px solid var(--rule);margin:1rem 0;}
 <!-- ════════════════════════════════════════════════════════════════
      ABSCHNITT 4 — RECHT & COMPLIANCE
 ════════════════════════════════════════════════════════════════ -->
-<div class="form-section" id="section-6">
+<div class="form-section" id="section-7">
   <div class="section-header" style="border-left-color:var(--s6)">
-    <div class="section-tag">Abschnitt 6 von 13</div>
+    <div class="section-tag">Abschnitt 7 von 14</div>
     <h2>Recht &amp; Compliance</h2>
     <p>EU AI Act Risikoklassifizierung, DSGVO-Pflichten, Haftung und Urheberrecht.</p>
   </div>
@@ -962,9 +1119,9 @@ hr.divider{border:none;border-top:1px solid var(--rule);margin:1rem 0;}
   </div>
 
   <div class="section-nav">
-    <button class="btn btn-outline" onclick="goTo(5)">← Zurück</button>
-    <div class="section-counter">Abschnitt 6 von 13</div>
-    <button class="btn btn-primary" onclick="goTo(7)">Weiter: Risikoregister →</button>
+    <button class="btn btn-outline" onclick="goTo(6)">← Zurück</button>
+    <div class="section-counter">Abschnitt 7 von 14</div>
+    <button class="btn btn-primary" onclick="goTo(8)">Weiter: Risikoregister →</button>
   </div>
 </div>
 
@@ -972,9 +1129,9 @@ hr.divider{border:none;border-top:1px solid var(--rule);margin:1rem 0;}
 <!-- ════════════════════════════════════════════════════════════════
      ABSCHNITT 5 — RISIKOREGISTER (STRUKTURIERT)
 ════════════════════════════════════════════════════════════════ -->
-<div class="form-section" id="section-7">
+<div class="form-section" id="section-8">
   <div class="section-header" style="border-left-color:var(--s7)">
-    <div class="section-tag">Abschnitt 7 von 13</div>
+    <div class="section-tag">Abschnitt 8 von 14</div>
     <h2>Risikoregister</h2>
     <p>Strukturierte Bewertung nach den vier KI-Risikoarten (Bias, technische Fehler, ethische Risiken, Agenten-Risiken) sowie rechtlichen Risiken. Bewertungsschema: <strong>W × S × D</strong> — Eintrittswahrscheinlichkeit × Schadenshöhe × Schwierigkeit der Detektion (je 1–5, max. Score = 125).</p>
   </div>
@@ -1086,9 +1243,9 @@ hr.divider{border:none;border-top:1px solid var(--rule);margin:1rem 0;}
   </div>
 
   <div class="section-nav">
-    <button class="btn btn-outline" onclick="goTo(6)">← Zurück</button>
-    <div class="section-counter">Abschnitt 7 von 13</div>
-    <button class="btn btn-primary" onclick="goTo(8)">Weiter: Daten & QS →</button>
+    <button class="btn btn-outline" onclick="goTo(7)">← Zurück</button>
+    <div class="section-counter">Abschnitt 8 von 14</div>
+    <button class="btn btn-primary" onclick="goTo(9)">Weiter: Daten & QS →</button>
   </div>
 </div>
 
@@ -1096,9 +1253,9 @@ hr.divider{border:none;border-top:1px solid var(--rule);margin:1rem 0;}
 <!-- ════════════════════════════════════════════════════════════════
      ABSCHNITT 6 — DATEN & QUALITÄTSSICHERUNG  [NEU]
 ════════════════════════════════════════════════════════════════ -->
-<div class="form-section" id="section-8">
+<div class="form-section" id="section-9">
   <div class="section-header" style="border-left-color:var(--s8)">
-    <div class="section-tag">Abschnitt 8 von 13</div>
+    <div class="section-tag">Abschnitt 9 von 14</div>
     <h2>Daten &amp; Qualitätssicherung</h2>
     <p>Datenqualität, FAIR-Prinzipien, Anforderungen an Trainingsdaten (Art. 10 KI-VO) sowie QS-Methoden und Abnahmekriterien.</p>
   </div>
@@ -1227,9 +1384,9 @@ hr.divider{border:none;border-top:1px solid var(--rule);margin:1rem 0;}
   </div>
 
   <div class="section-nav">
-    <button class="btn btn-outline" onclick="goTo(7)">← Zurück</button>
-    <div class="section-counter">Abschnitt 8 von 13</div>
-    <button class="btn btn-primary" onclick="goTo(9)">Weiter: Konformität & Monitoring →</button>
+    <button class="btn btn-outline" onclick="goTo(8)">← Zurück</button>
+    <div class="section-counter">Abschnitt 9 von 14</div>
+    <button class="btn btn-primary" onclick="goTo(10)">Weiter: Konformität & Monitoring →</button>
   </div>
 </div>
 
@@ -1237,9 +1394,9 @@ hr.divider{border:none;border-top:1px solid var(--rule);margin:1rem 0;}
 <!-- ════════════════════════════════════════════════════════════════
      ABSCHNITT 7 — KONFORMITÄT & MONITORING  [NEU]
 ════════════════════════════════════════════════════════════════ -->
-<div class="form-section" id="section-9">
+<div class="form-section" id="section-10">
   <div class="section-header" style="border-left-color:var(--s9)">
-    <div class="section-tag">Abschnitt 9 von 13</div>
+    <div class="section-tag">Abschnitt 10 von 14</div>
     <h2>Konformität &amp; Post-Market-Monitoring</h2>
     <p>Konformitätsbewertungsverfahren (Art. 43), CE-Kennzeichnung, technische Dokumentation (Anhang IV), Monitoring nach Inbetriebnahme und Meldepflichten.</p>
   </div>
@@ -1394,9 +1551,9 @@ hr.divider{border:none;border-top:1px solid var(--rule);margin:1rem 0;}
   </div>
 
   <div class="section-nav">
-    <button class="btn btn-outline" onclick="goTo(8)">← Zurück</button>
-    <div class="section-counter">Abschnitt 9 von 13</div>
-    <button class="btn btn-primary" onclick="goTo(10)">Weiter: Standards →</button>
+    <button class="btn btn-outline" onclick="goTo(9)">← Zurück</button>
+    <div class="section-counter">Abschnitt 10 von 14</div>
+    <button class="btn btn-primary" onclick="goTo(11)">Weiter: Standards →</button>
   </div>
 </div>
 
@@ -1404,9 +1561,9 @@ hr.divider{border:none;border-top:1px solid var(--rule);margin:1rem 0;}
 <!-- ════════════════════════════════════════════════════════════════
      ABSCHNITT 8 — STANDARDS & MANAGEMENTSYSTEME  [NEU]
 ════════════════════════════════════════════════════════════════ -->
-<div class="form-section" id="section-10">
+<div class="form-section" id="section-11">
   <div class="section-header" style="border-left-color:var(--s10)">
-    <div class="section-tag">Abschnitt 10 von 13</div>
+    <div class="section-tag">Abschnitt 11 von 14</div>
     <h2>Standards &amp; Managementsysteme</h2>
     <p>Einordnung in bestehende Managementsystem-Landschaft (ISO/IEC 42001, 9001, 27001), NIST AI RMF und GRC-Frameworks.</p>
   </div>
@@ -1494,9 +1651,9 @@ hr.divider{border:none;border-top:1px solid var(--rule);margin:1rem 0;}
   </div>
 
   <div class="section-nav">
-    <button class="btn btn-outline" onclick="goTo(9)">← Zurück</button>
-    <div class="section-counter">Abschnitt 10 von 13</div>
-    <button class="btn btn-primary" onclick="goTo(11)">Weiter: Governance →</button>
+    <button class="btn btn-outline" onclick="goTo(10)">← Zurück</button>
+    <div class="section-counter">Abschnitt 11 von 14</div>
+    <button class="btn btn-primary" onclick="goTo(12)">Weiter: Governance →</button>
   </div>
 </div>
 
@@ -1504,9 +1661,9 @@ hr.divider{border:none;border-top:1px solid var(--rule);margin:1rem 0;}
 <!-- ════════════════════════════════════════════════════════════════
      ABSCHNITT 9 — GOVERNANCE & CONTROLS
 ════════════════════════════════════════════════════════════════ -->
-<div class="form-section" id="section-11">
+<div class="form-section" id="section-12">
   <div class="section-header" style="border-left-color:var(--s11)">
-    <div class="section-tag">Abschnitt 11 von 13</div>
+    <div class="section-tag">Abschnitt 12 von 14</div>
     <h2>Governance &amp; Controls</h2>
     <p>Verantwortlichkeiten (RACI), menschliche Aufsicht, Override-Mechanismen und KI-Literacy-Maßnahmen (KI-VO Art. 4).</p>
   </div>
@@ -1610,9 +1767,9 @@ hr.divider{border:none;border-top:1px solid var(--rule);margin:1rem 0;}
   </div>
 
   <div class="section-nav">
-    <button class="btn btn-outline" onclick="goTo(10)">← Zurück</button>
-    <div class="section-counter">Abschnitt 11 von 13</div>
-    <button class="btn btn-primary" onclick="goTo(12)">Weiter: Einführungsplanung →</button>
+    <button class="btn btn-outline" onclick="goTo(11)">← Zurück</button>
+    <div class="section-counter">Abschnitt 12 von 14</div>
+    <button class="btn btn-primary" onclick="goTo(13)">Weiter: Einführungsplanung →</button>
   </div>
 </div>
 
@@ -1620,9 +1777,9 @@ hr.divider{border:none;border-top:1px solid var(--rule);margin:1rem 0;}
 <!-- ════════════════════════════════════════════════════════════════
      ABSCHNITT 10 — EINFÜHRUNGSPLANUNG & CHANGE MANAGEMENT  [NEU]
 ════════════════════════════════════════════════════════════════ -->
-<div class="form-section" id="section-12">
+<div class="form-section" id="section-13">
   <div class="section-header" style="border-left-color:var(--s12)">
-    <div class="section-tag">Abschnitt 12 von 13</div>
+    <div class="section-tag">Abschnitt 13 von 14</div>
     <h2>Einführungsplanung &amp; Change Management</h2>
     <p>Rollout-Planung, Change-Management-Ansatz, Widerstände und KI-Roadmap-Einordnung.</p>
   </div>
@@ -1751,9 +1908,9 @@ hr.divider{border:none;border-top:1px solid var(--rule);margin:1rem 0;}
   </div>
 
   <div class="section-nav">
-    <button class="btn btn-outline" onclick="goTo(11)">← Zurück</button>
-    <div class="section-counter">Abschnitt 12 von 13</div>
-    <button class="btn btn-primary" onclick="goTo(13)">Weiter: Bewertungsausgang →</button>
+    <button class="btn btn-outline" onclick="goTo(12)">← Zurück</button>
+    <div class="section-counter">Abschnitt 13 von 14</div>
+    <button class="btn btn-primary" onclick="goTo(14)">Weiter: Bewertungsausgang →</button>
   </div>
 </div>
 
@@ -1761,9 +1918,9 @@ hr.divider{border:none;border-top:1px solid var(--rule);margin:1rem 0;}
 <!-- ════════════════════════════════════════════════════════════════
      ABSCHNITT 11 — BEWERTUNGSAUSGANG & FREIGABE
 ════════════════════════════════════════════════════════════════ -->
-<div class="form-section" id="section-13">
+<div class="form-section" id="section-14">
   <div class="section-header" style="border-left-color:var(--s13)">
-    <div class="section-tag">Abschnitt 13 von 13</div>
+    <div class="section-tag">Abschnitt 14 von 14</div>
     <h2>Bewertungsausgang &amp; Freigabe</h2>
     <p>Zusammenfassung der Erkenntnisse, Gesamtempfehlung und Unterzeichnung durch die verantwortlichen Stellen.</p>
   </div>
@@ -1828,9 +1985,9 @@ hr.divider{border:none;border-top:1px solid var(--rule);margin:1rem 0;}
   </div>
 
   <div class="section-nav">
-    <button class="btn btn-outline" onclick="goTo(12)">← Zurück</button>
-    <div class="section-counter">Abschnitt 13 von 13</div>
-    <button class="btn btn-primary" onclick="goTo(14)">☑ Vollständigkeit prüfen →</button>
+    <button class="btn btn-outline" onclick="goTo(13)">← Zurück</button>
+    <div class="section-counter">Abschnitt 14 von 14</div>
+    <button class="btn btn-primary" onclick="goTo(15)">☑ Vollständigkeit prüfen →</button>
   </div>
 </div>
 
@@ -1838,7 +1995,7 @@ hr.divider{border:none;border-top:1px solid var(--rule);margin:1rem 0;}
 <!-- ════════════════════════════════════════════════════════════════
      ABSCHNITT 12 — VOLLSTÄNDIGKEITSPRÜFUNG
 ════════════════════════════════════════════════════════════════ -->
-<div class="form-section" id="section-14">
+<div class="form-section" id="section-15">
   <div class="section-header" style="border-left-color:var(--navy)">
     <div class="section-tag">Vollständigkeitsprüfung</div>
     <h2>Steckbrief — Vollständigkeit</h2>
@@ -1860,12 +2017,12 @@ hr.divider{border:none;border-top:1px solid var(--rule);margin:1rem 0;}
   </div>
 
   <div class="section-nav">
-    <button class="btn btn-outline" onclick="goTo(13)">← Zurück</button>
+    <button class="btn btn-outline" onclick="goTo(14)">← Zurück</button>
     <div class="section-counter"></div>
     <div style="display:flex;gap:0.5rem">
       <button class="btn btn-ghost" style="background:var(--navy);color:#fff" onclick="saveForm()">💾 Speichern</button>
       <button class="btn btn-primary" onclick="window.print()">🖨 Drucken / PDF</button>
-      <button class="btn btn-outline" onclick="goTo(15)">Anhang: ISO 42001 →</button>
+      <button class="btn btn-outline" onclick="goTo(16)">Anhang: ISO 42001 →</button>
     </div>
   </div>
 </div>
@@ -1874,7 +2031,7 @@ hr.divider{border:none;border-top:1px solid var(--rule);margin:1rem 0;}
      ANHANG — ISO/IEC 42001 ZERTIFIZIERUNGS-CHECKLISTE (TÜV Rheinland)
      NEU: 2026-05-18
 ════════════════════════════════════════════════════════════════ -->
-<div class="form-section" id="section-15">
+<div class="form-section" id="section-16">
   <div class="section-header" style="border-left-color:var(--teal)">
     <div class="section-tag">Anhang · Referenzinstrument</div>
     <h2>ISO/IEC 42001 — Zertifizierungs-Checkliste</h2>
@@ -1972,7 +2129,7 @@ hr.divider{border:none;border-top:1px solid var(--rule);margin:1rem 0;}
   </div>
 
   <div class="section-nav">
-    <button class="btn btn-outline" onclick="goTo(14)">← Vollständigkeit</button>
+    <button class="btn btn-outline" onclick="goTo(15)">← Vollständigkeit</button>
     <div class="section-counter">Anhang</div>
     <button class="btn btn-primary" onclick="window.print()">🖨 Drucken / PDF</button>
   </div>
@@ -1985,7 +2142,7 @@ hr.divider{border:none;border-top:1px solid var(--rule);margin:1rem 0;}
     updateTuevScore();
   }
   function updateTuevScore() {
-    const jaCount = document.querySelectorAll('#section-15 .tuev-btn.ja').length;
+    const jaCount = document.querySelectorAll('#section-16 .tuev-btn.ja').length;
     const total = 22;
     const pct = Math.round(jaCount / total * 100);
     document.getElementById('tuev-bar').style.width = pct + '%';
@@ -2007,7 +2164,7 @@ hr.divider{border:none;border-top:1px solid var(--rule);margin:1rem 0;}
 <script>
 // ── Navigation ───────────────────────────────────────────────
 let currentSection = 1;
-const TOTAL = 14;
+const TOTAL = 15;
 
 function goTo(n) {
   document.querySelectorAll('.form-section').forEach(s => s.classList.remove('active'));
@@ -2022,7 +2179,7 @@ function goTo(n) {
     });
   }
   currentSection = n;
-  if (n === 14) runCompletion();
+  if (n === 15) runCompletion();
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
@@ -2094,7 +2251,7 @@ function updateRiskResult() {
   const v = checked.value;
   const map = {
     verboten: { cls: 'alert-danger', icon: '🚫', title: 'Unzulässiges KI-System (Art. 5)', text: 'Dieser Anwendungsfall fällt unter die verbotenen KI-Praktiken der KI-VO. Eine Genehmigung ist nicht möglich. Bitte Rechtsabteilung und Aufsichtsbehörde kontaktieren.' },
-    hochrisiko: { cls: 'alert-warn', icon: '⚠️', title: 'Hochrisiko-KI-System (Anhang III)', text: 'Umfassende Pflichten: Konformitätsbewertung (Art. 43), technische Dokumentation (Anhang IV), Registrierung in EU-Datenbank, Post-Market-Monitoring (Art. 72), Logging (Art. 12). Abschnitte 8–10 dieses Steckbriefs vollständig ausfüllen.' },
+    hochrisiko: { cls: 'alert-warn', icon: '⚠️', title: 'Hochrisiko-KI-System (Anhang I oder III)', text: 'Umfassende Pflichten: Konformitätsbewertung (Art. 43), technische Dokumentation (Anhang IV), Registrierung in EU-Datenbank, Post-Market-Monitoring (Art. 72), Logging (Art. 12). Abschnitte 8–10 dieses Steckbriefs vollständig ausfüllen.' },
     begrenzt: { cls: 'alert-info', icon: 'ℹ️', title: 'Begrenztes Risiko (Art. 50)', text: 'Transparenzpflichten gelten: Benutzer müssen über KI-Interaktion informiert werden (Chatbots, Deepfakes etc.).' },
     minimal: { cls: 'alert-ok', icon: '✅', title: 'Minimales Risiko', text: 'Keine verpflichtenden Anforderungen der KI-VO. Freiwillige Codes of Conduct empfohlen.' }
   };
@@ -2131,33 +2288,33 @@ const PFLICHTFELDER = [
   [5,'sh-key','Schlüsselakteure (Mendelow)','text'],
   [5,'sh-br-vorhanden','Betriebsrat vorhanden','select'],
   [5,'sh-dsb','DSB eingebunden','select'],
-  [6,null,'EU AI Act Risikostufe','radio:ai-act-tier'],
-  [6,'act-begruendung','Einordnungsbegründung','text'],
-  [6,'gdpr-basis','DSGVO Rechtsgrundlage','select'],
-  [6,'gdpr-dpia','DSFA erforderlich','select'],
-  [6,'gdpr-art22','Art. 22 DSGVO','select'],
-  [6,'ip-ownership','IP-Eigentümerschaft','select'],
-  [8,'dq-herkunft','Herkunft Trainingsdaten','select'],
-  [8,'qs-kriterien','Abnahmekriterien','text'],
-  [9,'conf-verfahren','Konformitätsbewertungsverfahren','select'],
-  [9,'conf-techdok','Technische Dokumentation','select'],
-  [9,'conf-logging','Logging','select'],
-  [9,'pmm-plan','Monitoring-Plan','select'],
-  [10,'std-42001','ISO/IEC 42001 Status','select'],
-  [11,'gov-owner','KI-System-Eigentümer','text'],
-  [11,'gov-op-owner','Operativer Betreiber','text'],
-  [11,'gov-kibeauftragter','KI-Beauftragter','text'],
-  [11,'gov-oversight','Menschliche Aufsicht','text'],
-  [11,'gov-override','Override-Fähigkeit','select'],
-  [11,'gov-literacy','Schulungsmaßnahmen','text'],
-  [12,'cm-golive','Geplanter Go-Live','text'],
-  [12,'cm-modell','Change-Management-Modell','select'],
-  [12,'cm-widerstaende','Identifizierte Widerstände','text'],
-  [13,'out-opportunity','Chancen-Zusammenfassung','text'],
-  [13,'out-risks','Zusammenfassung Restrisiken','text'],
-  [13,'out-recommendation','Gesamtempfehlung','text_hidden'],
-  [13,'sign-ki','Unterzeichner KI-Beauftragter','text'],
-  [13,'sign-legal','Unterzeichner Legal','text'],
+  [7,null,'EU AI Act Risikostufe','radio:ai-act-tier'],
+  [7,'act-begruendung','Einordnungsbegründung','text'],
+  [7,'gdpr-basis','DSGVO Rechtsgrundlage','select'],
+  [7,'gdpr-dpia','DSFA erforderlich','select'],
+  [7,'gdpr-art22','Art. 22 DSGVO','select'],
+  [7,'ip-ownership','IP-Eigentümerschaft','select'],
+  [9,'dq-herkunft','Herkunft Trainingsdaten','select'],
+  [9,'qs-kriterien','Abnahmekriterien','text'],
+  [10,'conf-verfahren','Konformitätsbewertungsverfahren','select'],
+  [10,'conf-techdok','Technische Dokumentation','select'],
+  [10,'conf-logging','Logging','select'],
+  [10,'pmm-plan','Monitoring-Plan','select'],
+  [11,'std-42001','ISO/IEC 42001 Status','select'],
+  [12,'gov-owner','KI-System-Eigentümer','text'],
+  [12,'gov-op-owner','Operativer Betreiber','text'],
+  [12,'gov-kibeauftragter','KI-Beauftragter','text'],
+  [12,'gov-oversight','Menschliche Aufsicht','text'],
+  [12,'gov-override','Override-Fähigkeit','select'],
+  [12,'gov-literacy','Schulungsmaßnahmen','text'],
+  [13,'cm-golive','Geplanter Go-Live','text'],
+  [13,'cm-modell','Change-Management-Modell','select'],
+  [13,'cm-widerstaende','Identifizierte Widerstände','text'],
+  [14,'out-opportunity','Chancen-Zusammenfassung','text'],
+  [14,'out-risks','Zusammenfassung Restrisiken','text'],
+  [14,'out-recommendation','Gesamtempfehlung','text_hidden'],
+  [14,'sign-ki','Unterzeichner KI-Beauftragter','text'],
+  [14,'sign-legal','Unterzeichner Legal','text'],
 ];
 
 const ABSCHNITT_NAMEN = {
@@ -2166,14 +2323,15 @@ const ABSCHNITT_NAMEN = {
   3:'Abschnitt 3 — Ziele & Scope',
   4:'Abschnitt 4 — Geschäftlicher Mehrwert',
   5:'Abschnitt 5 — Stakeholder & Kommunikation',
-  6:'Abschnitt 6 — Recht & Compliance',
-  7:'Abschnitt 7 — Risikoregister',
-  8:'Abschnitt 8 — Daten & QS',
-  9:'Abschnitt 9 — Konformität',
-  10:'Abschnitt 10 — Standards',
-  11:'Abschnitt 11 — Governance',
-  12:'Abschnitt 12 — Einführung & Change',
-  13:'Abschnitt 13 — Bewertungsausgang'
+  6:'Abschnitt 6 — RACI-Matrix',
+  7:'Abschnitt 7 — Recht & Compliance',
+  8:'Abschnitt 8 — Risikoregister',
+  9:'Abschnitt 9 — Daten & QS',
+  10:'Abschnitt 10 — Konformität',
+  11:'Abschnitt 11 — Standards',
+  12:'Abschnitt 12 — Governance',
+  13:'Abschnitt 13 — Einführung & Change',
+  14:'Abschnitt 14 — Bewertungsausgang'
 };
 
 const REF_TABELLE = [
@@ -2182,14 +2340,15 @@ const REF_TABELLE = [
   ['§3','Ziele & Scope','SMART-Ziele, Scope-Abgrenzung, KSF'],
   ['§4','Geschäftlicher Mehrwert','ROI, Impact/Effort, Investitionsrahmen'],
   ['§5','Stakeholder & Kommunikation','Mendelow-Matrix, Betriebsrat, Kommunikationsplan'],
-  ['§6','Recht & Compliance','EU AI Act Risikoklasse, DSGVO, Haftung'],
-  ['§7','Risikoregister','Bias, Technik, Ethik, Agenten, Recht — W×S×D'],
-  ['§8','Daten & QS','Trainingsdaten, FAIR-Prinzipien, Abnahmekriterien (Art. 10)'],
-  ['§9','Konformität & Monitoring','Art. 43, CE-Kennzeichnung, Logging, PMM, Vorfallmanagement'],
-  ['§10','Standards & Managementsysteme','ISO 42001, ISO 27001, NIST AI RMF, GRC'],
-  ['§11','Governance & Controls','RACI, menschliche Aufsicht, KI-Literacy (Art. 4)'],
-  ['§12','Einführung & Change Management','Phasenplan, Kotter/ADKAR, 100-Tage-Plan'],
-  ['§13','Bewertungsausgang & Freigabe','Gesamtempfehlung, Unterzeichnung'],
+  ['§6','RACI-Matrix','Verantwortlichkeiten: Responsible, Accountable, Consulted, Informed'],
+  ['§7','Recht & Compliance','EU AI Act Risikoklasse (Anhang I oder III), DSGVO, Haftung'],
+  ['§8','Risikoregister','Bias, Technik, Ethik, Agenten, Recht — W×S×D'],
+  ['§9','Daten & QS','Trainingsdaten, FAIR-Prinzipien, Abnahmekriterien (Art. 10)'],
+  ['§10','Konformität & Monitoring','Art. 43, CE-Kennzeichnung, Logging, PMM, Vorfallmanagement'],
+  ['§11','Standards & Managementsysteme','ISO 42001, ISO 27001, NIST AI RMF, GRC'],
+  ['§12','Governance & Controls','menschliche Aufsicht, KI-Literacy (Art. 4)'],
+  ['§13','Einführung & Change Management','Phasenplan, Kotter/ADKAR, 100-Tage-Plan'],
+  ['§14','Bewertungsausgang & Freigabe','Gesamtempfehlung, Unterzeichnung'],
 ];
 
 function runCompletion() {
@@ -2257,6 +2416,79 @@ function runCompletion() {
     <td style="padding:0.4rem 0.7rem;font-size:0.81rem">${r[1]}</td>
     <td style="padding:0.4rem 0.7rem;font-size:0.81rem;color:var(--teal)">${r[2]}</td>
   </tr>`).join('');
+}
+
+// ── cycleRaci (Abschnitt 6 RACI-Matrix) ─────────────────────
+function cycleRaci(cell) {
+  const pill = cell.querySelector('.raci-pill');
+  if (!pill) return;
+  const order = ['raci-empty','raci-r','raci-a','raci-c','raci-i'];
+  const labels = {'raci-empty':'—','raci-r':'R','raci-a':'A','raci-c':'C','raci-i':'I'};
+  const cur = order.find(c => pill.classList.contains(c)) || 'raci-empty';
+  const next = order[(order.indexOf(cur) + 1) % order.length];
+  order.forEach(c => pill.classList.remove(c));
+  pill.classList.add(next);
+  pill.textContent = labels[next];
+}
+
+// ── RACI-Beispiel Abschnitt 6 (23 Tätigkeiten EU AI Act) ───
+function initRaciExample() {
+  const ITEMS_EX = [
+    {type:'section', label:'Pflichtenfeld 1 · Konformitätsbewertung'},
+    {type:'task', num:1,  text:'Risikoklasse nach Art. 6(1)/Anhang I oder Art. 6(2)/Anhang III bestätigen und dokumentieren', source:'Art. 6 + Anh. I/III'},
+    {type:'task', num:2,  text:'Konformitätsbewertungsverfahren auswählen (Anhang VI oder VII)', source:'Art. 43 Abs. 1+2'},
+    {type:'task', num:3,  text:'Konformitätsbewertung durchführen (Prüfung Art. 9–15 + 17)', source:'Art. 43'},
+    {type:'task', num:4,  text:'Notified Body einbinden (nur bei Anhang-VII-Verfahren)', source:'Art. 43 Abs. 2'},
+    {type:'task', num:5,  text:'EU-Konformitätserklärung erstellen und unterzeichnen', source:'Art. 47'},
+    {type:'task', num:6,  text:'CE-Kennzeichnung anbringen', source:'Art. 48'},
+    {type:'task', num:7,  text:'EU-Datenbank-Registrierung vor Inverkehrbringen', source:'Art. 49'},
+    {type:'task', num:8,  text:'Qualitätsmanagementsystem einrichten und betreiben', source:'Art. 17'},
+    {type:'section', label:'Pflichtenfeld 2 · Dokumentation'},
+    {type:'task', num:9,  text:'Technische Dokumentation (Anhang IV) initial erstellen', source:'Art. 11 + Anh. IV'},
+    {type:'task', num:10, text:'Technische Dokumentation während des Betriebs aktuell halten', source:'Art. 11 Abs. 2'},
+    {type:'task', num:11, text:'Risikomanagement-System aufbauen und betreiben', source:'Art. 9'},
+    {type:'task', num:12, text:'Logs aufzeichnen und aufbewahren', source:'Art. 12 + Art. 26(6)'},
+    {type:'section', label:'Pflichtenfeld 3 · Transparenz'},
+    {type:'task', num:13, text:'Bedienungsanleitung für Betreiber erstellen', source:'Art. 13'},
+    {type:'task', num:14, text:'Beschäftigte und Vertretung informieren', source:'Art. 26 Abs. 7'},
+    {type:'task', num:15, text:'Betroffene Personen bei automatisierten Entscheidungen informieren', source:'Art. 26 Abs. 11'},
+    {type:'task', num:16, text:'KI-Hinweis im UI implementieren', source:'Art. 50 Abs. 1'},
+    {type:'task', num:17, text:'KI-generierte Inhalte kennzeichnen / Wasserzeichen anbringen', source:'Art. 50 Abs. 2'},
+    {type:'section', label:'Pflichtenfeld 4 · Post-Market-Monitoring'},
+    {type:'task', num:18, text:'Post-Market-Monitoring-System aufbauen', source:'Art. 72 Abs. 1'},
+    {type:'task', num:19, text:'Drift-Schwellwerte definieren und Verhaltens-Baseline dokumentieren', source:'Art. 72 + Art. 3(23)'},
+    {type:'task', num:20, text:'Wesentliche Veränderung erkennen und Konformitätsbewertung wiederholen', source:'Art. 43 Abs. 4'},
+    {type:'section', label:'Pflichtenfeld 5 · Meldung'},
+    {type:'task', num:21, text:'Vorfall als schwerwiegend klassifizieren', source:'Art. 3 Nr. 49'},
+    {type:'task', num:22, text:'Vorfall an Marktüberwachungsbehörde melden', source:'Art. 73 Abs. 2–4'},
+    {type:'task', num:23, text:'Korrekturmaßnahmen einleiten und dokumentieren', source:'Art. 73 Abs. 5'},
+  ];
+  const tbody = document.getElementById('raci-ex-body');
+  if (!tbody) return;
+  tbody.innerHTML = '';
+  ITEMS_EX.forEach(item => {
+    const tr = document.createElement('tr');
+    if (item.type === 'section') {
+      tr.className = 'raci-sec-ex';
+      const td = document.createElement('td');
+      td.colSpan = 9; td.textContent = item.label;
+      tr.appendChild(td);
+    } else {
+      const tdN = document.createElement('td'); tdN.textContent = item.num; tr.appendChild(tdN);
+      const tdT = document.createElement('td'); tdT.textContent = item.text; tdT.style.lineHeight='1.4'; tr.appendChild(tdT);
+      const tdS = document.createElement('td'); tdS.textContent = item.source; tr.appendChild(tdS);
+      ['KL','CISO','KIB','DSB','FA','xDL'].forEach(actor => {
+        const td = document.createElement('td');
+        td.className = 'rc'; td.title = actor + ' · Klicken zum Wechseln';
+        const pill = document.createElement('span');
+        pill.className = 'raci-pill raci-empty'; pill.textContent = '—';
+        td.appendChild(pill);
+        td.addEventListener('click', () => cycleRaci(td));
+        tr.appendChild(td);
+      });
+    }
+    tbody.appendChild(tr);
+  });
 }
 
 // ── Save / Load ──────────────────────────────────────────────
@@ -2329,6 +2561,7 @@ document.addEventListener('change', () => { clearTimeout(saveTimer); saveTimer =
 
 // ── Init ─────────────────────────────────────────────────────
 loadForm();
+initRaciExample();
 const today = new Date().toISOString().split('T')[0];
 if (!document.getElementById('uc-date').value) document.getElementById('uc-date').value = today;
 </script>
