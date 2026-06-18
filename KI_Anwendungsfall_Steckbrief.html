@@ -244,6 +244,7 @@ hr.divider{border:none;border-top:1px solid var(--rule);margin:1rem 0;}
 .raci-tbl td.raci-cell{text-align:center;cursor:pointer;padding:0.3rem;}
 .raci-tbl tr:nth-child(even){background:rgba(0,0,0,0.02);}
 .raci-tbl .raci-inp{font-size:0.82rem;border:none;background:transparent;width:100%;font-family:var(--font-body);color:var(--ink);}
+.raci-tbl thead .raci-inp{color:#fff;}
 .raci-tbl .raci-inp:focus{outline:1px dashed var(--teal);border-radius:2px;}
 .raci-example-wrap{margin-top:1.2rem;background:#f8f9fb;border:1.5px solid #e2e6ec;border-radius:8px;overflow:hidden;}
 .raci-example-head{background:#1e293b;color:#f8fafc;padding:0.55rem 1rem;font-family:var(--font-mono);font-size:0.62rem;letter-spacing:0.08em;text-transform:uppercase;display:flex;align-items:center;gap:0.6rem;}
@@ -268,7 +269,8 @@ hr.divider{border:none;border-top:1px solid var(--rule);margin:1rem 0;}
   <div class="tb-badge">KI-Beauftragte:r</div>
   <div class="tb-spacer"></div>
   <div class="tb-actions">
-    <button class="btn btn-ghost btn-sm" onclick="saveForm()">💾 Speichern</button>
+    <button class="btn btn-ghost btn-sm" onclick="exportJSON()" title="Formularinhalt als .json-Datei herunterladen">⬇ Exportieren</button>
+    <label class="btn btn-ghost btn-sm" style="cursor:pointer;margin:0" title="Gespeicherte .json-Datei laden">⬆ Importieren<input type="file" accept=".json" style="display:none" onchange="importJSON(this)"></label>
     <button class="btn btn-ghost btn-sm" onclick="window.print()">🖨 Drucken</button>
     <button class="btn btn-ghost btn-sm" onclick="goTo(16)">☑ Vollständigkeit</button>
     <button class="btn btn-ghost btn-sm" onclick="clearForm()">✕ Zurücksetzen</button>
@@ -2226,7 +2228,8 @@ hr.divider{border:none;border-top:1px solid var(--rule);margin:1rem 0;}
     <button class="btn btn-outline" onclick="goTo(15)">← Zurück</button>
     <div class="section-counter"></div>
     <div style="display:flex;gap:0.5rem">
-      <button class="btn btn-ghost" style="background:var(--navy);color:#fff" onclick="saveForm()">💾 Speichern</button>
+      <button class="btn btn-ghost" style="background:var(--navy);color:#fff" onclick="exportJSON()" title="Formularinhalt als .json-Datei herunterladen">⬇ Exportieren</button>
+      <label class="btn btn-ghost" style="background:var(--teal);color:#fff;cursor:pointer;margin:0" title="Gespeicherte .json-Datei laden">⬆ Importieren<input type="file" accept=".json" style="display:none" onchange="importJSON(this)"></label>
       <button class="btn btn-primary" onclick="window.print()">🖨 Drucken / PDF</button>
       <button class="btn btn-outline" onclick="goTo(17)">Anhang: ISO 42001 →</button>
     </div>
@@ -2902,7 +2905,50 @@ function clearForm() {
   document.getElementById('risk-result').style.display = 'none';
 }
 
-// ── Auto-save ────────────────────────────────────────────────
+// ── Export / Import JSON ──────────────────────────────────────
+function exportJSON() {
+  const data = gatherFormData();
+  const title = (document.getElementById('uc-title')?.value || '').trim();
+  const slug = title
+    ? title.replace(/[^a-zA-Z0-9\s\-]/g, '').replace(/\s+/g, '_').substring(0, 40)
+    : 'Steckbrief';
+  const filename = slug + '_Formular.json';
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  const n = document.getElementById('save-notice');
+  n.textContent = '✓ Exportiert als ' + filename;
+  n.classList.add('show');
+  setTimeout(() => { n.classList.remove('show'); n.textContent = '✓ Gespeichert'; }, 3000);
+}
+
+function importJSON(input) {
+  const file = input.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      const data = JSON.parse(e.target.result);
+      localStorage.setItem('ki-steckbrief-v3', JSON.stringify(data));
+      loadForm();
+      const n = document.getElementById('save-notice');
+      n.textContent = '✓ Importiert: ' + file.name;
+      n.classList.add('show');
+      setTimeout(() => { n.classList.remove('show'); n.textContent = '✓ Gespeichert'; }, 3000);
+    } catch(err) {
+      alert('Fehler beim Importieren: ' + err.message);
+    }
+    input.value = '';
+  };
+  reader.readAsText(file, 'utf-8');
+}
+
+// ── Auto-save ─────────────────────────────────────────────────
 let saveTimer;
 document.addEventListener('input', () => { clearTimeout(saveTimer); saveTimer = setTimeout(saveForm, 1500); });
 document.addEventListener('change', () => { clearTimeout(saveTimer); saveTimer = setTimeout(saveForm, 800); });
