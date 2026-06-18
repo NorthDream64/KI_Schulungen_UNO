@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Coaching-Prompt-Template — KI als Sparringspartner</title>
+<style>
+  :root {
+    --bg: #fbfaf8;
+    --card: #ffffff;
+    --ink: #2b2b2b;
+    --muted: #6b6b6b;
+    --accent: #8a4f2a;
+    --accent-soft: #f3e6da;
+    --line: #e4ddd3;
+    --code-bg: #2b2b2b;
+    --code-ink: #f3efe9;
+    --warn-bg: #fdf3e7;
+    --warn-line: #e8c79a;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    line-height: 1.55;
+  }
+  .wrap { max-width: 880px; margin: 0 auto; padding: 32px 20px 80px; }
+  header { margin-bottom: 28px; }
+  h1 { font-size: 1.7rem; margin: 0 0 4px; }
+  .subtitle { color: var(--accent); font-weight: 600; margin: 0 0 16px; }
+  .lead {
+    background: var(--accent-soft);
+    border-left: 4px solid var(--accent);
+    padding: 14px 18px;
+    border-radius: 6px;
+    font-size: 0.98rem;
+  }
+  h2 {
+    font-size: 1.25rem;
+    margin: 40px 0 14px;
+    padding-bottom: 6px;
+    border-bottom: 2px solid var(--line);
+  }
+  table { width: 100%; border-collapse: collapse; font-size: 0.93rem; }
+  th, td { text-align: left; padding: 9px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { color: var(--muted); font-weight: 600; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.02em; }
+
+  .principles { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 14px; }
+  .pcard {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 16px 18px;
+  }
+  .pcard .num {
+    display: inline-block;
+    background: var(--accent);
+    color: #fff;
+    width: 26px; height: 26px;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 26px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  .pcard h3 { margin: 0 0 6px; font-size: 1.02rem; }
+  .pcard p { margin: 0; font-size: 0.92rem; color: var(--ink); }
+
+  .code-card {
+    background: var(--code-bg);
+    color: var(--code-ink);
+    border-radius: 10px;
+    padding: 18px 20px;
+    position: relative;
+    overflow-x: auto;
+  }
+  .code-card pre { margin: 0; white-space: pre-wrap; font-family: "SFMono-Regular", Consolas, Menlo, monospace; font-size: 0.86rem; }
+  .copy-btn {
+    position: sticky;
+    float: right;
+    top: 0;
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 7px 14px;
+    font-size: 0.82rem;
+    cursor: pointer;
+    margin-left: 12px;
+  }
+  .copy-btn:hover { background: #6e3f22; }
+  .copy-btn.copied { background: #3f7a4e; }
+
+  details {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    margin-bottom: 10px;
+    overflow: hidden;
+  }
+  summary {
+    cursor: pointer;
+    padding: 13px 18px;
+    font-weight: 600;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  summary::-webkit-details-marker { display: none; }
+  summary::after { content: "+"; color: var(--accent); font-size: 1.2rem; font-weight: 700; }
+  details[open] summary::after { content: "–"; }
+  .details-body { padding: 0 18px 16px; font-size: 0.92rem; }
+  .details-body pre {
+    background: var(--code-bg); color: var(--code-ink);
+    padding: 14px 16px; border-radius: 8px; font-size: 0.84rem;
+    white-space: pre-wrap; font-family: Consolas, Menlo, monospace;
+  }
+
+  .trap { border-left: 4px solid var(--warn-line); background: var(--warn-bg); border-radius: 0 8px 8px 0; padding: 12px 16px; margin-bottom: 10px; }
+  .trap b { color: var(--accent); }
+
+  .callout {
+    background: var(--accent-soft);
+    border-radius: 8px;
+    padding: 14px 18px;
+    font-size: 0.92rem;
+  }
+
+  .links { display: grid; gap: 12px; }
+  .link-card {
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 14px 18px;
+    background: var(--card);
+  }
+  .link-card .tag {
+    display: inline-block;
+    font-size: 0.74rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--accent);
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .link-card a { color: var(--accent); font-weight: 600; text-decoration: none; }
+  .link-card a:hover { text-decoration: underline; }
+  .link-card p { margin: 6px 0 0; font-size: 0.9rem; color: var(--ink); }
+
+  footer { margin-top: 56px; color: var(--muted); font-size: 0.85rem; text-align: center; }
+
+  .draft-banner {
+    background: #fff3cd; border: 1px solid #f0d28a; color: #6b5300;
+    border-radius: 8px; padding: 10px 16px; font-size: 0.85rem; margin-bottom: 24px;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <h1>Coaching-Prompt-Template</h1>
+    <p class="subtitle">KI als Sparringspartner — eine Methode zum Mitnehmen</p>
+    <p class="lead">
+      <b>Eine Methode für Berufspraxis, Bewerbungsvorbereitung und Selbstreflexion.</b>
+      Du nutzt eine KI nicht als Antwort-Maschine, sondern als kritischen Coach,
+      der dir Fragen stellt, dich herausfordert und dir hilft, deine eigenen
+      Argumente zu schärfen.
+    </p>
+  </header>
+
+  <h2>Wofür ist das gut?</h2>
+  <table>
+    <tr><th>Situation</th><th>Wie das Sparring hilft</th></tr>
+    <tr><td><b>Bewerbungsgespräch vorbereiten</b></td><td>„Was sage ich, wenn man mich fragt, wo ich in 100 Tagen die Schwerpunkte setze?"</td></tr>
+    <tr><td><b>Mandats-Pitch an Geschäftsführung</b></td><td>„Wie überzeuge ich, dass ich Budget brauche?"</td></tr>
+    <tr><td><b>Schwieriges Personalgespräch durchspielen</b></td><td>„Wie reagiere ich, wenn der Betriebsrat blockiert?"</td></tr>
+    <tr><td><b>Strategie-Argumentation testen</b></td><td>„Hält mein Risikobericht der Geschäftsführung stand?"</td></tr>
+    <tr><td><b>Quartalsgespräch vorbereiten</b></td><td>„Welche Fragen wird der CFO mir stellen?"</td></tr>
+  </table>
+  <p style="font-size:0.9rem;color:var(--muted);margin-top:10px;">Die Methode ist <b>wiederverwendbar</b> — du lernst sie einmal und nutzt sie ein Berufsleben lang.</p>
+
+  <h2>Die drei Prinzipien</h2>
+  <div class="principles">
+    <div class="pcard">
+      <span class="num">1</span>
+      <h3>Rolle vor Frage</h3>
+      <p>Bevor du fragst, sagst du der KI <b>wer sie sein soll</b>. Eine generische KI antwortet generisch. Eine KI, die als „kritische HR-Leiterin in einem mittelständischen Krankenhaus" eingerichtet ist, antwortet branchen- und kontextspezifisch.</p>
+    </div>
+    <div class="pcard">
+      <span class="num">2</span>
+      <h3>Härtegrad explizit setzen</h3>
+      <p>Standardmäßig ist KI <b>zu freundlich</b>. Sie lobt, sie nickt, sie bestätigt. Für Coaching ist das wertlos. Du musst aktiv anweisen: „Sei kritisch. Hinterfrage. Stelle unangenehme Folgefragen. Lobe nicht."</p>
+    </div>
+    <div class="pcard">
+      <span class="num">3</span>
+      <h3>Stop-Bedingung definieren</h3>
+      <p>Sage der KI, <b>wann das Gespräch endet</b> und was als Endergebnis kommen soll. Sonst läuft es endlos und unstrukturiert.</p>
+    </div>
+  </div>
+
+  <h2>Das Template — direkt einsetzbar</h2>
+  <p style="font-size:0.92rem;">Kopiere den folgenden Block in eine KI deiner Wahl (ChatGPT, Claude, Copilot — funktioniert mit allen). Passe die <code>[Platzhalter]</code> an deine Situation an.</p>
+  <div class="code-card">
+    <button class="copy-btn" onclick="copyTemplate(this)">In Zwischenablage kopieren</button>
+    <pre id="template-text">ROLLE
+Du bist [Rolle des Gegenübers, möglichst spezifisch].
+Beispiel: „Du bist HR-Direktorin eines Krankenhauses mit 600 Betten in NRW.
+Du hast 12 Jahre Erfahrung, kennst KI nur oberflächlich, hast aber gerade
+einen Hochrisiko-KI-Vorfall erlebt, der dich vorsichtig gemacht hat."
+
+KONTEXT
+Ich bewerbe mich bei dir als [Position].
+Ich habe eine Ausbildung als [Hintergrund].
+Mein 100-Tage-Plan ist: [Kurzform deines Plans, 3–5 Bullet Points].
+
+KERNAUFGABE
+Führe mit mir ein 15-Minuten-Bewerbungsgespräch zu meinem 100-Tage-Plan.
+
+REGELN FÜR DICH
+- Stelle eine Frage nach der anderen — nicht alle gleichzeitig.
+- Sei kritisch. Hake nach, wenn meine Antwort vage ist.
+- Stelle die unangenehmen Fragen — Budget, Konflikte, Zeitdruck, Realitätscheck.
+- Lobe NICHT. Bestätige NICHT. Frage stattdessen weiter.
+- Wenn ich eine schwache Antwort gebe, formuliere die kritische Folgefrage,
+  die ein erfahrener Personaler stellen würde.
+- Verwende keine Formatierung in deinen Antworten — sprich, wie eine Person
+  in einem Gespräch spricht.
+
+START
+Beginne das Gespräch jetzt mit deiner ersten Frage.
+
+ABSCHLUSS
+Nach 8–10 Frage-Antwort-Runden beende das Gespräch und gib mir
+eine ehrliche Einschätzung in drei Punkten:
+1. Was war stark in meinen Antworten?
+2. Wo waren Lücken oder Schwächen, die ich vor dem echten Gespräch
+   schließen sollte?
+3. Welche EINE Frage hat mich am meisten getroffen — und warum?</pre>
+  </div>
+
+  <h2>Drei Varianten für unterschiedliche Anlässe</h2>
+
+  <details open>
+    <summary>Variante A — Bewerbungsgespräch</summary>
+    <div class="details-body">
+      <p>Wie oben — <code>ROLLE = Personaler:in / Geschäftsführung / Fachvorgesetzte:r</code>.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>Variante B — Mandats-Pitch (intern)</summary>
+    <div class="details-body">
+<pre>ROLLE: Du bist die Geschäftsführerin meines Unternehmens, in dem ich
+       intern als KI-Beauftragte mandatiert werden soll.
+       Du bist betriebswirtschaftlich orientiert, skeptisch gegenüber
+       'noch einer Stabsstelle', willst harten ROI sehen.
+
+KONTEXT: Ich pitche dir ein Budget für mein Mandat als KI-Beauftragte.
+         Mein Plan: [Kurzform].
+
+KERNAUFGABE: Spiele das Pitch-Gespräch realistisch durch. Konfrontiere mich
+             mit Budgetfragen, Personalfragen, Erfolgsmessung.
+             Frag mich, was bei Misserfolg passiert.</pre>
+    </div>
+  </details>
+
+  <details>
+    <summary>Variante C — Schwieriges Stakeholder-Gespräch</summary>
+    <div class="details-body">
+<pre>ROLLE: Du bist Personalratsvorsitzender. Du hast Sorgen um
+       Mitarbeiter-Überwachung durch KI und vermutest, dass die
+       neue KI-Beauftragte die Geschäftsführung vertritt, nicht
+       die Belegschaft.
+
+KONTEXT: Ich bin neu im Amt und habe dich um ein Erstgespräch gebeten.
+         Mein Plan: [Kurzform — vor allem Aspekte, die dich besorgen
+         könnten: Hochrisiko-System, Mitarbeiterdaten, Monitoring].
+
+KERNAUFGABE: Spiele das Gespräch wie ein erfahrener Personalratsvorsitzender.
+             Sei skeptisch, aber nicht feindselig. Stelle die Fragen, die
+             ein Personalrat in dieser Situation wirklich stellen würde.</pre>
+    </div>
+  </details>
+
+  <h2>Häufige Fallen — und wie du sie vermeidest</h2>
+
+  <div class="trap">
+    <b>Falle 1 — Die KI bleibt freundlich, obwohl du „sei kritisch" geschrieben hast.</b><br>
+    <i>Was passiert:</i> Bei vielen KI-Modellen sitzt die Höflichkeit so tief, dass sie auch bei expliziter Anweisung weiter lobt.<br>
+    <i>Lösung:</i> Verschärfe die Anweisung — „Wenn du in deiner letzten Antwort etwas Bestätigendes oder Lobendes gesagt hast, formuliere sie um. Du bist im Sparring-Modus. Lob ist hier wertlos."
+  </div>
+  <div class="trap">
+    <b>Falle 2 — Die KI stellt zehn Fragen gleichzeitig.</b><br>
+    <i>Was passiert:</i> KI tendiert dazu, „hilfsbereit" alle möglichen Fragen aufzulisten.<br>
+    <i>Lösung:</i> Stelle die Anweisung „Eine Frage nach der anderen" sehr explizit. Wenn sie es trotzdem tut, antworte nur auf die erste und ignoriere den Rest.
+  </div>
+  <div class="trap">
+    <b>Falle 3 — Die KI gibt am Ende ein Lob-Feedback.</b><br>
+    <i>Was passiert:</i> Auch beim Abschluss-Feedback rutscht die KI in „du hast das gut gemacht"-Modus.<br>
+    <i>Lösung:</i> Verschärfe die Abschluss-Anweisung — „Im Feedback nenne mindestens DREI konkrete Schwächen. Wenn du keine findest, hast du nicht kritisch genug zugehört. Schau noch einmal nach."
+  </div>
+  <div class="trap">
+    <b>Falle 4 — Du fragst nicht nach, wenn die KI ungeschickt fragt.</b><br>
+    <i>Was passiert:</i> KI fragt manchmal etwas, was im Realgespräch niemand fragen würde („Wie schätzen Sie Ihre intrinsische Motivation auf einer Skala von 1–10?").<br>
+    <i>Lösung:</i> Brich aus der Rolle aus und sage „Diese Frage würde ein echter Personaler so nicht stellen — formuliere sie wie ein realer Mensch." Die KI lernt im Gespräch dazu.
+  </div>
+
+  <h2>Was du im Realgespräch mitnehmen wirst</h2>
+  <p style="font-size:0.92rem;">Nach 2–3 Sparring-Sitzungen mit verschiedenen Varianten merkst du:</p>
+  <ul style="font-size:0.92rem;">
+    <li><b>Welche deiner Argumente stark sind</b> — sie überstehen kritisches Nachfragen</li>
+    <li><b>Welche Schwachstellen du hast</b> — die immergleichen unangenehmen Fragen</li>
+    <li><b>Wie sich realer Druck anfühlt</b> — die KI ist erstaunlich gut darin, ein Gespräch unangenehm zu machen</li>
+    <li><b>Welche Themen du besser ausweichen solltest</b> — und welche du proaktiv ansprechen solltest</li>
+  </ul>
+
+  <h2>Datenschutz und Vertraulichkeit</h2>
+  <div class="callout">
+    <b>Wichtig:</b> Wenn du im Sparring konkrete Unternehmen oder Personen erwähnst, gelten die Datenschutz-Regeln aus Tag 2 (DSGVO Art. 28, AVV-Pflicht).<br><br>
+    Faustregel: Anonymisiere im Sparring. Statt „Krankenhaus St. Margareta in Köln" sage „mittelständisches Krankenhaus in NRW". Die Sparring-Qualität leidet nicht, deine Datenschutz-Pflichten bleiben erfüllt.
+  </div>
+
+  <h2>Weiterführende Erläuterungen</h2>
+  <p style="font-size:0.92rem;color:var(--muted);">Drei Quellen, die die Methode professionell einordnen — falls du tiefer einsteigen willst:</p>
+  <div class="links">
+    <div class="link-card">
+      <span class="tag">Coaching-Methodik</span><br>
+      <a href="https://www.open.edu/openlearn/money-business/workplace-learning-coaching-and-mentoring/content-section-5.2" target="_blank" rel="noopener">The Open University — Das GROW-Coaching-Modell (Whitmore)</a>
+      <p>Die „drei Prinzipien" dieses Templates folgen derselben Grundlogik wie das GROW-Modell aus dem Executive Coaching (Goal → Reality → Options → Will, John Whitmore, 1992): erst Klarheit über Ziel und Ist-Stand schaffen, dann Optionen kritisch prüfen. Hilfreich, wenn du verstehen willst, <i>warum</i> die Struktur des Templates funktioniert.</p>
+    </div>
+    <div class="link-card">
+      <span class="tag">Bewerbungsgespräch · Variante A</span><br>
+      <a href="https://www.opm.gov/policy-data-oversight/assessment-and-selection/structured-interviews/guide.pdf" target="_blank" rel="noopener">U.S. Office of Personnel Management — Leitfaden „Structured Interviews" (STAR-Methode)</a>
+      <p>Die US-Bundesbehörde für Personalwesen beschreibt hier die STAR-Methode (Situation → Task → Action → Result) — den Standard, mit dem strukturierte Interviews aufgebaut werden. Wenn du dich auf ein Bewerbungsgespräch vorbereitest, hilft dir dieses Modell zusätzlich dabei, deine eigenen Antworten im Sparring auf den Punkt zu bringen.</p>
+    </div>
+    <div class="link-card">
+      <span class="tag">Warum „Härtegrad explizit setzen" wichtig ist</span><br>
+      <a href="https://doi.org/10.1287/orsc.2025.21838" target="_blank" rel="noopener">Dell'Acqua, Mollick et al. — „Navigating the Jagged Technological Frontier" (Organization Science, 2026)</a>
+      <p>Peer-reviewte Feldstudie mit 758 Unternehmensberater:innen: Wer mit klarem Briefing arbeitete, erkannte Grenzen der KI-Unterstützung deutlich besser als die Kontrollgruppe — unkritische Nutzung führte zu messbar schlechteren Ergebnissen (−19 Prozentpunkte Korrektheit). Empirischer Beleg dafür, dass genau die Sorgfalt, die dieses Template einfordert („Sei kritisch", „Lobe nicht"), den Unterschied macht.</p>
+    </div>
+  </div>
+
+  <footer>Ulrich Nord · Coaching-Prompt-Template (Format-Entwurf) · Juni 2026</footer>
+</div>
+
+<script>
+function copyTemplate(btn) {
+  const text = document.getElementById('template-text').innerText;
+  navigator.clipboard.writeText(text).then(() => {
+    const original = btn.textContent;
+    btn.textContent = 'Kopiert ✓';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = original; btn.classList.remove('copied'); }, 1800);
+  });
+}
+</script>
+</body>
+</html>
