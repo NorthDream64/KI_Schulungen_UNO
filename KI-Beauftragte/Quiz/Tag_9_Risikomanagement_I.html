@@ -41,6 +41,7 @@ a{color:var(--accent);}
 .role-btns,.level-btns{display:flex;gap:.5rem;}
 .sel-btn{flex:1;padding:.55rem .6rem;border:1px solid var(--rule);border-radius:8px;background:none;font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;font-size:13px;cursor:pointer;text-align:center;transition:all .15s;color:var(--ink);}
 .sel-btn.active-a{background:var(--role-a-soft);border-color:var(--role-a);color:var(--role-a);font-weight:500;}
+.sel-btn.active-b{background:var(--role-b-soft);border-color:var(--role-b);color:var(--role-b);font-weight:500;}
 .sel-btn.active-1{background:var(--level-1-soft);border-color:var(--level-1);color:var(--level-1);font-weight:500;}
 .sel-btn.active-2{background:var(--level-2-soft);border-color:var(--level-2);color:var(--level-2);font-weight:500;}
 .hint-text{font-size:12px;color:var(--muted);margin-top:.3rem;display:block;}
@@ -52,6 +53,7 @@ a{color:var(--accent);}
 .quiz-header-strip{display:flex;gap:.6rem;align-items:center;margin-bottom:1.4rem;flex-wrap:wrap;}
 .strip-tag{font-family:"SFMono-Regular", Consolas, "Liberation Mono", monospace;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;padding:4px 12px;border-radius:100px;}
 .strip-role-a{background:var(--role-a-soft);color:var(--role-a);}
+.strip-role-b{background:var(--role-b-soft);color:var(--role-b);}
 .strip-level-1{background:var(--level-1-soft);color:var(--level-1);}
 .strip-level-2{background:var(--level-2-soft);color:var(--level-2);}
 .strip-name{font-size:13px;color:var(--muted);margin-left:auto;}
@@ -142,7 +144,7 @@ a{color:var(--accent);}
   <div class="eyebrow">Alfatraining · KI-Beauftragte:r · Tag 9</div>
   <h1>Lernkontrolle<br>Risikomanagement I</h1>
   <div class="header-meta">
-    <span>5 Fragen je Stufe</span>
+    <span>5 Fragen je Rolle &amp; Stufe</span>
     <span>Eine oder mehrere Antworten können richtig sein</span>
     <span>Use Case: Krankenhaus-KI &amp; Character.AI-Fall (Pennsylvania 2026)</span>
   </div>
@@ -153,7 +155,7 @@ a{color:var(--accent);}
 <!-- ── SETUP ── -->
 <div id="setup-section">
   <div class="setup-card">
-    <h2>Bitte wähle deine Schwierigkeitsstufe</h2>
+    <h2>Bitte wähle deine Rolle und Schwierigkeitsstufe</h2>
 
     <div style="margin-bottom:1rem;">
       <span class="field-label">Dein Name (oder Teilnehmer-Nummer)</span>
@@ -164,9 +166,10 @@ a{color:var(--accent);}
       <div>
         <span class="field-label">Rolle</span>
         <div class="role-btns">
-          <button class="sel-btn active-a" id="btn-role-a" onclick="selectRole('a')">KI-Beauftragter</button>
+          <button class="sel-btn" id="btn-role-a" onclick="selectRole('a')">KI-Beauftragter</button>
+          <button class="sel-btn" id="btn-role-b" onclick="selectRole('b')">Entwicklungsleiter</button>
         </div>
-        <span class="hint-text">Tag 9 ist KI-Beauftragter-spezifisch</span>
+        <span class="hint-text">KI-BA = Compliance &amp; Aufsicht · Entw.-Ltr. = Anbieter &amp; Technik</span>
       </div>
       <div>
         <span class="field-label">Schwierigkeitsstufe</span>
@@ -230,7 +233,8 @@ var APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwTfP8ygOun58rmvY
 
 /* ═══════ SZENARIEN ════════════════════════════════════════════ */
 var SCENARIOS = {
-  a: 'Das Krankenhaus St. Ulrich hat ein KI-System zur Bildauswertung von CT- und Röntgenaufnahmen sowie zur Behandlungspfad-Priorisierung eingeführt. Parallel macht ein aktueller Rechtsfall Schlagzeilen: Pennsylvania (USA) verklagt Character.AI, weil ein Chatbot sich als Psychiater mit gültiger Lizenznummer ausgegeben hat — und Nutzer täuschte, echte medizinische Behandlung zu erhalten. Als KI-Beauftragter musst du beide Fälle einordnen: Welche Risikoarten erkennst du — und welche Mitigationsmaßnahmen sind angemessen?'
+  a: 'Das Krankenhaus St. Ulrich hat ein KI-System zur Bildauswertung von CT- und Röntgenaufnahmen sowie zur Behandlungspfad-Priorisierung eingeführt. Parallel macht ein aktueller Rechtsfall Schlagzeilen: Pennsylvania (USA) verklagt Character.AI, weil ein Chatbot sich als Psychiater mit gültiger Lizenznummer ausgegeben hat — und Nutzer täuschte, echte medizinische Behandlung zu erhalten. Als KI-Beauftragter musst du beide Fälle einordnen: Welche Risikoarten erkennst du — und welche Mitigationsmaßnahmen sind angemessen?',
+  b: 'Du leitest das Entwicklungsteam beim KI-Hersteller, der das Radiologie-KI-System für Krankenhaus St. Ulrich entwickelt hat. Das System wertet CT- und Röntgenaufnahmen aus und priorisiert Behandlungspfade. Als Anbieter bist du nach EU AI Act direkt für technische Qualität, Datendokumentation und Robustheit verantwortlich. Parallel zeigt der Fall Pennsylvania v. Character.AI, was passiert, wenn KI-Systeme ohne ausreichende technische Guardrails auf den Markt gebracht werden.'
 };
 
 /* ═══════ FRAGENBANK ═══════════════════════════════════════════ */
@@ -240,6 +244,7 @@ var QBANK = {
 /* Verteilung: 1×1 richtig · 2×2 richtig · 2×3 richtig */
 a1: [
   {
+    schwierigkeit: 'Einfach',
     q: 'Welche der folgenden Aussagen zu technischen Fehlern bei KI-Systemen sind korrekt?',
     opts: [
       'Model Drift bezeichnet den Prozess, bei dem ein KI-Modell mit der Zeit ungenauer wird, weil sich die reale Welt verändert hat',
@@ -253,6 +258,7 @@ a1: [
     url: 'https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=OJ:L_202401689'
   },
   {
+    schwierigkeit: 'Einfach',
     q: 'Was sind die charakteristischen Risiken von KI-Agenten?',
     opts: [
       'Autonome Entscheidungsketten: KI-Agenten führen mehrere Schritte ohne menschliche Zwischenprüfung durch',
@@ -266,6 +272,7 @@ a1: [
     url: 'https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=OJ:L_202401689'
   },
   {
+    schwierigkeit: 'Einfach',
     q: 'Was versteht man unter Bias in einem KI-System?',
     opts: [
       'Eine systematische Verzerrung in Trainingsdaten oder Algorithmen, die zu unfairen oder fehlerhaften Ergebnissen führt',
@@ -279,6 +286,7 @@ a1: [
     url: 'https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=OJ:L_202401689'
   },
   {
+    schwierigkeit: 'Mittel',
     q: 'Pennsylvania verklagt Character.AI, weil ein Chatbot sich als Psychiater mit gültiger PA-Lizenznummer ausgegeben hat. Welche ethischen Risiken sind in diesem Fall erkennbar?',
     opts: [
       'Verletzung von Informed Consent: Nutzer wussten nicht, dass sie mit einem KI-Chatbot sprechen — und konnten deshalb keine informierte Zustimmung geben',
@@ -292,6 +300,7 @@ a1: [
     url: 'https://www.npr.org/2026/05/05/nx-s1-5812861/characterai-chatbot-medical-advice-pennsylvania-lawsuit'
   },
   {
+    schwierigkeit: 'Mittel',
     q: 'Welche Maßnahmen würdest du als KI-Beauftragter vorschlagen, um Bias-Risiken im Krankenhaus-KI-System zu begrenzen?',
     opts: [
       'Überprüfen, ob die Trainingsdaten alle relevanten Patientengruppen (Alter, Geschlecht, Herkunft) repräsentativ abbilden',
@@ -310,6 +319,7 @@ a1: [
 /* Verteilung: 1×1 richtig · 2×2 richtig · 2×3 richtig */
 a2: [
   {
+    schwierigkeit: 'Mittel',
     q: 'Pennsylvania klagt, Character.AI habe nicht ausreichend verhindert, dass ein Chatbot medizinische Identität annahm. Welche Maßnahmen wären aus KI-Risikomanagement-Perspektive am wirksamsten gewesen?',
     opts: [
       'Technisch erzwungene Guardrails: Der Chatbot darf keine Aussagen über Qualifikationen oder Lizenznummern machen, die er nicht besitzt',
@@ -323,6 +333,7 @@ a2: [
     url: 'https://www.pa.gov/governor/newsroom/2026-press-releases/shapiro-administration-sues-character-ai-over-fake-medical-claim'
   },
   {
+    schwierigkeit: 'Mittel',
     q: 'Ein Radiologe bemerkt, dass das KI-Diagnosesystem bei Patientinnen über 70 Jahren systematisch schlechtere Erkennungsraten liefert als bei jüngeren Patienten. Worum handelt es sich am ehesten?',
     opts: [
       'Systematischer Bias — wahrscheinlich sind ältere Patientinnen in den Trainingsdaten unterrepräsentiert',
@@ -336,6 +347,7 @@ a2: [
     url: 'https://www.AlgorithmWatch.org/'
   },
   {
+    schwierigkeit: 'Mittel',
     q: 'Die Behandlungspfad-Priorisierung des Krankenhaus-KI-Systems zeigt Ärzten standardmäßig die KI-Empfehlung als erste Option an. Welche Risiken sind dabei besonders zu beachten?',
     opts: [
       'Automation Bias: Ärzte neigen dazu, die erste angezeigte KI-Empfehlung zu übernehmen, ohne sie kritisch zu hinterfragen',
@@ -349,6 +361,7 @@ a2: [
     url: 'https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=OJ:L_202401689'
   },
   {
+    schwierigkeit: 'Mittel',
     q: 'Das KI-Diagnosesystem des Krankenhauses St. Ulrich wertet CT- und Röntgenaufnahmen aus und priorisiert Behandlungspfade. Welche Anforderungen des EU AI Act sind für dieses System besonders relevant?',
     opts: [
       'Art. 9: Risikomanagementsystem — der Betreiber muss bekannte Risiken systematisch identifizieren, bewerten und steuern',
@@ -362,6 +375,7 @@ a2: [
     url: 'https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=OJ:L_202401689'
   },
   {
+    schwierigkeit: 'Komplex',
     q: 'Du erstellst als KI-Beauftragter die erste Risikomatrix für das Krankenhaus-KI-System. Welche Aussagen zur Methodik sind korrekt?',
     opts: [
       'Eintrittswahrscheinlichkeit und Schadenshöhe sind beide zu bewerten — erst ihre Kombination ergibt die Risikoprioritätsnummer',
@@ -375,14 +389,166 @@ a2: [
     url: 'https://airc.nist.gov/'
   }
 ]
+,
+/* ── Entwicklungsleiter · Anfänger ─────────────────────────────── */
+/* 5 Fragen: Einfach×3, Mittel×2 — Anbieter-Perspektive, Art. 10/15/9/72 */
+b1: [
+  {
+    schwierigkeit: 'Einfach',
+    q: 'Was unterscheidet Trainingsdaten-Bias von Deployment-Bias bei KI-Systemen?',
+    opts: [
+      'Trainingsdaten-Bias entsteht durch unrepräsentative oder fehlerhafte Daten im Training — er ist im Entwicklungsprozess erkennbar und behebbar',
+      'Deployment-Bias entsteht, wenn das Modell in einem anderen Kontext eingesetzt wird als es trainiert wurde — z. B. andere Patientenpopulation oder Gerätetechnik',
+      'Beide Biasformen sind ohne externe Audits grundsätzlich nicht erkennbar',
+      'Deployment-Bias liegt in der Verantwortung des Betreibers — den Entwickler trifft keine Mitverantwortung'
+    ],
+    correct: [0, 1],
+    exp: 'Trainingsdaten-Bias liegt in der Entwicklungsphase: Wenn bestimmte Gruppen im Datensatz fehlen oder überrepräsentiert sind, lernt das Modell eine verzerrte Welt. Deployment-Bias tritt erst im Betrieb auf: Das Modell wurde für eine bestimmte Kontextverteilung trainiert, wird aber in einem anderen Umfeld eingesetzt (andere Klinik, andere Geräte, andere Patientenpopulation). Beide Formen sind durch gezielte Analyse erkennbar. Als Anbieter trägt das Entwicklungsteam Mitverantwortung auch für vorhersehbaren Deployment-Bias — EU AI Act Art. 9 fordert, bekannte und vernünftigerweise vorhersehbare Risiken zu berücksichtigen.',
+    src: 'EU AI Act Art. 9, 10 · https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=OJ:L_202401689',
+    url: 'https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=OJ:L_202401689'
+  },
+  {
+    schwierigkeit: 'Einfach',
+    q: 'EU AI Act Art. 10 stellt Anforderungen an das Datenmanagement für Hochrisiko-KI-Systeme. Welche Aussagen sind korrekt?',
+    opts: [
+      'Trainingsdaten müssen relevant, repräsentativ und so fehlerfrei wie möglich sein',
+      'Der Entwickler muss dokumentieren, woher die Daten stammen und wie sie aufbereitet wurden',
+      'Wenn das Modell groß genug ist, spielt die Datenqualität keine entscheidende Rolle mehr — Skalierung kompensiert Datenmängel',
+      'Bekannte Biases in den Daten müssen identifiziert und, soweit möglich, behoben oder begrenzt werden'
+    ],
+    correct: [0, 1, 3],
+    exp: 'Art. 10 KI-VO stellt klare Anforderungen: Daten müssen relevant und repräsentativ sein — fehlende Gruppen erzeugen systematische Fehler. Die Herkunft und Aufbereitung muss dokumentiert sein — das ist Teil der Technischen Dokumentation nach Art. 11. Bekannte Biases müssen aktiv adressiert werden. Die Annahme "Skalierung kompensiert Datenmängel" ist empirisch widerlegt: Größere Modelle können Biases sogar verstärken, wenn die Grunddaten verzerrt sind.',
+    src: 'EU AI Act Art. 10 · https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=OJ:L_202401689',
+    url: 'https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=OJ:L_202401689'
+  },
+  {
+    schwierigkeit: 'Mittel',
+    q: 'Dein Entwicklungsteam stellt beim internen Test fest, dass das Radiologie-KI-Modell bei Patienten über 75 Jahren deutlich schlechtere Erkennungsraten zeigt als bei jüngeren Patienten. Was sind die korrekten nächsten Schritte?',
+    opts: [
+      'Den Anteil älterer Patienten in den Trainingsdaten analysieren und ggf. gezielt nacherheben oder oversampling einsetzen',
+      'Das Modell trotzdem deployen — im klinischen Betrieb gleichen sich solche Abweichungen durch größere Datenmenge automatisch aus',
+      'Die bekannte Einschränkung in der Technischen Dokumentation nach EU AI Act Art. 11 festhalten',
+      'Den Auftraggeber St. Ulrich vor dem Deployment über die bekannte Leistungseinschränkung informieren'
+    ],
+    correct: [0, 2, 3],
+    exp: 'Drei Schritte sind klar geboten: Ursachenanalyse und ggf. Nacherhebung der Trainingsdaten für ältere Patienten. Dokumentation der Einschränkung in der Technischen Dokumentation — bekannte Grenzen müssen transparent gemacht werden (Art. 11 KI-VO). Information des Betreibers vor dem Deployment — er muss wissen, für welche Patienten das System eingeschränkt zuverlässig ist. Deployment ohne Korrektur in der Hoffnung auf Selbstverbesserung ist sachlich falsch und rechtlich riskant: Der Fehler wird größer, nicht kleiner.',
+    src: 'EU AI Act Art. 9, 11 · https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=OJ:L_202401689',
+    url: 'https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=OJ:L_202401689'
+  },
+  {
+    schwierigkeit: 'Einfach',
+    q: 'EU AI Act Art. 15 fordert Genauigkeit, Robustheit und Cybersicherheit für Hochrisiko-KI-Systeme. Was bedeutet das konkret für die Entwicklung des Radiologie-Modells?',
+    opts: [
+      'Das System muss auch bei schlechter Bildqualität, Rauschen oder unvollständigen Eingaben zuverlässig funktionieren — nicht nur unter Idealbedingungen',
+      'Genauigkeitskennzahlen müssen in der Technischen Dokumentation angegeben und für definierte Einsatzbereiche validiert sein',
+      'Robustheit bedeutet: Das System darf unter keinen Umständen eine falsche Diagnose ausgeben',
+      'Cybersicherheit ist bei medizinischen KI-Systemen gesetzlich nicht gefordert — das regelt das Medizinprodukterecht separat'
+    ],
+    correct: [0, 1],
+    exp: 'Art. 15 KI-VO fordert Robustheit: Das System muss fehlertolerant sein — bei schlechten Bildern, ungewöhnlichen Aufnahmewinkel oder technischen Störungen. Genauigkeitskennzahlen müssen nachvollziehbar dokumentiert und für den Einsatzbereich validiert sein. Robustheit bedeutet nicht Nullfehler — das ist physikalisch unmöglich und rechtlich nicht gefordert. Cybersicherheit ist ausdrücklich Teil von Art. 15 KI-VO, zusätzlich zu anderen Rechtsbereichen.',
+    src: 'EU AI Act Art. 15 · https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=OJ:L_202401689',
+    url: 'https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=OJ:L_202401689'
+  },
+  {
+    schwierigkeit: 'Mittel',
+    q: 'Ein Entwickler schlägt vor, das Radiologie-Modell nach dem Deployment nicht mehr zu überwachen — "es hat die Validierung bestanden, das reicht". Was ist daran problematisch?',
+    opts: [
+      'Model Drift: Die reale Patientenpopulation oder Bildgebungstechnik verändert sich — ein einmal valides Modell kann über Zeit an Genauigkeit verlieren',
+      'EU AI Act Art. 9 fordert ein kontinuierliches Risikomanagementsystem — nicht nur einmalig bei der Einführung',
+      'Post-Market-Surveillance nach EU AI Act Art. 72 verpflichtet Anbieter zur aktiven Überwachung des Systems nach dem Deployment',
+      'Einmal validierte Modelle sind dauerhaft stabil — Drift ist nur bei Modellen relevant, die älter als fünf Jahre sind'
+    ],
+    correct: [0, 1, 2],
+    exp: 'Drei Gründe sprechen klar gegen "einmalig validieren und fertig": Model Drift ist real — Bildgebungsgeräte werden ausgetauscht, Patientenpopulationen verändern sich, neue Krankheitsbilder treten auf. Art. 9 KI-VO verlangt ausdrücklich ein lebendiges, nicht einmaliges Risikomanagementsystem. Art. 72 KI-VO verpflichtet Anbieter zur Post-Market-Surveillance: aktive Sammlung und Auswertung von Leistungsdaten aus dem Betrieb. Drift ist zeitunabhängig — er kann bereits nach wenigen Monaten relevant werden.',
+    src: 'EU AI Act Art. 9, 72 · https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=OJ:L_202401689',
+    url: 'https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=OJ:L_202401689'
+  }
+],
+
+/* ── Entwicklungsleiter · Fortgeschrittene ───────────────────────── */
+/* 5 Fragen: Mittel×2, Komplex×3 — OOD, Accuracy-Fallen, Guardrails, Art. 11 */
+b2: [
+  {
+    schwierigkeit: 'Mittel',
+    q: 'Euer Radiologie-Modell erreicht in der Validierungsstudie 96 % Accuracy. Der Auftraggeber St. Ulrich fragt, ob das für den Betrieb ausreicht. Was ist die fachlich korrekte Antwort?',
+    opts: [
+      '96 % Accuracy kann trügerisch sein: Bei ungleicher Klassenverteilung (viele Gesunde, wenige Befunde) kann ein Modell durch "immer: kein Befund" schon hohe Accuracy erreichen',
+      'Für medizinische Diagnoseunterstützung sind Sensitivität (True Positive Rate) und Spezifität (True Negative Rate) getrennt auszuweisen — nicht nur Gesamtgenauigkeit',
+      'Im Radiologie-Kontext ist die Sensitivität oft kritischer: Ein übersehener Befund hat schwerere Folgen als ein Fehlalarm',
+      '96 % Accuracy bedeutet automatisch, dass alle Patientengruppen gleich gut versorgt werden — gruppenspezifische Analysen sind nicht nötig'
+    ],
+    correct: [0, 1, 2],
+    exp: 'Accuracy allein ist eine gefährliche Kennzahl im medizinischen Kontext. Das Klassenproblem: Wenn 95 % der Scans unauffällig sind, erreicht ein Modell, das immer "unauffällig" sagt, 95 % Accuracy — aber erkennt keinen einzigen echten Befund. Sensitivität misst, wie viele echte Befunde erkannt werden. Spezifität misst, wie wenige Fehlalarme erzeugt werden. Im medizinischen Kontext ist eine übersehene Diagnose (niedriger Recall) meist gefährlicher als ein Fehlalarm. Gruppenspezifische Analysen sind zwingend: 96 % Gesamtgenauigkeit verbirgt möglicherweise 80 % bei Patienten über 75.',
+    src: 'EU AI Act Art. 15 · NIST AI RMF · https://airc.nist.gov/',
+    url: 'https://airc.nist.gov/'
+  },
+  {
+    schwierigkeit: 'Komplex',
+    q: 'Euer Modell wurde an Daten aus drei deutschen Universitätskliniken trainiert. St. Ulrich ist ein kleines Kreiskrankenhaus mit einer anderen Patientenpopulation und älteren Geräten. Welche Out-of-Distribution-Risiken entstehen konkret?',
+    opts: [
+      'Populations-Shift: St. Ulrichs Patienten haben möglicherweise andere demografische Merkmale und Komorbiditäten als die Uni-Klinik-Kohorte — das Modell hat diese Verteilung nicht gelernt',
+      'Equipment-Shift: Ältere CT/Röntgen-Geräte erzeugen Bildcharakteristika (Rauschen, Kontrast, Auflösung), die im Trainingsdatensatz nicht vorkommen',
+      'OOD ist kein Problem, wenn das Modell groß genug ist — Skalierung überbrückt Verteilungsunterschiede zuverlässig',
+      'Saisonale Muster in Uni-Klinik-Daten (z. B. Grippewellen erhöhen bestimmte Diagnosen) können zu Verzerrungen führen, wenn St. Ulrich ein anderes saisonales Profil hat'
+    ],
+    correct: [0, 1, 3],
+    exp: 'OOD bedeutet: Das Modell trifft auf Eingaben, die außerhalb seiner Trainingsverteilung liegen — ohne das zu erkennen. Populations-Shift ist typisch beim Wechsel von Uni- zu Kreiskrankenhaus: Altersstruktur, Komorbiditäten und Erkrankungsspektrum können erheblich abweichen. Equipment-Shift ist bei älteren Geräten relevant: Das Modell hat gelernt, auf moderne Bildgebungscharakteristika zu reagieren — ältere Bildgebung sieht statistisch anders aus. Saisonale Shifts sind realer Faktor in klinischen Daten. Skalierung löst OOD-Probleme nicht: Größere Modelle extrahieren die Trainingsdistribution präziser — sie generalisieren nicht automatisch besser.',
+    src: 'NIST AI RMF · ISO/IEC 23894 Annex A · https://nvlpubs.nist.gov/nistpubs/ai/nist.ai.100-1.pdf',
+    url: 'https://nvlpubs.nist.gov/nistpubs/ai/nist.ai.100-1.pdf'
+  },
+  {
+    schwierigkeit: 'Komplex',
+    q: 'Character.AI ermöglichte es Nutzern, den Chatbot als Psychiater mit gültiger Lizenznummer zu konfigurieren. Welche Entwicklungsentscheidungen wären aus technischer Risikoperspektive grundlegend anders zu treffen gewesen?',
+    opts: [
+      'Modell-seitige Guardrails: Das Modell darf unabhängig von der Nutzer-Konfiguration keine medizinischen Qualifikationen oder Lizenznummern behaupten — das muss technisch erzwungen sein, nicht nur per Nutzungsbedingungen',
+      'Persona-Konfiguration durch Nutzer sollte auf Bereiche ohne Qualifikationsbehauptung beschränkt sein — die Architektur darf bestimmte Ausgabetypen grundsätzlich sperren',
+      'Der Fehler liegt ausschließlich bei den Nutzern — ein Entwickler kann nicht für jeden Missbrauch verantwortlich gemacht werden',
+      'EU AI Act Art. 9 verlangt, dass vorhersehbare Missbrauchsszenarien in die Risikoanalyse einbezogen werden — "Psychiater-Persona" war vorhersehbar'
+    ],
+    correct: [0, 1, 3],
+    exp: 'Aus Entwicklungsperspektive sind drei Punkte entscheidend: Guardrails auf Modell-Ebene (nicht nur auf Anwendungsebene) sind robuster gegen Missbrauch — sie greifen unabhängig von der Konfiguration durch den Nutzer. Architekturentscheidungen können bestimmte Ausgabetypen grundsätzlich sperren: Lizenznummern, Qualifikationsbehauptungen, diagnostische Feststellungen. Art. 9 KI-VO fordert, vorhersehbare Missbrauchsszenarien zu berücksichtigen — eine Psychiater-Persona in einem öffentlichen Chat-Produkt ist kein exotisches Szenario. "Das liegt beim Nutzer" entbindet den Entwickler nicht: EU AI Act Art. 16 listet Anbieterpflichten, die unabhängig vom Nutzerverhalten gelten.',
+    src: 'EU AI Act Art. 9, 16 · Pennsylvania v. Character.AI (2026)',
+    url: 'https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=OJ:L_202401689'
+  },
+  {
+    schwierigkeit: 'Mittel',
+    q: 'Das Radiologie-KI-System soll als Hochrisiko-System nach EU AI Act Anhang III eingestuft werden. Welche Dokumentationspflichten entstehen konkret für dein Entwicklungsteam?',
+    opts: [
+      'Technische Dokumentation nach Art. 11: Systembeschreibung, Trainings- und Testdaten, Leistungskennzahlen, bekannte Grenzen und Einschränkungen',
+      'Risikomanagementsystem-Dokumentation nach Art. 9: Identifizierte Risiken, gewählte Maßnahmen, dokumentierte Restrisiken',
+      'EU-Konformitätserklärung nach Art. 47 und CE-Kennzeichnung vor dem Inverkehrbringen in der EU',
+      'Die Technische Dokumentation ist vertraulich und muss nationalen Marktüberwachungsbehörden auf Anfrage nicht herausgegeben werden'
+    ],
+    correct: [0, 1, 2],
+    exp: 'Drei Dokumentationspflichten sind klar: Art. 11 (Technische Dokumentation) ist das zentrale Dokument — es enthält alle technischen Details, die eine Konformitätsbewertung ermöglichen. Art. 9 (Risikomanagementsystem) ist prozessual: Welche Risiken wurden identifiziert, was wurde getan, was bleibt als Restrisiko? Art. 47 (Konformitätserklärung) und CE-Kennzeichnung sind die formalen Markteintrittsbedingungen. Die Technische Dokumentation ist nicht vertraulich gegenüber Behörden: Marktüberwachungsbehörden haben nach Art. 74 KI-VO das Recht auf Zugang.',
+    src: 'EU AI Act Art. 9, 11, 47, 74 · https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=OJ:L_202401689',
+    url: 'https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=OJ:L_202401689'
+  },
+  {
+    schwierigkeit: 'Komplex',
+    q: 'Vor dem Deployment stellt das Team fest: Das Modell zeigt bei manipulierten DICOM-Metadaten (präparierte Dateiheader) unerwartete Ausgaben. Welche Schlüsse zieht ihr daraus?',
+    opts: [
+      'Das ist ein Adversarial-Attack-Szenario — das Modell ist gegenüber gezielt manipulierten Eingaben nicht robust',
+      'Robustheit gegenüber solchen Angriffen ist eine Anforderung nach EU AI Act Art. 15 (Cybersicherheit)',
+      'DICOM-Manipulation ist theoretisch — in der Praxis haben Krankenhäuser PACS-Systeme mit ausreichender Sicherheit, daher kein Handlungsbedarf',
+      'Das Risiko ist in der Risikoanalyse nach Art. 9 zu dokumentieren und technische Gegenmaßnahmen (Input-Validierung, Anomalie-Detection) sind zu prüfen'
+    ],
+    correct: [0, 1, 3],
+    exp: 'Manipulierte DICOM-Metadaten sind ein reales Angriffsszenario: DICOM-Dateien enthalten viele Parameter, die das Modell als Eingabe verarbeitet — gezielte Manipulation kann Ausgaben systematisch verfälschen. Das ist ein Adversarial Attack, der unter EU AI Act Art. 15 (Robustheit und Cybersicherheit) fällt. "PACS ist sicher genug" ist keine ausreichende Begründung: Angriffe können aus dem Netzwerk, über kompromittierte Geräte oder durch Insider entstehen. Der Befund muss in die Risikoanalyse nach Art. 9 eingetragen werden — mit Bewertung und Maßnahmen (Input-Validierung, Metadaten-Sanitisierung, Anomalie-Detection).',
+    src: 'EU AI Act Art. 9, 15 · NIST AI RMF · https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=OJ:L_202401689',
+    url: 'https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=OJ:L_202401689'
+  }
+]
 }; /* Ende QBANK */
 
 /* ═══════ STATE ════════════════════════════════════════════════ */
-var S = { role:'a', level:null, name:'', questions:[], selections:[], submitted:false };
+var S = { role:null, level:null, name:'', questions:[], selections:[], submitted:false };
 
 /* ═══════ SETUP ════════════════════════════════════════════════ */
 function selectRole(r) {
   S.role = r;
+  document.getElementById('btn-role-a').className='sel-btn'+(r==='a'?' active-a':'');
+  document.getElementById('btn-role-b').className='sel-btn'+(r==='b'?' active-b':'');
   checkReady();
 }
 function selectLevel(l) {
@@ -417,8 +583,10 @@ function startQuiz() {
 
   var lLabel = S.level==='1'?'Anfänger':'Fortgeschrittene';
   var lClass = S.level==='1'?'strip-level-1':'strip-level-2';
+  var rLabel = S.role==='a'?'KI-Beauftragter':'Entwicklungsleiter';
+  var rClass = S.role==='a'?'strip-role-a':'strip-role-b';
   document.getElementById('quiz-header-strip').innerHTML =
-    '<span class="strip-tag strip-role-a">KI-Beauftragter</span>'
+    '<span class="strip-tag '+rClass+'">'+rLabel+'</span>'
     +'<span class="strip-tag '+lClass+'">'+lLabel+'</span>'
     +'<span class="strip-name">'+S.name+'</span>';
 
@@ -672,6 +840,7 @@ function sendToSheets(correct, wrong) {
   var TAG_NR = 9;
   var THEMA  = 'Risikomanagement I — Bias, technische Fehler, ethische Risiken, KI-Agenten';
   var letters = ['A','B','C','D'];
+  var rolle = S.role === 'a' ? 'KI-Beauftragter' : 'Entwicklungsleiter';
   var stufe = S.level === '1' ? 'Anfänger' : 'Fortgeschrittene';
 
   var status = document.getElementById('submit-status');
@@ -694,7 +863,7 @@ function sendToSheets(correct, wrong) {
       + '&teilnehmer=' + encodeURIComponent(S.name)
       + '&tag='        + TAG_NR
       + '&thema='      + encodeURIComponent(THEMA)
-      + '&stufe='      + encodeURIComponent(stufe + ' · KI-Beauftragter')
+      + '&stufe='      + encodeURIComponent(stufe + ' · ' + rolle)
       + '&frage_nr='   + (i + 1)
       + '&frage_text=' + encodeURIComponent(q.q.substring(0, 80))
       + '&gewaehlt='   + encodeURIComponent(gewaehlt)
