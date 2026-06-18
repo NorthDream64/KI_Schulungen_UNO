@@ -202,6 +202,17 @@
     </div>
   </div>
 
+  <h2>Noch unsicher, wie du die Platzhalter füllen sollst?</h2>
+  <div style="background:#eef6f0;border-left:4px solid #3f7a4e;border-radius:0 10px 10px 0;padding:16px 20px;margin-bottom:10px;">
+    <p style="margin:0 0 10px;font-size:0.95rem;"><b>Vorstufe: Lass die KI zuerst Fragen stellen.</b><br>
+    Wenn du noch nicht genau weißt, was du in die Platzhalter unten schreiben sollst — welche Rolle, welcher Kontext, welches Ziel —, nutze diesen Einstieg. Die KI hilft dir, deine eigene Situation zu strukturieren, <i>bevor</i> das Sparring beginnt.</p>
+    <div class="code-card" style="margin-bottom:10px;">
+      <button class="copy-btn" onclick="copyById('vorstufe-text', this)">In Zwischenablage kopieren</button>
+      <pre id="vorstufe-text">Bevor du irgendetwas tust: Stelle mir Fragen — eine nach der anderen — zu meinem Ziel, für wen das ist und wie ein gutes Ergebnis aussieht. Mach so lange weiter, bis du genug weißt, um richtig loszulegen. Fasse dann zusammen, was du verstanden hast, und warte auf meine Bestätigung, bevor du anfängst.</pre>
+    </div>
+    <p style="margin:0;font-size:0.87rem;color:#3f5a47;"><b>Wie es weitergeht:</b> Sobald die KI zusammengefasst hat und du bestätigt hast, kopierst du das Haupt-Template unten und füllst die Platzhalter mit dem, was ihr gerade erarbeitet habt. Die zwei Methoden ergänzen sich — die Vorstufe klärt, das Template strukturiert.</p>
+  </div>
+
   <h2>Das Template — direkt einsetzbar</h2>
   <p style="font-size:0.92rem;">Kopiere den folgenden Block in eine KI deiner Wahl (ChatGPT, Claude, Copilot — funktioniert mit allen). Passe die <code>[Platzhalter]</code> an deine Situation an.</p>
   <div class="code-card">
@@ -348,14 +359,17 @@ KERNAUFGABE: Spiele das Gespräch wie ein erfahrener Personalratsvorsitzender.
 </div>
 
 <script>
-function copyTemplate(btn) {
-  const text = document.getElementById('template-text').innerText;
+function copyById(id, btn) {
+  const text = document.getElementById(id).innerText;
   navigator.clipboard.writeText(text).then(() => {
     const original = btn.textContent;
     btn.textContent = 'Kopiert ✓';
     btn.classList.add('copied');
     setTimeout(() => { btn.textContent = original; btn.classList.remove('copied'); }, 1800);
   });
+}
+function copyTemplate(btn) {
+  copyById('template-text', btn);
 }
 </script>
 </body>
