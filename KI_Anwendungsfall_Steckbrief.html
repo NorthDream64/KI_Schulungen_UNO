@@ -1135,70 +1135,76 @@ hr.divider{border:none;border-top:1px solid var(--rule);margin:1rem 0;}
   <div class="section-header" style="border-left-color:var(--s7)">
     <div class="section-tag">Abschnitt 8 von 15</div>
     <h2>Risikoregister</h2>
-    <p>Strukturierte Bewertung nach den vier KI-Risikoarten (Bias, technische Fehler, ethische Risiken, Agenten-Risiken) sowie rechtlichen Risiken. Bewertungsschema: <strong>W × S × D</strong> — Eintrittswahrscheinlichkeit × Schadenshöhe × Schwierigkeit der Detektion (je 1–5, max. Score = 125).</p>
+    <p>Strukturierte Bewertung nach sechs KI-Risikoarten. Bewertungsschema: <strong>A × B × E</strong> — <strong>A</strong> (Auftreten/Eintrittswahrscheinlichkeit) × <strong>B</strong> (Bedeutung/Schadenshöhe) × <strong>E</strong> (Entdeckbarkeit/Schwierigkeit der Detektion), je 1–10, max. Score = 1.000. <strong>Verantwortlich/Owner:</strong> Bitte eine konkrete Person eintragen — keine Abteilung und keine Rolle.</p>
   </div>
 
   <!-- Bias-Risiken -->
   <div class="risk-category">
     <div class="risk-cat-header"><span class="risk-cat-icon">⚖️</span> Bias-Risiken — Systematische Verzerrungen &amp; Diskriminierung</div>
     <table class="risk-rows">
-      <thead><tr><th style="width:20%">Risikobeschreibung</th><th style="width:24%">Ursache / Quelle</th><th style="width:20%">Mitigationsmaßnahme</th><th style="width:7%">W (1–5)</th><th style="width:7%">S (1–5)</th><th style="width:7%">D (1–5)</th><th style="width:8%">Score</th><th style="width:7%">Status</th></tr></thead>
+      <thead><tr><th style="width:13%">Risikobeschreibung</th><th style="width:12%">Ursache / Quelle</th><th style="width:12%">Auswirkung</th><th style="width:12%">Mitigationsmaßnahme</th><th style="width:5%">A</th><th style="width:5%">B</th><th style="width:5%">E</th><th style="width:6%">Score</th><th style="width:6%">Status</th><th style="width:11%">Verantwortlich/Owner</th></tr></thead>
       <tbody id="bias-rows">
         <tr>
           <td><input type="text" placeholder="z. B. Demografische Unterrepräsentation im Trainingsset"></td>
           <td><textarea placeholder="z. B. Historische Daten spiegeln frühere Benachteiligungen wider"></textarea></td>
+          <td><textarea placeholder="z. B. Falschklassifikation bestimmter Bevölkerungsgruppen bei Kreditvergabe"></textarea></td>
           <td><input type="text" placeholder="z. B. Bias-Audit, Re-Balancing Trainingsdaten"></td>
-          <td><select onchange="updateScore(this)"><option value="0">—</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></td>
-          <td><select onchange="updateScore(this)"><option value="0">—</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></td>
-          <td><select onchange="updateScore(this)"><option value="0">—</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></td>
+          <td><select onchange="updateScore(this)"><option value="0">—</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option></select></td>
+          <td><select onchange="updateScore(this)"><option value="0">—</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option></select></td>
+          <td><select onchange="updateScore(this)"><option value="0">—</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option></select></td>
           <td><div class="risk-score">—</div></td>
           <td><select><option>Offen</option><option>In Bearbeitung</option><option>Mitigiert</option><option>Akzeptiert</option></select></td>
+          <td><input type="text" placeholder="z. B. Erika Musterfrau (KI-Beauftragte)"></td>
         </tr>
       </tbody>
     </table>
-    <button class="btn btn-outline btn-sm" style="margin-top:0.4rem;width:100%;border-style:dashed" onclick="addRiskRow('bias-rows','⚖️ Bias')">+ Weiteres Bias-Risiko hinzufügen</button>
+    <button class="btn btn-outline btn-sm" style="margin-top:0.4rem;width:100%;border-style:dashed" onclick="addRiskRow('bias-rows')">+ Weiteres Bias-Risiko hinzufügen</button>
   </div>
 
   <!-- Technische Fehler -->
   <div class="risk-category">
     <div class="risk-cat-header"><span class="risk-cat-icon">⚙️</span> Technische Fehler — Model Drift, Robustheit, Fehlerfortpflanzung</div>
     <table class="risk-rows">
-      <thead><tr><th style="width:20%">Risikobeschreibung</th><th style="width:24%">Ursache / Quelle</th><th style="width:20%">Mitigationsmaßnahme</th><th style="width:7%">W (1–5)</th><th style="width:7%">S (1–5)</th><th style="width:7%">D (1–5)</th><th style="width:8%">Score</th><th style="width:7%">Status</th></tr></thead>
+      <thead><tr><th style="width:13%">Risikobeschreibung</th><th style="width:12%">Ursache / Quelle</th><th style="width:12%">Auswirkung</th><th style="width:12%">Mitigationsmaßnahme</th><th style="width:5%">A</th><th style="width:5%">B</th><th style="width:5%">E</th><th style="width:6%">Score</th><th style="width:6%">Status</th><th style="width:11%">Verantwortlich/Owner</th></tr></thead>
       <tbody id="tech-rows">
         <tr>
           <td><input type="text" placeholder="z. B. Model Drift nach 6 Monaten Betrieb"></td>
           <td><textarea placeholder="z. B. Verschiebung der Datenverteilung gegenüber Trainingsdaten"></textarea></td>
+          <td><textarea placeholder="z. B. Accuracy-Einbruch unter Schwellenwert, fehlerhafte Prognosen"></textarea></td>
           <td><input type="text" placeholder="z. B. Monatliches Performance-Monitoring, Retraining-Schwellenwert definieren"></td>
-          <td><select onchange="updateScore(this)"><option value="0">—</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></td>
-          <td><select onchange="updateScore(this)"><option value="0">—</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></td>
-          <td><select onchange="updateScore(this)"><option value="0">—</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></td>
+          <td><select onchange="updateScore(this)"><option value="0">—</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option></select></td>
+          <td><select onchange="updateScore(this)"><option value="0">—</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option></select></td>
+          <td><select onchange="updateScore(this)"><option value="0">—</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option></select></td>
           <td><div class="risk-score">—</div></td>
           <td><select><option>Offen</option><option>In Bearbeitung</option><option>Mitigiert</option><option>Akzeptiert</option></select></td>
+          <td><input type="text" placeholder="z. B. Max Mustermann (ML-Engineer)"></td>
         </tr>
       </tbody>
     </table>
-    <button class="btn btn-outline btn-sm" style="margin-top:0.4rem;width:100%;border-style:dashed" onclick="addRiskRow('tech-rows','⚙️ Technik')">+ Weiteres technisches Risiko hinzufügen</button>
+    <button class="btn btn-outline btn-sm" style="margin-top:0.4rem;width:100%;border-style:dashed" onclick="addRiskRow('tech-rows')">+ Weiteres technisches Risiko hinzufügen</button>
   </div>
 
   <!-- Ethische Risiken -->
   <div class="risk-category">
     <div class="risk-cat-header"><span class="risk-cat-icon">🧭</span> Ethische Risiken — Autonomie, Transparenz, Informed Consent</div>
     <table class="risk-rows">
-      <thead><tr><th style="width:20%">Risikobeschreibung</th><th style="width:24%">Ursache / Quelle</th><th style="width:20%">Mitigationsmaßnahme</th><th style="width:7%">W (1–5)</th><th style="width:7%">S (1–5)</th><th style="width:7%">D (1–5)</th><th style="width:8%">Score</th><th style="width:7%">Status</th></tr></thead>
+      <thead><tr><th style="width:13%">Risikobeschreibung</th><th style="width:12%">Ursache / Quelle</th><th style="width:12%">Auswirkung</th><th style="width:12%">Mitigationsmaßnahme</th><th style="width:5%">A</th><th style="width:5%">B</th><th style="width:5%">E</th><th style="width:6%">Score</th><th style="width:6%">Status</th><th style="width:11%">Verantwortlich/Owner</th></tr></thead>
       <tbody id="ethik-rows">
         <tr>
           <td><input type="text" placeholder="z. B. Fehlende Transparenz gegenüber Betroffenen"></td>
           <td><textarea placeholder="z. B. Black-Box-Modell ohne Erklärbarkeit der Entscheidungsgrundlage"></textarea></td>
+          <td><textarea placeholder="z. B. Betroffene können Entscheidung nicht nachvollziehen oder anfechten"></textarea></td>
           <td><input type="text" placeholder="z. B. XAI-Methoden implementieren, Erklärungspflicht dokumentieren"></td>
-          <td><select onchange="updateScore(this)"><option value="0">—</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></td>
-          <td><select onchange="updateScore(this)"><option value="0">—</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></td>
-          <td><select onchange="updateScore(this)"><option value="0">—</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></td>
+          <td><select onchange="updateScore(this)"><option value="0">—</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option></select></td>
+          <td><select onchange="updateScore(this)"><option value="0">—</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option></select></td>
+          <td><select onchange="updateScore(this)"><option value="0">—</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option></select></td>
           <td><div class="risk-score">—</div></td>
           <td><select><option>Offen</option><option>In Bearbeitung</option><option>Mitigiert</option><option>Akzeptiert</option></select></td>
+          <td><input type="text" placeholder="z. B. Maria Schmidt (Data Ethics Officer)"></td>
         </tr>
       </tbody>
     </table>
-    <button class="btn btn-outline btn-sm" style="margin-top:0.4rem;width:100%;border-style:dashed" onclick="addRiskRow('ethik-rows','🧭 Ethik')">+ Weiteres ethisches Risiko hinzufügen</button>
+    <button class="btn btn-outline btn-sm" style="margin-top:0.4rem;width:100%;border-style:dashed" onclick="addRiskRow('ethik-rows')">+ Weiteres ethisches Risiko hinzufügen</button>
   </div>
 
   <!-- KI-Agenten-Risiken -->
@@ -1206,55 +1212,80 @@ hr.divider{border:none;border-top:1px solid var(--rule);margin:1rem 0;}
     <div class="risk-cat-header"><span class="risk-cat-icon">🤖</span> KI-Agenten-Risiken — Autonome Handlungsketten, Kontrollverlust</div>
     <div class="alert alert-info" style="margin:0;border-radius:0"><p>Nur ausfüllen, wenn als KI-System-Typ „KI-Agent" ausgewählt wurde. Autonome Entscheidungsketten schaffen neue Haftungsebenen, da Zwischenschritte nicht mehr menschlich kontrolliert werden.</p></div>
     <table class="risk-rows">
-      <thead><tr><th style="width:20%">Risikobeschreibung</th><th style="width:24%">Ursache / Quelle</th><th style="width:20%">Mitigationsmaßnahme</th><th style="width:7%">W (1–5)</th><th style="width:7%">S (1–5)</th><th style="width:7%">D (1–5)</th><th style="width:8%">Score</th><th style="width:7%">Status</th></tr></thead>
+      <thead><tr><th style="width:13%">Risikobeschreibung</th><th style="width:12%">Ursache / Quelle</th><th style="width:12%">Auswirkung</th><th style="width:12%">Mitigationsmaßnahme</th><th style="width:5%">A</th><th style="width:5%">B</th><th style="width:5%">E</th><th style="width:6%">Score</th><th style="width:6%">Status</th><th style="width:11%">Verantwortlich/Owner</th></tr></thead>
       <tbody id="agent-rows">
         <tr>
           <td><input type="text" placeholder="z. B. Unkontrollierte Toolausführung (E-Mail, API-Call)"></td>
           <td><textarea placeholder="z. B. Prompt-Injection durch externe Datenquellen im Agentenkontext"></textarea></td>
+          <td><textarea placeholder="z. B. Unberechtigte Datenübertragung oder irreversible Systemaktion"></textarea></td>
           <td><input type="text" placeholder="z. B. Tool-Whitelist, Human-Approval-Gate für irreversible Aktionen"></td>
-          <td><select onchange="updateScore(this)"><option value="0">—</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></td>
-          <td><select onchange="updateScore(this)"><option value="0">—</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></td>
-          <td><select onchange="updateScore(this)"><option value="0">—</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></td>
+          <td><select onchange="updateScore(this)"><option value="0">—</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option></select></td>
+          <td><select onchange="updateScore(this)"><option value="0">—</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option></select></td>
+          <td><select onchange="updateScore(this)"><option value="0">—</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option></select></td>
           <td><div class="risk-score">—</div></td>
           <td><select><option>Offen</option><option>In Bearbeitung</option><option>Mitigiert</option><option>Akzeptiert</option></select></td>
+          <td><input type="text" placeholder="z. B. Klaus Weber (IT-Security)"></td>
         </tr>
       </tbody>
     </table>
-    <button class="btn btn-outline btn-sm" style="margin-top:0.4rem;width:100%;border-style:dashed" onclick="addRiskRow('agent-rows','🤖 Agent')">+ Weiteres Agenten-Risiko hinzufügen</button>
+    <button class="btn btn-outline btn-sm" style="margin-top:0.4rem;width:100%;border-style:dashed" onclick="addRiskRow('agent-rows')">+ Weiteres Agenten-Risiko hinzufügen</button>
   </div>
 
   <!-- Rechtliche / Compliance-Risiken -->
   <div class="risk-category">
-    <div class="risk-cat-header"><span class="risk-cat-icon">⚖️</span> Rechtliche & Compliance-Risiken</div>
+    <div class="risk-cat-header"><span class="risk-cat-icon">⚖️</span> Rechtliche &amp; Compliance-Risiken</div>
     <table class="risk-rows">
-      <thead><tr><th style="width:20%">Risikobeschreibung</th><th style="width:24%">Ursache / Quelle</th><th style="width:20%">Mitigationsmaßnahme</th><th style="width:7%">W (1–5)</th><th style="width:7%">S (1–5)</th><th style="width:7%">D (1–5)</th><th style="width:8%">Score</th><th style="width:7%">Status</th></tr></thead>
+      <thead><tr><th style="width:13%">Risikobeschreibung</th><th style="width:12%">Ursache / Quelle</th><th style="width:12%">Auswirkung</th><th style="width:12%">Mitigationsmaßnahme</th><th style="width:5%">A</th><th style="width:5%">B</th><th style="width:5%">E</th><th style="width:6%">Score</th><th style="width:6%">Status</th><th style="width:11%">Verantwortlich/Owner</th></tr></thead>
       <tbody id="legal-rows">
         <tr>
           <td><input type="text" placeholder="z. B. Sanktionen nach EU AI Act bei fehlender Konformitätsbewertung"></td>
           <td><textarea placeholder="z. B. Hochrisiko-KI ohne CE-Kennzeichnung in Betrieb genommen"></textarea></td>
-          <td><input type="text" placeholder="z. B. Konformitätsbewertungsverfahren einleiten (→ Abschnitt 9)"></td>
-          <td><select onchange="updateScore(this)"><option value="0">—</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></td>
-          <td><select onchange="updateScore(this)"><option value="0">—</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></td>
-          <td><select onchange="updateScore(this)"><option value="0">—</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></td>
+          <td><textarea placeholder="z. B. Bußgeld bis 3 % des weltweiten Jahresumsatzes (Art. 99 KI-VO)"></textarea></td>
+          <td><input type="text" placeholder="z. B. Konformitätsbewertungsverfahren einleiten (→ Abschnitt 10)"></td>
+          <td><select onchange="updateScore(this)"><option value="0">—</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option></select></td>
+          <td><select onchange="updateScore(this)"><option value="0">—</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option></select></td>
+          <td><select onchange="updateScore(this)"><option value="0">—</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option></select></td>
           <td><div class="risk-score">—</div></td>
           <td><select><option>Offen</option><option>In Bearbeitung</option><option>Mitigiert</option><option>Akzeptiert</option></select></td>
+          <td><input type="text" placeholder="z. B. Petra Meier (Legal / Compliance)"></td>
         </tr>
       </tbody>
     </table>
-    <button class="btn btn-outline btn-sm" style="margin-top:0.4rem;width:100%;border-style:dashed" onclick="addRiskRow('legal-rows','⚖️ Recht')">+ Weiteres Rechtsrisiko hinzufügen</button>
+    <button class="btn btn-outline btn-sm" style="margin-top:0.4rem;width:100%;border-style:dashed" onclick="addRiskRow('legal-rows')">+ Weiteres Rechtsrisiko hinzufügen</button>
+  </div>
+
+  <!-- Cybersicherheit & Systemintegrität (Art. 15 KI-VO) -->
+  <div class="risk-category">
+    <div class="risk-cat-header"><span class="risk-cat-icon">🔒</span> Cybersicherheit &amp; Systemintegrität — Art. 15 KI-VO</div>
+    <div class="alert alert-info" style="margin:0;border-radius:0"><p>Art. 15 KI-VO verpflichtet Anbieter von Hochrisiko-KI-Systemen zu Maßnahmen gegen Angriffe auf Integrität, Verfügbarkeit und Vertraulichkeit. Abs. 3: Genauigkeit und Robustheit bei Adversarial Inputs; Abs. 4: Resilienz gegen Datenvergiftung (Data Poisoning); Abs. 5: Schutz gegen Angriffe auf Modelldaten und -parameter. Vgl. auch <strong>Anhang IV Nr. 2 lit. g</strong> (Cybersicherheitsmaßnahmen in der technischen Dokumentation).</p></div>
+    <table class="risk-rows">
+      <thead><tr><th style="width:13%">Risikobeschreibung</th><th style="width:12%">Ursache / Quelle</th><th style="width:12%">Auswirkung</th><th style="width:12%">Mitigationsmaßnahme</th><th style="width:5%">A</th><th style="width:5%">B</th><th style="width:5%">E</th><th style="width:6%">Score</th><th style="width:6%">Status</th><th style="width:11%">Verantwortlich/Owner</th></tr></thead>
+      <tbody id="cyber-rows">
+        <tr>
+          <td><input type="text" placeholder="z. B. Adversarial Attack — manipulierte Eingabedaten täuschen das Modell"></td>
+          <td><textarea placeholder="z. B. Angreifer verändert Bilddaten minimal, verändert Klassifizierung erheblich"></textarea></td>
+          <td><textarea placeholder="z. B. KI trifft sicherheitskritische Fehlentscheidung (z. B. Zugangskontrolle)"></textarea></td>
+          <td><input type="text" placeholder="z. B. Input-Validierung, Adversarial-Robustness-Tests, kontinuierliches Monitoring"></td>
+          <td><select onchange="updateScore(this)"><option value="0">—</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option></select></td>
+          <td><select onchange="updateScore(this)"><option value="0">—</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option></select></td>
+          <td><select onchange="updateScore(this)"><option value="0">—</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option></select></td>
+          <td><div class="risk-score">—</div></td>
+          <td><select><option>Offen</option><option>In Bearbeitung</option><option>Mitigiert</option><option>Akzeptiert</option></select></td>
+          <td><input type="text" placeholder="z. B. Thomas Bauer (CISO)"></td>
+        </tr>
+      </tbody>
+    </table>
+    <button class="btn btn-outline btn-sm" style="margin-top:0.4rem;width:100%;border-style:dashed" onclick="addRiskRow('cyber-rows')">+ Weiteres Cybersicherheitsrisiko hinzufügen</button>
   </div>
 
   <div class="section-nav">
     <button class="btn btn-outline" onclick="goTo(7)">← Zurück</button>
     <div class="section-counter">Abschnitt 8 von 15</div>
-    <button class="btn btn-primary" onclick="goTo(9)">Weiter: Daten & QS →</button>
+    <button class="btn btn-primary" onclick="goTo(9)">Weiter: Daten &amp; QS →</button>
   </div>
 </div>
 
 
-<!-- ════════════════════════════════════════════════════════════════
-     ABSCHNITT 6 — DATEN & QUALITÄTSSICHERUNG  [NEU]
-════════════════════════════════════════════════════════════════ -->
 <div class="form-section" id="section-9">
   <div class="section-header" style="border-left-color:var(--s8)">
     <div class="section-tag">Abschnitt 9 von 15</div>
@@ -1521,6 +1552,62 @@ hr.divider{border:none;border-top:1px solid var(--rule);margin:1rem 0;}
         <label>Verantwortlich für Monitoring</label>
         <input type="text" id="pmm-verantwortlich" placeholder="z. B. ML-Engineer + KI-Beauftragter">
       </div>
+    </div>
+  </div>
+
+  <div class="form-card">
+    <h4>Genauigkeit, Robustheit &amp; Cybersicherheit — KI-VO Art. 15</h4>
+    <div class="alert alert-info"><p>Art. 15 KI-VO legt drei Anforderungen fest, die für Hochrisiko-KI-Systeme verpflichtend zu erfüllen und in der technischen Dokumentation (Anhang IV Nr. 2 lit. g) zu belegen sind:<br>
+    <strong>Abs. 3 — Genauigkeit (Accuracy):</strong> Das System muss die deklarierten Genauigkeitsmetriken über den gesamten Lebenszyklus einhalten; Schwellenwerte sind vor Inbetriebnahme zu definieren und im PMM-Plan (Art. 72) zu überwachen.<br>
+    <strong>Abs. 4 — Robustheit:</strong> Das System muss gegenüber Betriebsstörungen, Ausfällen einzelner Komponenten und bekannten Adversarial-Input-Mustern widerstandsfähig sein; redundante Sicherheitsmechanismen sind zu dokumentieren.<br>
+    <strong>Abs. 5 — Cybersicherheit:</strong> Technische und organisatorische Maßnahmen gegen Angriffe auf Integrität, Verfügbarkeit und Vertraulichkeit des Modells sind nachzuweisen (vgl. Risikoregister Abschnitt 8 — Kategorie Cybersicherheit). Querverbindung: <strong>Anhang IV Nr. 2 lit. g</strong> fordert die Dokumentation dieser Maßnahmen; <strong>Art. 72 PMM</strong> schreibt deren laufende Überwachung vor.</p></div>
+    <div class="field-row">
+      <div class="field-group">
+        <label>Genauigkeitsmetrik(en) definiert? (Art. 15 Abs. 3)</label>
+        <select id="art15-accuracy">
+          <option value="">— Auswahl —</option>
+          <option>Ja — Metriken und Schwellenwerte dokumentiert</option>
+          <option>In Erstellung</option>
+          <option>Nein — Maßnahme erforderlich</option>
+          <option>Nicht anwendbar (kein Hochrisiko)</option>
+        </select>
+      </div>
+      <div class="field-group">
+        <label>Robustheitstests durchgeführt? (Art. 15 Abs. 4)</label>
+        <select id="art15-robustness">
+          <option value="">— Auswahl —</option>
+          <option>Ja — Adversarial-Tests und Fail-Safe-Tests dokumentiert</option>
+          <option>Geplant</option>
+          <option>Nein — Maßnahme erforderlich</option>
+          <option>Nicht anwendbar</option>
+        </select>
+      </div>
+    </div>
+    <div class="field-row">
+      <div class="field-group">
+        <label>Cybersicherheitsmaßnahmen implementiert? (Art. 15 Abs. 5)</label>
+        <select id="art15-cybersec">
+          <option value="">— Auswahl —</option>
+          <option>Ja — Maßnahmen dokumentiert (→ Anhang IV Nr. 2 lit. g)</option>
+          <option>Teilweise</option>
+          <option>Nein — Maßnahme erforderlich</option>
+          <option>Nicht anwendbar</option>
+        </select>
+      </div>
+      <div class="field-group">
+        <label>Nachweis in techn. Dokumentation (Anhang IV Nr. 2 lit. g)</label>
+        <select id="art15-techdok">
+          <option value="">— Auswahl —</option>
+          <option>Vollständig dokumentiert</option>
+          <option>In Erstellung</option>
+          <option>Nicht vorhanden — Maßnahme erforderlich</option>
+          <option>Nicht anwendbar</option>
+        </select>
+      </div>
+    </div>
+    <div class="field-group">
+      <label>Hinweise / offene Punkte zu Art. 15</label>
+      <textarea id="art15-hinweise" rows="2" placeholder="z. B. Adversarial-Robustness-Test für Q3 geplant; CISO-Review Cybersicherheitsmaßnahmen ausstehend…"></textarea>
     </div>
   </div>
 
@@ -2323,26 +2410,26 @@ function selectRec(val, btn) {
   document.getElementById('out-recommendation').value = val;
 }
 
-// ── Risk score auto-calculation (W × S × D) ──────────────────
+// ── Risk score auto-calculation (A × B × E) ──────────────────
 function updateScore(sel) {
   const row = sel.closest('tr');
   const tds = Array.from(row.querySelectorAll('td'));
-  let w = 0, s = 0, d = 0;
+  let a = 0, b = 0, e = 0;
   tds.forEach((td, i) => {
     const sel = td.querySelector('select');
     if (!sel) return;
     const v = parseInt(sel.value) || 0;
-    if (i === 3) w = v;
-    if (i === 4) s = v;
-    if (i === 5) d = v;
+    if (i === 4) a = v;
+    if (i === 5) b = v;
+    if (i === 6) e = v;
   });
   const scoreEl = row.querySelector('.risk-score');
   if (!scoreEl) return;
-  const score = w * s * d;
+  const score = a * b * e;
   scoreEl.textContent = score > 0 ? score : '—';
   scoreEl.className = 'risk-score';
-  if (score >= 50) scoreEl.classList.add('high');
-  else if (score >= 15) scoreEl.classList.add('med');
+  if (score >= 200) scoreEl.classList.add('high');
+  else if (score >= 50) scoreEl.classList.add('med');
   else if (score >= 1) scoreEl.classList.add('low');
 }
 
@@ -2353,12 +2440,14 @@ function addRiskRow(tbodyId) {
   newRow.innerHTML = `
     <td><input type="text" placeholder="Risikobeschreibung"></td>
     <td><textarea placeholder="Ursache / Quelle"></textarea></td>
+    <td><textarea placeholder="Auswirkung"></textarea></td>
     <td><input type="text" placeholder="Mitigationsmaßnahme"></td>
-    <td><select onchange="updateScore(this)"><option value="0">—</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></td>
-    <td><select onchange="updateScore(this)"><option value="0">—</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></td>
-    <td><select onchange="updateScore(this)"><option value="0">—</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></td>
+    <td><select onchange="updateScore(this)"><option value="0">—</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option></select></td>
+    <td><select onchange="updateScore(this)"><option value="0">—</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option></select></td>
+    <td><select onchange="updateScore(this)"><option value="0">—</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option></select></td>
     <td><div class="risk-score">—</div></td>
-    <td><select><option>Offen</option><option>In Bearbeitung</option><option>Mitigiert</option><option>Akzeptiert</option></select></td>`;
+    <td><select><option>Offen</option><option>In Bearbeitung</option><option>Mitigiert</option><option>Akzeptiert</option></select></td>
+    <td><input type="text" placeholder="Verantwortlich/Owner"></td>`;
   tbody.appendChild(newRow);
 }
 
@@ -2464,7 +2553,7 @@ const REF_TABELLE = [
   ['§5','Stakeholder & Kommunikation','Mendelow-Matrix, Betriebsrat, Kommunikationsplan'],
   ['§6','RACI-Matrix','Verantwortlichkeiten: Responsible, Accountable, Consulted, Informed'],
   ['§7','Recht & Compliance','EU AI Act Risikoklasse (Anhang I oder III), DSGVO, Haftung'],
-  ['§8','Risikoregister','Bias, Technik, Ethik, Agenten, Recht — W×S×D'],
+  ['§8','Risikoregister','Bias, Technik, Ethik, Agenten, Recht, Cybersicherheit — A×B×E (max. 1.000)'],
   ['§9','Daten & QS','Trainingsdaten, FAIR-Prinzipien, Abnahmekriterien (Art. 10)'],
   ['§10','Konformität & Monitoring','Art. 43, CE-Kennzeichnung, Logging, PMM, Vorfallmanagement'],
   ['§11','Standards & Managementsysteme','ISO 42001, ISO 27001, NIST AI RMF, GRC'],
@@ -2615,12 +2704,116 @@ function initRaciExample() {
 }
 
 // ── Save / Load ──────────────────────────────────────────────
+const RISK_TBODIES = ['bias-rows','tech-rows','ethik-rows','agent-rows','legal-rows','cyber-rows'];
+
+function gatherRiskTables() {
+  const result = {};
+  RISK_TBODIES.forEach(tbId => {
+    const tbody = document.getElementById(tbId);
+    if (!tbody) return;
+    const rows = [];
+    tbody.querySelectorAll('tr').forEach(tr => {
+      const tds = tr.querySelectorAll('td');
+      if (tds.length < 10) return;
+      rows.push({
+        desc:       tds[0].querySelector('input')?.value    || '',
+        cause:      tds[1].querySelector('textarea')?.value || '',
+        auswirkung: tds[2].querySelector('textarea')?.value || '',
+        mit:        tds[3].querySelector('input')?.value    || '',
+        a:          tds[4].querySelector('select')?.value   || '0',
+        b:          tds[5].querySelector('select')?.value   || '0',
+        e:          tds[6].querySelector('select')?.value   || '0',
+        status:     tds[8].querySelector('select')?.value   || 'Offen',
+        owner:      tds[9].querySelector('input')?.value    || ''
+      });
+    });
+    result['risk_' + tbId] = rows;
+  });
+  return result;
+}
+
+// ── Extra save: Section 6 (RACI), 13 (Roadmap), 17 (TÜV) ───────────────────
+function gatherExtra() {
+  const x = {};
+  // Sec 6 — RACI column headers (6 th-inputs)
+  document.querySelectorAll('.raci-tbl thead .raci-inp').forEach((el, i) => {
+    x['raci_head_' + i] = el.value;
+  });
+  // Sec 6 — RACI task description inputs (3 tbody rows)
+  document.querySelectorAll('.raci-tbl tbody .raci-inp').forEach((el, i) => {
+    x['raci_task_' + i] = el.value;
+  });
+  // Sec 6 — RACI pill states (3 rows × 6 cols = 18 pills)
+  const pillOrder = ['raci-empty','raci-r','raci-a','raci-c','raci-i'];
+  document.querySelectorAll('.raci-tbl .raci-cell .raci-pill').forEach((pill, i) => {
+    x['raci_pill_' + i] = pillOrder.find(c => pill.classList.contains(c)) || 'raci-empty';
+  });
+  // Sec 13 — Roadmap inputs (4 data rows × 3 inputs)
+  let ri = 0;
+  document.querySelectorAll('#section-13 .roadmap-row').forEach(row => {
+    const inputs = row.querySelectorAll('input');
+    if (!inputs.length) return; // skip header row
+    inputs.forEach((inp, j) => { x['roadmap_' + ri + '_' + j] = inp.value; });
+    ri++;
+  });
+  // Sec 17 — TÜV toggle states (22 items)
+  document.querySelectorAll('#section-17 .tuev-toggle').forEach((toggle, i) => {
+    x['tuev_' + i] = toggle.querySelector('.tuev-btn.ja') ? 'ja'
+                   : toggle.querySelector('.tuev-btn.nein') ? 'nein' : '';
+  });
+  return x;
+}
+
+function restoreExtra(data) {
+  // Sec 6 — RACI column headers
+  document.querySelectorAll('.raci-tbl thead .raci-inp').forEach((el, i) => {
+    if (data['raci_head_' + i] !== undefined) el.value = data['raci_head_' + i];
+  });
+  // Sec 6 — RACI task descriptions
+  document.querySelectorAll('.raci-tbl tbody .raci-inp').forEach((el, i) => {
+    if (data['raci_task_' + i] !== undefined) el.value = data['raci_task_' + i];
+  });
+  // Sec 6 — RACI pills
+  const pillLabels = {'raci-empty':'—','raci-r':'R','raci-a':'A','raci-c':'C','raci-i':'I'};
+  const allPillCls = Object.keys(pillLabels);
+  document.querySelectorAll('.raci-tbl .raci-cell .raci-pill').forEach((pill, i) => {
+    const cls = data['raci_pill_' + i];
+    if (!cls) return;
+    allPillCls.forEach(c => pill.classList.remove(c));
+    pill.classList.add(cls);
+    pill.textContent = pillLabels[cls] || '—';
+  });
+  // Sec 13 — Roadmap inputs
+  let ri = 0;
+  document.querySelectorAll('#section-13 .roadmap-row').forEach(row => {
+    const inputs = row.querySelectorAll('input');
+    if (!inputs.length) return;
+    inputs.forEach((inp, j) => {
+      const v = data['roadmap_' + ri + '_' + j];
+      if (v !== undefined) inp.value = v;
+    });
+    ri++;
+  });
+  // Sec 17 — TÜV buttons
+  document.querySelectorAll('#section-17 .tuev-toggle').forEach((toggle, i) => {
+    const val = data['tuev_' + i];
+    if (!val) return;
+    const btns = toggle.querySelectorAll('.tuev-btn');
+    btns.forEach(b => b.classList.remove('ja','nein'));
+    if (val === 'ja'   && btns[0]) btns[0].classList.add('ja');
+    if (val === 'nein' && btns[1]) btns[1].classList.add('nein');
+  });
+  if (typeof updateTuevScore === 'function') updateTuevScore();
+}
+
 function gatherFormData() {
   const data = {};
   document.querySelectorAll('input[type=text],input[type=email],input[type=date],input[type=number],textarea').forEach(el => { if (el.id) data[el.id] = el.value; });
   document.querySelectorAll('select').forEach(el => { if (el.id) data['sel_' + el.id] = el.value; });
   document.querySelectorAll('input[type=radio]:checked').forEach(el => { data['radio_' + el.name] = el.value; });
   document.querySelectorAll('input[type=checkbox]').forEach(el => { data['cb_' + el.name + '_' + el.value] = el.checked; });
+  Object.assign(data, gatherRiskTables());
+  Object.assign(data, gatherExtra());
   return data;
 }
 
@@ -2633,12 +2826,42 @@ function saveForm() {
   } catch(e) {}
 }
 
+function restoreRiskTables(data) {
+  RISK_TBODIES.forEach(tbId => {
+    const rows = data['risk_' + tbId];
+    if (!rows || !rows.length) return;
+    const tbody = document.getElementById(tbId);
+    if (!tbody) return;
+    rows.forEach((row, idx) => {
+      if (idx > 0) addRiskRow(tbId);
+      const tr = tbody.querySelectorAll('tr')[idx];
+      if (!tr) return;
+      const tds = tr.querySelectorAll('td');
+      const setInp = (td, val) => { const el = td?.querySelector('input');    if (el) el.value = val; };
+      const setTa  = (td, val) => { const el = td?.querySelector('textarea'); if (el) el.value = val; };
+      const setSel = (td, val) => { const el = td?.querySelector('select');   if (el) { el.value = val; updateScore(el); } };
+      const setSelNoScore = (td, val) => { const el = td?.querySelector('select'); if (el) el.value = val; };
+      setInp(tds[0], row.desc);
+      setTa (tds[1], row.cause);
+      setTa (tds[2], row.auswirkung || '');
+      setInp(tds[3], row.mit);
+      setSel(tds[4], row.a || row.w || '0');
+      setSel(tds[5], row.b || row.s || '0');
+      setSel(tds[6], row.e || row.d || '0');
+      setSelNoScore(tds[8], row.status || 'Offen');
+      setInp(tds[9], row.owner || '');
+    });
+  });
+}
+
 function loadForm() {
   try {
     const raw = localStorage.getItem('ki-steckbrief-v3');
     if (!raw) return;
     const data = JSON.parse(raw);
     Object.entries(data).forEach(([k, v]) => {
+      if (k.startsWith('risk_') || k.startsWith('raci_') ||
+          k.startsWith('roadmap_') || k.startsWith('tuev_')) return;
       if (k.startsWith('radio_')) {
         const name = k.replace('radio_', '');
         const el = document.querySelector(`input[name="${name}"][value="${v}"]`);
@@ -2656,6 +2879,8 @@ function loadForm() {
         if (el) el.value = v;
       }
     });
+    restoreRiskTables(data);
+    restoreExtra(data);
     if (data['radio_ai-act-tier']) updateRiskResult();
     if (data['out-recommendation']) {
       const map = {freigabe:0,auflagen:1,zurueck:2,abgelehnt:3};
@@ -2681,12 +2906,6 @@ function clearForm() {
 let saveTimer;
 document.addEventListener('input', () => { clearTimeout(saveTimer); saveTimer = setTimeout(saveForm, 1500); });
 document.addEventListener('change', () => { clearTimeout(saveTimer); saveTimer = setTimeout(saveForm, 800); });
-
-// ── Init ─────────────────────────────────────────────────────
-loadForm();
-initRaciExample();
-const today = new Date().toISOString().split('T')[0];
-if (!document.getElementById('uc-date').value) document.getElementById('uc-date').value = today;
 </script>
 </body>
 </html>
