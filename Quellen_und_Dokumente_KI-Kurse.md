@@ -90,6 +90,7 @@
 | https://naaia.ai/homepage/ | Automatisiertes AI-Inventory | AIMS | Frankreich NAAIA | 
 | nützliches Glossar: https://naaia.ai/responsible-ai-glossary/
 | https://metr.org/ | Modellbewertung & Bedrohungsszenarien | METR (Model Evaluation and Threat Research | USA NGO |
+| https://www.nist.gov/artificial-intelligence | CAISI | Artificial Intelligence Initiave (NIST) | US-Regierung |
 
 ### 3.2 IT-Sicherheit & KI-Angriffe
 | URL | Name | Typ | Schlagwörter |
