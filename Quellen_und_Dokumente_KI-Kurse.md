@@ -91,6 +91,7 @@
 | nützliches Glossar: https://naaia.ai/responsible-ai-glossary/
 | https://metr.org/ | Modellbewertung & Bedrohungsszenarien | METR (Model Evaluation and Threat Research | USA NGO |
 | https://www.nist.gov/artificial-intelligence | CAISI | Artificial Intelligence Initiave (NIST) | US-Regierung |
+| https://partnershiponai.org/ | PAI | Partnership on AI | NGO mit stark akademischer Prägung |
 
 ### 3.2 IT-Sicherheit & KI-Angriffe
 | URL | Name | Typ | Schlagwörter |
