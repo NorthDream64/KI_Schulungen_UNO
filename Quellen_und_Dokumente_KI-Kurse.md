@@ -99,6 +99,7 @@
 | https://owasp.org/www-project-machine-learning-security-top-10/ | Open Worldwide Application Security Project (OWASP) | Sicherheit | ML-Sicherheit, Angriffe, Gegenmaßnahmen |
 | https://www.bsi.bund.de/DE/Themen/Unternehmen-und-Organisationen/Informationen-und-Empfehlungen/Kuenstliche-Intelligenz/kuenstliche-intelligenz_node.html | BSI — KI-Sicherheit | Behörde | Deutschland, Lageberichte, Empfehlungen |
 | https://genai.owasp.org/resource/agentic-ai-threats-and-mitigations/ | OWASP | Agentic AI | Angriffsmuster der agentischen KI |
+| https://incidentdatabase.ai/ | AIID | AI Incident Database | Sammlung von Vorfällen mit KI-Bezug |
 
 ---
 
