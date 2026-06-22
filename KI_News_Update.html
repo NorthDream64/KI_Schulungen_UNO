@@ -1,466 +1,452 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>KI-News Update | 14. Juni 2026</title>
-  <style>
-    :root {
-      --primary: #1a237e;
-      --secondary: #283593;
-      --accent: #e53935;
-      --accent2: #1565c0;
-      --accent3: #6a1b9a;
-      --success: #2e7d32;
-      --warn: #e65100;
-      --bg: #f5f6fa;
-      --card: #ffffff;
-      --text: #212121;
-      --muted: #546e7a;
-      --border: #e0e0e0;
-    }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: 'Segoe UI', Arial, sans-serif; background: var(--bg); color: var(--text); font-size: 15px; line-height: 1.6; }
-    header { background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%); color: #fff; padding: 28px 24px 20px; text-align: center; }
-    header h1 { font-size: 1.9em; font-weight: 700; letter-spacing: 0.5px; }
-    header .subtitle { font-size: 0.95em; opacity: 0.85; margin-top: 4px; }
-    header .stamp { display: inline-block; background: rgba(255,255,255,0.18); border-radius: 20px; padding: 4px 18px; margin-top: 10px; font-size: 0.88em; font-weight: 600; letter-spacing: 0.3px; }
-    .container { max-width: 960px; margin: 0 auto; padding: 24px 16px 40px; }
-    .section { margin-bottom: 32px; }
-    .section-header { display: flex; align-items: center; gap: 10px; padding: 12px 18px; border-radius: 8px 8px 0 0; color: #fff; font-size: 1.08em; font-weight: 700; }
-    .section-header.red    { background: var(--accent); }
-    .section-header.blue   { background: var(--accent2); }
-    .section-header.purple { background: var(--accent3); }
-    .section-header.green  { background: var(--success); }
-    .section-header.orange { background: var(--warn); }
-    .section-header.dark   { background: var(--primary); }
-    .card { background: var(--card); border: 1px solid var(--border); border-radius: 0 0 8px 8px; padding: 18px 20px; }
-    .alert { border-radius: 7px; padding: 14px 18px; margin-bottom: 14px; }
-    .alert.critical { background: #ffebee; border-left: 5px solid #c62828; }
-    .alert.warning  { background: #fff3e0; border-left: 5px solid #e65100; }
-    .alert.info     { background: #e3f2fd; border-left: 5px solid #1565c0; }
-    .alert.success  { background: #e8f5e9; border-left: 5px solid #2e7d32; }
-    .alert h3 { font-size: 0.99em; font-weight: 700; margin-bottom: 6px; }
-    .alert p { font-size: 0.93em; color: #37474f; }
-    .alert a { color: var(--accent2); }
-    table { width: 100%; border-collapse: collapse; font-size: 0.91em; margin-top: 6px; }
-    th { background: #eeeeee; padding: 8px 10px; text-align: left; font-weight: 600; border: 1px solid var(--border); }
-    td { padding: 7px 10px; border: 1px solid var(--border); vertical-align: top; }
-    tr:nth-child(even) td { background: #fafafa; }
-    .badge { display: inline-block; border-radius: 4px; padding: 2px 8px; font-size: 0.82em; font-weight: 700; white-space: nowrap; }
-    .badge.hoch    { background: #ffcdd2; color: #b71c1c; }
-    .badge.mittel  { background: #fff9c4; color: #e65100; }
-    .badge.niedrig { background: #c8e6c9; color: #1b5e20; }
-    .news-item { padding: 14px 0; border-bottom: 1px solid var(--border); }
-    .news-item:last-child { border-bottom: none; padding-bottom: 0; }
-    .news-item h3 { font-size: 1.0em; font-weight: 700; margin-bottom: 5px; }
-    .news-item p { font-size: 0.92em; color: #37474f; margin-bottom: 5px; }
-    .news-item .tags { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 6px; }
-    .tag { background: #e3f2fd; color: #0d47a1; border-radius: 3px; padding: 2px 8px; font-size: 0.78em; font-weight: 600; }
-    .tag.red    { background: #ffebee; color: #b71c1c; }
-    .tag.orange { background: #fff3e0; color: #e65100; }
-    .tag.green  { background: #e8f5e9; color: #1b5e20; }
-    .tag.purple { background: #f3e5f5; color: #6a1b9a; }
-    .tag.new    { background: #e8f5e9; color: #1b5e20; font-weight: 700; }
-    .tag.date   { background: #eeeeee; color: #37474f; }
-    .sources { font-size: 0.85em; margin-top: 6px; }
-    .sources a { color: var(--accent2); text-decoration: none; margin-right: 8px; }
-    .sources a:hover { text-decoration: underline; }
-    .courses { margin-top: 0; }
-    .courses li { padding: 7px 0; border-bottom: 1px solid var(--border); font-size: 0.93em; }
-    .courses li:last-child { border-bottom: none; }
-    .courses li strong { color: var(--primary); }
-    footer { text-align: center; font-size: 0.82em; color: var(--muted); padding: 18px 16px 30px; border-top: 1px solid var(--border); margin-top: 20px; line-height: 1.8; }
-    a { color: var(--accent2); }
-    @media (max-width: 600px) {
-      header h1 { font-size: 1.35em; }
-      .container { padding: 14px 8px 30px; }
-      table { font-size: 0.82em; }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KI-News Update | 22. Juni 2026</title>
+<style>
+  :root {
+    --primary: #1a1a2e;
+    --accent: #e94560;
+    --blue: #0f3460;
+    --card-bg: #ffffff;
+    --body-bg: #f4f6f9;
+    --text: #222;
+    --muted: #666;
+    --red: #c0392b;
+    --orange: #e67e22;
+    --green: #27ae60;
+    --purple: #8e44ad;
+    --badge-red: #fdecea;
+    --badge-orange: #fef3e2;
+    --badge-green: #eafaf1;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', Arial, sans-serif; background: var(--body-bg); color: var(--text); font-size: 15px; line-height: 1.6; }
+  header { background: linear-gradient(135deg, var(--primary) 0%, var(--blue) 100%); color: #fff; padding: 28px 20px 20px; text-align: center; }
+  header .robot { font-size: 2.4em; }
+  header h1 { font-size: 1.9em; font-weight: 700; margin: 8px 0 4px; }
+  header .subtitle { font-size: 0.95em; opacity: 0.8; margin-bottom: 8px; }
+  header .meta { display: inline-block; background: rgba(255,255,255,0.15); border-radius: 20px; padding: 5px 16px; font-size: 0.88em; margin-top: 6px; }
+  .container { max-width: 900px; margin: 0 auto; padding: 20px 16px 40px; }
+  .alert { border-radius: 8px; padding: 14px 18px; margin-bottom: 14px; border-left: 5px solid; }
+  .alert-red { background: #fdecea; border-color: #c0392b; }
+  .alert-blue { background: #eaf1fb; border-color: #2980b9; }
+  .alert-orange { background: #fef3e2; border-color: #e67e22; }
+  .alert h3 { font-size: 1em; margin-bottom: 4px; }
+  .alert p { font-size: 0.92em; }
+  .alert a { color: var(--blue); }
+  .section-header { display: flex; align-items: center; gap: 10px; background: var(--primary); color: #fff; border-radius: 8px 8px 0 0; padding: 12px 18px; margin-top: 28px; font-size: 1.05em; font-weight: 700; }
+  .section-header.red { background: #922b21; }
+  .section-header.blue { background: #1a5276; }
+  .section-header.purple { background: #6c3483; }
+  .section-header.green { background: #1e8449; }
+  .section-header.orange { background: #b7770d; }
+  .card { background: var(--card-bg); border-radius: 0 0 8px 8px; padding: 18px 20px; margin-bottom: 4px; box-shadow: 0 2px 6px rgba(0,0,0,0.07); }
+  .card h3 { font-size: 1em; color: var(--primary); margin-bottom: 6px; }
+  .card p { font-size: 0.92em; margin-bottom: 8px; }
+  .card a { color: #1a5276; }
+  .tag { display: inline-block; border-radius: 12px; padding: 2px 10px; font-size: 0.78em; font-weight: 600; margin: 2px 3px 4px 0; }
+  .tag-red { background: var(--badge-red); color: var(--red); }
+  .tag-blue { background: #eaf1fb; color: #1a5276; }
+  .tag-green { background: var(--badge-green); color: var(--green); }
+  .tag-orange { background: var(--badge-orange); color: #b7770d; }
+  .tag-purple { background: #f5eef8; color: var(--purple); }
+  .tag-gray { background: #f2f3f4; color: #555; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.9em; }
+  th { background: var(--primary); color: #fff; padding: 9px 12px; text-align: left; }
+  td { padding: 8px 12px; border-bottom: 1px solid #e8e8e8; vertical-align: top; }
+  tr:nth-child(even) td { background: #f9fafc; }
+  .timeline td:first-child { white-space: nowrap; font-weight: 600; }
+  .badge { display: inline-block; border-radius: 4px; padding: 2px 8px; font-size: 0.82em; font-weight: 700; }
+  .badge-red { background: var(--badge-red); color: var(--red); }
+  .badge-orange { background: var(--badge-orange); color: #b7770d; }
+  .badge-green { background: var(--badge-green); color: var(--green); }
+  .badge-gray { background: #f2f3f4; color: #555; }
+  .rec-list { list-style: none; padding: 0; }
+  .rec-list li { padding: 8px 0; border-bottom: 1px solid #eee; font-size: 0.92em; }
+  .rec-list li:last-child { border-bottom: none; }
+  footer { text-align: center; font-size: 0.82em; color: var(--muted); padding: 16px; border-top: 1px solid #ddd; margin-top: 30px; }
+  @media (max-width: 600px) {
+    header h1 { font-size: 1.4em; }
+    table { font-size: 0.82em; }
+    td, th { padding: 6px 8px; }
+  }
+</style>
 </head>
 <body>
+
 <header>
-  <div>🤖</div>
+  <div class="robot">🤖</div>
   <h1>KI-News Update</h1>
   <div class="subtitle">Automatisierter Wochenbericht | KI-Schulungsmaterial</div>
-  <div class="stamp">Neu seit 11. Juni 2026 &nbsp;·&nbsp; Stand: 14. Juni 2026</div>
+  <div class="meta">Neu seit 14. Juni 2026 &nbsp;·&nbsp; Stand: 22. Juni 2026</div>
 </header>
 
 <div class="container">
 
   <!-- ⚡ DRINGENDE HINWEISE -->
-  <div class="section">
-    <div class="section-header red">⚡ Dringende Hinweise</div>
-    <div class="card">
+  <div class="section-header red">⚡ Dringende Hinweise</div>
+  <div class="card">
 
-      <div class="alert critical">
-        <h3>🚨 Apple sperrt Apple Intelligence für 450 Millionen EU-Nutzer – DMA vs. KI (14. Juni 2026)</h3>
-        <p>Apple hat die Einführung seiner KI-Suite <strong>Apple Intelligence</strong> (Writing Tools, Visual Intelligence, erweiterter Siri-Kameramodus) mit iOS 27 und iPadOS 27 in der EU vollständig gestoppt. Begründung: Der <strong>Digital Markets Act (DMA)</strong> würde Drittanbieter-Zugriff auf Gerätedaten ermöglichen, was die Datensicherheit gefährde. Die EU-Kommission widerspricht: „Das ist Apples Entscheidung, nicht unsere Anforderung." Konkretes Lehrbeispiel für das Spannungsfeld US-Plattformen vs. EU-Regulierung und für KI-Funktionseinschränkungen durch regulatorische Rahmenbedingungen.</p>
-        <div class="sources">
-          <a href="https://borncity.com/news/apple-intelligence-konzern-sperrt-ki-fuer-450-millionen-eu-nutzer/">BornCity: Apple Intelligence EU-Sperre (14.6.2026)</a>
-        </div>
-      </div>
-
-      <div class="alert critical">
-        <h3>🚨 US-Exportverbot für Anthropic Fable 5 &amp; Mythos 5 – sofortige Sperrung für alle Nicht-US-Bürger (13. Juni 2026)</h3>
-        <p>Die US-Regierung hat Anthropic am 12. Juni 2026 per Exportkontrollanordnung verpflichtet, die Modelle <strong>Fable 5 und Mythos 5</strong> sofort für alle ausländischen Staatsangehörigen zu deaktivieren – weltweit, auch innerhalb der USA. Betrifft Millionen europäischer Nutzer und Unternehmen. Anthropic hat die Modelle unverzüglich abgeschaltet; alle anderen Modelle bleiben verfügbar. Fazit des Sicherheitsexperten Lukasz Olejnik: „Washington hält die Schlüssel zu KI-Modellen, die als nationale Sicherheits-Assets behandelt werden." Digitale Souveränität als konkretes Unternehmensrisiko.</p>
-        <div class="sources">
-          <a href="https://borncity.com/blog/2026/06/13/us-regierung-belegt-anthropic-fable-und-mythos-mit-export-verbot/">BornCity Blog: US-Exportverbot (13.6.2026)</a>
-          <a href="https://www.anthropic.com/news/fable-mythos-access">Anthropic Official Statement (12.6.2026)</a>
-        </div>
-      </div>
-
-      <div class="alert warning">
-        <h3>⚠️ Microsoft Copilot unter Druck: Investor-Klage, Wachstumsstopp, $7,2 Mrd. Abschreibungen (12. Juni 2026)</h3>
-        <p>Securities Class Action gegen Microsoft eingereicht; Vorwurf: Investoren über Copilot-Adoption und KI-Infrastrukturrisiken getäuscht. Gleichzeitig: Copilot-Seat-Wachstum zum 3. Quartal in Folge verlangsamt; Azure AI Revenue um 3,5 Mrd. USD korrigiert; 7,2 Mrd. USD Abschreibungen auf Rechenzentrumsanlagen. Aktie -16% seit Jahresbeginn. Ergänzt die Kostenschock-Berichterstattung aus der Vorwoche.</p>
-        <div class="sources">
-          <a href="https://windowsnews.ai/article/microsoft-investors-file-lawsuit-claiming-the-company-concealed-copilot-adoption-struggles-and-ai-in.425877">Windows News: Investor Lawsuit (12.6.2026)</a>
-          <a href="https://trading-treff.de/trading/microsoft-aktie-klage-um-copilot">Trading-Treff: Copilot Klage</a>
-        </div>
-      </div>
-
-      <div class="alert info">
-        <h3>ℹ️ EU AI Act Digital Omnibus: EP-Plenumabstimmung noch im Juni – formale Verabschiedung vor 2. August erwartet</h3>
-        <p>Die politische Einigung vom 7. Mai 2026 (Verschiebung Hochrisiko-KI Anhang III auf 2. Dezember 2027) wartet noch auf EP-Plenumabstimmung (erwartet im Laufe des Juni), Ratsbeschluss und Amtsblatt-Veröffentlichung. Alle drei Schritte müssen vor dem 2. August 2026 erfolgen. Bis dahin gilt der bestehende Rechtsrahmen unverändert.</p>
-        <div class="sources">
-          <a href="https://www.noze.it/en/insights/ai-act-omnibus-adozione/">noze.it: Digital Omnibus formal adoption</a>
-          <a href="https://www.gibsondunn.com/eu-ai-act-omnibus-agreement-postponed-high-risk-deadlines-and-other-key-changes/">Gibson Dunn: Omnibus Key Changes</a>
-        </div>
-      </div>
-
-      <div class="alert info">
-        <h3>ℹ️ Hochrisiko-KI Konsultation: Frist 23. Juni 2026 – noch 9 Tage</h3>
-        <p>Die öffentliche Konsultation der EU-Kommission zu den Entwurfs-Leitlinien zur Klassifizierung von Hochrisiko-KI-Systemen (Art. 6 / Anhang III) läuft noch bis zum <strong>23. Juni 2026</strong>. HR/Recruiting-KI steht im Fokus. Letzte Chance zur Stellungnahme.</p>
-        <div class="sources">
-          <a href="https://digital-strategy.ec.europa.eu/en/library/draft-commission-guidelines-classification-high-risk-ai-systems">EU-Kommission: Leitlinien-Entwurf (Konsultation)</a>
-        </div>
-      </div>
-
+    <div class="alert alert-red">
+      <h3>🚨 EU AI Act Digital Omnibus: EP hat zugestimmt (16. Juni, 423 Stimmen) – Ratsbeschluss + Amtsblatt noch ausstehend</h3>
+      <p>Das Europaparlament hat den Digital Omnibus am 16. Juni 2026 mit 423 Stimmen formell angenommen. Die Änderungen treten aber erst in Kraft, sobald der Rat formal zugestimmt hat und der Text im EU-Amtsblatt veröffentlicht wurde. Beide Schritte müssen <strong>vor dem 2. August 2026</strong> erfolgen. Bis dahin gilt der bestehende Rechtsrahmen unverändert. <strong>Handlungsbedarf:</strong> Compliance-Zeitplan bis zur Amtsblatt-Veröffentlichung mit Vorbehalt kennzeichnen; Ratsbeschluss eng beobachten.</p>
+      <p>
+        <a href="https://epthinktank.eu/2026/02/12/digital-omnibus-on-ai-eu-legislation-in-progress/" target="_blank">EP Think Tank: Digital Omnibus</a> ·
+        <a href="https://www.gibsondunn.com/eu-ai-act-omnibus-agreement-postponed-high-risk-deadlines-and-other-key-changes/" target="_blank">Gibson Dunn: Key Changes</a> ·
+        <a href="https://www.consilium.europa.eu/en/press/press-releases/2026/05/07/artificial-intelligence-council-and-parliament-agree-to-simplify-and-streamline-rules/" target="_blank">Consilium: Einigung 7. Mai</a>
+      </p>
     </div>
+
+    <div class="alert alert-orange">
+      <h3>⚠️ Hochrisiko-KI Konsultation: Frist verlängert auf 23. Juli 2026 – ursprünglich 23. Juni</h3>
+      <p>Die EU-Kommission verlängerte auf Stakeholder-Wunsch die Konsultationsfrist zu den Hochrisiko-KI-Leitlinien (Art. 6 / Anhang III) um einen Monat. Neue Frist: <strong>23. Juli 2026</strong>. HR/Recruiting-KI bleibt Schwerpunkt. Finale Leitlinien werden bis Ende 2026 erwartet.</p>
+      <p>
+        <a href="https://digital-strategy.ec.europa.eu/en/consultations/targeted-consultation-draft-guidelines-classification-high-risk-artificial-intelligence-systems" target="_blank">EU-Kommission: Konsultation Hochrisiko-KI</a>
+      </p>
+    </div>
+
+    <div class="alert alert-red">
+      <h3>🚨 KPMG zieht KI-generierten Bericht zurück – Halluzinationen als dokumentiertes Unternehmensrisiko</h3>
+      <p>KPMG musste einen mit KI erstellten Bericht wegen inhaltlicher Fehler (Halluzinationen) öffentlich zurückziehen. Symbolwirkung: Fehlende Human-in-the-Loop-Prozesse machen kein Unternehmen immun. Gleichzeitig: Absatzwirtschaft stellt Work &amp; Culture-Kolumne ein – weiteres Medienopfer der KI-Welle (BornCity, 21. Juni).</p>
+      <p>
+        <a href="https://borncity.com/blog/2026/06/14/ai-slop-bei-kpmg-und-politik-fails-bei-der-webseite-von-mario-vogt/" target="_blank">BornCity: AI-Slop bei KPMG (14.6.)</a> ·
+        <a href="https://borncity.com/blog/2026/06/21/ai-news-ki-killt-kolumne-von-absatzwirtschaft-und-moeglicherweise-die-redaktion/" target="_blank">BornCity: KI killt Kolumne (21.6.)</a>
+      </p>
+    </div>
+
+    <div class="alert alert-blue">
+      <h3>ℹ️ Code of Practice Art. 50: Signing-Deadline 22. Juli 2026 – noch 30 Tage</h3>
+      <p>Der finale Code of Practice on AI Transparency ist seit 10. Juni 2026 veröffentlicht. Unternehmen, die generative KI einsetzen oder anbieten, können dem Code beitreten. Signing-Deadline: <strong>22. Juli 2026, 18:00 Uhr CEST</strong>.</p>
+      <p><a href="https://digital-strategy.ec.europa.eu/en/policies/code-practice-ai-generated-content" target="_blank">EU AI Office: Code of Practice</a></p>
+    </div>
+
   </div>
 
-  <!-- 🎓 KURSAKTUALISIERUNGEN -->
-  <div class="section">
-    <div class="section-header green">🎓 Empfehlungen für Kursaktualisierungen</div>
-    <div class="card">
-      <ul class="courses">
-        <li>📝 <strong>Modul „KI-Strategie &amp; Plattformauswahl":</strong> Apple Intelligence EU-Sperre als Fallbeispiel: Regulatorisches Umfeld (DMA) kann KI-Funktionsumfang für europäische Nutzer direkt einschränken. Tool-Auswahl muss Regulierungsrisiken einpreisen.</li>
-        <li>📝 <strong>Modul „Digitale Souveränität &amp; Vendor Lock-in":</strong> US-Exportkontrolle für Anthropic Fable 5/Mythos 5 als Kernbeispiel: Ein einziger Verwaltungsakt in Washington kann den Zugang zu KI-Modellen sofort sperren. Handlungsauftrag: Multi-Vendor-Strategie, EU-Anbieter als Fallback, Notfallplanung.</li>
-        <li>📝 <strong>Modul „KI-Governance &amp; Agentic AI":</strong> IBM-Studie (1.661 erwartete Agenten, nur 11% gerüstet, 18% höhere Margen bei Governance) als quantifizierten Business Case für Governance-Investitionen einsetzen.</li>
-        <li>📝 <strong>Modul „Compliance: Transparenzpflichten Art. 50":</strong> Code of Practice ist seit 10. Juni 2026 final – Signing-Deadline <strong>22. Juli 2026</strong>. Konkreten Handlungsschritt in Compliance-Checklisten aufnehmen.</li>
-        <li>📝 <strong>Modul „KI-Beauftragter: Regulatorischer Zeitplan":</strong> Digital Omnibus steht kurz vor formaler Verabschiedung. Zeitplan vorläufig mit Hinweis auf ausstehende EP-Abstimmung versehen; Hochrisiko-Fristen erst nach Amtsblatt-Veröffentlichung verschoben.</li>
-        <li>📝 <strong>Modul „Microsoft 365 &amp; Copilot":</strong> Investor-Klage und Wachstumsverlangsamung als Fallbeispiel für realistisches Erwartungsmanagement. Copilot-Outage (11.6.) als Anlass für Business-Continuity-Diskussion nutzen.</li>
-      </ul>
-    </div>
+  <!-- 🎓 EMPFEHLUNGEN -->
+  <div class="section-header green">🎓 Empfehlungen für Kursaktualisierungen</div>
+  <div class="card">
+    <ul class="rec-list">
+      <li>📝 <strong>Modul „EU AI Act – Regulatorischer Zeitplan":</strong> EP-Abstimmung (16. Juni, 423 Stimmen) als abgeschlossenen Meilenstein einpflegen. Fristen-Verschiebungen weiterhin mit Vorbehalt (ausstehender Ratsbeschluss + Amtsblatt) kennzeichnen.</li>
+      <li>📝 <strong>Modul „Hochrisiko-KI Einstufung":</strong> Verlängerung der Konsultationsfrist auf 23. Juli 2026 aktualisieren. Stakeholder mit HR-KI-Bezug können noch Stellungnahmen einreichen.</li>
+      <li>📝 <strong>Modul „Microsoft 365 Copilot":</strong> Copilot Cowork ab 16. Juni 2026 GA: Anthropic-Modelle (Opus 4.8, Sonnet 4.6), Metered Billing via Copilot Credits, Voraussetzung M365 Copilot-Lizenz. Autonomer Taskagent – keine Chat-Funktion. Governance-Frage: Berechtigungskonzepte und Audit-Trails sind Pflicht.</li>
+      <li>📝 <strong>Modul „Agentic AI in der Praxis":</strong> Plattform-Welle ab 20. Juni: Google Gemini Spark (bis zu 15 parallele Tasks), Atlassian Claude Agent für Jira, ZoomMate – agentic AI ist in Standard-Collaboration-Tools angekommen.</li>
+      <li>📝 <strong>Modul „KI-Qualitätssicherung":</strong> KPMG-Vorfall als Lehrbeispiel: Vier-Augen-Prinzip und strukturierte Review-Prozesse für KI-Outputs sind kein Nice-to-Have.</li>
+      <li>📝 <strong>Modul „Digitale Souveränität &amp; Geopolitik":</strong> G7-Gipfel (15.–17. Juni): Erstmals alle drei großen KI-Lab-CEOs vor G7-Staatschefs. Forderung nach US-geführter KI-Koalition als Gegenmodell zur EU-Regulierung – jetzt durch Ereignisse auf Staatschef-Ebene belegbar.</li>
+      <li>📝 <strong>Modul „Vendor-Strategie":</strong> Anthropic überflügelt OpenAI (Bewertung 965 Mrd. USD), IPO geplant Oktober 2026. Copilot Cowork läuft auf Anthropic-Modellen – Abhängigkeit von einem Anbieter als Betriebsrisiko diskutieren.</li>
+    </ul>
   </div>
 
   <!-- 📊 PRIORITÄTSÜBERSICHT -->
-  <div class="section">
-    <div class="section-header dark">📊 Prioritätsübersicht dieser Woche</div>
-    <div class="card">
-      <table>
-        <thead>
-          <tr>
-            <th>Thema</th>
-            <th>Priorität</th>
-            <th>Kursrelevanz</th>
-            <th>Quelle</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Apple Intelligence für EU gesperrt – DMA-Konflikt (iOS 27 / iPadOS 27)</td>
-            <td><span class="badge hoch">🔴 Hoch</span></td>
-            <td>KI-Strategie, Regulierung, DMA</td>
-            <td><a href="https://borncity.com/news/apple-intelligence-konzern-sperrt-ki-fuer-450-millionen-eu-nutzer/">BornCity (14.6.)</a></td>
-          </tr>
-          <tr>
-            <td>US-Exportkontrolle: Anthropic Fable 5 &amp; Mythos 5 gesperrt für Nicht-US-Bürger</td>
-            <td><span class="badge hoch">🔴 Hoch</span></td>
-            <td>Digitale Souveränität, Vendor Lock-in</td>
-            <td><a href="https://borncity.com/blog/2026/06/13/us-regierung-belegt-anthropic-fable-und-mythos-mit-export-verbot/">BornCity (13.6.)</a></td>
-          </tr>
-          <tr>
-            <td>Microsoft Copilot: Investor-Klage, Azure-AI-Abschreibung, Wachstumsstopp</td>
-            <td><span class="badge hoch">🔴 Hoch</span></td>
-            <td>Governance, M365 Copilot, ROI</td>
-            <td><a href="https://windowsnews.ai/article/microsoft-investors-file-lawsuit-claiming-the-company-concealed-copilot-adoption-struggles-and-ai-in.425877">Windows News (12.6.)</a></td>
-          </tr>
-          <tr>
-            <td>Hochrisiko-KI Konsultation: Frist 23. Juni 2026 – noch 9 Tage</td>
-            <td><span class="badge hoch">🔴 Hoch</span></td>
-            <td>KI-Beauftragter, HR, Compliance</td>
-            <td><a href="https://digital-strategy.ec.europa.eu/en/library/draft-commission-guidelines-classification-high-risk-ai-systems">EU-Kommission</a></td>
-          </tr>
-          <tr>
-            <td>EU AI Act Digital Omnibus: EP-Plenumabstimmung erwartet im Juni</td>
-            <td><span class="badge hoch">🔴 Hoch</span></td>
-            <td>KI-Beauftragter, Compliance, Fristen</td>
-            <td><a href="https://www.noze.it/en/insights/ai-act-omnibus-adozione/">noze.it</a></td>
-          </tr>
-          <tr>
-            <td>IBM-Studie: 1.661 KI-Agenten erwartet, nur 11% Unternehmen gerüstet</td>
-            <td><span class="badge mittel">🟡 Mittel</span></td>
-            <td>Governance, Agentic AI, Risikomanagement</td>
-            <td><a href="https://borncity.com/news/ki-governance-luecke-ibm-warnt-vor-1-661-agenten-ohne-kontrolle/">BornCity (10.6.)</a></td>
-          </tr>
-          <tr>
-            <td>Code of Practice Art. 50 final veröffentlicht – Signing-Deadline 22. Juli 2026</td>
-            <td><span class="badge mittel">🟡 Mittel</span></td>
-            <td>Compliance, Transparenz, KI-Inhalte</td>
-            <td><a href="https://digital-strategy.ec.europa.eu/en/policies/code-practice-ai-generated-content">EU AI Office (10.6.)</a></td>
-          </tr>
-          <tr>
-            <td>Google Workspace: Gemini direkt in Gmail und Docs integriert</td>
-            <td><span class="badge niedrig">🟢 Niedrig</span></td>
-            <td>KI-Tools, Produktivität</td>
-            <td><a href="https://borncity.com/news/google-workspace-gemini-rueckt-direkt-in-gmail-und-docs-ein/">BornCity (14.6.)</a></td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+  <div class="section-header">📊 Prioritätsübersicht dieser Woche</div>
+  <div class="card">
+    <table>
+      <thead>
+        <tr>
+          <th>Thema</th>
+          <th>Priorität</th>
+          <th>Kursrelevanz</th>
+          <th>Quelle</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>EP nimmt Digital Omnibus an (16. Juni, 423 Stimmen) – Ratsbeschluss ausstehend</td>
+          <td>🔴 Hoch</td>
+          <td>KI-Beauftragter, Compliance, Fristen</td>
+          <td><a href="https://epthinktank.eu/2026/02/12/digital-omnibus-on-ai-eu-legislation-in-progress/" target="_blank">EP Think Tank</a></td>
+        </tr>
+        <tr>
+          <td>KPMG KI-Bericht wegen Halluzinationen zurückgezogen</td>
+          <td>🔴 Hoch</td>
+          <td>Qualitätssicherung, Governance, KI-Risiken</td>
+          <td><a href="https://borncity.com/blog/2026/06/14/ai-slop-bei-kpmg-und-politik-fails-bei-der-webseite-von-mario-vogt/" target="_blank">BornCity (14.6.)</a></td>
+        </tr>
+        <tr>
+          <td>Microsoft Copilot Cowork: Allgemeine Verfügbarkeit (GA) 16. Juni 2026</td>
+          <td>🔴 Hoch</td>
+          <td>M365 Copilot, Agentic AI, Governance</td>
+          <td><a href="https://www.microsoft.com/en-us/microsoft-365/blog/2026/06/16/copilot-cowork-is-now-generally-available/" target="_blank">Microsoft Blog (16.6.)</a></td>
+        </tr>
+        <tr>
+          <td>Hochrisiko-KI Konsultation: Frist verlängert auf 23. Juli 2026</td>
+          <td>🔴 Hoch</td>
+          <td>KI-Beauftragter, HR-KI, Compliance</td>
+          <td><a href="https://digital-strategy.ec.europa.eu/en/consultations/targeted-consultation-draft-guidelines-classification-high-risk-artificial-intelligence-systems" target="_blank">EU-Kommission</a></td>
+        </tr>
+        <tr>
+          <td>G7 AI Summit: Altman, Amodei &amp; Hassabis erstmals gemeinsam vor G7-Staatschefs (15.–17. Juni)</td>
+          <td>🟡 Mittel</td>
+          <td>KI-Governance, Geopolitik, Digitale Souveränität</td>
+          <td><a href="https://www.cnbc.com/2026/06/17/anthropic-amodei-google-hassabis-us-ai-coalition-g7.html" target="_blank">CNBC (17.6.)</a></td>
+        </tr>
+        <tr>
+          <td>Google Gemini Spark + Atlassian Claude Agent für Jira (20. Juni 2026)</td>
+          <td>🟡 Mittel</td>
+          <td>Agentic AI, Produktivität, Governance</td>
+          <td><a href="https://borncity.com/news/agentische-ki-zoom-google-und-atlassian-revolutionieren-teamwork/" target="_blank">BornCity</a></td>
+        </tr>
+        <tr>
+          <td>KI killt Kolumne Absatzwirtschaft (21. Juni) – weiteres Medienopfer</td>
+          <td>🟡 Mittel</td>
+          <td>KI-Auswirkungen, Change Management, Ethik</td>
+          <td><a href="https://borncity.com/blog/2026/06/21/ai-news-ki-killt-kolumne-von-absatzwirtschaft-und-moeglicherweise-die-redaktion/" target="_blank">BornCity (21.6.)</a></td>
+        </tr>
+        <tr>
+          <td>Anthropic überholt OpenAI: Bewertung 965 Mrd. USD, IPO-Prospekt eingereicht</td>
+          <td>🟡 Mittel</td>
+          <td>Digitale Souveränität, Vendor-Strategie</td>
+          <td><a href="https://www.trendingtopics.eu/anthropic-bewertung-steigt-auf-965-milliarden-dollar-ueberholt-openai-mit-852-milliarden-dollar/" target="_blank">Trending Topics</a></td>
+        </tr>
+        <tr>
+          <td>ZoomMate: Agentische KI für Zoom Workplace (~20 USD/Monat)</td>
+          <td>🟢 Niedrig</td>
+          <td>KI-Tools, Produktivität</td>
+          <td><a href="https://www.bigdata-insider.de/zoommate-agentische-ki-zoom-workplace-a-bb990af2a1a6bf1068b29a28833830bf/" target="_blank">BigData Insider</a></td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 
-  <!-- 🔴 EU AI ACT & REGULIERUNG -->
-  <div class="section">
-    <div class="section-header red">🔴 EU AI Act &amp; Regulierung</div>
-    <div class="card">
+  <!-- 🔴 EU AI Act & Regulierung -->
+  <div class="section-header red">🔴 EU AI Act &amp; Regulierung</div>
+  <div class="card">
 
-      <div class="news-item">
-        <h3>Digital Omnibus: Drei formale Schritte fehlen noch – EP-Abstimmung im Juni, Verabschiedung vor 2. August</h3>
-        <p>Die politische Einigung vom 7. Mai 2026 zum Digital Omnibus (erstes AI-Act-Änderungspaket) ist provisorisch – drei formale Schritte fehlen noch: EP-Plenumabstimmung (erwartet im Laufe des Juni 2026), formale Annahme durch den Rat, Veröffentlichung im EU-Amtsblatt. Alle drei müssen vor dem 2. August 2026 erfolgen. Wichtigste Änderungen: Anhang-III-Hochrisiko-Pflichten von August 2026 auf <strong>2. Dezember 2027</strong> verschoben; CE-Produkte-Hochrisiko (Anhang I) auf 2. August 2028; neues Art.-5-Verbot für KI-generierte nicht-einvernehmliche intime Bilder und CSAM.</p>
-        <div class="tags">
-          <span class="tag red">Frist: vor 2. August 2026</span>
-          <span class="tag orange">EP-Abstimmung ausstehend</span>
-          <span class="tag new">Kritisch</span>
-        </div>
-        <div class="sources">
-          <a href="https://www.noze.it/en/insights/ai-act-omnibus-adozione/">noze.it: Digital Omnibus toward formal adoption</a>
-          <a href="https://www.gibsondunn.com/eu-ai-act-omnibus-agreement-postponed-high-risk-deadlines-and-other-key-changes/">Gibson Dunn: Omnibus Key Changes</a>
-          <a href="https://www.insideprivacy.com/artificial-intelligence/eu-ai-act-update-timeline-relief-targeted-simplification-and-new-prohibitions/">Inside Privacy: Timeline Relief</a>
-        </div>
-      </div>
-
-      <div class="news-item">
-        <h3>Code of Practice Art. 50 (KI-generierte Inhalte) final veröffentlicht – Beitritt bis 22. Juli 2026</h3>
-        <p>Am 10. Juni 2026 hat das Europäische KI-Büro den finalen <strong>„Code of Practice on Transparency of AI-Generated Content"</strong> veröffentlicht. Er konkretisiert die ab 2. August 2026 geltenden Transparenzpflichten (Art. 50 AI Act). Kernpunkte: maschinenlesbare Markierungen (digital signierte Metadaten + imperceptible Wasserzeichen; empfohlene Technologie: C2PA); visuelle Kennzeichnung mit den drei EU-Icons; Non-Removal-Pflicht für bestehende Markierungen. <strong>Handlungsbedarf:</strong> Unternehmen, die generative KI nutzen oder anbieten, können dem Code jetzt beitreten. Erstunterzeichner-Liste wird im Juli 2026 veröffentlicht. <strong>Signing-Deadline: 22. Juli 2026, 18:00 Uhr CEST.</strong></p>
-        <div class="tags">
-          <span class="tag red">Signing-Deadline: 22. Juli 2026</span>
-          <span class="tag orange">In Kraft: 2. August 2026</span>
-          <span class="tag new">Final veröffentlicht</span>
-        </div>
-        <div class="sources">
-          <a href="https://digital-strategy.ec.europa.eu/en/policies/code-practice-ai-generated-content">EU AI Office: Code of Practice (10.6.2026)</a>
-          <a href="https://digital-strategy.ec.europa.eu/en/faqs/signing-code-practice-transparency-ai-generated-content">EU AI Office: Signing-Informationen</a>
-          <a href="https://iptc.org/news/eu-ai-transparency-code-of-practice-june-2026/">IPTC: Technische Analyse (C2PA, CAWG)</a>
-        </div>
-      </div>
-
-      <div class="news-item">
-        <h3>Apple Intelligence EU-Sperre: Regulatorisches Lehrbeispiel für KI-Planungsrisiken</h3>
-        <p>Apples Entscheidung, Apple Intelligence nicht in der EU einzuführen (bekannt gegeben 8./14. Juni 2026), zeigt: DMA-Interoperabilitätspflichten und KI-Datenschutzarchitektur sind schwer vereinbar, wenn US-Konzerne ihre Private-Cloud-Compute-Modelle schützen wollen. Die EU-Kommission widerspricht Apples Darstellung explizit. <strong>Für KI-Beauftragte</strong>: Regulatorische Rahmenbedingungen müssen bei der Auswahl und Einführung von KI-Plattformen als Planungsgröße berücksichtigt werden – nicht erst, wenn Funktionen wegfallen.</p>
-        <div class="tags">
-          <span class="tag red">DMA</span>
-          <span class="tag">EU-Regulierung</span>
-          <span class="tag new">Neu (14.6.)</span>
-        </div>
-        <div class="sources">
-          <a href="https://borncity.com/news/apple-intelligence-konzern-sperrt-ki-fuer-450-millionen-eu-nutzer/">BornCity: Apple Intelligence EU-Sperre (14.6.2026)</a>
-        </div>
-      </div>
-
+    <h3>Digital Omnibus: EP nimmt mit 423 Stimmen an (16. Juni) – Ratsbeschluss und Amtsblatt noch ausstehend</h3>
+    <p>Am 16. Juni 2026 hat das Europaparlament den Digital Omnibus mit einer deutlichen Mehrheit von 423 Stimmen formell angenommen. Damit ist der parlamentarische Prozess abgeschlossen. Zwei Schritte fehlen noch bis zum Inkrafttreten: formaler <strong>Ratsbeschluss</strong> und <strong>Amtsblatt-Veröffentlichung</strong> (Inkrafttreten 3 Tage danach). Beide müssen vor dem 2. August 2026 erfolgen. Die wichtigsten Änderungen: Anhang-III-Hochrisiko-Pflichten auf 2. Dezember 2027 verschoben; CE-Produkte-Hochrisiko (Anhang I) auf 2. August 2028; neues Art.-5-Verbot für Nudifier-KI und CSAM.</p>
+    <div>
+      <span class="tag tag-red">EP: 423 Stimmen (16.6.2026)</span>
+      <span class="tag tag-orange">Ratsbeschluss ausstehend</span>
+      <span class="tag tag-gray">Frist: vor 2. August 2026</span>
     </div>
+    <p style="margin-top:8px;">
+      <a href="https://epthinktank.eu/2026/02/12/digital-omnibus-on-ai-eu-legislation-in-progress/" target="_blank">EP Think Tank: Digital Omnibus</a> ·
+      <a href="https://www.gibsondunn.com/eu-ai-act-omnibus-agreement-postponed-high-risk-deadlines-and-other-key-changes/" target="_blank">Gibson Dunn: Key Changes</a> ·
+      <a href="https://verifywise.ai/blog/eu-ai-act-omnibus-what-changed" target="_blank">Verifywise: Was sich geändert hat</a> ·
+      <a href="https://www.consilium.europa.eu/en/press/press-releases/2026/05/07/artificial-intelligence-council-and-parliament-agree-to-simplify-and-streamline-rules/" target="_blank">Consilium: Einigung 7. Mai</a>
+    </p>
+
+    <hr style="margin:16px 0; border-color:#eee;">
+
+    <h3>Hochrisiko-KI Konsultation: Frist um einen Monat auf 23. Juli 2026 verlängert</h3>
+    <p>Auf Stakeholder-Wunsch verlängerte die EU-Kommission die öffentliche Konsultation zu den Entwurfs-Leitlinien für Hochrisiko-KI (Art. 6 / Anhang III) um einen Monat. Neue Frist: <strong>23. Juli 2026</strong>. Die 148-seitigen Leitlinien (veröffentlicht 19. Mai 2026) spezifizieren mit Praxisbeispielen, welche Systeme als hochriskant einzustufen sind. Besonders relevant: HR/Recruiting-KI. Finale Leitlinien werden nach Auswertung bis Ende 2026 erwartet. Hinweis: Die eigentlichen Hochrisiko-Pflichten (Anhang III) gelten nach Digital Omnibus erst ab 2. Dezember 2027.</p>
+    <div>
+      <span class="tag tag-orange">Neue Frist: 23. Juli 2026</span>
+      <span class="tag tag-blue">HR/Recruiting-KI</span>
+      <span class="tag tag-gray">Finale Leitlinien: Ende 2026</span>
+    </div>
+    <p style="margin-top:8px;">
+      <a href="https://digital-strategy.ec.europa.eu/en/consultations/targeted-consultation-draft-guidelines-classification-high-risk-artificial-intelligence-systems" target="_blank">EU-Kommission: Konsultation</a> ·
+      <a href="https://www.hunton.com/privacy-and-cybersecurity-law-blog/european-commission-releases-draft-guidelines-on-high-risk-ai-under-the-eu-ai-act" target="_blank">Hunton: Draft Guidelines Analyse</a>
+    </p>
+
+    <hr style="margin:16px 0; border-color:#eee;">
+
+    <h3>G7 AI Summit (15.–17. Juni 2026): Alle drei KI-Lab-CEOs erstmals vor Staatschefs – Forderung nach US-Koalition</h3>
+    <p>Beim G7-Gipfel in Frankreich traten Sam Altman (OpenAI), Dario Amodei (Anthropic) und Demis Hassabis (Google DeepMind) erstmals gemeinsam vor G7-Staatschefs. Hauptthemen: KI-Biosicherheit, KI-Souveränität in Europa, gemeinsames Evaluierungsframework. Amodei und Hassabis forderten eine US-geführte KI-Koalition. Frankreich und die EU widersprechen einem US-Führungsanspruch explizit. <strong>Für KI-Beauftragte:</strong> Geopolitische Fragmentierung der KI-Governance ist ein strategisches Risiko – Multi-Vendor-Planung und EU-Anbieter-Alternativen gewinnen an Gewicht.</p>
+    <div>
+      <span class="tag tag-blue">Geopolitik</span>
+      <span class="tag tag-purple">Digitale Souveränität</span>
+      <span class="tag tag-gray">G7 Frankreich 15.–17. Juni 2026</span>
+    </div>
+    <p style="margin-top:8px;">
+      <a href="https://www.cnbc.com/2026/06/17/anthropic-amodei-google-hassabis-us-ai-coalition-g7.html" target="_blank">CNBC: Amodei &amp; Hassabis US AI coalition</a> ·
+      <a href="https://fortune.com/2026/06/18/ai-chiefs-regulation-collaboration-g7-summit/" target="_blank">Fortune: AI chiefs at G7</a> ·
+      <a href="https://thenextweb.com/news/anthropic-google-us-led-ai-coalition-g7-amodei-hassabis" target="_blank">The Next Web: US-led AI coalition</a>
+    </p>
+
   </div>
 
-  <!-- 🔵 KI-TOOLS & UNTERNEHMENSANWENDUNGEN -->
-  <div class="section">
-    <div class="section-header blue">🔵 KI-Tools &amp; Unternehmensanwendungen</div>
-    <div class="card">
+  <!-- 🔵 KI-Tools & Unternehmensanwendungen -->
+  <div class="section-header blue">🔵 KI-Tools &amp; Unternehmensanwendungen</div>
+  <div class="card">
 
-      <div class="news-item">
-        <h3>US-Exportkontrolle für Anthropic Fable 5 &amp; Mythos 5: Digitale Souveränität als Betriebsrisiko</h3>
-        <p>Am 12. Juni 2026 erhielt Anthropic eine Exportkontrollanordnung der US-Regierung: Die neuesten Modelle Fable 5 und Mythos 5 dürfen nicht mehr von ausländischen Staatsangehörigen genutzt werden – unabhängig von Aufenthaltsort oder Unternehmenszugehörigkeit (betrifft auch ausländische Anthropic-Mitarbeiter). Anthropic hat die Modelle sofort weltweit deaktiviert. Alle anderen Anthropic-Modelle bleiben verfügbar. Hintergrund: Ein gemeldeter, von Anthropic selbst als gering eingestufter Jailbreak. Der Vorfall bestätigt eine strukturelle Abhängigkeit: Europäische Unternehmen nutzen US-KI-Dienste, über deren Verfügbarkeit letztlich US-Behörden entscheiden.</p>
-        <div class="tags">
-          <span class="tag red">Exportkontrolle USA</span>
-          <span class="tag red">Digitale Souveränität</span>
-          <span class="tag orange">Anthropic</span>
-          <span class="tag new">Neu (13.6.)</span>
-        </div>
-        <div class="sources">
-          <a href="https://borncity.com/blog/2026/06/13/us-regierung-belegt-anthropic-fable-und-mythos-mit-export-verbot/">BornCity Blog: US-Exportverbot Anthropic</a>
-          <a href="https://www.anthropic.com/news/fable-mythos-access">Anthropic Official Statement (12.6.2026)</a>
-        </div>
-      </div>
-
-      <div class="news-item">
-        <h3>Microsoft Copilot: Investor-Klage, Wachstumsstagnation und Infrastruktur-Abschreibungen</h3>
-        <p>Am 12. Juni 2026 wurde eine Securities Class Action gegen Microsoft eingereicht. Im Mid-Quarter-Update gab Microsoft bekannt: Copilot-Seat-Wachstum verlangsamt sich zum dritten Quartal in Folge; Azure AI Revenue um 3,5 Mrd. USD nach unten korrigiert; 7,2 Mrd. USD Abschreibungen auf Rechenzentrumsanlagen (mit dem Hinweis, dass „manche KI-Infrastruktur redundant werden könnte"). Aktie -16% YTD. Am 11. Juni gab es zudem einen kurzen Copilot-Ausfall durch eine fehlerhafte Deployment-Konfiguration. <strong>Für KI-Schulungen:</strong> Realistisches Erwartungsmanagement bei KI-Rollouts; Copilot-Abhängigkeit als Betriebsrisiko; AI Reliability als Governance-Thema.</p>
-        <div class="tags">
-          <span class="tag red">Investor-Klage</span>
-          <span class="tag orange">Copilot Adoption</span>
-          <span class="tag">Kostenkontrolle</span>
-          <span class="tag new">Neu (12.6.)</span>
-        </div>
-        <div class="sources">
-          <a href="https://windowsnews.ai/article/microsoft-investors-file-lawsuit-claiming-the-company-concealed-copilot-adoption-struggles-and-ai-in.425877">Windows News: Investor Lawsuit</a>
-          <a href="https://windowsnews.ai/article/june-2026-copilot-outages-why-ai-reliability-is-now-an-office-availability-issue.425467">Windows News: Copilot Outages</a>
-          <a href="https://trading-treff.de/trading/microsoft-aktie-klage-um-copilot">Trading-Treff: Copilot Klage</a>
-        </div>
-      </div>
-
-      <div class="news-item">
-        <h3>Google Workspace: Gemini direkt in Gmail und Docs integriert (14. Juni 2026)</h3>
-        <p>Google hat die Gemini-KI-Assistenz in Gmail und Google Docs tief in die Benutzeroberfläche integriert – KI-Unterstützung ist nun im Standardmodus aktiv, kein separates Einschalten mehr nötig. Für Unternehmen mit Google-Workspace-Nutzung: Erhöhter Schulungsbedarf, da Mitarbeitende KI nun permanent im Arbeitsfluss begegnen. Governance-Relevanz: Datenschutz bei KI-verarbeiteten Dokumenteninhalten, Transparenzpflichten Art. 50 für KI-modifizierte Inhalte.</p>
-        <div class="tags">
-          <span class="tag">Google Workspace</span>
-          <span class="tag">KI-Tools</span>
-          <span class="tag green">Niedrig</span>
-          <span class="tag new">Neu (14.6.)</span>
-        </div>
-        <div class="sources">
-          <a href="https://borncity.com/news/google-workspace-gemini-rueckt-direkt-in-gmail-und-docs-ein/">BornCity: Google Workspace Gemini (14.6.2026)</a>
-        </div>
-      </div>
-
+    <h3>Microsoft Copilot Cowork: Allgemeine Verfügbarkeit seit 16. Juni 2026 – Metered Billing, Anthropic-Modelle</h3>
+    <p>Microsoft hat Copilot Cowork am 16. Juni 2026 weltweit für alle Microsoft 365 Copilot-Kunden allgemein verfügbar (GA) gemacht. Cowork ist ein autonomer KI-Agent für komplexe Enterprise-Tasks über Dateien, Apps und Unternehmensdaten – kein Chat-Assistent, sondern ein Ausführungswerkzeug. Mehr als die Hälfte der Fortune 500 testete bereits in der Frontier-Preview (März–Juni). Technische Basis: Anthropic-Modelle (Opus 4.8 und Sonnet 4.6); GPT-5.5 in Frontier; eigenes Cowork-1-Modell angekündigt. Abrechnung: Copilot Credits (Usage-based), zusätzlich zur M365 Copilot-Lizenz. <strong>Governance:</strong> Autonome Agenten benötigen explizite Berechtigungskonzepte, Audit-Trails und menschliche Kontrollpunkte.</p>
+    <div>
+      <span class="tag tag-blue">GA 16. Juni 2026</span>
+      <span class="tag tag-gray">M365 Copilot</span>
+      <span class="tag tag-orange">Metered Billing</span>
+      <span class="tag tag-purple">Anthropic-Modelle</span>
     </div>
+    <p style="margin-top:8px;">
+      <a href="https://www.microsoft.com/en-us/microsoft-365/blog/2026/06/16/copilot-cowork-is-now-generally-available/" target="_blank">Microsoft Blog: Copilot Cowork GA</a> ·
+      <a href="https://redmondmag.com/articles/2026/06/16/microsoft-makes-copilot-cowork-generally-available-worldwide.aspx" target="_blank">Redmond Mag: GA worldwide</a> ·
+      <a href="https://windowsforum.com/threads/copilot-cowork-ga-june-16-2026-metered-agent-billing-credits-and-it-governance.426989/" target="_blank">Windows Forum: Billing &amp; Governance</a>
+    </p>
+
+    <hr style="margin:16px 0; border-color:#eee;">
+
+    <h3>Agentische KI-Welle: Google Gemini Spark, Atlassian Claude Agent für Jira, ZoomMate (ab 20. Juni 2026)</h3>
+    <p>Am 20. Juni 2026 lancierten gleich zwei Anbieter neue agentic-AI-Plattformen: <strong>Google Gemini Spark</strong> – persönlicher Agent für Google Workspace, führt bis zu 15 Tasks gleichzeitig in Gmail, Drive und Docs aus (Rollout 23.–30. Juni erwartet) – und <strong>Atlassian Claude Agent für Jira</strong> (Anthropic-KI direkt im Projektmanagement). ZoomMate (Zoom) startete Mitte Juni zu ca. 20 USD/Nutzer/Monat für Nordamerika (EU-Rollout H2/2026). <strong>Implikation:</strong> Agentic AI ist in Standard-Collaboration-Tools angekommen. Ohne Governance-Rahmen entstehen unkontrollierte KI-Aktionen in produktiven Kernsystemen.</p>
+    <div>
+      <span class="tag tag-green">Neu (ab 20. Juni 2026)</span>
+      <span class="tag tag-blue">Agentic AI</span>
+      <span class="tag tag-gray">Google / Atlassian / Zoom</span>
+    </div>
+    <p style="margin-top:8px;">
+      <a href="https://borncity.com/news/agentische-ki-zoom-google-und-atlassian-revolutionieren-teamwork/" target="_blank">BornCity: Agentische KI – Zoom, Google, Atlassian</a> ·
+      <a href="https://www.bigdata-insider.de/zoommate-agentische-ki-zoom-workplace-a-bb990af2a1a6bf1068b29a28833830bf/" target="_blank">BigData Insider: ZoomMate</a> ·
+      <a href="https://www.atlassian.com/blog/company-news/teamwork-collection-team-26" target="_blank">Atlassian: Teamwork Collection</a>
+    </p>
+
+    <hr style="margin:16px 0; border-color:#eee;">
+
+    <h3>KPMG: KI-generierter Bericht wegen Halluzinationen zurückgezogen – Governance-Versagen mit Symbolwirkung</h3>
+    <p>KPMG musste einen mit KI-Unterstützung erstellten Bericht öffentlich zurückziehen, da inhaltliche Fehler (Halluzinationen) entdeckt wurden. Dass ausgerechnet eine Big-Four-Prüfgesellschaft betroffen ist, hat Signalwirkung: Kein Unternehmen ist gegen KI-Qualitätsmängel immun, wenn menschliche Review-Prozesse fehlen. Gleichzeitig meldete BornCity am 21. Juni, dass die Work &amp; Culture-Kolumne bei absatzwirtschaft.de eingestellt wird – offenbar ein weiteres Medienopfer des KI-Drucks. Beide Fälle illustrieren die Notwendigkeit von Human-in-the-Loop-Prozessen und Qualitätssicherungsprotokollen für KI-Outputs.</p>
+    <div>
+      <span class="tag tag-red">Governance-Versagen</span>
+      <span class="tag tag-orange">Qualitätssicherung</span>
+      <span class="tag tag-gray">KPMG / Absatzwirtschaft</span>
+    </div>
+    <p style="margin-top:8px;">
+      <a href="https://borncity.com/blog/2026/06/14/ai-slop-bei-kpmg-und-politik-fails-bei-der-webseite-von-mario-vogt/" target="_blank">BornCity: AI-Slop bei KPMG (14.6.)</a> ·
+      <a href="https://borncity.com/blog/2026/06/21/ai-news-ki-killt-kolumne-von-absatzwirtschaft-und-moeglicherweise-die-redaktion/" target="_blank">BornCity: KI killt Kolumne (21.6.)</a>
+    </p>
+
   </div>
 
-  <!-- 🟣 GOVERNANCE, RISIKOMANAGEMENT & ZERTIFIZIERUNG -->
-  <div class="section">
-    <div class="section-header purple">🟣 Governance, Risikomanagement &amp; Zertifizierung</div>
-    <div class="card">
+  <!-- 🟣 Governance, Risikomanagement & Zertifizierung -->
+  <div class="section-header purple">🟣 Governance, Risikomanagement &amp; Zertifizierung</div>
+  <div class="card">
 
-      <div class="news-item">
-        <h3>IBM-Studie: 1.661 KI-Agenten erwartet – Governance-Investition liefert 18% höhere Margen</h3>
-        <p>Eine am 10. Juni 2026 veröffentlichte IBM-Studie (ca. 2.000 Führungskräfte, Oxford Economics, 33 Länder) belegt eine massive KI-Governance-Lücke: Unternehmen erwarten bis 2027 im Schnitt <strong>1.661 KI-Agenten im Einsatz</strong> – aber nur <strong>11%</strong> fühlen sich gerüstet, <strong>77%</strong> haben Governance, die hinter der KI-Entwicklung zurückbleibt. Im Durchschnitt wurden 54 Agenten-Vorfälle je Unternehmen gezählt, die menschliches Eingreifen erforderten. Das Positiv-Signal: Unternehmen mit strukturierter Governance erzielen <strong>18% höhere Margen</strong>, setzen 16x mehr Agenten ein und verbringen 4x weniger Budget für Problembehebung. Gleichzeitig starteten Adobe (CX Enterprise Coworker), Asana (KI-Teammitglieder + Asana Dash) und Cisco (AgenticOps) neue Agentic-AI-Plattformen.</p>
-        <div class="tags">
-          <span class="tag red">Agentic AI Governance</span>
-          <span class="tag orange">IBM-Studie</span>
-          <span class="tag new">Neu</span>
-        </div>
-        <div class="sources">
-          <a href="https://borncity.com/news/ki-governance-luecke-ibm-warnt-vor-1-661-agenten-ohne-kontrolle/">BornCity: IBM-Studie KI-Governance-Lücke (10.6.2026)</a>
-        </div>
-      </div>
-
-      <div class="news-item">
-        <h3>Digitale Souveränität als Governance-Pflicht: Zwei Weckrufe in drei Tagen</h3>
-        <p>Die Sperrung von Anthropic Fable 5/Mythos 5 (US-Exportkontrolle, 13.6.) und die Apple Intelligence EU-Sperre (DMA, 14.6.) belegen dasselbe Grundproblem: Europäische Nutzer und Unternehmen sind strukturell abhängig von US-KI-Anbietern, über deren Verfügbarkeit und Einsatzbedingungen letztlich US-Behörden und US-Unternehmensentscheidungen maßgeblich bestimmen. <strong>Governance-Konsequenzen:</strong> Multi-Vendor-Strategie für KI-Tools dokumentieren; EU-Alternativen evaluieren und als Fallback planen; Serviceverfügbarkeits-SLAs und Notfallprozesse in KI-Richtlinien aufnehmen; ISO 42001 bietet einen strukturierten Rahmen für genau diesen Ansatz.</p>
-        <div class="tags">
-          <span class="tag red">Digitale Souveränität</span>
-          <span class="tag purple">ISO 42001</span>
-          <span class="tag">Multi-Vendor</span>
-          <span class="tag new">Neu</span>
-        </div>
-        <div class="sources">
-          <a href="https://borncity.com/blog/2026/06/13/us-regierung-belegt-anthropic-fable-und-mythos-mit-export-verbot/">BornCity: Exportverbot Anthropic</a>
-          <a href="https://borncity.com/news/apple-intelligence-konzern-sperrt-ki-fuer-450-millionen-eu-nutzer/">BornCity: Apple Intelligence EU-Sperre</a>
-        </div>
-      </div>
-
-      <div class="news-item">
-        <h3>KI-Ausfall = Büro-Ausfall: Copilot-Outage als Business-Continuity-Lehrstück</h3>
-        <p>Der kurze Microsoft 365 Copilot-Ausfall am 11. Juni 2026 (durch einen fehlerhaft konfigurierten Authentication-Microservice) unterstreicht: Wenn KI tief in Arbeitsabläufe integriert ist, werden KI-Ausfälle zu Office-Ausfällen. Für KI-Governance bedeutet das: Verfügbarkeits-SLAs für KI-Dienste, Fallback-Prozesse und Business-Continuity-Planung gehören in das KI-Betriebskonzept – nicht nur für Hightech, sondern für jeden Copilot- oder Gemini-Nutzer.</p>
-        <div class="tags">
-          <span class="tag orange">AI Reliability</span>
-          <span class="tag">Business Continuity</span>
-          <span class="tag date">11.6.2026</span>
-        </div>
-        <div class="sources">
-          <a href="https://windowsnews.ai/article/june-2026-copilot-outages-why-ai-reliability-is-now-an-office-availability-issue.425467">Windows News: Copilot Outages – Office Availability Issue</a>
-        </div>
-      </div>
-
+    <h3>G7 AI Governance: Forderung nach internationalem Framework – Spannungsfeld mit EU-Regulierung</h3>
+    <p>Der G7-Gipfel hat die geopolitische Dimension von KI-Governance scharf beleuchtet. Während die EU mit dem AI Act auf verbindliche Regulierung setzt, forderten die CEOs von Anthropic und Google DeepMind eine US-geführte KI-Koalition mit internationalen Standards für Modell-Evaluierung und Risikominderung. OpenAI-CEO Altman plädierte für „ein internationales Forum für global akzeptierte Teststandards". Frankreich und die EU lehnen einen US-Führungsanspruch explizit ab. <strong>Für Governance-Module:</strong> Das Spannungsfeld US-Ansatz vs. EU-Regulierung ist durch konkrete Ereignisse auf Staatschef-Ebene jetzt direkt lehrbar.</p>
+    <div>
+      <span class="tag tag-purple">Geopolitik</span>
+      <span class="tag tag-blue">Digitale Souveränität</span>
+      <span class="tag tag-gray">G7 Frankreich 15.–17. Juni</span>
     </div>
+    <p style="margin-top:8px;">
+      <a href="https://www.cnbc.com/2026/06/17/anthropic-amodei-google-hassabis-us-ai-coalition-g7.html" target="_blank">CNBC: Amodei &amp; Hassabis US AI coalition G7</a> ·
+      <a href="https://fortune.com/2026/06/18/ai-chiefs-regulation-collaboration-g7-summit/" target="_blank">Fortune: AI chiefs at G7</a>
+    </p>
+
+    <hr style="margin:16px 0; border-color:#eee;">
+
+    <h3>Anthropic: Bewertung 965 Mrd. USD überholt OpenAI – IPO-Vorbereitung als Governance-Signal</h3>
+    <p>Anthropic schloss im Mai 2026 eine Series-H-Finanzierung (65 Mrd. USD) ab und überholte OpenAI (852 Mrd. USD). Annualisierter Umsatz: 47 Mrd. USD (5x gegenüber Ende 2025). Börsenprospekt (S-1) vertraulich am 1. Juni 2026 bei der SEC eingereicht; möglicher IPO Oktober 2026. <strong>Governance-Relevanz:</strong> Microsoft Copilot Cowork läuft auf Anthropic-Modellen – ein Börsengang verändert Anthropics Anreizstruktur. Europäische Unternehmen mit Abhängigkeit von Anthropic-Modellen sollten Multi-Vendor-Planung aktuell halten.</p>
+    <div>
+      <span class="tag tag-purple">Anthropic</span>
+      <span class="tag tag-orange">IPO Oktober 2026</span>
+      <span class="tag tag-gray">Digitale Souveränität</span>
+    </div>
+    <p style="margin-top:8px;">
+      <a href="https://www.trendingtopics.eu/anthropic-bewertung-steigt-auf-965-milliarden-dollar-ueberholt-openai-mit-852-milliarden-dollar/" target="_blank">Trending Topics: Anthropic Bewertung</a> ·
+      <a href="https://finanzwissen.de/news/anthropic-plant-boersengang-im-herbst-2026-bewertung-kratzt-an-einer-billion-dollar/" target="_blank">Finanzwissen: Anthropic IPO</a>
+    </p>
+
+    <hr style="margin:16px 0; border-color:#eee;">
+
+    <h3>ISO 42001: Weiterhin keine harmonisierte Norm unter dem AI Act – aber strukturierte Governance-Basis</h3>
+    <p>ISO/IEC 42001 bleibt der führende internationale Standard für KI-Managementsysteme (zertifizierbar über TÜV AUSTRIA, TÜV SÜD, TÜV Rheinland). Klarstellung für Schulungsmodule: Stand 2026 ist ISO 42001 <strong>keine harmonisierte Norm</strong> unter dem EU AI Act und begründet keine Konformitätsvermutung – kann aber im Rahmen eines AI-Act-Compliance-Projekts als Nachweis strukturierter Governance-Reife herangezogen werden. TÜV Süd Whitepaper (März 2026) zu „Trust by Design" mit ISO 42001 verfügbar.</p>
+    <div>
+      <span class="tag tag-purple">ISO 42001</span>
+      <span class="tag tag-blue">KI-Governance</span>
+      <span class="tag tag-gray">TÜV AUSTRIA / TÜV SÜD / TÜV Rheinland</span>
+    </div>
+    <p style="margin-top:8px;">
+      <a href="https://certification.tuv.com/de/de/audits-zertifizierungen/zertifiziernugen-it-security-datenschutz/iso-42001/" target="_blank">TÜV Rheinland: ISO 42001</a> ·
+      <a href="https://www.tuvsud.com/de-de/dienstleistungen/auditierung-und-zertifizierung/cyber-security-zertifizierung/iso-42001" target="_blank">TÜV SÜD: ISO 42001</a> ·
+      <a href="https://www.qz-online.de/a/news/ist-unternehmens-ki-vertrauenswuerdig-7597920" target="_blank">QZ Online: TÜV Süd Whitepaper Trust by Design</a>
+    </p>
+
   </div>
 
-  <!-- 📅 REGULATORISCHER ZEITPLAN -->
-  <div class="section">
-    <div class="section-header orange">📅 Regulatorischer Zeitplan (aktualisiert)</div>
-    <div class="card">
-      <table>
-        <thead>
-          <tr>
-            <th>Datum</th>
-            <th>Verpflichtung / Ereignis</th>
-            <th>Zielgruppe</th>
-            <th>Status</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Gilt bereits</td>
-            <td>Verbote (unzulässige KI) &amp; GPAI-Pflichten</td>
-            <td>Alle Anbieter &amp; Betreiber</td>
-            <td>✅ In Kraft</td>
-          </tr>
-          <tr>
-            <td><strong>23. Juni 2026</strong></td>
-            <td>Konsultationsende Hochrisiko-KI-Leitlinien (Art. 6 / Anhang III, inkl. HR/Recruiting) – <strong>noch 9 Tage!</strong></td>
-            <td>Anbieter &amp; Betreiber Hochrisiko-KI</td>
-            <td>⏰ Kritisch</td>
-          </tr>
-          <tr>
-            <td>Juni 2026</td>
-            <td>EU AI Act Digital Omnibus: EP-Plenumabstimmung erwartet (dann Rat + Amtsblatt-Veröffentlichung vor 2. August)</td>
-            <td>Alle KI-Anbieter &amp; Betreiber</td>
-            <td>🔄 Ausstehend</td>
-          </tr>
-          <tr>
-            <td><strong>22. Juli 2026</strong></td>
-            <td>Signing-Deadline Code of Practice on AI Transparency Art. 50 – Erstunterzeichner-Liste erscheint im Juli 2026</td>
-            <td>Anbieter &amp; Deployer generativer KI</td>
-            <td>⏰ NEU – Handlungsbedarf</td>
-          </tr>
-          <tr>
-            <td>2. August 2026</td>
-            <td>Transparenzpflichten Art. 50 Abs. 1, 3, 4 (Kennzeichnung KI-generierter Inhalte) – ohne Übergangsfrist. EU-Icons verfügbar seit 10.6.2026</td>
-            <td>Anbieter &amp; Deployer generativer KI</td>
-            <td>⏰ Frist rückt näher</td>
-          </tr>
-          <tr>
-            <td>2. Dezember 2026</td>
-            <td>Machine-readable Marking Art. 50 Abs. 2 (Übergangsregel); Nudifier-App-Verbot (nach Digital Omnibus)</td>
-            <td>Anbieter generativer KI</td>
-            <td>⏳ Läuft</td>
-          </tr>
-          <tr>
-            <td>1. Januar 2027</td>
-            <td>Colorado AI Act (SB 26-189) tritt in Kraft – USA</td>
-            <td>Unternehmen mit US-Geschäft</td>
-            <td>📋 Geplant</td>
-          </tr>
-          <tr>
-            <td>Q1 2027</td>
-            <td>EU-Amtsblatt-Referenzierung harmonisierter Normen (frühestens)</td>
-            <td>Alle KI-Anbieter</td>
-            <td>🔄 Verzögert</td>
-          </tr>
-          <tr>
-            <td>2. Dezember 2027</td>
-            <td>Hochrisiko-KI Anhang III – nach Digital Omnibus verschoben (vorher: 2. August 2026)</td>
-            <td>Anbieter &amp; Betreiber Hochrisiko-KI</td>
-            <td>📋 Verschoben (Digital Omnibus, noch ausstehend)</td>
-          </tr>
-          <tr>
-            <td>2. August 2028</td>
-            <td>Hochrisiko-KI in regulierten Produkten (Anhang I) – nach Digital Omnibus</td>
-            <td>Hersteller (CE-Produkte)</td>
-            <td>📋 Verschoben (Digital Omnibus, noch ausstehend)</td>
-          </tr>
-        </tbody>
-      </table>
-      <p style="margin-top:10px; font-size:0.82em; color:#546e7a;">⚠️ Digital Omnibus noch nicht formal verabschiedet (Stand: 14.6.2026). Verschobene Fristen (Dez. 2027, Aug. 2028) gelten erst nach EP-Abstimmung, Ratsbeschluss und EU-Amtsblatt-Veröffentlichung.</p>
-    </div>
+  <!-- 📅 Regulatorischer Zeitplan -->
+  <div class="section-header orange">📅 Regulatorischer Zeitplan (aktualisiert)</div>
+  <div class="card">
+    <table class="timeline">
+      <thead>
+        <tr>
+          <th>Datum</th>
+          <th>Verpflichtung / Ereignis</th>
+          <th>Zielgruppe</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Gilt bereits</td>
+          <td>Verbote (unzulässige KI) &amp; GPAI-Pflichten</td>
+          <td>Alle Anbieter &amp; Betreiber</td>
+          <td><span class="badge badge-green">✅ In Kraft</span></td>
+        </tr>
+        <tr>
+          <td><strong>16. Juni 2026</strong></td>
+          <td>EP nimmt Digital Omnibus an (423 Stimmen) – Ratsbeschluss + Amtsblatt ausstehend</td>
+          <td>Alle KI-Anbieter &amp; Betreiber</td>
+          <td><span class="badge badge-orange">🔄 Ratsbeschluss ausstehend</span></td>
+        </tr>
+        <tr>
+          <td><strong>22. Juli 2026</strong></td>
+          <td>Signing-Deadline Code of Practice on AI Transparency Art. 50 (18:00 Uhr CEST)</td>
+          <td>Anbieter &amp; Deployer generativer KI</td>
+          <td><span class="badge badge-red">⏰ Handlungsbedarf</span></td>
+        </tr>
+        <tr>
+          <td><strong>23. Juli 2026</strong></td>
+          <td>Verlängerte Konsultationsfrist Hochrisiko-KI Leitlinien Art. 6 / Anhang III (ursprünglich 23. Juni)</td>
+          <td>Anbieter &amp; Betreiber Hochrisiko-KI</td>
+          <td><span class="badge badge-orange">⏰ Verlängert</span></td>
+        </tr>
+        <tr>
+          <td><strong>vor 2. August 2026</strong></td>
+          <td>EU AI Act Digital Omnibus: Ratsbeschluss + Amtsblatt-Veröffentlichung erforderlich – sonst Hochrisiko-Pflichten ab 2. August ohne Verschiebung</td>
+          <td>Alle KI-Anbieter &amp; Betreiber</td>
+          <td><span class="badge badge-red">⏰ Kritisch</span></td>
+        </tr>
+        <tr>
+          <td>2. August 2026</td>
+          <td>Transparenzpflichten Art. 50 Abs. 1, 3, 4 (Kennzeichnung KI-generierter Inhalte) – ohne Übergangsfrist</td>
+          <td>Anbieter &amp; Deployer generativer KI</td>
+          <td><span class="badge badge-orange">⏰ Frist rückt näher</span></td>
+        </tr>
+        <tr>
+          <td>2. Dezember 2026</td>
+          <td>Machine-readable Marking Art. 50 Abs. 2 (Übergangsregel); Nudifier-App-Verbot (nach Digital Omnibus)</td>
+          <td>Anbieter generativer KI</td>
+          <td><span class="badge badge-gray">⏳ Läuft</span></td>
+        </tr>
+        <tr>
+          <td>1. Januar 2027</td>
+          <td>Colorado AI Act (SB 26-189) tritt in Kraft – USA</td>
+          <td>Unternehmen mit US-Geschäft</td>
+          <td><span class="badge badge-gray">📋 Geplant</span></td>
+        </tr>
+        <tr>
+          <td>Q1 2027</td>
+          <td>EU-Amtsblatt-Referenzierung harmonisierter Normen (frühestens)</td>
+          <td>Alle KI-Anbieter</td>
+          <td><span class="badge badge-gray">🔄 Verzögert</span></td>
+        </tr>
+        <tr>
+          <td>2. Dezember 2027</td>
+          <td>Hochrisiko-KI Anhang III – nach Digital Omnibus verschoben (vorher: 2. August 2026)</td>
+          <td>Anbieter &amp; Betreiber Hochrisiko-KI</td>
+          <td><span class="badge badge-gray">📋 Verschoben (Digital Omnibus)</span></td>
+        </tr>
+        <tr>
+          <td>2. August 2028</td>
+          <td>Hochrisiko-KI in regulierten Produkten (Anhang I) – nach Digital Omnibus</td>
+          <td>Hersteller (CE-Produkte)</td>
+          <td><span class="badge badge-gray">📋 Verschoben (Digital Omnibus)</span></td>
+        </tr>
+      </tbody>
+    </table>
+    <p style="margin-top:12px; font-size:0.85em; color:#666;">
+      ⚠️ Digital Omnibus: EP-Abstimmung abgeschlossen (16.6.2026, 423 Stimmen). Fristen-Verschiebungen (Dez. 2027, Aug. 2028) treten erst nach Ratsbeschluss und Amtsblatt-Veröffentlichung in Kraft – erwartet vor 2. August 2026.
+    </p>
   </div>
 
-</div>
+</div><!-- /container -->
 
 <footer>
-  <strong>Erstellt:</strong> 14. Juni 2026 (automatisierter Lauf) &nbsp;|&nbsp;
-  <strong>Stichtag (neu seit):</strong> 11. Juni 2026 &nbsp;|&nbsp;
-  <strong>Quellen:</strong> EU-Kommission / digital-strategy.ec.europa.eu, EU AI Act Explorer (artificialintelligenceact.eu), BornCity / borncity.com, IPTC (iptc.org), Gibson Dunn, Inside Privacy, noze.it, Windows News AI, Trading-Treff, Anthropic (anthropic.com)
+  <strong>Erstellt:</strong> 22. Juni 2026 (automatisierter Lauf) &nbsp;|&nbsp;
+  <strong>Stichtag (neu seit):</strong> 14. Juni 2026 &nbsp;|&nbsp;
+  <strong>Quellen:</strong> EU-Kommission / digital-strategy.ec.europa.eu, Europäisches Parlament / epthinktank.eu, Consilium, Gibson Dunn, Verifywise, BornCity / borncity.com, Microsoft Blog, Redmond Mag, Windows Forum, CNBC, Fortune, The Next Web, Trending Topics, Finanzwissen.de, BigData Insider, Atlassian Blog, TÜV Rheinland / TÜV SÜD / TÜV AUSTRIA, Hunton Privacy Blog, TechJack Solutions
 </footer>
+
 </body>
 </html>

@@ -115,6 +115,7 @@
 ### 4.2 KI-Strategie & Roadmaps
 | URL | Name | Typ | Schlagwörter |
 |-----|------|-----|--------------|
+| https://www.federalreserve.gov/econres/notes/feds-notes/monitoring-ai-adoption-in-the-u-s-economy-20260403.html | Federal Reserve — Monitoring AI Adoption in the U.S. Economy (Allen, April 2026) | Studie | KI-Adoption USA, 18% Firmen / 41% Beschäftigte / 78% employment-weighted, Finanzsektor Spitzenreiter, Shadow AI, Business Case, KIM Tag 1 + Tag 5 / KIB Tag 1–2 |
 | https://www.plattform-lernende-systeme.de/ | Plattform Lernende Systeme | Behörde | Deutschland, KI-Strategie, Whitepaper, Use Cases |
 | https://digital-strategy.ec.europa.eu/en/library/coordinated-plan-artificial-intelligence-2021-review | EU Kommission | EU Coordinated AI Plan 2021 | Mitgliedsstaaten, Investitionen, Strategie |
 | https://openai.com/de-DE/research/index/ | OpenAI | Forschung | KI-Strategie, KI-Modelle, Intelligence Age, OpenAI-Perspektive |
