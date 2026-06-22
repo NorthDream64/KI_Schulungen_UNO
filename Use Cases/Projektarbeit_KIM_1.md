@@ -1,29 +1,26 @@
 # Projektarbeit im Rahmen der Fortbildung zur KI-Beauftragten
-> ⚠️ Disclaimer — bitte verwendet in der Projektarbeit keine echten Namen von Unternehmen oder Personen.
+> ⚠️ Disclaimer — bitte verwendet in der Projektarbeit keine echten Namen von Unternehmen oder Personen. Eure eigene Branche und euer eigenes Arbeitsumfeld dürft und sollt ihr aber beschreiben.
 
 ---
 
 ## Hintergrund
 
-Ihr seid der oder die frisch gebackene KI-Beauftragte einer mittelgroßen Stadt und des sie umschließenden Landkreises mit insgesamt 54.000 Einwohnern. 2/3 davon wohnen in urbanen, 1/3 in ländlichen Nachbarschaften.
+Ihr habt vier intensive Wochen hinter euch. Ihr kennt jetzt die regulatorischen Grundlagen, die technischen Konzepte und die Governance-Strukturen rund um KI — auf einem Niveau, das die TÜV-Prüfung bestätigt hat.
 
-Die Bürgermeisterin - Eure Chefin - wurde mit dem Slogan gewählt "Erfolgreich sein - erfolgreich bleiben". Sie hat im Wahlkampf eine effizientere Verwaltung, mehr Sicherheit, größere Bürgernähe und neue, modern Investitionen in Stadt und Landkreis versprochen.
+Diese Projektarbeit ist keine Wiederholung davon. Sie fragt etwas anderes: **Könnt ihr das Gelernte in euren eigenen Kontext übersetzen?** Branchenkenntnis, Urteilsvermögen und ein ehrlicher Blick auf das eigene Arbeitsumfeld sind gefragt — das sind Dinge, die keine KI für euch erledigen kann.
 
-Es gibt einige größere Handwerksbetriebe vor Ort und ein großes, seit Jahren brach liegendes, als Industriegebiet ausgewiesenes Gelande. Größter Arbeitgeber ist ein Zulieferer der Automobilproduktion, der zugesagt hat, in der Stadt das neue Forschungs-Zentrum für seine Drohnen- und Cybertechnologie zu errichten.
-
-Die Bürgermeisterin bittet Euch, ein Konzept für den Einsatz von KI zu erstellen, dass sie der Kreisverwaltung ebenso wie der Förderstelle des Bundeslandes präsentieren kann. Du weißt, dass sie Publicity mag und gerne als "Macherin" in den Medien erscheint. Andererseits kennst Du mittlerweile die diffuse Gemengelage vor Ort und bist mit der Tatsache konfroniert, dass jede und jeder unter "KI" etwas Anderes versteht, manchmal sogar die gleiche Person gegenteilige Dinge, je nachdem, wer sie wann dazu fragt.
-
+KI darf und soll bei der Recherche helfen. Ihr werdet schnell merken, wo sie an ihre Grenzen stößt — und genau dort beginnt eure eigentliche Arbeit.
 
 ---
 
 ## Aufgabe
 
-### Teil A — KI im Landkreis *(ca. 2 Seiten)*
+### Teil A — KI in meiner Branche *(ca. 2 Seiten)*
 
-Recherchiert, wie KI in der Verwaltung im Sinne der Belange der Bürgermeisterin bereits eingesetzt wird oder in den nächsten zwei bis drei Jahren eingesetzt werden könnte.
+Recherchiert, wie KI in eurer Branche gerade eingesetzt wird oder in den nächsten zwei bis drei Jahren eingesetzt werden wird.
 
-- Welche **drei bis fünf KI-Anwendungen** sind in der Verwaltung besonders relevant — als laufende Praxis oder als absehbarer Trend?
-- Wer sind die **Vorreiter** — vergleichbare Landkreise oder Institutionen, die ihr als erfolgreiche Beispiele benennen könnt?
+- Welche **drei bis fünf KI-Anwendungen** sind in eurer Branche besonders relevant — als laufende Praxis oder als absehbarer Trend?
+- Wer sind die **Vorreiter** — Unternehmen oder Institutionen, die ihr (anonymisiert) benennen könnt?
 - Welche **Risiken** sind in eurem Sektor besonders ausgeprägt — regulatorisch, ethisch oder operativ? Und warum gerade dort?
 
 *Hinweis:* Wenn eine KI euch eine allgemeine Liste generiert, ist das ein Anfang — kein Ergebnis. Eure Aufgabe ist es, diese Liste auf das zu reduzieren, was in eurer konkreten Branche wirklich zutrifft, und das zu begründen.
@@ -50,12 +47,12 @@ Nutzt dafür den **Steckbrief-Rahmen** aus dem Kurs:
 
 ---
 
-### Teil C — Kommunikation und Change Management *(ca. 1 Seite)*
+### Teil C — Mein größtes Umdenken *(ca. 1 Seite)*
 
-In der Bevölkerung gibt es diffuse Ängste, aber auch Hoffnungen und Begeisterung. Erstellt einen Plan
+Dieser Teil ist persönlich und kann nicht delegiert werden.
 
-- wie wollt Ihr dieses Stimmungsbild konkretisiern und in handlungs-relevante Maßnahmen übertragen?
-- wie sieht Euer Plan für die Kommunikation der KI-Inistiative azs?
+- Was hat der Kurs an eurer Einschätzung von KI **konkret verändert**? Was dachtet ihr vorher — und was denkt ihr jetzt?
+- Welchen **einen Irrtum** habt ihr im Kurs revidiert?
 - Was werdet ihr in den **nächsten 90 Tagen** in eurem Arbeitsalltag konkret anders machen?
 
 ---
@@ -82,9 +79,9 @@ Die Präsentation ist kein Vortrag — sie ist ein Gespräch. Plant Zeit für R�
 
 ### Extrapunkte
 
-- Für eine **Begründung, was Ihr in Eurem Landkreis noch über das hinaus vorschlagt** was andere bereits umgesetzt haben.
+- Für eine **Begründung, warum euer Use Case in eurer Branche anders bewertet werden muss** als in einer anderen Branche
 - Für den Nachweis, **wo die KI bei der Recherche falsch lag** — und wie ihr das korrigiert habt
-- Für **konkrete Messgrößen (KPI)**, an denen die Stakeholder den Fortschritt und Erfolg der KI-Maßnahmen ablesen können.
+- Für eine **konkrete erste Maßnahme**, die ihr nach dem Kurs in eurem Unternehmen anstößt
 
 ---
 
