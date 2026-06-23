@@ -137,21 +137,13 @@
 | https://www.uipath.com/resources/automation-case-studies | UIPath (RPA) | Use Cases Robotic Process Automation |
 | https://github.com/neurawork-git/n8n-autopilot | Neuraworks | Beispiel für n8n-Autoamtion (GitHub) |
 | https://atlas.mitre.org/studies | MITRE Atlas (Adversarial Threat Landscape for Artificial-Intelligence Systems) | Beispiel für KI-Angriffsvektoren |
+| https://www.iao.fraunhofer.de/ | Fraunhofer Institut für Arbeitsforschung | praktische Anwendungen von KI in der Arbeitswelt |
 
 ### 5.2 KI Newsletter & Podcasts
 | URL | Name | Typ | Schlagwörter |
 |-----|------|-----|--------------|
 | https://brobotspodcast.substack.com/ | Health, Wellness & Mindset in the Age of AI | Podcast und Substack-Artikel |
 | https://aiweekly.co/ai-news-today | AI Weekly | Sammelpunkt für aktuelle Artikel zu KI |
-
----
-
-## 🏥 KI im Gesundheitswesen
-
-| URL / Angabe | Name | Typ | Schlagwörter |
-|---|---|---|---|
-| https://www.nature.com/articles/s44360-026-00117-x | Costa-Gomes et al. — „Use of generative AI chatbots for personal health-related questions", Nature Health, April 2026 | Peer-Review-Studie | LLMs, Gesundheitsanfragen, Triage, Chatbots, UC-03b |
-| Paywall — kein öffentlicher Link · Titel: „Hospitals are stuck in a deadly doom loop", The Economist, April 2026 | The Economist — Doom Loop | Fachmedium (Tier-2) | Krankenhaus, Überlastung, Wartezeiten, Doom Loop, UC-03, Art. 10 Bias-Risiko |
 
 ---
 
