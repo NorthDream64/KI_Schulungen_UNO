@@ -8,7 +8,7 @@
 **„Sealing the future"** — Aufbau eines KI-gestützten Wissensmanagement-Systems und Onboarding-Bots bei WellSeal.
 
 ### Auftrag (Originalwortlaut Geschäftsführung)
-„Das implizite Wissen unserer erfahrenen Ingenieure und Werkmeister soll strukturiert erfasst und über ein KI-gestütztes RAG-System für die folgenden unsere Serviceingenieure im Aussendienst und unsere Agenten in Houston, Busan, Dubai und Miami verfügbar gemacht werden.
+„Das implizite Wissen unserer erfahrenen Ingenieure und Werkmeister soll strukturiert erfasst und über ein KI-gestütztes RAG-System für unsere eigenen Mitarbeiter, besonders die  Service- und Vertriebsingenieure sowie unsere entsprechend qualifizierten Agenten in Houston, Busan, Dubai und Miami verfügbar gemacht werden.
 
 Zusätzlich brauchen wir ein KI-gestütztes Onboarding für unsere Mitarbeiterinnen und Mitarbeiter, durch das sie alles Wichtige (Spesenabrechnung, Überstundenregelung, Kantinenplan, Verpflegungspauschalen, Sicherheitsbeauftragte, Einreise- und Zollvorschriften, Fortbildungsmöglichkeiten) erfahren können. Wenn möglich wünscht sich die Finanzabteilung zusätzlich eine Möglichkeit, Belegte (z.B. Hotelrechnungen oder Bewirtungsbelege) einscannen und mit Projektnummern versehen zu können.
 
