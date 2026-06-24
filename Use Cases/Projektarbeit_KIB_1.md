@@ -31,9 +31,10 @@ Eine Eurer ersten Anforderungen an die/den neue(n) KI-Beauftragten wird eine "AI
 
 Bewertung
 
-| Ihr seid frei in der Art der Darstellung. Euer Dokument sollte allerdings nicht mehr als 5 Seiten in der Schriftform umfassen. Für die Präsentation habt Ihr 10 Minuten Zeit. Das entspricht in etwas 3 - 4 Folien.
+Ihr seid frei in der Art der Darstellung. Euer Dokument sollte allerdings nicht mehr als 5 Seiten in der Schriftform umfassen. Für die Präsentation habt Ihr 10 Minuten Zeit. Das entspricht in etwas 3 - 4 Folien.
 
-| Wofür gibt es Extrapunkte? 
+Wofür gibt es Extrapunkte?
+
 - Für eine Formulierung der Arbeitsplatzbeschreibung und Stellenausschreibung, die den besonderen Charakter Eures Unternehmens reflektiert, Aufgaben und Verantwortlichkeiten so beschreibt, dass sie für eine engagierte Fachfrau oder -mann, die im Markt zwischen verschiedenen Angeboten wählen kann, attraktiv ist.
 - Für einen Vorschlag, wie Ihr der/des neuen KIB zeitnah ein brauchbares Verständnis für die Besonderheiten Eures Unternehmens und seine spezielle Kultur nahe bringt, damit die Person da nicht "ins offene Messer läuft".
 
