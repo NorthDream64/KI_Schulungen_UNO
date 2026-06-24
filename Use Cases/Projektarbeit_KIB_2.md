@@ -30,23 +30,12 @@ Recherchiert, wie KI in der Verwaltung im Sinne der Belange der Bürgermeisterin
 
 ---
 
-### Teil B — Mein Use Case *(ca. 2 Seiten)*
+### Teil B — KI-Landschaft *(ca. 2 Seiten)*
 
-Beschreibt einen konkreten KI-Anwendungsfall aus eurem eigenen Arbeitsumfeld — einen, der bereits läuft, geplant ist oder eurer Meinung nach sinnvoll wäre.
+Eine der ersten Aufgaben ist es, die bestehende KI zu inventarisieren sowie mögliche KI-Anwendungsfälle zu erfassen und hinsichtlich ihrer Umstzbarkeit zu bewerten.
 
-Nutzt dafür den **Steckbrief-Rahmen** aus dem Kurs:
-
-| Aspekt | Eure Einschätzung |
-|---|---|
-| Was ist der Anwendungsfall? | |
-| Welche Daten werden genutzt? | |
-| Welche Risikoklasse nach EU AI Act? | |
-| Welche Stakeholder sind betroffen? | |
-| Was ist die größte technische Hürde? | |
-| Was ist die größte organisatorische Hürde? | |
-| Was würde "Erfolg" in 12 Monaten bedeuten? | |
-
-*Hinweis:* Ihr müsst nicht für jedes Feld eine vollständige Antwort haben. Ein ehrliches "Das weiß ich noch nicht — und deshalb müsste ich als nächstes ..." ist wertvoller als eine KI-generierte Antwort, die ihr nicht vertreten könnt.
+- Erläutert, wie Ihr bei einer Inventarisierung der bestehende KI vorgehen wollt. Wer soll einbezogen werden? Worauf liegt Euer Augenmerk, Eure Prioritäten? Wie wollt Ihr das Thema transparent machen und laufend überwachen?
+- Erklärt, wie Ihr mögliche Anwendungsfälle aufnehmen und bewerten würdet. Wer darf z.B. Vorschläge für KI-Anwendungen machen? Wie sorgt Ihr dafür, nicht mit diffusen Idee "überflutet" zu werden?
 
 ---
 
