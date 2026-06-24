@@ -5,18 +5,9 @@
 
 ## Aufgabe
 
-Ihr seid jetzt schon einige Zeit als KI-Beauftragte:r unterwegs. Ihr habt anhand Eures Use Case eine gute Basis für die Bewertung und das Monitoring von Anwendungsfällen geschaffen. Ein Risikomanagement ist - angelehnt an die Verfahren des Qualitätsmanagement - etabliert; mit der IT-Sicherheit hast Du einen Arbeitsmodus gefunden, um die Sicherheit der Daten und Anwendungen auf ein "KI-fähiges" Niveau zu heben. Bis dahin unterliegt die Informationsverarbeitung durch und der Zugriff auf KI strengen "least access/least privilege"-Prinzipien.
+Euer Unternehmen möchte KI fester in seinen Prozessen verankern und - wenn möglich - eine Marktführerschaft auf diesem Gebiet in seiner Branche übernehmen. Du bist die/der designierte "Head of AI and Digital Transformation". Eine Deiner Aufgaben ist es, Dein Team zusammenzustellen. Dabei braucht es auch einen oder eine KI-Beauftragte:n.
 
-Nun bittet Dich Deine Geschäftsführerin oder Dein Geschäftsführer zum Gespräch mit folgender Aufgabe:
-
-"Wir brauchen für die strategische Ausrichtung der nächsten 3 Jahre einen Plan von Dir, wie wir unter Deiner Leitung hier im Unternehmen die KI weiter auf- und ausbauen sollen. Andere Abteilungen erstellen ähnliche Pläne und versuchen dadurch, Budget für ihre Vorhaben einzuwerben. Wir können ja jeden Euro nur einmal ausgeben.
-
-Das Format für die strategische Planung ist folgendes:
-
-1) Wo stehen wir heute im Vergleich zum relevanten Wettbewerb?
-2) Welche Entwicklungen rund um KI sind im Markt absehbar, die wir strategische berücksichtigen sollten?
-3) Wie sieht Dein strategischer Plan aus: Aktivitäten, Ziele, Meilensteine, Ressourcen, Abhängigkeiten?
-4) Welche Ressourcen und damit welches Budget ist dafür erforderlich? Wie viel Geld braucht Ihr pro Jahr in den kommenden 3 Jahren?
+# 1
 
 ---
 
