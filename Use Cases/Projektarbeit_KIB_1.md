@@ -3,11 +3,29 @@
 
 ---
 
+## Hintergrund
+
+Euer Unternehmen möchte KI fester in seinen Prozessen verankern und - wenn möglich - perspektivisch eine Marktführerschaft auf diesem Gebiet in seiner Branche übernehmen. Du bist die/der designierte "Head of AI and Digital Transformation". Eine Deiner Aufgaben ist es, Dein Team zusammenzustellen. Dabei braucht es auch einen oder eine KI-Beauftragte:n.
+
 ## Aufgabe
 
-Euer Unternehmen möchte KI fester in seinen Prozessen verankern und - wenn möglich - eine Marktführerschaft auf diesem Gebiet in seiner Branche übernehmen. Du bist die/der designierte "Head of AI and Digital Transformation". Eine Deiner Aufgaben ist es, Dein Team zusammenzustellen. Dabei braucht es auch einen oder eine KI-Beauftragte:n.
+### Teil A — Recruitierung *(ca. 3 Seiten)*
 
-# 1
+Erstellt eine Arbeitsplatzbeschreibung und (darauf aufbauend) Stellenanzeige für diese neue Rolle eines oder einer "KI-Beauftragten".
+
+- Welche **Aufgaben und Verantwortlichktein** soll diese Rolle haben? Wie ist sie in der Organisation verankert (z.B.: An wen berichtet sie?)?
+- Welche Anforderungen habt Ihr an die Rolle (Ausbildung, Berufserfahrung, Charaktereigenschaften)? Verfasst eine zielgruppen-gerechte Stellenanzeige.
+- Erstellt einen **Interviewleitfaden** für diese Rolle, die ihr zwei Interviewenden (CISO und GF) mitgeben würdet?
+- Bereitet Euch selbst auf das **Interview** mit der Kandidation oder dem Kandidaten vor. Welche Fragen würdet Ihr stellen? Welche Antworten würdet Ihr geben?
+
+---
+
+### Teil B — Die ersten 100 Tage *(ca. 2 Seiten)*
+
+Eine Eurer ersten Anforderungen an die/den neue(n) KI-Beauftragten wird eine "AI Roadmap" für die ersten 100 Tage sein. Du möchtest dabei Dein Szenario mit dem der neuen Kollegin bzw. des neuen Kollegen vergleichen.
+
+- Formuliere Deine Anforderungen an eine solche "AI Roadmap" der 100 Tage auf. Grenze auch die Rolle "KIB" gegen andere Rollen (z.B. Data Scientist, DSB, Projektmanagerin o.ä.) Worauf soll der Fokus der neuen Rolle liegen? 
+- Skizziere eine ideal-typische "AI Roadmap" der ersten 100 Tage, zeige dabei, nach welcher Logik Du Aufgaben priorisieren würdest oder in welcher zeitlichen Abfolge Du sie erledigen würdest.
 
 ---
 
@@ -15,10 +33,8 @@ Bewertung
 
 | Ihr seid frei in der Art der Darstellung. Euer Dokument sollte allerdings nicht mehr als 5 Seiten in der Schriftform umfassen. Für die Präsentation habt Ihr 10 Minuten Zeit. Das entspricht in etwas 3 Folien.
 | Wofür gibt es Extrapunkte? 
-- Für die Formulierung von KPI, an denen Ihr den Fortschritt der KI im Unternehmen für das Management transparent messen würdet.
-- Für die Formulierung einer "KI-Vision", die die Besonderheiten des KI-Einsatzes in Eurem Unternehmen reflektiert.
-- Für eine Begründung "was, wenn wir das nicht so machen, sondern alles beim Alten lassen?"
-| Tipps: Kalkuliert die internen Ressourcen mit Vollkosten von € 100.000 p.a. Kalkuliert externe Dienstleistungen mit € 1.000 p.d. für Senior-Berater, € 750 p.d. für alle anderen Berater. Der externe IT-Aufwand (falls Ihr die Leistung nicht in-house erbringen könnt oder wollt) liegt bei 75% der Lizenzkosten pro KI (also wenn Ihr 5 KI-Systeme im Einsatz habt und pro KI-System einmalig € 10.000 an Lizenzkosten bezahlt habt, liegen die laufenden jährlichen IT-Kosten dafür bei € 50.000 x 0,75 = € 37.500. In diesen Aufwendungen ist der Support und die Pflege der Updates inbegriffen.
+- Für eine Formulierung der Arbeitsplatzbeschreibung und Stellenausschreibung, die den besonderen Charakter Eures Unternehmens reflektiert, Aufgaben und Verantwortlichkeiten so beschreibt, dass sie für eine engagierte Fachfrau oder -mann, die im Markt zwischen verschiedenen Angeboten wählen kann, attraktiv ist.
+- Für einen Vorschlag, wie Ihr der/des neuen KIB zeitnah ein brauchbares Verständnis für die Besonderheiten Eures Unternehmens und seine spezielle Kultur nahe bringt, damit die Person da nicht "ins offene Messer läuft".
 
 ---
 
