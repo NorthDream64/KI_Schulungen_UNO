@@ -5,7 +5,7 @@
 
 ## Aufgabe
 
-Ihr seid jetzt schon einige Zeit als KI-Verantwortliche (die Rolle mag in Eurem konkreten Umfeld etwas anders heissen) unterwegs. Ihr habt anhand Eures Use Case eine gute Basis für die Bewertung und das Monitoring von Anwendungsfällen geschaffen. Ein Risikomanagement ist - angelehnt an die Verfahren des Qualitätsmanagement - etabliert; mit der IT-Sicherheit hast Du einen Arbeitsmodus gefunden, um die Sicherheit der Daten und Anwendungen auf ein "KI-fähiges" Niveau zu heben. Bis dahin unterliegt die Informationsverarbeitung durch und der Zugriff auf KI strengen "least access/least privilege"-Prinzipien.
+Ihr seid jetzt schon einige Zeit als KI-Beauftragte:r unterwegs. Ihr habt anhand Eures Use Case eine gute Basis für die Bewertung und das Monitoring von Anwendungsfällen geschaffen. Ein Risikomanagement ist - angelehnt an die Verfahren des Qualitätsmanagement - etabliert; mit der IT-Sicherheit hast Du einen Arbeitsmodus gefunden, um die Sicherheit der Daten und Anwendungen auf ein "KI-fähiges" Niveau zu heben. Bis dahin unterliegt die Informationsverarbeitung durch und der Zugriff auf KI strengen "least access/least privilege"-Prinzipien.
 
 Nun bittet Dich Deine Geschäftsführerin oder Dein Geschäftsführer zum Gespräch mit folgender Aufgabe:
 
