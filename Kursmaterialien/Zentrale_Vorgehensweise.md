@@ -3,7 +3,7 @@
 > Dieses Dokument ist die **einzige verbindliche Referenz** für Quellenrecherche, Content-Pflege und Quiz-Erstellung in den drei Kursen.  
 > Es ersetzt `Quellen_Workflow.md` (archiviert).  
 > Gilt für: KI-Beauftragter (KIB · Modul 764), KI-Manager (KIM · Modul 763), Manager KI-Transformation (MAT).  
-> Letzte Aktualisierung: 2026-06-22
+> Letzte Aktualisierung: 2026-06-25
 
 ---
 
@@ -195,6 +195,7 @@ Diese Regeln gelten für Hand-Outs, Gamma-Präsentationen, Quizze, Übungsblätt
 | **Quellenbelege** | Jede inhaltliche Aussage muss belegbar sein; keine konstruierten URLs |
 | **Kursseparation** | Inhalte nie 1:1 zwischen KIB, KIM und MAT übertragen |
 | **Nur Tier-1 in offiziellen Materialien** | In Hand-Outs und Gamma ausschließlich verifizierte Quellen |
+| **Use Cases nicht im Hand-Out** | Use Cases werden im Hand-Out **nicht namentlich genannt** (keine Firmennamen, keine fallspezifischen Kennzahlen). Sie werden im Labor (Dozentendokument) und live durch den Dozenten eingeführt. Übungen im Hand-Out bleiben **use-case-neutral** formuliert (z. B. „das heute vorgestellte Unternehmen"). Vorteil: Hand-Out bleibt wiederverwendbar und kursübergreifend konfliktfrei. |
 
 ---
 
