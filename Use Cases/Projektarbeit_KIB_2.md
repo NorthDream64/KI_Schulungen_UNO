@@ -18,9 +18,9 @@ Die Bürgermeisterin bittet Euch, ein Konzept für den Einsatz von KI zu erstell
 
 ## Aufgabe
 
-### Teil A — KI im Landkreis *(ca. 2 Seiten)*
+### Teil A — KI in der Verwaltung *(1 Seite)*
 
-Recherchiert, wie KI in der Verwaltung im Sinne der Belange der Bürgermeisterin bereits eingesetzt wird oder in den nächsten zwei bis drei Jahren eingesetzt werden könnte.
+Recherchiert, wie KI in der Verwaltung im Sinne der Belange der Bürgermeisterin in den nächsten zwei bis drei Jahren eingesetzt werden könnte. Erstellt ein kurzes Profil der Chancen und Risiken von KI für die Verwaltung
 
 - Welche **drei bis fünf KI-Anwendungen** sind in der Verwaltung besonders relevant — als laufende Praxis oder als absehbarer Trend?
 - Wer sind die **Vorreiter** — vergleichbare Landkreise oder Institutionen, die ihr als erfolgreiche Beispiele benennen könnt?
@@ -30,7 +30,7 @@ Recherchiert, wie KI in der Verwaltung im Sinne der Belange der Bürgermeisterin
 
 ---
 
-### Teil B — KI-Landschaft *(ca. 2 Seiten)*
+### Teil B — KI bei uns *(ca. 2 Seiten)*
 
 Eine der ersten Aufgaben ist es, die bestehende KI zu inventarisieren sowie mögliche KI-Anwendungsfälle zu erfassen und hinsichtlich ihrer Umstzbarkeit zu bewerten.
 
@@ -39,53 +39,32 @@ Eine der ersten Aufgaben ist es, die bestehende KI zu inventarisieren sowie mög
 
 ---
 
-### Teil C — Kommunikation und Change Management *(ca. 1 Seite)*
+### Teil C — Kommunikation und Change Management *(ca. 2 Seiten)*
 
 In der Bevölkerung gibt es diffuse Ängste, aber auch Hoffnungen und Begeisterung. Erstellt einen Plan
 
 - wie wollt Ihr dieses Stimmungsbild konkretisiern und in handlungs-relevante Maßnahmen übertragen?
-- wie sieht Euer Plan für die Kommunikation der KI-Inistiative azs?
-- Was werdet ihr in den **nächsten 90 Tagen** in eurem Arbeitsalltag konkret anders machen?
+- wie sieht Euer Plan für die Kommunikation mit den Bürgerinnen und Bürgern aus? Welche unterschiedlichen Gruppen (z.B. nach den Phasen des Kübler-Ross-Zyklus) wollt Ihr wie ansprechen?
 
 ---
 
-## Präsentation *(10 Minuten, ca. 3 Folien)*
-
-| Folie | Inhalt |
-|---|---|
-| **1 — Meine Branche** | Der eine KI-Trend, der in eurer Branche gerade alles verändert — und warum |
-| **2 — Mein Use Case** | Der Kern eures Anwendungsfalls auf einer Folie: Was, für wen, warum jetzt |
-| **3 — Was ich jetzt tue** | Konkret, realistisch, in 90 Tagen umsetzbar |
+## Präsentation *(10 Minuten, ca. 3 - 4 Folien)*
 
 Die Präsentation ist kein Vortrag — sie ist ein Gespräch. Plant Zeit für Rückfragen ein.
 
 ---
 
-## Bewertung
-
-| Kriterium | Gewichtung | Woran wir es erkennen |
-|---|---|---|
-| **Branchenspezifität** | 40 % | Die Recherche zeigt echtes Branchenwissen — nicht das, was eine KI über "typische Branchen" weiss |
-| **Use-Case-Qualität** | 40 % | Der Fall ist konkret, realistisch und zeigt, dass der Steckbrief-Rahmen verstanden wurde |
-| **Reflexionstiefe** | 20 % | Teil C ist persönlich, ehrlich und zeigt echtes Umdenken — nicht eine generische Lernzusammenfassung |
-
 ### Extrapunkte
 
-- Für eine **Begründung, was Ihr in Eurem Landkreis noch über das hinaus vorschlagt** was andere bereits umgesetzt haben.
-- Für den Nachweis, **wo die KI bei der Recherche falsch lag** — und wie ihr das korrigiert habt
-- Für **konkrete Messgrößen (KPI)**, an denen die Stakeholder den Fortschritt und Erfolg der KI-Maßnahmen ablesen können.
+- Für die Darstellung des Themas "KI in der Verwaltung in Form einer **SWOT-Analyse**.
+- Für eine profunde Stakeholder-Analyse und ein daraus abgeleitetes, zielgruppen-spezifisches Kommunikationskonzept
+- Für **konkrete Indikatoren**, an denen der Erfolg der Adoption bzw. der drohende Misserfolg abzulesen sein würde.
 
 ---
 
 ## Hinweise zur Zusammenarbeit mit KI
 
-Ihr dürft KI für Recherche, Strukturierung und Formulierung nutzen. Das ist ausdrücklich erwünscht — ihr seid KI-Beauftragte, keine KI-Verweigernden.
-
-Achtet dabei auf drei Dinge:
-
-1. **KI kennt eure Branche nur von außen.** Sie wird euch generische Antworten geben. Eure Aufgabe ist es, diese zu prüfen, zu korrigieren und mit echtem Branchenwissen zu füllen.
-2. **Teil C kann keine KI für euch schreiben.** Wenn ihr merkt, dass der Text klingt wie eine KI, fängt ihr von vorne an.
-3. **Dokumentiert einen Moment, in dem ihr der KI widersprochen habt** — das ist ein Bonuspunkt und zeigt genau die Kompetenz, die wir entwickeln wollen.
+Ihr dürft KI für Recherche, Strukturierung und Formulierung nutzen. Das ist ausdrücklich erwünscht — aber achtet bitte darauf, bei Rüpckfragen zu einzelnen Punkten aussagefähig zu sein, nach dem Motto "Was habe ich mir dabei gedacht?".
 
 ---
 
