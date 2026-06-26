@@ -20,6 +20,7 @@
 | https://www.dsn-group.de/kuenstliche-intelligenz/ki-pruefschema-fuer-hochrisiko | DSN Gruppe | Prüfschemata | Deutschland Bewertung von Hoch-Risko-Systemen |
 | https://www.edpb.europa.eu/edpb_en | European Data Protection Board (edpb) | Richtliniensammlung | EU |
 | https://www.aisi.gov.uk/blog/ | AI Security Institute (AISI) | Forschung | Grossbritannien KI-Sicherheit |
+| https://standards.cencenelec.eu/ords/f?p=305:7:::::FSP_ORG_ID:2916257&cs=18CADACF032CF8171E8D7168C8C02237A | European Electrotechnical Committee for Standardization (CENELEC) | EU | Datenmangement-Standards |
 
 
 ### 1.2 Rolle des KI-Beauftragten
