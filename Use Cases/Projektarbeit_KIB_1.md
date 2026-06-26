@@ -41,9 +41,11 @@ Die Präsentation ist kein Vortrag — sie ist ein Gespräch. Plant Zeit für R�
 
 ---
 
-Bewertung
+## Hinweise
 
-Ihr seid frei in der Art der Darstellung. Euer Dokument sollte allerdings nicht mehr als 5 Seiten in der Schriftform umfassen. Für die Präsentation habt Ihr 10 Minuten Zeit.
+Ihr seid frei in der Art der Darstellung. Euer Dokument sollte allerdings nicht mehr als 5 Seiten in der Schriftform umfassen. Für die Präsentation habt Ihr 10 Minuten Zeit. 
+
+Ihr dürft KI für Recherche, Strukturierung und Formulierung nutzen. Das ist ausdrücklich erwünscht — aber achtet bitte darauf, bei Rückfragen zu einzelnen Punkten aussagefähig zu sein, nach dem Motto "Was habe ich mir dabei gedacht?".
 
 ---
 
