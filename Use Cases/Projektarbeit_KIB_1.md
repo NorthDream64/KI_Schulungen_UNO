@@ -5,16 +5,18 @@
 
 ## Hintergrund
 
-Euer Unternehmen möchte KI fester in seinen Prozessen verankern und - wenn möglich - perspektivisch eine Marktführerschaft auf diesem Gebiet in seiner Branche übernehmen. Du bist die/der designierte "Head of AI and Digital Transformation". Eine Deiner Aufgaben ist es, Dein Team zusammenzustellen. Dabei braucht es auch einen oder eine KI-Beauftragte:n.
+Euer Unternehmen möchte KI fester in seinen Prozessen verankern und - wenn möglich - perspektivisch eine Marktführerschaft auf diesem Gebiet in seiner Branche übernehmen. Du bist die/der designierte "Head of AI and Digital Transformation". 
+
+Eine Deiner Aufgaben ist es, dafür Dein Team zusammenzustellen, unter anderem auch mit einem oder einer KI-Beauftragte:n.
 
 ## Aufgabe
 
-### Teil A — Recruitierung *(ca. 3 Seiten)*
+### Teil A — Recruitierung *(ca. 2 Seiten)*
 
-Erstellt eine Arbeitsplatzbeschreibung und (darauf aufbauend) Stellenanzeige für diese neue Rolle eines oder einer "KI-Beauftragten".
+Erstelle eine Arbeitsplatzbeschreibung und (darauf aufbauend) Stellenanzeige für diese neue Rolle eines oder einer "KI-Beauftragten" in Deinem Unternehmen.
 
 - Welche **Aufgaben und Verantwortlichktein** soll diese Rolle haben? Wie ist sie in der Organisation verankert (z.B.: An wen berichtet sie?)?
-- Welche Anforderungen habt Ihr an die Rolle (Ausbildung, Berufserfahrung, Charaktereigenschaften)? Verfasst eine zielgruppen-gerechte Stellenanzeige.
+- Welche Anforderungen habt Ihr als Unternehmen und hast Du als "Head of AI" an die Rolle (Ausbildung, Berufserfahrung, Charaktereigenschaften)? 
 - Erstellt einen **Interviewleitfaden** für diese Rolle, die ihr zwei Interviewenden (CISO und GF) mitgeben würdet?
 - Bereitet Euch selbst auf das **Interview** mit der Kandidation oder dem Kandidaten vor. Welche Fragen würdet Ihr stellen? Welche Antworten würdet Ihr geben?
 
@@ -22,10 +24,15 @@ Erstellt eine Arbeitsplatzbeschreibung und (darauf aufbauend) Stellenanzeige fü
 
 ### Teil B — Die ersten 100 Tage *(ca. 2 Seiten)*
 
-Eine Eurer ersten Anforderungen an die/den neue(n) KI-Beauftragten wird eine "AI Roadmap" für die ersten 100 Tage sein. Du möchtest dabei Dein Szenario mit dem der neuen Kollegin bzw. des neuen Kollegen vergleichen.
+Eine Eurer ersten Anforderungen an die/den neue(n) KI-Beauftragten wird eine "AI Management Roadmap" für die ersten 100 Tage sein. Du möchtest Dein Szenario mit dem der neuen Kollegin bzw. des neuen Kollegen abgleichen.
 
-- Formuliere Deine Anforderungen an eine solche "AI Roadmap" der 100 Tage auf. Grenze auch die Rolle "KIB" gegen andere Rollen (z.B. Data Scientist, DSB, Projektmanagerin o.ä.) Worauf soll der Fokus der neuen Rolle liegen? 
-- Skizziere eine ideal-typische "AI Roadmap" der ersten 100 Tage, zeige dabei, nach welcher Logik Du Aufgaben priorisieren würdest oder in welcher zeitlichen Abfolge Du sie erledigen würdest.
+- Formuliere Deine Anforderungen an eine solche "AI MAnagement Roadmap" der 100 Tage aus Sicht der Rolle KI-Beauftrage:r. Grenze dabei wo erforderlich die Rolle "KIB" gegen andere Rollen (z.B. Head of AI, DSB, KI-Projektmanager o.ä.). Erläutere an ein oder zwei Beispielen, nach welcher Logik Du Aufgaben priorisieren würdest oder weshalb Du sie in einer bestimmten zeitlichen Abfolge erledigen würdest.
+
+---
+
+### Teil C — Onboading KIB *(1 Seite)*
+
+- Skizziere einen "Onboarding"-Prozess für die neue bzw. den neuen KIB. Welche anderen Rollen im Unternehmen sollte er oder sie kennenlernen? Welchen Input seitens der7des KIB, welchen Output seitens der bestehenden Rolle in der Oragnisation erwartest Du dabei?
 
 ---
 
