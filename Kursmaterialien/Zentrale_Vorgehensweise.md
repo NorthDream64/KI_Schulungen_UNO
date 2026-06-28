@@ -3,7 +3,7 @@
 > Dieses Dokument ist die **einzige verbindliche Referenz** für Quellenrecherche, Content-Pflege und Quiz-Erstellung in den drei Kursen.  
 > Es ersetzt `Quellen_Workflow.md` (archiviert).  
 > Gilt für: KI-Beauftragter (KIB · Modul 764), KI-Manager (KIM · Modul 763), Manager KI-Transformation (MAT).  
-> Letzte Aktualisierung: 2026-06-25
+> Letzte Aktualisierung: 2026-06-28
 
 ---
 
@@ -122,19 +122,20 @@ Wird ein Kurstag (z.B. „KIB Tag 7") reviewed oder aktualisiert, gelten folgend
 ### Schritt 2 — Bestandsprüfung
 
 Alle vorhandenen Dateien des Kurstages lesen:
-- Hand-Out (HTML oder DOCX)
-- Gamma-Präsentation (Link oder exportierte Folien)
+- Hand-Out (HTML oder DOCX) — **führendes Tagesdokument**
+- Gamma-Präsentation (Link oder exportierte Folien) — speist sich aus dem Hand-Out
 - Quiz (falls vorhanden — beide Schwierigkeitsstufen, beide Rollen)
-- Laborübungen / Fallstudien (falls vorhanden)
 
 Bestandsaudit prüft: Inhaltliche Aktualität · Quellenbelege vorhanden? · Formatregeln eingehalten?
 
 ### Schritt 3 — Content-Update
 
-Hand-Out und Gamma-Präsentation auf Basis der Quellenrecherche aktualisieren:
+Das **Hand-Out ist das führende Tagesdokument** und wird auf Basis der Quellenrecherche aktualisiert:
 - Veraltete Fakten ersetzen (mit Quellenangabe)
 - Neue relevante Inhalte aus Intake/Wochenberichten einbauen
 - Stilregeln (Abschnitt 6) einhalten
+
+Die **Gamma-Präsentation speist sich aus dem Hand-Out** (Zusammenfassung in separatem Chat) und wird nicht parallel doppelt gepflegt. Ein eigenständiges Dozenten-„Labor" wird nicht mehr geführt.
 
 ### Schritt 4 — Quiz prüfen oder erstellen
 
@@ -195,7 +196,7 @@ Diese Regeln gelten für Hand-Outs, Gamma-Präsentationen, Quizze, Übungsblätt
 | **Quellenbelege** | Jede inhaltliche Aussage muss belegbar sein; keine konstruierten URLs |
 | **Kursseparation** | Inhalte nie 1:1 zwischen KIB, KIM und MAT übertragen |
 | **Nur Tier-1 in offiziellen Materialien** | In Hand-Outs und Gamma ausschließlich verifizierte Quellen |
-| **Use Cases nicht im Hand-Out** | Use Cases werden im Hand-Out **nicht namentlich genannt** (keine Firmennamen, keine fallspezifischen Kennzahlen). Sie werden im Labor (Dozentendokument) und live durch den Dozenten eingeführt. Übungen im Hand-Out bleiben **use-case-neutral** formuliert (z. B. „das heute vorgestellte Unternehmen"). Vorteil: Hand-Out bleibt wiederverwendbar und kursübergreifend konfliktfrei. |
+| **Use Cases nicht im Hand-Out** | Use Cases werden im Hand-Out **nicht namentlich genannt** (keine Firmennamen, keine fallspezifischen Kennzahlen). Sie wohnen im Ordner `Use Cases/` (GitHub) und werden live durch den Dozenten eingeführt. Übungen im Hand-Out bleiben **use-case-neutral** formuliert (z. B. „das heute vorgestellte Unternehmen"). Vorteil: Hand-Out bleibt wiederverwendbar und kursübergreifend konfliktfrei. |
 
 ---
 
