@@ -3,7 +3,7 @@
 > Dieses Dokument ist die **einzige verbindliche Referenz** für Quellenrecherche, Content-Pflege und Quiz-Erstellung in den drei Kursen.  
 > Es ersetzt `Quellen_Workflow.md` (archiviert).  
 > Gilt für: KI-Beauftragter (KIB · Modul 764), KI-Manager (KIM · Modul 763), Manager KI-Transformation (MAT).  
-> Letzte Aktualisierung: 2026-06-28
+> Letzte Aktualisierung: 2026-06-29
 
 ---
 
@@ -151,10 +151,10 @@ Falls Quiz existiert: Aktualität der Antworten prüfen (Fristen, Zahlen, regula
 
 ### 5.1 Struktur
 
-- **Zwei Schwierigkeitsstufen:** Grundlagen (Level 1/2) und Fortgeschritten (Level 3)
-- **Zwei Rollen:** Primärrolle des Kurses (z.B. KI-Beauftragter) + eine zweite, vom Dozenten festzulegende Rolle (z.B. Datenschutzbeauftragte:r, Betriebsrat, IT-Leitung — je nach Thema des Kurstages)
-- Vor der Erstellung eines neuen Quizzes: **Zweite Rolle erfragen**, sofern nicht bereits vorgegeben
-- Format: Multiple Choice, 4 Antwortoptionen (a/b/c/d), eine korrekte Antwort
+- **Keine Schwierigkeitsstufen.** Pro Quiz **2 × 5 Fragen**: ein Set für die Primärrolle des Kurses (KI-Manager:in bzw. KI-Beauftragte:r) und ein zweites für eine pro Kurstag festzulegende Rolle (z. B. Datenschutzbeauftragte:r, Betriebsrat, IT-Leitung, Geschäftsführer:in — je nach Thema des Tages).
+- Vor der Erstellung eines neuen Quizzes: **Zweite Rolle erfragen**, sofern nicht bereits vorgegeben.
+- Format: Multiple Choice, 4 Antwortoptionen. **1–3 richtige Antworten** je Frage — Verteilung ca. 20 % eine, 40 % zwei, 40 % drei richtige; **nie vier**. (Maßgeblich ist der KIM-Fragenpool; ersetzt die frühere Vorgabe „eine korrekte Antwort".)
+- **Tonalität wie die TÜV-Prüfungsfragen:** Jede Frage beginnt mit einer knappen, konkreten Situationsschilderung (1–3 Sätze, generisch/anonym, **kein benannter Use Case**) und schließt mit „Welche Aussage(n) … ist/sind korrekt?". Die Situation ist **in die Frage eingewoben** — kein separater, dauerhaft eingeblendeter Use-Case-Block. Beispiel: „Ein Unternehmen will Belege anhand optischer Merkmale auf Betrug prüfen; die zugehörige Projektnummer wird oft handschriftlich eingetragen, sodass die KI mit verschiedenen Schriftbildern umgehen muss. Welche Aussage(n) über bildverarbeitende KI (Computer Vision) ist/sind korrekt?"
 
 ### 5.2 Formulierungsregeln
 
@@ -162,7 +162,7 @@ Falls Quiz existiert: Aktualität der Antworten prüfen (Fristen, Zahlen, regula
 - **Du-Form** durchgehend (Fragestellung, Antwortoptionen, Erklärungen)
 - **Keine Optionsbuchstaben in Erklärungen:** Erklärungsfelder (`explanation`/`exp`) dürfen niemals auf „A", „B", „C" oder „D" verweisen. Der Shuffle-Mechanismus macht Buchstaben bedeutungslos. Stattdessen inhaltlich erklären, warum die richtige Antwort korrekt ist.
 - **Keine Zertifizierungsaussagen:** Nie formulieren „für die Prüfung wichtig", „für die Zertifizierung zählt" o.ä. — das erzeugt unnötigen Druck. Stattdessen inhaltliche Bedeutung betonen.
-- **Abkürzungen ausschreiben:** Level 1/2/3 (nie L1/L2/L3). Fachbegriffe wie Schutzbedarfsfeststellung (SBF), Datenschutz-Folgenabschätzung (DSFA), Risikoprioritätszahl (RPZ) beim ersten Auftreten ausschreiben.
+- **Abkürzungen ausschreiben:** Fachbegriffe wie Schutzbedarfsfeststellung (SBF), Datenschutz-Folgenabschätzung (DSFA), Risikoprioritätszahl (RPZ) beim ersten Auftreten ausschreiben.
 
 ### 5.3 Aktualitätsprüfung bei bestehenden Quizzen
 
@@ -178,7 +178,7 @@ Veraltete Antworten müssen korrigiert werden, bevor das Quiz verwendet wird.
 
 - Alle Antworten einer Überprüfung unterziehen: Ist die als „richtig" markierte Antwort tatsächlich korrekt?
 - Distraktoren (falsche Antworten) müssen plausibel aber eindeutig falsch sein — keine Trick-Fragen
-- Schwierigkeitsverteilung prüfen: nicht alle Fragen Level 1, nicht alle Level 3
+- Antwortzahl-Verteilung prüfen: Mix aus Fragen mit einer, zwei und drei richtigen Antworten (ca. 20/40/40); nie vier richtige
 - Nach Quiz-Erstellung: Korrektheit aller Antworten verifizieren, bevor abgeliefert wird
 
 ---
