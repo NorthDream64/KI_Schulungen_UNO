@@ -80,20 +80,30 @@ Erkennung: Dateiname enthält „Projektarbeit" (Groß-/Kleinschreibung egal). F
 sich keine eindeutige Datei, **den Dozenten fragen**, welche Datei die Projektarbeit
 ist — nicht raten.
 
-**Ausgabe:** ein Bewertungs-Entwurf je Person, der die Struktur von
-`Kursmaterialien/Projektarbeit_Bewertung.html` bedient (2–3 Aufgaben, je 0–100,
-Gesamtpunktzahl /300, Gesamtzensur). Kopf des Entwurfs trägt deutlich den Vermerk
-**„Entwurf — Freigabe durch den Dozenten erforderlich"**.
+**Aufgaben-Maßstab (zwei Varianten):** Die gültigen Aufgabenstellungen stehen auf
+GitHub unter `Use Cases/Projektarbeit_KIB_1.md` (Unternehmen / „Head of AI") und
+`Use Cases/Projektarbeit_KIB_2.md` (Kommune). Jede Variante hat drei Teile (A/B/C).
+**Vor der Bewertung** die passende Variante bestimmen und ihre Datei als Maßstab
+lesen.
+
+**Ausgabe:** ein Bewertungs-Entwurf je Person, der die Felder des **offiziellen
+Bewertungsbogens „Projektarbeit"** liefert (Kopffelder, Name, je Aufgabe Punkte +
+Begründung, Gesamtpunktzahl /100, Bewertungsstufe). Kopf des Entwurfs trägt deutlich
+den Vermerk **„Entwurf — Freigabe durch den Dozenten erforderlich"**.
+
+**Offizielle Skala (max. 100 Punkte gesamt):** 100–81 „mit ausgezeichnetem Erfolg" ·
+80–50 „mit sehr gutem Erfolg" · 49–0 „erfolgreich".
 
 **Vorgehen und Rubrik:** siehe `reference/bewertungs-rubrik.md`. Kernpunkte:
-1. Die 2–3 Aufgaben der Projektarbeit identifizieren (UC04a SolidFinanz AG:
-   Strategieplan, Change Management, Business Case).
-2. Je Aufgabe ein **Rating** (Punktzahl + Zensur-Stufe) und eine **Begründung**.
-3. **Default ≥ 85**, sofern die Aufgabenstellung erfüllt ist.
-4. Eine Punktzahl **< 85** nur, wenn ein konkreter, im Dokument belegbarer Mangel
-   vorliegt — und dann mit **wörtlichem Beleg** und beschwerdesicherer Formulierung.
-5. **Gesamtzensur** aus dem Mittel der Aufgaben (Zensur-Stufen wie im bestehenden
-   Formular).
+1. Variante bestimmen (KIB_1 oder KIB_2) und die drei Teile A/B/C als die drei
+   zu bewertenden Aufgaben heranziehen.
+2. Maxima: Teil A = **34**, Teil B = **33**, Teil C = **33** (Summe 100).
+3. Je Aufgabe erreichte Punktzahl + **Begründung**.
+4. **Normbereich ≈ 85–100 gesamt** (= „ausgezeichnet"), sofern die Aufgabenstellung
+   erfüllt ist.
+5. Punktabzug nur bei einem konkreten, im Dokument belegbaren Mangel — mit
+   **wörtlichem Beleg** und beschwerdesicherer Formulierung.
+6. **Gesamtpunktzahl** = Summe der Aufgaben; **Bewertungsstufe** aus der Skala oben.
 
 ---
 

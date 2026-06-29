@@ -1,61 +1,77 @@
 # Bewertungs-Rubrik — Projektarbeit (Modus `bewertung`)
 
 > Diese Rubrik ist der **Entwurfs-Maßstab**. Der Dozent gibt jede Bewertung frei,
-> bevor sie in die Urkunde einfließt. Der Skill liefert einen Vorschlag, keine
-> Entscheidung.
+> bevor sie in den offiziellen Bewertungsbogen / die Urkunde einfließt. Der Skill
+> liefert einen Vorschlag, keine Entscheidung.
 
 ## 0 · Leitprinzip
 
-Die Abschlussurkunde des Anbieters weist faktisch durchgängig ein **gutes Ergebnis
-(≥ 85 Punkte)** aus. Differenzierung nach oben ist nicht das Ziel. Das Ziel ist:
+Die Abschlussurkunde des Anbieters weist faktisch durchgängig ein Spitzenergebnis
+aus — Teilnehmende erreichen in der Regel **85 Punkte oder mehr**, also „mit
+ausgezeichnetem Erfolg". Differenzierung nach oben ist nicht das Ziel. Das Ziel ist:
 
 > **Die Norm wohlwollend abbilden — und jede Abweichung nach unten so belegen,
 > dass sie einer Beschwerde standhält.**
 
 Daraus folgt die Arbeitsteilung des Skills:
-- Erfüllt die Arbeit die Aufgabenstellung → zügig in den Normbereich (85–95)
-  einordnen, knapp positiv begründen. Kein Suchen nach Haaren in der Suppe.
-- Liegt ein **konkreter, belegbarer Mangel** vor → erst dann die Punktzahl senken,
-  und zwar mit der Sorgfalt, die eine mögliche Beschwerde erfordert.
+- Erfüllt die Arbeit die Aufgabenstellung → zügig in den Normbereich (≈ 85–100
+  gesamt) einordnen, knapp positiv begründen. Kein Suchen nach Haaren in der Suppe.
+- Liegt ein **konkreter, belegbarer Mangel** vor → erst dann Punkte abziehen, und
+  zwar mit der Sorgfalt, die eine mögliche Beschwerde erfordert.
 
-## 1 · Skala und Zensur-Stufen
+## 1 · Offizielle Skala (Bewertungsbogen „Projektarbeit")
 
-Übernommen aus `Kursmaterialien/Projektarbeit_Bewertung.html` (unveränderte
-Schwellen):
+Gesamtbewertung bezieht sich auf **maximal 100 Punkte**. Schwellen laut Bogen:
 
-| Punkte | Zensur-Stufe | Einordnung |
-|--------|--------------|------------|
-| 90–100 | Mit ausgezeichnetem Erfolg | klar über der Aufgabenstellung |
-| 85–89 | Mit sehr gutem Erfolg | **Normbereich** — Aufgabenstellung voll erfüllt |
-| 80–84 | Mit sehr gutem Erfolg (unteres Ende) | erfüllt, mit kleineren Lücken |
-| 70–79 | Mit gutem Erfolg | spürbare Lücke — Begründung erforderlich |
-| < 70 | Nicht ausreichend für Bestauszeichnung | begründete Ausnahme |
+| Gesamtpunkte | Bewertung |
+|--------------|-----------|
+| 100–81 | mit ausgezeichnetem Erfolg |
+| 80–50 | mit sehr gutem Erfolg |
+| 49–0 | erfolgreich |
 
-Jede Punktzahl **unter 85** verlangt eine Begründung; **unter 80** eine besonders
-belastbare. Das bestehende Formular blendet die Warnung bereits ab 80 ein — der
-Skill behandelt 85 als Normuntergrenze und dokumentiert alles darunter.
+- **Normbereich:** ≈ 85–100 → „mit ausgezeichnetem Erfolg".
+- **Beschwerderelevante Grenze:** Wer unter **81** rutscht, verliert die
+  Top-Bewertung. Jede Gesamtpunktzahl unter 85 verlangt eine belastbare Begründung,
+  unter 81 eine besonders sorgfältige.
+- Die Stufen gelten für die **Gesamtpunktzahl**, nicht je Aufgabe.
 
-## 2 · Die 2–3 Aufgaben (UC04a SolidFinanz AG)
+## 2 · Die drei Aufgaben (= Teile A/B/C der gewählten Projektarbeit)
 
-Bewertet werden die in der Projektarbeit bearbeiteten Aufgaben. Für den KIB-Use-Case
-SolidFinanz AG sind das:
+Es gibt **zwei Projektarbeits-Varianten**. Die jeweils gültigen Aufgabenstellungen
+stehen auf GitHub und sind **vor der Bewertung zu lesen**:
+- `Use Cases/Projektarbeit_KIB_1.md` — Unternehmen, Rolle „Head of AI":
+  Teil A Recruiting (Arbeitsplatzbeschreibung, Stellenanzeige, Interviewleitfaden,
+  Interviewvorbereitung) · Teil B erste 100 Tage (AI-Management-Roadmap,
+  Rollenabgrenzung, Priorisierungslogik) · Teil C Onboarding KIB.
+- `Use Cases/Projektarbeit_KIB_2.md` — Kommune, 54.000 Einwohner:
+  Teil A KI in der Verwaltung (Chancen/Risiken-Profil, Anpassung an die Gemeinde) ·
+  Teil B KI-Inventarisierung und Anwendungsfall-Bewertung · Teil C Kommunikation
+  und Change Management.
 
-1. **Strategieplan** — KI-Strategie und Roadmap für den Vorstand
-   (Lageeinschätzung, Handlungsempfehlung, 5–7 Meilensteine, Ressourcenschätzung,
-   regulatorischer Rahmen BaFin/MaRisk/BAIT/DSGVO, plus Präsentationsfolien).
-2. **Change Management** — von Schatten-KI zur geregelten KI-Kultur
-   (Maßnahmen je Stakeholder, Kommunikationsplan, Erfolgsmessung).
-3. **Business Case** — Bewertungsframework für KI-Initiativen
-   (qualitative + quantitative Kriterien, ≥ 3 KPI, Anwendung auf zwei Initiativen).
+**Schritt 0 — Variante bestimmen:** Anhand der eingereichten Projektarbeit
+erkennen, ob es sich um KIB_1 (Unternehmen/Head of AI) oder KIB_2 (Kommune)
+handelt, und die passende Aufgabendatei als Maßstab heranziehen. Im Zweifel den
+Dozenten fragen.
 
-Sind nur 2 Aufgaben bearbeitet, werden 2 bewertet. Die Gesamtpunktzahl bezieht sich
-dann auf die tatsächlich bearbeiteten Aufgaben (Mittelwert für die Zensur).
+**Maxima (gleichgewichtet, Summe = 100):**
+
+| Aufgabe | Maximum |
+|---------|---------|
+| Teil A | **34** |
+| Teil B | **33** |
+| Teil C | **33** |
+| **Gesamt** | **100** |
+
+Jeder Teil wird auf sein Maximum (34 bzw. 33) bewertet; die Summe ergibt die
+Gesamtpunktzahl, aus der die Bewertungsstufe (Abschnitt 1) folgt. Beide Varianten
+enthalten zusätzlich eine **Präsentation (10 Min., 3–4 Folien)** — sie fließt in
+die Würdigung des zugehörigen Teils ein, ist aber keine eigene vierte Aufgabe.
 
 ## 3 · Bewertungsdimensionen je Aufgabe
 
 Diese fünf Dimensionen dienen **nicht** der Punktarithmetik, sondern als
 **Suchraster für belegbare Mängel**. Solange keine Dimension einen konkreten Mangel
-zeigt, bleibt die Aufgabe im Normbereich.
+zeigt, bleibt die Aufgabe an ihrem Maximum bzw. nah daran.
 
 1. **Erfüllung der Aufgabenstellung** — Sind alle ausdrücklich geforderten
    Bestandteile vorhanden? (Häufigste, am leichtesten belegbare Abzugsquelle:
@@ -68,12 +84,11 @@ zeigt, bleibt die Aufgabe im Normbereich.
 4. **Struktur und Adressatengerechtigkeit** — Klar, nachvollziehbar, für die
    genannte Zielgruppe (Vorstand, Stakeholder) angemessen?
 5. **Eigenständigkeit und Reflexionstiefe** — Eigene Urteilsbildung erkennbar,
-   oder Schema-F? (Diese Dimension hebt nach oben in Richtung 90+; sie ist nur
-   in Ausnahmefällen ein belastbarer Abzugsgrund.)
+   oder Schema-F? (Nur in Ausnahmefällen ein belastbarer Abzugsgrund.)
 
-## 4 · Belegpflicht (kern für die Beschwerdesicherheit)
+## 4 · Belegpflicht (Kern für die Beschwerdesicherheit)
 
-Jede Punktzahl **unter 85** muss in der Begründung:
+Jeder Punktabzug muss in der Begründung:
 - den Mangel **konkret benennen** (nicht „etwas dünn", sondern „der geforderte
   Kommunikationsplan fehlt vollständig");
 - ihn mit einem **wörtlichen Beleg oder einer präzisen Fundstelle** aus der
@@ -92,21 +107,28 @@ Im Zweifel die **höhere** Bewertung. Mehrdeutigkeit, Unschärfe oder ein
 unkonventioneller, aber vertretbarer Ansatz sind **kein** Abzugsgrund. Abgezogen
 wird nur bei einem **eindeutig belegbaren** Mangel gegenüber der Aufgabenstellung.
 
-## 6 · Gesamtzensur und Ausgabe
+**Extrapunkte:** Beide Aufgabendateien benennen ausdrücklich, „wofür es Extrapunkte
+gibt" (z. B. attraktive, kulturreflektierende Stellenausschreibung; SWOT-Analyse;
+fundierte Stakeholder-Analyse; konkrete Erfolgsindikatoren). Werden diese Marker
+erfüllt, rechtfertigt das die Einordnung am **oberen Ende** des Normbereichs. Ihr
+Fehlen ist **kein** Abzugsgrund — es ist Kür, nicht Pflicht.
 
-- **Gesamtpunktzahl:** Summe der Aufgaben (max. 300 bei 3 Aufgaben).
-- **Gesamtzensur:** Zensur-Stufe des **Mittelwerts** der Aufgaben (Stufen aus
-  Abschnitt 1).
-- **Gesamtbegründung:** 3–5 Sätze, die das Gesamtbild zusammenfassen; bei
-  durchgehendem Normbereich knapp und positiv.
+## 6 · Ausgabe (passend zum offiziellen Bogen)
+
+Der Entwurf liefert genau die Felder des Bewertungsbogens:
+- **Kopf:** Fach, Datum, Zeitdauer, Dozent, Ort, Hilfsmittel (soweit bekannt; sonst
+  als auszufüllen markieren).
+- **Name, Vorname.**
+- **Je Aufgabe:** erreichte Punktzahl „von maximal 34 / 33 Punkten" + Begründung.
+- **Gesamt:** erreichte Punktzahl „von maximal 100 Punkten".
+- **Bewertung:** Stufe aus Abschnitt 1 (z. B. „mit ausgezeichnetem Erfolg").
 - **Kopfvermerk:** „Entwurf — Freigabe durch den Dozenten erforderlich".
-- **Übergabeformat:** so, dass die Punktzahlen und Begründungen direkt in
-  `Projektarbeit_Bewertung.html` übernommen werden können (je Aufgabe: Punkte +
-  Begründungstext; plus Gesamtbegründung).
+
+Format der Übergabe: so, dass die Werte und Begründungen direkt in den Word-Bogen
+übertragen werden können (je Aufgabe Punkte + Begründungstext, plus Gesamt).
 
 ## 7 · Offene Parameter (vom Dozenten zu bestätigen)
-
-- Ob 85 oder ein anderer Wert die Normuntergrenze ist.
-- Ob die fünf Dimensionen so passen oder ergänzt/gestrichen werden sollen.
-- Erkennungskonvention für die Projektarbeits-Datei (aktuell: Dateiname enthält
+- Normuntergrenze: aktuell ≈ 85 (= „ausgezeichnet").
+- Eignung der fünf Dimensionen.
+- Erkennungskonvention für die Projektarbeits-Datei (Dateiname enthält
   „Projektarbeit").
