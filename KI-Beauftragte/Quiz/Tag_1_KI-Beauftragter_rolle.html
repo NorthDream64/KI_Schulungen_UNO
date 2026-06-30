@@ -37,16 +37,15 @@ a{color:var(--accent);}
 .btn-start:hover{background:#333;}
 .btn-start:disabled{background:#aaa;cursor:not-allowed;}
 .quiz-header-strip{display:flex;gap:.6rem;align-items:center;margin-bottom:1.4rem;flex-wrap:wrap;}
-.strip-tag{font-family:"SFMono-Regular", Consolas, "Liberation Mono", monospace;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;padding:4px 12px;border-radius:100px;}
-.strip-level-1{background:var(--level-1-soft);color:var(--level-1);}
-.strip-level-2{background:var(--level-2-soft);color:var(--level-2);}
-.strip-name{font-size:13px;color:var(--muted);margin-left:auto;}
+.strip-tag{display:inline-block;font-size:11px;font-weight:600;padding:2px 10px;border-radius:100px;letter-spacing:.5px;}
+.strip-role-1{background:var(--level-1-soft);color:var(--level-1);}
+.strip-role-2{background:var(--level-2-soft);color:var(--level-2);}
+.strip-name{font-size:12px;color:var(--muted);}
+.separator-card{background:var(--accent-soft);border:1px solid var(--rule);border-radius:12px;padding:1.2rem 1.5rem;margin:1.5rem 0;text-align:center;}
+.separator-card h3{font-family:Georgia,serif;font-size:1.1rem;color:var(--accent);margin:0;}
 .progress-bar{height:3px;background:var(--rule);border-radius:2px;margin-bottom:1.2rem;}
 .progress-fill{height:100%;background:var(--ink);border-radius:2px;transition:width .3s;}
 .progress-label{font-family:"SFMono-Regular", Consolas, "Liberation Mono", monospace;font-size:10px;color:var(--muted);margin-bottom:.5rem;}
-.scenario-box{background:var(--accent-soft);border:1px solid #c0d0e8;border-left:3px solid var(--accent);border-radius:0 8px 8px 0;padding:.9rem 1.1rem;margin-bottom:1.2rem;}
-.scenario-label{font-family:"SFMono-Regular", Consolas, "Liberation Mono", monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:.3rem;}
-.scenario-text{font-size:13px;color:var(--ink);line-height:1.6;}
 .q-card{background:var(--card);border:1px solid var(--rule);border-radius:12px;padding:1.5rem;margin-bottom:1rem;}
 .q-num{font-family:"SFMono-Regular", Consolas, "Liberation Mono", monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:.6rem;}
 .q-text{font-size:15px;font-weight:500;line-height:1.55;margin-bottom:.5rem;}
@@ -110,9 +109,8 @@ a{color:var(--accent);}
   <div class="eyebrow">Alfatraining · KI-Beauftragte:r · Tag 1</div>
   <h1>Lernkontrolle<br>Rolle und Verantwortung des KI-Beauftragten</h1>
   <div class="header-meta">
-    <span>5 Fragen</span>
+    <span>10 Fragen</span>
     <span>Eine oder mehrere Antworten können richtig sein</span>
-    <span>Use Case: KI-gestütztes HR-Screening im KMU</span>
   </div>
 </header>
 
@@ -121,23 +119,14 @@ a{color:var(--accent);}
 <!-- ── SETUP ── -->
 <div id="setup-section">
   <div class="setup-card">
-    <h2>Bitte wähle deine Schwierigkeitsstufe</h2>
+    <h2>Quiz starten</h2>
 
     <div style="margin-bottom:1.2rem;">
       <span class="field-label">Dein Name (oder Teilnehmer-Nummer)</span>
       <input type="text" id="participant-name" class="setup-input" placeholder="z. B. Teilnehmer-07 oder Vorname">
     </div>
 
-    <div style="margin-bottom:.5rem;">
-      <span class="field-label">Schwierigkeitsstufe</span>
-      <div class="level-btns">
-        <button class="sel-btn" id="btn-level-1" onclick="selectLevel('1')">Anfänger</button>
-        <button class="sel-btn" id="btn-level-2" onclick="selectLevel('2')">Fortgeschrittene</button>
-      </div>
-      <span class="hint-text">Anfänger = Definitionen &amp; Grundlagen · Fortgeschrittene = Szenarien &amp; Abgrenzungen</span>
-    </div>
-
-    <button class="btn-start" id="btn-start" onclick="startQuiz()" disabled>Quiz starten →</button>
+    <button class="btn-start" id="btn-start" onclick="startQuiz()">Quiz starten</button>
   </div>
 </div>
 
@@ -146,11 +135,6 @@ a{color:var(--accent);}
   <div class="quiz-header-strip" id="quiz-header-strip"></div>
   <div class="progress-label" id="progress-label"></div>
   <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
-
-  <div class="scenario-box">
-    <div class="scenario-label">Fallbeispiel · Gilt für alle Fragen</div>
-    <div class="scenario-text">Ein mittelständisches Bauplanungsbüro (50 Mitarbeitende) führt ein KI-gestütztes Bewerbermanagementsystem ein. Das System analysiert eingehende Bewerbungen und schlägt eine Vorauswahl für Vorstellungsgespräche vor. Sie wurden als KI-Beauftragter damit beauftragt, die Einführung regulatorisch und organisatorisch zu begleiten.</div>
-  </div>
 
   <div id="questions-container"></div>
 
@@ -185,153 +169,155 @@ a{color:var(--accent);}
 var APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwTfP8ygOun58rmvY9hQXFmPEgVyxppQGEPYjar1e78N6uanaGHuzBNOyU5P4kgvmz7/exec';
 
 /* ═══════ FRAGENBANK ═══════════════════════════════════════════ */
-/* Verteilung je Set: 1× eine richtig · 2× zwei richtig · 2× drei richtig */
-var QBANK = {
+/* Verteilung: 2x eine richtig, 4x zwei richtig, 4x drei richtig; nie vier */
 
-'1': [
+var QUESTIONS = [
+  /* ═══════ SET 1: KI-Beauftragte:r (Fragen 1-5) ═══════ */
   {
-    q: 'Was ist die primäre Aufgabe eines KI-Beauftragten im Unternehmen?',
+    set: 'KI-Beauftragte:r',
+    q: 'Dein Unternehmen plant, mehrere KI-Systeme einzusetzen. Du wirst als KI-Beauftragte:r bestellt und sollst zuerst klären, welche Kompetenzpflichten gelten. Welche Aussage(n) zur Kompetenzpflicht nach Artikel 4 der KI-Verordnung sind korrekt?',
     opts: [
-      'KI-Systeme eigenständig programmieren und in Betrieb nehmen',
-      'Die Einhaltung regulatorischer Anforderungen beim KI-Einsatz koordinieren und sicherstellen',
-      'Den Datenschutzbeauftragten vollständig ersetzen',
-      'Ausschließlich für die Beschaffung von KI-Software zuständig sein'
-    ],
-    correct: [1],
-    exp: 'Der KI-Beauftragte wirkt beratend und koordinierend — er ist die Schnittstelle zwischen Fachbereichen, IT und Compliance. Programmierkenntnisse sind nicht erforderlich. Die rechtliche Verantwortung verbleibt bei der Geschäftsführung. Der DSB bleibt für Datenschutzrecht zuständig; der KI-Beauftragte ergänzt ihn, ersetzt ihn aber nicht.',
-    src: 'EU AI Act Art. 4', url: 'https://artificialintelligenceact.eu/article/4/'
-  },
-  {
-    q: 'Welche Aussagen zur Kompetenzpflicht nach Art. 4 KI-VO sind korrekt?',
-    opts: [
-      'Art. 4 KI-VO verpflichtet Anbieter und Betreiber, für ausreichende KI-Kompetenz ihrer Mitarbeitenden zu sorgen',
-      'Die Kompetenzpflicht nach Art. 4 KI-VO gilt ausschließlich für Hochrisiko-KI-Systeme',
-      'KI-Literacy umfasst das Wissen, die Fähigkeiten und das Verständnis, KI-Systeme sicher und bestimmungsgemäß zu nutzen',
-      'Der KI-Beauftragte trägt die alleinige Haftung für Fehler im KI-System'
+      'Artikel 4 KI-Verordnung verpflichtet Anbieter und Betreiber, für ausreichende KI-Kompetenz ihrer Mitarbeitenden zu sorgen — unabhängig von der Risikoklasse des Systems.',
+      'Die Kompetenzpflicht gilt erst ab August 2027, wenn die Hochrisiko-Vorschriften in Kraft treten.',
+      'KI-Kompetenz (AI Literacy) umfasst Wissen, Fähigkeiten und Verständnis, um KI-Systeme sachkundig und bestimmungsgemäß einzusetzen.',
+      'Bei Verstößen gegen die Kompetenzpflicht drohen keine Sanktionen, da Artikel 4 nur eine Empfehlung ist.'
     ],
     correct: [0,2],
-    exp: 'Art. 4 KI-VO verpflichtet alle Akteure — Anbieter wie Betreiber — zu ausreichender KI-Kompetenz, unabhängig von der Risikoklasse. KI-Literacy ist der Oberbegriff für dieses Wissen und Können. Eine Sonderhaftung des KI-Beauftragten existiert nicht — die Haftung verbleibt bei Organisation und Leitung.',
+    exp: 'Artikel 4 KI-Verordnung gilt seit dem 2. Februar 2025 und ist keine bloße Empfehlung. Die Kompetenzpflicht betrifft alle KI-Systeme, nicht nur Hochrisiko-Systeme. Die Durchsetzung beginnt ab dem 2. August 2026. KI-Kompetenz umfasst das Wissen und Verständnis, KI-Systeme sachkundig, sicher und bestimmungsgemäß einzusetzen.',
     src: 'EU AI Act Art. 4', url: 'https://artificialintelligenceact.eu/article/4/'
   },
   {
-    q: 'Welche Aussagen zur Haftung und Verantwortung des KI-Beauftragten sind korrekt?',
+    set: 'KI-Beauftragte:r',
+    q: 'Die Geschäftsführung bittet dich, deine Kernaufgaben als KI-Beauftragte:r zusammenzufassen. Welche der folgenden Tätigkeiten gehören typischerweise zu deinem Aufgabenbereich?',
     opts: [
-      'Der KI-Beauftragte trägt Sonderhaftung für alle Schäden, die durch KI-Systeme entstehen',
-      'Der KI-Beauftragte wirkt beratend und koordinierend — die Haftung verbleibt bei der Organisation',
-      'Die Geschäftsführung behält die rechtliche Verantwortung, auch wenn ein KI-Beauftragter bestellt ist',
-      'Ohne Programmierkenntnisse kann ein KI-Beauftragter seine Aufgaben nicht wahrnehmen'
-    ],
-    correct: [1,2],
-    exp: 'Der KI-Beauftragte hat keine Sonderhaftung. Er berät und koordiniert — die rechtliche Verantwortung liegt bei der Geschäftsführung. Programmierkenntnisse sind nicht erforderlich; Governance-, Compliance- und Kommunikationskompetenz stehen im Vordergrund.',
-    src: 'EU AI Act Art. 4', url: 'https://artificialintelligenceact.eu/article/4/'
-  },
-  {
-    q: 'Welche der folgenden Aufgaben gehören typischerweise zum Tätigkeitsbereich eines KI-Beauftragten?',
-    opts: [
-      'Koordination zwischen Fachbereichen, IT und Datenschutz bei KI-Projekten',
-      'Eigenständige Entwicklung und Programmierung von KI-Modellen',
-      'Überwachung der Einhaltung regulatorischer Anforderungen (EU AI Act, DSGVO)',
-      'Beratung der Geschäftsführung zu KI-Risiken und Governance-Maßnahmen'
+      'Inventarisierung aller im Unternehmen eingesetzten KI-Systeme und deren Risikoklassifizierung.',
+      'Eigenständige Programmierung und technische Entwicklung von KI-Modellen.',
+      'Koordination von Schulungsmaßnahmen zur Sicherstellung der KI-Kompetenz im Unternehmen.',
+      'Aufbau und Pflege eines KI-Governance-Rahmens einschließlich interner Richtlinien und Prozesse.'
     ],
     correct: [0,2,3],
-    exp: 'Der KI-Beauftragte ist Koordinator, Berater und Compliance-Wächter — keine technische Entwicklerfunktion. Kernaufgaben: Schnittstellenmanagement, Überwachung regulatorischer Anforderungen und Beratung der Unternehmensleitung. Die Entwicklung von KI-Modellen fällt in den Bereich von Data Scientists und Entwicklern.',
+    exp: 'Kernaufgaben des KI-Beauftragten sind die Inventarisierung und Risikobewertung von KI-Systemen, die Koordination von Schulungen sowie der Aufbau eines Governance-Rahmens. Die technische Entwicklung von KI-Modellen fällt in den Bereich von Data Scientists und Entwicklern — der KI-Beauftragte arbeitet beratend und koordinierend.',
     src: 'EU AI Act Art. 4', url: 'https://artificialintelligenceact.eu/article/4/'
   },
   {
-    q: 'Welche Rechtsquellen und Standards sind für einen KI-Beauftragten in Deutschland zentral?',
+    set: 'KI-Beauftragte:r',
+    q: 'Ein Vorstandsmitglied fragt, ob mit deiner Bestellung als KI-Beauftragte:r die Haftung für KI-Fehler auf dich übergeht. Welche Aussage(n) zur Haftung sind korrekt?',
     opts: [
-      'EU AI Act (KI-VO)',
-      'DSGVO (Datenschutz-Grundverordnung)',
-      'Handelsgesetzbuch (HGB)',
-      'ISO/IEC 42001 als KI-Managementsystem-Standard'
-    ],
-    correct: [0,1,3],
-    exp: 'Die drei zentralen Referenzpunkte: EU AI Act als primäre KI-Regulierung, DSGVO für den Datenschutz, ISO/IEC 42001 als freiwilliger, aber praxisrelevanter Standard für KI-Managementsysteme. Das HGB ist für KI-Governance nicht primär relevant.',
-    src: 'EU AI Act · DSGVO · ISO/IEC 42001', url: 'https://artificialintelligenceact.eu/'
-  }
-],
-
-'2': [
-  {
-    q: 'Das Bauplanungsbüro setzt ein zugekauftes HR-Screening-System ein. Welche Rolle nimmt es nach Art. 3 Nr. 4 KI-VO ein?',
-    opts: [
-      'Anbieter (Provider), da es das System intern für eigene Zwecke konfiguriert',
-      'Betreiber (Deployer), da es ein fremdes KI-System in eigener Verantwortung einsetzt',
-      'Bevollmächtigter, da es im Auftrag des Anbieters handelt',
-      'Einführer, da es das System aus dem außereuropäischen Ausland importiert'
+      'Der KI-Beauftragte trägt eine gesetzliche Sonderhaftung analog zum Datenschutzbeauftragten nach DSGVO.',
+      'Die Bestellung eines KI-Beauftragten entbindet die Geschäftsführung nicht von ihrer rechtlichen Verantwortung — sie bleibt voll haftbar.',
+      'Der KI-Beauftragte haftet persönlich für jeden Fehler eines im Unternehmen eingesetzten KI-Systems.',
+      'Sobald ein KI-Beauftragter bestellt ist, haftet ausschließlich er für alle regulatorischen Verstöße im KI-Bereich.'
     ],
     correct: [1],
-    exp: 'Der Betreiber nach Art. 3 Nr. 4 KI-VO ist eine Person, die ein KI-System in eigener Verantwortung verwendet. Das Bauplanungsbüro kauft das System zu und setzt es im eigenen HR-Prozess ein — damit ist es klassisch Betreiber. Anbieter ist nur, wer das System unter eigenem Namen entwickelt und in Verkehr bringt.',
-    src: 'EU AI Act Art. 3 Nr. 4', url: 'https://artificialintelligenceact.eu/article/3/'
+    exp: 'Für den KI-Beauftragten existiert keine gesetzliche Sonderhaftung. Die Rolle ist beratend und koordinierend angelegt. Die rechtliche Verantwortung verbleibt bei der Geschäftsführung — auch dann, wenn ein KI-Beauftragter bestellt wurde. Eine vollständige Haftungsverlagerung auf den KI-Beauftragten findet nicht statt.',
+    src: 'EU AI Act Art. 4', url: 'https://artificialintelligenceact.eu/article/4/'
   },
   {
-    q: 'Welche Aussagen zum Three-Lines-of-Defense-Modell im KI-Governance-Kontext sind korrekt?',
+    set: 'KI-Beauftragte:r',
+    q: 'In deinem Unternehmen gibt es bereits einen Datenschutzbeauftragten und einen Chief Information Security Officer. Du sollst klären, wie sich deine Rolle als KI-Beauftragte:r von diesen abgrenzt. Welche Aussage(n) sind korrekt?',
     opts: [
-      'Der KI-Beauftragte gehört zur zweiten Linie — er überwacht und koordiniert, trifft aber keine operativen Entscheidungen',
-      'Der KI-Beauftragte gehört zur ersten Linie, weil er täglich mit KI-Systemen arbeitet',
-      'Fachbereiche und Anwender bilden die erste Linie — sie sind die erste Verteidigung gegen Fehlanwendung im Alltag',
-      'Die interne Revision übernimmt die Koordinationsaufgaben des KI-Beauftragten'
+      'Der KI-Beauftragte koordiniert den gesamten KI-Governance-Prozess; der Datenschutzbeauftragte ist primär für das Datenschutzrecht zuständig.',
+      'Der KI-Beauftragte ersetzt den Datenschutzbeauftragten vollständig bei allen KI-Projekten.',
+      'Der Chief Information Security Officer verantwortet die IT-Sicherheit; der KI-Beauftragte ergänzt ihn um die KI-spezifische Regulierungs- und Governance-Perspektive.',
+      'Alle drei Rollen können bei größeren Organisationen ohne Interessenkonflikte in einer Person zusammengefasst werden.'
     ],
     correct: [0,2],
-    exp: 'Im Three-Lines-of-Defense-Modell bilden operative Anwender und Fachbereiche die erste Linie. Der KI-Beauftragte gehört zur zweiten Linie: Er überwacht, koordiniert Richtlinien und eskaliert — trifft aber keine operativen Entscheidungen. Die dritte Linie (interne Revision, externe Auditoren) prüft das gesamte Governance-System unabhängig. Die zweite Linie übernimmt keine Aufgaben der dritten.',
-    src: 'ISO/IEC 42001:2023 Kap. 5.3', url: 'https://www.iso.org/standard/81230.html'
+    exp: 'Der KI-Beauftragte hat ein eigenständiges Mandat, das den gesamten KI-Lebenszyklus abdeckt. Der Datenschutzbeauftragte fokussiert auf DSGVO-Konformität, der CISO auf IT-Sicherheit. Die Rollen ergänzen sich, sind aber nicht identisch. Bei größeren Organisationen ist eine Trennung sinnvoll, da eine Zusammenlegung aller drei Rollen zu Interessenkonflikten führen kann.',
+    src: 'EU AI Act Art. 4', url: 'https://artificialintelligenceact.eu/article/4/'
   },
   {
-    q: 'Wie grenzt sich der KI-Beauftragte vom Datenschutzbeauftragten (DSB) ab?',
+    set: 'KI-Beauftragte:r',
+    q: 'Du erstellst ein Governance-Konzept und orientierst dich am Three-Lines-of-Defense-Modell. Welche Aussage(n) zur Einordnung des KI-Beauftragten in dieses Modell sind korrekt?',
     opts: [
-      'Der KI-Beauftragte koordiniert den gesamten KI-Governance-Prozess; der DSB ist primär für Datenschutzrecht zuständig',
-      'Der KI-Beauftragte und der DSB haben identische Aufgaben und können generell fusioniert werden',
-      'Beide Rollen können in Personalunion besetzt werden, sofern keine Interessenkonflikte entstehen',
-      'Der KI-Beauftragte ersetzt den DSB vollständig bei KI-Projekten mit Personendaten'
-    ],
-    correct: [0,2],
-    exp: 'KI-Beauftragter und DSB haben komplementäre, aber unterschiedliche Mandate: Der KI-Beauftragte deckt den gesamten KI-Lebenszyklus ab. Der DSB fokussiert auf Datenschutzrecht (DSGVO). Personalunion ist ohne Interessenkonflikt möglich — bei größeren Organisationen ist Trennung sinnvoll.',
-    src: 'EU AI Act Art. 4 · DSGVO Art. 37', url: 'https://artificialintelligenceact.eu/article/4/'
-  },
-  {
-    q: 'ISO/IEC 42001 stellt Anforderungen an die organisatorische Einbindung des KI-Beauftragten. Welche Aussagen zum Standard sind korrekt?',
-    opts: [
-      'ISO/IEC 42001 Kap. 5.3 verpflichtet die oberste Leitung, Verantwortlichkeiten für KI-Governance zuzuweisen und zu kommunizieren',
-      'ISO/IEC 42001 ist verbindliches EU-Recht und ersetzt den EU AI Act als primäre Rechtsgrundlage',
-      'ISO/IEC 42001 folgt der High Level Structure — eine Integration mit ISO 9001 (Qualität) und ISO 27001 (IT-Sicherheit) ist strukturell möglich',
-      'ISO/IEC 42001 schreibt zwingend eine eigenständige Vollzeitstelle für den KI-Beauftragten vor'
-    ],
-    correct: [0,2],
-    exp: 'ISO/IEC 42001:2023 ist ein freiwilliger Standard — kein verbindliches Recht. Kap. 5.3 verlangt, dass die oberste Leitung Verantwortlichkeiten für KI-Governance aktiv zuweist und kommuniziert — das ist die formale Normgrundlage für die Funktion des KI-Beauftragten. Der Standard folgt der High Level Structure wie ISO 9001 und 27001 und lässt sich nahtlos in bestehende Managementsysteme integrieren. Eine Vollzeitstelle ist nicht vorgeschrieben.',
-    src: 'ISO/IEC 42001:2023 Kap. 5.3', url: 'https://www.iso.org/standard/81230.html'
-  },
-  {
-    q: 'Welche organisatorischen Einbindungsmodelle für den KI-Beauftragten sind in der Praxis sinnvoll?',
-    opts: [
-      'Stabsstelle direkt bei der Geschäftsführung für maximale Unabhängigkeit und Entscheidungsnähe',
-      'Einbindung in die Rechts- oder Compliance-Abteilung bei mittelgroßen bis größeren Unternehmen',
-      'Der KI-Beauftragte muss zwingend in der IT-Abteilung angesiedelt sein',
-      'Matrixfunktion mit bereichsübergreifender Koordinationsfunktion für alle KI-nutzenden Bereiche'
+      'Fachbereiche und operative Anwender bilden die erste Verteidigungslinie — sie tragen die unmittelbare Verantwortung für den korrekten KI-Einsatz im Alltag.',
+      'Der KI-Beauftragte gehört zur zweiten Linie: Er überwacht, entwickelt Richtlinien und eskaliert, trifft aber keine operativen Einsatzentscheidungen.',
+      'Der KI-Beauftragte gehört zur dritten Linie, weil er unabhängig vom operativen Geschäft agiert.',
+      'Die interne Revision bildet die dritte Linie und prüft das gesamte Governance-System unabhängig.'
     ],
     correct: [0,1,3],
-    exp: 'Es gibt kein gesetzlich vorgeschriebenes Einbindungsmodell. Sinnvoll sind: Stabsstelle (hohe Sichtbarkeit, direkter Zugang zur Leitung), Compliance-Integration (bei regulierungsintensiven Branchen) oder Matrixstruktur (bei breitem KI-Einsatz). Eine zwingende IT-Anbindung ist nicht vorgeschrieben und kann die Unabhängigkeit einschränken.',
-    src: 'EU AI Act Art. 4', url: 'https://artificialintelligenceact.eu/article/4/'
+    exp: 'Im Three-Lines-of-Defense-Modell bilden operative Anwender die erste Linie. Der KI-Beauftragte gehört zur zweiten Linie: Er überwacht, koordiniert Richtlinien und eskaliert — trifft aber keine operativen Einsatzentscheidungen. Die dritte Linie (interne Revision, externe Auditoren) prüft das Governance-System unabhängig. Der KI-Beauftragte ist nicht Teil der dritten Linie.',
+    src: 'ISO/IEC 42001:2023 Kap. 5.3', url: 'https://www.iso.org/standard/81230.html'
+  },
+
+  /* ═══════ SET 2: Geschäftsführung (Fragen 6-10) ═══════ */
+  {
+    set: 'Geschäftsführung',
+    q: 'Als Geschäftsführer:in erfährst du, dass Artikel 4 der KI-Verordnung eine Kompetenzpflicht für KI-Anwender vorschreibt. Welche Aussage(n) zu deinen Pflichten sind korrekt?',
+    opts: [
+      'Du bist verpflichtet, sicherzustellen, dass Mitarbeitende, die KI-Systeme bedienen, über ausreichende KI-Kompetenz verfügen.',
+      'Die Kompetenzpflicht betrifft nur den IT-Bereich — Fachabteilungen sind ausgenommen.',
+      'Bei Nichterfüllung der Kompetenzpflicht drohen Sanktionen, die sich am Umsatz des Unternehmens orientieren können.',
+      'Die Kompetenzpflicht gilt erst ab 2027, wenn die Hochrisiko-Regelungen greifen.'
+    ],
+    correct: [0,2],
+    exp: 'Artikel 4 KI-Verordnung verpflichtet Betreiber — und damit die Geschäftsführung — sicherzustellen, dass alle Personen, die KI-Systeme nutzen, über ausreichende Kompetenz verfügen. Das gilt für alle Abteilungen, nicht nur die IT. Die Kompetenzpflicht ist seit Februar 2025 geltendes Recht. Sanktionen sind vorgesehen und können sich am Jahresumsatz orientieren.',
+    src: 'EU AI Act Art. 4 · Enforcement', url: 'https://www.complyloft.com/blog/eu-ai-act-article-4-ai-literacy'
+  },
+  {
+    set: 'Geschäftsführung',
+    q: 'Du prüfst als Geschäftsführer:in, ob die ISO/IEC 42001 für dein Unternehmen relevant ist. Welche Aussage(n) zur Rollenzuweisung nach diesem Standard sind korrekt?',
+    opts: [
+      'Kapitel 5.3 der ISO/IEC 42001 verpflichtet die oberste Leitung, Verantwortlichkeiten für KI-Governance zuzuweisen und zu kommunizieren.',
+      'ISO/IEC 42001 ist verbindliches EU-Recht und muss von jedem Unternehmen umgesetzt werden.',
+      'Der Standard folgt der High Level Structure und lässt sich mit bestehenden Managementsystemen wie ISO 27001 oder ISO 9001 integrieren.',
+      'ISO/IEC 42001 schreibt zwingend eine Vollzeitstelle für den KI-Beauftragten vor.'
+    ],
+    correct: [0,2],
+    exp: 'ISO/IEC 42001:2023 ist ein freiwilliger internationaler Standard, kein verbindliches EU-Recht. Kapitel 5.3 verlangt, dass die oberste Leitung Verantwortlichkeiten für das KI-Managementsystem aktiv zuweist und kommuniziert. Der Standard folgt die High Level Structure und ist deshalb nahtlos mit ISO 27001 und ISO 9001 integrierbar. Eine Vollzeitstelle ist nicht vorgeschrieben — die organisatorische Ausgestaltung bleibt flexibel.',
+    src: 'ISO/IEC 42001:2023 Kap. 5.3', url: 'https://www.iso.org/standard/81230.html'
+  },
+  {
+    set: 'Geschäftsführung',
+    q: 'Dein Unternehmen setzt ein zugekauftes KI-System eines externen Anbieters ein. Ein Berater behauptet, die regulatorische Verantwortung liege vollständig beim Softwareanbieter. Welche Aussage(n) sind korrekt?',
+    opts: [
+      'Als Betreiber bleibt dein Unternehmen für den ordnungsgemäßen Einsatz des KI-Systems verantwortlich — unabhängig davon, wer es entwickelt hat.',
+      'Die vollständige Verlagerung der Betreiberverantwortung auf den Anbieter ist durch vertragliche Vereinbarung möglich.',
+      'Sobald ein KI-System als zertifiziertes Produkt eingekauft wird, entfallen alle Betreiberpflichten automatisch.',
+      'Die Betreiberpflichten gelten nur für selbst entwickelte KI-Systeme, nicht für zugekaufte Software.'
+    ],
+    correct: [0],
+    exp: 'Die KI-Verordnung unterscheidet klar zwischen Anbieter- und Betreiberpflichten. Der Betreiber — also das einsetzende Unternehmen — bleibt für den ordnungsgemäßen Einsatz verantwortlich. Diese Verantwortung lässt sich weder vertraglich noch durch den Kauf eines zertifizierten Produkts vollständig auf den Anbieter übertragen. Das ist die sogenannte Vendor Risk Transfer Illusion.',
+    src: 'EU AI Act Art. 3', url: 'https://artificialintelligenceact.eu/article/3/'
+  },
+  {
+    set: 'Geschäftsführung',
+    q: 'Du überlegst als Geschäftsführer:in, wo du die Funktion des KI-Beauftragten organisatorisch ansiedeln sollst. Welche Aussage(n) zu den Einbindungsmodellen sind korrekt?',
+    opts: [
+      'Eine Stabsstelle direkt bei der Geschäftsführung bietet maximale Unabhängigkeit und Entscheidungsnähe.',
+      'Der KI-Beauftragte muss zwingend in der IT-Abteilung angesiedelt sein, da KI ein technisches Thema ist.',
+      'Eine Matrixfunktion mit bereichsübergreifender Koordination eignet sich für Unternehmen mit breitem KI-Einsatz.',
+      'Bei regulierungsintensiven Branchen kann die Einbindung in die Compliance-Abteilung sinnvoll sein.'
+    ],
+    correct: [0,2,3],
+    exp: 'Es gibt kein gesetzlich vorgeschriebenes Einbindungsmodell. Sinnvolle Varianten sind: Stabsstelle bei der Geschäftsführung (hohe Sichtbarkeit und direkter Zugang), Matrixstruktur (bei breitem KI-Einsatz über mehrere Bereiche) oder Einbindung in Compliance (bei stark regulierten Branchen). Eine zwingende IT-Anbindung ist nicht vorgeschrieben und kann die Unabhängigkeit einschränken.',
+    src: 'ISO/IEC 42001:2023 Kap. 5.3', url: 'https://www.iso.org/standard/81230.html'
+  },
+  {
+    set: 'Geschäftsführung',
+    q: 'Du hörst von einer geplanten EU-Gesetzesänderung (Digital Omnibus), die bestimmte Fristen der KI-Verordnung verschieben soll. Welche Aussage(n) sind korrekt?',
+    opts: [
+      'Der Digital Omnibus sieht vor, die Durchsetzungsfrist für Hochrisiko-KI-Systeme zu verschieben.',
+      'Die Kompetenzpflicht nach Artikel 4 ist von der geplanten Fristenverschiebung des Digital Omnibus nicht betroffen.',
+      'Durch den Digital Omnibus entfällt die KI-Verordnung vollständig und wird durch eine neue Richtlinie ersetzt.',
+      'Die KI-Verordnung bleibt durch den Omnibus grundsätzlich bestehen — es werden nur einzelne Fristen angepasst.'
+    ],
+    correct: [0,1,3],
+    exp: 'Der Digital Omnibus sieht vor, die Anwendungsfristen für Hochrisiko-KI-Systeme zu verschieben, um Anbietern und Betreibern mehr Vorbereitungszeit zu geben. Die Kompetenzpflicht nach Artikel 4 ist davon nicht betroffen — sie gilt bereits seit Februar 2025. Die KI-Verordnung wird durch den Omnibus nicht ersetzt, sondern punktuell angepasst.',
+    src: 'Digital Omnibus (Dastra)', url: 'https://www.dastra.eu/en/blog/digital-omnibus-on-ai-parliament-votes-deadlines-redrawn/60108'
   }
-]
-};
+];
 
 /* ═══════ STATE ════════════════════════════════════════════════ */
-var S = { level:null, name:'', questions:[], selections:[], submitted:false };
-
-function selectLevel(l) {
-  S.level = l;
-  document.getElementById('btn-level-1').className='sel-btn'+(l==='1'?' active-1':'');
-  document.getElementById('btn-level-2').className='sel-btn'+(l==='2'?' active-2':'');
-  document.getElementById('btn-start').disabled = false;
-}
+var S = { name:'', questions:[], selections:[], submitted:false };
 
 function startQuiz() {
   S.name = document.getElementById('participant-name').value.trim() || 'Anonym';
-  S.questions = QBANK[S.level].map(function(q){
+  S.questions = QUESTIONS.map(function(q){
     var n=q.opts.length, idx=[];
     for(var k=0;k<n;k++) idx.push(k);
     for(var j=n-1;j>0;j--){ var r=Math.floor(Math.random()*(j+1)),t=idx[j];idx[j]=idx[r];idx[r]=t; }
     return {
+      set:q.set,
       q:q.q,
       opts:idx.map(function(i){return q.opts[i];}),
       correct:q.correct.map(function(c){return idx.indexOf(c);}),
@@ -344,10 +330,9 @@ function startQuiz() {
   document.getElementById('setup-section').style.display='none';
   document.getElementById('quiz-section').style.display='block';
 
-  var lLabel = S.level==='1'?'Anfänger':'Fortgeschrittene';
-  var lClass = S.level==='1'?'strip-level-1':'strip-level-2';
   document.getElementById('quiz-header-strip').innerHTML =
-    '<span class="strip-tag '+lClass+'">'+lLabel+'</span>'
+    '<span class="strip-tag strip-role-1">KI-Beauftragte:r</span>'
+    +'<span class="strip-tag strip-role-2">Geschäftsführung</span>'
     +'<span class="strip-name">'+S.name+'</span>';
 
   renderQuestions();
@@ -360,6 +345,14 @@ function renderQuestions() {
   var letters = ['A','B','C','D'];
 
   S.questions.forEach(function(q, qi) {
+    // Add separator between sets
+    if (qi === 5) {
+      var sep = document.createElement('div');
+      sep.className = 'separator-card';
+      sep.innerHTML = '<h3>Perspektivwechsel: Geschäftsführung</h3>';
+      container.appendChild(sep);
+    }
+
     var card = document.createElement('div');
     card.className = 'q-card';
 
@@ -568,8 +561,6 @@ function sendToSheets(correct, wrong) {
   var TAG_NR = 1;
   var THEMA  = 'Rolle & Verantwortung';
   var letters = ['A','B','C','D'];
-  var stufe = S.level === '1' ? 'Anfänger' : 'Fortgeschrittene';
-
   var status = document.getElementById('submit-status');
   status.className = 'submit-status sending';
   status.style.display = 'block';
@@ -590,7 +581,7 @@ function sendToSheets(correct, wrong) {
       + '&teilnehmer=' + encodeURIComponent(S.name)
       + '&tag='        + TAG_NR
       + '&thema='      + encodeURIComponent(THEMA)
-      + '&stufe='      + encodeURIComponent(stufe)
+      + '&stufe='      + encodeURIComponent(S.questions[i].set)
       + '&frage_nr='   + (i + 1)
       + '&frage_text=' + encodeURIComponent(q.q.substring(0, 80))
       + '&gewaehlt='   + encodeURIComponent(gewaehlt)
