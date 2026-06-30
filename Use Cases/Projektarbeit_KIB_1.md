@@ -1,4 +1,4 @@
-# Projetkarbeit im Rahmen der Fortbildung zur KI-Beauftragten
+# Projektkarbeit im Rahmen der Fortbildung zur KI-Beauftragten
 > ⚠️ Disclaimer - bitte verwendet in der Projektarbeit keine echten Namen von Unternehmen oder Personen
 
 ---
