@@ -75,10 +75,11 @@ abbilden. Die eigentliche Sorgfalt des Skills liegt **nicht** im feinen Ranking,
 sondern darin, jede **Abweichung nach unten beschwerdesicher zu belegen** — weil
 nur Minderbewertungen zu Beschwerden führen.
 
-**Eingabe:** die als **Projektarbeit gekennzeichnete Datei** im Ordner der Person.
-Erkennung: Dateiname enthält „Projektarbeit" (Groß-/Kleinschreibung egal). Findet
-sich keine eindeutige Datei, **den Dozenten fragen**, welche Datei die Projektarbeit
-ist — nicht raten.
+**Eingabe:** die Projektarbeits-Datei im Ordner der Person. Erkennung über das
+Namensschema **`[Vorname]_[Nachname]_Projektarbeit_KLR-…`** — der Teil `_Projektarbeit_KLR-`
+ist fix, die Kursnummer danach (z. B. `KLR-295`) wechselt von Kurs zu Kurs und wird
+ignoriert (z. B. `Anca_Hurduc_Projektarbeit_KLR-295.docx`). Findet sich keine
+passende Datei, **den Dozenten fragen** — nicht raten.
 
 **Aufgaben-Maßstab (zwei Varianten):** Die gültigen Aufgabenstellungen stehen auf
 GitHub unter `Use Cases/Projektarbeit_KIB_1.md` (Unternehmen / „Head of AI") und
@@ -86,10 +87,12 @@ GitHub unter `Use Cases/Projektarbeit_KIB_1.md` (Unternehmen / „Head of AI") u
 **Vor der Bewertung** die passende Variante bestimmen und ihre Datei als Maßstab
 lesen.
 
-**Ausgabe:** ein Bewertungs-Entwurf je Person, der die Felder des **offiziellen
-Bewertungsbogens „Projektarbeit"** liefert (Kopffelder, Name, je Aufgabe Punkte +
-Begründung, Gesamtpunktzahl /100, Bewertungsstufe). Kopf des Entwurfs trägt deutlich
-den Vermerk **„Entwurf — Freigabe durch den Dozenten erforderlich"**.
+**Ausgabe:** eine **ausgefüllte Kopie der offiziellen Vorlage**
+`Kursmaterialien/Vorlage_Projektarbeit.docx` (per docx-Skill befüllt) — Kopffelder,
+Name, je Aufgabe Punkte + Begründung, Gesamtpunktzahl /100, Bewertungsstufe.
+Gespeichert als `Arbeitsproben/[Vollname]/[Vollname]_Projektarbeit_Bewertung_ENTWURF.docx`.
+Der Entwurf trägt sichtbar den Vermerk **„Entwurf — Freigabe durch den Dozenten
+erforderlich"** (vor Weitergabe entfernen).
 
 **Offizielle Skala (max. 100 Punkte gesamt):** 100–81 „mit ausgezeichnetem Erfolg" ·
 80–50 „mit sehr gutem Erfolg" · 49–0 „erfolgreich".

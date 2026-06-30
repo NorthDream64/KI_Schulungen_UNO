@@ -29,10 +29,10 @@ Gesamtbewertung bezieht sich auf **maximal 100 Punkte**. Schwellen laut Bogen:
 | 80–50 | mit sehr gutem Erfolg |
 | 49–0 | erfolgreich |
 
-- **Normbereich:** ≈ 85–100 → „mit ausgezeichnetem Erfolg".
+- **Normbereich:** ≈ 85–100 → „mit ausgezeichnetem Erfolg". Im Bereich 81–97
+  genügt eine knappe Begründung (siehe Abschnitt 4).
 - **Beschwerderelevante Grenze:** Wer unter **81** rutscht, verliert die
-  Top-Bewertung. Jede Gesamtpunktzahl unter 85 verlangt eine belastbare Begründung,
-  unter 81 eine besonders sorgfältige.
+  Top-Bewertung — hier ausführlich und beschwerdesicher begründen.
 - Die Stufen gelten für die **Gesamtpunktzahl**, nicht je Aufgabe.
 
 ## 2 · Die drei Aufgaben (= Teile A/B/C der gewählten Projektarbeit)
@@ -86,9 +86,22 @@ zeigt, bleibt die Aufgabe an ihrem Maximum bzw. nah daran.
 5. **Eigenständigkeit und Reflexionstiefe** — Eigene Urteilsbildung erkennbar,
    oder Schema-F? (Nur in Ausnahmefällen ein belastbarer Abzugsgrund.)
 
-## 4 · Belegpflicht (Kern für die Beschwerdesicherheit)
+## 4 · Begründungstiefe (Effizienzregel — nur für die offizielle Projektarbeits-Bewertung)
 
-Jeder Punktabzug muss in der Begründung:
+Im Normalfall **knapp** bleiben. Ausführlich nur bei den beiden Ausnahmen:
+
+| Gesamtpunktzahl | Begründungstiefe |
+|-----------------|------------------|
+| **81–97** (Normbereich) | **eine knappe Zeile** je Aufgabe; Vorschlagswert genügt |
+| **> 97** (Spitze) | **ausführlich** begründen, warum die Arbeit nahezu fehlerfrei ist |
+| **< 81** (unter „ausgezeichnet") | **ausführlich und beschwerdesicher** begründen (Abschnitt 4a) |
+
+Diese Regel gilt **ausschließlich** für die Bewertung der Projektarbeit — nicht für
+Feed-back oder Profil.
+
+## 4a · Belegpflicht bei den Ausnahmen (Kern für die Beschwerdesicherheit)
+
+**Bei < 81 Punkten** (beschwerderelevant) muss die Begründung:
 - den Mangel **konkret benennen** (nicht „etwas dünn", sondern „der geforderte
   Kommunikationsplan fehlt vollständig");
 - ihn mit einem **wörtlichen Beleg oder einer präzisen Fundstelle** aus der
@@ -100,6 +113,10 @@ Jeder Punktabzug muss in der Begründung:
 
 Eine Begründung, die diese vier Punkte erfüllt, hält einer Beschwerde stand. Eine
 Begründung, die nur ein Werturteil enthält, nicht.
+
+**Bei > 97 Punkten** entfällt die Mangel-Logik; stattdessen die herausragende
+Qualität konkret benennen — welche Anforderungen vollständig erfüllt und welche
+**Extrapunkte-Marker** (Abschnitt 5) erreicht wurden, mit kurzer Fundstelle.
 
 ## 5 · Wohlwollens-Regel
 
@@ -113,22 +130,26 @@ fundierte Stakeholder-Analyse; konkrete Erfolgsindikatoren). Werden diese Marker
 erfüllt, rechtfertigt das die Einordnung am **oberen Ende** des Normbereichs. Ihr
 Fehlen ist **kein** Abzugsgrund — es ist Kür, nicht Pflicht.
 
-## 6 · Ausgabe (passend zum offiziellen Bogen)
+## 6 · Ausgabe (ausgefüllte Kopie des offiziellen Bogens)
 
-Der Entwurf liefert genau die Felder des Bewertungsbogens:
+Der Skill befüllt eine Kopie der offiziellen Vorlage
+`Kursmaterialien/Vorlage_Projektarbeit.docx` (über den docx-Skill) und füllt:
 - **Kopf:** Fach, Datum, Zeitdauer, Dozent, Ort, Hilfsmittel (soweit bekannt; sonst
-  als auszufüllen markieren).
+  leer lassen, damit der Dozent ergänzt).
 - **Name, Vorname.**
-- **Je Aufgabe:** erreichte Punktzahl „von maximal 34 / 33 Punkten" + Begründung.
-- **Gesamt:** erreichte Punktzahl „von maximal 100 Punkten".
+- **Je Aufgabe:** erreichte Punktzahl + „von maximal 34" bzw. „33" Punkten +
+  Begründung.
+- **Gesamt:** erreichte Punktzahl von maximal 100 Punkten.
 - **Bewertung:** Stufe aus Abschnitt 1 (z. B. „mit ausgezeichnetem Erfolg").
-- **Kopfvermerk:** „Entwurf — Freigabe durch den Dozenten erforderlich".
 
-Format der Übergabe: so, dass die Werte und Begründungen direkt in den Word-Bogen
-übertragen werden können (je Aufgabe Punkte + Begründungstext, plus Gesamt).
+**Dateiname/Ort des Entwurfs:**
+`Arbeitsproben/[Vollname]/[Vollname]_Projektarbeit_Bewertung_ENTWURF.docx`
+(oder ein vom Dozenten genannter Ort). Der Entwurf trägt sichtbar den Vermerk
+**„Entwurf — Freigabe durch den Dozenten erforderlich"**; dieser Vermerk wird vor
+der Weitergabe an die Teilnehmenden entfernt.
 
 ## 7 · Offene Parameter (vom Dozenten zu bestätigen)
 - Normuntergrenze: aktuell ≈ 85 (= „ausgezeichnet").
 - Eignung der fünf Dimensionen.
-- Erkennungskonvention für die Projektarbeits-Datei (Dateiname enthält
-  „Projektarbeit").
+- Erkennungskonvention für die Projektarbeits-Datei: Namensschema
+  `[Vorname]_[Nachname]_Projektarbeit_KLR-…` (Kursnummer nach `KLR-` variabel).
