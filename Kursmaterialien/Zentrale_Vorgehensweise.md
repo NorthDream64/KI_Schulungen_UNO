@@ -197,6 +197,9 @@ Diese Regeln gelten für Hand-Outs, Gamma-Präsentationen, Quizze, Übungsblätt
 | **Kursseparation** | Inhalte nie 1:1 zwischen KIB, KIM und MAT übertragen |
 | **Nur Tier-1 in offiziellen Materialien** | In Hand-Outs und Gamma ausschließlich verifizierte Quellen |
 | **Use Cases nicht im Hand-Out** | Use Cases werden im Hand-Out **nicht namentlich genannt** (keine Firmennamen, keine fallspezifischen Kennzahlen). Sie wohnen im Ordner `Use Cases/` (GitHub) und werden live durch den Dozenten eingeführt. Übungen im Hand-Out bleiben **use-case-neutral** formuliert (z. B. „das heute vorgestellte Unternehmen"). Vorteil: Hand-Out bleibt wiederverwendbar und kursübergreifend konfliktfrei. |
+| **Keine Zeitangaben in Gamma** | Uhrzeiten und Zeitblöcke (z. B. „11:50–12:35 Uhr") gehören nicht in Gamma-Folien — weder als Folientitel noch als Unterzeile. Zeitplanung liegt beim Dozenten, nicht in der Präsentation. |
+| **Tagesordnung → „Was uns heute erwartet?"** | Die Tagesstruktur-Folie heißt immer „Was uns heute erwartet?" und enthält eine einfache Bullet-Liste der Themenblöcke — keine Kernfragen-Spalte, keine Uhrzeiten. |
+| **Übungsformat: immer „Praxisübung"** | Statt „Gruppenarbeit", „Einzelarbeit" oder „Partnerarbeit" wird einheitlich „Praxisübung" verwendet. Ob Einzel- oder Gruppenformat, entscheidet der Dozent situativ — das gehört nicht in die Folie. |
 
 ---
 
