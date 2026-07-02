@@ -78,6 +78,7 @@
 | https://www.microsoft.com/en-us/ai/responsible-ai | Microsoft | Industrie | Responsible AI Report, Standard, Governance-Prinzipien |
 | https://www.partnershiponai.org/ | Partnership on AI | NGO | Multi-Stakeholder, Best Practices, Forschung |
 | https://knowledge.wharton.upenn.edu/category/technology/ai/ | Wharton AI & Analytics Initiative | Universität | Forschung |
+| https://www.tno.nl/en/digital/artificial-intelligence/ | TNO — Netherlands Organisation for Applied Scientific Research | Forschung | Niederlande, AI Oversight Lab, Responsible Human-Machine Interaction, Zukunft der Arbeit, kognitive Belastung durch KI, NEA-Surveys |
 
 ---
 
