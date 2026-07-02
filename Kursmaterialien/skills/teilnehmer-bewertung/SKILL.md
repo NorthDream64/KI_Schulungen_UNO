@@ -90,9 +90,11 @@ lesen.
 **Ausgabe:** eine **ausgefüllte Kopie der offiziellen Vorlage**
 `Kursmaterialien/Vorlage_Projektarbeit.docx` (per docx-Skill befüllt) — Kopffelder,
 Name, je Aufgabe Punkte + Begründung, Gesamtpunktzahl /100, Bewertungsstufe.
-Gespeichert als `Arbeitsproben/[Vollname]/[Vollname]_Projektarbeit_Bewertung_ENTWURF.docx`.
-Der Entwurf trägt sichtbar den Vermerk **„Entwurf — Freigabe durch den Dozenten
-erforderlich"** (vor Weitergabe entfernen).
+Gespeichert als
+`Arbeitsproben/[Vollname]/[Vorname]_[Nachname]_Projektarbeit_Bewertung_KLR-…docx`
+(Kursnummer wie bei der Einreichung). **Kein Entwurfs-Vermerk im Dokument.** Die
+Freigabe durch den Dozenten bleibt Pflicht — sie erfolgt außerhalb des Dokuments
+(Sichtung vor dem Hochladen), nicht über einen gedruckten Hinweis.
 
 **Offizielle Skala (max. 100 Punkte gesamt):** 100–81 „mit ausgezeichnetem Erfolg" ·
 80–50 „mit sehr gutem Erfolg" · 49–0 „erfolgreich".

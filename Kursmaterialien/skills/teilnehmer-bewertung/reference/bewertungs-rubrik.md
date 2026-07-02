@@ -134,19 +134,24 @@ Fehlen ist **kein** Abzugsgrund — es ist Kür, nicht Pflicht.
 
 Der Skill befüllt eine Kopie der offiziellen Vorlage
 `Kursmaterialien/Vorlage_Projektarbeit.docx` (über den docx-Skill) und füllt:
-- **Kopf:** Fach, Datum, Zeitdauer, Dozent, Ort, Hilfsmittel (soweit bekannt; sonst
-  leer lassen, damit der Dozent ergänzt).
-- **Name, Vorname.**
-- **Je Aufgabe:** erreichte Punktzahl + „von maximal 34" bzw. „33" Punkten +
-  Begründung.
+
+- **Kopf-Standardwerte (aktueller Durchlauf — bei neuem Kurs anpassen):**
+  - Fach: **KI-Beauftragte(r)**
+  - Datum: **03.07.2026**
+  - Zeitdauer: **01.–02.07.2026**
+  - Dozent: **Ulrich Nord**
+  - Ort: **remote**
+  - Hilfsmittel: **Mammouth AI**
+- **Name, Vorname** — aus Ordner-/Dateiname der Person.
+- **Je Aufgabe:** kurze Beschreibung der Aufgabe (Teil A/B/C der erkannten Variante)
+  + erreichte Punktzahl „von maximal 34" bzw. „33" Punkten + prägnante Begründung.
 - **Gesamt:** erreichte Punktzahl von maximal 100 Punkten.
 - **Bewertung:** Stufe aus Abschnitt 1 (z. B. „mit ausgezeichnetem Erfolg").
 
-**Dateiname/Ort des Entwurfs:**
-`Arbeitsproben/[Vollname]/[Vollname]_Projektarbeit_Bewertung_ENTWURF.docx`
-(oder ein vom Dozenten genannter Ort). Der Entwurf trägt sichtbar den Vermerk
-**„Entwurf — Freigabe durch den Dozenten erforderlich"**; dieser Vermerk wird vor
-der Weitergabe an die Teilnehmenden entfernt.
+**Dateiname/Ort:**
+`Arbeitsproben/[Vollname]/[Vorname]_[Nachname]_Projektarbeit_Bewertung_KLR-….docx`
+(Kursnummer wie bei der Einreichung). **Kein Entwurfs-Vermerk im Dokument** — die
+Freigabe durch den Dozenten erfolgt außerhalb (Sichtung vor dem Hochladen).
 
 ## 7 · Offene Parameter (vom Dozenten zu bestätigen)
 - Normuntergrenze: aktuell ≈ 85 (= „ausgezeichnet").
