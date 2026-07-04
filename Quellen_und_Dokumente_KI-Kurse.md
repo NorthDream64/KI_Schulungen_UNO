@@ -7,7 +7,7 @@
 
 ## 🔵 Grundlagen: Rolle, Kommunikation, Recht
 
-### 1.1 EU AI Act & Regulierung
+### 1.1 EU AI Act & internationale Regulierung
 | URL | Name | Typ | Schlagwörter |
 |-----|------|-----|--------------|
 | https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=OJ:L_202401689 | EU AI Act Volltext | Primärquelle | Regulation (EU) 2024/1689, Risikoklassen, KI-Beauftragter, Hochrisiko-KI |
@@ -21,6 +21,8 @@
 | https://www.edpb.europa.eu/edpb_en | European Data Protection Board (edpb) | Richtliniensammlung | EU |
 | https://www.aisi.gov.uk/blog/ | AI Security Institute (AISI) | Forschung | Grossbritannien KI-Sicherheit |
 | https://standards.cencenelec.eu/ords/f?p=305:7:::::FSP_ORG_ID:2916257&cs=18CADACF032CF8171E8D7168C8C02237A | European Electrotechnical Committee for Standardization (CENELEC) | EU | Datenmangement-Standards |
+| https://regulations.ai/regulations/china-summary | Overview Chinese AI Regulations | China | Cyber Security, Datenschutz, regulatorische Aufsicht |
+| https://legalclarity.org/ai-regulations-in-the-us-federal-and-state-laws | Overview Federal and State Regulations of AI | USA |
 
 
 ### 1.2 Rolle des KI-Beauftragten
