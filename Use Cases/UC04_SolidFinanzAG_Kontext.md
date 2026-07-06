@@ -88,6 +88,12 @@ Die Antragsprüfung mit KI ist "noch kein Thema" — aber die Weichen werden heu
 
 ---
 
+## Best Practices in Finance
+
+SolidFinanz AG orientiert sich bei seiner KI-Strategie an Marktführern wie z.B. der asiatischen Bank DBS (https://www.dbs.com/artificial-intelligence-machine-learning/artificial-intelligence/singapore-fintech-festival-ai-in-banking-finance.html).
+
+---
+
 ## Verwendung in der Schulung
 
 | Kontext | Verwendung |
