@@ -47,7 +47,7 @@
 |-----|------|-----|--------------|
 | https://aiindex.stanford.edu/ | Stanford HAI — AI Index Report | Forschung | Jährlicher State-of-AI, Statistiken, Marktdaten |
 | https://www.deeplearning.ai/ | DeepLearning.AI | Bildung | ML-Grundlagen, Kurse, Andrew Ng |
-| https://huggingface.co/docs | Hugging Face | Technisch | LLMs, Modelle, Open Source KI |
+| https://huggingface.co/ | Hugging Face | Plattform | Sammelplattform für KI-Modelle (Model Hub), Datensätze, Demo-Umgebungen (Spaces); führende Anlaufstelle für Open-Source- und Open-Weight-LLMs (Llama, Mistral, DeepSeek u.a.); Leaderboards für Modellvergleiche |
 | https://platform.openai.com/docs | OpenAI API Docs | Technisch | GPT-4, Prompting, Token-Limits, Sicherheitsfilter |
 | https://cset.georgetown.edu/research-area/cyberai/ | CSET (Center for Security and Emergign Technology) | Forschung | USA Cybersecurity |
 | https://ocw.mit.edu/search/?t=Artificial+Intelligence | MIT (Open Course Ware) | Gratis-Videos des MIT zu KI- Themen, z.B. https://ocw.mit.edu/courses/6-s087-foundation-models-and-generative-ai-january-iap-2024/ zu Foundation Models & Generative AI
