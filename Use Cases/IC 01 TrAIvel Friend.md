@@ -93,4 +93,12 @@ xxxx *(to be developed)*
 
 ---
 
-*Sources (market & competition): Growth Market Reports — Weekend Getaway Market; Coherent Market Insights — Urban Tourism Market; Layla / Mindtrip / MonkeyTravel product data; Travelovin & Expedia/Booking affiliate-commission data (2025). Full links in the working notes.*
+## Sources (market & competition)
+
+- Weekend Getaway Market — [Growth Market Reports](https://growthmarketreports.com/report/weekend-getaway-market)
+- Urban Tourism Market — [Coherent Market Insights](https://www.coherentmarketinsights.com/industry-reports/urban-tourism-market)
+- AI trip-planner comparison (Mindtrip, Layla & others) — [MonkeyTravel](https://monkeytravel.app/blog/best-ai-trip-planners-2026-compared)
+- Layla — [layla.ai](https://layla.ai/) · Mindtrip — [mindtrip.ai](https://mindtrip.ai/)
+- Online-travel commission rates 2025–2026 — [Travelovin](https://travelovin.com/blog/online-travel-agency-commission-rates-2025-2026)
+
+*Note: market-research and product/commission figures above are practitioner sources (not government/academic Tier-1). The city-break TAM and the ~5–10 % commission range are each supported by more than one of the sources listed.*
