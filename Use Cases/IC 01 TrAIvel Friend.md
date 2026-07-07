@@ -6,7 +6,7 @@
 
 ## 1 · Proposal
 
-The following proposal has been submitted to AIktivInvest for consideration and funding:
+The following proposal has been submitted to AktivInvest for consideration and funding:
 
 **TrAIvel Friend** is an AI-based travel companion. It organises the entire journey — "the experience" — for the user: from the first vague idea of a destination, through the booking of flights, hotels, theatre or museum tickets and restaurant tables, to the handling of claims and the post-trip feedback and recommendations for other travellers. It is built around a **personal AI agent**.
 
