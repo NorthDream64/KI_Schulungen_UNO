@@ -23,6 +23,7 @@
 | https://standards.cencenelec.eu/ords/f?p=305:7:::::FSP_ORG_ID:2916257&cs=18CADACF032CF8171E8D7168C8C02237A | European Electrotechnical Committee for Standardization (CENELEC) | EU | Datenmangement-Standards |
 | https://regulations.ai/regulations/china-summary | Overview Chinese AI Regulations | China | Cyber Security, Datenschutz, regulatorische Aufsicht |
 | https://legalclarity.org/ai-regulations-in-the-us-federal-and-state-laws | Overview Federal and State Regulations of AI | USA |
+| https://www.imda.gov.sg/ | Infocomm Media Development Authority | Singapore | Schulkurse, agentische KI (https://www.imda.gov.sg/-/media/imda/files/about/emerging-tech-and-research/artificial-intelligence/mgf-for-agentic-ai.pdf)
 
 
 ### 1.2 Rolle des KI-Beauftragten
