@@ -36,15 +36,14 @@ Direkt der Geschäftsführerin zugeordnet. Kein eigenes Budget. Beratende Funkti
 
 ---
 
-## Die fünf KI-Initiativen
+## Die vier laufenden KI-Initiativen
 
-| Stufe | System | Risikoniveau | Datenquelle |
+| Stufe | System | Status | Datenquelle |
 |---|---|---|---|
-| UC-03a | Verbrauchsmaterialien | Minimal | ERP / Bestellhistorie |
-| UC-03b | Patienten-Onboarding-App | Begrenzt → Grenzfall | Keine Patientendaten (nur FAQ) |
-| UC-03c | Administrative Automatisierung | Mittel bis hoch | EPA |
-| UC-03d | Diagnoseunterstützung | Hochrisiko | EPA + Bilddaten |
-| UC-03e | Externe Kooperationen | Hoch bis sehr hoch | EPA (anonymisiert?) |
+| UC-03a | Optimierte Steuerung der Verbrauchsmaterialien (Verbände, Handschuhe, Spritzen usw.) | Pilot | ERP / Bestellhistorie |
+| UC-03b | Patienten-Onboarding-App (Öffnungszeiten, Kantinenplan, FAQ, Chatfunktion usw.) | Pilot | Keine Patientendaten (nur FAQ) |
+| UC-03c | Automatisierung administrativer Abläufe (Prüfung der KV-Schlüssel, Terminvorschläge, Entwürfe für Entlassbriefe | Test | interne Dokumente / KV-Webseiten / Kalender |
+| UC-03d | Diagnoseunterstützung (Scanning von CRTs mittels einer in Indien gehosteten App  | Test | EPA + Bilddaten |
 
 ---
 
