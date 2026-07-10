@@ -5,112 +5,171 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Lernkontrolle · Tag 8 · Compliance & Microsoft 365</title>
 <style>
-:root{
-  --ink:#1a1a18;--paper:#f8f6f1;--card:#ffffff;--rule:#d5d0c5;--muted:#6b6b60;
-  --accent:#0a4a7a;--teal:#0a6b6b;--green:#2a5c3f;--red:#8b1a1a;
-  --correct-bg:#e8f5e9;--correct-border:#66bb6a;
-  --wrong-bg:#fce4ec;--wrong-border:#ef9a9a;
-  --missed-bg:#fff4e6;--missed-border:#f0b070;--missed:#b85c00;
-  --phase:#f2f0eb;
+:root {
+  --ink:#1a1a18;--paper:#f5f2ec;--card:#fff;--rule:#d5d0c5;--muted:#888880;
+  --accent:#2a4a8a;--accent-soft:#e8edf7;
+  --level-1:#5a3a7a;--level-1-soft:#f0eaf7;
+  --level-2:#0a5a7a;--level-2-soft:#e0eff7;
+  --correct:#2a7a50;--correct-bg:#eaf5ee;--correct-border:#a0d8b8;
+  --wrong:#9a2a2a;--wrong-bg:#faeaea;--wrong-border:#d8a0a0;--missed:#b85c00;--missed-bg:#fff4e6;--missed-border:#f0b070;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:'DM Sans',system-ui,sans-serif;background:var(--paper);color:var(--ink);font-size:14px;line-height:1.65;}
-.page{max-width:820px;margin:0 auto;padding:2.5rem 2rem 5rem;}
-.ho-header{border-bottom:3px solid var(--ink);padding-bottom:1.5rem;margin-bottom:2rem;}
-.ho-eyebrow{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-bottom:.5rem;}
-h1{font-family:'Playfair Display',Georgia,serif;font-size:clamp(1.5rem,4vw,2.1rem);line-height:1.15;margin-bottom:.5rem;}
-.setup-card{background:var(--card);border:1px solid var(--rule);border-radius:8px;padding:1.8rem;max-width:420px;margin:0 auto 2rem;}
-.setup-card h2{font-family:'Playfair Display',Georgia,serif;font-size:1.2rem;margin-bottom:1.2rem;}
-.field-label{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:.3rem;}
-.setup-input{width:100%;border:1px solid var(--rule);border-radius:6px;padding:.55rem .8rem;font-size:14px;background:var(--paper);outline:none;color:var(--ink);}
+body{font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;background:var(--paper);color:var(--ink);line-height:1.65;font-size:15px;}
+a{color:var(--accent);}
+.site-header{border-bottom:2px solid var(--ink);padding:1.8rem 2rem 1.4rem;max-width:820px;margin:0 auto;}
+.eyebrow{font-family:"SFMono-Regular", Consolas, "Liberation Mono", monospace;font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:var(--muted);margin-bottom:.5rem;}
+.site-header h1{font-family:Georgia, "Times New Roman", serif;font-size:clamp(1.5rem,4vw,2.1rem);line-height:1.15;margin-bottom:.4rem;}
+.header-meta{font-size:12px;color:var(--muted);display:flex;gap:1rem;flex-wrap:wrap;}
+.header-meta span::before{content:"· ";}
+.header-meta span:first-child::before{content:"";}
+.main{max-width:820px;margin:0 auto;padding:1.8rem 2rem 4rem;}
+.setup-card{background:var(--card);border:1px solid var(--rule);border-radius:12px;padding:2rem;max-width:480px;margin:0 auto;}
+.setup-card h2{font-family:Georgia, "Times New Roman", serif;font-size:1.3rem;margin-bottom:1.2rem;}
+.field-label{font-family:"SFMono-Regular", Consolas, "Liberation Mono", monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:.35rem;}
+.setup-input{width:100%;border:1px solid var(--rule);border-radius:8px;padding:.6rem .9rem;font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;font-size:14px;background:var(--paper);outline:none;color:var(--ink);transition:border-color .15s;}
 .setup-input:focus{border-color:var(--ink);}
-.btn-start{width:100%;padding:.7rem;background:var(--ink);color:#fff;border:none;border-radius:6px;font-size:14px;font-weight:500;cursor:pointer;margin-top:1rem;}
+.hint-text{font-size:12px;color:var(--muted);margin-top:.3rem;display:block;}
+.level-btns{display:flex;gap:.5rem;margin-top:.3rem;}
+.sel-btn{flex:1;padding:.55rem .6rem;border:1px solid var(--rule);border-radius:8px;background:none;font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;font-size:13px;cursor:pointer;text-align:center;transition:all .15s;color:var(--ink);}
+.sel-btn.active-1{background:var(--level-1-soft);border-color:var(--level-1);color:var(--level-1);font-weight:500;}
+.sel-btn.active-2{background:var(--level-2-soft);border-color:var(--level-2);color:var(--level-2);font-weight:500;}
+.btn-start{width:100%;padding:.75rem;background:var(--ink);color:#fff;border:none;border-radius:8px;font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;font-size:15px;font-weight:500;cursor:pointer;margin-top:1rem;transition:background .15s;}
 .btn-start:hover{background:#333;}
-.role-label{display:inline-block;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;padding:3px 10px;border-radius:100px;margin:1.5rem 0 .8rem;font-weight:600;}
-.role-kib{background:#e3f0fa;color:var(--accent);border:1px solid #b0cfe0;}
-.role-two{background:#e8f5e9;color:var(--green);border:1px solid #a5d6a7;}
-.q-card{background:var(--card);border:1px solid var(--rule);border-radius:8px;padding:1.2rem 1.4rem;margin-bottom:1.2rem;}
-.q-num{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:1px;margin-bottom:.4rem;}
-.q-text{font-size:14px;font-weight:500;margin-bottom:.8rem;line-height:1.55;}
-.q-hint{font-size:12px;color:var(--muted);font-style:italic;margin-bottom:.6rem;}
-.opt-list{list-style:none;padding:0;}
-.opt-list li{display:flex;align-items:flex-start;gap:.6rem;padding:.45rem .6rem;border-radius:6px;margin-bottom:.3rem;font-size:13.5px;line-height:1.5;cursor:pointer;border:1px solid transparent;-webkit-user-select:none;user-select:none;}
-.opt-list li:hover:not(.disabled){background:var(--phase);}
-.opt-list li.disabled{cursor:default;}
-.opt-list li.selected{background:#e8edf7;border-color:#8090b8;}
-.opt-box{width:18px;height:18px;border:2px solid var(--rule);border-radius:4px;flex-shrink:0;margin-top:2px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:white;}
-.opt-list li.selected .opt-box{border-color:var(--accent);background:var(--accent);}
-.opt-list li.correct-sel{background:var(--correct-bg);border-color:var(--correct-border);}
-.opt-list li.correct-sel .opt-box{border-color:var(--green);background:var(--green);}
-.opt-list li.wrong-sel{background:var(--wrong-bg);border-color:var(--wrong-border);}
-.opt-list li.wrong-sel .opt-box{border-color:var(--red);background:var(--red);}
-.opt-list li.missed{background:var(--missed-bg);border-color:var(--missed-border);}
-.opt-list li.missed .opt-box{border-color:var(--missed);background:var(--missed);}
-.exp{display:none;background:#f5f5f0;border-left:3px solid var(--teal);padding:.7rem 1rem;margin-top:.7rem;border-radius:0 6px 6px 0;font-size:12.5px;line-height:1.6;color:var(--ink);}
-.exp.visible{display:block;}
-.exp-src{font-size:11px;color:var(--muted);margin-top:.4rem;border-top:1px solid var(--rule);padding-top:.35rem;}
-.btn-row{display:flex;gap:.8rem;margin-top:.7rem;}
-.btn{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:1px;padding:7px 18px;border:1px solid var(--rule);border-radius:5px;background:var(--card);color:var(--ink);cursor:pointer;}
-.btn:hover{border-color:var(--accent);color:var(--accent);}
-.btn.primary{background:var(--accent);color:white;border-color:var(--accent);}
-.btn.primary:hover{background:#08396a;}
-.btn.submit-btn{background:var(--green);color:white;border-color:var(--green);font-size:12px;padding:9px 22px;}
-.btn.submit-btn:hover{background:#1e4530;}
-.btn.submit-btn:disabled{background:#aaa;border-color:#aaa;cursor:not-allowed;}
-.final-panel{background:var(--card);border:2px solid var(--ink);border-radius:8px;padding:1.5rem 1.8rem;margin-top:1.8rem;display:none;}
-.final-score{font-family:'Playfair Display',Georgia,serif;font-size:2.8rem;color:var(--accent);margin-bottom:.2rem;line-height:1;}
-.final-pct{font-size:13px;color:var(--muted);margin-bottom:1rem;}
-.submit-status{font-size:12px;margin-top:.6rem;padding:.4rem .8rem;border-radius:5px;display:none;}
+.btn-start:disabled{background:#aaa;cursor:not-allowed;}
+.quiz-header-strip{display:flex;gap:.6rem;align-items:center;margin-bottom:1.4rem;flex-wrap:wrap;}
+.strip-tag{display:inline-block;font-size:11px;font-weight:600;padding:2px 10px;border-radius:100px;letter-spacing:.5px;}
+.strip-role-1{background:var(--level-1-soft);color:var(--level-1);}
+.strip-role-2{background:var(--level-2-soft);color:var(--level-2);}
+.strip-name{font-size:12px;color:var(--muted);}
+.separator-card{background:var(--accent-soft);border:1px solid var(--rule);border-radius:12px;padding:1.2rem 1.5rem;margin:1.5rem 0;text-align:center;}
+.separator-card h3{font-family:Georgia,serif;font-size:1.1rem;color:var(--accent);margin:0;}
+.progress-bar{height:3px;background:var(--rule);border-radius:2px;margin-bottom:1.2rem;}
+.progress-fill{height:100%;background:var(--ink);border-radius:2px;transition:width .3s;}
+.progress-label{font-family:"SFMono-Regular", Consolas, "Liberation Mono", monospace;font-size:10px;color:var(--muted);margin-bottom:.5rem;}
+.q-card{background:var(--card);border:1px solid var(--rule);border-radius:12px;padding:1.5rem;margin-bottom:1rem;}
+.q-num{font-family:"SFMono-Regular", Consolas, "Liberation Mono", monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:.6rem;}
+.q-text{font-size:15px;font-weight:500;line-height:1.55;margin-bottom:.5rem;}
+.q-hint{font-size:12px;color:var(--muted);margin-bottom:.9rem;font-style:italic;}
+.opt-list{display:flex;flex-direction:column;gap:.5rem;}
+.opt{display:flex;align-items:flex-start;gap:.7rem;padding:.75rem 1rem;border:1px solid var(--rule);border-radius:8px;cursor:pointer;background:#fdfdfb;transition:all .12s;-webkit-user-select:none;user-select:none;}
+.opt:hover:not(.disabled){border-color:#888;background:#f5f2ec;}
+.opt.selected{background:var(--accent-soft);border-color:#8090b8;}
+.opt.disabled{cursor:default;}
+.opt.correct-sel{background:var(--correct-bg);border-color:var(--correct-border);}
+.opt.wrong-sel{background:var(--wrong-bg);border-color:var(--wrong-border);}
+.opt.missed{background:var(--missed-bg);border-color:var(--missed-border);}
+.opt-cb{width:18px;height:18px;min-width:18px;border:1.5px solid #bbb;border-radius:4px;flex-shrink:0;margin-top:2px;display:flex;align-items:center;justify-content:center;transition:all .12s;}
+.opt-cb.chk{background:var(--ink);border-color:var(--ink);}
+.opt-cb.chk::after{content:'';display:block;width:8px;height:8px;background:#fff;border-radius:2px;}
+.opt.correct-sel .opt-cb{background:var(--correct);border-color:var(--correct);}
+.opt.correct-sel .opt-cb::after{content:'✓';color:#fff;font-size:11px;background:none;width:auto;height:auto;}
+.opt.wrong-sel .opt-cb{background:var(--wrong);border-color:var(--wrong);}
+.opt.wrong-sel .opt-cb::after{content:'✗';color:#fff;font-size:11px;background:none;width:auto;height:auto;}
+.opt.missed .opt-cb{background:var(--missed);border-color:var(--missed);}
+.opt.missed .opt-cb::after{content:'→';color:#fff;font-size:11px;background:none;width:auto;height:auto;}
+.opt-letter{font-family:"SFMono-Regular", Consolas, "Liberation Mono", monospace;font-size:12px;color:var(--muted);min-width:16px;flex-shrink:0;margin-top:2px;}
+.opt-text{font-size:14px;line-height:1.5;}
+.feedback{border-radius:8px;padding:.9rem 1.1rem;margin-top:.9rem;}
+.feedback.fb-ok{background:var(--correct-bg);border:1px solid var(--correct-border);}
+.feedback.fb-wrong{background:var(--wrong-bg);border:1px solid var(--wrong-border);}
+.fb-title{font-weight:500;font-size:14px;margin-bottom:.4rem;}
+.fb-ok .fb-title{color:var(--correct);}
+.fb-wrong .fb-title{color:var(--wrong);}
+.fb-text{font-size:13px;line-height:1.65;color:#444;margin-bottom:.5rem;}
+.fb-source{font-size:12px;color:var(--muted);border-top:1px solid var(--rule);padding-top:.5rem;}
+.btn{display:inline-flex;align-items:center;padding:.55rem 1.2rem;border:1px solid var(--rule);border-radius:8px;background:none;font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;font-size:14px;font-weight:500;cursor:pointer;color:var(--ink);transition:all .15s;}
+.btn:hover{background:var(--paper);border-color:#888;}
+.btn-full{width:100%;justify-content:center;padding:.7rem;font-size:15px;margin-top:1rem;}
+.btn-submit{background:#2a5c3f;color:#fff;border-color:#2a5c3f;}
+.btn-submit:hover{background:#1e4530;}
+.result-block{max-width:600px;margin:0 auto;text-align:center;}
+.result-grade{font-family:Georgia, "Times New Roman", serif;font-size:4.5rem;line-height:1;margin-bottom:.3rem;}
+.result-label{font-size:1.1rem;font-weight:500;margin-bottom:.3rem;}
+.result-sub{font-size:13px;color:var(--muted);margin-bottom:1.5rem;}
+.stats-row{display:flex;justify-content:center;gap:1rem;flex-wrap:wrap;margin-bottom:1.5rem;}
+.stat{background:var(--card);border:1px solid var(--rule);border-radius:10px;padding:.9rem 1.2rem;text-align:center;min-width:90px;}
+.stat-n{font-size:1.8rem;font-weight:500;}
+.stat-l{font-size:11px;color:var(--muted);margin-top:2px;}
+.comp-title{font-size:13px;font-weight:500;text-align:left;margin-bottom:.8rem;}
+.comp-row{margin-bottom:.7rem;text-align:left;}
+.comp-labels{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-bottom:3px;}
+.comp-track{height:4px;background:var(--rule);border-radius:2px;}
+.comp-fill{height:100%;border-radius:2px;}
+.fill-ok{background:var(--correct);}
+.fill-wrong{background:var(--wrong);}
+.submit-status{display:none;font-size:12px;margin-top:.5rem;padding:.4rem .8rem;border-radius:6px;}
 .submit-status.sending{display:block;background:#fffbe8;color:#806a00;border:1px solid #d0c060;}
-.submit-status.success{display:block;background:var(--correct-bg);color:var(--green);border:1px solid var(--correct-border);}
-.submit-status.error{display:block;background:var(--wrong-bg);color:var(--red);border:1px solid var(--wrong-border);}
-.footer{margin-top:3rem;padding-top:1rem;border-top:1px solid var(--rule);font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:.5px;display:flex;justify-content:space-between;}
+.submit-status.success{display:block;background:var(--correct-bg);color:var(--correct);border:1px solid var(--correct-border);}
+.submit-status.error{display:block;background:var(--wrong-bg);color:var(--wrong);border:1px solid var(--wrong-border);}
 </style>
 </head>
 <body>
-<div class="page">
 
-<div class="ho-header">
-  <div class="ho-eyebrow">alfatraining · KI-Beauftragte:r · Tag 1</div>
+<header class="site-header">
+  <div class="eyebrow">Alfatraining · KI-Beauftragte:r · Tag 8</div>
   <h1>Lernkontrolle<br>Compliance & Microsoft 365</h1>
-  <p style="font-size:13px;color:var(--muted);margin-top:.5rem;">10 Fragen · Mehrfachauswahl möglich · Frage für Frage auswerten</p>
-</div>
+  <div class="header-meta">
+    <span>10 Fragen</span>
+    <span>Eine oder mehrere Antworten können richtig sein</span>
+  </div>
+</header>
 
+<main class="main">
+
+<!-- ── SETUP ── -->
 <div id="setup-section">
   <div class="setup-card">
     <h2>Quiz starten</h2>
-    <span class="field-label">Dein Name (oder Teilnehmer-Nummer)</span>
-    <input type="text" id="participant-name" class="setup-input" placeholder="z. B. Vorname oder Teilnehmer-07">
-    <button class="btn-start" onclick="startQuiz()">Quiz starten</button>
+
+    <div style="margin-bottom:1.2rem;">
+      <span class="field-label">Dein Name (oder Teilnehmer-Nummer)</span>
+      <input type="text" id="participant-name" class="setup-input" placeholder="z. B. Teilnehmer-07 oder Vorname">
+    </div>
+
+    <button class="btn-start" id="btn-start" onclick="startQuiz()">Quiz starten</button>
   </div>
 </div>
 
+<!-- ── QUIZ ── -->
 <div id="quiz-section" style="display:none">
+  <div class="quiz-header-strip" id="quiz-header-strip"></div>
+  <div class="progress-label" id="progress-label"></div>
+  <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+
   <div id="questions-container"></div>
 
-  <div class="final-panel" id="final-panel">
-    <div class="final-score" id="final-score">—</div>
-    <div class="final-pct" id="final-pct">Alle Fragen ausgewertet</div>
-    <div style="display:flex;gap:.8rem;flex-wrap:wrap;align-items:center;">
-      <button class="btn submit-btn" id="btn-send" onclick="sendToSheets()">Ergebnisse übermitteln →</button>
+  <div style="margin-top:1.5rem">
+    <button class="btn btn-submit btn-full" id="btn-submit" onclick="submitQuiz()" disabled>Auswertung anzeigen →</button>
+  </div>
+  <div class="submit-status" id="submit-status"></div>
+</div>
+
+<!-- ── RESULTS ── -->
+<div id="results-section" style="display:none">
+  <div class="result-block">
+    <div class="result-grade" id="result-grade"></div>
+    <div class="result-label" id="result-label"></div>
+    <div class="result-sub" id="result-sub"></div>
+    <div class="stats-row" id="stats-row"></div>
+    <div class="comp-title">Kompetenzprofil</div>
+    <div id="comp-bars"></div>
+    <div style="margin-top:.8rem;display:flex;justify-content:center;">
       <button class="btn" onclick="location.reload()">Neu starten</button>
     </div>
-    <div class="submit-status" id="submit-status"></div>
-  </div>
+    </div>
+
+  <hr style="border:none;border-top:1px solid var(--rule);margin:2rem 0">
+  <h2 style="font-family:Georgia, "Times New Roman", serif;font-size:1.2rem;margin-bottom:1rem">Detailauswertung</h2>
+  <div id="review-container"></div>
 </div>
 
-<div class="footer">
-  <span>alfatraining · KI-Beauftragte:r · Tag 8 · Quiz</span>
-  <span>Ulrich Nord · 2026</span>
-</div>
-
-</div><!-- .page -->
+</main>
 
 <script>
 var APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyPs358GF_E1xsvTh08PpTpZcBDS1OvsU9XQ0qi0MkZoCCnAk4dyo3Aii0OYxILdvCRYA/exec';
-var TAG_NR = 8;
-var THEMA  = 'Compliance & M365';
-var ROLE2  = 'CISO';
+
+/* ═══════ FRAGENBANK ═══════════════════════════════════════════ */
+/* Verteilung: 2x eine richtig, 4x zwei richtig, 4x drei richtig; nie vier */
 
 var QUESTIONS = [
 
@@ -250,58 +309,58 @@ var QUESTIONS = [
 
 ];
 
-/* ── State ─────────────────────────────────────────────────── */
-var S = { name:'', qs:[], sels:[], checkedCount:0, score:0 };
+/* ═══════ STATE ════════════════════════════════════════════════ */
+var S = { name:'', questions:[], selections:[], submitted:false };
 
 function startQuiz() {
-  S.name = (document.getElementById('participant-name').value.trim()) || 'Anonym';
-
-  // Shuffle options per question
-  S.qs = QUESTIONS.map(function(q) {
-    var n = q.opts.length, idx = [];
-    for (var k=0;k<n;k++) idx.push(k);
-    for (var j=n-1;j>0;j--) { var r=Math.floor(Math.random()*(j+1)),t=idx[j];idx[j]=idx[r];idx[r]=t; }
+  S.name = document.getElementById('participant-name').value.trim() || 'Anonym';
+  S.questions = QUESTIONS.map(function(q){
+    var n=q.opts.length, idx=[];
+    for(var k=0;k<n;k++) idx.push(k);
+    for(var j=n-1;j>0;j--){ var r=Math.floor(Math.random()*(j+1)),t=idx[j];idx[j]=idx[r];idx[r]=t; }
     return {
-      set: q.set, q: q.q,
-      opts: idx.map(function(i){return q.opts[i];}),
-      correct: q.correct.map(function(c){return idx.indexOf(c);}),
-      exp: q.exp, src: q.src, url: q.url
+      set:q.set,
+      q:q.q,
+      opts:idx.map(function(i){return q.opts[i];}),
+      correct:q.correct.map(function(c){return idx.indexOf(c);}),
+      exp:q.exp, src:q.src, url:q.url
     };
   });
-  S.sels = S.qs.map(function(){return [];});
-  S.checkedCount = 0; S.score = 0;
+  S.selections = S.questions.map(function(){return [];});
+  S.submitted = false;
 
-  document.getElementById('setup-section').style.display = 'none';
-  document.getElementById('quiz-section').style.display = 'block';
+  document.getElementById('setup-section').style.display='none';
+  document.getElementById('quiz-section').style.display='block';
+
+  document.getElementById('quiz-header-strip').innerHTML =
+    '<span class="strip-tag strip-role-1">KI-Beauftragte:r</span>'
+    +'<span class="strip-tag strip-role-2">'+ROLE2+'</span>'
+    +'<span class="strip-name">'+S.name+'</span>';
+
   renderQuestions();
 }
 
 function renderQuestions() {
   var container = document.getElementById('questions-container');
   container.innerHTML = '';
-  var total = S.qs.length;
+  var total = S.questions.length;
+  var letters = ['A','B','C','D'];
 
-  S.qs.forEach(function(q, qi) {
-    // Role separator
+  S.questions.forEach(function(q, qi) {
+    // Add separator between sets
     if (qi === 5) {
       var sep = document.createElement('div');
-      sep.className = 'role-label role-two';
-      sep.textContent = 'Perspektive: ' + ROLE2;
+      sep.className = 'separator-card';
+      sep.innerHTML = '<h3>Perspektivwechsel: '+ROLE2+'</h3>';
       container.appendChild(sep);
-    } else if (qi === 0) {
-      var sep0 = document.createElement('div');
-      sep0.className = 'role-label role-kib';
-      sep0.textContent = 'Perspektive: KI-Beauftragte:r';
-      container.appendChild(sep0);
     }
 
     var card = document.createElement('div');
     card.className = 'q-card';
-    card.id = 'card-' + qi;
 
     var numEl = document.createElement('div');
     numEl.className = 'q-num';
-    numEl.textContent = 'Frage ' + (qi+1) + ' von ' + total;
+    numEl.textContent = 'Frage '+(qi+1)+' von '+total;
     card.appendChild(numEl);
 
     var qEl = document.createElement('div');
@@ -309,158 +368,246 @@ function renderQuestions() {
     qEl.textContent = q.q;
     card.appendChild(qEl);
 
-    var hint = document.createElement('div');
-    hint.className = 'q-hint';
-    hint.textContent = 'Eine oder mehrere Antworten können richtig sein.';
-    card.appendChild(hint);
+    var hEl = document.createElement('div');
+    hEl.className = 'q-hint';
+    hEl.textContent = 'Eine oder mehrere Antworten können richtig sein.';
+    card.appendChild(hEl);
 
-    var ul = document.createElement('ul');
-    ul.className = 'opt-list';
-    ul.id = 'opts-' + qi;
+    var optList = document.createElement('div');
+    optList.className = 'opt-list';
 
     q.opts.forEach(function(opt, oi) {
-      var li = document.createElement('li');
-      li.id = 'opt-' + qi + '-' + oi;
-      li.onclick = (function(a,b){return function(){toggleOpt(a,b);};})(qi,oi);
+      var row = document.createElement('div');
+      row.className = 'opt';
+      row.id = 'opt-'+qi+'-'+oi;
+      row.onclick = (function(a,b){ return function(){ toggleOpt(a,b); }; })(qi,oi);
 
-      var box = document.createElement('span');
-      box.className = 'opt-box';
-      box.id = 'box-' + qi + '-' + oi;
-      li.appendChild(box);
+      var cb = document.createElement('div');
+      cb.className = 'opt-cb';
+      cb.id = 'cb-'+qi+'-'+oi;
+      row.appendChild(cb);
 
-      var txt = document.createElement('span');
-      txt.textContent = opt;
-      li.appendChild(txt);
+      var letter = document.createElement('div');
+      letter.className = 'opt-letter';
+      letter.textContent = letters[oi]+'.';
+      row.appendChild(letter);
 
-      ul.appendChild(li);
+      var text = document.createElement('div');
+      text.className = 'opt-text';
+      text.textContent = opt;
+      row.appendChild(text);
+
+      optList.appendChild(row);
     });
-    card.appendChild(ul);
 
-    var expEl = document.createElement('div');
-    expEl.className = 'exp';
-    expEl.id = 'exp-' + qi;
-    card.appendChild(expEl);
+    card.appendChild(optList);
+    var fb = document.createElement('div');
+    fb.id = 'fb-'+qi;
+    card.appendChild(fb);
+    container.appendChild(card);
+  });
 
-    var btnRow = document.createElement('div');
-    btnRow.className = 'btn-row';
-    var btn = document.createElement('button');
-    btn.className = 'btn primary';
-    btn.id = 'btn-check-' + qi;
-    btn.textContent = 'Auswerten';
-    btn.onclick = (function(a){return function(){checkQ(a);};})(qi);
-    btnRow.appendChild(btn);
-    card.appendChild(btnRow);
+  updateProgress();
+}
 
+function toggleOpt(qi, oi) {
+  if (S.submitted) return;
+  var sel = S.selections[qi];
+  var pos = sel.indexOf(oi);
+  if (pos >= 0) sel.splice(pos,1); else sel.push(oi);
+  document.getElementById('cb-'+qi+'-'+oi).className = 'opt-cb'+(sel.indexOf(oi)>=0?' chk':'');
+  document.getElementById('opt-'+qi+'-'+oi).className = 'opt'+(sel.indexOf(oi)>=0?' selected':'');
+  checkSubmitReady();
+  updateProgress();
+}
+
+function checkSubmitReady() {
+  document.getElementById('btn-submit').disabled =
+    S.selections.filter(function(s){return s.length>0;}).length < S.questions.length;
+}
+
+function updateProgress() {
+  var answered = S.selections.filter(function(s){return s.length>0;}).length;
+  document.getElementById('progress-fill').style.width = Math.round(answered/S.questions.length*100)+'%';
+  document.getElementById('progress-label').textContent = answered+' von '+S.questions.length+' Fragen beantwortet';
+}
+
+function submitQuiz() {
+  S.submitted = true;
+  document.getElementById('btn-submit').disabled = true;
+  var correct=0, wrong=0;
+
+  S.questions.forEach(function(q, qi) {
+    var sel = S.selections[qi].slice().sort().join(',');
+    var cor = q.correct.slice().sort().join(',');
+    var isFull = sel===cor;
+    if (isFull) correct++; else wrong++;
+
+    q.opts.forEach(function(opt,oi){
+      var isSel = S.selections[qi].indexOf(oi)>=0;
+      var isCorr = q.correct.indexOf(oi)>=0;
+      document.getElementById('opt-'+qi+'-'+oi).className =
+        'opt disabled'+(isSel&&isCorr?' correct-sel':isSel&&!isCorr?' wrong-sel':!isSel&&isCorr?' missed':'');
+      document.getElementById('cb-'+qi+'-'+oi).className = 'opt-cb'+(isSel?' chk':'');
+    });
+
+    document.getElementById('fb-'+qi).innerHTML =
+      '<div class="feedback '+(isFull?'fb-ok':'fb-wrong')+'">'
+      +'<div class="fb-title">'+(isFull?'Richtig — alle Antworten korrekt.':'Falsch — nicht alle richtigen Antworten gewählt oder falsche angekreuzt.')+'</div>'
+      +'<div class="fb-text">'+q.exp+'</div>'
+      +'<div class="fb-source">Quelle: <a href="'+q.url+'" target="_blank">'+q.src+'</a></div>'
+      +'</div>';
+  });
+
+  showResults(correct, wrong);
+  sendToSheets(correct, wrong);
+}
+
+function showResults(correct, wrong) {
+  var total = S.questions.length;
+  var pct = Math.round(correct/total*100);
+  var grade, label, sub;
+  if(pct>=80){grade='A';label='Sehr gut!';sub='Prüfungsreife für dieses Thema nachgewiesen.';}
+  else if(pct>=60){grade='B';label='Gut';sub='Solide Basis — Quellenlinks gezielt nutzen.';}
+  else if(pct>=40){grade='C';label='Ausbaufähig';sub='Grundlagen vorhanden — Theorieblock nochmals lesen.';}
+  else{grade='D';label='Weiter üben';sub='Lücken mit den verlinkten Quellen schließen.';}
+
+  document.getElementById('result-grade').textContent=grade;
+  document.getElementById('result-label').textContent=label;
+  document.getElementById('result-sub').textContent=sub;
+  document.getElementById('stats-row').innerHTML=
+    '<div class="stat"><div class="stat-n" style="color:var(--correct)">'+correct+'</div><div class="stat-l">Richtig</div></div>'
+    +'<div class="stat"><div class="stat-n" style="color:var(--wrong)">'+wrong+'</div><div class="stat-l">Falsch</div></div>'
+    +'<div class="stat"><div class="stat-n">'+pct+'%</div><div class="stat-l">Ergebnis</div></div>';
+
+  document.getElementById('comp-bars').innerHTML=S.questions.map(function(q,i){
+    var ok=S.selections[i].slice().sort().join(',')===q.correct.slice().sort().join(',');
+    return '<div class="comp-row"><div class="comp-labels"><span>Frage '+(i+1)+'</span>'
+      +'<span style="color:'+(ok?'var(--correct)':'var(--wrong)')+'">'+(ok?'✓ Richtig':'✗ Falsch')+'</span></div>'
+      +'<div class="comp-track"><div class="comp-fill '+(ok?'fill-ok':'fill-wrong')+'" style="width:'+(ok?100:0)+'%"></div></div></div>';
+  }).join('');
+
+  renderReview();
+  document.getElementById('quiz-section').style.display='none';
+  document.getElementById('results-section').style.display='block';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function renderReview() {
+  var letters = ['A','B','C','D'];
+  var container = document.getElementById('review-container');
+  container.innerHTML = '';
+
+  S.questions.forEach(function(q, qi) {
+    var isFull = S.selections[qi].slice().sort().join(',')===q.correct.slice().sort().join(',');
+    var card = document.createElement('div');
+    card.className = 'q-card';
+    card.style.marginBottom = '.8rem';
+
+    var header = document.createElement('div');
+    header.style.cssText = 'display:flex;gap:.6rem;align-items:baseline;margin-bottom:.5rem;';
+    var numEl = document.createElement('div');
+    numEl.className = 'q-num';
+    numEl.textContent = 'Frage '+(qi+1);
+    var badge = document.createElement('span');
+    badge.style.cssText = 'font-size:12px;font-weight:500;padding:2px 10px;border-radius:100px;'
+      +(isFull?'background:var(--correct-bg);color:var(--correct);':'background:var(--wrong-bg);color:var(--wrong);');
+    badge.textContent = isFull?'✓ Richtig':'✗ Falsch';
+    header.appendChild(numEl); header.appendChild(badge);
+    card.appendChild(header);
+
+    var qEl = document.createElement('div');
+    qEl.className = 'q-text';
+    qEl.style.marginBottom = '.7rem';
+    qEl.textContent = q.q;
+    card.appendChild(qEl);
+
+    var optList = document.createElement('div');
+    optList.className = 'opt-list';
+    q.opts.forEach(function(opt, oi) {
+      var isSel = S.selections[qi].indexOf(oi)>=0;
+      var isCorr = q.correct.indexOf(oi)>=0;
+      var row = document.createElement('div');
+      var cls = 'opt disabled';
+      if(isSel&&isCorr) cls+=' correct-sel';
+      else if(isSel&&!isCorr) cls+=' wrong-sel';
+      else if(!isSel&&isCorr) cls+=' missed';
+      row.className = cls;
+      var cb = document.createElement('div');
+      cb.className = 'opt-cb'+(isSel?' chk':'');
+      row.appendChild(cb);
+      var letter = document.createElement('div');
+      letter.className = 'opt-letter';
+      letter.textContent = letters[oi]+'.';
+      row.appendChild(letter);
+      var text = document.createElement('div');
+      text.className = 'opt-text';
+      text.textContent = opt;
+      row.appendChild(text);
+      optList.appendChild(row);
+    });
+    card.appendChild(optList);
+
+    var fb = document.createElement('div');
+    fb.innerHTML = '<div class="feedback '+(isFull?'fb-ok':'fb-wrong')+'" style="margin-top:.7rem">'
+      +'<div class="fb-title">'+(isFull?'Richtig.':'Falsch.')+'</div>'
+      +'<div class="fb-text">'+q.exp+'</div>'
+      +'<div class="fb-source">Quelle: <a href="'+q.url+'" target="_blank">'+q.src+'</a></div></div>';
+    card.appendChild(fb);
     container.appendChild(card);
   });
 }
 
-function toggleOpt(qi, oi) {
-  var card = document.getElementById('card-' + qi);
-  if (card.classList.contains('answered')) return;
-  var sel = S.sels[qi];
-  var pos = sel.indexOf(oi);
-  if (pos >= 0) sel.splice(pos,1); else sel.push(oi);
-  var li = document.getElementById('opt-' + qi + '-' + oi);
-  var box = document.getElementById('box-' + qi + '-' + oi);
-  if (sel.indexOf(oi) >= 0) {
-    li.classList.add('selected');
-    box.textContent = '✓';
-  } else {
-    li.classList.remove('selected');
-    box.textContent = '';
-  }
-}
-
-function checkQ(qi) {
-  var card = document.getElementById('card-' + qi);
-  if (card.classList.contains('answered')) return;
-  card.classList.add('answered');
-
-  var q = S.qs[qi];
-  var sel = S.sels[qi];
-  var selSorted = sel.slice().sort().join(',');
-  var corSorted = q.correct.slice().sort().join(',');
-  var isFullRight = selSorted === corSorted;
-  if (isFullRight) S.score++;
-
-  q.opts.forEach(function(opt, oi) {
-    var li  = document.getElementById('opt-' + qi + '-' + oi);
-    var box = document.getElementById('box-' + qi + '-' + oi);
-    var isSel  = sel.indexOf(oi) >= 0;
-    var isCorr = q.correct.indexOf(oi) >= 0;
-
-    li.classList.remove('selected');
-    li.classList.add('disabled');
-
-    if (isSel && isCorr)  { li.classList.add('correct-sel'); box.textContent = '✓'; }
-    else if (isSel)        { li.classList.add('wrong-sel');   box.textContent = '✗'; }
-    else if (isCorr)       { li.classList.add('missed');      box.textContent = '→'; }
-    else                   { box.textContent = ''; }
-  });
-
-  var expEl = document.getElementById('exp-' + qi);
-  expEl.innerHTML = q.exp
-    + '<div class="exp-src">Quelle: <a href="'+q.url+'" target="_blank">'+q.src+'</a></div>';
-  expEl.classList.add('visible');
-
-  var btn = document.getElementById('btn-check-' + qi);
-  btn.disabled = true;
-  btn.style.opacity = '.4';
-
-  S.checkedCount++;
-  if (S.checkedCount === S.qs.length) showFinalPanel();
-}
-
-function showFinalPanel() {
-  var pct = Math.round(S.score / S.qs.length * 100);
-  document.getElementById('final-score').textContent = S.score + ' / ' + S.qs.length;
-  document.getElementById('final-pct').textContent = pct + ' % korrekt';
-  var panel = document.getElementById('final-panel');
-  panel.style.display = 'block';
-  panel.scrollIntoView({behavior:'smooth', block:'start'});
-}
-
-function sendToSheets() {
-  var btn = document.getElementById('btn-send');
-  btn.disabled = true;
+function sendToSheets(correct, wrong) {
+  if (!APPS_SCRIPT_URL) return;
+  var TAG_NR = 8;
+  var THEMA  = 'Compliance & M365';
+var ROLE2  = 'CISO';
+  var letters = ['A','B','C','D'];
   var status = document.getElementById('submit-status');
   status.className = 'submit-status sending';
-  status.textContent = 'Wird übermittelt…';
+  status.style.display = 'block';
+  status.textContent = 'Ergebnis wird übermittelt...';
 
-  var urls = [];
-  S.qs.forEach(function(q, i) {
-    var selSorted  = S.sels[i].slice().sort();
-    var corSorted  = q.correct.slice().sort();
-    var isOk       = selSorted.join(',') === corSorted.join(',');
-    var gewaehlt   = selSorted.length ? selSorted.join(',') : '-';
-    var korrekt    = corSorted.join(',');
+  var toSend = [];
+  S.questions.forEach(function(q, i) {
+    var selIndices  = S.selections[i].slice().sort();
+    var corrIndices = q.correct.slice().sort();
+    var isFull      = selIndices.join(',') === corrIndices.join(',');
+    var gewaehlt    = selIndices.map(function(idx) { return letters[idx]; }).join(',') || '-';
+    var korrekt     = corrIndices.map(function(idx) { return letters[idx]; }).join(',');
+    var ergebnis    = isFull ? 'RICHTIG' : 'FALSCH';
 
-    urls.push(APPS_SCRIPT_URL
+    toSend.push(
+      APPS_SCRIPT_URL
       + '?tab='        + encodeURIComponent('KI-Beauftragter')
       + '&teilnehmer=' + encodeURIComponent(S.name)
       + '&tag='        + TAG_NR
       + '&thema='      + encodeURIComponent(THEMA)
-      + '&stufe='      + encodeURIComponent(q.set)
-      + '&frage_nr='   + (i+1)
-      + '&frage_text=' + encodeURIComponent(q.q.substring(0,80))
+      + '&stufe='      + encodeURIComponent(S.questions[i].set)
+      + '&frage_nr='   + (i + 1)
+      + '&frage_text=' + encodeURIComponent(q.q.substring(0, 80))
       + '&gewaehlt='   + encodeURIComponent(gewaehlt)
       + '&korrekt='    + encodeURIComponent(korrekt)
-      + '&ergebnis='   + encodeURIComponent(isOk ? 'RICHTIG' : 'FALSCH')
+      + '&ergebnis='   + encodeURIComponent(ergebnis)
     );
   });
 
   var idx = 0;
-  function next() {
-    if (idx >= urls.length) {
+  function sendNext() {
+    if (idx >= toSend.length) {
       status.className = 'submit-status success';
-      status.textContent = '✓ ' + urls.length + ' Antworten übermittelt (' + new Date().toLocaleTimeString('de-DE') + ')';
+      status.textContent = '✓ ' + toSend.length + ' Antworten übermittelt ('
+        + new Date().toLocaleTimeString('de-DE') + ')';
       return;
     }
-    fetch(urls[idx], {mode:'no-cors'}).catch(function(){}).finally(function(){idx++;next();});
+    fetch(toSend[idx], { mode: 'no-cors' })
+      .catch(function() {})
+      .then(function() { idx++; setTimeout(sendNext, 400); });
   }
-  next();
+  sendNext();
 }
+
 </script>
 </body>
 </html>
