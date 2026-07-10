@@ -3,610 +3,271 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Lernkontrolle · Tag 6 · EU AI Act — Vertiefung</title>
+<title>Quiz · KIB Tag 6 · Konformität, Dokumentation, Transparenz, Monitoring, Meldung</title>
 <style>
-:root {
-  --ink:#1a1a18;--paper:#f5f2ec;--card:#fff;--rule:#d5d0c5;--muted:#888880;
-  --accent:#2a4a8a;--accent-soft:#e8edf7;
-  --level-1:#5a3a7a;--level-1-soft:#f0eaf7;
-  --level-2:#0a5a7a;--level-2-soft:#e0eff7;
-  --correct:#2a7a50;--correct-bg:#eaf5ee;--correct-border:#a0d8b8;
-  --wrong:#9a2a2a;--wrong-bg:#faeaea;--wrong-border:#d8a0a0;--missed:#b85c00;--missed-bg:#fff4e6;--missed-border:#f0b070;
-}
+:root{--ink:#1a1a18;--paper:#f8f6f1;--card:#ffffff;--rule:#d5d0c5;--muted:#6b6b60;--accent:#0a4a7a;--teal:#0a6b6b;--green:#2a5c3f;--amber:#7a4a00;--red:#8b1a1a;--correct-bg:#e8f5e9;--wrong-bg:#fce4ec;--phase:#f2f0eb;}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;background:var(--paper);color:var(--ink);line-height:1.65;font-size:15px;}
-a{color:var(--accent);}
-.site-header{border-bottom:2px solid var(--ink);padding:1.8rem 2rem 1.4rem;max-width:820px;margin:0 auto;}
-.eyebrow{font-family:"SFMono-Regular", Consolas, "Liberation Mono", monospace;font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:var(--muted);margin-bottom:.5rem;}
-.site-header h1{font-family:Georgia, "Times New Roman", serif;font-size:clamp(1.5rem,4vw,2.1rem);line-height:1.15;margin-bottom:.4rem;}
-.header-meta{font-size:12px;color:var(--muted);display:flex;gap:1rem;flex-wrap:wrap;}
-.header-meta span::before{content:"· ";}
-.header-meta span:first-child::before{content:"";}
-.main{max-width:820px;margin:0 auto;padding:1.8rem 2rem 4rem;}
-.setup-card{background:var(--card);border:1px solid var(--rule);border-radius:12px;padding:2rem;max-width:480px;margin:0 auto;}
-.setup-card h2{font-family:Georgia, "Times New Roman", serif;font-size:1.3rem;margin-bottom:1.2rem;}
-.field-label{font-family:"SFMono-Regular", Consolas, "Liberation Mono", monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:.35rem;}
-.setup-input{width:100%;border:1px solid var(--rule);border-radius:8px;padding:.6rem .9rem;font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;font-size:14px;background:var(--paper);outline:none;color:var(--ink);transition:border-color .15s;}
-.setup-input:focus{border-color:var(--ink);}
-.hint-text{font-size:12px;color:var(--muted);margin-top:.3rem;display:block;}
-.level-btns{display:flex;gap:.5rem;margin-top:.3rem;}
-.sel-btn{flex:1;padding:.55rem .6rem;border:1px solid var(--rule);border-radius:8px;background:none;font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;font-size:13px;cursor:pointer;text-align:center;transition:all .15s;color:var(--ink);}
-.sel-btn.active-1{background:var(--level-1-soft);border-color:var(--level-1);color:var(--level-1);font-weight:500;}
-.sel-btn.active-2{background:var(--level-2-soft);border-color:var(--level-2);color:var(--level-2);font-weight:500;}
-.btn-start{width:100%;padding:.75rem;background:var(--ink);color:#fff;border:none;border-radius:8px;font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;font-size:15px;font-weight:500;cursor:pointer;margin-top:1rem;transition:background .15s;}
-.btn-start:hover{background:#333;}
-.btn-start:disabled{background:#aaa;cursor:not-allowed;}
-.quiz-header-strip{display:flex;gap:.6rem;align-items:center;margin-bottom:1.4rem;flex-wrap:wrap;}
-.strip-tag{display:inline-block;font-size:11px;font-weight:600;padding:2px 10px;border-radius:100px;letter-spacing:.5px;}
-.strip-role-1{background:var(--level-1-soft);color:var(--level-1);}
-.strip-role-2{background:var(--level-2-soft);color:var(--level-2);}
-.strip-name{font-size:12px;color:var(--muted);}
-.separator-card{background:var(--accent-soft);border:1px solid var(--rule);border-radius:12px;padding:1.2rem 1.5rem;margin:1.5rem 0;text-align:center;}
-.separator-card h3{font-family:Georgia,serif;font-size:1.1rem;color:var(--accent);margin:0;}
-.progress-bar{height:3px;background:var(--rule);border-radius:2px;margin-bottom:1.2rem;}
-.progress-fill{height:100%;background:var(--ink);border-radius:2px;transition:width .3s;}
-.progress-label{font-family:"SFMono-Regular", Consolas, "Liberation Mono", monospace;font-size:10px;color:var(--muted);margin-bottom:.5rem;}
-.q-card{background:var(--card);border:1px solid var(--rule);border-radius:12px;padding:1.5rem;margin-bottom:1rem;}
-.q-num{font-family:"SFMono-Regular", Consolas, "Liberation Mono", monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:.6rem;}
-.q-text{font-size:15px;font-weight:500;line-height:1.55;margin-bottom:.5rem;}
-.q-hint{font-size:12px;color:var(--muted);margin-bottom:.9rem;font-style:italic;}
-.opt-list{display:flex;flex-direction:column;gap:.5rem;}
-.opt{display:flex;align-items:flex-start;gap:.7rem;padding:.75rem 1rem;border:1px solid var(--rule);border-radius:8px;cursor:pointer;background:#fdfdfb;transition:all .12s;-webkit-user-select:none;user-select:none;}
-.opt:hover:not(.disabled){border-color:#888;background:#f5f2ec;}
-.opt.selected{background:var(--accent-soft);border-color:#8090b8;}
-.opt.disabled{cursor:default;}
-.opt.correct-sel{background:var(--correct-bg);border-color:var(--correct-border);}
-.opt.wrong-sel{background:var(--wrong-bg);border-color:var(--wrong-border);}
-.opt.missed{background:var(--missed-bg);border-color:var(--missed-border);}
-.opt-cb{width:18px;height:18px;min-width:18px;border:1.5px solid #bbb;border-radius:4px;flex-shrink:0;margin-top:2px;display:flex;align-items:center;justify-content:center;transition:all .12s;}
-.opt-cb.chk{background:var(--ink);border-color:var(--ink);}
-.opt-cb.chk::after{content:'';display:block;width:8px;height:8px;background:#fff;border-radius:2px;}
-.opt.correct-sel .opt-cb{background:var(--correct);border-color:var(--correct);}
-.opt.correct-sel .opt-cb::after{content:'✓';color:#fff;font-size:11px;background:none;width:auto;height:auto;}
-.opt.wrong-sel .opt-cb{background:var(--wrong);border-color:var(--wrong);}
-.opt.wrong-sel .opt-cb::after{content:'✗';color:#fff;font-size:11px;background:none;width:auto;height:auto;}
-.opt.missed .opt-cb{background:var(--missed);border-color:var(--missed);}
-.opt.missed .opt-cb::after{content:'→';color:#fff;font-size:11px;background:none;width:auto;height:auto;}
-.opt-letter{font-family:"SFMono-Regular", Consolas, "Liberation Mono", monospace;font-size:12px;color:var(--muted);min-width:16px;flex-shrink:0;margin-top:2px;}
-.opt-text{font-size:14px;line-height:1.5;}
-.feedback{border-radius:8px;padding:.9rem 1.1rem;margin-top:.9rem;}
-.feedback.fb-ok{background:var(--correct-bg);border:1px solid var(--correct-border);}
-.feedback.fb-wrong{background:var(--wrong-bg);border:1px solid var(--wrong-border);}
-.fb-title{font-weight:500;font-size:14px;margin-bottom:.4rem;}
-.fb-ok .fb-title{color:var(--correct);}
-.fb-wrong .fb-title{color:var(--wrong);}
-.fb-text{font-size:13px;line-height:1.65;color:#444;margin-bottom:.5rem;}
-.fb-source{font-size:12px;color:var(--muted);border-top:1px solid var(--rule);padding-top:.5rem;}
-.btn{display:inline-flex;align-items:center;padding:.55rem 1.2rem;border:1px solid var(--rule);border-radius:8px;background:none;font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;font-size:14px;font-weight:500;cursor:pointer;color:var(--ink);transition:all .15s;}
-.btn:hover{background:var(--paper);border-color:#888;}
-.btn-full{width:100%;justify-content:center;padding:.7rem;font-size:15px;margin-top:1rem;}
-.btn-submit{background:#2a5c3f;color:#fff;border-color:#2a5c3f;}
-.btn-submit:hover{background:#1e4530;}
-.result-block{max-width:600px;margin:0 auto;text-align:center;}
-.result-grade{font-family:Georgia, "Times New Roman", serif;font-size:4.5rem;line-height:1;margin-bottom:.3rem;}
-.result-label{font-size:1.1rem;font-weight:500;margin-bottom:.3rem;}
-.result-sub{font-size:13px;color:var(--muted);margin-bottom:1.5rem;}
-.stats-row{display:flex;justify-content:center;gap:1rem;flex-wrap:wrap;margin-bottom:1.5rem;}
-.stat{background:var(--card);border:1px solid var(--rule);border-radius:10px;padding:.9rem 1.2rem;text-align:center;min-width:90px;}
-.stat-n{font-size:1.8rem;font-weight:500;}
-.stat-l{font-size:11px;color:var(--muted);margin-top:2px;}
-.comp-title{font-size:13px;font-weight:500;text-align:left;margin-bottom:.8rem;}
-.comp-row{margin-bottom:.7rem;text-align:left;}
-.comp-labels{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-bottom:3px;}
-.comp-track{height:4px;background:var(--rule);border-radius:2px;}
-.comp-fill{height:100%;border-radius:2px;}
-.fill-ok{background:var(--correct);}
-.fill-wrong{background:var(--wrong);}
-.submit-status{display:none;font-size:12px;margin-top:.5rem;padding:.4rem .8rem;border-radius:6px;}
-.submit-status.sending{display:block;background:#fffbe8;color:#806a00;border:1px solid #d0c060;}
-.submit-status.success{display:block;background:var(--correct-bg);color:var(--correct);border:1px solid var(--correct-border);}
-.submit-status.error{display:block;background:var(--wrong-bg);color:var(--wrong);border:1px solid var(--wrong-border);}
+body{font-family:'DM Sans',sans-serif;background:var(--paper);color:var(--ink);font-size:14px;line-height:1.65;}
+.page{max-width:820px;margin:0 auto;padding:2.5rem 2rem 5rem;}
+.ho-header{border-bottom:3px solid var(--ink);padding-bottom:1.5rem;margin-bottom:2rem;}
+.ho-eyebrow{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-bottom:.5rem;}
+h1{font-family:'Playfair Display',serif;font-size:clamp(1.6rem,4vw,2.2rem);line-height:1.15;margin-bottom:.5rem;}
+h1 em{font-style:italic;color:var(--teal);}
+.role-label{display:inline-block;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;padding:3px 10px;border-radius:100px;margin:1.5rem 0 .8rem;font-weight:600;}
+.role-kib{background:#e3f0fa;color:var(--accent);border:1px solid #b0cfe0;}
+.role-dsb{background:#e8f5e9;color:var(--green);border:1px solid #a5d6a7;}
+.q-card{background:var(--card);border:1px solid var(--rule);border-radius:8px;padding:1.2rem 1.4rem;margin-bottom:1.2rem;}
+.q-num{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:1px;margin-bottom:.4rem;}
+.q-text{font-size:14px;font-weight:500;margin-bottom:.8rem;line-height:1.55;}
+.q-hint{font-size:12px;color:var(--muted);font-style:italic;margin-bottom:.6rem;}
+.opt-list{list-style:none;padding:0;}
+.opt-list li{display:flex;align-items:flex-start;gap:.6rem;padding:.45rem .6rem;border-radius:6px;margin-bottom:.3rem;font-size:13.5px;line-height:1.5;cursor:pointer;border:1px solid transparent;}
+.opt-list li:hover{background:var(--phase);}
+.opt-box{width:18px;height:18px;border:2px solid var(--rule);border-radius:4px;flex-shrink:0;margin-top:2px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:white;}
+.opt-list li.selected .opt-box{border-color:var(--accent);background:var(--accent);}
+.opt-list li.correct-show{background:var(--correct-bg);border-color:#66bb6a;}
+.opt-list li.correct-show .opt-box{border-color:var(--green);background:var(--green);}
+.opt-list li.wrong-show{background:var(--wrong-bg);border-color:#ef9a9a;}
+.opt-list li.wrong-show .opt-box{border-color:var(--red);background:var(--red);}
+.exp{display:none;background:#f5f5f0;border-left:3px solid var(--teal);padding:.7rem 1rem;margin-top:.6rem;border-radius:0 6px 6px 0;font-size:12.5px;line-height:1.6;color:var(--ink);}
+.exp.visible{display:block;}
+.btn-row{display:flex;gap:.8rem;margin-top:.5rem;}
+.btn{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:1px;padding:7px 18px;border:1px solid var(--rule);border-radius:5px;background:var(--card);color:var(--ink);cursor:pointer;}
+.btn:hover{border-color:var(--accent);color:var(--accent);}
+.btn.primary{background:var(--accent);color:white;border-color:var(--accent);}
+.btn.primary:hover{background:#08396a;}
+.result-bar{background:var(--card);border:1px solid var(--rule);border-radius:8px;padding:1rem 1.4rem;margin-top:1.5rem;display:none;font-size:14px;}
+.result-bar .score{font-family:'Playfair Display',serif;font-size:28px;color:var(--accent);font-weight:700;}
+.footer{margin-top:3rem;padding-top:1rem;border-top:1px solid var(--rule);font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:.5px;}
 </style>
 </head>
 <body>
+<div class="page">
 
-<header class="site-header">
-  <div class="eyebrow">Alfatraining · KI-Beauftragte:r · Tag 6</div>
-  <h1>Lernkontrolle<br>EU AI Act — Vertiefung</h1>
-  <div class="header-meta">
-    <span>10 Fragen</span>
-    <span>Eine oder mehrere Antworten können richtig sein</span>
-  </div>
-</header>
-
-<main class="main">
-
-<!-- ── SETUP ── -->
-<div id="setup-section">
-  <div class="setup-card">
-    <h2>Quiz starten</h2>
-
-    <div style="margin-bottom:1.2rem;">
-      <span class="field-label">Dein Name (oder Teilnehmer-Nummer)</span>
-      <input type="text" id="participant-name" class="setup-input" placeholder="z. B. Teilnehmer-07 oder Vorname">
-    </div>
-
-    <button class="btn-start" id="btn-start" onclick="startQuiz()">Quiz starten</button>
-  </div>
+<div class="ho-header">
+ <div class="ho-eyebrow">alfatraining · KI-Beauftragte:r · Woche 2 · Tag 6 — Quiz</div>
+ <h1>Konformität, Dokumentation,<br>Transparenz, <em>Monitoring &amp; Meldung</em></h1>
+ <p style="font-size:13px;color:var(--muted);margin-top:.5rem;">10 Fragen · Mehrfachauswahl möglich · Sofortige Auswertung</p>
 </div>
 
-<!-- ── QUIZ ── -->
-<div id="quiz-section" style="display:none">
-  <div class="quiz-header-strip" id="quiz-header-strip"></div>
-  <div class="progress-label" id="progress-label"></div>
-  <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+<!-- ROLLE 1: KI-BEAUFTRAGTE:R -->
+<div class="role-label role-kib">Perspektive: KI-Beauftragte:r</div>
 
-  <div id="questions-container"></div>
-
-  <div style="margin-top:1.5rem">
-    <button class="btn btn-submit btn-full" id="btn-submit" onclick="submitQuiz()" disabled>Auswertung anzeigen →</button>
-  </div>
-  <div class="submit-status" id="submit-status"></div>
+<!-- FRAGE 1 — 2 richtige -->
+<div class="q-card" data-correct="1,3">
+ <div class="q-num">Frage 1 von 10</div>
+ <div class="q-text">Ein Krankenhaus will ein KI-System zur Diagnoseunterstützung in Betrieb nehmen. Das System ist als Hochrisiko nach Anhang III klassifiziert und fällt nicht unter sektorale Produktharmonisierungsvorschriften. Du sollst als KI-Beauftragte:r das Konformitätsbewertungsverfahren vorbereiten. Welche Aussage(n) zur Konformitätsbewertung ist/sind korrekt?</div>
+ <div class="q-hint">Zwei Aussagen sind korrekt.</div>
+ <ul class="opt-list">
+  <li data-idx="0"><span class="opt-box"></span><span>Die Konformitätsbewertung kann auch nach der Inbetriebnahme nachgeholt werden, sofern sie innerhalb von sechs Monaten abgeschlossen wird.</span></li>
+  <li data-idx="1"><span class="opt-box"></span><span>Da keine sektorale Harmonisierungsvorschrift greift, ist das interne Verfahren nach Anhang VI anzuwenden — der Anbieter prüft selbst.</span></li>
+  <li data-idx="2"><span class="opt-box"></span><span>Die Bundesnetzagentur muss als notifizierte Stelle die Konformitätsbewertung vor Inbetriebnahme durchführen.</span></li>
+  <li data-idx="3"><span class="opt-box"></span><span>Die drei sichtbaren Ergebnisse der Konformitätsbewertung sind die EU-Konformitätserklärung (Art. 47), die CE-Kennzeichnung (Art. 48) und der Eintrag in der EU-Datenbank (Art. 49).</span></li>
+ </ul>
+ <div class="exp">Die Konformitätsbewertung muss vor dem Inverkehrbringen oder der Inbetriebnahme abgeschlossen sein — ein Nachholen ist nicht vorgesehen. Bei Hochrisiko-Systemen nach Anhang III ohne sektorale Produktvorschriften ist das interne Verfahren nach Anhang VI der Regelweg (Art. 43 Abs. 1). Die Bundesnetzagentur ist Marktüberwachungsbehörde, nicht notifizierte Stelle — diese Rolle fällt bei Bedarf z. B. TÜV Süd oder DEKRA zu. Die drei formalen Akte vor Inbetriebnahme (EU-Konformitätserklärung, CE-Kennzeichnung, EU-Datenbank) ergeben sich aus Art. 47, 48 und 49.</div>
+ <div class="btn-row"><button class="btn primary" onclick="checkQ(this)">Auswerten</button></div>
 </div>
 
-<!-- ── RESULTS ── -->
-<div id="results-section" style="display:none">
-  <div class="result-block">
-    <div class="result-grade" id="result-grade"></div>
-    <div class="result-label" id="result-label"></div>
-    <div class="result-sub" id="result-sub"></div>
-    <div class="stats-row" id="stats-row"></div>
-    <div class="comp-title">Kompetenzprofil</div>
-    <div id="comp-bars"></div>
-    <div style="margin-top:.8rem;display:flex;justify-content:center;">
-      <button class="btn" onclick="location.reload()">Neu starten</button>
-    </div>
-    </div>
-
-  <hr style="border:none;border-top:1px solid var(--rule);margin:2rem 0">
-  <h2 style="font-family:Georgia, "Times New Roman", serif;font-size:1.2rem;margin-bottom:1rem">Detailauswertung</h2>
-  <div id="review-container"></div>
+<!-- FRAGE 2 — 3 richtige -->
+<div class="q-card" data-correct="0,1,3">
+ <div class="q-num">Frage 2 von 10</div>
+ <div class="q-text">Du prüfst die technische Dokumentation eines lernenden KI-Systems, das bereits in einer Klinik im Einsatz ist. Das System aktualisiert sein Modell regelmäßig auf Basis von Nutzerbewertungen. Welche Aussage(n) zur Anhang-IV-Dokumentation ist/sind korrekt?</div>
+ <div class="q-hint">Drei Aussagen sind korrekt.</div>
+ <ul class="opt-list">
+  <li data-idx="0"><span class="opt-box"></span><span>Die technische Dokumentation muss bei jeder wesentlichen Änderung des Systems aktualisiert werden — bei lernenden Systemen kann jedes Modell-Update eine solche Änderung darstellen.</span></li>
+  <li data-idx="1"><span class="opt-box"></span><span>Der Anbieter ist verpflichtet, die Dokumentation mindestens zehn Jahre ab Markteinführung oder Inbetriebnahme aufzubewahren.</span></li>
+  <li data-idx="2"><span class="opt-box"></span><span>Die Dokumentation muss ausschließlich auf Anfrage der notifizierten Stelle vorgelegt werden — andere Behörden haben keinen Einsichtsanspruch.</span></li>
+  <li data-idx="3"><span class="opt-box"></span><span>Anhang IV verlangt unter anderem Angaben zu Trainings-, Validierungs- und Testdaten — einschließlich Herkunft, Aufbereitung und möglicher Verzerrungen.</span></li>
+ </ul>
+ <div class="exp">Art. 11 Abs. 2 verlangt eine Aktualisierung der technischen Dokumentation bei wesentlichen Änderungen. Bei lernenden Systemen ist jedes Modell-Update potenziell eine wesentliche Änderung — das macht die Versionierung zur operativen Daueraufgabe. Art. 18 schreibt eine Aufbewahrungspflicht von mindestens zehn Jahren vor. Art. 21 gibt der Marktüberwachungsbehörde (in Deutschland: Bundesnetzagentur) das Recht auf Einsicht — nicht nur der notifizierten Stelle. Anhang IV Nr. 3 verlangt detaillierte Angaben zu Daten, einschließlich Bias-Analyse und Datenherkunft.</div>
+ <div class="btn-row"><button class="btn primary" onclick="checkQ(this)">Auswerten</button></div>
 </div>
 
-</main>
+<!-- FRAGE 3 — 1 richtige -->
+<div class="q-card" data-correct="2">
+ <div class="q-num">Frage 3 von 10</div>
+ <div class="q-text">Eine Klinik betreibt ein KI-System zur Patientenanamnese. Das System gibt einem Patienten eine falsche Information zur Medikamentenvorbereitung. Der Patient bemerkt den Fehler und fragt beim Pflegepersonal nach — ein Schaden tritt nicht ein. Welche Aussage zur Meldepflicht ist korrekt?</div>
+ <div class="q-hint">Eine Aussage ist korrekt.</div>
+ <ul class="opt-list">
+  <li data-idx="0"><span class="opt-box"></span><span>Da kein tatsächlicher Schaden eingetreten ist, besteht keine Meldepflicht nach Art. 73 — der Vorfall muss lediglich intern dokumentiert werden.</span></li>
+  <li data-idx="1"><span class="opt-box"></span><span>Der Betreiber muss den Vorfall innerhalb von zwei Tagen an die Bundesnetzagentur melden, da es sich um kritische Infrastruktur handelt.</span></li>
+  <li data-idx="2"><span class="opt-box"></span><span>Der Vorfall ist meldepflichtig, weil er zu einer schweren Gesundheitsbeeinträchtigung hätte führen können — Art. 73 stellt auf das potenzielle Risiko ab, nicht auf den eingetretenen Schaden.</span></li>
+  <li data-idx="3"><span class="opt-box"></span><span>Die Meldepflicht entfällt, sobald der Patient durch eigene Nachfrage den Fehler erkannt hat — die Eigenverantwortung des Patienten unterbricht die Kausalkette.</span></li>
+ </ul>
+ <div class="exp">Art. 73 in Verbindung mit Art. 3 Nr. 49 definiert einen schwerwiegenden Vorfall als Ereignis, das zu einem der dort genannten Schäden geführt hat oder hätte führen können. Das Kriterium „hätte führen können" macht den Beinahe-Vorfall meldepflichtig — unabhängig davon, ob tatsächlich ein Schaden eingetreten ist. Dass der Patient den Fehler selbst bemerkt hat, ändert an der Meldepflicht nichts. Die Zwei-Tage-Frist gilt für weitverbreitete Beeinträchtigungen oder Störungen kritischer Infrastruktur, nicht für jeden Vorfall in einem Krankenhaus.</div>
+ <div class="btn-row"><button class="btn primary" onclick="checkQ(this)">Auswerten</button></div>
+</div>
+
+<!-- FRAGE 4 — 3 richtige -->
+<div class="q-card" data-correct="0,2,3">
+ <div class="q-num">Frage 4 von 10</div>
+ <div class="q-text">Du baust in einer Klinik ein Post-Market-Monitoring-System (Art. 72) für ein Hochrisiko-KI-System auf. Das System ist seit drei Monaten im Einsatz und zeigt erste Anzeichen von Leistungsabfall. Welche Aussage(n) zum Post-Market-Monitoring ist/sind korrekt?</div>
+ <div class="q-hint">Drei Aussagen sind korrekt.</div>
+ <ul class="opt-list">
+  <li data-idx="0"><span class="opt-box"></span><span>Das Post-Market-Monitoring-System muss Schwellwerte definieren, ab denen das System angepasst, gewarnt oder deaktiviert wird — diese Schwellwerte müssen im Voraus festgelegt werden.</span></li>
+  <li data-idx="1"><span class="opt-box"></span><span>Post-Market-Monitoring ist ausschließlich Anbieter-Pflicht — der Betreiber hat keinen aktiven Beitrag zu leisten.</span></li>
+  <li data-idx="2"><span class="opt-box"></span><span>Der Betreiber ist nach Art. 26 Abs. 5 verpflichtet, Auffälligkeiten an den Anbieter zu melden, damit dieser sein Post-Market-Monitoring-System speisen kann.</span></li>
+  <li data-idx="3"><span class="opt-box"></span><span>Bei lernenden KI-Systemen kann eine graduelle Verhaltensveränderung (Behavioral Drift) eine wesentliche Veränderung im Sinne von Art. 3(23) darstellen und eine erneute Konformitätsbewertung erforderlich machen.</span></li>
+ </ul>
+ <div class="exp">Art. 72 Abs. 2 verlangt die Definition von Schwellwerten für Eingriffe — proaktiv, nicht erst im Schadensfall. Der Betreiber hat nach Art. 26 Abs. 5 eine aktive Mitwirkungspflicht: Er muss dem Anbieter Auffälligkeiten melden und Betriebsdaten liefern. Bei lernenden Systemen kann Behavioral Drift — eine graduelle Verhaltensänderung durch akkumulierte Interaktionen — eine wesentliche Veränderung nach Art. 3(23) darstellen, die eine neue Konformitätsbewertung nach sich zieht.</div>
+ <div class="btn-row"><button class="btn primary" onclick="checkQ(this)">Auswerten</button></div>
+</div>
+
+<!-- FRAGE 5 — 2 richtige -->
+<div class="q-card" data-correct="1,2">
+ <div class="q-num">Frage 5 von 10</div>
+ <div class="q-text">Ein Verwaltungs-KI-Agent in einer Klinik erstellt automatisch Entlassbriefe und versendet diese per E-Mail an Patienten. Ein sichtbarer „KI"-Hinweis ist im Bedieninterface für die Verwaltungsmitarbeitenden implementiert. Welche Aussage(n) zur Transparenzpflicht nach Art. 50 ist/sind korrekt?</div>
+ <div class="q-hint">Zwei Aussagen sind korrekt.</div>
+ <ul class="opt-list">
+  <li data-idx="0"><span class="opt-box"></span><span>Der KI-Hinweis im Bedieninterface erfüllt Art. 50 vollständig — der Patient muss nicht separat informiert werden, da er nicht direkt mit dem System interagiert.</span></li>
+  <li data-idx="1"><span class="opt-box"></span><span>Art. 50 gilt gegenüber allen betroffenen natürlichen Personen — der Patient, der den Entlassbrief erhält, muss ebenfalls erkennbar erfahren, dass das Dokument KI-generiert ist.</span></li>
+  <li data-idx="2"><span class="opt-box"></span><span>KI-generierte Textinhalte wie Entlassbriefe fallen unter Art. 50 Abs. 2 und müssen als KI-generiert gekennzeichnet werden — die maschinenlesbare Wasserzeichen-Pflicht greift ab dem 2. Dezember 2026.</span></li>
+  <li data-idx="3"><span class="opt-box"></span><span>Art. 50 betrifft ausschließlich Hochrisiko-KI-Systeme — administrative Automatisierung mit mittlerem Risiko ist von der Transparenzpflicht befreit.</span></li>
+ </ul>
+ <div class="exp">Art. 50 gilt unabhängig von der Risikoklasse — auch Systeme mit begrenztem oder mittlerem Risiko sind erfasst. Bei KI-Agenten erstreckt sich die Transparenzpflicht auf alle betroffenen Personen, nicht nur auf den direkten Nutzer des Systems. Der Patient als Empfänger des Entlassbriefs ist betroffene Person und muss informiert werden. Art. 50 Abs. 2 verlangt die Kennzeichnung synthetischer Textinhalte — die Wasserzeichen- und Provenance-Pflicht für maschinenlesbare Kennzeichnung greift ab dem 2. Dezember 2026.</div>
+ <div class="btn-row"><button class="btn primary" onclick="checkQ(this)">Auswerten</button></div>
+</div>
+
+<!-- ROLLE 2: DATENSCHUTZBEAUFTRAGTE:R -->
+<div class="role-label role-dsb">Perspektive: Datenschutzbeauftragte:r</div>
+
+<!-- FRAGE 6 — 2 richtige -->
+<div class="q-card" data-correct="0,3">
+ <div class="q-num">Frage 6 von 10</div>
+ <div class="q-text">Ein Unternehmen setzt ein Hochrisiko-KI-System ein und hat mit dem KI-Anbieter eine Zero Data Retention (ZDR)-Vereinbarung abgeschlossen. Das Unternehmen betreibt kein eigenes Logging-System für KI-Interaktionen. Du wirst als Datenschutzbeauftragte:r um eine Einschätzung gebeten. Welche Aussage(n) ist/sind korrekt?</div>
+ <div class="q-hint">Zwei Aussagen sind korrekt.</div>
+ <ul class="opt-list">
+  <li data-idx="0"><span class="opt-box"></span><span>Die Logging-Pflicht nach Art. 12 trifft den Betreiber (Deployer) — eine ZDR-Vereinbarung mit dem KI-Anbieter entbindet den Betreiber nicht von dieser Pflicht.</span></li>
+  <li data-idx="1"><span class="opt-box"></span><span>Die ZDR-Vereinbarung erfüllt gleichzeitig die Anforderungen der DSGVO-Speicherbegrenzung und des Art. 12 EU AI Act — beides ist damit abgedeckt.</span></li>
+  <li data-idx="2"><span class="opt-box"></span><span>Der GPAI-Modell-Anbieter ist nach Art. 53 verpflichtet, einzelne Kundenanfragen zu speichern und dem Betreiber auf Anforderung zur Verfügung zu stellen.</span></li>
+  <li data-idx="3"><span class="opt-box"></span><span>Das Unternehmen hat eine Compliance-Lücke: Ohne eigenes Logging kann es die Aufzeichnungspflicht nach Art. 12 und die Aufsichtspflicht nach Art. 14 nicht nachweislich erfüllen.</span></li>
+ </ul>
+ <div class="exp">Art. 12 verlangt auditfähige Logs über die gesamte Lebensdauer des Systems — diese Pflicht trifft den Betreiber auf seiner eigenen Infrastruktur. Eine ZDR-Vereinbarung schützt vor ungewolltem Datenzugriff durch den Anbieter, erfüllt aber die Logging-Pflicht nicht. Der GPAI-Anbieter ist nach Art. 53 zur Modell-Dokumentation (Trainingsverfahren, Evaluierung, Fähigkeiten) verpflichtet — nicht zur Speicherung einzelner Kundenanfragen. Ohne eigenes Logging hat der Betreiber eine Compliance-Lücke bei Art. 12 und kann die menschliche Aufsicht nach Art. 14 nicht nachweisen.</div>
+ <div class="btn-row"><button class="btn primary" onclick="checkQ(this)">Auswerten</button></div>
+</div>
+
+<!-- FRAGE 7 — 3 richtige -->
+<div class="q-card" data-correct="0,1,3">
+ <div class="q-num">Frage 7 von 10</div>
+ <div class="q-text">Der Europäische Datenschutzausschuss (EDPB) hat für 2026 die fünfte Coordinated Enforcement Framework (CEF 5) Aktion durchgeführt. Du bereitest als Datenschutzbeauftragte:r eine Stellungnahme für die Geschäftsführung vor. Welche Aussage(n) zum CEF 5 ist/sind korrekt?</div>
+ <div class="q-hint">Drei Aussagen sind korrekt.</div>
+ <ul class="opt-list">
+  <li data-idx="0"><span class="opt-box"></span><span>CEF 5 richtet sich auf Transparenz- und Informationspflichten nach Art. 12–14 DSGVO — 25 europäische Datenschutzbehörden prüfen koordiniert.</span></li>
+  <li data-idx="1"><span class="opt-box"></span><span>Art. 26 Abs. 11 EU AI Act (Information betroffener Personen über automatisierte Entscheidungen) liegt inhaltlich im Prüffokus des CEF 5, weil sich die Pflichten mit Art. 13/14 DSGVO decken.</span></li>
+  <li data-idx="2"><span class="opt-box"></span><span>CEF 5 betrifft ausschließlich KI-Systeme — Unternehmen ohne KI-Einsatz sind von der Prüfung nicht erfasst.</span></li>
+  <li data-idx="3"><span class="opt-box"></span><span>Ein Unternehmen, das Art. 26 Abs. 11 EU AI Act nicht umsetzt, hat gleichzeitig ein DSGVO-Problem, weil die Informationspflichten beider Regelwerke auf dieselben Prozesse und Dokumente zielen.</span></li>
+ </ul>
+ <div class="exp">CEF 5 prüft die Umsetzung von Art. 12–14 DSGVO — das sind die allgemeinen Transparenz- und Informationspflichten, die für alle Verantwortlichen gelten, nicht nur für KI-Betreiber. Art. 26 Abs. 11 EU AI Act (Information bei automatisierten Entscheidungen) deckt sich inhaltlich mit Art. 13/14 DSGVO — beide Pflichten zielen auf dieselben Prozesse. Wer die eine nicht erfüllt, verletzt mit hoher Wahrscheinlichkeit auch die andere. Die koordinierte Durchsetzung durch 25 Behörden erhöht das Risiko paralleler Verfahren erheblich.</div>
+ <div class="btn-row"><button class="btn primary" onclick="checkQ(this)">Auswerten</button></div>
+</div>
+
+<!-- FRAGE 8 — 1 richtige -->
+<div class="q-card" data-correct="1">
+ <div class="q-num">Frage 8 von 10</div>
+ <div class="q-text">Du willst als Datenschutzbeauftragte:r den Konflikt zwischen der Logging-Pflicht nach Art. 12 EU AI Act und der DSGVO-Speicherbegrenzung (Art. 5 Abs. 1 lit. e) für ein Hochrisiko-KI-System dokumentiert absichern. Welche Aussage zum Lösungsweg ist korrekt?</div>
+ <div class="q-hint">Eine Aussage ist korrekt.</div>
+ <ul class="opt-list">
+  <li data-idx="0"><span class="opt-box"></span><span>Der AI Act genießt als jüngeres Gesetz Vorrang vor der DSGVO — die Speicherbegrenzung der DSGVO ist für KI-Systeme automatisch aufgehoben.</span></li>
+  <li data-idx="1"><span class="opt-box"></span><span>Eine Datenschutz-Folgenabschätzung (DSFA) nach Art. 35 DSGVO dokumentiert den Konflikt, wägt die Interessen ab und sichert den Lösungsweg behördlich ab — der EDPB hat dafür 2026 eine EU-weit harmonisierte Vorlage verabschiedet.</span></li>
+  <li data-idx="2"><span class="opt-box"></span><span>Die Einwilligung der betroffenen Personen nach Art. 6 Abs. 1 lit. a DSGVO ist der einzige zulässige Rechtsgrund für das Logging — ohne Einwilligung jedes Patienten darf nicht geloggt werden.</span></li>
+  <li data-idx="3"><span class="opt-box"></span><span>Art. 12 EU AI Act schreibt keine Mindestaufbewahrungsfrist vor — der Betreiber kann die Logs löschen, sobald der Geschäftsvorfall abgeschlossen ist.</span></li>
+ </ul>
+ <div class="exp">DSGVO und AI Act gelten parallel — keines der beiden Gesetze hat automatischen Vorrang. Die Datenschutz-Folgenabschätzung (DSFA) nach Art. 35 DSGVO ist der etablierte Weg, um den Konflikt zwischen Logging-Pflicht und Speicherbegrenzung zu dokumentieren und behördlich abzusichern. Der EDPB hat im März 2026 eine EU-weit harmonisierte DSFA-Vorlage verabschiedet, die von allen nationalen Datenschutzbehörden im Europäischen Wirtschaftsraum anerkannt wird. Art. 12 in Verbindung mit Art. 26 Abs. 6 schreibt eine Mindestaufbewahrung von sechs Monaten für Betreiber-Logs vor. Die Einwilligung ist nicht der einzige zulässige Rechtsgrund — Art. 6 Abs. 1 lit. c und f DSGVO kommen ebenfalls in Betracht.</div>
+ <div class="btn-row"><button class="btn primary" onclick="checkQ(this)">Auswerten</button></div>
+</div>
+
+<!-- FRAGE 9 — 2 richtige -->
+<div class="q-card" data-correct="0,2">
+ <div class="q-num">Frage 9 von 10</div>
+ <div class="q-text">Ein Krankenhaus informiert seine Beschäftigten in der Verwaltung darüber, dass ab nächster Woche ein KI-Agent administrative Aufgaben übernimmt. Die Information erfolgt am Tag des Roll-outs per E-Mail an alle Betroffenen. Welche Aussage(n) ist/sind korrekt?</div>
+ <div class="q-hint">Zwei Aussagen sind korrekt.</div>
+ <ul class="opt-list">
+  <li data-idx="0"><span class="opt-box"></span><span>Die Information am Tag des Roll-outs kommt zu spät — Art. 26 Abs. 7 EU AI Act verlangt die Information der Beschäftigten und ihrer Vertretung vor Inbetriebnahme, nicht zeitgleich.</span></li>
+  <li data-idx="1"><span class="opt-box"></span><span>Art. 26 Abs. 7 gilt nur für Hochrisiko-KI-Systeme — ein administrativer KI-Agent mit mittlerem Risiko ist von dieser Pflicht befreit.</span></li>
+  <li data-idx="2"><span class="opt-box"></span><span>Die Information muss sowohl das Ob (ein KI-System wird eingesetzt) als auch das Wie (welche Aufgaben es übernimmt) umfassen — eine reine Ankündigung ohne inhaltliche Beschreibung genügt nicht.</span></li>
+  <li data-idx="3"><span class="opt-box"></span><span>Eine E-Mail an alle Beschäftigten erfüllt die Informationspflicht vollständig — eine Einbindung des Betriebsrats oder Personalrats ist nicht erforderlich.</span></li>
+ </ul>
+ <div class="exp">Art. 26 Abs. 7 verlangt die Information der Beschäftigten und ihrer Vertretung vor Inbetriebnahme — nicht erst am Tag des Roll-outs. Die Information muss das Ob und das Wie umfassen: Dass ein KI-System eingesetzt wird und welche konkreten Aufgaben es übernimmt. Art. 26 Abs. 7 spricht ausdrücklich von der „Vertretung der Arbeitnehmer" — der Personalrat muss eingebunden werden. Die Pflicht betrifft den Einsatz von Hochrisiko-KI im Beschäftigungsverhältnis, administrative Agenten mit erheblicher Autonomie können in den Hochrisiko-Bereich fallen.</div>
+ <div class="btn-row"><button class="btn primary" onclick="checkQ(this)">Auswerten</button></div>
+</div>
+
+<!-- FRAGE 10 — 3 richtige -->
+<div class="q-card" data-correct="0,1,2">
+ <div class="q-num">Frage 10 von 10</div>
+ <div class="q-text">Ein KI-Anbieter hat für sein leistungsstärkstes Modell eine neue Datenspeicherungspflicht eingeführt: Alle Prompts und Outputs werden 30 Tage lang gespeichert — auch bei Kunden mit bestehender Zero Data Retention (ZDR)-Vereinbarung. Du bewertest als Datenschutzbeauftragte:r die Auswirkungen. Welche Aussage(n) ist/sind korrekt?</div>
+ <div class="q-hint">Drei Aussagen sind korrekt.</div>
+ <ul class="opt-list">
+  <li data-idx="0"><span class="opt-box"></span><span>Die einseitige Einschränkung der ZDR-Vereinbarung muss datenschutzrechtlich bewertet werden — bestehende Auftragsverarbeitungsverträge decken die neue 30-Tage-Speicherung möglicherweise nicht ab.</span></li>
+  <li data-idx="1"><span class="opt-box"></span><span>Kunden mit eigenem Logging-System sind operativ weniger betroffen als Kunden, die auf anbieterseitige Speicherung vertraut haben — das unterstreicht die Bedeutung eigener Art.-12-Infrastruktur.</span></li>
+  <li data-idx="2"><span class="opt-box"></span><span>Extraterritoriale Eingriffe durch das Exportkontrollrecht des Anbieterlandes können den Zugang zu einem Anbietermodell ohne Vorankündigung kappen — die DSGVO schützt vor ungewolltem Datenzugriff, nicht vor erzwungener Nichtverfügbarkeit.</span></li>
+  <li data-idx="3"><span class="opt-box"></span><span>ZDR-Vereinbarungen sind durch den EU AI Act seit August 2025 verboten, da sie die Logging-Pflicht nach Art. 12 unterlaufen.</span></li>
+ </ul>
+ <div class="exp">ZDR-Vereinbarungen sind nicht verboten — sie regeln die Speicherung beim Anbieter und schützen den Kunden vor ungewolltem Datenzugriff. Die Logging-Pflicht nach Art. 12 trifft den Betreiber auf seiner eigenen Infrastruktur und wird durch eine ZDR-Vereinbarung weder erfüllt noch verletzt. Bei einseitiger Änderung der Speicherpraxis muss geprüft werden, ob der bestehende Auftragsverarbeitungsvertrag die neue 30-Tage-Speicherung abdeckt. Eigenes Logging reduziert die operative Abhängigkeit vom Anbieter. Exportkontrollrechtliche Eingriffe des Anbieterlandes sind ein reales Vendor-Risiko, das durch die DSGVO nicht aufgefangen wird.</div>
+ <div class="btn-row"><button class="btn primary" onclick="checkQ(this)">Auswerten</button></div>
+</div>
+
+<!-- ERGEBNIS -->
+<div class="result-bar" id="resultBar">
+ <span>Ergebnis: <span class="score" id="scoreDisplay">0/10</span></span>
+ <span style="margin-left:1rem;color:var(--muted);font-size:13px;" id="scoreText"></span>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+ <span>alfatraining · KI-Beauftragte:r · Tag 6 · Quiz · Konformität, Dokumentation, Transparenz, Monitoring, Meldung</span>
+ <span>Ulrich Nord · Juli 2026</span>
+</div>
+
+</div>
 
 <script>
-var APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyPs358GF_E1xsvTh08PpTpZcBDS1OvsU9XQ0qi0MkZoCCnAk4dyo3Aii0OYxILdvCRYA/exec';
+let answered = 0;
+const total = 10;
 
-/* ═══════ FRAGENBANK ═══════════════════════════════════════════ */
-/* Verteilung: 2x eine richtig, 4x zwei richtig, 4x drei richtig; nie vier */
+document.querySelectorAll('.opt-list li').forEach(li => {
+ li.addEventListener('click', function() {
+  if (this.closest('.q-card').classList.contains('answered')) return;
+  this.classList.toggle('selected');
+ });
+});
 
-var QUESTIONS = [
+function checkQ(btn) {
+ const card = btn.closest('.q-card');
+ if (card.classList.contains('answered')) return;
+ card.classList.add('answered');
 
-  /* ═══ SET 1: KI-Beauftragte:r (Fragen 1–5) ═══ */
-  {
-    set: 'KI-Beauftragte:r',
-    q: 'Ein neues Hochrisiko-KI-System soll in Betrieb genommen werden. Du klärst als KI-Beauftragte:r, was die Konformitätsbewertung nach Art. 43 EU AI Act umfasst. Welche Aussage(n) sind korrekt?',
-    opts: [
-      'Die Konformitätsbewertung prüft, ob das System die Anforderungen aus Kapitel III, Abschnitt 2 EU AI Act erfüllt — u. a. Risikomanagement, Datenqualität, Dokumentation, Transparenz, menschliche Aufsicht, Genauigkeit und Cybersicherheit.',
-      'Die Konformitätsbewertung prüft, ob das System die wirtschaftlichste verfügbare Lösung ist.',
-      'Die Konformitätsbewertung ist Aufgabe des Anbieters und muss vor dem Inverkehrbringen abgeschlossen sein.',
-      'Für alle Hochrisiko-KI-Systeme ist zwingend eine externe Konformitätsbewertungsstelle (Notified Body) einzuschalten.'
-    ],
-    correct: [0,2],
-    exp: 'Die Konformitätsbewertung nach Art. 43 prüft die technischen und organisatorischen Mindeststandards für Hochrisiko-KI: Risikomanagement, Datenqualität, Dokumentation, Transparenz, menschliche Aufsicht, Genauigkeit und Cybersicherheit. Sie liegt beim Anbieter und muss vor Inverkehrbringen abgeschlossen sein. Eine externe Notified-Body-Bewertung ist nur für bestimmte Systeme (z. B. Biometrie) Pflicht — für viele Hochrisiko-KI-Systeme ist eine interne Bewertung zulässig. Wirtschaftlichkeit ist kein Prüfgegenstand.',
-    src: 'EU AI Act Art. 43', url: 'https://artificialintelligenceact.eu/article/43/'
-  },
-  {
-    set: 'KI-Beauftragte:r',
-    q: 'Ein Lieferant übergibt euch ein CE-gekennzeichnetes Hochrisiko-KI-System. Ein Kollege meint, mit der CE-Kennzeichnung seien alle Pflichten erfüllt. Du klärst als KI-Beauftragte:r auf. Welche Aussage(n) zur CE-Kennzeichnung sind korrekt?',
-    opts: [
-      'Die CE-Kennzeichnung wird vom Anbieter angebracht, nachdem die Konformitätsbewertung erfolgreich abgeschlossen ist.',
-      'Die CE-Kennzeichnung entbindet den Betreiber von eigenen Pflichten — nach dem Kauf greift ausschließlich die Herstellerverantwortung.',
-      'Die CE-Kennzeichnung signalisiert die Konformität mit den Anforderungen des EU AI Act und anderer anwendbarer EU-Rechtsvorschriften.',
-      'Der Betreiber kann die CE-Kennzeichnung eigenständig anbringen, wenn er das System ausreichend getestet hat.'
-    ],
-    correct: [0,2],
-    exp: 'Die CE-Kennzeichnung ist Sache des Anbieters und bestätigt, dass das System die EU-Anforderungen erfüllt. Sie entbindet den Betreiber nicht von eigenen Pflichten — Art. 26 Betreiberpflichten gelten unabhängig davon. Der Betreiber bringt niemals selbst die CE-Kennzeichnung an. Die CE-Kennzeichnung bezieht sich auf Konformität mit dem EU AI Act und ggf. anderen einschlägigen Verordnungen, nicht auf wirtschaftliche Eignung.',
-    src: 'EU AI Act Art. 16, 26, 49', url: 'https://artificialintelligenceact.eu/article/49/'
-  },
-  {
-    set: 'KI-Beauftragte:r',
-    q: 'Das Beschaffungsteam fragt dich, welche Unterlagen ihr von einem Anbieter eines Hochrisiko-KI-Systems einfordern sollt. Du erklärst die Anforderungen an die technische Dokumentation nach Anhang IV EU AI Act. Welche Aussage(n) sind korrekt?',
-    opts: [
-      'Die technische Dokumentation ist eine umfassende Beschreibung des Systems mit Zweck, Architektur, Trainingsdaten, Leistungsmetriken und Risikobewertung.',
-      'Die technische Dokumentation ist eine kurze Bedienungsanleitung für Endnutzer.',
-      'Die technische Dokumentation muss vor Inverkehrbringen vorliegen und ist Grundlage der Konformitätsbewertung.',
-      'Einmal erstellt, muss die Dokumentation nicht mehr aktualisiert werden — auch bei wesentlichen Systemänderungen nicht.'
-    ],
-    correct: [0,2],
-    exp: 'Die technische Dokumentation nach Anhang IV ist eine strukturierte Gesamtbeschreibung: Zweck, Architektur, Trainingsdaten, Leistungsmetriken, Risikobewertung und Konformitätserklärung. Sie muss vor Inverkehrbringen vorliegen und ist die Basis der Konformitätsbewertung. Sie muss kontinuierlich aktualisiert werden, solange das System im Markt ist. Eine Bedienungsanleitung für Endnutzer ist eine separate Anforderung nach Art. 13 (Transparenz), aber nicht die Anhang-IV-Dokumentation.',
-    src: 'EU AI Act Art. 11 · Anhang IV', url: 'https://artificialintelligenceact.eu/article/11/'
-  },
-  {
-    set: 'KI-Beauftragte:r',
-    q: 'Euer Unternehmen plant einen KI-gestützten Chatbot im Kundendienst. Du prüfst als KI-Beauftragte:r, welche Transparenzpflichten nach Art. 50 EU AI Act gelten. Welche Aussage(n) sind korrekt?',
-    opts: [
-      'Nutzer müssen erkennen können, dass sie mit einem KI-System — und nicht mit einem Menschen — interagieren.',
-      'Die Transparenzpflicht nach Art. 50 gilt nur für Hochrisiko-KI-Systeme.',
-      'KI-generierte Inhalte (Texte, Bilder, Audio, Video) müssen als solche maschinenlesbar gekennzeichnet sein.',
-      'Sowohl Anbieter als auch Betreiber können je nach Anwendungsfall Pflichten nach Art. 50 treffen.'
-    ],
-    correct: [0,2,3],
-    exp: 'Art. 50 EU AI Act schreibt Transparenz bei KI-Interaktionen vor — unabhängig von der Risikoklasse. Nutzer müssen wissen, wenn sie mit einer KI sprechen. KI-generierte Inhalte müssen maschinenlesbar gekennzeichnet sein (Wasserzeichen-Format per Delegiertem Rechtsakt ab Dezember 2026). Anbieter und Betreiber tragen je nach Rolle Pflichten. Die Aussage "nur für Hochrisiko" ist falsch — Art. 50 gilt auch für begrenzte-Risiko-Systeme wie Chatbots.',
-    src: 'EU AI Act Art. 50', url: 'https://artificialintelligenceact.eu/article/50/'
-  },
-  {
-    set: 'KI-Beauftragte:r',
-    q: 'Der Einkauf fragt, ob der KI-Anbieter nach dem Kauf noch Pflichten hat. Du erläuterst das Post-Market-Monitoring nach Art. 72 EU AI Act. Welche Aussage(n) sind korrekt?',
-    opts: [
-      'Der Anbieter muss ein systematisches Überwachungssystem für Leistung und Risiken des Systems im laufenden Betrieb einrichten.',
-      'Das Post-Market-Monitoring endet mit dem Inverkehrbringen — danach liegt die Verantwortung vollständig beim Betreiber.',
-      'Daten zur Systemleistung und zu festgestellten Risiken müssen gesammelt und ausgewertet werden.',
-      'Die Ergebnisse des Monitorings müssen Aufsichtsbehörden auf Anfrage zur Verfügung gestellt werden können.'
-    ],
-    correct: [0,2,3],
-    exp: 'Post-Market-Monitoring nach Art. 72 ist eine dauerhafte Anbieterpflicht: systematische Überwachung von Leistung und Risiken, Datenerhebung und -auswertung, Verfügbarkeit der Ergebnisse für Behörden. Das Monitoring endet nicht mit dem Inverkehrbringen — der Anbieter bleibt verantwortlich. Eine jährliche Quellcode-Veröffentlichung ist nicht vorgesehen. Der Aufwand ist proportional zur Risikoklasse des Systems.',
-    src: 'EU AI Act Art. 72', url: 'https://artificialintelligenceact.eu/article/72/'
-  },
+ const correctIdx = card.dataset.correct.split(',').map(Number);
+ const opts = card.querySelectorAll('.opt-list li');
+ let allCorrect = true;
 
-  /* ═══ SET 2: Compliance (Fragen 6–10) ═══ */
-  {
-    set: 'Compliance',
-    q: 'Bei einer internen Revision wirst du als Compliance-Beauftragte:r gefragt, wann ein Vorfall mit einem KI-System nach Art. 73 EU AI Act meldepflichtig ist. Welche Aussage(n) zur Definition eines schwerwiegenden Vorfalls sind korrekt?',
-    opts: [
-      'Ein Ereignis, das zum Tod oder zu einer schweren Gesundheitsschädigung einer Person geführt hat oder hätte führen können.',
-      'Eine schwere Beeinträchtigung kritischer Infrastruktur durch das KI-System.',
-      'Eine schwerwiegende Verletzung von Grundrechten mit erheblicher Tragweite.',
-      'Jeder Vorfall, bei dem ein Nutzer mit dem KI-System unzufrieden war.'
-    ],
-    correct: [0,1,2],
-    exp: 'Art. 73 EU AI Act definiert schwerwiegende Vorfälle anhand ihrer Folgen oder Schadenspotenziale: Tod oder schwere Gesundheitsschädigung, Beeinträchtigung kritischer Infrastruktur, schwerwiegende Grundrechtsverletzung. Das "hätte führen können" ist entscheidend — nicht nur eingetretene Schäden, sondern auch realisierte Risiken lösen die Meldepflicht aus. Nutzerunzufriedenheit ist kein meldepflichtiger Vorfall. Für Compliance bedeutet das: intern breit erfassen, dann juristisch bewerten, was extern gemeldet werden muss.',
-    src: 'EU AI Act Art. 73', url: 'https://artificialintelligenceact.eu/article/73/'
-  },
-  {
-    set: 'Compliance',
-    q: 'Ein KI-System in eurem Unternehmen hat eine fehlerhafte Entscheidungsempfehlung ausgegeben. Als Compliance-Beauftragte:r prüfst du die Meldefristen nach Art. 73 EU AI Act. Welche Aussage(n) sind korrekt?',
-    opts: [
-      'Die Standardfrist für die Meldung eines schwerwiegenden Vorfalls beträgt 15 Tage ab Kenntnisnahme.',
-      'Die Meldung darf erst nach vollständiger interner Aufklärung erfolgen — vorläufige Meldungen sind unzulässig.',
-      'Bei Tod einer betroffenen Person verkürzt sich die Frist auf 10 Tage ab Kenntnisnahme.',
-      'Die Meldepflicht besteht gegenüber der zuständigen nationalen Marktüberwachungsbehörde.'
-    ],
-    correct: [0,2,3],
-    exp: 'Art. 73 sieht abgestufte Fristen vor: 15 Tage Standardfrist, 10 Tage bei Todesfolge, 2 Tage bei drohenden Großschadensereignissen. Vorläufige Meldungen sind ausdrücklich zulässig und können nachgereicht werden — "erst nach Komplettaufklärung melden" widerspricht der Norm und kann selbst zur Pflichtverletzung werden. Die Meldung geht an die nationale Marktüberwachungsbehörde (in Deutschland die zuständige Aufsichtsbehörde je nach Branche).',
-    src: 'EU AI Act Art. 73', url: 'https://artificialintelligenceact.eu/article/73/'
-  },
-  {
-    set: 'Compliance',
-    q: 'Die Geschäftsführung fragt dich als Compliance-Beauftragte:r nach den Konsequenzen bei Verstößen gegen den EU AI Act. Du erläuterst die Sanktionsstruktur nach Art. 99. Welche Aussage(n) sind korrekt?',
-    opts: [
-      'Verstöße gegen das Verbot unannehmbarer KI-Praktiken (Art. 5) können mit bis zu 35 Mio. Euro oder 7 % des weltweiten Jahresumsatzes geahndet werden.',
-      'Bußgelder für Verstöße gegen Hochrisiko-Anforderungen (Kapitel III) können bis zu 15 Mio. Euro oder 3 % des weltweiten Jahresumsatzes betragen.',
-      'Für Falschinformationen gegenüber Behörden sieht Art. 99 ein Bußgeld von bis zu 7,5 Mio. Euro oder 1 % des Umsatzes vor.',
-      'Sanktionen richten sich ausschließlich gegen den Anbieter — der Betreiber ist nicht bußgeldbewehrt.'
-    ],
-    correct: [0,1,2],
-    exp: 'Art. 99 EU AI Act sieht eine dreistufige Sanktionsstruktur vor: Verbotsverstöße (Art. 5) bis 35 Mio. Euro / 7 % Jahresumsatz; Verstöße gegen Hochrisiko-Anforderungen bis 15 Mio. Euro / 3 %; Falschinformationen gegenüber Behörden bis 7,5 Mio. Euro / 1 %. Es gilt jeweils der höhere Betrag. Sanktionen können Anbieter und Betreiber treffen — die vierte Aussage ist falsch. Für KMU und Start-ups gelten reduzierte Obergrenzen.',
-    src: 'EU AI Act Art. 99', url: 'https://artificialintelligenceact.eu/article/99/'
-  },
-  {
-    set: 'Compliance',
-    q: 'Euer Unternehmen betreibt ein Hochrisiko-KI-System im Personalbereich. Als Compliance-Beauftragte:r prüfst du, ob eine Registrierung in der EU-KI-Datenbank erforderlich ist. Welche Aussage(n) sind korrekt?',
-    opts: [
-      'Anbieter von Hochrisiko-KI-Systemen aus Anhang III müssen sich und ihre Systeme vor Inverkehrbringen in der EU-Datenbank registrieren.',
-      'Betreiber von Hochrisiko-KI-Systemen in bestimmten Bereichen (z. B. kritische Infrastruktur, Personalverwaltung) müssen sich ebenfalls registrieren.',
-      'Die EU-KI-Datenbank ist nicht öffentlich zugänglich — sie dient ausschließlich Behördenzwecken.',
-      'Eine fehlende Registrierung gilt als Verstoß gegen den EU AI Act und kann sanktioniert werden.'
-    ],
-    correct: [0,1,3],
-    exp: 'Die EU-KI-Datenbank (Art. 71) ist öffentlich zugänglich — die dritte Aussage ist falsch. Anbieter von Hochrisiko-KI-Systemen aus Anhang III müssen sich registrieren. In bestimmten Bereichen (u. a. kritische Infrastruktur, Personalverwaltung, Bildung) müssen auch Betreiber registriert sein. Eine fehlende Registrierung ist ein Verstoß nach Art. 99. Compliance-seitig bedeutet das: Registrierungspflichten als Teil der Markteinführungsprüfung stets berücksichtigen.',
-    src: 'EU AI Act Art. 71', url: 'https://artificialintelligenceact.eu/article/71/'
-  },
-  {
-    set: 'Compliance',
-    q: 'Im Rahmen eines internen Audits prüfst du als Compliance-Beauftragte:r, welche KI-Praktiken nach Art. 5 EU AI Act absolut verboten sind. Welche Aussage(n) sind korrekt?',
-    opts: [
-      'Systeme zur unbewussten Manipulation von Personen unterhalb ihrer Wahrnehmungsschwelle sind verboten.',
-      'Social-Scoring-Systeme durch öffentliche Behörden, die zur Benachteiligung führen, sind verboten.',
-      'Echtzeit-Biometrie zur Fernidentifizierung in öffentlichen Räumen durch Strafverfolgungsbehörden ist grundsätzlich verboten, mit engen Ausnahmen.',
-      'Chatbots im Kundendienst, die keine Kaufempfehlungen machen, sind nach Art. 5 verboten.'
-    ],
-    correct: [0,1,2],
-    exp: 'Art. 5 EU AI Act enthält absolute Verbote ohne Ausnahmemöglichkeit für private Akteure: Unterschwellige Manipulation, Ausnutzung von Schwächen, Social Scoring durch öffentliche Stellen, biometrische Kategorisierung zur Ableitung sensibler Merkmale, Emotionserkennung am Arbeitsplatz/Bildungseinrichtungen. Biometrie zur Echtzeit-Fernidentifizierung ist für Strafverfolgungsbehörden grundsätzlich verboten, mit engen definierten Ausnahmen. Kundendienst-Chatbots ohne Manipulation fallen nicht unter Art. 5.',
-    src: 'EU AI Act Art. 5', url: 'https://artificialintelligenceact.eu/article/5/'
+ opts.forEach((li, i) => {
+  const isCorrect = correctIdx.includes(i);
+  const isSelected = li.classList.contains('selected');
+  if (isCorrect) {
+   li.classList.add('correct-show');
+   if (!isSelected) allCorrect = false;
+  } else if (isSelected) {
+   li.classList.add('wrong-show');
+   allCorrect = false;
   }
+ });
 
-];
+ card.querySelector('.exp').classList.add('visible');
 
-/* ═══════ STATE ════════════════════════════════════════════════ */
-var S = { name:'', questions:[], selections:[], submitted:false };
-
-function startQuiz() {
-  S.name = document.getElementById('participant-name').value.trim() || 'Anonym';
-  S.questions = QUESTIONS.map(function(q){
-    var n=q.opts.length, idx=[];
-    for(var k=0;k<n;k++) idx.push(k);
-    for(var j=n-1;j>0;j--){ var r=Math.floor(Math.random()*(j+1)),t=idx[j];idx[j]=idx[r];idx[r]=t; }
-    return {
-      set:q.set,
-      q:q.q,
-      opts:idx.map(function(i){return q.opts[i];}),
-      correct:q.correct.map(function(c){return idx.indexOf(c);}),
-      exp:q.exp, src:q.src, url:q.url
-    };
-  });
-  S.selections = S.questions.map(function(){return [];});
-  S.submitted = false;
-
-  document.getElementById('setup-section').style.display='none';
-  document.getElementById('quiz-section').style.display='block';
-
-  document.getElementById('quiz-header-strip').innerHTML =
-    '<span class="strip-tag strip-role-1">KI-Beauftragte:r</span>'
-    +'<span class="strip-tag strip-role-2">Geschäftsführung</span>'
-    +'<span class="strip-name">'+S.name+'</span>';
-
-  renderQuestions();
+ if (allCorrect) answered++;
+ updateScore();
 }
 
-function renderQuestions() {
-  var container = document.getElementById('questions-container');
-  container.innerHTML = '';
-  var total = S.questions.length;
-  var letters = ['A','B','C','D'];
-
-  S.questions.forEach(function(q, qi) {
-    // Add separator between sets
-    if (qi === 5) {
-      var sep = document.createElement('div');
-      sep.className = 'separator-card';
-      sep.innerHTML = '<h3>Perspektivwechsel: Geschäftsführung</h3>';
-      container.appendChild(sep);
-    }
-
-    var card = document.createElement('div');
-    card.className = 'q-card';
-
-    var numEl = document.createElement('div');
-    numEl.className = 'q-num';
-    numEl.textContent = 'Frage '+(qi+1)+' von '+total;
-    card.appendChild(numEl);
-
-    var qEl = document.createElement('div');
-    qEl.className = 'q-text';
-    qEl.textContent = q.q;
-    card.appendChild(qEl);
-
-    var hEl = document.createElement('div');
-    hEl.className = 'q-hint';
-    hEl.textContent = 'Eine oder mehrere Antworten können richtig sein.';
-    card.appendChild(hEl);
-
-    var optList = document.createElement('div');
-    optList.className = 'opt-list';
-
-    q.opts.forEach(function(opt, oi) {
-      var row = document.createElement('div');
-      row.className = 'opt';
-      row.id = 'opt-'+qi+'-'+oi;
-      row.onclick = (function(a,b){ return function(){ toggleOpt(a,b); }; })(qi,oi);
-
-      var cb = document.createElement('div');
-      cb.className = 'opt-cb';
-      cb.id = 'cb-'+qi+'-'+oi;
-      row.appendChild(cb);
-
-      var letter = document.createElement('div');
-      letter.className = 'opt-letter';
-      letter.textContent = letters[oi]+'.';
-      row.appendChild(letter);
-
-      var text = document.createElement('div');
-      text.className = 'opt-text';
-      text.textContent = opt;
-      row.appendChild(text);
-
-      optList.appendChild(row);
-    });
-
-    card.appendChild(optList);
-    var fb = document.createElement('div');
-    fb.id = 'fb-'+qi;
-    card.appendChild(fb);
-    container.appendChild(card);
-  });
-
-  updateProgress();
+function updateScore() {
+ const answeredCards = document.querySelectorAll('.q-card.answered').length;
+ if (answeredCards === total) {
+  const bar = document.getElementById('resultBar');
+  bar.style.display = 'block';
+  document.getElementById('scoreDisplay').textContent = answered + '/' + total;
+  const pct = Math.round(answered / total * 100);
+  document.getElementById('scoreText').textContent = pct + ' % korrekt';
+ }
 }
-
-function toggleOpt(qi, oi) {
-  if (S.submitted) return;
-  var sel = S.selections[qi];
-  var pos = sel.indexOf(oi);
-  if (pos >= 0) sel.splice(pos,1); else sel.push(oi);
-  document.getElementById('cb-'+qi+'-'+oi).className = 'opt-cb'+(sel.indexOf(oi)>=0?' chk':'');
-  document.getElementById('opt-'+qi+'-'+oi).className = 'opt'+(sel.indexOf(oi)>=0?' selected':'');
-  checkSubmitReady();
-  updateProgress();
-}
-
-function checkSubmitReady() {
-  document.getElementById('btn-submit').disabled =
-    S.selections.filter(function(s){return s.length>0;}).length < S.questions.length;
-}
-
-function updateProgress() {
-  var answered = S.selections.filter(function(s){return s.length>0;}).length;
-  document.getElementById('progress-fill').style.width = Math.round(answered/S.questions.length*100)+'%';
-  document.getElementById('progress-label').textContent = answered+' von '+S.questions.length+' Fragen beantwortet';
-}
-
-function submitQuiz() {
-  S.submitted = true;
-  document.getElementById('btn-submit').disabled = true;
-  var correct=0, wrong=0;
-
-  S.questions.forEach(function(q, qi) {
-    var sel = S.selections[qi].slice().sort().join(',');
-    var cor = q.correct.slice().sort().join(',');
-    var isFull = sel===cor;
-    if (isFull) correct++; else wrong++;
-
-    q.opts.forEach(function(opt,oi){
-      var isSel = S.selections[qi].indexOf(oi)>=0;
-      var isCorr = q.correct.indexOf(oi)>=0;
-      document.getElementById('opt-'+qi+'-'+oi).className =
-        'opt disabled'+(isSel&&isCorr?' correct-sel':isSel&&!isCorr?' wrong-sel':!isSel&&isCorr?' missed':'');
-      document.getElementById('cb-'+qi+'-'+oi).className = 'opt-cb'+(isSel?' chk':'');
-    });
-
-    document.getElementById('fb-'+qi).innerHTML =
-      '<div class="feedback '+(isFull?'fb-ok':'fb-wrong')+'">'
-      +'<div class="fb-title">'+(isFull?'Richtig — alle Antworten korrekt.':'Falsch — nicht alle richtigen Antworten gewählt oder falsche angekreuzt.')+'</div>'
-      +'<div class="fb-text">'+q.exp+'</div>'
-      +'<div class="fb-source">Quelle: <a href="'+q.url+'" target="_blank">'+q.src+'</a></div>'
-      +'</div>';
-  });
-
-  showResults(correct, wrong);
-  sendToSheets(correct, wrong);
-}
-
-function showResults(correct, wrong) {
-  var total = S.questions.length;
-  var pct = Math.round(correct/total*100);
-  var grade, label, sub;
-  if(pct>=80){grade='A';label='Sehr gut!';sub='Prüfungsreife für dieses Thema nachgewiesen.';}
-  else if(pct>=60){grade='B';label='Gut';sub='Solide Basis — Quellenlinks gezielt nutzen.';}
-  else if(pct>=40){grade='C';label='Ausbaufähig';sub='Grundlagen vorhanden — Theorieblock nochmals lesen.';}
-  else{grade='D';label='Weiter üben';sub='Lücken mit den verlinkten Quellen schließen.';}
-
-  document.getElementById('result-grade').textContent=grade;
-  document.getElementById('result-label').textContent=label;
-  document.getElementById('result-sub').textContent=sub;
-  document.getElementById('stats-row').innerHTML=
-    '<div class="stat"><div class="stat-n" style="color:var(--correct)">'+correct+'</div><div class="stat-l">Richtig</div></div>'
-    +'<div class="stat"><div class="stat-n" style="color:var(--wrong)">'+wrong+'</div><div class="stat-l">Falsch</div></div>'
-    +'<div class="stat"><div class="stat-n">'+pct+'%</div><div class="stat-l">Ergebnis</div></div>';
-
-  document.getElementById('comp-bars').innerHTML=S.questions.map(function(q,i){
-    var ok=S.selections[i].slice().sort().join(',')===q.correct.slice().sort().join(',');
-    return '<div class="comp-row"><div class="comp-labels"><span>Frage '+(i+1)+'</span>'
-      +'<span style="color:'+(ok?'var(--correct)':'var(--wrong)')+'">'+(ok?'✓ Richtig':'✗ Falsch')+'</span></div>'
-      +'<div class="comp-track"><div class="comp-fill '+(ok?'fill-ok':'fill-wrong')+'" style="width:'+(ok?100:0)+'%"></div></div></div>';
-  }).join('');
-
-  renderReview();
-  document.getElementById('quiz-section').style.display='none';
-  document.getElementById('results-section').style.display='block';
-  window.scrollTo({top:0,behavior:'smooth'});
-}
-
-function renderReview() {
-  var letters = ['A','B','C','D'];
-  var container = document.getElementById('review-container');
-  container.innerHTML = '';
-
-  S.questions.forEach(function(q, qi) {
-    var isFull = S.selections[qi].slice().sort().join(',')===q.correct.slice().sort().join(',');
-    var card = document.createElement('div');
-    card.className = 'q-card';
-    card.style.marginBottom = '.8rem';
-
-    var header = document.createElement('div');
-    header.style.cssText = 'display:flex;gap:.6rem;align-items:baseline;margin-bottom:.5rem;';
-    var numEl = document.createElement('div');
-    numEl.className = 'q-num';
-    numEl.textContent = 'Frage '+(qi+1);
-    var badge = document.createElement('span');
-    badge.style.cssText = 'font-size:12px;font-weight:500;padding:2px 10px;border-radius:100px;'
-      +(isFull?'background:var(--correct-bg);color:var(--correct);':'background:var(--wrong-bg);color:var(--wrong);');
-    badge.textContent = isFull?'✓ Richtig':'✗ Falsch';
-    header.appendChild(numEl); header.appendChild(badge);
-    card.appendChild(header);
-
-    var qEl = document.createElement('div');
-    qEl.className = 'q-text';
-    qEl.style.marginBottom = '.7rem';
-    qEl.textContent = q.q;
-    card.appendChild(qEl);
-
-    var optList = document.createElement('div');
-    optList.className = 'opt-list';
-    q.opts.forEach(function(opt, oi) {
-      var isSel = S.selections[qi].indexOf(oi)>=0;
-      var isCorr = q.correct.indexOf(oi)>=0;
-      var row = document.createElement('div');
-      var cls = 'opt disabled';
-      if(isSel&&isCorr) cls+=' correct-sel';
-      else if(isSel&&!isCorr) cls+=' wrong-sel';
-      else if(!isSel&&isCorr) cls+=' missed';
-      row.className = cls;
-      var cb = document.createElement('div');
-      cb.className = 'opt-cb'+(isSel?' chk':'');
-      row.appendChild(cb);
-      var letter = document.createElement('div');
-      letter.className = 'opt-letter';
-      letter.textContent = letters[oi]+'.';
-      row.appendChild(letter);
-      var text = document.createElement('div');
-      text.className = 'opt-text';
-      text.textContent = opt;
-      row.appendChild(text);
-      optList.appendChild(row);
-    });
-    card.appendChild(optList);
-
-    var fb = document.createElement('div');
-    fb.innerHTML = '<div class="feedback '+(isFull?'fb-ok':'fb-wrong')+'" style="margin-top:.7rem">'
-      +'<div class="fb-title">'+(isFull?'Richtig.':'Falsch.')+'</div>'
-      +'<div class="fb-text">'+q.exp+'</div>'
-      +'<div class="fb-source">Quelle: <a href="'+q.url+'" target="_blank">'+q.src+'</a></div></div>';
-    card.appendChild(fb);
-    container.appendChild(card);
-  });
-}
-
-function sendToSheets(correct, wrong) {
-  if (!APPS_SCRIPT_URL) return;
-  var TAG_NR = 6;
-  var THEMA  = 'EU AI Act Vertiefung';
-  var letters = ['A','B','C','D'];
-  var status = document.getElementById('submit-status');
-  status.className = 'submit-status sending';
-  status.style.display = 'block';
-  status.textContent = 'Ergebnis wird übermittelt...';
-
-  var toSend = [];
-  S.questions.forEach(function(q, i) {
-    var selIndices  = S.selections[i].slice().sort();
-    var corrIndices = q.correct.slice().sort();
-    var isFull      = selIndices.join(',') === corrIndices.join(',');
-    var gewaehlt    = selIndices.map(function(idx) { return letters[idx]; }).join(',') || '-';
-    var korrekt     = corrIndices.map(function(idx) { return letters[idx]; }).join(',');
-    var ergebnis    = isFull ? 'RICHTIG' : 'FALSCH';
-
-    toSend.push(
-      APPS_SCRIPT_URL
-      + '?tab='        + encodeURIComponent('KI-Beauftragter')
-      + '&teilnehmer=' + encodeURIComponent(S.name)
-      + '&tag='        + TAG_NR
-      + '&thema='      + encodeURIComponent(THEMA)
-      + '&stufe='      + encodeURIComponent(S.questions[i].set)
-      + '&frage_nr='   + (i + 1)
-      + '&frage_text=' + encodeURIComponent(q.q.substring(0, 80))
-      + '&gewaehlt='   + encodeURIComponent(gewaehlt)
-      + '&korrekt='    + encodeURIComponent(korrekt)
-      + '&ergebnis='   + encodeURIComponent(ergebnis)
-    );
-  });
-
-  var idx = 0;
-  function sendNext() {
-    if (idx >= toSend.length) {
-      status.className = 'submit-status success';
-      status.textContent = '✓ ' + toSend.length + ' Antworten übermittelt ('
-        + new Date().toLocaleTimeString('de-DE') + ')';
-      return;
-    }
-    fetch(toSend[idx], { mode: 'no-cors' })
-      .catch(function() {})
-      .then(function() { idx++; setTimeout(sendNext, 400); });
-  }
-  sendNext();
-}
-
 </script>
 </body>
 </html>
