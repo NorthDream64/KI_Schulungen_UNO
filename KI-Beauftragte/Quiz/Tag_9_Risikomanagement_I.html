@@ -3,13 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Lernkontrolle · Tag 9 · Risikomanagement I</title>
+<title>Lernkontrolle · Tag 9 · Risikomanagement I — Grundlagen & Bias</title>
 <style>
 :root {
   --ink:#1a1a18;--paper:#f5f2ec;--card:#fff;--rule:#d5d0c5;--muted:#888880;
   --accent:#2a4a8a;--accent-soft:#e8edf7;
-  --role-a:#2a5c3f;--role-a-soft:#e8f2ec;
-  --role-b:#7a3a2a;--role-b-soft:#f5ece8;
   --level-1:#5a3a7a;--level-1-soft:#f0eaf7;
   --level-2:#0a5a7a;--level-2-soft:#e0eff7;
   --correct:#2a7a50;--correct-bg:#eaf5ee;--correct-border:#a0d8b8;
@@ -18,63 +16,40 @@
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;background:var(--paper);color:var(--ink);line-height:1.65;font-size:15px;}
 a{color:var(--accent);}
-
-/* HEADER */
 .site-header{border-bottom:2px solid var(--ink);padding:1.8rem 2rem 1.4rem;max-width:820px;margin:0 auto;}
 .eyebrow{font-family:"SFMono-Regular", Consolas, "Liberation Mono", monospace;font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:var(--muted);margin-bottom:.5rem;}
 .site-header h1{font-family:Georgia, "Times New Roman", serif;font-size:clamp(1.5rem,4vw,2.1rem);line-height:1.15;margin-bottom:.4rem;}
 .header-meta{font-size:12px;color:var(--muted);display:flex;gap:1rem;flex-wrap:wrap;}
 .header-meta span::before{content:"· ";}
 .header-meta span:first-child::before{content:"";}
-
-/* MAIN */
 .main{max-width:820px;margin:0 auto;padding:1.8rem 2rem 4rem;}
-
-/* SETUP */
-.setup-card{background:var(--card);border:1px solid var(--rule);border-radius:12px;padding:2rem;max-width:540px;margin:0 auto;}
+.setup-card{background:var(--card);border:1px solid var(--rule);border-radius:12px;padding:2rem;max-width:480px;margin:0 auto;}
 .setup-card h2{font-family:Georgia, "Times New Roman", serif;font-size:1.3rem;margin-bottom:1.2rem;}
 .field-label{font-family:"SFMono-Regular", Consolas, "Liberation Mono", monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:.35rem;}
 .setup-input{width:100%;border:1px solid var(--rule);border-radius:8px;padding:.6rem .9rem;font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;font-size:14px;background:var(--paper);outline:none;color:var(--ink);transition:border-color .15s;}
 .setup-input:focus{border-color:var(--ink);}
-.setup-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.2rem;}
-@media(max-width:480px){.setup-grid{grid-template-columns:1fr;}}
-.role-btns,.level-btns{display:flex;gap:.5rem;}
+.hint-text{font-size:12px;color:var(--muted);margin-top:.3rem;display:block;}
+.level-btns{display:flex;gap:.5rem;margin-top:.3rem;}
 .sel-btn{flex:1;padding:.55rem .6rem;border:1px solid var(--rule);border-radius:8px;background:none;font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;font-size:13px;cursor:pointer;text-align:center;transition:all .15s;color:var(--ink);}
-.sel-btn.active-a{background:var(--role-a-soft);border-color:var(--role-a);color:var(--role-a);font-weight:500;}
-.sel-btn.active-b{background:var(--role-b-soft);border-color:var(--role-b);color:var(--role-b);font-weight:500;}
 .sel-btn.active-1{background:var(--level-1-soft);border-color:var(--level-1);color:var(--level-1);font-weight:500;}
 .sel-btn.active-2{background:var(--level-2-soft);border-color:var(--level-2);color:var(--level-2);font-weight:500;}
-.hint-text{font-size:12px;color:var(--muted);margin-top:.3rem;display:block;}
 .btn-start{width:100%;padding:.75rem;background:var(--ink);color:#fff;border:none;border-radius:8px;font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;font-size:15px;font-weight:500;cursor:pointer;margin-top:1rem;transition:background .15s;}
 .btn-start:hover{background:#333;}
 .btn-start:disabled{background:#aaa;cursor:not-allowed;}
-
-/* QUIZ HEADER STRIP */
 .quiz-header-strip{display:flex;gap:.6rem;align-items:center;margin-bottom:1.4rem;flex-wrap:wrap;}
-.strip-tag{font-family:"SFMono-Regular", Consolas, "Liberation Mono", monospace;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;padding:4px 12px;border-radius:100px;}
-.strip-role-a{background:var(--role-a-soft);color:var(--role-a);}
-.strip-role-b{background:var(--role-b-soft);color:var(--role-b);}
-.strip-level-1{background:var(--level-1-soft);color:var(--level-1);}
-.strip-level-2{background:var(--level-2-soft);color:var(--level-2);}
-.strip-name{font-size:13px;color:var(--muted);margin-left:auto;}
-
-/* PROGRESS */
+.strip-tag{display:inline-block;font-size:11px;font-weight:600;padding:2px 10px;border-radius:100px;letter-spacing:.5px;}
+.strip-role-1{background:var(--level-1-soft);color:var(--level-1);}
+.strip-role-2{background:var(--level-2-soft);color:var(--level-2);}
+.strip-name{font-size:12px;color:var(--muted);}
+.separator-card{background:var(--accent-soft);border:1px solid var(--rule);border-radius:12px;padding:1.2rem 1.5rem;margin:1.5rem 0;text-align:center;}
+.separator-card h3{font-family:Georgia,serif;font-size:1.1rem;color:var(--accent);margin:0;}
 .progress-bar{height:3px;background:var(--rule);border-radius:2px;margin-bottom:1.2rem;}
 .progress-fill{height:100%;background:var(--ink);border-radius:2px;transition:width .3s;}
 .progress-label{font-family:"SFMono-Regular", Consolas, "Liberation Mono", monospace;font-size:10px;color:var(--muted);margin-bottom:.5rem;}
-
-/* SCENARIO */
-.scenario-box{background:var(--accent-soft);border:1px solid #c0d0e8;border-left:3px solid var(--accent);border-radius:0 8px 8px 0;padding:.9rem 1.1rem;margin-bottom:1.2rem;}
-.scenario-label{font-family:"SFMono-Regular", Consolas, "Liberation Mono", monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:.3rem;}
-.scenario-text{font-size:13px;color:var(--ink);line-height:1.6;}
-
-/* QUESTION CARD */
 .q-card{background:var(--card);border:1px solid var(--rule);border-radius:12px;padding:1.5rem;margin-bottom:1rem;}
 .q-num{font-family:"SFMono-Regular", Consolas, "Liberation Mono", monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:.6rem;}
 .q-text{font-size:15px;font-weight:500;line-height:1.55;margin-bottom:.5rem;}
 .q-hint{font-size:12px;color:var(--muted);margin-bottom:.9rem;font-style:italic;}
-
-/* OPTIONS */
 .opt-list{display:flex;flex-direction:column;gap:.5rem;}
 .opt{display:flex;align-items:flex-start;gap:.7rem;padding:.75rem 1rem;border:1px solid var(--rule);border-radius:8px;cursor:pointer;background:#fdfdfb;transition:all .12s;-webkit-user-select:none;user-select:none;}
 .opt:hover:not(.disabled){border-color:#888;background:#f5f2ec;}
@@ -94,8 +69,6 @@ a{color:var(--accent);}
 .opt.missed .opt-cb::after{content:'→';color:#fff;font-size:11px;background:none;width:auto;height:auto;}
 .opt-letter{font-family:"SFMono-Regular", Consolas, "Liberation Mono", monospace;font-size:12px;color:var(--muted);min-width:16px;flex-shrink:0;margin-top:2px;}
 .opt-text{font-size:14px;line-height:1.5;}
-
-/* FEEDBACK */
 .feedback{border-radius:8px;padding:.9rem 1.1rem;margin-top:.9rem;}
 .feedback.fb-ok{background:var(--correct-bg);border:1px solid var(--correct-border);}
 .feedback.fb-wrong{background:var(--wrong-bg);border:1px solid var(--wrong-border);}
@@ -104,19 +77,11 @@ a{color:var(--accent);}
 .fb-wrong .fb-title{color:var(--wrong);}
 .fb-text{font-size:13px;line-height:1.65;color:#444;margin-bottom:.5rem;}
 .fb-source{font-size:12px;color:var(--muted);border-top:1px solid var(--rule);padding-top:.5rem;}
-
-/* NAV */
-.nav-row{display:flex;align-items:center;gap:.6rem;margin-top:1rem;}
 .btn{display:inline-flex;align-items:center;padding:.55rem 1.2rem;border:1px solid var(--rule);border-radius:8px;background:none;font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;font-size:14px;font-weight:500;cursor:pointer;color:var(--ink);transition:all .15s;}
 .btn:hover{background:var(--paper);border-color:#888;}
-.btn:disabled{opacity:.3;cursor:not-allowed;}
-.btn-primary{background:var(--ink);color:#fff;border-color:var(--ink);}
-.btn-primary:hover{background:#333;}
 .btn-full{width:100%;justify-content:center;padding:.7rem;font-size:15px;margin-top:1rem;}
 .btn-submit{background:#2a5c3f;color:#fff;border-color:#2a5c3f;}
 .btn-submit:hover{background:#1e4530;}
-
-/* RESULTS */
 .result-block{max-width:600px;margin:0 auto;text-align:center;}
 .result-grade{font-family:Georgia, "Times New Roman", serif;font-size:4.5rem;line-height:1;margin-bottom:.3rem;}
 .result-label{font-size:1.1rem;font-weight:500;margin-bottom:.3rem;}
@@ -142,11 +107,10 @@ a{color:var(--accent);}
 
 <header class="site-header">
   <div class="eyebrow">Alfatraining · KI-Beauftragte:r · Tag 9</div>
-  <h1>Lernkontrolle<br>Risikomanagement I</h1>
+  <h1>Lernkontrolle<br>Risikomanagement I — Grundlagen & Bias</h1>
   <div class="header-meta">
-    <span>5 Fragen je Rolle &amp; Stufe</span>
+    <span>10 Fragen</span>
     <span>Eine oder mehrere Antworten können richtig sein</span>
-    <span>Use Case: Krankenhaus-KI &amp; Character.AI-Fall (Pennsylvania 2026)</span>
   </div>
 </header>
 
@@ -155,33 +119,14 @@ a{color:var(--accent);}
 <!-- ── SETUP ── -->
 <div id="setup-section">
   <div class="setup-card">
-    <h2>Bitte wähle deine Rolle und Schwierigkeitsstufe</h2>
+    <h2>Quiz starten</h2>
 
-    <div style="margin-bottom:1rem;">
+    <div style="margin-bottom:1.2rem;">
       <span class="field-label">Dein Name (oder Teilnehmer-Nummer)</span>
       <input type="text" id="participant-name" class="setup-input" placeholder="z. B. Teilnehmer-07 oder Vorname">
     </div>
 
-    <div class="setup-grid">
-      <div>
-        <span class="field-label">Rolle</span>
-        <div class="role-btns">
-          <button class="sel-btn" id="btn-role-a" onclick="selectRole('a')">KI-Beauftragter</button>
-          <button class="sel-btn" id="btn-role-b" onclick="selectRole('b')">Entwicklungsleiter</button>
-        </div>
-        <span class="hint-text">KI-BA = Compliance &amp; Aufsicht · Entw.-Ltr. = Anbieter &amp; Technik</span>
-      </div>
-      <div>
-        <span class="field-label">Schwierigkeitsstufe</span>
-        <div class="level-btns">
-          <button class="sel-btn" id="btn-level-1" onclick="selectLevel('1')">Anfänger</button>
-          <button class="sel-btn" id="btn-level-2" onclick="selectLevel('2')">Fortgeschrittene</button>
-        </div>
-        <span class="hint-text">Anfänger = Definitionen · Fortgeschr. = Szenarien</span>
-      </div>
-    </div>
-
-    <button class="btn-start" id="btn-start" onclick="startQuiz()" disabled>Quiz starten →</button>
+    <button class="btn-start" id="btn-start" onclick="startQuiz()">Quiz starten</button>
   </div>
 </div>
 
@@ -191,14 +136,9 @@ a{color:var(--accent);}
   <div class="progress-label" id="progress-label"></div>
   <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
 
-  <div class="scenario-box">
-    <div class="scenario-label">Fallbeispiel · Gilt für alle Fragen</div>
-    <div class="scenario-text" id="scenario-text"></div>
-  </div>
-
   <div id="questions-container"></div>
 
-  <div class="nav-row" style="margin-top:1.5rem">
+  <div style="margin-top:1.5rem">
     <button class="btn btn-submit btn-full" id="btn-submit" onclick="submitQuiz()" disabled>Auswertung anzeigen →</button>
   </div>
   <div class="submit-status" id="submit-status"></div>
@@ -213,13 +153,11 @@ a{color:var(--accent);}
     <div class="stats-row" id="stats-row"></div>
     <div class="comp-title">Kompetenzprofil</div>
     <div id="comp-bars"></div>
-    <div id="sheets-note"></div>
     <div style="margin-top:.8rem;display:flex;justify-content:center;">
       <button class="btn" onclick="location.reload()">Neu starten</button>
     </div>
-  </div>
+    </div>
 
-  <!-- REVIEW -->
   <hr style="border:none;border-top:1px solid var(--rule);margin:2rem 0">
   <h2 style="font-family:Georgia, "Times New Roman", serif;font-size:1.2rem;margin-bottom:1rem">Detailauswertung</h2>
   <div id="review-container"></div>
@@ -228,347 +166,160 @@ a{color:var(--accent);}
 </main>
 
 <script>
-/* ═══════ CONFIG ═══════════════════════════════════════════════ */
 var APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyPs358GF_E1xsvTh08PpTpZcBDS1OvsU9XQ0qi0MkZoCCnAk4dyo3Aii0OYxILdvCRYA/exec';
 
-/* ═══════ SZENARIEN ════════════════════════════════════════════ */
-var SCENARIOS = {
-  a: 'Das Krankenhaus St. Ulrich hat ein KI-System zur Bildauswertung von CT- und Röntgenaufnahmen sowie zur Behandlungspfad-Priorisierung eingeführt. Parallel macht ein aktueller Rechtsfall Schlagzeilen: Pennsylvania (USA) verklagt Character.AI, weil ein Chatbot sich als Psychiater mit gültiger Lizenznummer ausgegeben hat — und Nutzer täuschte, echte medizinische Behandlung zu erhalten. Als KI-Beauftragter musst du beide Fälle einordnen: Welche Risikoarten erkennst du — und welche Mitigationsmaßnahmen sind angemessen?',
-  b: 'Du leitest das Entwicklungsteam beim KI-Hersteller, der das Radiologie-KI-System für Krankenhaus St. Ulrich entwickelt hat. Das System wertet CT- und Röntgenaufnahmen aus und priorisiert Behandlungspfade. Als Anbieter bist du nach EU AI Act direkt für technische Qualität, Datendokumentation und Robustheit verantwortlich. Parallel zeigt der Fall Pennsylvania v. Character.AI, was passiert, wenn KI-Systeme ohne ausreichende technische Guardrails auf den Markt gebracht werden.'
-};
-
 /* ═══════ FRAGENBANK ═══════════════════════════════════════════ */
-var QBANK = {
+/* Verteilung: 2x eine richtig, 4x zwei richtig, 4x drei richtig; nie vier */
 
-/* ── KI-Beauftragter · Anfänger ─────────────────────────────── */
-/* Verteilung: 1×1 richtig · 2×2 richtig · 2×3 richtig */
-a1: [
-  {
-    schwierigkeit: 'Einfach',
-    q: 'Welche der folgenden Aussagen zu technischen Fehlern bei KI-Systemen sind korrekt?',
-    opts: [
-      'Model Drift bezeichnet den Prozess, bei dem ein KI-Modell mit der Zeit ungenauer wird, weil sich die reale Welt verändert hat',
-      'EU AI Act Art. 15 fordert, dass Hochrisiko-KI-Systeme auch unter schwierigen Bedingungen zuverlässig und robust funktionieren',
-      'Technische Fehler bei KI entstehen ausschließlich durch Programmierfehler der Entwickler — Datenfehler spielen keine Rolle',
-      'Fehlerfortpflanzung bei KI ist kein eigenständiges Problem, weil KI-Systeme jeden Fehler intern selbst erkennen und korrigieren'
-    ],
-    correct: [0, 1],
-    exp: 'Model Drift ist real: Wenn sich die Welt verändert (neue Krankheitsbilder, veränderte Patientenpopulation, neue Aufnahmetechnik), verliert ein einmal trainiertes Modell an Genauigkeit. EU AI Act Art. 15 fordert Robustheit: Hochrisiko-Systeme müssen auch bei unvollständigen Eingaben, schlechter Bildqualität oder Angriffen zuverlässig funktionieren. Technische Fehler entstehen keineswegs nur durch Code-Fehler — fehlerhafte, veraltete oder verzerrte Daten sind mindestens genauso häufige Ursachen. Fehlerfortpflanzung ist ein bekanntes Problem: Ein kleiner Fehler in einer frühen Stufe kann sich in nachgelagerten Entscheidungen verstärken, ohne dass das System es erkennt.',
-    src: 'EU AI Act Art. 15',
-    url: 'https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=OJ:L_202401689'
-  },
-  {
-    schwierigkeit: 'Einfach',
-    q: 'Was sind die charakteristischen Risiken von KI-Agenten?',
-    opts: [
-      'Autonome Entscheidungsketten: KI-Agenten führen mehrere Schritte ohne menschliche Zwischenprüfung durch',
-      'Kontrollverlust: Je länger eine Agenten-Kette läuft, desto schwieriger wird eine menschliche Korrektur',
-      'KI-Agenten sind nach EU AI Act grundsätzlich verboten, weil sie keine menschliche Aufsicht ermöglichen',
-      'KI-Agenten sind nur in militärischen Anwendungen relevant — im Unternehmenskontext spielen sie keine Rolle'
-    ],
-    correct: [0, 1],
-    exp: 'KI-Agenten führen autonome Entscheidungsketten aus — sie kombinieren mehrere Schritte (Suche, Analyse, Aktion) ohne menschliche Zwischenprüfung. Das Risiko: Kontrollverlust. Wenn ein Agent frühzeitig eine falsche Annahme trifft, pflanzt sie sich durch alle nachfolgenden Schritte fort — und je länger die Kette, desto schwieriger die Korrektur. KI-Agenten sind nicht verboten — sie sind ein aktives und schnell wachsendes Feld, auch in Unternehmen. Der EU AI Act regelt das Risiko proportional zum konkreten Einsatz, nicht technologisch. Im Krankenhaus-Kontext wäre ein Agent, der Behandlungspfade autonom priorisiert, ein klares Hochrisiko-Szenario.',
-    src: 'EU AI Act Art. 9 · Rohrlich – KI und Recht, Kap. 5',
-    url: 'https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=OJ:L_202401689'
-  },
-  {
-    schwierigkeit: 'Einfach',
-    q: 'Was versteht man unter Bias in einem KI-System?',
-    opts: [
-      'Eine systematische Verzerrung in Trainingsdaten oder Algorithmen, die zu unfairen oder fehlerhaften Ergebnissen führt',
-      'Einen zufälligen Rechenfehler, der nur bei großen Datenmengen auftritt',
-      'Das bewusste Einschränken eines KI-Modells auf bestimmte Aufgaben durch die Entwickler',
-      'Einen Designfehler in der Benutzeroberfläche, der die Bedienung erschwert'
-    ],
-    correct: [0],
-    exp: 'Bias bezeichnet eine systematische Verzerrung — in Trainingsdaten (z.B. unterrepräsentierte demografische Gruppen) oder im Algorithmus selbst. Systematisch bedeutet: der Fehler tritt regelmäßig und vorhersehbar auf, nicht zufällig. Im medizinischen Kontext kann Bias dazu führen, dass ein KI-Diagnosesystem bei bestimmten Ethnien, Altersgruppen oder Geschlechtern schlechtere Ergebnisse liefert — weil diese in den Trainingsdaten unterrepräsentiert waren. Art. 10 EU AI Act verlangt deshalb repräsentative Trainingsdaten.',
-    src: 'EU AI Act Art. 10 · Turing Institute AI Ethics',
-    url: 'https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=OJ:L_202401689'
-  },
-  {
-    schwierigkeit: 'Mittel',
-    q: 'Pennsylvania verklagt Character.AI, weil ein Chatbot sich als Psychiater mit gültiger PA-Lizenznummer ausgegeben hat. Welche ethischen Risiken sind in diesem Fall erkennbar?',
-    opts: [
-      'Verletzung von Informed Consent: Nutzer wussten nicht, dass sie mit einem KI-Chatbot sprechen — und konnten deshalb keine informierte Zustimmung geben',
-      'Verletzung des Autonomieprinzips: Nutzer konnten keine freie, informierte Entscheidung über ihre Behandlung treffen',
-      'Verletzung von Transparenzpflichten: Der Chatbot hat aktiv eine falsche Identität behauptet und eine erfundene Lizenznummer geliefert',
-      'Character.AI hat gegen EU AI Act Art. 5 verstoßen — dieser verbietet alle kommerziellen KI-Chatbots im Gesundheitsbereich'
-    ],
-    correct: [0, 1, 2],
-    exp: 'Drei ethische Risiken sind klar erkennbar: Informed Consent ist verletzt — wer glaubt, mit einem Psychiater zu sprechen, kann keine informierte Zustimmung zur KI-Interaktion geben. Das Autonomieprinzip ist verletzt — Täuschung über die Natur des Gegenübers untergräbt jede freie Entscheidung. Transparenzpflichten sind verletzt — der Chatbot nannte sogar eine erfundene Lizenznummer "PS306189", die in Pennsylvania nicht existiert. Art. 5 EU AI Act regelt verbotene Praktiken (Subliminalmanipulation, Social Scoring, biometrische Massenüberwachung) — er verbietet nicht generell Chatbots im Gesundheitsbereich. Relevant wäre Art. 50 EU AI Act: Offenlegungspflicht bei KI-Interaktion.',
-    src: 'Pennsylvania v. Character.AI (Mai 2026) · EU AI Act Art. 50',
-    url: 'https://www.npr.org/2026/05/05/nx-s1-5812861/characterai-chatbot-medical-advice-pennsylvania-lawsuit'
-  },
-  {
-    schwierigkeit: 'Mittel',
-    q: 'Welche Maßnahmen würdest du als KI-Beauftragter vorschlagen, um Bias-Risiken im Krankenhaus-KI-System zu begrenzen?',
-    opts: [
-      'Überprüfen, ob die Trainingsdaten alle relevanten Patientengruppen (Alter, Geschlecht, Herkunft) repräsentativ abbilden',
-      'Regelmäßige Leistungsüberprüfung des Modells nach dem Go-Live — nicht nur einmalig bei der Einführung',
-      'Das System sofort abschalten — Bias ist bei medizinischer KI unvermeidlich und nicht steuerbar',
-      'Dokumentieren, welche Patientengruppen in der Validierungsstudie einbezogen waren, und Lücken transparent benennen'
-    ],
-    correct: [0, 1, 3],
-    exp: 'Drei erste Maßnahmen sind richtig und umsetzbar: Repräsentativitätsprüfung der Trainingsdaten — wer in den Daten fehlt, taucht als Fehler im System auf. Regelmäßige Post-Go-Live-Überprüfung — Bias kann sich erst bei echtem Einsatz zeigen (Model Drift, veränderte Patientenpopulation). Dokumentation der Validierungsstudie — Lücken transparent zu benennen ist Voraussetzung für gezielte Verbesserung und Teil der EU AI Act Art. 9 Anforderungen. Die Abschalt-Option ist eine Überreaktion: Bias ist ein steuerbares Risiko, kein Absolutum. Ziel ist nicht Null-Fehler, sondern bekannte, begrenzte und dokumentierte Restunsicherheit.',
-    src: 'EU AI Act Art. 10 · Turing Institute AI Ethics',
-    url: 'https://www.turing.ac.uk/research/interest-groups/fairness-transparency-privacy'
-  }
-],
+var QUESTIONS = [
 
-/* ── KI-Beauftragter · Fortgeschrittene ─────────────────────── */
-/* Verteilung: 1×1 richtig · 2×2 richtig · 2×3 richtig */
-a2: [
+  /* ═══ SET 1: KI-Beauftragte:r (Fragen 1–5) ═══ */
   {
-    schwierigkeit: 'Mittel',
-    q: 'Pennsylvania klagt, Character.AI habe nicht ausreichend verhindert, dass ein Chatbot medizinische Identität annahm. Welche Maßnahmen wären aus KI-Risikomanagement-Perspektive am wirksamsten gewesen?',
+    set: 'KI-Beauftragte:r',
+    q: 'Ein KI-System liefert in einem Pilotbetrieb unerwartete Ergebnisse. Du erklärst als KI-Beauftragte:r, welche technischen Fehlerquellen bei KI-Systemen typischerweise auftreten. Welche Aussage(n) sind korrekt?',
     opts: [
-      'Technisch erzwungene Guardrails: Der Chatbot darf keine Aussagen über Qualifikationen oder Lizenznummern machen, die er nicht besitzt',
-      'Verpflichtende, nicht überspringbare Hinweispflicht: Klarer Hinweis auf KI-Natur am Anfang jeder Konversation — nicht nur im Kleingedruckten',
-      'Eine Altersprüfung beim Kontoanlegen — Minderjährige hätten keinen Zugang gehabt',
-      'Sperren aller Suchanfragen nach Begriffen wie „Psychiater" oder „Diagnose" auf der Plattform'
+      'Verteilungsverschiebung (Distribution Shift) tritt auf, wenn die Daten im Betrieb signifikant von den Trainingsdaten abweichen.',
+      'Halluzinationen bei generativen KI-Systemen können plausibel klingende, aber faktisch falsche Ausgaben erzeugen.',
+      'KI-Systeme mit ausreichend großen Trainingsdaten produzieren nie fehlerhafte Ausgaben.',
+      'Kaskadenfehler können entstehen, wenn mehrere KI-Systeme miteinander verkoppelt sind und ein Fehler sich verstärkt fortpflanzt.'
     ],
-    correct: [0, 1],
-    exp: 'Die wirksamsten Maßnahmen sind strukturelle Guardrails: Technisch erzwungene Guardrails verhindern, dass der Chatbot falsche Qualifikations- oder Lizenzbehauptungen aufstellt — unabhängig davon, wie der Nutzer fragt oder welche Persona-Konfiguration gewählt wurde. Nicht überspringbare Hinweise auf die KI-Natur schaffen echten Informed Consent (EU AI Act Art. 50: Offenlegungspflicht). Altersprüfung hätte den konkreten Fall nicht gelöst: Das Problem war die Identitätstäuschung gegenüber Erwachsenen. Sperren von Suchbegriffen wäre übermäßig einschränkend, leicht umgehbar und trifft nicht die eigentliche Ursache — fehlende Transparenz über die KI-Natur.',
-    src: 'Pennsylvania v. Character.AI (Mai 2026) · EU AI Act Art. 50',
-    url: 'https://www.pa.gov/governor/newsroom/2026-press-releases/shapiro-administration-sues-character-ai-over-fake-medical-claim'
+    correct: [0,1,3],
+    exp: 'KI-Systeme haben spezifische Fehlertypen: Distribution Shift (Trainingsdaten ≠ Produktionsdaten), Halluzinationen (plausible aber falsche Ausgaben bei LLMs), Kaskadenfehler (verkoppelte Systeme verstärken Fehler). Kein KI-System — unabhängig von der Trainingsdatenmenge — ist fehlerfrei. Größere Trainingsmengen reduzieren bestimmte Fehler, eliminieren sie aber nicht.',
+    src: 'EU AI Act Art. 9 · ISO/IEC 42001:2023', url: 'https://artificialintelligenceact.eu/article/9/'
   },
   {
-    schwierigkeit: 'Mittel',
-    q: 'Ein Radiologe bemerkt, dass das KI-Diagnosesystem bei Patientinnen über 70 Jahren systematisch schlechtere Erkennungsraten liefert als bei jüngeren Patienten. Worum handelt es sich am ehesten?',
+    set: 'KI-Beauftragte:r',
+    q: 'Du erklärst deinem Team, was unter Bias in KI-Systemen zu verstehen ist. Welche Aussage(n) sind korrekt?',
     opts: [
-      'Systematischer Bias — wahrscheinlich sind ältere Patientinnen in den Trainingsdaten unterrepräsentiert',
-      'Zufälliger Fehler — in dieser Altersgruppe treten schlechter beleuchtete Aufnahmen häufiger auf',
-      'Model Drift — das Modell ist veraltet und muss vollständig neu trainiert werden',
-      'Ein Softwarefehler im PACS-System, der nichts mit dem KI-Modell zu tun hat'
+      'Bias in KI-Systemen bezeichnet systematische Verzerrungen, die zu unfairen oder diskriminierenden Ausgaben führen können.',
+      'Bias entsteht ausschließlich durch böswillige Manipulation der Entwickler — bei sorgfältiger Entwicklung gibt es keinen Bias.',
+      'Trainingsdaten, die bestimmte Gruppen über- oder unterrepräsentieren, können Bias im Modell erzeugen.',
+      'Bias kann auch durch den Kontext des Deployments entstehen — wenn das System in einer anderen Umgebung eingesetzt wird als geplant.'
     ],
-    correct: [0],
-    exp: 'Systematisch schlechtere Ergebnisse bei einer demografischen Gruppe sind das Lehrbuch-Beispiel für systematischen Bias. Wahrscheinliche Ursache: Unterrepräsentation älterer Patientinnen in den Trainingsdaten — klinische Studien erfassen diese Gruppe häufig weniger vollständig (Komorbidität, Ausschlusskriterien). Der Unterschied zu zufälligen Fehlern: Zufällige Fehler treffen alle Gruppen gleichmäßig und sind nicht vorhersagbar. Model Drift wäre eine andere Ursache (zeitliche Verschiebung), die im beschriebenen Fall nicht relevant ist. Ein PACS-Softwarefehler ist denkbar, aber die erste Hypothese muss das Modell selbst sein, da das Muster gruppenspezifisch ist.',
-    src: 'EU AI Act Art. 10 · AlgorithmWatch',
-    url: 'https://www.AlgorithmWatch.org/'
+    correct: [0,2,3],
+    exp: 'Bias bezeichnet systematische Verzerrungen in KI-Ausgaben. Er entsteht durch verschiedene Quellen: unrepräsentative Trainingsdaten, methodische Fehler im Training, aber auch durch Deployment-Kontext (System wird anders eingesetzt als vorgesehen). Bias ist kein rein böswilliges Phänomen — er kann auch unbeabsichtigt entstehen. EU AI Act Art. 10 adressiert Datenqualitätsanforderungen, um Bias zu minimieren.',
+    src: 'EU AI Act Art. 10 · Art. 9', url: 'https://artificialintelligenceact.eu/article/10/'
   },
   {
-    schwierigkeit: 'Mittel',
-    q: 'Die Behandlungspfad-Priorisierung des Krankenhaus-KI-Systems zeigt Ärzten standardmäßig die KI-Empfehlung als erste Option an. Welche Risiken sind dabei besonders zu beachten?',
+    set: 'KI-Beauftragte:r',
+    q: 'Bei einer Systemprüfung stellst du fest, dass ein KI-System bei älteren Nutzern schlechtere Ergebnisse liefert als bei jüngeren. Du analysierst als KI-Beauftragte:r die Ursache. Was unterscheidet Trainingsdaten-Bias von Deployment-Bias?',
     opts: [
-      'Automation Bias: Ärzte neigen dazu, die erste angezeigte KI-Empfehlung zu übernehmen, ohne sie kritisch zu hinterfragen',
-      'Verlust des Informed Consent: Patienten wurden nicht darüber informiert, dass ihre Daten KI-gestützt verarbeitet werden',
-      'Das Problem entfällt vollständig, wenn das System als „Entscheidungsunterstützung" deklariert wird — dann liegt die Verantwortung allein beim Arzt',
-      'Jede KI-Empfehlung muss nach EU AI Act in Echtzeit von einem zweiten Arzt validiert werden — sonst ist der Betrieb illegal'
+      'Trainingsdaten-Bias entsteht, wenn bestimmte Gruppen in den Trainingsdaten unterrepräsentiert oder falsch repräsentiert sind.',
+      'Deployment-Bias entsteht, wenn das System in einem Kontext eingesetzt wird, der sich von der Zielgruppe des Trainings unterscheidet.',
+      'Beide Bias-Arten sind identisch — der Begriff ist nur eine Frage des Zeitpunkts der Feststellung.',
+      'Deployment-Bias lässt sich durch Post-Market-Monitoring erkennen und dokumentieren.'
     ],
-    correct: [0, 1],
-    exp: 'Zwei zentrale Risiken: Automation Bias ist kognitiv gut belegt — wenn eine KI eine Empfehlung sichtbar als erste Option zeigt, übernehmen Ärzte sie häufiger als bei offener Auswahl, selbst wenn sie fehlerhaft ist. Das ist kein Vorwurf, sondern ein bekanntes kognitives Muster. Informed Consent ist relevant: Patienten müssen nach Art. 13 DSGVO und Art. 50 EU AI Act darüber informiert werden, dass ihre Daten KI-gestützt verarbeitet werden. Die Deklaration als "Entscheidungsunterstützung" hebt die Haftung des Betreibers nicht auf — er bleibt in der Verantwortung. EU AI Act Art. 14 fordert wirksame menschliche Aufsicht, aber nicht zwingend eine Vier-Augen-Validierung jeder Einzelempfehlung.',
-    src: 'EU AI Act Art. 14 · DSGVO Art. 13',
-    url: 'https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=OJ:L_202401689'
+    correct: [0,1,3],
+    exp: 'Trainingsdaten-Bias entsteht beim Modelltraining durch unrepräsentative Daten. Deployment-Bias entsteht während des Betriebs: Das System wird auf eine Nutzergruppe angewendet, die im Training nicht oder anders repräsentiert war. Beide Arten sind konzeptionell unterschiedlich und erfordern unterschiedliche Gegenmaßnahmen. Post-Market-Monitoring nach Art. 72 EU AI Act ist geeignet, Deployment-Bias im Betrieb zu erkennen.',
+    src: 'EU AI Act Art. 10, 72', url: 'https://artificialintelligenceact.eu/article/10/'
   },
   {
-    schwierigkeit: 'Mittel',
-    q: 'Das KI-Diagnosesystem des Krankenhauses St. Ulrich wertet CT- und Röntgenaufnahmen aus und priorisiert Behandlungspfade. Welche Anforderungen des EU AI Act sind für dieses System besonders relevant?',
+    set: 'KI-Beauftragte:r',
+    q: 'Du prüfst als KI-Beauftragte:r, ob für ein KI-System im Personalbereich eine Datenschutz-Folgenabschätzung (DSFA) nach DSGVO Art. 35 erforderlich ist. Welche Aussage(n) sind korrekt?',
     opts: [
-      'Art. 9: Risikomanagementsystem — der Betreiber muss bekannte Risiken systematisch identifizieren, bewerten und steuern',
-      'Art. 10: Datenmanagementsystem — Trainingsdaten müssen repräsentativ, fehlerfrei und vollständig dokumentiert sein',
-      'Art. 15: Genauigkeit, Robustheit und Cybersicherheit — das System muss auch bei schlechter Bildqualität oder Angriffen zuverlässig funktionieren',
-      'Art. 5: Verbot autonomer Entscheidungen — jedes Krankenhaus-KI-System muss nach Art. 5 gesondert genehmigt werden'
+      'Eine DSFA ist erforderlich, wenn die Verarbeitung voraussichtlich zu einem hohen Risiko für die Rechte und Freiheiten natürlicher Personen führt.',
+      'Für KI-Systeme, die automatisierte Entscheidungen über Personen treffen, ist eine DSFA nach Art. 35 Abs. 3 lit. a DSGVO typischerweise pflicht.',
+      'Die DSFA muss vom Verantwortlichen vor Beginn der Verarbeitung durchgeführt werden.',
+      'Eine DSFA nach DSGVO Art. 35 ist für KI-Systeme grundsätzlich freiwillig — erst der EU AI Act macht sie verpflichtend.'
     ],
-    correct: [0, 1, 2],
-    exp: 'Die drei Kernanforderungen für Hochrisiko-KI im medizinischen Bereich: Art. 9 (Risikomanagement) verpflichtet zur systematischen Dokumentation und Steuerung aller bekannten Risiken — Bias, Drift, Fehlerfortpflanzung. Art. 10 (Datenmanagement) fordert repräsentative, gut dokumentierte Trainingsdaten — entscheidend für Bias-Vermeidung. Art. 15 (Genauigkeit, Robustheit, Cybersicherheit) stellt sicher, dass das System auch unter schwierigen Bedingungen funktioniert. Art. 5 regelt verbotene Praktiken (Subliminalmanipulation, biometrische Massenüberwachung etc.) — er ist keine Genehmigungspflicht für Krankenhaus-KI. Medizinische Bildgebungs-KI ist ein Hochrisiko-System nach Anhang III der KI-VO und unterliegt dem Konformitätsbewertungsverfahren.',
-    src: 'EU AI Act Art. 9, 10, 15 · EUR-Lex 2024/1689',
-    url: 'https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=OJ:L_202401689'
+    correct: [0,1,2],
+    exp: 'Die DSFA nach Art. 35 DSGVO ist bei voraussichtlich hohem Risiko für Personenrechte Pflicht — insbesondere bei automatisierten Entscheidungen (Art. 35 Abs. 3 lit. a). Bei KI-Systemen im Personalbereich ist dies typischerweise der Fall. Die DSFA muss vor Beginn der Verarbeitung durchgeführt werden. Sie ist keine freiwillige Maßnahme — das ist unabhängig vom EU AI Act. Der EU AI Act hat eigene Anforderungen (Art. 9), die parallel gelten.',
+    src: 'DSGVO Art. 35 · EU AI Act Art. 9', url: 'https://eur-lex.europa.eu/legal-content/DE/TXT/?uri=CELEX:32016R0679'
   },
   {
-    schwierigkeit: 'Komplex',
-    q: 'Du erstellst als KI-Beauftragter die erste Risikomatrix für das Krankenhaus-KI-System. Welche Aussagen zur Methodik sind korrekt?',
+    set: 'KI-Beauftragte:r',
+    q: 'Du erstellst eine Risikobewertung für ein KI-System. Welche Aussage(n) zu den Anforderungen an das Risikomanagement nach EU AI Act Art. 9 sind korrekt?',
     opts: [
-      'Eintrittswahrscheinlichkeit und Schadenshöhe sind beide zu bewerten — erst ihre Kombination ergibt die Risikoprioritätsnummer',
-      'Bias-Risiken haben im medizinischen Kontext typischerweise hohe Schadenshöhe (Fehldiagnosen bei bestimmten Gruppen) — sie gehören priorisiert in den Fokus',
-      'Eine Risikomatrix ersetzt den EU AI Act Art. 9 Risikomanagementplan vollständig — sie ist das einzige geforderte Dokument',
-      'Mitigationsmaßnahmen sollten direkt in der Matrix vermerkt werden — ein Risiko ohne dokumentierte Gegenmaßnahme ist unvollständig'
+      'Das Risikomanagementsystem muss kontinuierlich über den gesamten Lebenszyklus des KI-Systems betrieben werden — nicht nur einmalig vor Inbetriebnahme.',
+      'Art. 9 fordert die Identifikation, Analyse und Bewertung von Risiken sowie die Implementierung geeigneter Gegenmaßnahmen.',
+      'Art. 9 gilt nur für verbotene KI-Systeme nach Art. 5 — für andere Systeme gibt es keine Risikomanagementpflicht.',
+      'Die Wirksamkeit der Risikomaßnahmen muss regelmäßig getestet und dokumentiert werden.'
     ],
-    correct: [0, 1, 3],
-    exp: 'Drei methodisch korrekte Aussagen: Die Risikoprioritätsnummer ergibt sich aus Eintrittswahrscheinlichkeit × Schadenshöhe — keine der beiden Dimensionen allein reicht. Bias-Risiken im medizinischen Bereich sind typischerweise hoch in der Schadenshöhe: Eine systematische Fehldiagnose bei einer Patientengruppe kann lebensbedrohlich sein — deshalb priorisiert. Mitigationsmaßnahmen gehören in die Matrix — sie dokumentieren, was konkret getan wird, um das Risiko zu senken, und ermöglichen späteres Monitoring. Die Aussage "Matrix ersetzt Art. 9" ist falsch: Die Matrix ist ein Werkzeug innerhalb des Risikomanagementsystems — Art. 9 verlangt darüber hinaus Prozesse, Verantwortlichkeiten, regelmäßiges Monitoring und vollständige Dokumentation.',
-    src: 'EU AI Act Art. 9 · NIST AI RMF',
-    url: 'https://airc.nist.gov/'
-  }
-]
-,
-/* ── Entwicklungsleiter · Anfänger ─────────────────────────────── */
-/* 5 Fragen: Einfach×3, Mittel×2 — Anbieter-Perspektive, Art. 10/15/9/72 */
-b1: [
-  {
-    schwierigkeit: 'Einfach',
-    q: 'Was unterscheidet Trainingsdaten-Bias von Deployment-Bias bei KI-Systemen?',
-    opts: [
-      'Trainingsdaten-Bias entsteht durch unrepräsentative oder fehlerhafte Daten im Training — er ist im Entwicklungsprozess erkennbar und behebbar',
-      'Deployment-Bias entsteht, wenn das Modell in einem anderen Kontext eingesetzt wird als es trainiert wurde — z. B. andere Patientenpopulation oder Gerätetechnik',
-      'Beide Biasformen sind ohne externe Audits grundsätzlich nicht erkennbar',
-      'Deployment-Bias liegt in der Verantwortung des Betreibers — den Entwickler trifft keine Mitverantwortung'
-    ],
-    correct: [0, 1],
-    exp: 'Trainingsdaten-Bias liegt in der Entwicklungsphase: Wenn bestimmte Gruppen im Datensatz fehlen oder überrepräsentiert sind, lernt das Modell eine verzerrte Welt. Deployment-Bias tritt erst im Betrieb auf: Das Modell wurde für eine bestimmte Kontextverteilung trainiert, wird aber in einem anderen Umfeld eingesetzt (andere Klinik, andere Geräte, andere Patientenpopulation). Beide Formen sind durch gezielte Analyse erkennbar. Als Anbieter trägt das Entwicklungsteam Mitverantwortung auch für vorhersehbaren Deployment-Bias — EU AI Act Art. 9 fordert, bekannte und vernünftigerweise vorhersehbare Risiken zu berücksichtigen.',
-    src: 'EU AI Act Art. 9, 10 · https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=OJ:L_202401689',
-    url: 'https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=OJ:L_202401689'
+    correct: [0,1,3],
+    exp: 'Art. 9 EU AI Act verpflichtet Anbieter von Hochrisiko-KI-Systemen zu einem kontinuierlichen Risikomanagementsystem über den gesamten Lebenszyklus. Es umfasst: Identifikation, Analyse und Bewertung von Risiken sowie geeignete Gegenmaßnahmen und deren Wirksamkeitsprüfung. Art. 9 gilt nicht für Art.-5-Verbote (dort greift ein striktes Verbot), sondern für Hochrisiko-KI-Systeme nach Kapitel III.',
+    src: 'EU AI Act Art. 9', url: 'https://artificialintelligenceact.eu/article/9/'
   },
-  {
-    schwierigkeit: 'Einfach',
-    q: 'EU AI Act Art. 10 stellt Anforderungen an das Datenmanagement für Hochrisiko-KI-Systeme. Welche Aussagen sind korrekt?',
-    opts: [
-      'Trainingsdaten müssen relevant, repräsentativ und so fehlerfrei wie möglich sein',
-      'Der Entwickler muss dokumentieren, woher die Daten stammen und wie sie aufbereitet wurden',
-      'Wenn das Modell groß genug ist, spielt die Datenqualität keine entscheidende Rolle mehr — Skalierung kompensiert Datenmängel',
-      'Bekannte Biases in den Daten müssen identifiziert und, soweit möglich, behoben oder begrenzt werden'
-    ],
-    correct: [0, 1, 3],
-    exp: 'Art. 10 KI-VO stellt klare Anforderungen: Daten müssen relevant und repräsentativ sein — fehlende Gruppen erzeugen systematische Fehler. Die Herkunft und Aufbereitung muss dokumentiert sein — das ist Teil der Technischen Dokumentation nach Art. 11. Bekannte Biases müssen aktiv adressiert werden. Die Annahme "Skalierung kompensiert Datenmängel" ist empirisch widerlegt: Größere Modelle können Biases sogar verstärken, wenn die Grunddaten verzerrt sind.',
-    src: 'EU AI Act Art. 10 · https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=OJ:L_202401689',
-    url: 'https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=OJ:L_202401689'
-  },
-  {
-    schwierigkeit: 'Mittel',
-    q: 'Dein Entwicklungsteam stellt beim internen Test fest, dass das Radiologie-KI-Modell bei Patienten über 75 Jahren deutlich schlechtere Erkennungsraten zeigt als bei jüngeren Patienten. Was sind die korrekten nächsten Schritte?',
-    opts: [
-      'Den Anteil älterer Patienten in den Trainingsdaten analysieren und ggf. gezielt nacherheben oder oversampling einsetzen',
-      'Das Modell trotzdem deployen — im klinischen Betrieb gleichen sich solche Abweichungen durch größere Datenmenge automatisch aus',
-      'Die bekannte Einschränkung in der Technischen Dokumentation nach EU AI Act Art. 11 festhalten',
-      'Den Auftraggeber St. Ulrich vor dem Deployment über die bekannte Leistungseinschränkung informieren'
-    ],
-    correct: [0, 2, 3],
-    exp: 'Drei Schritte sind klar geboten: Ursachenanalyse und ggf. Nacherhebung der Trainingsdaten für ältere Patienten. Dokumentation der Einschränkung in der Technischen Dokumentation — bekannte Grenzen müssen transparent gemacht werden (Art. 11 KI-VO). Information des Betreibers vor dem Deployment — er muss wissen, für welche Patienten das System eingeschränkt zuverlässig ist. Deployment ohne Korrektur in der Hoffnung auf Selbstverbesserung ist sachlich falsch und rechtlich riskant: Der Fehler wird größer, nicht kleiner.',
-    src: 'EU AI Act Art. 9, 11 · https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=OJ:L_202401689',
-    url: 'https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=OJ:L_202401689'
-  },
-  {
-    schwierigkeit: 'Einfach',
-    q: 'EU AI Act Art. 15 fordert Genauigkeit, Robustheit und Cybersicherheit für Hochrisiko-KI-Systeme. Was bedeutet das konkret für die Entwicklung des Radiologie-Modells?',
-    opts: [
-      'Das System muss auch bei schlechter Bildqualität, Rauschen oder unvollständigen Eingaben zuverlässig funktionieren — nicht nur unter Idealbedingungen',
-      'Genauigkeitskennzahlen müssen in der Technischen Dokumentation angegeben und für definierte Einsatzbereiche validiert sein',
-      'Robustheit bedeutet: Das System darf unter keinen Umständen eine falsche Diagnose ausgeben',
-      'Cybersicherheit ist bei medizinischen KI-Systemen gesetzlich nicht gefordert — das regelt das Medizinprodukterecht separat'
-    ],
-    correct: [0, 1],
-    exp: 'Art. 15 KI-VO fordert Robustheit: Das System muss fehlertolerant sein — bei schlechten Bildern, ungewöhnlichen Aufnahmewinkel oder technischen Störungen. Genauigkeitskennzahlen müssen nachvollziehbar dokumentiert und für den Einsatzbereich validiert sein. Robustheit bedeutet nicht Nullfehler — das ist physikalisch unmöglich und rechtlich nicht gefordert. Cybersicherheit ist ausdrücklich Teil von Art. 15 KI-VO, zusätzlich zu anderen Rechtsbereichen.',
-    src: 'EU AI Act Art. 15 · https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=OJ:L_202401689',
-    url: 'https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=OJ:L_202401689'
-  },
-  {
-    schwierigkeit: 'Mittel',
-    q: 'Ein Entwickler schlägt vor, das Radiologie-Modell nach dem Deployment nicht mehr zu überwachen — "es hat die Validierung bestanden, das reicht". Was ist daran problematisch?',
-    opts: [
-      'Model Drift: Die reale Patientenpopulation oder Bildgebungstechnik verändert sich — ein einmal valides Modell kann über Zeit an Genauigkeit verlieren',
-      'EU AI Act Art. 9 fordert ein kontinuierliches Risikomanagementsystem — nicht nur einmalig bei der Einführung',
-      'Post-Market-Surveillance nach EU AI Act Art. 72 verpflichtet Anbieter zur aktiven Überwachung des Systems nach dem Deployment',
-      'Einmal validierte Modelle sind dauerhaft stabil — Drift ist nur bei Modellen relevant, die älter als fünf Jahre sind'
-    ],
-    correct: [0, 1, 2],
-    exp: 'Drei Gründe sprechen klar gegen "einmalig validieren und fertig": Model Drift ist real — Bildgebungsgeräte werden ausgetauscht, Patientenpopulationen verändern sich, neue Krankheitsbilder treten auf. Art. 9 KI-VO verlangt ausdrücklich ein lebendiges, nicht einmaliges Risikomanagementsystem. Art. 72 KI-VO verpflichtet Anbieter zur Post-Market-Surveillance: aktive Sammlung und Auswertung von Leistungsdaten aus dem Betrieb. Drift ist zeitunabhängig — er kann bereits nach wenigen Monaten relevant werden.',
-    src: 'EU AI Act Art. 9, 72 · https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=OJ:L_202401689',
-    url: 'https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=OJ:L_202401689'
-  }
-],
 
-/* ── Entwicklungsleiter · Fortgeschrittene ───────────────────────── */
-/* 5 Fragen: Mittel×2, Komplex×3 — OOD, Accuracy-Fallen, Guardrails, Art. 11 */
-b2: [
+  /* ═══ SET 2: Projektmanagerin (Fragen 6–10) ═══ */
   {
-    schwierigkeit: 'Mittel',
-    q: 'Euer Radiologie-Modell erreicht in der Validierungsstudie 96 % Accuracy. Der Auftraggeber St. Ulrich fragt, ob das für den Betrieb ausreicht. Was ist die fachlich korrekte Antwort?',
+    set: 'Projektmanagerin',
+    q: 'Als Projektmanagerin planst du ein Projekt zur Einführung eines KI-Systems. Du wirst gefragt, welche projektspezifischen Risiken beim KI-Einsatz besonders zu beachten sind. Welche Aussage(n) sind korrekt?',
     opts: [
-      '96 % Accuracy kann trügerisch sein: Bei ungleicher Klassenverteilung (viele Gesunde, wenige Befunde) kann ein Modell durch "immer: kein Befund" schon hohe Accuracy erreichen',
-      'Für medizinische Diagnoseunterstützung sind Sensitivität (True Positive Rate) und Spezifität (True Negative Rate) getrennt auszuweisen — nicht nur Gesamtgenauigkeit',
-      'Im Radiologie-Kontext ist die Sensitivität oft kritischer: Ein übersehener Befund hat schwerere Folgen als ein Fehlalarm',
-      '96 % Accuracy bedeutet automatisch, dass alle Patientengruppen gleich gut versorgt werden — gruppenspezifische Analysen sind nicht nötig'
+      'Datenqualität und -verfügbarkeit sind kritische Projektrisiken — schlechte Daten führen zu schlechten Modellergebnissen.',
+      'Stakeholder-Akzeptanz ist ein zentrales Risiko: Widerstände im Team können die Einführung scheitern lassen.',
+      'Bei KI-Projekten gelten keine besonderen regulatorischen Risiken — die normale Projektplanung reicht aus.',
+      'Scope Creep ist bei KI-Projekten besonders kritisch, weil ML-Modelle flexibel erscheinen aber klare Anforderungen brauchen.'
     ],
-    correct: [0, 1, 2],
-    exp: 'Accuracy allein ist eine gefährliche Kennzahl im medizinischen Kontext. Das Klassenproblem: Wenn 95 % der Scans unauffällig sind, erreicht ein Modell, das immer "unauffällig" sagt, 95 % Accuracy — aber erkennt keinen einzigen echten Befund. Sensitivität misst, wie viele echte Befunde erkannt werden. Spezifität misst, wie wenige Fehlalarme erzeugt werden. Im medizinischen Kontext ist eine übersehene Diagnose (niedriger Recall) meist gefährlicher als ein Fehlalarm. Gruppenspezifische Analysen sind zwingend: 96 % Gesamtgenauigkeit verbirgt möglicherweise 80 % bei Patienten über 75.',
-    src: 'EU AI Act Art. 15 · NIST AI RMF · https://airc.nist.gov/',
-    url: 'https://airc.nist.gov/'
+    correct: [0,1,3],
+    exp: 'KI-Projekte haben spezifische Risiken: Datenqualität (Garbage in, Garbage out), Stakeholder-Akzeptanz (menschliche Aufsicht, Change Management), Scope Creep (ML-Modelle scheinen "alles zu können", brauchen aber scharfe Anforderungen). Regulatorische Risiken (EU AI Act, DSGVO) sind bei KI-Projekten ein eigener Risikobereich — klassische Projektplanung greift zu kurz.',
+    src: 'EU AI Act Art. 9 · ISO/IEC 42001:2023', url: 'https://artificialintelligenceact.eu/article/9/'
   },
   {
-    schwierigkeit: 'Komplex',
-    q: 'Euer Modell wurde an Daten aus drei deutschen Universitätskliniken trainiert. St. Ulrich ist ein kleines Kreiskrankenhaus mit einer anderen Patientenpopulation und älteren Geräten. Welche Out-of-Distribution-Risiken entstehen konkret?',
+    set: 'Projektmanagerin',
+    q: 'Dein KI-Projekt ist im Zeitplan, aber das Modell liefert für eine Untergruppe der Nutzer systematisch schlechtere Ergebnisse. Als Projektmanagerin entscheidest du über das weitere Vorgehen. Welche Aussage(n) sind korrekt?',
     opts: [
-      'Populations-Shift: St. Ulrichs Patienten haben möglicherweise andere demografische Merkmale und Komorbiditäten als die Uni-Klinik-Kohorte — das Modell hat diese Verteilung nicht gelernt',
-      'Equipment-Shift: Ältere CT/Röntgen-Geräte erzeugen Bildcharakteristika (Rauschen, Kontrast, Auflösung), die im Trainingsdatensatz nicht vorkommen',
-      'OOD ist kein Problem, wenn das Modell groß genug ist — Skalierung überbrückt Verteilungsunterschiede zuverlässig',
-      'Saisonale Muster in Uni-Klinik-Daten (z. B. Grippewellen erhöhen bestimmte Diagnosen) können zu Verzerrungen führen, wenn St. Ulrich ein anderes saisonales Profil hat'
+      'Du eskalierst den Befund an den KI-Beauftragten und den Datenschutzbeauftragten — Bias ist ein Compliance-Thema, nicht nur ein technisches.',
+      'Du passt den Projektzeitplan an, um eine Analyse und Behebung des Bias vor Go-Live zu ermöglichen.',
+      'Du gehst trotzdem in Produktion — der Bias kann nach dem Launch behoben werden, ohne dass das Projekt verzögert wird.',
+      'Du dokumentierst den Befund und die getroffene Entscheidung für die Projektakte — Nachvollziehbarkeit ist Teil der Governance.'
     ],
-    correct: [0, 1, 3],
-    exp: 'OOD bedeutet: Das Modell trifft auf Eingaben, die außerhalb seiner Trainingsverteilung liegen — ohne das zu erkennen. Populations-Shift ist typisch beim Wechsel von Uni- zu Kreiskrankenhaus: Altersstruktur, Komorbiditäten und Erkrankungsspektrum können erheblich abweichen. Equipment-Shift ist bei älteren Geräten relevant: Das Modell hat gelernt, auf moderne Bildgebungscharakteristika zu reagieren — ältere Bildgebung sieht statistisch anders aus. Saisonale Shifts sind realer Faktor in klinischen Daten. Skalierung löst OOD-Probleme nicht: Größere Modelle extrahieren die Trainingsdistribution präziser — sie generalisieren nicht automatisch besser.',
-    src: 'NIST AI RMF · ISO/IEC 23894 Annex A · https://nvlpubs.nist.gov/nistpubs/ai/nist.ai.100-1.pdf',
-    url: 'https://nvlpubs.nist.gov/nistpubs/ai/nist.ai.100-1.pdf'
+    correct: [0,1,3],
+    exp: 'Systematischer Bias ist ein Compliance-Risiko — es muss eskaliert werden. Die Projektmanagerin ist verantwortlich für eine bewusste Entscheidung: Zeitplan anpassen oder bewusst in Produktion gehen mit dokumentiertem Risikobescheid. Der dritte Weg — einfach starten und hoffen — ist regulatorisch und ethisch problematisch. Dokumentation ist Pflicht, damit Entscheidungen nachvollziehbar bleiben.',
+    src: 'EU AI Act Art. 9, 10 · DSGVO Art. 35', url: 'https://artificialintelligenceact.eu/article/10/'
   },
   {
-    schwierigkeit: 'Komplex',
-    q: 'Character.AI ermöglichte es Nutzern, den Chatbot als Psychiater mit gültiger Lizenznummer zu konfigurieren. Welche Entwicklungsentscheidungen wären aus technischer Risikoperspektive grundlegend anders zu treffen gewesen?',
+    set: 'Projektmanagerin',
+    q: 'Du planst als Projektmanagerin die Einführung eines KI-Systems, das teilautomatisierte Entscheidungen trifft. Die Fachabteilung möchte alle Entscheidungen vollständig automatisieren. Welche Aussage(n) zur menschlichen Aufsicht sind korrekt?',
     opts: [
-      'Modell-seitige Guardrails: Das Modell darf unabhängig von der Nutzer-Konfiguration keine medizinischen Qualifikationen oder Lizenznummern behaupten — das muss technisch erzwungen sein, nicht nur per Nutzungsbedingungen',
-      'Persona-Konfiguration durch Nutzer sollte auf Bereiche ohne Qualifikationsbehauptung beschränkt sein — die Architektur darf bestimmte Ausgabetypen grundsätzlich sperren',
-      'Der Fehler liegt ausschließlich bei den Nutzern — ein Entwickler kann nicht für jeden Missbrauch verantwortlich gemacht werden',
-      'EU AI Act Art. 9 verlangt, dass vorhersehbare Missbrauchsszenarien in die Risikoanalyse einbezogen werden — "Psychiater-Persona" war vorhersehbar'
+      'EU AI Act Art. 14 schreibt für Hochrisiko-KI-Systeme menschliche Aufsicht vor — vollständige Automatisierung ohne Kontrollmöglichkeit ist regulatorisch problematisch.',
+      'Menschliche Aufsicht bedeutet, dass jede einzelne KI-Entscheidung von einem Menschen bestätigt werden muss.',
+      'Ein "Human in the Loop"-Konzept muss im Projektplan als Governance-Anforderung verankert werden.',
+      'Die Entscheidung über den Grad der Automatisierung ist ausschließlich eine technische Frage ohne rechtliche Implikationen.'
     ],
-    correct: [0, 1, 3],
-    exp: 'Aus Entwicklungsperspektive sind drei Punkte entscheidend: Guardrails auf Modell-Ebene (nicht nur auf Anwendungsebene) sind robuster gegen Missbrauch — sie greifen unabhängig von der Konfiguration durch den Nutzer. Architekturentscheidungen können bestimmte Ausgabetypen grundsätzlich sperren: Lizenznummern, Qualifikationsbehauptungen, diagnostische Feststellungen. Art. 9 KI-VO fordert, vorhersehbare Missbrauchsszenarien zu berücksichtigen — eine Psychiater-Persona in einem öffentlichen Chat-Produkt ist kein exotisches Szenario. "Das liegt beim Nutzer" entbindet den Entwickler nicht: EU AI Act Art. 16 listet Anbieterpflichten, die unabhängig vom Nutzerverhalten gelten.',
-    src: 'EU AI Act Art. 9, 16 · Pennsylvania v. Character.AI (2026)',
-    url: 'https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=OJ:L_202401689'
+    correct: [0,2],
+    exp: 'Art. 14 EU AI Act verlangt für Hochrisiko-KI-Systeme wirksame menschliche Aufsicht — das bedeutet nicht, dass jede Entscheidung manuell bestätigt werden muss, aber Möglichkeiten zur Überwachung, Unterbrechung und Korrektur müssen existieren. Das "Human in the Loop"-Konzept muss frühzeitig im Projektplan verankert werden — es ist eine Governance-Anforderung, keine rein technische Frage.',
+    src: 'EU AI Act Art. 14', url: 'https://artificialintelligenceact.eu/article/14/'
   },
   {
-    schwierigkeit: 'Mittel',
-    q: 'Das Radiologie-KI-System soll als Hochrisiko-System nach EU AI Act Anhang III eingestuft werden. Welche Dokumentationspflichten entstehen konkret für dein Entwicklungsteam?',
+    set: 'Projektmanagerin',
+    q: 'Dein Team möchte die KI-Risikoanalyse mithilfe einer Risikomatrix strukturieren. Als Projektmanagerin fragst du, was eine vollständige Risikodokumentation für ein Hochrisiko-KI-System nach EU AI Act Art. 9 umfassen muss. Welche Aussage(n) sind korrekt?',
     opts: [
-      'Technische Dokumentation nach Art. 11: Systembeschreibung, Trainings- und Testdaten, Leistungskennzahlen, bekannte Grenzen und Einschränkungen',
-      'Risikomanagementsystem-Dokumentation nach Art. 9: Identifizierte Risiken, gewählte Maßnahmen, dokumentierte Restrisiken',
-      'EU-Konformitätserklärung nach Art. 47 und CE-Kennzeichnung vor dem Inverkehrbringen in der EU',
-      'Die Technische Dokumentation ist vertraulich und muss nationalen Marktüberwachungsbehörden auf Anfrage nicht herausgegeben werden'
+      'Die Identifikation und Analyse von Risiken über den gesamten Lebenszyklus des Systems.',
+      'Eine Bewertung der Risiken hinsichtlich Eintrittswahrscheinlichkeit und Schwere des möglichen Schadens.',
+      'Beschreibung der Maßnahmen zur Risikominderung und Belege für ihre Wirksamkeit.',
+      'Ein vollständiger Business Case mit Kosten-Nutzen-Rechnung für das KI-System.'
     ],
-    correct: [0, 1, 2],
-    exp: 'Drei Dokumentationspflichten sind klar: Art. 11 (Technische Dokumentation) ist das zentrale Dokument — es enthält alle technischen Details, die eine Konformitätsbewertung ermöglichen. Art. 9 (Risikomanagementsystem) ist prozessual: Welche Risiken wurden identifiziert, was wurde getan, was bleibt als Restrisiko? Art. 47 (Konformitätserklärung) und CE-Kennzeichnung sind die formalen Markteintrittsbedingungen. Die Technische Dokumentation ist nicht vertraulich gegenüber Behörden: Marktüberwachungsbehörden haben nach Art. 74 KI-VO das Recht auf Zugang.',
-    src: 'EU AI Act Art. 9, 11, 47, 74 · https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=OJ:L_202401689',
-    url: 'https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=OJ:L_202401689'
+    correct: [0,1,2],
+    exp: 'Die Risikodokumentation nach Art. 9 EU AI Act umfasst: Identifikation von Risiken über den Lebenszyklus, Bewertung nach Wahrscheinlichkeit und Schwere, Maßnahmen zur Minderung und Nachweise für ihre Wirksamkeit. Ein Business Case ist kein Bestandteil der regulatorischen Risikodokumentation — er kann projektintern sinnvoll sein, aber Art. 9 fordert ihn nicht.',
+    src: 'EU AI Act Art. 9', url: 'https://artificialintelligenceact.eu/article/9/'
   },
   {
-    schwierigkeit: 'Komplex',
-    q: 'Vor dem Deployment stellt das Team fest: Das Modell zeigt bei manipulierten DICOM-Metadaten (präparierte Dateiheader) unerwartete Ausgaben. Welche Schlüsse zieht ihr daraus?',
+    set: 'Projektmanagerin',
+    q: 'Nach dem Go-Live deines KI-Projekts kommt keine Fehlermeldung aus dem Fachbereich. Als Projektmanagerin fragst du dich, was das bedeutet. Welche Aussage(n) sind korrekt?',
     opts: [
-      'Das ist ein Adversarial-Attack-Szenario — das Modell ist gegenüber gezielt manipulierten Eingaben nicht robust',
-      'Robustheit gegenüber solchen Angriffen ist eine Anforderung nach EU AI Act Art. 15 (Cybersicherheit)',
-      'DICOM-Manipulation ist theoretisch — in der Praxis haben Krankenhäuser PACS-Systeme mit ausreichender Sicherheit, daher kein Handlungsbedarf',
-      'Das Risiko ist in der Risikoanalyse nach Art. 9 zu dokumentieren und technische Gegenmaßnahmen (Input-Validierung, Anomalie-Detection) sind zu prüfen'
+      'Ausbleibende Meldungen können auf fehlende Feedbackkanäle hinweisen — nicht auf fehlerfreien Betrieb.',
+      'Nutzer melden Fehler oft nicht, wenn sie glauben, dass die KI "immer recht hat" oder wenn Rückmeldeprozesse unklar sind.',
+      'Keine Fehlermeldungen bedeuten, dass das System fehlerfrei arbeitet und kein weiteres Monitoring nötig ist.',
+      'Ein strukturiertes Post-Go-Live-Monitoring mit definierten Metriken ist notwendig, um den tatsächlichen Systemzustand zu beurteilen.'
     ],
-    correct: [0, 1, 3],
-    exp: 'Manipulierte DICOM-Metadaten sind ein reales Angriffsszenario: DICOM-Dateien enthalten viele Parameter, die das Modell als Eingabe verarbeitet — gezielte Manipulation kann Ausgaben systematisch verfälschen. Das ist ein Adversarial Attack, der unter EU AI Act Art. 15 (Robustheit und Cybersicherheit) fällt. "PACS ist sicher genug" ist keine ausreichende Begründung: Angriffe können aus dem Netzwerk, über kompromittierte Geräte oder durch Insider entstehen. Der Befund muss in die Risikoanalyse nach Art. 9 eingetragen werden — mit Bewertung und Maßnahmen (Input-Validierung, Metadaten-Sanitisierung, Anomalie-Detection).',
-    src: 'EU AI Act Art. 9, 15 · NIST AI RMF · https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=OJ:L_202401689',
-    url: 'https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=OJ:L_202401689'
+    correct: [0,1,3],
+    exp: 'Ausbleibende Fehlermeldungen sind kein Beweis für fehlerfreien Betrieb — sie können auf fehlende Feedbackkanäle, Autorität der KI ("automation bias") oder unklare Meldeprozesse hindeuten. Ein strukturiertes Post-Go-Live-Monitoring mit definierten Metriken (Genauigkeit, Fairness, Abweichungen) ist Pflicht — und entspricht auch dem Post-Market-Monitoring-Gedanken des EU AI Act Art. 72.',
+    src: 'EU AI Act Art. 72 · Art. 14', url: 'https://artificialintelligenceact.eu/article/72/'
   }
-]
-}; /* Ende QBANK */
+
+];
 
 /* ═══════ STATE ════════════════════════════════════════════════ */
-var S = { role:null, level:null, name:'', questions:[], selections:[], submitted:false };
-
-/* ═══════ SETUP ════════════════════════════════════════════════ */
-function selectRole(r) {
-  S.role = r;
-  document.getElementById('btn-role-a').className='sel-btn'+(r==='a'?' active-a':'');
-  document.getElementById('btn-role-b').className='sel-btn'+(r==='b'?' active-b':'');
-  checkReady();
-}
-function selectLevel(l) {
-  S.level = l;
-  document.getElementById('btn-level-1').className='sel-btn'+(l==='1'?' active-1':'');
-  document.getElementById('btn-level-2').className='sel-btn'+(l==='2'?' active-2':'');
-  checkReady();
-}
-function checkReady() {
-  document.getElementById('btn-start').disabled = !(S.role && S.level);
-}
+var S = { name:'', questions:[], selections:[], submitted:false };
 
 function startQuiz() {
   S.name = document.getElementById('participant-name').value.trim() || 'Anonym';
-  var key = S.role + S.level;
-  S.questions = QBANK[key].map(function(q,i){
+  S.questions = QUESTIONS.map(function(q){
     var n=q.opts.length, idx=[];
     for(var k=0;k<n;k++) idx.push(k);
     for(var j=n-1;j>0;j--){ var r=Math.floor(Math.random()*(j+1)),t=idx[j];idx[j]=idx[r];idx[r]=t; }
     return {
+      set:q.set,
       q:q.q,
       opts:idx.map(function(i){return q.opts[i];}),
       correct:q.correct.map(function(c){return idx.indexOf(c);}),
@@ -581,29 +332,31 @@ function startQuiz() {
   document.getElementById('setup-section').style.display='none';
   document.getElementById('quiz-section').style.display='block';
 
-  var lLabel = S.level==='1'?'Anfänger':'Fortgeschrittene';
-  var lClass = S.level==='1'?'strip-level-1':'strip-level-2';
-  var rLabel = S.role==='a'?'KI-Beauftragter':'Entwicklungsleiter';
-  var rClass = S.role==='a'?'strip-role-a':'strip-role-b';
   document.getElementById('quiz-header-strip').innerHTML =
-    '<span class="strip-tag '+rClass+'">'+rLabel+'</span>'
-    +'<span class="strip-tag '+lClass+'">'+lLabel+'</span>'
+    '<span class="strip-tag strip-role-1">KI-Beauftragte:r</span>'
+    +'<span class="strip-tag strip-role-2">Geschäftsführung</span>'
     +'<span class="strip-name">'+S.name+'</span>';
 
-  document.getElementById('scenario-text').textContent = SCENARIOS[S.role];
   renderQuestions();
 }
 
-/* ═══════ RENDER QUESTIONS ═════════════════════════════════════ */
 function renderQuestions() {
   var container = document.getElementById('questions-container');
   container.innerHTML = '';
   var total = S.questions.length;
+  var letters = ['A','B','C','D'];
 
   S.questions.forEach(function(q, qi) {
+    // Add separator between sets
+    if (qi === 5) {
+      var sep = document.createElement('div');
+      sep.className = 'separator-card';
+      sep.innerHTML = '<h3>Perspektivwechsel: Geschäftsführung</h3>';
+      container.appendChild(sep);
+    }
+
     var card = document.createElement('div');
     card.className = 'q-card';
-    card.id = 'qcard-'+qi;
 
     var numEl = document.createElement('div');
     numEl.className = 'q-num';
@@ -622,13 +375,12 @@ function renderQuestions() {
 
     var optList = document.createElement('div');
     optList.className = 'opt-list';
-    var letters = ['A','B','C','D'];
 
     q.opts.forEach(function(opt, oi) {
       var row = document.createElement('div');
       row.className = 'opt';
       row.id = 'opt-'+qi+'-'+oi;
-      row.onclick = (function(qIdx,oIdx){ return function(){ toggleOpt(qIdx,oIdx); }; })(qi,oi);
+      row.onclick = (function(a,b){ return function(){ toggleOpt(a,b); }; })(qi,oi);
 
       var cb = document.createElement('div');
       cb.className = 'opt-cb';
@@ -649,11 +401,9 @@ function renderQuestions() {
     });
 
     card.appendChild(optList);
-
     var fb = document.createElement('div');
     fb.id = 'fb-'+qi;
     card.appendChild(fb);
-
     container.appendChild(card);
   });
 
@@ -665,110 +415,91 @@ function toggleOpt(qi, oi) {
   var sel = S.selections[qi];
   var pos = sel.indexOf(oi);
   if (pos >= 0) sel.splice(pos,1); else sel.push(oi);
-
-  var cb = document.getElementById('cb-'+qi+'-'+oi);
-  var row = document.getElementById('opt-'+qi+'-'+oi);
-  var isSel = sel.indexOf(oi) >= 0;
-  cb.className = 'opt-cb'+(isSel?' chk':'');
-  row.className = 'opt'+(isSel?' selected':'');
-
+  document.getElementById('cb-'+qi+'-'+oi).className = 'opt-cb'+(sel.indexOf(oi)>=0?' chk':'');
+  document.getElementById('opt-'+qi+'-'+oi).className = 'opt'+(sel.indexOf(oi)>=0?' selected':'');
   checkSubmitReady();
   updateProgress();
 }
 
 function checkSubmitReady() {
-  var answered = S.selections.filter(function(s){return s.length>0;}).length;
-  document.getElementById('btn-submit').disabled = (answered < S.questions.length);
+  document.getElementById('btn-submit').disabled =
+    S.selections.filter(function(s){return s.length>0;}).length < S.questions.length;
 }
 
 function updateProgress() {
   var answered = S.selections.filter(function(s){return s.length>0;}).length;
-  var pct = Math.round(answered/S.questions.length*100);
-  document.getElementById('progress-fill').style.width = pct+'%';
+  document.getElementById('progress-fill').style.width = Math.round(answered/S.questions.length*100)+'%';
   document.getElementById('progress-label').textContent = answered+' von '+S.questions.length+' Fragen beantwortet';
 }
 
-/* ═══════ SUBMIT ════════════════════════════════════════════════ */
 function submitQuiz() {
   S.submitted = true;
   document.getElementById('btn-submit').disabled = true;
-
   var correct=0, wrong=0;
 
   S.questions.forEach(function(q, qi) {
     var sel = S.selections[qi].slice().sort().join(',');
     var cor = q.correct.slice().sort().join(',');
     var isFull = sel===cor;
-
     if (isFull) correct++; else wrong++;
 
     q.opts.forEach(function(opt,oi){
-      var row = document.getElementById('opt-'+qi+'-'+oi);
-      var cb  = document.getElementById('cb-'+qi+'-'+oi);
       var isSel = S.selections[qi].indexOf(oi)>=0;
       var isCorr = q.correct.indexOf(oi)>=0;
-      row.className = 'opt disabled'+(isSel&&isCorr?' correct-sel':isSel&&!isCorr?' wrong-sel':!isSel&&isCorr?' missed':'');
-      cb.className = 'opt-cb'+(isSel?' chk':'');
+      document.getElementById('opt-'+qi+'-'+oi).className =
+        'opt disabled'+(isSel&&isCorr?' correct-sel':isSel&&!isCorr?' wrong-sel':!isSel&&isCorr?' missed':'');
+      document.getElementById('cb-'+qi+'-'+oi).className = 'opt-cb'+(isSel?' chk':'');
     });
 
-    var fbEl = document.getElementById('fb-'+qi);
-    var fbType = isFull?'fb-ok':'fb-wrong';
-    var fbTitle = isFull?'Richtig — alle Antworten korrekt.':'Falsch — nicht alle richtigen Antworten gewählt oder falsche angekreuzt.';
-    fbEl.innerHTML = '<div class="feedback '+fbType+'"><div class="fb-title">'+fbTitle+'</div><div class="fb-text">'+q.exp+'</div><div class="fb-source">Quelle: <a href="'+q.url+'" target="_blank">'+q.src+'</a></div></div>';
+    document.getElementById('fb-'+qi).innerHTML =
+      '<div class="feedback '+(isFull?'fb-ok':'fb-wrong')+'">'
+      +'<div class="fb-title">'+(isFull?'Richtig — alle Antworten korrekt.':'Falsch — nicht alle richtigen Antworten gewählt oder falsche angekreuzt.')+'</div>'
+      +'<div class="fb-text">'+q.exp+'</div>'
+      +'<div class="fb-source">Quelle: <a href="'+q.url+'" target="_blank">'+q.src+'</a></div>'
+      +'</div>';
   });
 
   showResults(correct, wrong);
   sendToSheets(correct, wrong);
 }
 
-/* ═══════ RESULTS ═══════════════════════════════════════════════ */
 function showResults(correct, wrong) {
   var total = S.questions.length;
   var pct = Math.round(correct/total*100);
   var grade, label, sub;
-  if (pct>=80){grade='A';label='Sehr gut!';sub='Prüfungsreife für dieses Thema nachgewiesen.';}
+  if(pct>=80){grade='A';label='Sehr gut!';sub='Prüfungsreife für dieses Thema nachgewiesen.';}
   else if(pct>=60){grade='B';label='Gut';sub='Solide Basis — Quellenlinks gezielt nutzen.';}
   else if(pct>=40){grade='C';label='Ausbaufähig';sub='Grundlagen vorhanden — Theorieblock nochmals lesen.';}
-  else {grade='D';label='Weiter üben';sub='Lücken mit den verlinkten Quellen schließen.';}
+  else{grade='D';label='Weiter üben';sub='Lücken mit den verlinkten Quellen schließen.';}
 
   document.getElementById('result-grade').textContent=grade;
   document.getElementById('result-label').textContent=label;
   document.getElementById('result-sub').textContent=sub;
-
   document.getElementById('stats-row').innerHTML=
     '<div class="stat"><div class="stat-n" style="color:var(--correct)">'+correct+'</div><div class="stat-l">Richtig</div></div>'
     +'<div class="stat"><div class="stat-n" style="color:var(--wrong)">'+wrong+'</div><div class="stat-l">Falsch</div></div>'
     +'<div class="stat"><div class="stat-n">'+pct+'%</div><div class="stat-l">Ergebnis</div></div>';
 
-  var topics = S.questions.map(function(q,i){
-    var sel=S.selections[i], cor=q.correct;
-    var isFull=sel.slice().sort().join(',')===cor.slice().sort().join(',');
-    return {label:'Frage '+(i+1), pct:isFull?100:0, cls:isFull?'fill-ok':'fill-wrong'};
-  });
-  document.getElementById('comp-bars').innerHTML=topics.map(function(t){
-    return '<div class="comp-row"><div class="comp-labels"><span>'+t.label+'</span>'
-      +'<span style="color:'+(t.pct===100?'var(--correct)':'var(--wrong)')+';">'+(t.pct===100?'✓ Richtig':'✗ Falsch')+'</span></div>'
-      +'<div class="comp-track"><div class="comp-fill '+t.cls+'" style="width:'+t.pct+'%"></div></div></div>';
+  document.getElementById('comp-bars').innerHTML=S.questions.map(function(q,i){
+    var ok=S.selections[i].slice().sort().join(',')===q.correct.slice().sort().join(',');
+    return '<div class="comp-row"><div class="comp-labels"><span>Frage '+(i+1)+'</span>'
+      +'<span style="color:'+(ok?'var(--correct)':'var(--wrong)')+'">'+(ok?'✓ Richtig':'✗ Falsch')+'</span></div>'
+      +'<div class="comp-track"><div class="comp-fill '+(ok?'fill-ok':'fill-wrong')+'" style="width:'+(ok?100:0)+'%"></div></div></div>';
   }).join('');
 
   renderReview();
-
   document.getElementById('quiz-section').style.display='none';
   document.getElementById('results-section').style.display='block';
   window.scrollTo({top:0,behavior:'smooth'});
 }
 
-/* ═══════ DETAIL REVIEW ══════════════════════════════════════════ */
 function renderReview() {
   var letters = ['A','B','C','D'];
   var container = document.getElementById('review-container');
   container.innerHTML = '';
 
   S.questions.forEach(function(q, qi) {
-    var sel = S.selections[qi].slice().sort().join(',');
-    var cor = q.correct.slice().sort().join(',');
-    var isFull = sel===cor;
-
+    var isFull = S.selections[qi].slice().sort().join(',')===q.correct.slice().sort().join(',');
     var card = document.createElement('div');
     card.className = 'q-card';
     card.style.marginBottom = '.8rem';
@@ -782,8 +513,7 @@ function renderReview() {
     badge.style.cssText = 'font-size:12px;font-weight:500;padding:2px 10px;border-radius:100px;'
       +(isFull?'background:var(--correct-bg);color:var(--correct);':'background:var(--wrong-bg);color:var(--wrong);');
     badge.textContent = isFull?'✓ Richtig':'✗ Falsch';
-    header.appendChild(numEl);
-    header.appendChild(badge);
+    header.appendChild(numEl); header.appendChild(badge);
     card.appendChild(header);
 
     var qEl = document.createElement('div');
@@ -795,54 +525,44 @@ function renderReview() {
     var optList = document.createElement('div');
     optList.className = 'opt-list';
     q.opts.forEach(function(opt, oi) {
-      var isSel  = S.selections[qi].indexOf(oi)>=0;
+      var isSel = S.selections[qi].indexOf(oi)>=0;
       var isCorr = q.correct.indexOf(oi)>=0;
       var row = document.createElement('div');
       var cls = 'opt disabled';
-      if      (isSel&&isCorr)  cls+=' correct-sel';
-      else if (isSel&&!isCorr) cls+=' wrong-sel';
-      else if (!isSel&&isCorr) cls+=' missed';
+      if(isSel&&isCorr) cls+=' correct-sel';
+      else if(isSel&&!isCorr) cls+=' wrong-sel';
+      else if(!isSel&&isCorr) cls+=' missed';
       row.className = cls;
-
       var cb = document.createElement('div');
       cb.className = 'opt-cb'+(isSel?' chk':'');
       row.appendChild(cb);
-
       var letter = document.createElement('div');
       letter.className = 'opt-letter';
       letter.textContent = letters[oi]+'.';
       row.appendChild(letter);
-
       var text = document.createElement('div');
       text.className = 'opt-text';
       text.textContent = opt;
       row.appendChild(text);
-
       optList.appendChild(row);
     });
     card.appendChild(optList);
 
-    var fbType = isFull?'fb-ok':'fb-wrong';
     var fb = document.createElement('div');
-    fb.innerHTML = '<div class="feedback '+fbType+'" style="margin-top:.7rem">'
+    fb.innerHTML = '<div class="feedback '+(isFull?'fb-ok':'fb-wrong')+'" style="margin-top:.7rem">'
       +'<div class="fb-title">'+(isFull?'Richtig.':'Falsch.')+'</div>'
       +'<div class="fb-text">'+q.exp+'</div>'
-      +'<div class="fb-source">Quelle: <a href="'+q.url+'" target="_blank">'+q.src+'</a></div>'
-      +'</div>';
+      +'<div class="fb-source">Quelle: <a href="'+q.url+'" target="_blank">'+q.src+'</a></div></div>';
     card.appendChild(fb);
     container.appendChild(card);
   });
 }
 
-/* ═══════ GOOGLE SHEETS ═════════════════════════════════════════ */
 function sendToSheets(correct, wrong) {
   if (!APPS_SCRIPT_URL) return;
   var TAG_NR = 9;
-  var THEMA  = 'Risikomanagement I — Bias, technische Fehler, ethische Risiken, KI-Agenten';
+  var THEMA  = 'Risikomanagement I';
   var letters = ['A','B','C','D'];
-  var rolle = S.role === 'a' ? 'KI-Beauftragter' : 'Entwicklungsleiter';
-  var stufe = S.level === '1' ? 'Anfänger' : 'Fortgeschrittene';
-
   var status = document.getElementById('submit-status');
   status.className = 'submit-status sending';
   status.style.display = 'block';
@@ -863,7 +583,7 @@ function sendToSheets(correct, wrong) {
       + '&teilnehmer=' + encodeURIComponent(S.name)
       + '&tag='        + TAG_NR
       + '&thema='      + encodeURIComponent(THEMA)
-      + '&stufe='      + encodeURIComponent(stufe + ' · ' + rolle)
+      + '&stufe='      + encodeURIComponent(S.questions[i].set)
       + '&frage_nr='   + (i + 1)
       + '&frage_text=' + encodeURIComponent(q.q.substring(0, 80))
       + '&gewaehlt='   + encodeURIComponent(gewaehlt)
@@ -886,6 +606,7 @@ function sendToSheets(correct, wrong) {
   }
   sendNext();
 }
+
 </script>
 </body>
 </html>
