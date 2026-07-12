@@ -150,6 +150,7 @@
 |-----|------|-----|--------------|
 | https://brobotspodcast.substack.com/ | Health, Wellness & Mindset in the Age of AI | Podcast und Substack-Artikel |
 | https://aiweekly.co/ai-news-today | AI Weekly | Sammelpunkt für aktuelle Artikel zu KI |
+| https://huggingnews.com/ | Hugging News | Aktuelle Informationen zu KI-Modellen |
 
 ---
 
