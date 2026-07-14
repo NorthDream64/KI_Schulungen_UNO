@@ -170,7 +170,7 @@ var APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyPs358GF_E1xsvTh
 var ROLE2  = 'CISO';
 
 /* ═══════ FRAGENBANK ═══════════════════════════════════════════ */
-/* Verteilung: 2x eine richtig, 4x zwei richtig, 4x drei richtig; nie vier */
+/* Verteilung: 2× eine richtig (Q2, Q10), 4× zwei richtig (Q4, Q6, Q7, Q9), 4× drei richtig (Q1, Q3, Q5, Q8); nie vier */
 
 var QUESTIONS = [
 
@@ -185,20 +185,20 @@ var QUESTIONS = [
       'Eine Inventur der Schatten-KI-Nutzung ist Ausgangspunkt für eine strukturierte KI-Governance.'
     ],
     correct: [0,1,3],
-    exp: 'Schatten-KI ist der ungenehmigter Einsatz von KI-Tools ohne Wissen der IT. Das Risiko: Mitarbeitende geben vertrauliche Daten (Kundeninformationen, interne Dokumente) in externe Systeme ein, ohne dass Datenschutz oder Compliance geprüft wurden. Kostenlose Tools haben oft nachteilige Nutzungsbedingungen — z. B. Verwendung der Eingaben für Trainingszwecke. Eine systematische Inventur ist der erste Schritt zur kontrollierten Governance.',
+    exp: 'Schatten-KI ist der ungenehmigte Einsatz von KI-Tools ohne Wissen der IT. Das Risiko: Mitarbeitende geben vertrauliche Daten (Kundeninformationen, interne Dokumente) in externe Systeme ein, ohne dass Datenschutz oder Compliance geprüft wurden. Kostenlose Tools haben oft nachteilige Nutzungsbedingungen — z. B. Verwendung der Eingaben für Trainingszwecke. Eine systematische Inventur ist der erste Schritt zur kontrollierten Governance.',
     src: 'EU AI Act Art. 26 · DSGVO Art. 5', url: 'https://artificialintelligenceact.eu/article/26/'
   },
   {
     set: 'KI-Beauftragte:r',
-    q: 'Du führst als KI-Beauftragte:r eine Schatten-KI-Inventur durch. Welche Bereiche müssen dabei erfasst werden? Welche Aussage(n) sind korrekt?',
+    q: 'Du führst als KI-Beauftragte:r eine Schatten-KI-Inventur durch. Welche Bereiche müssen dabei erfasst werden? Welche Aussage ist korrekt?',
     opts: [
-      'Welche KI-Tools von welchen Mitarbeitenden für welche Aufgaben genutzt werden.',
-      'Ob sensible Unternehmensdaten in die Tools eingegeben werden.',
+      'Welche KI-Tools von welchen Mitarbeitenden für welche Aufgaben genutzt werden — einschließlich kostenloser und privat genutzter Tools.',
+      'Ausschließlich KI-Tools, die personenbezogene Daten verarbeiten — alle anderen Tools fallen nicht unter die Inventurpflicht.',
       'Ausschließlich Tools, die mehr als 50 Euro pro Monat kosten — kostenlose Tools sind irrelevant.',
-      'Welche vertraglichen und datenschutzrechtlichen Bedingungen die genutzten Tools haben.'
+      'Nur Tools, die die IT-Abteilung bereits offiziell freigegeben hat — private Tools auf privaten Geräten sind nicht Teil der Schatten-KI-Inventur.'
     ],
-    correct: [0,1,3],
-    exp: 'Eine vollständige Inventur erfasst: welche Tools genutzt werden, durch wen, für welche Zwecke, ob sensible Daten eingegeben werden und unter welchen AGB die Tools betrieben werden. Kostenlose Tools sind oft problematischer als kostenpflichtige Enterprise-Versionen — sie haben häufig schlechtere Datenschutzbedingungen und können Eingaben für das Training verwenden.',
+    correct: [0],
+    exp: 'Eine vollständige Schatten-KI-Inventur muss alle genutzten KI-Tools erfassen — unabhängig von Kosten, Datentyp oder Freigabestatus. Gerade kostenlose und privat genutzte Tools sind oft die größte Lücke, weil sie sich der IT-Sicht entziehen. Eine Beschränkung auf freigegebene, kostenpflichtige oder nur personenbezogene Tools verfehlt den Zweck der Inventur: Sichtbarkeit über das tatsächlich Genutzte herzustellen.',
     src: 'DSGVO Art. 28 · EU AI Act Art. 26', url: 'https://artificialintelligenceact.eu/article/26/'
   },
   {
@@ -221,10 +221,10 @@ var QUESTIONS = [
       'Du koordinierst die Bewertung von Copilot hinsichtlich EU AI Act, DSGVO und internen Richtlinien — nicht die technische Konfiguration.',
       'Die technische Konfiguration von Sensitivity Labels und DLP-Regeln liegt beim IT-Team bzw. CISO.',
       'Als KI-Beauftragte:r bist du für die technische Administration von Microsoft 365 zuständig.',
-      'Du sorgst dafür, dass eine KI-Risikoklassifizierung für Copilot vorliegt und die Betreiberpflichten nach EU AI Act erfüllt werden.'
+      'Du bist verantwortlich dafür, dass Microsoft als Anbieter die Konformitätsbewertung für Copilot durchführt — das ist eine Betreiberaufgabe nach EU AI Act.'
     ],
-    correct: [0,1,3],
-    exp: 'Der KI-Beauftragte koordiniert die Governance-Bewertung von M365-KI-Tools: Risikoklassifizierung, Compliance-Prüfung, Betreiberpflichten. Die technische Konfiguration (Sensitivity Labels, DLP, Tenant-Einstellungen) liegt beim IT-Team und CISO. Die Aufgabenteilung ist klar: KI-Beauftragte:r = fachlich-regulatorisch, IT/CISO = technisch-operativ.',
+    correct: [0,1],
+    exp: 'Der KI-Beauftragte koordiniert die Governance-Bewertung von M365-KI-Tools: Risikoklassifizierung, Compliance-Prüfung, Betreiberpflichten. Die technische Konfiguration (Sensitivity Labels, DLP, Tenant-Einstellungen) liegt beim IT-Team und CISO. Die Konformitätsbewertung ist eine Anbieter-Pflicht (Art. 16 EU AI Act), keine Betreiberaufgabe — der Betreiber muss die Einhaltung seiner eigenen Pflichten sicherstellen, nicht die des Anbieters.',
     src: 'EU AI Act Art. 26 · Microsoft Copilot Compliance', url: 'https://artificialintelligenceact.eu/article/26/'
   },
   {
@@ -249,10 +249,10 @@ var QUESTIONS = [
       'NIST AI RMF ist ein US-amerikanisches Rahmenwerk (keine ISO-Norm) mit vier Kernfunktionen: Govern, Map, Measure, Manage.',
       'ISO/IEC 42001 und NIST AI RMF verfolgen ähnliche Ziele, sind aber unterschiedlich strukturiert — eine Übersetzungstabelle (Crosswalk) hilft bei der Integration.',
       'NIST AI RMF ist in der EU verbindlich und ersetzt den EU AI Act für technische Anforderungen.',
-      'Für international aufgestellte Unternehmen kann eine Harmonisierung beider Rahmenwerke Governance-Effizienz steigern.'
+      'NIST AI RMF kann ISO/IEC 42001 vollständig ersetzen, da beide Rahmenwerke identische Anforderungen abbilden.'
     ],
-    correct: [0,1,3],
-    exp: 'NIST AI RMF ist ein US-Rahmenwerk (veröffentlicht 2023) mit vier Kernfunktionen: Govern, Map, Measure, Manage. Es ist kein verbindliches EU-Recht. ISO/IEC 42001 und NIST AI RMF sind konzeptionell verwandt, aber unterschiedlich strukturiert — NIST stellt ein offizielles Crosswalk-Dokument bereit. Für global agierende Unternehmen ist eine Harmonisierung sinnvoll, um Compliance-Aufwand zu bündeln.',
+    correct: [0,1],
+    exp: 'NIST AI RMF ist ein US-Rahmenwerk (veröffentlicht 2023) mit vier Kernfunktionen: Govern, Map, Measure, Manage. Es ist kein verbindliches EU-Recht. ISO/IEC 42001 und NIST AI RMF sind konzeptionell verwandt, aber unterschiedlich strukturiert — NIST stellt ein offizielles Crosswalk-Dokument bereit. Die beiden Rahmenwerke sind jedoch nicht deckungsgleich: ISO 42001 ist ein zertifizierungsfähiges Managementsystem, NIST AI RMF eine Methodensammlung ohne Zertifizierungsoption. Sie ergänzen sich, ersetzen einander aber nicht.',
     src: 'NIST AI RMF 1.0 · ISO/IEC 42001:2023', url: 'https://www.nist.gov/system/files/documents/2023/01/26/AI%20RMF%20Playbook%20-%2012-19-22%20Draft.pdf'
   },
   {
@@ -262,10 +262,10 @@ var QUESTIONS = [
       'Der CISO verantwortet die technische Sicherheitskonfiguration von M365 — Tenant-Einstellungen, Conditional Access, DLP-Regeln.',
       'Der KI-Beauftragte bewertet Copilot regulatorisch und stimmt Richtlinien ab — ohne in die technische Administration einzugreifen.',
       'Der CISO ist alleinverantwortlich für alle Compliance-Fragen rund um M365 — der KI-Beauftragte hat keine Rolle.',
-      'Bei KI-Vorfällen in M365 arbeiten CISO und KI-Beauftragter zusammen: der CISO sichert technische Beweise, der KI-Beauftragte bewertet regulatorische Konsequenzen.'
+      'Bei KI-Vorfällen in M365 ist ausschließlich der CISO zuständig — der KI-Beauftragte wird erst nach Abschluss der technischen Untersuchung einbezogen.'
     ],
-    correct: [0,1,3],
-    exp: 'Die Aufgabenteilung ist klar: Der CISO verantwortet die technische Sicherheitsarchitektur und -konfiguration. Der KI-Beauftragte bringt die regulatorische Perspektive (EU AI Act, DSGVO, Betreiberpflichten). Bei Vorfällen ist eine enge Zusammenarbeit beider Rollen notwendig: technische Beweissicherung (CISO) und regulatorische Folgenabschätzung (KI-Beauftragte:r) gehen Hand in Hand.',
+    correct: [0,1],
+    exp: 'Die Aufgabenteilung ist klar: Der CISO verantwortet die technische Sicherheitsarchitektur und -konfiguration. Der KI-Beauftragte bringt die regulatorische Perspektive (EU AI Act, DSGVO, Betreiberpflichten). Bei Vorfällen ist eine enge, parallele Zusammenarbeit beider Rollen notwendig — nicht nacheinander. Technische Beweissicherung (CISO) und regulatorische Folgenabschätzung (KI-Beauftragte:r) müssen zeitgleich laufen, weil Meldefristen (z. B. 72 Stunden nach DSGVO Art. 33) keine sequenzielle Bearbeitung erlauben.',
     src: 'EU AI Act Art. 26 · ISO/IEC 27001', url: 'https://artificialintelligenceact.eu/article/26/'
   },
   {
@@ -298,13 +298,13 @@ var QUESTIONS = [
     set: 'CISO',
     q: 'Dein Unternehmen hat mehrere KI-Initiativen mit unterschiedlichem Reifegrad. Als CISO bewertest du, auf welchem Compliance-Reifegrad sich die KI-Governance befindet. Welche Aussage(n) zu einem strukturierten Reifegradmodell sind korrekt?',
     opts: [
-      'Stufe 1 (Ad hoc): Kein systematisches Inventar, keine Richtlinien — KI wird situativ eingesetzt.',
-      'Stufe 2 (Managed): Inventar vorhanden, erste Richtlinien definiert, aber noch keine systematische Risikobewertung.',
+      'Ad-hoc-KI-Governance bedeutet, dass die Organisation bewusst auf Inventar und Richtlinien verzichtet, weil der EU AI Act dies für KMU ausdrücklich erlaubt.',
+      'Im Managed-Stadium verfügt die Organisation über ein vollständiges AIMS nach ISO/IEC 42001 mit abgeschlossener Zertifizierung.',
       'Stufe 3 (Optimized): Vollständiges AIMS nach ISO/IEC 42001, kontinuierliche Verbesserung, Audit-Bereitschaft.',
       'Ein höherer Reifegrad erhöht grundsätzlich die regulatorischen Risiken — je strukturierter, desto mehr Angriffsfläche für Aufsichtsbehörden.'
     ],
-    correct: [0,1,2],
-    exp: 'Reifegradmodelle für KI-Governance unterscheiden typischerweise zwischen ad hoc (kein Inventar, keine Richtlinien), managed (strukturierte Grundlagen, aber noch keine vollständige Risikobewertung) und optimized (vollständiges AIMS, kontinuierliche Verbesserung, Audit-Bereitschaft). Ein höherer Reifegrad reduziert regulatorische Risiken — er gibt Aufsichtsbehörden gerade kein breiteres Angriffsziel, sondern demonstriert Sorgfalt.',
+    correct: [2],
+    exp: 'Reifegradmodelle unterscheiden typischerweise ad hoc, managed und optimized. Ad hoc beschreibt einen unstrukturierten Zustand — der EU AI Act erlaubt aber keiner Organisationsform, auf Governance ganz zu verzichten. Managed bedeutet: erste Strukturen vorhanden (Inventar, Richtlinien), aber noch kein vollständiges Managementsystem — ein vollständiges AIMS mit Zertifizierung gehört zu Stufe 3 (Optimized). Ein höherer Reifegrad reduziert regulatorische Risiken, er vergrößert sie nicht.',
     src: 'ISO/IEC 42001:2023 · EU AI Act Art. 26', url: 'https://www.iso.org/standard/81230.html'
   }
 
@@ -468,7 +468,7 @@ function showResults(correct, wrong) {
   var total = S.questions.length;
   var pct = Math.round(correct/total*100);
   var grade, label, sub;
-  if(pct>=80){grade='A';label='Sehr gut!';sub='Prüfungsreife für dieses Thema nachgewiesen.';}
+  if(pct>=80){grade='A';label='Sehr gut!';sub='Du beherrschst die zentralen Konzepte dieses Themas sicher.';}
   else if(pct>=60){grade='B';label='Gut';sub='Solide Basis — Quellenlinks gezielt nutzen.';}
   else if(pct>=40){grade='C';label='Ausbaufähig';sub='Grundlagen vorhanden — Theorieblock nochmals lesen.';}
   else{grade='D';label='Weiter üben';sub='Lücken mit den verlinkten Quellen schließen.';}
