@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lernkontrolle; Generalwiederholung</title>
+<style>
+:root {
+  --ink:#1a1a18;--paper:#f5f2ec;--card:#fff;--rule:#d5d0c5;--muted:#888880;
+  --accent:#2a4a8a;--accent-soft:#e8edf7;
+  --correct:#2a7a50;--correct-bg:#eaf5ee;--correct-border:#a0d8b8;
+  --wrong:#9a2a2a;--wrong-bg:#faeaea;--wrong-border:#d8a0a0;--missed:#b85c00;--missed-bg:#fff4e6;--missed-border:#f0b070;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;background:var(--paper);color:var(--ink);line-height:1.65;font-size:15px;}
+a{color:var(--accent);}
+.site-header{border-bottom:2px solid var(--ink);padding:1.8rem 2rem 1.4rem;max-width:820px;margin:0 auto;}
+.eyebrow{font-family:"SFMono-Regular", Consolas, "Liberation Mono", monospace;font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:var(--muted);margin-bottom:.5rem;}
+.site-header h1{font-family:Georgia, "Times New Roman", serif;font-size:clamp(1.5rem,4vw,2.1rem);line-height:1.15;margin-bottom:.4rem;}
+.header-meta{font-size:12px;color:var(--muted);display:flex;gap:1rem;flex-wrap:wrap;}
+.header-meta span::before{content:"&middot; ";}
+.header-meta span:first-child::before{content:"";}
+.main{max-width:820px;margin:0 auto;padding:1.8rem 2rem 4rem;}
+.setup-card{background:var(--card);border:1px solid var(--rule);border-radius:12px;padding:2rem;max-width:480px;margin:0 auto;}
+.setup-card h2{font-family:Georgia, "Times New Roman", serif;font-size:1.3rem;margin-bottom:1.2rem;}
+.field-label{font-family:"SFMono-Regular", Consolas, "Liberation Mono", monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:.35rem;}
+.setup-input{width:100%;border:1px solid var(--rule);border-radius:8px;padding:.6rem .9rem;font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;font-size:14px;background:var(--paper);outline:none;color:var(--ink);transition:border-color .15s;}
+.setup-input:focus{border-color:var(--ink);}
+.setup-info{background:var(--accent-soft);border:1px solid #c0d0e8;border-radius:8px;padding:.9rem 1.1rem;margin-bottom:1.2rem;font-size:13px;color:var(--ink);line-height:1.6;}
+.btn-start{width:100%;padding:.75rem;background:var(--ink);color:#fff;border:none;border-radius:8px;font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;font-size:15px;font-weight:500;cursor:pointer;margin-top:1rem;transition:background .15s;}
+.btn-start:hover{background:#333;}
+.quiz-header-strip{display:flex;gap:.6rem;align-items:center;margin-bottom:1.4rem;flex-wrap:wrap;}
+.strip-tag{font-family:"SFMono-Regular", Consolas, "Liberation Mono", monospace;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;padding:4px 12px;border-radius:100px;background:var(--accent-soft);color:var(--accent);}
+.strip-name{font-size:13px;color:var(--muted);margin-left:auto;}
+.progress-bar{height:3px;background:var(--rule);border-radius:2px;margin-bottom:1.2rem;}
+.progress-fill{height:100%;background:var(--ink);border-radius:2px;transition:width .3s;}
+.progress-label{font-family:"SFMono-Regular", Consolas, "Liberation Mono", monospace;font-size:10px;color:var(--muted);margin-bottom:.5rem;}
+.scenario-box{background:var(--accent-soft);border:1px solid #c0d0e8;border-left:3px solid var(--accent);border-radius:0 8px 8px 0;padding:.9rem 1.1rem;margin-bottom:1.2rem;}
+.scenario-label{font-family:"SFMono-Regular", Consolas, "Liberation Mono", monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:.3rem;}
+.scenario-text{font-size:13px;color:var(--ink);line-height:1.6;}
+.week-divider{font-family:"SFMono-Regular", Consolas, "Liberation Mono", monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);border-top:1px solid var(--rule);padding-top:.8rem;margin:1.5rem 0 .8rem;}
+.q-card{background:var(--card);border:1px solid var(--rule);border-radius:12px;padding:1.5rem;margin-bottom:1rem;}
+.q-num{font-family:"SFMono-Regular", Consolas, "Liberation Mono", monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:.6rem;}
+.q-text{font-size:15px;font-weight:500;line-height:1.55;margin-bottom:.5rem;}
+.q-hint{font-size:12px;color:var(--muted);margin-bottom:.9rem;font-style:italic;}
+.opt-list{display:flex;flex-direction:column;gap:.5rem;}
+.opt{display:flex;align-items:flex-start;gap:.7rem;padding:.75rem 1rem;border:1px solid var(--rule);border-radius:8px;cursor:pointer;background:#fdfdfb;transition:all .12s;-webkit-user-select:none;user-select:none;}
+.opt:hover:not(.disabled){border-color:#888;background:#f5f2ec;}
+.opt.selected{background:var(--accent-soft);border-color:#8090b8;}
+.opt.disabled{cursor:default;}
+.opt.correct-sel{background:var(--correct-bg);border-color:var(--correct-border);}
+.opt.wrong-sel{background:var(--wrong-bg);border-color:var(--wrong-border);}
+.opt.missed{background:var(--missed-bg);border-color:var(--missed-border);}
+.opt-cb{width:18px;height:18px;min-width:18px;border:1.5px solid #bbb;border-radius:4px;flex-shrink:0;margin-top:2px;display:flex;align-items:center;justify-content:center;transition:all .12s;}
+.opt-cb.chk{background:var(--ink);border-color:var(--ink);}
+.opt-cb.chk::after{content:'';display:block;width:8px;height:8px;background:#fff;border-radius:2px;}
+.opt.correct-sel .opt-cb{background:var(--correct);border-color:var(--correct);}
+.opt.correct-sel .opt-cb::after{content:'\2713';color:#fff;font-size:11px;background:none;width:auto;height:auto;}
+.opt.wrong-sel .opt-cb{background:var(--wrong);border-color:var(--wrong);}
+.opt.wrong-sel .opt-cb::after{content:'\2717';color:#fff;font-size:11px;background:none;width:auto;height:auto;}
+.opt.missed .opt-cb{background:var(--missed);border-color:var(--missed);}
+.opt.missed .opt-cb::after{content:'\2192';color:#fff;font-size:11px;background:none;width:auto;height:auto;}
+.opt-text{font-size:14px;line-height:1.5;}
+.feedback{border-radius:8px;padding:.9rem 1.1rem;margin-top:.9rem;}
+.feedback.fb-ok{background:var(--correct-bg);border:1px solid var(--correct-border);}
+.feedback.fb-wrong{background:var(--wrong-bg);border:1px solid var(--wrong-border);}
+.fb-title{font-weight:500;font-size:14px;margin-bottom:.4rem;}
+.fb-ok .fb-title{color:var(--correct);}
+.fb-wrong .fb-title{color:var(--wrong);}
+.fb-text{font-size:13px;line-height:1.65;color:#444;margin-bottom:.5rem;}
+.fb-source{font-size:12px;color:var(--muted);border-top:1px solid var(--rule);padding-top:.5rem;}
+.btn{display:inline-flex;align-items:center;padding:.55rem 1.2rem;border:1px solid var(--rule);border-radius:8px;background:none;font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;font-size:14px;font-weight:500;cursor:pointer;color:var(--ink);transition:all .15s;}
+.btn:hover{background:var(--paper);border-color:#888;}
+.btn-full{width:100%;justify-content:center;padding:.7rem;font-size:15px;margin-top:1rem;}
+.btn-submit{background:#2a5c3f;color:#fff;border-color:#2a5c3f;}
+.btn-submit:hover{background:#1e4530;}
+.btn-submit:disabled{background:#aaa;border-color:#aaa;cursor:not-allowed;}
+.result-block{max-width:600px;margin:0 auto;text-align:center;}
+.result-grade{font-family:Georgia, "Times New Roman", serif;font-size:4.5rem;line-height:1;margin-bottom:.3rem;}
+.result-label{font-size:1.1rem;font-weight:500;margin-bottom:.3rem;}
+.result-sub{font-size:13px;color:var(--muted);margin-bottom:1.5rem;}
+.stats-row{display:flex;justify-content:center;gap:1rem;flex-wrap:wrap;margin-bottom:1.5rem;}
+.stat{background:var(--card);border:1px solid var(--rule);border-radius:10px;padding:.9rem 1.2rem;text-align:center;min-width:90px;}
+.stat-n{font-size:1.8rem;font-weight:500;}
+.stat-l{font-size:11px;color:var(--muted);margin-top:2px;}
+.comp-title{font-size:13px;font-weight:500;text-align:left;margin-bottom:.8rem;}
+.comp-row{margin-bottom:.7rem;text-align:left;}
+.comp-labels{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-bottom:3px;}
+.comp-track{height:4px;background:var(--rule);border-radius:2px;}
+.comp-fill{height:100%;border-radius:2px;}
+.fill-ok{background:var(--correct);}
+.fill-wrong{background:var(--wrong);}
+.submit-status{display:none;font-size:12px;margin-top:.5rem;padding:.4rem .8rem;border-radius:6px;}
+.submit-status.sending{display:block;background:#fffbe8;color:#806a00;border:1px solid #d0c060;}
+.submit-status.success{display:block;background:var(--correct-bg);color:var(--correct);border:1px solid var(--correct-border);}
+.submit-status.error{display:block;background:var(--wrong-bg);color:var(--wrong);border:1px solid var(--wrong-border);}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="eyebrow">Alfatraining &middot; KI-Zertifikatskurse &middot; Prüfungstraining</div>
+  <h1>Lernerfolgskontrolle<br>Generalwiederholung</h1>
+  <div class="header-meta">
+    <span>50 Fragen; über alle Kurstage</span>
+    <span>Eine oder mehrere Antworten können richtig sein</span>
+  </div>
+</header>
+
+<main class="main">
+
+<div id="setup-section">
+  <div class="setup-card">
+    <h2>Generalwiederholung starten</h2>
+    <div class="setup-info">
+      50 Fragen aus allen vier Wochen &mdash; EU AI Act, ISO 42001, DSGVO, Datenqualit&auml;t und Change Management. Kein Bewertungsdruck. Ehrliche Selbstdiagnose.
+    </div>
+    <div style="margin-bottom:1rem;">
+      <span class="field-label">Dein Name (oder Teilnehmer-Nummer)</span>
+      <input type="text" id="participant-name" class="setup-input" placeholder="z. B. Teilnehmer-07 oder Vorname">
+    </div>
+    <button class="btn-start" onclick="startQuiz()">Quiz starten &rarr;</button>
+  </div>
+</div>
+
+<div id="quiz-section" style="display:none">
+  <div class="quiz-header-strip" id="quiz-header-strip"></div>
+  <div class="progress-label" id="progress-label"></div>
+  <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+  <div id="questions-container"></div>
+  <div style="margin-top:1.5rem">
+    <button class="btn btn-submit btn-full" id="btn-submit" onclick="submitQuiz()" disabled>Auswertung anzeigen &rarr;</button>
+  </div>
+  <div class="submit-status" id="submit-status"></div>
+</div>
+
+<div id="results-section" style="display:none">
+  <div class="result-block">
+    <div class="result-grade" id="result-grade"></div>
+    <div class="result-label" id="result-label"></div>
+    <div class="result-sub" id="result-sub"></div>
+    <div class="stats-row" id="stats-row"></div>
+    <div class="comp-title">Kompetenzprofil nach Themenbereich</div>
+    <div id="comp-bars"></div>
+    <div style="margin-top:.8rem;display:flex;justify-content:center;">
+      <button class="btn" onclick="location.reload()">Neu starten</button>
+    </div>
+  </div>
+  <hr style="border:none;border-top:1px solid var(--rule);margin:2rem 0">
+  <h2 style="font-family:Georgia, 'Times New Roman', serif;font-size:1.2rem;margin-bottom:1rem">Detailauswertung</h2>
+  <div id="review-container"></div>
+</div>
+
+</main>
+
+<script>
+var APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyPs358GF_E1xsvTh08PpTpZcBDS1OvsU9XQ0qi0MkZoCCnAk4dyo3Aii0OYxILdvCRYA/exec';
+
+/* ═══════════════════════════════════════════════════════════════
+   QBANK — 50 Fragen · TÜV-Prüfungssimulation · Generalwiederholung
+   Verteilung: 50 Fragen aus dem TÜV Rheinland Fragenpool (Juni 2026)
+   ─────────────────────────────────────────────────────────────────
+   WOCHE 1 (Q 0–11):  Rolle KI-BA · Rechtsgrundlagen · Prompting
+   WOCHE 2 (Q12–24):  ISO 42001 · Konformitätsbewertung · Transparenz
+   WOCHE 3 (Q25–36):  Risikomanagement · Datenschutz · QS
+   WOCHE 4 (Q37–49):  Stakeholder · Schulung · Change Management
+   ═══════════════════════════════════════════════════════════════ */
+
+var QBANK = [
+  {cat:"Grundlagen & Rollen",q:"Du erklärst der Geschäftsführung den Unterschied zwischen klassischer Automatisierung und KI. Welche Aussage(n) sind korrekt?",opts:["KI-Systeme lernen aus Daten und passen ihr Verhalten an — klassische Automatisierung folgt fest codierten Regeln ohne Lernfähigkeit.", "Deep Learning ist eine Unterkategorie des Maschinellen Lernens und basiert auf mehrschichtigen neuronalen Netzen.", "Automatisierung kann wie KI mit unbekannten Situationen umgehen, wenn die Regelbasis groß genug ist.", "Maschinelles Lernen benötigt für jede neue Anwendungssituation explizite Neuprogrammierung durch Entwickler:innen."],correct:[0, 1],exp:"KI lernt aus Daten, klassische Automatisierung folgt starren Regeln. Deep Learning ist eine ML-Spezialisierung. Automatisierung ist nicht adaptiv für unbekannte Situationen. ML benötigt gerade keine explizite Neuprogrammierung für jede Situation — das ist sein Kernmerkmal.",src:"KIM Tag 1 · Grundlagen KI"},
+  {cat:"Grundlagen & Rollen",q:"Ein Produktionsunternehmen fragt, welche KI-Disziplin für automatische Fehlererkennung auf dem Fließband geeignet ist. Welche Aussage(n) sind korrekt?",opts:["Computer Vision analysiert Bilddaten und erkennt visuelle Muster wie Oberflächenfehler — sie ist die geeignete Disziplin.", "Natural Language Processing ist besonders für Bildanalyse geeignet, da es Muster in komplexen Datensätzen erkennt.", "Deep-Learning-Architekturen liefern bei Bildverarbeitung höhere Erkennungsraten als einfache regelbasierte Systeme.", "Für strukturierte Sensordaten eignet sich klassisches ML oft besser als Deep Learning."],correct:[0, 2, 3],exp:"Computer Vision ist für visuelle Fehlererkennung geeignet. NLP verarbeitet Text und Sprache, nicht Bilder. Deep Learning übertrifft regelbasierte Ansätze bei Bildverarbeitung. Für strukturierte Sensordaten ist klassisches ML oft effizienter.",src:"KIM Tag 1 · ML/DL/CV"},
+  {cat:"Grundlagen & Rollen",q:"Im Kickoff fragt der Betriebsrat nach der Abgrenzung von KI-Manager:in, KI-Beauftragtem und KI-Auditor:in. Welche Aussage(n) sind korrekt?",opts:["KI-Manager:innen verantworten Aufbau, Betrieb und Wirksamkeitsprüfung des AIMS nach ISO 42001.", "KI-Auditor:innen prüfen und bewerten die Konformität und Wirksamkeit des Managementsystems.", "KI-Beauftragte übernehmen primär die Ressourcen- und Budgetplanung für strategische KI-Investitionen.", "KI-Manager:innen fungieren als Verbindungsglied zwischen technischer Umsetzung, Business Value und Governance."],correct:[0, 1, 3],exp:"KI-Manager:innen bauen das AIMS auf und betreiben es. KI-Auditor:innen prüfen Konformität. KI-Beauftragte haben eine Governance-/Compliance-Rolle, keine primäre Budgetplanung.",src:"KIM Tag 1 · Rollenabgrenzung"},
+  {cat:"Grundlagen & Rollen",q:"Dein Unternehmen führt ein AIMS nach ISO 42001 ein. Welche Aussage(n) zu deiner Rolle als KI-Manager:in treffen zu?",opts:["Du verantwortest Aufbau, kontinuierlichen Betrieb und Wirksamkeitsprüfung des AIMS.", "Die Zertifizierung durch externe Auditor:innen führst du eigenständig durch.", "Das AIMS schafft den Rahmen für Governance, Transparenz und Risikominimierung über den gesamten KI-Lebenszyklus.", "Die Wirksamkeitsprüfung ist eine einmalige Aufgabe nach Ersteinführung."],correct:[0, 2],exp:"KI-Manager:innen bauen das AIMS auf und prüfen es kontinuierlich. Externe Zertifizierung führen Auditor:innen durch. Wirksamkeitsprüfung ist kein Einmalschritt, sondern ein Dauerprozess.",src:"KIM Tag 2 · ISO 42001"},
+  {cat:"Grundlagen & Rollen",q:"Ein Unternehmen will mit KI den Kundenservice automatisieren. In der Initiierungsphase schaffst du Entscheidungsgrundlagen. Welche Maßnahmen sind korrekt?",opts:["Machbarkeitsanalyse: Bewertung von Datenverfügbarkeit, technischer Umsetzbarkeit und Kosten-Nutzen.", "Sofortiger Aufbau eines vollständigen Produktivsystems — ein PoC verlängert den Zeitplan unnötig.", "Stakeholder-Mapping: Erwartungen von IT, Datenschutz, Betriebsrat und Fachbereichen erfassen.", "SMART-Zieldefinition: spezifische, messbare, akzeptierte, realistische und terminierte Ziele."],correct:[0, 2, 3],exp:"Machbarkeitsanalyse, Stakeholder-Mapping und SMART-Ziele sind Kerninstrumente. Ein sofortiger Produktivaufbau ohne PoC erhöht das Projektrisiko erheblich.",src:"KIM Tag 4 · Projektinitiierung"},
+  {cat:"Grundlagen & Rollen",q:"Die Geschäftsführung fordert einen ROI-Nachweis für das KI-Projekt. Welche Aussage(n) sind korrekt?",opts:["ROI wird durch klar definierte, messbare KPIs nachgewiesen, die direkt mit Unternehmenszielen verknüpft sind.", "Wertschöpfung entsteht ausschließlich durch vollständige Elimination menschlicher Kontrolle.", "Effizienzgewinne durch Automatisierung von Routineaufgaben sind quantifizierbare ROI-Treiber.", "SMART-Methodik hilft, unrealistische Erwartungen durch präzise Zieldefinition zu vermeiden."],correct:[0, 2, 3],exp:"ROI-Nachweis basiert auf messbaren KPIs, Effizienzgewinnen und SMART-Zielen. Vollständige Elimination menschlicher Kontrolle ist weder notwendig noch immer regulatorisch zulässig.",src:"KIM Tag 5 · ROI und Business Case"},
+  {cat:"Grundlagen & Rollen",q:"Du bewertest Anwendungsfälle für eine erste KI-Initiative. Welche Einstiegsstrategie ist empfehlenswert?",opts:["Quick Wins: kleine, klar messbare Projekte, die schnell Mehrwert liefern und Vertrauen aufbauen.", "Ausschließliche Konzentration auf das komplexeste Projekt, da nur dort der ROI groß genug ist.", "Messbare KPIs bereits in der Initiierungsphase definieren, um den Mehrwert nachweisbar zu machen.", "Machbarkeitsanalyse vorab, um technische Umsetzbarkeit und Wirtschaftlichkeit zu prüfen."],correct:[0, 2, 3],exp:"Quick Wins bauen Vertrauen auf. Das komplexeste Projekt als Einstieg erhöht das Misserfolgsrisiko. KPIs und Machbarkeitsanalyse sind essenziell.",src:"KIM Tag 3 · Quick Wins"},
+  {cat:"Grundlagen & Rollen",q:"Ein Unternehmen analysiert Kunden-Videorezensionen auf Stimmungen. Welche KI-Disziplinen kommen typischerweise zum Einsatz?",opts:["Computer Vision für die Analyse visueller Informationen (Mimik, Gestik).", "Natural Language Processing für Transkription und Stimmungsanalyse des gesprochenen Texts.", "Klassische regelbasierte Automatisierung — Videoanalyse erfordert kein Maschinelles Lernen.", "Reinforcement Learning, weil das System durch Kundenfeedback trainiert wird."],correct:[0, 1],exp:"Videoanalyse kombiniert Computer Vision (visuelle Signale) und NLP (sprachliche Inhalte). Klassische Automatisierung ist für unstrukturierte Videodaten ungeeignet. Reinforcement Learning ist ein Entscheidungsparadigma, kein Standard für Stimmungsanalyse.",src:"KIM Tag 1 · CV/NLP"},
+  {cat:"Grundlagen & Rollen",q:"Eine Kolleg:in sagt: „Unüberwachtes Lernen ist ideal für Qualitätskontrolle.\" Wie bewertest du das?",opts:["Unüberwachtes Lernen erkennt Muster und Anomalien — verlässliche Fehlerklassifikation erfordert jedoch typischerweise gelabelte Daten.", "Für Qualitätskontrolle mit bekannten Fehlertypen ist überwachtes Lernen der Standardansatz.", "Unüberwachtes Lernen kann für Anomalieerkennung genutzt werden — ohne Labels bleibt offen, ob eine Anomalie ein Fehler ist.", "Unüberwachtes Lernen ist generell für Bildverarbeitung ungeeignet."],correct:[0, 1, 2],exp:"Unüberwachtes Lernen findet Muster ohne Labels, liefert aber keine direkte Fehlerklassifikation. Überwachtes Lernen ist für bekannte Fehlertypen überlegen. Unüberwachtes Lernen (z.B. Autoencoder) ist für Bildverarbeitung durchaus einsetzbar.",src:"KIM Tag 1 · Supervised/Unsupervised"},
+  {cat:"Grundlagen & Rollen",q:"Ein Unternehmen überlegt Build vs. Buy für eine KI-Lösung. Welche Faktoren sind maßgeblich?",opts:["Wenn die KI-Lösung einen einzigartigen Wettbewerbsvorteil darstellt, spricht das für Build.", "Existiert eine passende Marktlösung, senkt Buy typischerweise Zeit- und Kostenaufwand.", "Build ist grundsätzlich vorzuziehen, da nur selbst entwickelte Systeme ISO 42001 erfüllen können.", "Datensouveränität und Integrationskomplexität sind relevante Entscheidungsfaktoren."],correct:[0, 1, 3],exp:"Build vs. Buy hängt von Differenzierungspotenzial, Marktverfügbarkeit, Datensouveränität und Integrationskomplexität ab. ISO 42001-Konformität ist unabhängig vom Ansatz erreichbar.",src:"KIM Tag 3 · Build vs. Buy"},
+  {cat:"Grundlagen & Rollen",q:"Welche einzige Aussage beschreibt Reinforcement Learning am präzisesten?",opts:["RL-Agenten lernen durch Belohnungs- und Bestrafungssignale, optimale Strategien in dynamischen Umgebungen zu entwickeln.", "RL ist identisch mit überwachtem Lernen und unterscheidet sich nur durch die Datensatzgröße.", "RL eignet sich für sequenzielle Entscheidungsprobleme wie Robotersteuerung oder Spieloptimierung.", "RL benötigt einen vorab vollständig beschrifteten Datensatz."],correct:[0],exp:"RL lernt durch Interaktion und Reward-Signale — kein gelabelter Datensatz erforderlich. Es ist auf sequenzielle Entscheidungen spezialisiert und grundlegend verschieden von überwachtem Lernen.",src:"KIM Tag 1 · Lernparadigmen"},
+  {cat:"Grundlagen & Rollen",q:"Du planst die Projektinitiierung für ein Logistik-KI-Vorhaben. Welche Schritte gehören zwingend dazu?",opts:["Stakeholder-Mapping: Identifikation aller betroffenen Gruppen und deren Erwartungen.", "Machbarkeitsanalyse: Bewertung von Datenverfügbarkeit, Umsetzbarkeit und Kosten-Nutzen.", "Sofortiger Aufbau eines produktionsreifen Modells, um den Zeitplan einzuhalten.", "SMART-Zieldefinition: spezifische, messbare, akzeptierte, realistische und terminierte Ziele."],correct:[0, 1, 3],exp:"Stakeholder-Mapping, Machbarkeitsanalyse und SMART-Ziele sind Kernschritte. Ein direkter Produktivaufbau ohne Vorbereitungsschritte erhöht das Risiko erheblich.",src:"KIM Tag 4 · Projektinitiierung"},
+  {cat:"Grundlagen & Rollen",q:"Eine Kolleg:in möchte den ROI ausschließlich anhand der Modellgenauigkeit messen. Du widersprichst. Welche Aussage(n) sind korrekt?",opts:["Technische Metriken allein reichen nicht — fachlich relevante KPIs müssen den Geschäftswert messen.", "Eine Accuracy von 95 % garantiert automatisch einen positiven ROI.", "Quantifizierbare Effizienzgewinne und Kosteneinsparungen sind als ROI-Indikatoren auszuweisen.", "KPIs müssen den Zusammenhang zwischen KI-Lösung und Geschäftsziel herstellen."],correct:[0, 2, 3],exp:"Technische Accuracy allein reicht nicht — fachliche KPIs (Durchlaufzeiten, Fehlerquoten, Kosten) messen den eigentlichen Geschäftswert. Hohe Accuracy garantiert keinen ROI, wenn der Anwendungsfall nicht relevant ist.",src:"KIM Tag 5 · ROI-Messung"},
+  {cat:"Grundlagen & Rollen",q:"Die Geschäftsleitung fragt nach dem Reifegrad ihrer KI-Nutzung. Welche Aussage(n) sind korrekt?",opts:["Auf der Stufe „Initial\" wird KI nur punktuell ohne übergreifende Koordination genutzt.", "Systematische KI-Nutzung beginnt erst wenn alle Prozesse vollautomatisch laufen.", "Übergreifend koordinierte, governance-gestützte Nutzung mit definierten Rollen kennzeichnet höhere Reifegrade.", "Auf Stufe „Initial\" verfügt ein Unternehmen bereits über ein vollständig implementiertes AIMS."],correct:[0, 2],exp:"Stufe „Initial\" beschreibt experimentelle, unkoordinierte Nutzung. Höhere Reifegrade zeigen koordinierte, governance-gestützte Strukturen. Vollautomatische Prozesse sind kein Reifegradmerkmal. Ein vollständiges AIMS gibt es erst auf höheren Stufen.",src:"KIM Tag 15 · Reifegradmodell"},
+  {cat:"Grundlagen & Rollen",q:"Dein Unternehmen plant KI in der Finanzabteilung. Du wirst gefragt, ob ein Proof of Concept nötig ist. Welche Aussage(n) sind korrekt?",opts:["Ein PoC demonstriert die technische Machbarkeit und den fachlichen Nutzen frühzeitig und kostengünstig.", "Ein PoC ist überflüssig, wenn das Management bereits grundsätzlich überzeugt ist.", "Durch frühe Erkenntnisse eines PoC können Fehlentwicklungen vor hohen Investitionen identifiziert werden.", "Ein PoC schafft Fakten, überzeugt Stakeholder und reduziert das Projektrisiko."],correct:[0, 2, 3],exp:"Ein PoC reduziert Risiko durch frühes Lernen und Stakeholder-Überzeugungsarbeit. Er bleibt auch bei grundsätzlicher Unterstützung sinnvoll — er weist technische Machbarkeit unter realen Bedingungen nach.",src:"KIM Tag 4 · PoC"},
+  {cat:"Datenmanagement & Tools",q:"Dein Team diskutiert den Aufwand für Datenvorbereitung in ML-Projekten. Welche Aussage(n) sind korrekt?",opts:["Datenvorbereitung macht typischerweise 60–80 % des Gesamtaufwands in ML-Projekten aus.", "Unstrukturierte Daten (Text, Bilder, Audio) sind besonders aufwändig vorzubereiten.", "Algorithmen kompensieren schlechte Datenqualität automatisch durch komplexere Modellarchitekturen.", "Datenintegrität muss von Beginn an sichergestellt werden, nicht erst in der Rollout-Phase."],correct:[0, 1],exp:"Datenvorbereitung ist der zeitintensivste Schritt. Unstrukturierte Daten erfordern aufwändige Vorverarbeitung. Kein Algorithmus kompensiert grundlegend schlechte Datenqualität. Datenintegrität ist von Anfang an sicherzustellen.",src:"KIM Tag 6 · Datenmanagement"},
+  {cat:"Datenmanagement & Tools",q:"Das Team erklärt, MLOps sei für das KI-Vorhaben unerlässlich. Welche Aussage(n) zu MLOps sind korrekt?",opts:["MLOps überträgt DevOps-Prinzipien auf den gesamten Machine-Learning-Lebenszyklus.", "MLOps beschränkt sich auf den Deployment-Schritt und hat keinen Einfluss auf Datenvorbereitungsprozesse.", "MLOps ermöglicht kontinuierliches Monitoring und automatisierte Nachschulung gegen Model Drift.", "KI-Manager:innen programmieren alle MLOps-Automatisierungen eigenständig in Python."],correct:[0, 2],exp:"MLOps überträgt DevOps-Prinzipien auf den gesamten ML-Lebenszyklus — einschließlich Datenvorbereitung. Es ermöglicht Monitoring und automatisiertes Retraining. Programmierung ist Aufgabe von ML/Data Engineers.",src:"KIM Tag 6 · MLOps"},
+  {cat:"Datenmanagement & Tools",q:"Das Marketing-Team möchte generative KI für Content-Erstellung einsetzen. Du berätst. Welche Aussage(n) sind korrekt?",opts:["Tool-Auswahl muss sich am konkreten Anwendungsfall orientieren.", "Lizenzmodelle und Nutzungsrechte für generierten Output sind bei kommerzieller Nutzung irrelevant.", "Prompt Engineering ist die methodische Formulierung von Eingaben zur gezielten Steuerung von KI-Ausgaben.", "DSGVO-Anforderungen des Anbieters müssen vor dem Einsatz geprüft werden."],correct:[0, 2, 3],exp:"Anwendungsfallspezifische Auswahl, Prompt Engineering und DSGVO-Prüfung sind Kernaufgaben. Lizenzen sind keineswegs irrelevant — viele Anbieter schränken kommerzielle Nutzung generierter Inhalte ein.",src:"KIM Tag 7 · KI-Tools"},
+  {cat:"Datenmanagement & Tools",q:"Das Team baut eine Datenpipeline für ein ML-Projekt. Welche Aussage(n) sind korrekt?",opts:["Eine Datenpipeline stellt den kontinuierlichen Datenfluss für Training, Validierung und Evaluation sicher.", "Datenpipelines sind nur einmalig beim ersten Modelltraining relevant.", "Datenpipelines automatisieren ETL-Schritte und reduzieren manuelle Fehlerquellen.", "Datenintegrität in der Pipeline ist Voraussetzung für reproduzierbare Modellergebnisse."],correct:[0, 2],exp:"Datenpipelines sind dauerhaft relevant — für Nachtraining, Monitoring und Aktualisierungen. Einmalige Nutzung widerspricht MLOps-Prinzipien.",src:"KIM Tag 6 · Datenpipelines"},
+  {cat:"Datenmanagement & Tools",q:"Im Produktivbetrieb nimmt die Vorhersagequalität des Modells allmählich ab. Wie ordnest du das ein?",opts:["Es liegt Model Drift vor — die Modellleistung sinkt, weil sich Eingabedaten-Eigenschaften verändert haben.", "Model Drift tritt nicht auf, wenn das Modell initial eine Accuracy über 90 % erreicht hat.", "Kontinuierliches Monitoring von Metriken ermöglicht Früherkennung von Model Drift.", "Retraining mit aktuellen Daten ist die Standard-Gegenmaßnahme."],correct:[0, 2, 3],exp:"Model Drift entsteht durch sich ändernde Datenmuster — unabhängig von initialer Accuracy. Monitoring ermöglicht Früherkennung, Retraining ist die Standardmaßnahme.",src:"KIM Tag 8 · Model Drift"},
+  {cat:"Datenmanagement & Tools",q:"Welche einzige Aussage zum RACI-Modell ist korrekt?",opts:["RACI (Responsible, Accountable, Consulted, Informed) ist ein Modell zur Rollenverteilung — kein Prompt-Engineering-Framework.", "RACI ist ein strukturierter Ansatz im Prompt Engineering zur Steuerung von KI-Ausgaben.", "RACI beschreibt die vier Phasen des ML-Modelltrainings.", "RACI steht für vier Qualitätsdimensionen von Trainingsdaten."],correct:[0],exp:"RACI steht für Responsible, Accountable, Consulted, Informed — ein Rollenverteilungsmodell aus dem Projektmanagement. Es hat keinen Bezug zu Prompt Engineering, ML-Phasen oder Datenqualität.",src:"KIM Tag 4 · RACI-Modell"},
+  {cat:"Datenmanagement & Tools",q:"Du bereitest Trainingsdaten für ein Kreditrisikomodell vor. Welche Maßnahmen sind korrekt?",opts:["Bereinigung von Duplikaten, Ausreißern und fehlenden Werten.", "Prüfung der Repräsentativität — fehlen Gruppen, kann das Modell systematisch biasierte Ergebnisse produzieren.", "Datenprovenienz-Dokumentation ist optional, da Auditierbarkeit durch das Modell selbst sichergestellt wird.", "Datenprovenienz muss dokumentiert werden, um Auditierbarkeit gegenüber Behörden nachzuweisen."],correct:[0, 1],exp:"Bereinigung und Repräsentativitätsprüfung sind essenziell. Datenprovenienz muss dokumentiert werden — das Modell selbst kann keine Auditierbarkeit der Datenherkunft gewährleisten.",src:"KIM Tag 6 · Datenqualität"},
+  {cat:"Datenmanagement & Tools",q:"Du evaluierst KI-Plattformen für den unternehmensweiten Einsatz. Welche Aussage(n) sind korrekt?",opts:["Lizenzmodelle und Nutzungsrechte müssen vor der Implementierung geprüft werden.", "DSGVO-Konformität und IT-Kompatibilität sind relevante Auswahlkriterien.", "Der bekannteste Anbieter ist automatisch die beste Wahl.", "Auftragsverarbeitungsverträge (Art. 28 DSGVO) sind bei personenbezogenen Daten erforderlich."],correct:[0, 1, 3],exp:"Lizenzen, DSGVO-Konformität und AVV sind kritische Auswahlkriterien. Markenbekanntheit ist kein Qualitäts- oder Compliance-Indikator.",src:"KIM Tag 7 · Tool-Governance"},
+  {cat:"Datenmanagement & Tools",q:"Dein Team diskutiert algorithmischen Bias. Welche Aussage(n) sind korrekt?",opts:["Algorithmischer Bias entsteht primär, wenn Trainingsdaten historische Ungleichheiten widerspiegeln oder Gruppen unterrepräsentiert sind.", "Bias wird durch ausschließliche Nutzung synthetisch generierter Daten vollständig eliminiert.", "Bias-Minimierung sollte bereits in der Konzeptionsphase eingeplant werden.", "Ein kontinuierliches Risikomanagementsystem sollte Bias über den gesamten Lebenszyklus überwachen."],correct:[0, 2, 3],exp:"Bias entsteht durch nicht-repräsentative Daten. Synthetische Daten reduzieren bestimmte Bias-Quellen, eliminieren sie aber nicht vollständig. Bias-Management gehört in die Konzeptionsphase und den laufenden Betrieb.",src:"KIM Tag 8 · Algorithmischer Bias"},
+  {cat:"Datenmanagement & Tools",q:"Das Marketing-Team nutzt generative KI für Produktbeschreibungen. Du sicherst die Governance. Welche Maßnahmen sind korrekt?",opts:["Interne Nutzungsrichtlinie: Welche Inhalte dürfen KI-generiert sein, welche erfordern menschliche Prüfung?", "Klärung urheberrechtlicher Aspekte für generierten Content.", "Generative KI-Ausgaben sind immer fehlerfrei — auf Qualitätskontrolle kann verzichtet werden.", "Schulung der Mitarbeitenden im Prompt Engineering."],correct:[0, 1, 3],exp:"Nutzungsrichtlinien, Urheberrecht und Schulung sind Kern-Governance-Maßnahmen. Generative KI produziert keine garantiert fehlerfreien Ausgaben — Human-in-the-Loop und Qualitätskontrolle bleiben unverzichtbar.",src:"KIM Tag 7 · Generative KI"},
+  {cat:"Datenmanagement & Tools",q:"Welche Aussage(n) zu Feature Engineering sind korrekt?",opts:["Feature Engineering bezeichnet Auswahl, Transformation und Erstellung von Eingabemerkmalen zur Verbesserung der Modellleistung.", "Gute Features verbessern die Modellleistung erheblich — schlechte Features führen trotz gutem Algorithmus zu schlechten Ergebnissen.", "Deep-Learning-Modelle extrahieren Features automatisch aus Rohdaten — manuelles Feature Engineering entfällt dann weitgehend.", "Feature Engineering ist ausschließlich Aufgabe von KI-Manager:innen, nicht von Data Scientists."],correct:[0, 1, 2],exp:"Feature Engineering verbessert Modellleistung. Deep Learning kann Features automatisch extrahieren. Feature Engineering ist primär Aufgabe von Data Scientists.",src:"KIM Tag 6 · Feature Engineering"},
+  {cat:"Datenmanagement & Tools",q:"Als KI-Manager:in bist du für Daten-Governance verantwortlich. Welche Aufgaben liegen in deinem Bereich?",opts:["Sicherstellung, dass Datenqualitätsstandards definiert und eingehalten werden.", "Eigenständige technische Implementierung der Datenbankarchitektur.", "Koordination zwischen Fachbereichen und IT, um Datenfluss sicherzustellen.", "Überwachung der DSGVO-Konformität bei personenbezogenen Trainingsdaten."],correct:[0, 2, 3],exp:"Qualitätsstandards, Koordination und DSGVO-Compliance sind KI-Manager-Aufgaben. Die Datenbankarchitektur-Implementierung ist Aufgabe von IT/Data Engineers.",src:"KIM Tag 6 · Daten-Governance"},
+  {cat:"Datenmanagement & Tools",q:"Dein Unternehmen trainiert ML-Modelle in der Cloud. Welche Governance-Aspekte musst du berücksichtigen?",opts:["Datenlokalisierung: In welcher Region werden Daten verarbeitet — relevant für DSGVO-Konformität.", "AVV mit dem Cloud-Anbieter gemäß Art. 28 DSGVO bei personenbezogenen Daten.", "Cloud-Nutzung ist automatisch DSGVO-konform, sobald der Anbieter EU-Server betreibt.", "Zugriffskontrollen und Verschlüsselung der Trainingsdaten als Sicherheitsmaßnahmen."],correct:[0, 1, 3],exp:"Datenlokalisierung, AVV und Zugriffskontrollen sind kritische Pflichten. Cloud-Nutzung ist nicht automatisch DSGVO-konform — Drittlandtransfers und Subauftragnehmer können Compliance-Lücken erzeugen.",src:"KIM Tag 6 · Cloud-Governance"},
+  {cat:"Datenmanagement & Tools",q:"Welche Aussage(n) zur Abgrenzung strukturierter und unstrukturierter Daten sind korrekt?",opts:["Strukturierte Daten liegen in tabellarischer Form vor und sind für klassisches ML direkt verarbeitbar.", "Unstrukturierte Daten machen den Großteil der Unternehmensdaten aus und erfordern spezialisierte Vorverarbeitung.", "Deep Learning eignet sich besonders für unstrukturierte Daten wie Bilder, Text und Audio.", "Unstrukturierte Daten können ohne Vorverarbeitung direkt in klassische ML-Algorithmen eingespeist werden."],correct:[0, 1, 2],exp:"Strukturierte Daten sind für klassisches ML direkt nutzbar. Unstrukturierte Daten dominieren und erfordern Vorverarbeitung. Deep Learning ist dafür geeignet. Ohne Transformation können unstrukturierte Daten nicht in klassische Algorithmen einfließen.",src:"KIM Tag 6 · Datentypen"},
+  {cat:"Datenmanagement & Tools",q:"Du prüfst Trainingsdaten für ein Hochrisiko-KI-System nach EU AI Act Art. 10. Welche Aussage(n) sind korrekt?",opts:["Trainingsdaten müssen für den Verwendungszweck geeignet und repräsentativ für relevante Anwendungssituationen sein.", "Statistische Eigenschaften und Verteilung müssen dokumentiert und für den Kontext angemessen sein.", "Vollständige Fehlerfreiheit der Trainingsdaten ist laut Art. 10 eine verbindliche Pflicht.", "Qualitätssicherungsmaßnahmen müssen dokumentiert sein, um gegenüber Behörden nachweisbar zu sein."],correct:[0, 1, 3],exp:"Art. 10 EU AI Act verlangt Repräsentativität, dokumentierte statistische Eigenschaften und Qualitätsnachweise. Vollständige Fehlerfreiheit ist kein realistisches Ziel — Prozesse zur Fehlerminimierung sind gefordert.",src:"EU AI Act Art. 10"},
+  {cat:"Modelltraining & Einsatz",q:"Das Team erklärt die Aufteilung des Datensatzes. Welche Aussage(n) sind korrekt?",opts:["Trainingsdaten werden aktiv für das Lernen des Modells genutzt — sie prägen die Parameter.", "Validierungsdaten werden für das initiale Training des Modells verwendet und danach als Testdaten weitergenutzt.", "Testdaten müssen während Training und Validierung unberührt bleiben, um unvoreingenommene Bewertung zu ermöglichen.", "Logging von Trainings-Ergebnissen ist die einzige Voraussetzung für reproduzierbare Modellergebnisse."],correct:[0, 2],exp:"Trainingsdaten trainieren das Modell. Validierungsdaten dienen zur Hyperparameter-Feinabstimmung, nicht zum initialen Training. Testdaten müssen bis zur finalen Evaluation isoliert bleiben.",src:"KIM Tag 8 · Daten-Split"},
+  {cat:"Modelltraining & Einsatz",q:"Das Modell zeigt auf Trainingsdaten hohe Genauigkeit, auf neuen Daten deutlich schlechtere Ergebnisse. Welche Aussage(n) sind korrekt?",opts:["Es liegt Overfitting vor — das Modell hat Trainingsdaten auswendig gelernt statt allgemeine Muster zu erkennen.", "Regularisierungstechniken (L1/L2), Dropout oder Early Stopping können Overfitting reduzieren.", "Overfitting wird durch ausschließliche Erhöhung der Modellkomplexität behoben.", "Overfitting ist ein Zeichen hoher Modellqualität."],correct:[0, 1],exp:"Overfitting bedeutet mangelnde Generalisierung. Regularisierung, Dropout und Early Stopping sind Gegenmaßnahmen. Erhöhung der Modellkomplexität verschlimmert Overfitting. Overfitting ist ein Problem, kein Qualitätsmerkmal.",src:"KIM Tag 8 · Overfitting"},
+  {cat:"Modelltraining & Einsatz",q:"Das Team diskutiert White-Box- und Black-Box-Tests. Welche Aussage(n) sind korrekt?",opts:["White-Box-Tests prüfen die interne Logik und Struktur des Algorithmus.", "Black-Box-Tests beurteilen die Leistung anhand von Ein- und Ausgabe, ohne interne Architektur zu analysieren.", "Unit-Tests ersetzen bei KI-Systemen vollständig die Modell-Evaluation auf Testdaten.", "Black-Box-Tests sind in der Praxis die häufigste Testform für KI-Modelle."],correct:[0, 1],exp:"White-Box-Tests prüfen interne Logik, Black-Box-Tests Ein/Ausgabe. Unit-Tests prüfen einzelne Komponenten, ersetzen aber nicht die Modell-Evaluation. Black-Box-Tests sind praxistauglich und verbreitet.",src:"KIM Tag 8 · Testverfahren"},
+  {cat:"Modelltraining & Einsatz",q:"Welche einzige Aussage zur Rolle der Testdaten ist korrekt?",opts:["Testdaten dienen der abschließenden, unvoreingenommenen Bewertung — sie dürfen während des Trainings nicht einsehbar sein.", "Testdaten werden parallel zu Trainingsdaten für die Gewichtsanpassung genutzt.", "Der gesamte Datensatz kann für Training und Tests genutzt werden, wenn er groß genug ist.", "Testdaten und Validierungsdaten sind identisch und austauschbar."],correct:[0],exp:"Testdaten müssen bis zur finalen Evaluation isoliert bleiben — nur so liefern sie eine unvoreingenommene Bewertung. Validierungs- und Testdaten haben unterschiedliche Rollen.",src:"KIM Tag 8 · Testdaten"},
+  {cat:"Modelltraining & Einsatz",q:"Du beaufsichtigst ein Betrugerkennungsmodell. Kein echter Betrugsfall soll unentdeckt bleiben. Welche Aussage(n) sind korrekt?",opts:["Recall (Sensitivität) ist wichtiger als Precision — sie misst den Anteil tatsächlicher Betrugsfälle, die korrekt erkannt wurden.", "Hoher Recall und niedrige False-Positive-Rate sind gleichzeitig immer ohne Trade-off erreichbar.", "Accuracy ist die einzig relevante Metrik bei Betrugserkennungsaufgaben.", "Der F1-Score vereint Precision und Recall — relevant, wenn ein ausgewogenes Verhältnis angestrebt wird."],correct:[0, 3],exp:"Bei hohen Kosten unentdeckter Betrugsfälle wird Recall priorisiert. Der Recall-Precision-Trade-off ist bekannt — hoher Recall erzeugt tendenziell mehr Fehlalarme. Accuracy reicht bei unbalancierten Datensätzen nicht aus. Der F1-Score balanciert beide Metriken.",src:"KIM Tag 8 · Evaluationsmetriken"},
+  {cat:"Modelltraining & Einsatz",q:"Das AIMS nach ISO 42001 verlangt Nachvollziehbarkeit. Welche Maßnahmen unterstützen diese Anforderung?",opts:["Kontinuierliche Protokollierung (Logging) aller Systemaktivitäten und Modellentscheidungen.", "Sicherstellung repräsentativer, hochwertiger Trainingsdaten zur Erfüllung von Bias-Anforderungen.", "Umfassende Dokumentation der Evaluierungsmethoden ist nicht erforderlich, da ISO 42001 nur Prozesse, nicht Modellergebnisse dokumentiert.", "Die Black-Box-Problematik entfällt automatisch durch ISO-42001-Zertifizierung."],correct:[0, 1],exp:"Logging und Datenqualitätsnachweise sind Kernmaßnahmen. ISO 42001 erfordert ausdrücklich auch die Dokumentation von Evaluierungsmethoden und Metriken. Die Black-Box-Problematik bleibt bestehen — ISO 42001 fordert Maßnahmen dagegen, löst sie aber nicht automatisch.",src:"KIM Tag 8 · ISO 42001 Traceability"},
+  {cat:"Modelltraining & Einsatz",q:"Im Produktivbetrieb beobachtest du eine schrittweise Verschlechterung der Modellleistung. Welche Maßnahmen sind korrekt?",opts:["Kontinuierliches Monitoring von Performance-Metriken zur Früherkennung von Model Drift.", "Monitoring kann eingestellt werden, wenn das Modell zwei Quartale stabil war.", "Analyse von Datenintegrität und Input-Drift.", "Automatische Feedback-Schleifen ersetzen das Logging vollständig — getrennte Protokollierung ist dann nicht mehr notwendig."],correct:[0, 2],exp:"Kontinuierliches Monitoring und Input-Drift-Analyse sind die Kernmaßnahmen. Feedback-Schleifen sind ergänzend wertvoll, ersetzen aber strukturiertes Logging nicht. Monitoring ist ein dauerhafter Prozess.",src:"KIM Tag 8 · Monitoring"},
+  {cat:"Modelltraining & Einsatz",q:"Das Team diskutiert Explainable AI (XAI). Welche Aussage(n) sind korrekt?",opts:["XAI adressiert die Black-Box-Problematik und macht Modellentscheidungen für Menschen nachvollziehbar.", "XAI-Methoden wie LIME oder SHAP zeigen, welche Features einen Entscheid beeinflusst haben.", "EU AI Act und DSGVO Art. 22 verlangen bei automatisierten Entscheidungen mit erheblichen Auswirkungen Erklärbarkeit.", "Bei Hochrisiko-KI ist XAI optional — Erklärbarkeit muss nur auf Anfrage nachgereicht werden."],correct:[0, 1, 2],exp:"XAI macht Entscheidungen erklärbar. LIME und SHAP sind verbreitete Methoden. EU AI Act und DSGVO Art. 22 begründen rechtliche Pflichten. XAI ist keine optionale Anforderung bei Hochrisiko-KI.",src:"KIM Tag 8 · XAI"},
+  {cat:"Modelltraining & Einsatz",q:"Vor dem Go-Live eines KI-Systems für Kreditentscheidungen müssen Abnahmekriterien erfüllt sein. Welche Aussage(n) sind korrekt?",opts:["Definierte Performance-Schwellenwerte müssen auf repräsentativen Testdaten erreicht werden.", "DSGVO Art. 22 und EU AI Act müssen vor Go-Live nachweislich erfüllt und dokumentiert sein.", "Go-Live kann freigegeben werden, sobald das Modell auf Trainingsdaten 99 % Accuracy zeigt.", "Eine Rollback-Strategie für technische Probleme nach Go-Live muss definiert sein."],correct:[0, 1, 3],exp:"Performance auf Testdaten, rechtliche Compliance und Rollback-Planung sind Go-Live-Kriterien. Accuracy auf Trainingsdaten kann Overfitting verschleiern — kein valider Go-Live-Indikator.",src:"KIM Tag 9 · Go-Live"},
+  {cat:"Modelltraining & Einsatz",q:"Welche Aussage(n) zum Prinzip Human-in-the-Loop sind korrekt?",opts:["DSGVO Art. 22 gewährt Betroffenen das Recht auf menschliche Überprüfung bei ausschließlich automatisierten Entscheidungen.", "Human-in-the-Loop bedeutet, dass ein Mensch die Möglichkeit hat, die KI-Entscheidung zu überprüfen und zu überschreiben.", "Human-in-the-Loop ist nur freiwillig implementierbar — gesetzliche Pflichten existieren nicht.", "Bei Hochrisiko-KI nach EU AI Act ist menschliche Aufsicht eine verpflichtende Anforderung."],correct:[0, 1, 3],exp:"DSGVO Art. 22 und EU AI Act begründen rechtliche Pflichten zu menschlicher Aufsicht. Human-in-the-Loop ist kein optionales Extra bei betroffenen KI-Systemen.",src:"EU AI Act · DSGVO Art. 22"},
+  {cat:"Modelltraining & Einsatz",q:"Nach sechs Monaten Betrieb sollen Feedback-Schleifen eingerichtet werden. Welche Aussage(n) sind korrekt?",opts:["Feedback-Schleifen erfassen Nutzungsmuster und Modellergebnisse systematisch für Retraining.", "Feedback-Schleifen sind nur bei Bilddaten relevant — Textmodelle benötigen kein Retraining.", "Iterative Optimierung durch Retraining ist ein Kernprinzip von MLOps.", "Logging-Daten aus dem Produktivbetrieb können als Grundlage für Retraining genutzt werden."],correct:[0, 2, 3],exp:"Feedback-Schleifen, Retraining und Logging sind MLOps-Kernprinzipien. Retraining ist nicht auf Bilddaten beschränkt — auch Textmodelle driften.",src:"KIM Tag 8 · Iterative Optimierung"},
+  {cat:"Modelltraining & Einsatz",q:"Ein Sprachmodell zeigt Overfitting. Welche Regularisierungsmaßnahmen sind korrekt?",opts:["L1- und L2-Regularisierung bestrafen zu große Parameterwerte und reduzieren Overfitting.", "Dropout deaktiviert zufällig Neuronen im Training und erzwingt robustere Repräsentationen.", "Early Stopping stoppt das Training, wenn die Leistung auf Validierungsdaten nicht mehr steigt.", "Regularisierung erhöht die Modellkomplexität und verbessert dadurch die Trainingsdaten-Accuracy."],correct:[0, 1, 2],exp:"L1/L2-Regularisierung, Dropout und Early Stopping sind Anti-Overfitting-Techniken. Regularisierung reduziert Komplexität, um Generalisierung zu verbessern — Trainingsdaten-Accuracy steigt dabei typischerweise nicht.",src:"KIM Tag 8 · Regularisierung"},
+  {cat:"Modelltraining & Einsatz",q:"Ein Lieferzeit-Vorhersagemodell liefert in anderen Werken schlechte Ergebnisse. Welche Aussage(n) sind korrekt?",opts:["Das Modell generalisiert nicht auf neue Domänen — ein Zeichen mangelnder Repräsentativität im Training.", "Es liegt Domain Shift vor: Die Datenverteilung in anderen Werken weicht von der Trainingsdomäne ab.", "Transfer Learning kann helfen — das Modell wird auf Daten der neuen Werke feingetunt.", "Das Problem ist ausschließlich auf fehlerhafte Netzwerkverbindungen zurückzuführen."],correct:[0, 1, 2],exp:"Fehlende Repräsentativität im Training führt zu schlechter Generalisierung. Domain Shift beschreibt die Abweichung zwischen Train- und Einsatzdomäne. Transfer Learning ermöglicht Domänenanpassung.",src:"KIM Tag 8 · Domain Shift"},
+  {cat:"Modelltraining & Einsatz",q:"Welche einzige Aussage zur Bedeutung von Logging im Produktivbetrieb ist korrekt?",opts:["Logging ist ein dauerhafter Prozess: Es protokolliert Systemaktivitäten, ermöglicht Auditierbarkeit und dient als Grundlage für Drift-Erkennung und Retraining.", "Logging ist nur während der Trainingsphase relevant — nach Go-Live entfällt es.", "Im Produktivbetrieb ist Logging freiwillig, da ISO 42001 es nicht explizit fordert.", "Logging ist ausschließlich für sicherheitsrelevante Systeme gesetzlich vorgeschrieben."],correct:[0],exp:"Logging ist im Produktivbetrieb dauerhaft relevant: für Auditierbarkeit, regulatorische Compliance und als Grundlage für Drift-Erkennung. ISO 42001 fordert Logging ausdrücklich.",src:"KIM Tag 8 · Logging"},
+  {cat:"Modelltraining & Einsatz",q:"Dein Unternehmen führt MLOps ein. Welche Kernziele sind korrekt?",opts:["Automatisierung und Standardisierung des ML-Lebenszyklus von Datenvorbereitung bis Deployment.", "CI/CD für ML-Modelle ermöglicht schnellere und zuverlässigere Modell-Updates.", "MLOps fokussiert ausschließlich auf manuelle Datenbereinigung durch Data Scientists.", "Reproduzierbarkeit von Experimenten und Ergebnissen ist ein zentrales MLOps-Ziel."],correct:[0, 1, 3],exp:"MLOps automatisiert den ML-Lebenszyklus, ermöglicht CI/CD und sichert Reproduzierbarkeit. Manuelle Datenbereinigung ist das Gegenteil von MLOps-Zielen.",src:"KIM Tag 8 · MLOps-Ziele"},
+  {cat:"Risikomanagement & Projektsteuerung",q:"Dein Team diskutiert, welche Projektmethode für KI-Projekte geeignet ist. Welche Aussage(n) sind korrekt?",opts:["Ein hybrider Ansatz kombiniert klassisches PM (Budget, Meilensteine) mit agilen Methoden (iterative Entwicklung).", "Agile Methoden sind für Entwicklungs- und Testphasen geeignet, da sie schnelle Feedbackzyklen ermöglichen.", "KI-Projekte sollten ausschließlich nach der klassischen Wasserfall-Methode gesteuert werden.", "Iterative Deployment-Zyklen mit MVPs sind nur für Start-ups geeignet, nicht im Unternehmenskontext."],correct:[0, 1],exp:"Hybride Ansätze verbinden Planungssicherheit mit Flexibilität. Agile Methoden ermöglichen frühe Feedbackschleifen. Reiner Wasserfall ist für explorative KI-Projekte ungeeignet. MVPs sind im Unternehmenskontext bewährte Praxis.",src:"KIM Tag 9 · Projektmethodik"},
+  {cat:"Risikomanagement & Projektsteuerung",q:"Du stellst sicher, dass rechtliche Rahmenbedingungen eingehalten werden. Welche Aussage(n) sind korrekt?",opts:["ISO 42001 verpflichtet zur kontinuierlichen Protokollierung (Logging), um Auditierbarkeit zu gewährleisten.", "Sicherheit und Erklärbarkeit sind zentrale Anforderungen des EU AI Act für Hochrisiko-KI.", "Eine DSFA ist ausschließlich bei der Verarbeitung besonders sensibler Daten nach Art. 9 DSGVO erforderlich.", "Bei Hochrisiko-KI muss ein kontinuierliches RMS über den gesamten Lebenszyklus etabliert werden."],correct:[0, 1],exp:"ISO 42001 fordert Logging. EU AI Act verlangt Sicherheit und Erklärbarkeit. Eine DSFA kann auch ohne Art.-9-Daten erforderlich sein (Art. 35 DSGVO). Das RMS für Hochrisiko-KI gilt über den gesamten Lebenszyklus — ebenfalls korrekt, hier aber auf die primären Anforderungen fokussiert.",src:"KIM Tag 9 · Rechtliche Compliance"},
+  {cat:"Risikomanagement & Projektsteuerung",q:"Du sorgst für kontinuierliche Verbesserung (KVP) im KI-Projekt. Welche Maßnahmen sind korrekt?",opts:["Kontinuierliches Monitoring der Modellleistung, um Model Drift frühzeitig zu erkennen.", "Iterative Deployment-Zyklen mit MVPs ermöglichen frühes Nutzerfeedback.", "Agile Methoden ersetzen bei KI-Projekten grundsätzlich die klassische Budget- und Ressourcenplanung.", "Dokumentation von Verbesserungsmaßnahmen ist für Auditierbarkeit nach ISO 42001 erforderlich."],correct:[0, 1],exp:"Monitoring und MVPs sind KVP-Instrumente. Agile Methoden ersetzen die Budgetplanung nicht — hybrides Vorgehen ist der Standard. Dokumentation ist wichtig, aber hier nicht das spezifische KVP-Instrument.",src:"KIM Tag 9 · KVP"},
+  {cat:"Risikomanagement & Projektsteuerung",q:"Dein Unternehmen entwickelt ein Hochrisiko-KI-System. Welche Pflichten gelten nach EU AI Act?",opts:["Implementierung eines kontinuierlichen Risikomanagementsystems über den gesamten Lebenszyklus.", "Sicherstellung menschlicher Aufsicht mit Überwachungs- und Interventionsmöglichkeit.", "Pflicht zur offenen Veröffentlichung der vollständigen Trainingsdatensätze.", "Logging ist für Hochrisiko-KI nicht verpflichtend — die Anforderung gilt nur für Strafverfolgungssysteme."],correct:[0, 1],exp:"EU AI Act verlangt für Hochrisiko-KI: Risikomanagement und Human Oversight. Vollständige Veröffentlichung von Trainingsdaten ist keine generelle Pflicht. Logging ist für alle Hochrisiko-KI-Systeme verpflichtend.",src:"EU AI Act · Hochrisiko-KI"},
+  {cat:"Risikomanagement & Projektsteuerung",q:"Wann ist gemäß DSGVO eine Datenschutz-Folgenabschätzung (DSFA) durchzuführen?",opts:["Wenn die Verarbeitung ein hohes Risiko für die Rechte natürlicher Personen darstellt.", "Ausschließlich wenn das KI-System mit Daten von Minderjährigen arbeitet.", "Wenn das KI-System systematische Bewertungen persönlicher Aspekte vornimmt, die erhebliche Auswirkungen haben.", "Wenn neue Technologien eingesetzt werden und der Umfang ein hohes Risiko erzeugen kann."],correct:[0, 2, 3],exp:"Eine DSFA ist erforderlich bei hohem Risiko für Betroffene — nicht ausschließlich bei Minderjährigen-Daten. Automatisierte Bewertungssysteme und neue Technologien sind typische DSFA-Auslöser nach Art. 35 DSGVO.",src:"DSGVO Art. 35"},
+  {cat:"Risikomanagement & Projektsteuerung",q:"Welche einzige Aussage zur Hauptursache algorithmischen Bias ist korrekt?",opts:["Algorithmischer Bias entsteht primär, wenn Trainingsdaten historische Ungleichheiten widerspiegeln oder Gruppen unterrepräsentiert sind.", "Bias entsteht ausschließlich durch fehlerhafte Programmierung des ML-Algorithmus.", "Bias lässt sich vollständig eliminieren, indem der Datensatz groß genug gemacht wird.", "Bias tritt nur in Deep-Learning-Systemen auf, nicht in klassischen ML-Modellen."],correct:[0],exp:"Nicht-repräsentative Trainingsdaten und historische Ungleichheiten sind die Hauptursache. Bias ist kein reines Programmierproblem, kann durch Datenmenge allein nicht eliminiert werden und tritt in allen ML-Paradigmen auf.",src:"KIM Tag 8 · Bias Ursachen"},
+  {cat:"Risikomanagement & Projektsteuerung",q:"Das Risikomanagementsystem nach ISO 42001 muss welche Anforderungen erfüllen?",opts:["Kontinuierliche Identifikation, Analyse und Bewertung von Risiken über den gesamten Lebenszyklus.", "Berücksichtigung technischer, organisatorischer und ethischer Risiken.", "Das RMS kann nach erfolgreichem Go-Live auf Anfrage der Geschäftsleitung eingestellt werden.", "Dokumentation von Risikobewertungen ist optional, wenn das RMS intern gut bekannt ist."],correct:[0, 1],exp:"Das RMS nach ISO 42001 umfasst kontinuierlich technische, organisatorische und ethische Risiken. Es kann nicht nach Go-Live eingestellt werden. Die Dokumentation von Risikobewertungen ist verpflichtend — interne Bekanntheit ersetzt keinen Nachweis.",src:"ISO 42001 · Risikomanagement"},
+  {cat:"Risikomanagement & Projektsteuerung",q:"Du nutzt das RACI-Modell in der Projektsteuerung. Welche Aussage(n) sind korrekt?",opts:["RACI steht für Responsible (Durchführend), Accountable (Verantwortlich), Consulted (Beratend), Informed (Informiert).", "RACI macht Verantwortlichkeiten transparent und hilft, Zuständigkeitslücken zu vermeiden.", "Jede Aufgabe sollte genau eine accountable Person haben.", "RACI ist ein Qualitätssicherungsrahmen für Datenpipelines."],correct:[0, 1, 2],exp:"RACI steht für Responsible, Accountable, Consulted, Informed. Es schließt Verantwortungslücken und sieht genau eine accountable Person pro Aufgabe vor. RACI ist ein PM-Instrument, kein Datenpipeline-Framework.",src:"KIM Tag 4 · RACI-Modell"},
+  {cat:"Risikomanagement & Projektsteuerung",q:"Du planst Budget und Ressourcen für ein KI-Projekt. Welche Aussage(n) sind korrekt?",opts:["Budget für Lizenzen, Cloud-Infrastruktur und externe Beratungsleistungen muss eingeplant werden.", "Bei agiler Entwicklung kann auf feste Budget-Allokation vollständig verzichtet werden.", "Verfügbarkeit und Qualität der Trainingsdaten müssen als kritische Ressource eingeplant werden.", "Externe Partner können fehlendes KI-Know-how schnell beschaffen."],correct:[0, 2, 3],exp:"Budget für Lizenzen/Cloud/Beratung, Datenverfügbarkeit und externe Partner sind relevante Planungsgrößen. Agile Methoden ersetzen die Budgetplanung nicht.",src:"KIM Tag 9 · Ressourcenplanung"},
+  {cat:"Risikomanagement & Projektsteuerung",q:"Du führst Stakeholder-Management für ein KI-Vorhaben durch. Welche Maßnahmen sind korrekt?",opts:["Zielgruppengerechte Kommunikation: Endanwender:innen brauchen Praxis-Infos, Management fokussiert ROI.", "Frühzeitige Einbindung von Betriebsrat und Datenschutz minimiert Widerstände.", "Das RACI-Modell macht Rollenverteilung transparent.", "Stakeholder-Management beschränkt sich auf das Executive Sponsoring."],correct:[0, 1, 2],exp:"Zielgruppengerechte Kommunikation, frühzeitige Einbindung und RACI sind Kernmaßnahmen. Operative Mitarbeitende sind für Akzeptanz essenziell — Beschränkung auf Executive Sponsoring greift zu kurz.",src:"KIM Tag 4 · Stakeholder-Management"},
+  {cat:"Risikomanagement & Projektsteuerung",q:"Welche Aussage(n) zur Erklärbarkeit im Governance-Kontext sind korrekt?",opts:["XAI adressiert die Black-Box-Problematik und macht Entscheidungen nachvollziehbar.", "Erklärbarkeit ist notwendig, um Transparenzpflichten nach DSGVO Art. 22 und EU AI Act zu erfüllen.", "Bei Hochrisiko-KI ist Human Oversight nicht verpflichtend, wenn XAI implementiert ist.", "Erklärbarkeit ist eine kontinuierliche Anforderung im AIMS nach ISO 42001."],correct:[0, 1, 3],exp:"XAI erfüllt regulatorische Anforderungen und ist ISO-42001-Anforderung. XAI ersetzt Human Oversight nicht — bei Hochrisiko-KI sind beide Anforderungen separat verpflichtend.",src:"KIM Tag 8 · XAI und Governance"},
+  {cat:"Risikomanagement & Projektsteuerung",q:"Dein KI-Projekt soll in den Regelbetrieb überführt werden. Welche Abnahmekriterien sind korrekt?",opts:["Performance-Schwellenwerte müssen auf repräsentativen Testdaten erreicht werden.", "Rechtliche Anforderungen (DSGVO, EU AI Act) müssen nachweislich erfüllt und dokumentiert sein.", "Abnahmetests prüfen neben Performance auch Integration und Sicherheitsanforderungen.", "Nach erfolgter DSGVO-Prüfung entfällt eine technische Rollback-Planung."],correct:[0, 1, 2],exp:"Performance auf Testdaten, rechtliche Compliance und Integrations-/Sicherheitstests sind Abnahmekriterien. Eine Rollback-Strategie ist zusätzlich erforderlich — DSGVO-Prüfung entbindet nicht von technischer Notfallplanung.",src:"KIM Tag 9 · Abnahmekriterien"},
+  {cat:"Risikomanagement & Projektsteuerung",q:"Welche Methode ist für die iterative Entwicklung in KI-Projekten empfohlen?",opts:["Ausschließlich Wasserfall — klare Phasen sind bei KI zwingend erforderlich.", "Hybrider Ansatz: klassisches PM für Rahmenbedingungen, agile Methoden für die Entwicklungszyklen.", "Ausschließlich agil — Meilensteine und Budgetplanung sind bei KI irrelevant.", "Rapid Application Development ohne Phasenstruktur."],correct:[1],exp:"Der hybride Ansatz kombiniert Planungssicherheit des klassischen PM mit der Flexibilität agiler Methoden. Weder reiner Wasserfall noch rein agile Ansätze ohne Planungsrahmen sind für typische KI-Projekte optimal.",src:"KIM Tag 9 · Hybridmethodik"},
+  {cat:"Risikomanagement & Projektsteuerung",q:"Dein Team plant externe Partnerschaften für das KI-Projekt. Welche Aussage(n) sind korrekt?",opts:["Externe Partner können fehlendes KI-Know-how schnell beschaffen.", "Datenschutzverträge (AVV) und Vertraulichkeitsvereinbarungen sind bei externer Zusammenarbeit notwendig.", "Externe Partner übernehmen automatisch Compliance- und Governance-Verantwortung.", "Kosten für externe Partner müssen in der Budget- und Ressourcenplanung berücksichtigt werden."],correct:[0, 1, 3],exp:"Externe Partner beschleunigen Know-how-Aufbau, erfordern aber rechtliche Absicherung. Die Governance-Verantwortung verbleibt beim Auftraggeber.",src:"KIM Tag 9 · Externe Partner"},
+  {cat:"Risikomanagement & Projektsteuerung",q:"Du implementierst einen KVP-Prozess für ein KI-System. Welche Aussage(n) sind korrekt?",opts:["KVP basiert auf kontinuierlichem Monitoring, um Leistungsveränderungen früh zu erkennen.", "Iterative Modellverbesserungen durch Retraining mit neuen Daten sind zentraler Bestandteil.", "KVP endet mit der initialen Go-Live-Phase.", "Dokumentation von Verbesserungsmaßnahmen ist für Auditierbarkeit nach ISO 42001 erforderlich."],correct:[0, 1, 3],exp:"KVP im KI-Kontext ist ein Dauerauftrag: Monitoring, Retraining und Dokumentation. Das System wird nach Go-Live nicht wartungsfrei.",src:"KIM Tag 9 · KVP Prozess"},
+  {cat:"Governance & Change Management",q:"Bevor du die KI-Strategie entwickelst, wird der Reifegrad bewertet. Welche Aussage(n) sind korrekt?",opts:["Die Reifegradanalyse ist eine einmalige Aufgabe in der Initialisierungsphase — danach nicht mehr notwendig.", "Sie dient als Standortbestimmung und Basis für Maßnahmenpläne zur Schließung von Ist-Soll-Lücken.", "Auf der Stufe „Initial\" wird KI nur punktuell ohne übergreifende Koordination genutzt.", "Mehrdimensionale Bewertung ist nur für Konzerne relevant — für KMUs reicht eine technische Analyse."],correct:[1, 2],exp:"Die Reifegradanalyse ist keine Einmalaufgabe. Sie dient als Standortbestimmung. Stufe „Initial\" beschreibt unkoordinierte Nutzung. Mehrdimensionale Bewertung ist für alle Unternehmensgrößen relevant.",src:"KIM Tag 15 · Reifegradanalyse"},
+  {cat:"Governance & Change Management",q:"Die Einführung eines KI-Systems löst bei Mitarbeitenden Ängste aus. Welche Maßnahmen sind korrekt?",opts:["Frühzeitige transparente Kommunikation über Ziele, Vorteile und Auswirkungen auf den Arbeitsalltag.", "Schulung und Kompetenzaufbau, um Angst vor Überforderung zu adressieren.", "Endanwender:innen sollten erst nach der technischen Fertigstellung eingebunden werden, um Anforderungsänderungen zu vermeiden.", "Aktive Beteiligung (Co-Creation) der Endanwender:innen im Gestaltungsprozess."],correct:[0, 1],exp:"Frühzeitige Kommunikation und Schulung sind bewährte Maßnahmen. Mitarbeitende erst nach Go-Live zu informieren, führt zu Widerstand. Co-Creation ist hilfreich, aber späte Einbindung ist der Kernfehler.",src:"KIM Tag 15 · Change Management"},
+  {cat:"Governance & Change Management",q:"Dein Unternehmen baut eine KI-Governance-Struktur auf. Welche Elemente sind zentral?",opts:["Etablierung eines interdisziplinären Gremiums (z. B. Ethikrat) zur Beurteilung ethischer Implikationen.", "Entwicklung standardisierter Prozesse für Entwicklung, Freigabe, Monitoring und Stilllegung.", "Fokus ausschließlich auf technische Implementierung — Governance ist rein technisch abdeckbar.", "Rollenverteilung in der KI-Governance erfolgt ausschließlich über IT-Zugriffsrechte, nicht über RACI."],correct:[0, 1],exp:"KI-Governance braucht Ethikgremium und standardisierte Prozesse. Governance ist kein rein technisches Thema. RACI und klare Rollenverteilung sind wichtige Governance-Instrumente.",src:"KIM Tag 15 · KI-Governance"},
+  {cat:"Governance & Change Management",q:"Ein interdisziplinäres KI-Team soll aufgebaut werden. Welche Aussage(n) sind korrekt?",opts:["Teams aus Data Scientists, Fachexperten, Compliance-Verantwortlichen und Change Manager:innen sind essenziell.", "Governance- und Compliance-Verantwortung wird klar den KI-Manager:innen und Governance-Funktionen zugeordnet.", "Hyperparameter-Tuning und Overfitting-Erkennung liegen primär bei Fachexperten (Domänenspezialisten).", "Das RACI-Modell ist ein Werkzeug ausschließlich für agile Teams und nicht für KI-Governance-Strukturen geeignet."],correct:[0, 1],exp:"Interdisziplinarität und klare Governance-Zuständigkeiten sind Erfolgsfaktoren. Hyperparameter-Tuning liegt bei Data Scientists. RACI ist keineswegs agil-exklusiv — es ist ein universelles PM-Werkzeug für Rollenklarheit.",src:"KIM Tag 15 · Teamstruktur"},
+  {cat:"Governance & Change Management",q:"Du entwickelst eine ganzheitliche KI-Strategie. Welche Kerndimensionen sind korrekt?",opts:["Governance, Ethik & Recht: Rahmen für verantwortungsvolle Nutzung und Compliance.", "Datenstrategie & Datenmanagement: Verfügbarkeit, Qualität und Governance als Fundament.", "Die operative Implementierung von MLOps-Pipelines ist die zentrale strategische Kerndimension.", "Technologie-Auswahl beschränkt sich auf das KI-Framework und ist keine eigenständige strategische Dimension."],correct:[0, 1],exp:"KI-Strategie umfasst Governance/Ethik/Recht und Datenstrategie als Kerndimensionen. MLOps-Implementierung ist eine operative Aufgabe. Technologie & Infrastruktur (inkl. Build-vs-Buy, Cloud) ist eine vollständige strategische Dimension.",src:"KIM Tag 15 · KI-Strategie"},
+  {cat:"Governance & Change Management",q:"Die KI-Einführung im Vertrieb soll zielgruppengerecht kommuniziert werden. Welche Aussage(n) sind korrekt?",opts:["Endanwender:innen benötigen Informationen zu Schulungen, konkretem Nutzen und Alltags-Unterstützung.", "Das Management fokussiert sich auf Business Case, ROI und Governance.", "Einheitliche Botschaften für alle Zielgruppen sind effizienter als zielgruppenspezifische Kommunikation.", "Der Betriebsrat muss frühzeitig eingebunden werden, um Mitbestimmungsrechte zu wahren."],correct:[0, 1, 3],exp:"Zielgruppengerechte Kommunikation ist wirksamer als einheitliche Botschaften. Endanwender:innen, Management und Betriebsrat haben unterschiedliche Bedürfnisse und Rechte.",src:"KIM Tag 15 · Kommunikationsstrategie"},
+  {cat:"Governance & Change Management",q:"Dein Unternehmen führt eine SWOT-Analyse für die KI-Strategie durch. Welche Aussage(n) sind korrekt?",opts:["SWOT identifiziert Stärken und Schwächen (intern) sowie Chancen und Risiken (extern).", "SWOT-Ergebnisse liefern Inputs für die KI-Strategie — Stärken können als Hebel genutzt werden.", "Interne Stärken und Schwächen fließen in den Außenrahmen (Chancen/Risiken) der SWOT ein.", "Die SWOT-Analyse liefert automatisch eine fertige KI-Strategie ohne weiteren Planungsschritt."],correct:[0, 1],exp:"SWOT analysiert interne Stärken/Schwächen und externe Chancen/Risiken — nicht umgekehrt. Es ist ein Input-Instrument, kein Strategie-Substitut.",src:"KIM Tag 15 · SWOT-Analyse"},
+  {cat:"Governance & Change Management",q:"Welche Aussage(n) zum Fokus der GAP-Analyse im KI-Kontext sind korrekt?",opts:["Die GAP-Analyse vergleicht ausschließlich technische Unterschiede zwischen IT-Infrastruktur und KI-Anforderungen.", "Sie identifiziert die Lücke zwischen aktuellem KI-Reifegrad und angestrebtem Soll-Zustand.", "Sie deckt alle relevanten Dimensionen ab: Technologie, Daten, Kompetenzen, Governance und Kultur.", "Die GAP-Analyse ist nur für Unternehmen auf Stufe „Initial\" relevant."],correct:[1, 2],exp:"Die GAP-Analyse ist mehrdimensional (Technologie, Daten, Kompetenzen, Governance, Kultur) und für alle Reifegrade relevant. Sie ist kein rein technisches Werkzeug.",src:"KIM Tag 15 · GAP-Analyse"},
+  {cat:"Governance & Change Management",q:"Das RACI-Modell wird im KI-Projektteam eingeführt. Welche Aussage(n) sind korrekt?",opts:["R = Responsible: Die Person oder Gruppe, die die Aufgabe tatsächlich ausführt.", "A = Accountable: Die Person, die letztlich verantwortlich ist — pro Aufgabe genau eine.", "C = Consulted: Personen, deren Fachwissen eingeholt wird — bidirektionale Kommunikation.", "I = Informed: Personen, die wie Consulted aktiv an Entscheidungen mitwirken — bidirektionale Kommunikation."],correct:[0, 1, 2],exp:"R = ausführend, A = letztverantwortlich (genau eine Person), C = beratend (bidirektional). I = Informed bedeutet einseitige Information über Fortschritt — gerade nicht bidirektionale Mitentscheidung, das ist der Unterschied zu C.",src:"KIM Tag 4 · RACI-Definitionen"},
+  {cat:"Governance & Change Management",q:"Dein Unternehmen ist auf Reifegradstufe 2. Was charakterisiert höhere Reifegrade?",opts:["KI ist unternehmensübergreifend koordiniert, mit definierten Governance-Strukturen und standardisierten Prozessen.", "Höhere Reifegrade zeichnen sich durch ein aktiv betriebenes AIMS nach ISO 42001 aus.", "Vollständige Automatisierung aller Unternehmensprozesse ist das definierende Merkmal der höchsten Stufe.", "Messung und Optimierung des KI-ROI ist ein Merkmal höherer Reifegrade."],correct:[0, 1, 3],exp:"Höhere Reifegrade zeigen unternehmensweite Koordination, AIMS-Betrieb und ROI-Messung. Vollständige Prozessautomatisierung ist kein definiertes Reifegradmerkmal.",src:"KIM Tag 15 · Höhere Reifegrade"},
+  {cat:"Governance & Change Management",q:"Du entwickelst eine KI-Strategie für ein mittelständisches Unternehmen. Welche Dimensionen müssen abgedeckt sein?",opts:["Technologie & Infrastruktur: Build-vs-Buy, Cloud-Strategie und IT-Integration.", "Datenstrategie & Datenmanagement: Verfügbarkeit, Qualität und Governance.", "Kompetenzentwicklung & Change Management: Schulung und Akzeptanzförderung.", "Governance und Ethik werden nach ISO-42001-Zertifizierung vollständig durch das AIMS abgedeckt — eine eigenständige strategische Dimension entfällt dann."],correct:[0, 1, 2],exp:"Eine vollständige KI-Strategie umfasst Technologie/Infrastruktur, Datenstrategie und Kompetenzentwicklung/Change Management. Governance, Ethik & Recht ist eine essenziell eigenständige Dimension — ISO-42001-Zertifizierung ersetzt sie nicht, sondern unterstützt sie.",src:"KIM Tag 15 · Vollständige KI-Strategie"},
+  {cat:"Governance & Change Management",q:"Für die Prozessanalyse werden Automatisierungspotenziale identifiziert. Welche Aussage(n) sind korrekt?",opts:["Medienbrüche und wiederkehrende manuelle Schritte sind typische Indikatoren für Automatisierungspotenzial.", "Prozesse mit hohem Datenvolumen, klaren Regeln und Wiederholcharakter eignen sich besonders.", "Nur Prozesse mit mehr als 100 beteiligten Mitarbeitenden bieten ausreichend Potenzial für KI.", "Die SWOT-Analyse kann die Prozessanalyse im strategischen Kontext sinnvoll ergänzen."],correct:[0, 1, 3],exp:"Medienbrüche, manuelle Wiederholschritte und hohe Datenvolumen sind Automatisierungsindikatoren. Mitarbeiterzahl ist kein Kriterium. SWOT ergänzt die Prozessanalyse sinnvoll.",src:"KIM Tag 15 · Prozessanalyse"},
+  {cat:"Governance & Change Management",q:"Dein Unternehmen will AI-Literacy bei Mitarbeitenden aufbauen. Welche Maßnahmen sind korrekt?",opts:["Zielgruppenspezifische Schulungen: Endanwender:innen brauchen Anwendungswissen, Fachexperten Methodenkenntnisse.", "Schulungen reduzieren Ängste und stärken die Akzeptanz neuer KI-Systeme.", "AI-Literacy ist ausschließlich für technische Mitarbeitende relevant — Führungskräfte benötigen sie nicht.", "Hands-on-Übungen mit KI-Tools erhöhen Verständnis und Anwendungssicherheit."],correct:[0, 1, 3],exp:"Zielgruppenspezifische Schulungen, Angstreduzierung und praktische Übungen sind wirksam. AI-Literacy ist für alle Mitarbeitenden relevant — Führungskräfte müssen Potenziale und Risiken einschätzen können.",src:"KIM Tag 15 · AI-Literacy"},
+  {cat:"Governance & Change Management",q:"Welche einzige Aussage zur Wirksamkeitsprüfung des AIMS nach ISO 42001 ist korrekt?",opts:["Regelmäßige interne Audits, ein dedizierter KI-Verantwortlicher und standardisierte Lebenszyklussprozesse sind Kernelemente — externe Erstzertifizierung entbindet nicht von kontinuierlicher interner Prüfung.", "Die interne Wirksamkeitsprüfung kann nach der externen Erstzertifizierung entfallen.", "Interne Audits sind nicht erforderlich, wenn ein externes Audit bestanden wurde.", "Das AIMS muss intern nur bei regulatorischen Verstößen überprüft werden."],correct:[0],exp:"Interne Audits, KI-Verantwortliche und standardisierte Prozesse sind Kernelemente. Externe Erstzertifizierung entbindet nicht von kontinuierlicher interner Überprüfung — ISO 42001 ist ein kontinuierliches Managementsystem.",src:"ISO 42001 · AIMS-Wirksamkeit"},
+  {cat:"Governance & Change Management",q:"Als KI-Manager:in baust du eine Governance-Struktur für die organisationsweite KI-Nutzung auf. Welche Maßnahmen sind korrekt?",opts:["Standardisierte Prozesse für den KI-Lebenszyklus (Entwicklung, Freigabe, Monitoring, Stilllegung) sichern Auditierbarkeit.", "Zuweisung der Gesamtverantwortung für KI-Strategie und Compliance an KI-Verantwortliche.", "Einrichtung eines interdisziplinären Gremiums (z. B. Ethikrat) zur Bewertung ethischer Implikationen.", "KI-Governance ist eine einmalige Aufbauaufgabe — nach Implementierung wird kein laufender Betrieb benötigt."],correct:[0, 1, 2],exp:"Standardisierte Prozesse, KI-Verantwortliche und Ethikgremium sind Kernbausteine. KI-Governance ist kein Einmalvorhaben — sie muss kontinuierlich betrieben, geprüft und weiterentwickelt werden.",src:"KIM Tag 15 · Governance-Struktur"},
+]; /* Ende QBANK */ // end QBANK
+
+/* ─── State ─────────────────────────────────────────────────────── */
+var state = { name: '', questions: [], selections: [] };
+
+function startQuiz() {
+  state.name = document.getElementById('participant-name').value.trim() || 'Anonym';
+  state.questions = shuffle(QBANK.slice());
+  state.selections = state.questions.map(function(){ return []; });
+  document.getElementById('setup-section').style.display = 'none';
+  document.getElementById('quiz-section').style.display = 'block';
+  var strip = document.getElementById('quiz-header-strip');
+  strip.innerHTML = '<span class="strip-tag">KI-Manager:in</span><span class="strip-tag">Generalwiederholung</span><span class="strip-name">' + escHtml(state.name) + '</span>';
+  renderQuestions();
+}
+
+function shuffle(arr) {
+  for (var i = arr.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var t = arr[i]; arr[i] = arr[j]; arr[j] = t;
+  }
+  return arr;
+}
+
+function shuffleIndexes(n) {
+  var arr = [];
+  for (var i = 0; i < n; i++) arr.push(i);
+  return shuffle(arr);
+}
+
+function renderQuestions() {
+  var container = document.getElementById('questions-container');
+  container.innerHTML = '';
+  var total = state.questions.length;
+  var weekShown = {};
+  state.questions.forEach(function(q, qi) {
+    var nCorrect = q.correct.length;
+    var hint = 'Eine oder mehrere Antworten können richtig sein.';
+    var shuffledIdx = shuffleIndexes(q.opts.length);
+    var card = document.createElement('div');
+    card.className = 'q-card';
+    card.id = 'qcard-' + qi;
+    card.innerHTML = '<div class="q-num">Frage ' + (qi+1) + ' von ' + total + ' · ' + escHtml(q.cat) + '</div>'
+      + '<div class="q-text">' + escHtml(q.q) + '</div>'
+      + '<div class="q-hint">' + hint + '</div>'
+      + '<div class="opt-list" id="opts-' + qi + '"></div>';
+    container.appendChild(card);
+    var optList = document.getElementById('opts-' + qi);
+    shuffledIdx.forEach(function(origIdx) {
+      var opt = document.createElement('div');
+      opt.className = 'opt';
+      opt.dataset.qi = qi;
+      opt.dataset.oi = origIdx;
+      opt.innerHTML = '<div class="opt-cb" id="cb-'+qi+'-'+origIdx+'"></div>'
+        + '<div class="opt-text">' + escHtml(q.opts[origIdx]) + '</div>';
+      opt.addEventListener('click', function() { toggleOpt(qi, origIdx); });
+      optList.appendChild(opt);
+    });
+  });
+  updateProgress();
+  checkSubmitReady();
+}
+
+function toggleOpt(qi, oi) {
+  var sel = state.selections[qi];
+  var idx = sel.indexOf(oi);
+  if (idx === -1) { sel.push(oi); } else { sel.splice(idx, 1); }
+  var allOpts = document.querySelectorAll('#opts-' + qi + ' .opt');
+  allOpts.forEach(function(el) {
+    var elOi = parseInt(el.dataset.oi);
+    var isSelected = sel.indexOf(elOi) !== -1;
+    el.classList.toggle('selected', isSelected);
+    var cb = document.getElementById('cb-' + qi + '-' + elOi);
+    cb.classList.toggle('chk', isSelected);
+  });
+  checkSubmitReady();
+  updateProgress();
+}
+
+function checkSubmitReady() {
+  var allAnswered = state.selections.every(function(s){ return s.length > 0; });
+  document.getElementById('btn-submit').disabled = !allAnswered;
+}
+
+function updateProgress() {
+  var answered = state.selections.filter(function(s){ return s.length > 0; }).length;
+  var total = state.questions.length;
+  document.getElementById('progress-label').textContent = answered + ' von ' + total + ' Fragen beantwortet';
+  document.getElementById('progress-fill').style.width = (answered / total * 100) + '%';
+}
+
+function submitQuiz() {
+  var score = 0;
+  var catMap = {};
+  state.questions.forEach(function(q, qi) {
+    var sel = state.selections[qi].slice().sort();
+    var cor = q.correct.slice().sort();
+    var ok = sel.length === cor.length && sel.every(function(v,i){ return v === cor[i]; });
+    if (ok) score++;
+    if (!catMap[q.cat]) catMap[q.cat] = { ok: 0, total: 0 };
+    catMap[q.cat].total++;
+    if (ok) catMap[q.cat].ok++;
+
+    var card = document.getElementById('qcard-' + qi);
+    var allOpts = card.querySelectorAll('.opt');
+    allOpts.forEach(function(el) {
+      el.classList.add('disabled');
+      var elOi = parseInt(el.dataset.oi);
+      var isSelected = sel.indexOf(elOi) !== -1;
+      var isCorrect = cor.indexOf(elOi) !== -1;
+      if (isSelected && isCorrect) el.classList.add('correct-sel');
+      else if (isSelected && !isCorrect) el.classList.add('wrong-sel');
+      else if (!isSelected && isCorrect) el.classList.add('missed');
+      el.classList.remove('selected');
+    });
+
+    var fb = document.createElement('div');
+    fb.className = 'feedback ' + (ok ? 'fb-ok' : 'fb-wrong');
+    fb.innerHTML = '<div class="fb-title">' + (ok ? '✓ Richtig' : '✗ Nicht vollständig richtig') + '</div>'
+      + '<div class="fb-text">' + escHtml(q.exp) + '</div>'
+      + (q.src ? '<div class="fb-source">Quelle: ' + escHtml(q.src) + '</div>' : '');
+    card.appendChild(fb);
+  });
+
+  document.getElementById('btn-submit').style.display = 'none';
+  var total = state.questions.length;
+  var pct = Math.round(score / total * 100);
+  var grade = pct >= 80 ? '✓✓' : pct >= 60 ? '✓' : '✗';
+  var label = pct >= 80 ? 'Sehr gut' : pct >= 60 ? 'Bestanden' : 'Noch einmal';
+  var sub = score + ' von ' + total + ' Fragen vollständig richtig (' + pct + ' %)';
+  document.getElementById('result-grade').textContent = grade;
+  document.getElementById('result-label').textContent = label;
+  document.getElementById('result-sub').textContent = sub;
+  document.getElementById('stats-row').innerHTML =
+    '<div class="stat"><div class="stat-n">' + score + '</div><div class="stat-l">Richtig</div></div>' +
+    '<div class="stat"><div class="stat-n">' + (total-score) + '</div><div class="stat-l">Fehler</div></div>' +
+    '<div class="stat"><div class="stat-n">' + pct + '%</div><div class="stat-l">Ergebnis</div></div>';
+
+  var bars = document.getElementById('comp-bars');
+  bars.innerHTML = '';
+  Object.keys(catMap).forEach(function(cat) {
+    var d = catMap[cat];
+    var p = Math.round(d.ok / d.total * 100);
+    bars.innerHTML += '<div class="comp-row"><div class="comp-labels"><span>' + escHtml(cat) + '</span><span>' + d.ok + '/' + d.total + '</span></div>'
+      + '<div class="comp-track"><div class="comp-fill ' + (p>=60?'fill-ok':'fill-wrong') + '" style="width:' + p + '%"></div></div></div>';
+  });
+
+  var reviewHtml = '';
+  state.questions.forEach(function(q, qi) {
+    var sel = state.selections[qi].slice().sort();
+    var cor = q.correct.slice().sort();
+    var ok = sel.length === cor.length && sel.every(function(v,i){ return v === cor[i]; });
+    reviewHtml += '<div style="margin-bottom:1.2rem;padding:1rem;background:var(--card);border:1px solid var(--rule);border-radius:10px;">'
+      + '<div style="font-family:\'DM Mono\',monospace;font-size:10px;color:var(--muted);margin-bottom:.4rem;">Frage ' + (qi+1) + ' · ' + escHtml(q.cat) + '</div>'
+      + '<div style="font-size:14px;font-weight:500;margin-bottom:.5rem;">' + escHtml(q.q) + '</div>'
+      + '<div style="font-size:12px;color:' + (ok?'var(--correct)':'var(--wrong)') + ';font-weight:500;">' + (ok ? '✓ Vollständig richtig' : '✗ Nicht vollständig richtig') + '</div>'
+      + '</div>';
+  });
+  document.getElementById('review-container').innerHTML = reviewHtml;
+  document.getElementById('results-section').style.display = 'block';
+  document.getElementById('results-section').scrollIntoView({ behavior: 'smooth' });
+
+  sendResult(score, total, pct);
+}
+
+function sendResult(score, total, pct) {
+  var TAG_NR = 17;
+  var THEMA  = 'Generalwiederholung';
+  var letters = ['A','B','C','D'];
+  var toSend = [];
+  state.questions.forEach(function(q, i) {
+    var selIndices  = state.selections[i].slice().sort();
+    var corrIndices = q.correct.slice().sort();
+    var isFull      = selIndices.join(',') === corrIndices.join(',');
+    var gewaehlt    = selIndices.map(function(idx) { return letters[idx]; }).join(',') || '-';
+    var korrekt     = corrIndices.map(function(idx) { return letters[idx]; }).join(',');
+    var ergebnis    = isFull ? 'RICHTIG' : 'FALSCH';
+    toSend.push(
+      APPS_SCRIPT_URL
+      + '?tab='        + encodeURIComponent('KI-Beauftragter')
+      + '&teilnehmer=' + encodeURIComponent(state.name)
+      + '&tag='        + TAG_NR
+      + '&thema='      + encodeURIComponent(THEMA)
+      + '&stufe='      + encodeURIComponent('Gemischt · KI-Manager:in')
+      + '&frage_nr='   + (i + 1)
+      + '&frage_text=' + encodeURIComponent(q.q.substring(0, 80))
+      + '&gewaehlt='   + encodeURIComponent(gewaehlt)
+      + '&korrekt='    + encodeURIComponent(korrekt)
+      + '&ergebnis='   + encodeURIComponent(ergebnis)
+    );
+  });
+  var st = document.getElementById('submit-status');
+  st.className = 'submit-status sending';
+  st.textContent = 'Übertrage 1 von ' + toSend.length + ' — Seite bitte offen lassen …';
+  var transferDone = false;
+  function beforeUnloadGuard(e) {
+    if (!transferDone) { e.preventDefault(); e.returnValue = ''; }
+  }
+  window.addEventListener('beforeunload', beforeUnloadGuard);
+  var idx = 0;
+  function sendNext() {
+    if (idx >= toSend.length) {
+      transferDone = true;
+      window.removeEventListener('beforeunload', beforeUnloadGuard);
+      st.className = 'submit-status success';
+      st.textContent = '✓ ' + toSend.length + ' Antworten übermittelt (' + new Date().toLocaleTimeString('de-DE') + ')';
+      return;
+    }
+    st.textContent = 'Übertrage ' + (idx + 1) + ' von ' + toSend.length + ' — Seite bitte offen lassen …';
+    fetch(toSend[idx], { mode: 'no-cors' })
+      .catch(function() {})
+      .then(function() { idx++; setTimeout(sendNext, 200); });
+  }
+  sendNext();
+}
+
+function escHtml(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+</script>
+</body>
+</html>
