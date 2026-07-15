@@ -216,6 +216,22 @@ footer{border-top:1px solid var(--rule);padding:1.5rem 2rem;max-width:820px;marg
       </div>
     </div>
 
+    <div id="card-tag5" class="quiz-card locked">
+      <div id="icon-tag5" class="card-icon icon-muted">📋</div>
+      <div class="card-body">
+        <div class="card-tag">Tag 5 · Freitag</div>
+        <div class="card-title">Vertiefung EU AI Act</div>
+        <div class="card-desc">Hochrisiko-KI, Verbotene Praktiken, Transparenzpflichten.</div>
+        <div class="card-meta">
+          <span class="pill">5 * 2 Fragen mit Perspektivwechsel</span>
+          <span class="pill" id="pill-tag5">Gesperrt</span>
+        </div>
+      </div>
+      <div class="card-action" id="action-tag5">
+        <span class="btn-locked">Gesperrt</span>
+      </div>
+    </div>
+
   </div>
 
   <!-- Woche 2 -->
@@ -271,6 +287,22 @@ footer{border-top:1px solid var(--rule);padding:1.5rem 2rem;max-width:820px;marg
         </div>
       </div>
       <div class="card-action" id="action-tag9"><span class="btn-locked">Gesperrt</span></div>
+    </div>
+
+    <div id="card-tag10" class="quiz-card locked">
+      <div id="icon-tag10" class="card-icon icon-muted">📋</div>
+      <div class="card-body">
+        <div class="card-tag">Tag 10 · Freitag</div>
+        <div class="card-title">Risikomanagement II</div>
+        <div class="card-desc">Operative Risikosteuerung, Maßnahmen, Eskalationspfade.</div>
+        <div class="card-meta">
+          <span class="pill">5 * 2 Fragen mit Perspektivwechsel</span>
+          <span class="pill" id="pill-tag10">Gesperrt</span>
+        </div>
+      </div>
+      <div class="card-action" id="action-tag10">
+        <span class="btn-locked">Gesperrt</span>
+      </div>
     </div>
 
   </div>
@@ -395,10 +427,12 @@ var QUIZ_FILES = {
   2:  'Quiz/Tag_2_KI-Kommunikation_Prompting.html',
   3:  'Quiz/Tag_3_Rechtliche_Grundlagen_I.html',
   4:  'Quiz/Tag_4_Rechtliche_Grundlagen_II.html',
+  5:  'Quiz/Tag_5_Vertiefung_EU_AI_Act.html',
   6:  'Quiz/Tag_6_EU_AI_Act_Vertiefung.html',
   7:  'Quiz/Tag_7_Managementsysteme_Standards.html',
   8:  'Quiz/Tag_8_Compliance_M365.html',
   9:  'Quiz/Tag_9_Risikomanagement_I.html',
+  10: 'Quiz/Tag_10_Risikomanagement_II.html',
   11: 'Quiz/Tag_11_Risikomanagement_II.html',
   12: 'Quiz/Tag_12_QS_Abnahme.html',
   13: 'Quiz/Tag_13_Stakeholder_Kommunikation.html',
@@ -493,15 +527,21 @@ function renderStatus(kurstag) {
     freischalten(t);
   }
 
-  // Sonderfälle: Karten die mehrere Tage zusammenfassen
-  // (z.B. Tag 11 steht für Tage 11-13)
+  // Sonderfälle: Generalwiederholung ab Tag 13 freischalten
   var SAMMELKARTEN = {
-    11: [11,12,13],
-    14: [14,15],
-    17: [13,17]  // Generalwiederholung bereits ab Tag 13 verfügbar
+    17: 13  // Generalwiederholung bereits ab Tag 13 verfügbar
   };
   for (var sammel in SAMMELKARTEN) {
-    var tage = SAMMELKARTEN[sammel];
+    if (kurstag >= SAMMELKARTEN[sammel]) {
+      freischalten(parseInt(sammel));
+    }
+  }
+})();
+</script>
+
+</body>
+</html>
+MMELKARTEN[sammel];
     // Freischalten wenn mindestens einer der Tage erreicht ist
     if (kurstag >= tage[0]) {
       freischalten(parseInt(sammel));
