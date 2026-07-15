@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Lernkontrolle · Tag 5 · Vertiefung EU AI Act — Digital Omnibus &amp; Compliance-Planung</title>
+<title>Lernkontrolle · Tag 5 · Vertiefung EU AI Act</title>
 <style>
 :root {
   --ink:#1a1a18;--paper:#f5f2ec;--card:#fff;--rule:#d5d0c5;--muted:#888880;
@@ -29,6 +29,13 @@ a{color:var(--accent);}
 .setup-input{width:100%;border:1px solid var(--rule);border-radius:8px;padding:.6rem .9rem;font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;font-size:14px;background:var(--paper);outline:none;color:var(--ink);transition:border-color .15s;}
 .setup-input:focus{border-color:var(--ink);}
 .hint-text{font-size:12px;color:var(--muted);margin-top:.3rem;display:block;}
+.level-btns{display:flex;gap:.5rem;margin-top:.3rem;}
+.sel-btn{flex:1;padding:.55rem .6rem;border:1px solid var(--rule);border-radius:8px;background:none;font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;font-size:13px;cursor:pointer;text-align:center;transition:all .15s;color:var(--ink);}
+.sel-btn.active-1{background:var(--level-1-soft);border-color:var(--level-1);color:var(--level-1);font-weight:500;}
+.sel-btn.active-2{background:var(--level-2-soft);border-color:var(--level-2);color:var(--level-2);font-weight:500;}
+.btn-start{width:100%;padding:.75rem;background:var(--ink);color:#fff;border:none;border-radius:8px;font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;font-size:15px;font-weight:500;cursor:pointer;margin-top:1rem;transition:background .15s;}
+.btn-start:hover{background:#333;}
+.btn-start:disabled{background:#aaa;cursor:not-allowed;}
 .quiz-header-strip{display:flex;gap:.6rem;align-items:center;margin-bottom:1.4rem;flex-wrap:wrap;}
 .strip-tag{display:inline-block;font-size:11px;font-weight:600;padding:2px 10px;border-radius:100px;letter-spacing:.5px;}
 .strip-role-1{background:var(--level-1-soft);color:var(--level-1);}
@@ -100,7 +107,7 @@ a{color:var(--accent);}
 
 <header class="site-header">
   <div class="eyebrow">Alfatraining · KI-Beauftragte:r · Tag 5</div>
-  <h1>Lernkontrolle<br>Vertiefung EU AI Act — Digital Omnibus &amp; Compliance-Planung</h1>
+  <h1>Lernkontrolle<br>Vertiefung EU AI Act</h1>
   <div class="header-meta">
     <span>10 Fragen</span>
     <span>Eine oder mehrere Antworten können richtig sein</span>
@@ -152,7 +159,7 @@ a{color:var(--accent);}
     </div>
 
   <hr style="border:none;border-top:1px solid var(--rule);margin:2rem 0">
-  <h2 style="font-family:Georgia, serif;font-size:1.2rem;margin-bottom:1rem">Detailauswertung</h2>
+  <h2 style="font-family:Georgia, "Times New Roman", serif;font-size:1.2rem;margin-bottom:1rem">Detailauswertung</h2>
   <div id="review-container"></div>
 </div>
 
@@ -160,144 +167,147 @@ a{color:var(--accent);}
 
 <script>
 var APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyPs358GF_E1xsvTh08PpTpZcBDS1OvsU9XQ0qi0MkZoCCnAk4dyo3Aii0OYxILdvCRYA/exec';
+var ROLE2  = 'Datenschutzbeauftragte:r';
 
 /* ═══════ FRAGENBANK ═══════════════════════════════════════════ */
 /* Verteilung: 2x eine richtig, 4x zwei richtig, 4x drei richtig; nie vier */
 
 var QUESTIONS = [
-  /* ═══════ SET 1: KI-Beauftragte:r (Fragen 1-5) ═══════ */
+
+  /* ═══ SET 1: KI-Beauftragte:r (Fragen 1–5) ═══ */
   {
     set: 'KI-Beauftragte:r',
-    q: 'Du erstellst als KI-Beauftragte:r eine Compliance-Timeline für dein Unternehmen. Der Digital Omnibus hat den Rat am 29. Juni 2026 passiert. Welche Aussage(n) sind korrekt?',
+    q: 'Dein Unternehmen prüft, welche Rechtsbereiche beim Einsatz eines KI-gestützten Bewerbermanagementsystems gleichzeitig gelten. Du erklärst die rechtliche Einordnung des EU AI Acts. Welche Aussage(n) sind korrekt?',
     opts: [
-      'Der Digital Omnibus verschiebt die Hochrisiko-Fristen: Anhang III auf den 2. Dezember 2027, Anhang I (produktintegrierte KI) auf den 2. August 2028.',
-      'Art. 4 (KI-Kompetenzpflicht) und Art. 5 (Verbote) sind vom Digital Omnibus nicht betroffen — sie gelten seit dem 2. Februar 2025.',
-      'Der Digital Omnibus verschiebt alle Fristen der KI-Verordnung einheitlich um zwei Jahre.',
-      'Der Digital Omnibus ist seit Juni 2026 geltendes Recht.'
-    ],
-    correct: [0,1],
-    exp: 'Der Digital Omnibus verschiebt gezielt einzelne Fristen: Anhang III (Hochrisiko standalone) auf den 2. Dezember 2027, Anhang I (produktintegrierte KI) auf den 2. August 2028. Art. 4 (KI-Kompetenzpflicht) und Art. 5 (Verbote) bleiben ausdrücklich unverändert — beide gelten seit dem 2. Februar 2025. Die Aussage „alle Fristen um zwei Jahre" ist falsch. Der Digital Omnibus hat EP und Rat passiert, ist aber erst nach Amtsblatt-Veröffentlichung (vor 2.8.2026 erwartet) geltendes Recht.',
-    src: 'Rat der EU — Digital Omnibus 29.6.2026', url: 'https://www.consilium.europa.eu/de/press/press-releases/2026/06/29/digital-omnibus/'
-  },
-  {
-    set: 'KI-Beauftragte:r',
-    q: 'Dein Unternehmen setzt ein Hochrisiko-KI-System ein. Du prüfst als KI-Beauftragte:r die Betreiberpflichten nach Art. 26. Welche Aussage(n) sind korrekt?',
-    opts: [
-      'Art. 26 definiert sieben aktive Pflichten für Betreiber — darunter bestimmungsgemäße Verwendung, menschliche Aufsicht und Vorfallmeldung.',
-      'Eine Grundrechtliche Folgenabschätzung (FRIA) nach Art. 27 muss vor der Erstinbetriebnahme abgeschlossen sein — sie ist keine Kann-Bestimmung.',
-      'Art. 26 gilt parallel zur DSGVO — ein Datenschutzverstoß bei einem KI-System kann gleichzeitig ein AI-Act-Verstoß sein.',
-      'Betreiberpflichten gelten nur für Unternehmen mit mehr als 250 Mitarbeitenden.'
-    ],
-    correct: [0,1,2],
-    exp: 'Art. 26 EU AI Act definiert sieben aktive Betreiberpflichten bei Hochrisiko-KI: bestimmungsgemäße Verwendung, Datenqualität sicherstellen, Anbieter-Anweisungen einhalten, Überwachung und Vorfallmeldung, menschliche Aufsicht (Art. 14), FRIA vor Erstinbetriebnahme (Art. 27) und Barrierefreiheit. Art. 26 gilt parallel zur DSGVO — beide Normen kennen eigene Bußgeldschwellen. Eine Unternehmensgröße-Schwelle für Betreiberpflichten gibt es nicht.',
-    src: 'EU AI Act Art. 26, 27', url: 'https://artificialintelligenceact.eu/article/26/'
-  },
-  {
-    set: 'KI-Beauftragte:r',
-    q: 'Ein KMU mit 120 Mitarbeitenden fragt, ob es Erleichterungen nach dem Digital Omnibus in Anspruch nehmen kann. Welche Aussage ist korrekt?',
-    opts: [
-      'KMU-Erleichterungen umfassen Priority-Zugang zu Regulatory Sandboxes, vereinfachte Dokumentation und günstigere Bußobergrenzen — der Digital Omnibus weitet diese auf Small Mid-Caps (SMC) aus.',
-      'KMU sind vollständig von den Pflichten des EU AI Act befreit.',
-      'Erleichterungen gelten nur für Unternehmen mit weniger als 50 Mitarbeitenden.',
-      'Die KMU-Erleichterungen betreffen ausschließlich die Bußgeldhöhe, nicht die Compliance-Anforderungen.'
-    ],
-    correct: [0],
-    exp: 'Der EU AI Act nennt KMU 38-mal — mehr als „Industrie" oder „Zivilgesellschaft". Die drei wichtigsten Erleichterungen: Priority-Zugang zu Regulatory Sandboxes (Art. 57/58, kostenlos), vereinfachte Dokumentation für die Konformitätsbewertung (Art. 63) und günstigere Bußobergrenzen (der niedrigere Betrag aus Fixsumme und Umsatzanteil gilt). Der Digital Omnibus weitet diese Erleichterungen auf Small Mid-Caps (SMC) aus. Eine vollständige Befreiung gibt es nicht — die Pflichten gelten, nur vereinfacht.',
-    src: 'AI Act Explorer — SME Guide', url: 'https://artificialintelligenceact.eu/small-businesses-guide-to-the-ai-act/'
-  },
-  {
-    set: 'KI-Beauftragte:r',
-    q: 'Ab dem 2. August 2026 greifen Art.-50-Transparenzpflichten. Du identifizierst als KI-Beauftragte:r betroffene Systeme im Unternehmen. Welche Aussage(n) sind korrekt?',
-    opts: [
-      'Chatbots und KI-Assistenten müssen sich gegenüber den Nutzenden als KI zu erkennen geben.',
-      'KI-generierte Bilder, Audio, Video und Text müssen als synthetische Inhalte gekennzeichnet werden.',
-      'Art. 50 gilt nur für Hochrisiko-KI-Systeme — Chatbots mit minimalem Risiko sind nicht betroffen.',
-      'Die Bundesnetzagentur hat mit Art. 50 nichts zu tun — sie überwacht nur Hochrisiko-KI.'
-    ],
-    correct: [0,1],
-    exp: 'Art. 50 definiert vier Transparenzpflichten ab 2.8.2026: Interaktive KI muss sich als KI zu erkennen geben, synthetische Inhalte müssen gekennzeichnet werden, Emotionserkennung erfordert Information der Betroffenen, und ab 2.12.2026 kommen maschinell lesbare Wasserzeichen (Provenance) hinzu. Art. 50 gilt risikoklassenübergreifend — auch Chatbots mit minimalem Risiko sind betroffen. Die Bundesnetzagentur übernimmt als zentrale KI-Aufsichtsbehörde die Marktüberwachung und koordiniert auch die Durchsetzung von Art. 50.',
-    src: 'EU AI Act Art. 50 · Bundesnetzagentur', url: 'https://www.bundesnetzagentur.de/DE/Fachthemen/Digitales/KI/14_Marktueberwachung/start.html'
-  },
-  {
-    set: 'KI-Beauftragte:r',
-    q: 'Du sollst als KI-Beauftragte:r ein neues KI-System im Unternehmen einordnen. Welche Aussage(n) sind korrekt?',
-    opts: [
-      'Die Risikoklasse hängt am Verwendungszweck, nicht an der Technologie — dasselbe Modell kann je nach Einsatz verschiedene Klassen haben.',
-      'Drei Leitfragen helfen bei der Einordnung: Anhang-III-Bereich betroffen? Entscheidung über natürliche Person? Erhebliche Auswirkung? Dreimal Ja ergibt Hochrisiko.',
-      'Die Risikoklasse wird einmalig bei der Beschaffung festgelegt und ändert sich danach nicht mehr.',
-      'Art. 4 (KI-Kompetenzpflicht) gilt auch bei minimalem Risiko — jede Person, die KI einsetzt, muss nachweislich geschult sein.'
+      'Der EU AI Act ist eine EU-Verordnung und gilt in allen Mitgliedstaaten unmittelbar — ohne nationale Umsetzungsgesetze.',
+      'Der AI Act ist Produktrecht und reguliert KI-Systeme als Produkte — er unterscheidet sich damit grundlegend von der DSGVO, die Datenverarbeitung regelt.',
+      'Da der EU AI Act das gesamte KI-Umfeld als Produktrecht abdeckt, ist die DSGVO beim Einsatz von HR-KI nicht mehr anzuwenden.',
+      'Beim Einsatz von HR-KI greifen neben AI Act und DSGVO auch das BetrVG (§ 87 Abs. 1 Nr. 6) und ggf. sektorspezifisches Recht parallel.'
     ],
     correct: [0,1,3],
-    exp: 'Die Risikoklasse hängt am Verwendungszweck: Ein Chatbot, der Reisefragen beantwortet, ist minimal — derselbe Chatbot für Patientenanamnese ist begrenztes Risiko. Die drei Leitfragen (Anhang III, natürliche Person, erhebliche Auswirkung) helfen bei der Einordnung. Die Risikoklasse kann sich ändern, wenn sich der Verwendungszweck ändert — sie ist nicht einmalig fixiert. Art. 4 gilt universell seit 2.2.2025 — unabhängig von der Risikoklasse muss jede Person, die KI einsetzt, nachweislich geschult sein.',
-    src: 'EU AI Act Art. 4, 6, Anhang III', url: 'https://artificialintelligenceact.eu/article/6/'
+    exp: 'Der EU AI Act ist eine EU-Verordnung — direkt anwendbar, kein nationales Umsetzungsgesetz nötig. Als Produktrecht reguliert er KI-Systeme selbst; die DSGVO regelt ergänzend den Umgang mit personenbezogenen Daten. Beide Regime gelten parallel. Beim HR-KI-Einsatz kommt zusätzlich § 87 Abs. 1 Nr. 6 BetrVG (Mitbestimmung bei technischer Überwachung) ins Spiel.',
+    src: 'EU AI Act Art. 1, ErwGr 1 · DSGVO · BetrVG § 87'
   },
-
-  /* ═══════ SET 2: Geschäftsführung (Fragen 6-10) ═══════ */
   {
-    set: 'Geschäftsführung',
-    q: 'Als Geschäftsführer:in fragst du den KI-Beauftragten, was der Digital Omnibus für die Unternehmensplanung bedeutet. Welche Aussage(n) sind korrekt?',
+    set: 'KI-Beauftragte:r',
+    q: 'In einem internen Workshop stellst du die fünf Ziele des EU AI Acts (Erwägungsgrund 1) vor. Eine Kollegin fragt, welche Ziele die strengen Anforderungen für Medizin-KI und gleichzeitig die KMU-Erleichterungen begründen. Welche Aussage(n) sind korrekt?',
     opts: [
-      'Der Omnibus gibt mehr Zeit für Hochrisiko-Compliance — aber Art. 4 (KI-Kompetenzpflicht) gilt bereits seit Februar 2025 und muss jetzt nachgewiesen werden.',
-      'Mehr Zeit bedeutet nicht weniger Aufwand — wer 2027 compliant sein will, muss 2025/2026 starten.',
-      'Der Digital Omnibus reduziert den Compliance-Aufwand für Hochrisiko-Systeme um die Hälfte.',
-      'Art. 4 KI-Kompetenzpflicht betrifft nur IT-Mitarbeitende.'
+      'Das Ziel des Schutzes von Gesundheit und Sicherheit begründet die strenge Regulierung von Medizin-KI, Industrie-KI und autonomem Fahren.',
+      'Das Ziel der Förderung von Innovation und Wettbewerbsfähigkeit schlägt sich in Regulatory Sandboxes (Art. 57) und Erleichterungen für KMU nieder.',
+      'Das Ziel des funktionierenden Binnenmarkts soll Forum Shopping zwischen EU-Mitgliedstaaten verhindern — einheitliche Regeln und CE-Kennzeichnung gelten EU-weit.',
+      'Das Ziel des Schutzes von Gesundheit und Sicherheit macht alle medizinischen KI-Anwendungen automatisch zu verbotenen Praktiken nach Art. 5.'
+    ],
+    correct: [0,1,2],
+    exp: 'Erwägungsgrund 1 nennt fünf Ziele: Schutz von Grundrechten, Gesundheit/Sicherheit (→ strenge Medizin-KI-Regeln), Innovation (→ Sandboxes, KMU-Erleichterungen), Vertrauen und Binnenmarkt (→ einheitliche EU-Regeln). Medizinische KI-Anwendungen sind nicht automatisch verboten — sie können Hochrisiko-KI nach Anhang III sein, müssen aber nicht Art. 5-Verbote erfüllen.',
+    src: 'EU AI Act ErwGr 1 · Art. 5 · Art. 57'
+  },
+  {
+    set: 'KI-Beauftragte:r',
+    q: 'Dein Unternehmen plant die Einführung eines KI-gestützten Diagnoseunterstützungssystems im Krankenhaus bis Ende 2027. Als KI-Beauftragte:r ordnest du die relevanten Stichtage ein. Welche Aussage(n) zum Zeitplan des EU AI Acts sind korrekt?',
+    opts: [
+      'Die Verbote nach Art. 5 (u. a. Social Scoring, biometrische Echtzeit-Identifizierung) gelten seit dem 2. Februar 2025 — ohne Übergangsfrist.',
+      'Für Hochrisiko-KI-Systeme nach Anhang III (standalone) treten die vollen Betreiber- und Anbieterpflichten am 2. Dezember 2027 in Kraft.',
+      'Hochrisiko-KI, die in Produkte nach Anhang I integriert ist, muss bereits zum 2. August 2026 alle Konformitätspflichten erfüllen.',
+      'Art. 4 zur KI-Kompetenzpflicht wird erst 2028 wirksam.'
     ],
     correct: [0,1],
-    exp: 'Der Omnibus verschiebt die Hochrisiko-Fristen — aber die gewonnene Zeit ist keine Entwarnung. Art. 4 (KI-Kompetenzpflicht) gilt seit 2.2.2025 für alle Mitarbeitenden, die KI einsetzen, nicht nur IT. TÜV Rheinland Consulting empfiehlt: „Nicht auf die verschobenen Fristen warten, sondern die gewonnene Zeit nutzen." Der Compliance-Aufwand bleibt gleich — nur der Zeitraum für die Umsetzung ist länger.',
-    src: 'TÜV Rheinland Consulting — AI Act Zwischenstand 2026', url: 'https://consulting.tuv.com/aktuelles/ki-im-fokus/eu-ai-act-2026-zwischenstand'
+    exp: 'Art. 5 (Verbote) und Art. 4 (KI-Kompetenzpflicht) gelten seit 2.2.2025. Die Hochrisiko-Pflichten für standalone-Systeme (Anhang III) kommen am 2.12.2027. Für produktintegrierte Hochrisiko-KI (Anhang I) gilt der spätere Stichtag 2.8.2028 — nicht 2026.',
+    src: 'EU AI Act Art. 113 (Zeitplan) · Art. 4 · Art. 5'
   },
   {
-    set: 'Geschäftsführung',
-    q: 'Der KI-Beauftragte legt dir als Geschäftsführer:in einen 100-Tage-Plan vor. Welche Aussage zum Aufbau ist korrekt?',
+    set: 'KI-Beauftragte:r',
+    q: 'Ein Softwareunternehmen fragt dich, wie ein Sprachmodell einzuordnen ist, das sowohl für automatisierte Bewerbervorauswahl als auch als internes Schreibwerkzeug ohne Personalentscheidungsbezug genutzt werden soll. Welche Aussage(n) zur Risikoklassifizierung sind korrekt?',
     opts: [
-      'Phase 1 (Tag 1–30) ist „Sehen lernen": Mandat klären, KI-Inventar aufbauen, Stakeholder-Map erstellen, Quick Wins identifizieren — bevor irgendetwas implementiert wird.',
-      'Der 100-Tage-Plan beginnt direkt mit der Beschaffung eines Hochrisiko-KI-Systems.',
-      'Phase 1 besteht ausschließlich aus Art.-4-Schulungen.',
-      'Der 100-Tage-Plan ist erst relevant, wenn die KI-Verordnung vollständig in Kraft ist.'
+      'Die Risikoklasse hängt am Verwendungszweck, nicht an der eingesetzten Technologie — dasselbe Modell kann in verschiedenen Kontexten unterschiedliche Risikoklassen haben.',
+      'Der Einsatz als Bewerbervorauswahl fällt in den Hochrisiko-Bereich (Anhang III, Nr. 4: Beschäftigung und Personalmanagement).',
+      'Für das Schreibwerkzeug ohne Personalentscheidungsbezug gilt kein spezifisches Anforderungsprogramm nach AI Act, jedoch bleibt Art. 4 (KI-Kompetenzpflicht) bestehen.',
+      'Da beide Einsatzzwecke über dasselbe Modell laufen, muss das Modell einheitlich als Hochrisiko-KI eingestuft und vollständig zertifiziert werden.'
+    ],
+    correct: [0,1,2],
+    exp: 'Die Risikoklasse ist zweckabhängig: HR-Screening fällt unter Anhang III Nr. 4 (Hochrisiko), ein Schreibwerkzeug ohne Personalentscheidungscharakter typischerweise nicht. Das heißt, für den HR-Einsatz gelten Hochrisiko-Pflichten, für das Schreibwerkzeug nicht — unabhängig davon, dass es dasselbe Modell ist. Art. 4 gilt für alle Einsatzzwecke.',
+    src: 'EU AI Act Art. 6 · Anhang III Nr. 4 · Art. 4'
+  },
+  {
+    set: 'KI-Beauftragte:r',
+    q: 'Ein Sicherheitsdienstleister möchte an einem Bahnhof Kameras mit Echtzeit-Emotionserkennung einsetzen, um verdächtiges Verhalten zu erkennen. Du ordnest die Anfrage rechtlich ein. Welche Aussage ist korrekt?',
+    opts: [
+      'Emotionserkennung im öffentlichen Raum und am Arbeitsplatz ist nach Art. 5 EU AI Act grundsätzlich verboten — dieser Anwendungsfall fällt unter die verbotenen Praktiken.',
+      'Emotionserkennung ist nur verboten, wenn sie durch staatliche Stellen eingesetzt wird — private Sicherheitsdienste sind ausgenommen.',
+      'Das System ist zulässig, wenn es als Hochrisiko-KI nach Anhang III konformitätsbewertet und mit CE-Kennzeichnung versehen ist.',
+      'Verbote nach Art. 5 treten erst zum 2. Dezember 2027 in Kraft, sodass der Einsatz bis dahin provisorisch erlaubt ist.'
     ],
     correct: [0],
-    exp: 'Der 100-Tage-Plan hat drei Phasen: Phase 1 (Tag 1–30) ist „Sehen lernen" — Mandat klären, KI-Inventar aufbauen, Stakeholder-Map, Quick Wins. Phase 2 (Tag 31–60) schafft Strukturen: Risikoklassen bewerten, DSGVO-Audit, Art.-4-Schulungsplan. Phase 3 (Tag 61–100) wird wirksam: Pilot starten, GF-Report, Lenkungskreis, Compliance-Plan auf den Stichtag 2.12.2027. Der Plan beginnt nicht mit Beschaffung, sondern mit Bestandsaufnahme — und er ist jetzt relevant, nicht erst bei Vollgeltung.',
-    src: 'Kursmaterial KIB Tag 5 — 100-Tage-Plan', url: ''
+    exp: 'Art. 5 verbietet Emotionserkennung am Arbeitsplatz und in Bildungseinrichtungen sowie biometrische Kategorisierung nach sensiblen Merkmalen. Diese Verbote gelten seit 2.2.2025 — ohne Übergangsfrist, unabhängig vom Betreiber (staatlich oder privat). Eine Konformitätsbewertung schafft keine Ausnahme von Art. 5-Verboten.',
+    src: 'EU AI Act Art. 5 Abs. 1 lit. f · Art. 113'
   },
+
+  /* ═══ SET 2: Datenschutzbeauftragte:r (Fragen 6–10) ═══ */
   {
-    set: 'Geschäftsführung',
-    q: 'Du bist Geschäftsführerin eines Krankenhauses mit fünf KI-Initiativen — von Bestandsoptimierung bis Diagnoseunterstützung. Welche Aussage(n) sind korrekt?',
+    set: 'Datenschutzbeauftragte:r',
+    q: 'Als Datenschutzbeauftragte:r wirst du gebeten, die Überschneidungen zwischen AI Act und DSGVO bei einem geplanten KI-System zur automatisierten Personalplanung zu klären. Welche Aussage(n) sind korrekt?',
     opts: [
-      'Unterschiedliche KI-Initiativen können in unterschiedliche Risikoklassen fallen — die Einordnung hängt vom jeweiligen Verwendungszweck ab.',
-      'Eine Diagnoseunterstützung in der Radiologie ist wahrscheinlich Hochrisiko und erfordert eine Grundrechtliche Folgenabschätzung (FRIA) nach Art. 27 vor Erstinbetriebnahme.',
-      'KI-Systeme zur Bestandsoptimierung von Verbrauchsmaterial fallen typischerweise in die Kategorie minimales Risiko — es gelten nur Art. 4 (Kompetenz) und allgemeine Sorgfaltspflichten.',
-      'Alle fünf Initiativen müssen in dieselbe Risikoklasse eingestuft werden, weil sie im selben Unternehmen betrieben werden.'
+      'Der AI Act und die DSGVO gelten parallel — der AI Act reguliert das KI-System als Produkt, die DSGVO den Umgang mit den dabei verarbeiteten personenbezogenen Daten.',
+      'Ein KI-gestütztes HR-System kann gleichzeitig Hochrisiko-KI nach Anhang III AI Act sein und eine Datenschutz-Folgenabschätzung nach Art. 35 DSGVO erfordern.',
+      'Da der AI Act als späteres Recht die DSGVO im Bereich KI verdrängt, muss für HR-KI-Systeme keine DSFA mehr durchgeführt werden.',
+      'Die DSGVO-Rechte der betroffenen Personen — darunter Auskunft, Widerspruch und Erläuterung automatisierter Entscheidungen nach Art. 22 DSGVO — bleiben neben den AI-Act-Pflichten vollständig bestehen.'
     ],
-    correct: [0,1,2],
-    exp: 'Die Risikoklasse hängt am Verwendungszweck, nicht am Unternehmen. Bestandsoptimierung (Verbrauchsmaterial) ist typischerweise minimal — keine Entscheidung über natürliche Personen. Diagnoseunterstützung in der Radiologie fällt wahrscheinlich unter Anhang III (Medizinprodukt / Gesundheit) und ist Hochrisiko: CE-Kennzeichnung, Konformitätsbewertung, FRIA vor Erstinbetriebnahme (Art. 27), und MDR-Anforderungen kommen hinzu. Im selben Haus können minimal und Hochrisiko gleichzeitig vorkommen.',
-    src: 'EU AI Act Anhang III · Art. 27', url: 'https://artificialintelligenceact.eu/annex/3/'
+    correct: [0,1,3],
+    exp: 'AI Act und DSGVO ergänzen sich — sie verdrängen sich nicht. Der AI Act regelt das System als Produkt, die DSGVO die Datenverarbeitung. HR-KI kann gleichzeitig Hochrisiko-KI (Anhang III Nr. 4) und DSFA-pflichtig sein. Art. 22 DSGVO (automatisierte Einzelentscheidungen) bleibt eigenständig anwendbar.',
+    src: 'EU AI Act Art. 2 Abs. 7 · DSGVO Art. 22, Art. 35'
   },
   {
-    set: 'Geschäftsführung',
-    q: 'Du fragst als Geschäftsführer:in, wer die KI-Aufsicht in Deutschland übernimmt. Welche Aussage(n) sind korrekt?',
+    set: 'Datenschutzbeauftragte:r',
+    q: 'Ein Kundenservice-Chatbot soll auf der Unternehmenswebsite eingesetzt werden. Als Datenschutzbeauftragte:r prüfst du die Transparenzpflichten nach Art. 50 EU AI Act. Welche Aussage(n) sind korrekt?',
     opts: [
-      'Die Bundesnetzagentur wird zentrale KI-Aufsichtsbehörde für die Marktüberwachung ab dem 2. August 2026.',
-      'Es gibt ein Hybrid-Modell: Die Bundesnetzagentur koordiniert, aber BfDI, BaFin und BSI bleiben für sektorspezifische Aufsicht zuständig.',
-      'Die KI-Aufsicht ist ausschließlich Sache der Landesbehörden.',
-      'Die EU-Kommission übernimmt die direkte Aufsicht über alle KI-Systeme in Deutschland.'
+      'KI-Systeme, die mit Menschen interagieren (z. B. Chatbots), müssen Nutzer:innen zu Beginn der Interaktion kenntlich machen, dass sie mit einer KI kommunizieren.',
+      'Für KI-generierte Bilder, Audio- und Videoinhalte (Deepfakes, synthetische Inhalte) gilt eine Kennzeichnungspflicht ab dem 2. Dezember 2026 (Wasserzeichen / Provenance).',
+      'Der Chatbot gilt automatisch als Hochrisiko-KI nach Anhang III und muss deshalb konformitätsbewertet werden.',
+      'Art. 50-Transparenzpflichten ersetzen DSGVO-Informationspflichten bei KI-Systemen vollständig.'
     ],
     correct: [0,1],
-    exp: 'Der Kabinettsbeschluss vom 11. Februar 2026 regelt: Die Bundesnetzagentur wird zentrale KI-Aufsichtsbehörde für die Marktüberwachung (Hochrisiko, Anhang III) und betreibt das Koordinierungszentrum KI (KoKIVO). Gleichzeitig gilt ein Hybrid-Modell: BfDI (Datenschutz), BaFin (Finanzsektor) und BSI (IT-Sicherheit) bleiben für sektorspezifische Aufsicht zuständig. Es ist weder reine Landessache noch direkte EU-Aufsicht.',
-    src: 'Bundesnetzagentur — KI-Marktüberwachung', url: 'https://www.bundesnetzagentur.de/DE/Fachthemen/Digitales/KI/14_Marktueberwachung/start.html'
+    exp: 'Art. 50 begründet Transparenzpflichten für KI-Systeme mit begrenztem Risiko: Chatbots müssen sich als KI zu erkennen geben; KI-generierte Medieninhalte müssen ab 2.12.2026 als solche gekennzeichnet werden. Ein Kundenservice-Chatbot ist kein Hochrisiko-System nach Anhang III. Die DSGVO-Informationspflichten gelten unabhängig davon weiter.',
+    src: 'EU AI Act Art. 50 · Art. 113 (Stichtag 2.12.2026)'
   },
   {
-    set: 'Geschäftsführung',
-    q: 'Du willst als Geschäftsführer:in schnell sichtbare Ergebnisse sehen. Der KI-Beauftragte schlägt Quick Wins vor. Welche Aussage(n) sind korrekt?',
+    set: 'Datenschutzbeauftragte:r',
+    q: 'Dein Unternehmen (350 Mitarbeitende, 70 Mio. € Umsatz) plant die Einführung eines Hochrisiko-KI-Systems. Als Datenschutzbeauftragte:r klärst du, welche Erleichterungen der AI Act Omnibus (Ratsbeschluss 29.06.2026) bringt. Welche Aussage(n) sind korrekt?',
     opts: [
-      'Art.-50-konforme Kennzeichnung eines bestehenden Chatbots ist ein typischer Quick Win — sichtbar, umsetzbar und bis zum 2. August 2026 ohnehin Pflicht.',
-      'Ein KI-Inventar aller im Unternehmen eingesetzten Systeme (einschließlich Schatten-KI) ist die Basis für alle weiteren Compliance-Schritte.',
-      'Der Compliance-Plan für Hochrisiko-Systeme muss sich am Stichtag 2. Dezember 2027 orientieren — wer heute beginnt, hat 18 Monate Vorlauf.',
-      'Quick Wins sind nur relevant für Unternehmen, die bereits ein Hochrisiko-KI-System im Einsatz haben.'
+      'KMU und die neue Kategorie \"Small Mid-Cap\" (SMC) erhalten priorisierten, kostenlosen Zugang zu Regulatory Sandboxes nach Art. 57.',
+      'Für die Konformitätsbewertung steht KMU und SMC ein vereinfachtes Formular der EU-Kommission zur Verfügung — das vollständige Anforderungsprogramm nach Anhang IV entfällt.',
+      'Bei Bußgeldern gilt für KMU der niedrigere Betrag aus Fixsumme und Umsatzanteil — nicht der jeweils höhere wie bei Großunternehmen.',
+      'Der Omnibus hat die Hochrisiko-Pflichten für KMU vollständig gestrichen — eine Konformitätsbewertung ist ab 2027 für KMU nicht mehr erforderlich.'
     ],
     correct: [0,1,2],
-    exp: 'Art.-50-konforme Chatbot-Kennzeichnung ist der ideale Quick Win: sichtbar, sofort umsetzbar, ab 2.8.2026 Pflicht. Das KI-Inventar (einschließlich Schatten-KI) ist die unverzichtbare Basis — wer nicht weiß, welche KI läuft, kann keine Risikoklassen bewerten. Der Hochrisiko-Compliance-Plan orientiert sich am 2.12.2027 — 18 Monate Vorlauf, wenn man heute startet. Quick Wins gelten für alle Unternehmen mit KI-Einsatz, nicht nur für Hochrisiko.',
-    src: 'Kursmaterial KIB Tag 5 — 100-Tage-Plan', url: ''
+    exp: 'Der Omnibus (Mai/Juni 2026) bringt drei KMU-Erleichterungen: kostenlosen Sandbox-Zugang (Art. 57), vereinfachte Konformitätsdokumentation (Art. 63) und günstigere Bußgeldobergrenzen. Die Hochrisiko-Pflichten selbst wurden für KMU nicht gestrichen — sie gelten weiterhin, aber mit reduziertem Aufwand.',
+    src: 'EU AI Act Omnibus · Art. 57 · Art. 63 · Ratsbeschluss 29.06.2026'
+  },
+  {
+    set: 'Datenschutzbeauftragte:r',
+    q: 'Ein Softwareanbieter liefert eurem Unternehmen ein KI-System zur Kreditrisikoprüfung. Dein Unternehmen passt die Entscheidungsschwellen eigenständig an. Als Datenschutzbeauftragte:r klärst du die Akteursrollen nach EU AI Act. Welche Aussage(n) sind korrekt?',
+    opts: [
+      'Wer ein KI-System wesentlich verändert, wird nach Art. 25 EU AI Act selbst zum Anbieter mit allen damit verbundenen Hochrisiko-Pflichten.',
+      'Als Betreiber seid ihr für den zweckgemäßen Einsatz des Systems verantwortlich — dazu gehören Überwachung, Protokollführung und Mitarbeiterschulung nach Art. 26.',
+      'Da der ursprüngliche Softwareanbieter das System entwickelt hat, trägt euer Unternehmen keine eigenen Pflichten aus dem AI Act.',
+      'Betreiber dürfen KI-Systeme frei für neue Einsatzzwecke nutzen, solange das System beim Anbieter CE-gekennzeichnet ist.'
+    ],
+    correct: [0,1],
+    exp: 'Art. 25 macht denjenigen zum Anbieter, der ein Hochrisiko-KI-System wesentlich verändert — mit allen entsprechenden Pflichten (Konformitätsbewertung, CE, Dokumentation). Als Betreiber kommen nach Art. 26 eigene Pflichten hinzu: Zweckbindung, Überwachung, Mitarbeiterschulung, Protokollführung. Die Herstellerrolle des Zulieferers entbindet euch nicht.',
+    src: 'EU AI Act Art. 25 · Art. 26'
+  },
+  {
+    set: 'Datenschutzbeauftragte:r',
+    q: 'Als Datenschutzbeauftragte:r sollst du für drei geplante KI-Projekte vorab eine Risikoklassen-Einschätzung geben: (1) Kreditwürdigkeitsprüfung für Privatkunden, (2) Zulassungsentscheidung an einer Hochschule, (3) Empfehlungsalgorithmus für interne Weiterbildungsangebote ohne Personalentscheidungscharakter. Welche Aussage(n) sind korrekt?',
+    opts: [
+      'Die Kreditwürdigkeitsprüfung fällt unter Anhang III, Nr. 5 (Grundversorgung / Kreditwürdigkeit) und ist Hochrisiko-KI.',
+      'Die Zulassungsentscheidung an der Hochschule fällt unter Anhang III, Nr. 3 (Bildung und Berufsausbildung) und ist Hochrisiko-KI.',
+      'Der interne Weiterbildungsempfehlungsalgorithmus ohne Personalentscheidungscharakter ist kein Hochrisiko-System — die drei Einordnungsleitfragen (Anhang-III-Bereich, Entscheidung über Personen, erhebliche Auswirkungen) sind dennoch zu prüfen.',
+      'Alle drei Systeme sind automatisch Hochrisiko-KI, sobald sie personenbezogene Daten verarbeiten.'
+    ],
+    correct: [0,1,2],
+    exp: 'Kreditwürdigkeitsprüfung (Anhang III Nr. 5) und Hochschulzulassung (Anhang III Nr. 3) sind Hochrisiko-KI. Der Weiterbildungsempfehlungsalgorithmus ohne Personalentscheidungscharakter fällt nicht automatisch darunter — aber die drei Leitfragen (Bereich, Entscheidung über Personen, erhebliche Auswirkungen) müssen trotzdem systematisch geprüft werden. Personenbezogene Daten allein begründen keine Hochrisiko-Einstufung.',
+    src: 'EU AI Act Anhang III Nr. 3, 5 · Art. 6'
   }
+
 ];
 
 /* ═══════ STATE ════════════════════════════════════════════════ */
@@ -325,7 +335,7 @@ function startQuiz() {
 
   document.getElementById('quiz-header-strip').innerHTML =
     '<span class="strip-tag strip-role-1">KI-Beauftragte:r</span>'
-    +'<span class="strip-tag strip-role-2">Geschäftsführung</span>'
+    +'<span class="strip-tag strip-role-2">'+ROLE2+'</span>'
     +'<span class="strip-name">'+S.name+'</span>';
 
   renderQuestions();
@@ -338,10 +348,11 @@ function renderQuestions() {
   var letters = ['A','B','C','D'];
 
   S.questions.forEach(function(q, qi) {
+    // Add separator between sets
     if (qi === 5) {
       var sep = document.createElement('div');
       sep.className = 'separator-card';
-      sep.innerHTML = '<h3>Perspektivwechsel: Geschäftsführung</h3>';
+      sep.innerHTML = '<h3>Perspektivwechsel: '+ROLE2+'</h3>';
       container.appendChild(sep);
     }
 
@@ -457,7 +468,7 @@ function showResults(correct, wrong) {
   var total = S.questions.length;
   var pct = Math.round(correct/total*100);
   var grade, label, sub;
-  if(pct>=80){grade='A';label='Sehr gut!';sub='Starke Woche 1 — bereit für das Krankenhaus St. Ulrich.';}
+  if(pct>=80){grade='A';label='Sehr gut!';sub='Prüfungsreife für dieses Thema nachgewiesen.';}
   else if(pct>=60){grade='B';label='Gut';sub='Solide Basis — Quellenlinks gezielt nutzen.';}
   else if(pct>=40){grade='C';label='Ausbaufähig';sub='Grundlagen vorhanden — Theorieblock nochmals lesen.';}
   else{grade='D';label='Weiter üben';sub='Lücken mit den verlinkten Quellen schließen.';}
@@ -551,7 +562,7 @@ function renderReview() {
 function sendToSheets(correct, wrong) {
   if (!APPS_SCRIPT_URL) return;
   var TAG_NR = 5;
-  var THEMA  = 'Vertiefung EU AI Act — Digital Omnibus & Compliance-Planung';
+  var THEMA  = 'EU AI Act Vertiefung';
   var letters = ['A','B','C','D'];
   var status = document.getElementById('submit-status');
   status.className = 'submit-status sending';
