@@ -102,7 +102,7 @@ a{color:var(--accent);}
   <div class="eyebrow">Alfatraining &middot; KI-Zertifikatskurse &middot; Prüfungstraining</div>
   <h1>Lernerfolgskontrolle<br>Generalwiederholung</h1>
   <div class="header-meta">
-    <span>50 Fragen; über alle Kurstage</span>
+    <span>51 Fragen in 6 Blöcken (5 × 10 + 1) · über alle Kurstage</span>
     <span>Eine oder mehrere Antworten können richtig sein</span>
   </div>
 </header>
@@ -113,7 +113,7 @@ a{color:var(--accent);}
   <div class="setup-card">
     <h2>Generalwiederholung starten</h2>
     <div class="setup-info">
-      50 Fragen aus allen vier Wochen &mdash; EU AI Act, ISO 42001, DSGVO, Datenqualit&auml;t und Change Management. Kein Bewertungsdruck. Ehrliche Selbstdiagnose.
+      51 Fragen aus allen vier Wochen &mdash; EU AI Act, ISO 42001, DSGVO, Datenqualit&auml;t und Change Management. Nach jeder 10. Frage: Zwischenauswertung und Zwischenspeicherung. Kein Bewertungsdruck. Ehrliche Selbstdiagnose.
     </div>
     <div style="margin-bottom:1rem;">
       <span class="field-label">Dein Name (oder Teilnehmer-Nummer)</span>
@@ -943,17 +943,25 @@ var QBANK = [
 ]; /* Ende QBANK */ // end QBANK
 
 /* ─── State ─────────────────────────────────────────────────────── */
-var state = { name: '', questions: [], selections: [] };
+var BLOCK_SIZE = 10;
+var state = { name: '', questions: [], selections: [], currentBlock: 0, sentBlocks: {}, blockScores: [] };
 
 function startQuiz() {
   state.name = document.getElementById('participant-name').value.trim() || 'Anonym';
   state.questions = shuffle(QBANK.slice());
   state.selections = state.questions.map(function(){ return []; });
+  state.currentBlock = 0;
+  state.sentBlocks = {};
+  state.blockScores = [];
   document.getElementById('setup-section').style.display = 'none';
   document.getElementById('quiz-section').style.display = 'block';
   var strip = document.getElementById('quiz-header-strip');
-  strip.innerHTML = '<span class="strip-tag">KI-Beauftragte:r</span><span class="strip-tag">Generalwiederholung</span><span class="strip-name">' + escHtml(state.name) + '</span>';
-  renderQuestions();
+  strip.innerHTML = '<span class="strip-tag">KI-Beauftragte:r</span><span class="strip-tag">Tag 17 · Generalwiederholung</span><span class="strip-name">' + escHtml(state.name) + '</span>';
+  renderBlock(0);
+}
+
+function totalBlocks() {
+  return Math.ceil(state.questions.length / BLOCK_SIZE);
 }
 
 function shuffle(arr) {
@@ -970,37 +978,65 @@ function shuffleIndexes(n) {
   return shuffle(arr);
 }
 
-function renderQuestions() {
+function renderBlock(bi) {
+  state.currentBlock = bi;
   var container = document.getElementById('questions-container');
   container.innerHTML = '';
   var total = state.questions.length;
-  var weekShown = {};
-  state.questions.forEach(function(q, qi) {
-    var nCorrect = q.correct.length;
-    var hint = 'Eine oder mehrere Antworten können richtig sein.';
-    var shuffledIdx = shuffleIndexes(q.opts.length);
-    var card = document.createElement('div');
-    card.className = 'q-card';
-    card.id = 'qcard-' + qi;
-    card.innerHTML = '<div class="q-num">Frage ' + (qi+1) + ' von ' + total + ' · ' + escHtml(q.cat) + '</div>'
-      + '<div class="q-text">' + escHtml(q.q) + '</div>'
-      + '<div class="q-hint">' + hint + '</div>'
-      + '<div class="opt-list" id="opts-' + qi + '"></div>';
-    container.appendChild(card);
-    var optList = document.getElementById('opts-' + qi);
-    shuffledIdx.forEach(function(origIdx) {
-      var opt = document.createElement('div');
-      opt.className = 'opt';
-      opt.dataset.qi = qi;
-      opt.dataset.oi = origIdx;
-      opt.innerHTML = '<div class="opt-cb" id="cb-'+qi+'-'+origIdx+'"></div>'
-        + '<div class="opt-text">' + escHtml(q.opts[origIdx]) + '</div>';
-      opt.addEventListener('click', function() { toggleOpt(qi, origIdx); });
-      optList.appendChild(opt);
-    });
-  });
+  var start = bi * BLOCK_SIZE;
+  var end = Math.min(start + BLOCK_SIZE, total);
+  var tb = totalBlocks();
+
+  var header = document.createElement('div');
+  header.className = 'week-divider';
+  header.textContent = 'Block ' + (bi + 1) + ' von ' + tb + ' — Fragen ' + (start + 1) + '–' + end;
+  container.appendChild(header);
+
+  for (var qi = start; qi < end; qi++) {
+    renderCard(qi);
+  }
+
+  var btn = document.getElementById('btn-submit');
+  btn.textContent = 'Block ' + (bi + 1) + ' auswerten →';
+  btn.style.display = '';
+  btn.disabled = true;
+
+  var oldPanel = document.getElementById('block-result-panel');
+  if (oldPanel) oldPanel.parentNode.removeChild(oldPanel);
+  var oldContinue = document.getElementById('btn-continue');
+  if (oldContinue) oldContinue.parentNode.removeChild(oldContinue);
+  var oldStatus = document.getElementById('submit-status');
+  if (oldStatus) { oldStatus.className = 'submit-status'; oldStatus.textContent = ''; }
+
   updateProgress();
   checkSubmitReady();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function renderCard(qi) {
+  var container = document.getElementById('questions-container');
+  var q = state.questions[qi];
+  var total = state.questions.length;
+  var shuffledIdx = shuffleIndexes(q.opts.length);
+  var card = document.createElement('div');
+  card.className = 'q-card';
+  card.id = 'qcard-' + qi;
+  card.innerHTML = '<div class="q-num">Frage ' + (qi + 1) + ' von ' + total + ' · ' + escHtml(q.cat) + '</div>'
+    + '<div class="q-text">' + escHtml(q.q) + '</div>'
+    + '<div class="q-hint">Eine oder mehrere Antworten können richtig sein.</div>'
+    + '<div class="opt-list" id="opts-' + qi + '"></div>';
+  container.appendChild(card);
+  var optList = document.getElementById('opts-' + qi);
+  shuffledIdx.forEach(function(origIdx) {
+    var opt = document.createElement('div');
+    opt.className = 'opt';
+    opt.dataset.qi = qi;
+    opt.dataset.oi = origIdx;
+    opt.innerHTML = '<div class="opt-cb" id="cb-' + qi + '-' + origIdx + '"></div>'
+      + '<div class="opt-text">' + escHtml(q.opts[origIdx]) + '</div>';
+    opt.addEventListener('click', function() { toggleOpt(qi, origIdx); });
+    optList.appendChild(opt);
+  });
 }
 
 function toggleOpt(qi, oi) {
@@ -1013,31 +1049,39 @@ function toggleOpt(qi, oi) {
     var isSelected = sel.indexOf(elOi) !== -1;
     el.classList.toggle('selected', isSelected);
     var cb = document.getElementById('cb-' + qi + '-' + elOi);
-    cb.classList.toggle('chk', isSelected);
+    if (cb) cb.classList.toggle('chk', isSelected);
   });
   checkSubmitReady();
   updateProgress();
 }
 
 function checkSubmitReady() {
-  var allAnswered = state.selections.every(function(s){ return s.length > 0; });
-  document.getElementById('btn-submit').disabled = !allAnswered;
+  var start = state.currentBlock * BLOCK_SIZE;
+  var end = Math.min(start + BLOCK_SIZE, state.questions.length);
+  var ready = true;
+  for (var i = start; i < end; i++) {
+    if (state.selections[i].length === 0) { ready = false; break; }
+  }
+  document.getElementById('btn-submit').disabled = !ready;
 }
 
 function updateProgress() {
   var answered = state.selections.filter(function(s){ return s.length > 0; }).length;
   var total = state.questions.length;
-  document.getElementById('progress-label').textContent = answered + ' von ' + total + ' Fragen beantwortet';
+  document.getElementById('progress-label').textContent = answered + ' von ' + total + ' Fragen beantwortet · Block ' + (state.currentBlock + 1) + ' / ' + totalBlocks();
   document.getElementById('progress-fill').style.width = (answered / total * 100) + '%';
 }
 
-function submitQuiz() {
+function evaluateBlock(bi) {
+  var start = bi * BLOCK_SIZE;
+  var end = Math.min(start + BLOCK_SIZE, state.questions.length);
   var score = 0;
   var catMap = {};
-  state.questions.forEach(function(q, qi) {
+  for (var qi = start; qi < end; qi++) {
+    var q = state.questions[qi];
     var sel = state.selections[qi].slice().sort();
     var cor = q.correct.slice().sort();
-    var ok = sel.length === cor.length && sel.every(function(v,i){ return v === cor[i]; });
+    var ok = sel.length === cor.length && sel.every(function(v, i){ return v === cor[i]; });
     if (ok) score++;
     if (!catMap[q.cat]) catMap[q.cat] = { ok: 0, total: 0 };
     catMap[q.cat].total++;
@@ -1062,10 +1106,142 @@ function submitQuiz() {
       + '<div class="fb-text">' + escHtml(q.exp) + '</div>'
       + (q.src ? '<div class="fb-source">Quelle: ' + escHtml(q.src) + '</div>' : '');
     card.appendChild(fb);
+  }
+  return { score: score, total: end - start, catMap: catMap };
+}
+
+function submitQuiz() {
+  var bi = state.currentBlock;
+  var res = evaluateBlock(bi);
+  state.blockScores[bi] = res;
+
+  var btn = document.getElementById('btn-submit');
+  btn.style.display = 'none';
+
+  var cumScore = 0, cumTotal = 0;
+  for (var i = 0; i < state.blockScores.length; i++) {
+    if (state.blockScores[i]) { cumScore += state.blockScores[i].score; cumTotal += state.blockScores[i].total; }
+  }
+  var blockPct = Math.round(res.score / res.total * 100);
+  var cumPct   = Math.round(cumScore / cumTotal * 100);
+  var isLast = (bi + 1) >= totalBlocks();
+
+  var panel = document.createElement('div');
+  panel.id = 'block-result-panel';
+  panel.style.cssText = 'margin-top:1.5rem;padding:1.4rem;background:var(--card);border:1px solid var(--rule);border-radius:12px;';
+  var catRows = '';
+  Object.keys(res.catMap).forEach(function(cat){
+    var d = res.catMap[cat];
+    var p = Math.round(d.ok / d.total * 100);
+    catRows += '<div class="comp-row"><div class="comp-labels"><span>' + escHtml(cat) + '</span><span>' + d.ok + '/' + d.total + '</span></div>'
+      + '<div class="comp-track"><div class="comp-fill ' + (p >= 60 ? 'fill-ok' : 'fill-wrong') + '" style="width:' + p + '%"></div></div></div>';
+  });
+  panel.innerHTML =
+      '<div style="font-family:Georgia,serif;font-size:1.15rem;margin-bottom:.4rem;">Auswertung Block ' + (bi + 1) + ' von ' + totalBlocks() + '</div>'
+    + '<div style="color:var(--muted);font-size:13px;margin-bottom:1rem;">Fragen ' + (bi * BLOCK_SIZE + 1) + '–' + (bi * BLOCK_SIZE + res.total) + '</div>'
+    + '<div class="stats-row" style="margin-bottom:1rem;">'
+      + '<div class="stat"><div class="stat-n">' + res.score + '/' + res.total + '</div><div class="stat-l">Block</div></div>'
+      + '<div class="stat"><div class="stat-n">' + blockPct + ' %</div><div class="stat-l">Block-Quote</div></div>'
+      + '<div class="stat"><div class="stat-n">' + cumScore + '/' + cumTotal + '</div><div class="stat-l">Gesamt bisher</div></div>'
+      + '<div class="stat"><div class="stat-n">' + cumPct + ' %</div><div class="stat-l">Gesamt-Quote</div></div>'
+    + '</div>'
+    + (catRows ? '<div style="font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:.4rem;">Kategorien in diesem Block</div>' + catRows : '');
+  var container = document.getElementById('questions-container');
+  container.appendChild(panel);
+
+  sendBlock(bi, function() {
+    var cont = document.createElement('button');
+    cont.id = 'btn-continue';
+    cont.className = 'btn btn-submit btn-full';
+    cont.style.marginTop = '1.2rem';
+    cont.textContent = isLast ? 'Endauswertung anzeigen →' : 'Weiter zu Block ' + (bi + 2) + ' →';
+    cont.onclick = function() {
+      if (isLast) {
+        showFinalResults();
+      } else {
+        renderBlock(bi + 1);
+      }
+    };
+    panel.appendChild(cont);
+    panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+}
+
+function sendBlock(bi, onDone) {
+  if (state.sentBlocks[bi]) { if (onDone) onDone(); return; }
+  state.sentBlocks[bi] = true;
+
+  var TAG_NR = 17;
+  var THEMA  = 'Tag 17 · Generalwiederholung';
+  var letters = ['A','B','C','D'];
+  var start = bi * BLOCK_SIZE;
+  var end = Math.min(start + BLOCK_SIZE, state.questions.length);
+  var toSend = [];
+  for (var i = start; i < end; i++) {
+    var q = state.questions[i];
+    var selIndices  = state.selections[i].slice().sort();
+    var corrIndices = q.correct.slice().sort();
+    var isFull      = selIndices.length === corrIndices.length && selIndices.every(function(v, k){ return v === corrIndices[k]; });
+    var gewaehlt    = selIndices.map(function(idx) { return letters[idx]; }).join(',') || '-';
+    var korrekt     = corrIndices.map(function(idx) { return letters[idx]; }).join(',');
+    var ergebnis    = isFull ? 'RICHTIG' : 'FALSCH';
+    toSend.push(
+      APPS_SCRIPT_URL
+      + '?tab='        + encodeURIComponent('KI-Beauftragter')
+      + '&teilnehmer=' + encodeURIComponent(state.name)
+      + '&tag='        + TAG_NR
+      + '&thema='      + encodeURIComponent(THEMA + ' · Block ' + (bi + 1))
+      + '&stufe='      + encodeURIComponent('Gemischt · KI-Beauftragte:r')
+      + '&block='      + (bi + 1)
+      + '&frage_nr='   + (i + 1)
+      + '&frage_text=' + encodeURIComponent(q.q.substring(0, 80))
+      + '&gewaehlt='   + encodeURIComponent(gewaehlt)
+      + '&korrekt='    + encodeURIComponent(korrekt)
+      + '&ergebnis='   + encodeURIComponent(ergebnis)
+    );
+  }
+
+  var st = document.getElementById('submit-status');
+  st.className = 'submit-status sending';
+  st.textContent = 'Übertrage Block ' + (bi + 1) + ': 1 von ' + toSend.length + ' — Seite bitte offen lassen …';
+
+  var transferDone = false;
+  function beforeUnloadGuard(e) {
+    if (!transferDone) { e.preventDefault(); e.returnValue = ''; }
+  }
+  window.addEventListener('beforeunload', beforeUnloadGuard);
+
+  var idx = 0;
+  function sendNext() {
+    if (idx >= toSend.length) {
+      transferDone = true;
+      window.removeEventListener('beforeunload', beforeUnloadGuard);
+      st.className = 'submit-status success';
+      st.textContent = '✓ Block ' + (bi + 1) + ': ' + toSend.length + ' Antworten übermittelt (' + new Date().toLocaleTimeString('de-DE') + ')';
+      if (onDone) onDone();
+      return;
+    }
+    st.textContent = 'Übertrage Block ' + (bi + 1) + ': ' + (idx + 1) + ' von ' + toSend.length + ' — Seite bitte offen lassen …';
+    fetch(toSend[idx], { mode: 'no-cors' })
+      .catch(function() {})
+      .then(function() { idx++; setTimeout(sendNext, 200); });
+  }
+  sendNext();
+}
+
+function showFinalResults() {
+  var score = 0, total = state.questions.length;
+  var catMap = {};
+  state.questions.forEach(function(q, qi) {
+    var sel = state.selections[qi].slice().sort();
+    var cor = q.correct.slice().sort();
+    var ok = sel.length === cor.length && sel.every(function(v, i){ return v === cor[i]; });
+    if (ok) score++;
+    if (!catMap[q.cat]) catMap[q.cat] = { ok: 0, total: 0 };
+    catMap[q.cat].total++;
+    if (ok) catMap[q.cat].ok++;
   });
 
-  document.getElementById('btn-submit').style.display = 'none';
-  var total = state.questions.length;
   var pct = Math.round(score / total * 100);
   var grade = pct >= 80 ? '✓✓' : pct >= 60 ? '✓' : '✗';
   var label = pct >= 80 ? 'Sehr gut' : pct >= 60 ? 'Bestanden' : 'Noch einmal';
@@ -1075,7 +1251,7 @@ function submitQuiz() {
   document.getElementById('result-sub').textContent = sub;
   document.getElementById('stats-row').innerHTML =
     '<div class="stat"><div class="stat-n">' + score + '</div><div class="stat-l">Richtig</div></div>' +
-    '<div class="stat"><div class="stat-n">' + (total-score) + '</div><div class="stat-l">Fehler</div></div>' +
+    '<div class="stat"><div class="stat-n">' + (total - score) + '</div><div class="stat-l">Fehler</div></div>' +
     '<div class="stat"><div class="stat-n">' + pct + '%</div><div class="stat-l">Ergebnis</div></div>';
 
   var bars = document.getElementById('comp-bars');
@@ -1084,76 +1260,23 @@ function submitQuiz() {
     var d = catMap[cat];
     var p = Math.round(d.ok / d.total * 100);
     bars.innerHTML += '<div class="comp-row"><div class="comp-labels"><span>' + escHtml(cat) + '</span><span>' + d.ok + '/' + d.total + '</span></div>'
-      + '<div class="comp-track"><div class="comp-fill ' + (p>=60?'fill-ok':'fill-wrong') + '" style="width:' + p + '%"></div></div></div>';
+      + '<div class="comp-track"><div class="comp-fill ' + (p >= 60 ? 'fill-ok' : 'fill-wrong') + '" style="width:' + p + '%"></div></div></div>';
   });
 
   var reviewHtml = '';
   state.questions.forEach(function(q, qi) {
     var sel = state.selections[qi].slice().sort();
     var cor = q.correct.slice().sort();
-    var ok = sel.length === cor.length && sel.every(function(v,i){ return v === cor[i]; });
+    var ok = sel.length === cor.length && sel.every(function(v, i){ return v === cor[i]; });
     reviewHtml += '<div style="margin-bottom:1.2rem;padding:1rem;background:var(--card);border:1px solid var(--rule);border-radius:10px;">'
-      + '<div style="font-family:\'DM Mono\',monospace;font-size:10px;color:var(--muted);margin-bottom:.4rem;">Frage ' + (qi+1) + ' · ' + escHtml(q.cat) + '</div>'
+      + '<div style="font-family:\'DM Mono\',monospace;font-size:10px;color:var(--muted);margin-bottom:.4rem;">Frage ' + (qi + 1) + ' · ' + escHtml(q.cat) + '</div>'
       + '<div style="font-size:14px;font-weight:500;margin-bottom:.5rem;">' + escHtml(q.q) + '</div>'
-      + '<div style="font-size:12px;color:' + (ok?'var(--correct)':'var(--wrong)') + ';font-weight:500;">' + (ok ? '✓ Vollständig richtig' : '✗ Nicht vollständig richtig') + '</div>'
+      + '<div style="font-size:12px;color:' + (ok ? 'var(--correct)' : 'var(--wrong)') + ';font-weight:500;">' + (ok ? '✓ Vollständig richtig' : '✗ Nicht vollständig richtig') + '</div>'
       + '</div>';
   });
   document.getElementById('review-container').innerHTML = reviewHtml;
   document.getElementById('results-section').style.display = 'block';
   document.getElementById('results-section').scrollIntoView({ behavior: 'smooth' });
-
-  sendResult(score, total, pct);
-}
-
-function sendResult(score, total, pct) {
-  var TAG_NR = 17;
-  var THEMA  = 'Generalwiederholung';
-  var letters = ['A','B','C','D'];
-  var toSend = [];
-  state.questions.forEach(function(q, i) {
-    var selIndices  = state.selections[i].slice().sort();
-    var corrIndices = q.correct.slice().sort();
-    var isFull      = selIndices.join(',') === corrIndices.join(',');
-    var gewaehlt    = selIndices.map(function(idx) { return letters[idx]; }).join(',') || '-';
-    var korrekt     = corrIndices.map(function(idx) { return letters[idx]; }).join(',');
-    var ergebnis    = isFull ? 'RICHTIG' : 'FALSCH';
-    toSend.push(
-      APPS_SCRIPT_URL
-      + '?tab='        + encodeURIComponent('KI-Beauftragter')
-      + '&teilnehmer=' + encodeURIComponent(state.name)
-      + '&tag='        + TAG_NR
-      + '&thema='      + encodeURIComponent(THEMA)
-      + '&stufe='      + encodeURIComponent('Gemischt · KI-Beauftragte:r')
-      + '&frage_nr='   + (i + 1)
-      + '&frage_text=' + encodeURIComponent(q.q.substring(0, 80))
-      + '&gewaehlt='   + encodeURIComponent(gewaehlt)
-      + '&korrekt='    + encodeURIComponent(korrekt)
-      + '&ergebnis='   + encodeURIComponent(ergebnis)
-    );
-  });
-  var st = document.getElementById('submit-status');
-  st.className = 'submit-status sending';
-  st.textContent = 'Übertrage 1 von ' + toSend.length + ' — Seite bitte offen lassen …';
-  var transferDone = false;
-  function beforeUnloadGuard(e) {
-    if (!transferDone) { e.preventDefault(); e.returnValue = ''; }
-  }
-  window.addEventListener('beforeunload', beforeUnloadGuard);
-  var idx = 0;
-  function sendNext() {
-    if (idx >= toSend.length) {
-      transferDone = true;
-      window.removeEventListener('beforeunload', beforeUnloadGuard);
-      st.className = 'submit-status success';
-      st.textContent = '✓ ' + toSend.length + ' Antworten übermittelt (' + new Date().toLocaleTimeString('de-DE') + ')';
-      return;
-    }
-    st.textContent = 'Übertrage ' + (idx + 1) + ' von ' + toSend.length + ' — Seite bitte offen lassen …';
-    fetch(toSend[idx], { mode: 'no-cors' })
-      .catch(function() {})
-      .then(function() { idx++; setTimeout(sendNext, 200); });
-  }
-  sendNext();
 }
 
 function escHtml(s) {
