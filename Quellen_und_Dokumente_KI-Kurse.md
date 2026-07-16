@@ -83,6 +83,7 @@
 | https://knowledge.wharton.upenn.edu/category/technology/ai/ | Wharton AI & Analytics Initiative | Universität | Forschung |
 | https://www.tno.nl/en/digital/artificial-intelligence/ | TNO — Netherlands Organisation for Applied Scientific Research | Forschung | Niederlande, AI Oversight Lab, Responsible Human-Machine Interaction, Zukunft der Arbeit, kognitive Belastung durch KI, NEA-Surveys |
 | https://www.imda.gov.sg/-/media/imda/files/about/emerging-tech-and-research/artificial-intelligence/mgf-for-agentic-ai.pdf | IMDA — Model AI Governance Framework for Agentic AI (v1.5, Mai/Juni 2026) | Regulierung | Singapur, Staatsbehörde, Agentische KI, Governance-Framework, Action-Space-×-Autonomy-Matrix, Human-in-the-Loop, Least Privilege, Automation Bias, Fallstudien (PwC, OCBC, Tencent, GovTech, Workday) |
+| https://www.who.int/publications/i/item/9789240029200 | WHO — Ethics and Governance of Artificial Intelligence for Health (2021) | Regulierung | UN-Sonderorganisation, Tier-1, Gesundheitswesen, 6 Ethikprinzipien (Transparenz, Inklusivität, Rechenschaftspflicht, Nicht-Diskriminierung, Nachhaltigkeit, Datenschutz), Governance-Empfehlungen, Krankenhaus, Diagnostik, Patientensicherheit |
 
 ---
 
