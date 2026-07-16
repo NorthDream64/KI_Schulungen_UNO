@@ -190,16 +190,16 @@ var QUESTIONS = [
   },
   {
     set: 'KI-Beauftragte:r',
-    q: 'In der Projektbesprechung diskutiert dein Team, ob die klassische Risikomatrix für das neue autonome KI-Diagnosesystem ausreicht. Du erläuterst die spezifischen Grenzen beim Einsatz für KI-Systeme. Welche Aussage(n) sind korrekt?',
+    q: 'Das IMDA-Framework (Singapur, Mai/Juni 2026) beschreibt zwei unabhängige Risikodimensionen für KI-Agenten: Action-Space und Autonomiegrad. Dein Unternehmen setzt einen Agenten ein, der Lesezugriff auf Terminpläne und Schreibzugriff auf Patientenakten hat und bei Unklarheiten nach eigenem Ermessen entscheidet. Welche Aussage(n) sind korrekt?',
     opts: [
-      'KI-Systeme können emergentes Verhalten zeigen, das im Training nicht angelegt war — die Risikomatrix setzt jedoch voraus, dass Risiken im Voraus bekannt und abgrenzbar sind.',
-      'Das Risikoprofil eines KI-Systems kann sich durch Model-Updates, veränderte Trainingsdaten oder Out-of-Distribution-Situationen verändern, ohne dass dies sofort sichtbar wird (Drift).',
-      'Bei neuronalen Netzen ist die Kausalität zwischen Ursache und Wirkung oft nicht direkt nachvollziehbar (Black-Box-Problem) — die Risikomatrix setzt implizit voraus, dass die Risikoursache bekannt ist.',
-      'Die Risikomatrix ist für KI-Systeme vollständig ungeeignet und sollte durch kontinuierliches Post-Market-Monitoring vollständig ersetzt werden.'
+      'Der Schreibzugriff auf Patientenakten erweitert den Action-Space gegenüber reinem Lesezugriff — der maximale Schadensradius steigt damit erheblich.',
+      'Das Entscheiden nach eigenem Ermessen (statt nach festgelegten Prozessschritten) erhöht den Autonomiegrad — und verstärkt alle Action-Space-Risiken multiplikativ.',
+      'Berechtigungsbegrenzungen über Prompt-Anweisungen sind ausreichend, solange der System-Prompt klar formuliert ist.',
+      'Action-Space und Autonomiegrad sind zwei verschiedene Begriffe für dasselbe Risiko — sie beschreiben beide die Breite des Systemzugriffs.'
     ],
-    correct: [0,1,2],
-    exp: 'Drei zentrale Grenzen der Risikomatrix bei KI: (1) Emergentes Verhalten ist vorab nicht identifizierbar, (2) Drift verändert das Risikoprofil ohne Warnsignal, (3) Black-Box-Kausalitäten erschweren die Risikoidentifikation. Die Matrix bleibt ein nützliches Kommunikations- und Visualisierungswerkzeug — sie wird durch kontinuierliches Post-Market-Monitoring (Art. 72 KI-VO) ergänzt, nicht ersetzt.',
-    src: 'KIB Tag 10 HandOut · EU AI Act Art. 72'
+    correct: [0,1],
+    exp: 'Action-Space (welche Systeme, Daten, Aktionen?) und Autonomiegrad (wie viel Eigenentscheidung?) sind zwei unabhängige Dimensionen. Schreibzugriff erweitert den Action-Space, Eigenentscheidung erhöht den Autonomiegrad — beides zusammen ergibt ein hohes Risiko. Berechtigungsbegrenzungen müssen auf Systemebene durchgesetzt werden, nicht nur per Prompt — Prompt-Anweisungen können durch Goal Hijacking umgangen oder bei langem Kontext vergessen werden.',
+    src: 'KIB Tag 10 HandOut · IMDA Model AI Governance Framework for Agentic AI (v1.5, 2026)'
   },
   {
     set: 'KI-Beauftragte:r',
@@ -216,16 +216,16 @@ var QUESTIONS = [
   },
   {
     set: 'KI-Beauftragte:r',
-    q: 'Nach der Maßnahmenplanung verbleiben zwei Restrisiken im KI-System. Die Projektleitung fragt dich, wer diese akzeptieren darf und wie die Akzeptanz zu dokumentieren ist. Welche Aussage(n) sind korrekt?',
+    q: 'Dein Team hat mehrere KI-Agenten im Einsatz. Das IMDA-Framework empfiehlt, menschliche Aufsicht nicht nur als Zustand zu beschreiben, sondern quantitativ zu messen. Welche Aussage ist korrekt?',
     opts: [
-      'Restrisiko-Akzeptanz ist eine Geschäftsführungs-Entscheidung — nicht allein Sache des KI-Beauftragten oder der Projektleitung.',
-      'Im Risikoregister sind Risikobewertungen vor und nach den Maßnahmen sowie die Begründung für die Restrisiko-Akzeptanz zu dokumentieren.',
-      'Dokumentierte Restrisiko-Akzeptanz verbessert die Haftungsposition der Organisation gegenüber dem Fall, dass das Risiko unerkannt geblieben wäre.',
-      'Sobald Maßnahmen ergriffen wurden, muss das Risikoregister erst bei einem schwerwiegenden Vorfall aktualisiert werden.'
+      'Eine dauerhaft niedrige Human Override Rate (der Mensch weicht fast nie vom Agenten-Vorschlag ab) ist ein Qualitätsbeweis für den Agenten — je niedriger die Rate, desto besser funktioniert das System.',
+      'Sehr kurze Human Response Times ohne erkennbare Prüfphase können auf Automation Bias hindeuten — der Mensch bestätigt, ohne ernsthaft zu kontrollieren.',
+      'Human Override Rate und Human Response Time sind ausschließlich für medizinische KI-Systeme relevant — in anderen Branchen sind sie nicht anwendbar.',
+      'Die Human Override Rate ist identisch mit der Fehlerquote des KI-Systems — beide messen dasselbe.'
     ],
-    correct: [0,1,2],
-    exp: 'Restrisiko-Akzeptanz liegt bei der Geschäftsführung (nicht beim KI-Beauftragten). Das Risikoregister muss RPZ/AP vor und nach Maßnahmen, Begründung und Unterschrift der Geschäftsführung enthalten. Dokumentierte Akzeptanz schützt in der Haftungsfrage. Das Register muss mindestens jährlich, bei wesentlichen Systemänderungen (Art. 43 Abs. 4 KI-VO) und nach Vorfällen aktualisiert werden.',
-    src: 'KIB Tag 10 HandOut · EU AI Act Art. 43 Abs. 4'
+    correct: [1],
+    exp: 'Das IMDA-Framework benennt zwei KPIs für menschliche Aufsicht: Human Override Rate (wie oft weicht der Mensch ab?) und Human Response Time (wie lange dauert die Entscheidung?). Eine dauerhaft niedrige Override Rate ist kein Qualitätsbeweis, sondern kann Rubber-Stamping signalisieren — der Mensch stimmt zu, ohne zu prüfen. Kurze Response Times ohne Prüfphase verstärken diesen Verdacht. Beide KPIs sind branchenübergreifend einsetzbar.',
+    src: 'KIB Tag 10 HandOut · IMDA Model AI Governance Framework for Agentic AI (v1.5, 2026)'
   },
   {
     set: 'KI-Beauftragte:r',
@@ -270,16 +270,16 @@ var QUESTIONS = [
   },
   {
     set: 'Projektmanager:in',
-    q: 'Als Projektmanager:in planst du Gegenmaßnahmen für das Risiko „Doom-Loop-Bias in den Trainingsdaten" eines KI-Diagnosesystems. Du willst sicherstellen, dass alle drei Kontroll-Typen abgedeckt sind. Welche Aussage(n) sind korrekt?',
+    q: 'Das IMDA-Framework beschreibt eine Fallstudie (Dayos), in der ein IT-Ticketing-Agent mit 60.000 Tickets pro Jahr in drei Risikoklassen eingeteilt wird. Als Projektmanager:in überlegst du, wie dieses Modell auf dein eigenes KI-Projekt übertragbar ist. Welche Aussage(n) sind korrekt?',
     opts: [
-      'Eine Anforderung an den Anbieter, Herkunft und demografische Verteilung der Trainingsdaten zu dokumentieren, ist eine Preventive-Maßnahme.',
-      'Ein quartalsweiser Vergleich der Modellperformance bei unterschiedlichen Patientengruppen, um Driftsignale zu erkennen, ist eine Detective-Maßnahme.',
-      'Das Aussetzen des Systems für betroffene Gruppen nach nachgewiesenem Bias ist eine Detective-Maßnahme — sie erkennt den Schaden frühzeitig.',
-      'Re-Training mit ausgeglichenen Daten nach nachgewiesenem Bias ist eine Corrective-Maßnahme — sie behebt die Ursache nach dem Eintritt.'
+      'Das Tiering-Modell teilt Aufgaben nach Schwere und Reversibilität ein: Tier 1 (60 %, vollautomatisch mit periodischem Audit), Tier 2 (30 %, Agent diagnostiziert, Mensch genehmigt) und Tier 3 (10 %, kein Agenteneinsatz).',
+      'Das Tiering-Modell funktioniert nur für IT-Ticketing-Systeme und ist auf andere Branchen nicht übertragbar, weil die Risikoklassen spezifisch für diese Domäne definiert sind.',
+      'Action-Space und Autonomie sind je Tier klar begrenzt — das ist der Grund, warum das Modell bei kalkulierbarem Restrisiko 121.000 $ Jahreseinsparung erzielt.',
+      'Im Dayos-Modell wird Tier 3 vollständig automatisiert, weil dort die geringsten Risiken liegen — der Mensch greift nur bei Tier 1 ein.'
     ],
-    correct: [0,1,3],
-    exp: 'Preventive: Trainingsdaten-Dokumentationsanforderung (wirkt vor dem Schaden). Detective: Quartalsweiser Performance-Vergleich (erkennt Drift beim Auftreten). Corrective: Re-Training mit ausgeglichenen Daten nach nachgewiesenem Bias (behebt den Schaden). Das Aussetzen des Systems ist eine Corrective-Maßnahme (Schadensbegrenzung nach Erkennung) — keine Detective-Maßnahme.',
-    src: 'KIB Tag 10 HandOut · Drei Kontroll-Typen'
+    correct: [0,2],
+    exp: 'Das Dayos-Tiering teilt Aufgaben nach Schwere × Reversibilität in drei Stufen ein: Tier 1 (60 %, vollautomatisch + 14-tägiges Audit), Tier 2 (30 %, Agent diagnostiziert, Mensch genehmigt), Tier 3 (10 %, zu riskant für Agenteneinsatz). Der Schlüssel: Action-Space und Autonomiegrad sind je Tier klar begrenzt. Das Modell ist branchenübergreifend übertragbar — die Tiering-Logik (Schwere × Reversibilität) gilt für jeden Agenten-Einsatz.',
+    src: 'KIB Tag 10 HandOut · IMDA Model AI Governance Framework for Agentic AI (v1.5, 2026) · Dayos-Fallstudie'
   },
   {
     set: 'Projektmanager:in',
@@ -296,7 +296,7 @@ var QUESTIONS = [
   },
   {
     set: 'Projektmanager:in',
-    q: 'Am Ende der Risikoworkshops für euer KI-Projekt verbleiben drei Restrisiken im roten Bereich der Matrix. Als Projektmanager:in klärst du das weitere Vorgehen. Welche Aussage(n) sind korrekt?',
+    q: 'Am Ende der Risikoworkshops für dein KI-Projekt verbleiben drei Restrisiken im roten Bereich der Matrix. Als Projektmanager:in klärst du das weitere Vorgehen. Welche Aussage(n) sind korrekt?',
     opts: [
       'Restrisiken im roten Bereich erfordern eine explizite Entscheidung der Geschäftsführung — die Akzeptanz muss mit Begründung dokumentiert werden.',
       'Das Risikoregister soll für jedes Restrisiko die Bewertung vor und nach den Maßnahmen sowie den Namen der akzeptierenden Person ausweisen.',
