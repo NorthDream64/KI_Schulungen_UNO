@@ -25,7 +25,42 @@ All features are available in English, Spanish, Japanese, French, Italian, Portu
 
 ## 3 · Business Model
 
-Purchase or rent: cAIre robots can be bought (with a service contract), rented or leased.
+**Sales model.** cAIre robots are offered under three commercial models tailored to the buyer's balance-sheet preference:
+
+- **Purchase + service contract.** One-time capex; mandatory annual service, software updates and vital-signs-monitoring licence (SaaS).
+- **Operating lease (36–60 months).** Institutional customers (hospitals, long-term care facilities); replacement cycle, insurance and service bundled.
+- **Monthly rental with break clause.** Home-care agencies and private households; low commitment, ideal for pilot phases.
+
+**Reference pricing in the current market** (fiscal 2025/26):
+
+| Product class | Purchase | Lease / rental |
+|---|---|---|
+| Companion-style (Hyodol, KR) | ~USD 1,150 | subsidised in KR |
+| Therapy robot (PARO, JP) | ~USD 6,000 | ~USD 170–200 / month |
+| Humanoid service robot (Pepper, NAO) | USD 9,000–25,000 | — |
+| Full home-humanoid (1X NEO, US) | USD 20,000 early access | USD 499 / month |
+| Advanced healthcare humanoid (Fourier GR-3, CN) | not yet publicly priced | pilot deployments |
+
+cAIre positions in the *"advanced companion + light-assistive"* segment — targeted list price **EUR 12,000–18,000 purchase** or **EUR 350–450 / month rental**, including service contract, software updates and secure telemetry.
+
+**Reimbursement pathway.** In Japan, care-robot procurement by nursing homes is subsidised by MHLW/METI under the *"Priority Areas for the Use of Caregiving Technology"* (revised June 2024, operational since April 2025), with public insurance covering up to 70–90 % of eligible devices. Korea's Hyodol programme is government-funded. In Germany, no comparable dedicated subsidy exists yet; reimbursement via SGB XI ("Pflegehilfsmittel") is limited and would require case-by-case classification. This is a key market-access lever cAIre must plan for.
+
+**Existing developments — competitive baseline.** The AI-care-robot space is no longer greenfield; several serious players are already deployed at scale:
+
+| Region | Product / company | Positioning | Deployed base |
+|---|---|---|---|
+| **Japan** | **PARO** (AIST, therapy seal) | Emotional-comfort therapy in dementia care; class II medical device in Japan and EU | ~3,000 units in Japan, ~5,000 worldwide |
+| **Japan** | **Robear / Riba** (Riken × Sumitomo Riko) | Patient transfer (bed ↔ wheelchair) | Research prototypes; not yet mass-market |
+| **Japan** | **Palro** (Fuji Soft) | Group exercise leader, conversation | ~1,000+ nursing homes |
+| **Japan** | **Toyota HSR** | Home-helper mobile manipulator | Research fleet, ~40 partner labs |
+| **Korea** | **Hyodol** (startup, since 2015) | Doll-form companion, medication reminders, vital-signs alerts | **12,000+ units deployed via government programme** (as of Nov 2025) |
+| **Korea** | **LG Q9**, **Samsung Ballie** | AI companion / mobile assistant | in-development, roadmap 2026–2028 |
+| **China** | **Fourier GR-3** | Full-body humanoid with rehab and guidance functions | pilot deployments (WAIC 2025) |
+| **China** | **Unitree**, **UBTech**, **AgiBot** | Humanoid platforms adapted for elder-care pilot | National pilot programme (June 2025): 200 robots × 200 families × 6 months |
+| **Global / US** | **1X NEO Home** (Norway/US) | Home-domestic humanoid, subscription model | first shipments end 2026 |
+| **Germany / EU** | **Neura Robotics 4NE1** | General-purpose humanoid, USD 7 bn valuation (Jun 2025) | Deliveries targeted late 2026 |
+
+**Implication for cAIre.** The Asia-Pacific playbook — government-backed procurement into institutional care — is the fastest proven path to volume (Hyodol: 12,000+ units in ~18 months). Europe's route is likely private-institutional first (LTC operators), with reimbursement negotiations following. cAIre's *agentic world model* differentiator must translate into measurable outcomes (falls prevented, medication adherence, staff-time recovered) to unlock these procurement channels.
 
 ---
 
