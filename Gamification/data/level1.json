@@ -10,16 +10,51 @@
       "szenario": "Kim schreibt Dir: „Unser neues Klassifikationsmodell erreicht 99 % Genauigkeit auf den Trainingsdaten, aber im Test-Set nur 71 %. Ich bin ratlos. Woran liegt das wahrscheinlich?“",
       "frage": "Wie ordnest Du das Phänomen ein?",
       "optionen": [
-        { "id": "a", "text": "Das Modell zeigt klassisches Overfitting — es hat die Trainingsdaten quasi auswendig gelernt statt zu generalisieren." },
-        { "id": "b", "text": "Das ist normaler Model Drift, wir müssen die Produktivdaten prüfen." },
-        { "id": "c", "text": "Die Test-Set-Größe ist zu klein — die 71 % sind statistisch nicht aussagekräftig." }
+        {
+          "id": "a",
+          "text": "Das Modell zeigt klassisches Overfitting — es hat die Trainingsdaten quasi auswendig gelernt statt zu generalisieren."
+        },
+        {
+          "id": "b",
+          "text": "Das ist normaler Model Drift, wir müssen die Produktivdaten prüfen."
+        },
+        {
+          "id": "c",
+          "text": "Die Test-Set-Größe ist zu klein — die 71 % sind statistisch nicht aussagekräftig."
+        }
       ],
-      "korrekt": ["a"],
+      "korrekt": [
+        "a"
+      ],
       "feedback_richtig": "Genau. Wenn die Trainings-Performance stark über der Test-Performance liegt, ist Overfitting die naheliegendste Erklärung. Das Modell hat sich zu eng an die Trainingsdaten angepasst und generalisiert schlecht.",
       "feedback_falsch": "Model Drift wäre eine Verschlechterung *im Betrieb über Zeit*. Und die Test-Set-Größe erklärt nicht die enorme Lücke zwischen Trainings- und Test-Performance. Der Klassiker für diese Kluft heißt Overfitting.",
       "glossar": {
         "begriff": "Overfitting",
         "erklaerung": "Ein Modell ist so eng an die Trainingsdaten angepasst, dass es dort exzellent, aber auf neuen Daten deutlich schlechter abschneidet. Gegenmaßnahmen: Regularisierung, Dropout, Early Stopping, mehr/vielfältigere Trainingsdaten."
+      },
+      "vertiefung": {
+        "begriff": "Overfitting",
+        "laien_erklaerung": "Overfitting ist das Kern-Problem von „Auswendiglernen ohne Verstehen“. Stell Dir eine Schülerin vor, die für eine Prüfung alle Übungsaufgaben Wort für Wort auswendig lernt — inklusive der zufälligen Tippfehler und Formulierungs-Eigenheiten. In der Klausur bekommt sie neue Aufgaben mit denselben Themen — und scheitert, weil sie die zugrunde liegende Regel nie verstanden hat.\n\nGenau das passiert einem KI-Modell beim Overfitting: Es merkt sich die Trainingsdaten so gründlich, dass es auch deren Zufälligkeiten und Rauschen mitlernt. Auf neuen Daten schneidet es dann deutlich schlechter ab. Man erkennt das an der Kluft zwischen Trainings- und Test-Ergebnis: 99 % im Training, aber nur 71 % im Test ist ein klassisches Muster.\n\nGegenmaßnahmen setzen dem Modell absichtlich Grenzen: einfachere Architektur, mehr und vielfältigere Daten, oder Techniken wie Regularisierung, Dropout und Early Stopping.\n\nWarum das für Dich als KI-Managerin wichtig ist: Wenn ein Modell im Produktivbetrieb schlechter läuft als in den Präsentationen der Data-Science-Abteilung, ist Overfitting oft die erste Diagnose — bevor Du weitere Ursachen wie Model Drift oder Datenqualität ins Feld führst.",
+        "quellen": [
+          {
+            "titel": "Stanford CS229 (Andrew Ng), Lecture 3 — Underfitting und Overfitting",
+            "art": "Vorlesung (Video, frei)",
+            "institution": "Stanford University",
+            "url": "https://see.stanford.edu/Course/CS229/42"
+          },
+          {
+            "titel": "LMU München, Institut für Statistik — Masterarbeit mit Overfitting-Diskussion (deutschsprachig)",
+            "art": "Wissenschaftliche Arbeit (PDF)",
+            "institution": "Ludwig-Maximilians-Universität München",
+            "url": "https://epub.ub.uni-muenchen.de/60632/1/MA_Quandel.pdf"
+          },
+          {
+            "titel": "Hastie, Tibshirani, Friedman: The Elements of Statistical Learning (2nd ed.) — Kapitel 7 „Model Assessment and Selection“",
+            "art": "Lehrbuch (Referenz)",
+            "institution": "Stanford University / Springer",
+            "url": "https://hastie.su.domains/ElemStatLearn/"
+          }
+        ]
       }
     },
     {
@@ -29,11 +64,22 @@
       "szenario": "Marc mailt: „Das Betrugserkennungs-Modell soll morgen live gehen. Der Validation-Loss hört seit drei Epochen nicht mehr auf zu sinken, aber der Training-Loss fällt weiter. Was empfiehlst Du?“",
       "frage": "Welcher Vorschlag adressiert das Problem am direktesten?",
       "optionen": [
-        { "id": "a", "text": "Training abbrechen (Early Stopping) und die letzte Version mit dem besten Validation-Loss deployen." },
-        { "id": "b", "text": "Weiter trainieren — je länger, desto besser." },
-        { "id": "c", "text": "Learning Rate verdreifachen, damit das Modell aus dem Plateau ausbricht." }
+        {
+          "id": "a",
+          "text": "Training abbrechen (Early Stopping) und die letzte Version mit dem besten Validation-Loss deployen."
+        },
+        {
+          "id": "b",
+          "text": "Weiter trainieren — je länger, desto besser."
+        },
+        {
+          "id": "c",
+          "text": "Learning Rate verdreifachen, damit das Modell aus dem Plateau ausbricht."
+        }
       ],
-      "korrekt": ["a"],
+      "korrekt": [
+        "a"
+      ],
       "feedback_richtig": "Richtig. Wenn der Validation-Loss stagniert, während der Training-Loss weiter sinkt, beginnt das Modell zu überanpassen. Early Stopping schneidet das Training an genau dem Punkt ab, an dem es aufhört, echt zu lernen.",
       "feedback_falsch": "Weiter trainieren verschärft das Overfitting. Learning Rate zu erhöhen wäre ein Kunstgriff für ein Konvergenzproblem — hier ist das Problem aber Überanpassung, nicht Konvergenz.",
       "glossar": {
