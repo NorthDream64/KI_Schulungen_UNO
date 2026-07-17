@@ -23,7 +23,7 @@ const state = {
   ausgewaehlt: new Set(),
   attempts: 0,
   gesperrt: false,
-  bilanz: { total: 0, richtigBeimErstenVersuch: 0, richtigInsgesamt: 0, falsch: 0 }
+  bilanz: { total: 0, richtigBeimErstenVersuch: 0, richtigInsgesamt: 0, falsch: 0, uebersprungen: 0 }
 };
 
 // ── DOM-HELFER ─────────────────────────────────────────────────────────────
@@ -35,6 +35,7 @@ const hide = (id) => $(id).classList.add("hidden");
 document.addEventListener("DOMContentLoaded", () => {
   $("btn-start").addEventListener("click", startGame);
   $("btn-check").addEventListener("click", checkAnswer);
+  $("btn-skip").addEventListener("click", skipToExplanation);
   $("btn-next").addEventListener("click", nextQuestion);
   $("btn-restart").addEventListener("click", () => location.reload());
 
@@ -115,6 +116,13 @@ function zeigeFrage() {
   $("btn-next").classList.add("hidden");
   $("btn-next").textContent = "Weiter →";
   $("btn-next").classList.remove("btn-next-thema");
+
+  // Skip-Button nur zeigen, wenn eine Vertiefung hinterlegt ist
+  if (frage.vertiefung) {
+    $("btn-skip").classList.remove("hidden");
+  } else {
+    $("btn-skip").classList.add("hidden");
+  }
 }
 
 function toggleOption(row, id) {
@@ -189,6 +197,7 @@ function markiereOptionen(korrekt, gewaehlt, final) {
 function schliesseFrageAb(richtig) {
   state.gesperrt = true;
   $("btn-check").classList.add("hidden");
+  $("btn-skip").classList.add("hidden");
   const isLast = state.frageIndex === state.fragenAktuellesLevel.length - 1 &&
                  state.levelIndex === LEVELS.length - 1;
   if (richtig) {
@@ -200,8 +209,30 @@ function schliesseFrageAb(richtig) {
   $("btn-next").classList.remove("hidden");
 }
 
+// ── SKIP: direkt zur Erklärung ────────────────────────────────────────────
+function skipToExplanation() {
+  const frage = state.fragenAktuellesLevel[state.frageIndex];
+  if (!frage.vertiefung) return;
+
+  state.bilanz.total++;
+  state.bilanz.uebersprungen++;
+
+  // Optionen sperren, aber neutral markieren (weder richtig noch falsch)
+  state.gesperrt = true;
+  document.querySelectorAll(".opt").forEach(row => row.classList.add("disabled"));
+
+  zeigeFeedback("hint",
+    "Alles klar — hier ist die Erklärung.",
+    "Du hast diese Frage übersprungen, um direkt zur Vertiefung zu kommen. Kein Malus — das ist Teil des Spiels.");
+
+  zeigeDidaktik(frage.vertiefung, /*aufgeklappt*/ true);
+
+  logAntwort(frage, /*richtig*/ null); // null = übersprungen
+  schliesseFrageAb(/*richtig*/ false);
+}
+
 // ── DIDAKTISCHE SEITE ─────────────────────────────────────────────────────
-function zeigeDidaktik(vert) {
+function zeigeDidaktik(vert, aufgeklappt) {
   const quellenHtml = (vert.quellen || []).map(q =>
     '<div class="didaktik-source">' +
     '<div class="didaktik-source-titel">' + escapeHtml(q.titel) + '</div>' +
@@ -213,14 +244,18 @@ function zeigeDidaktik(vert) {
   const absaetze = (vert.laien_erklaerung || "").split(/\n\n+/)
     .map(p => '<p>' + escapeHtml(p).replace(/\n/g, "<br>") + '</p>').join("");
 
+  const bodyCls   = aufgeklappt ? "" : " hidden";
+  const toggleCls = aufgeklappt ? " open" : "";
+  const ariaOpen  = aufgeklappt ? "true" : "false";
+
   const html =
     '<div class="didaktik-panel">' +
       '<div class="didaktik-head">Didaktische Pause · ' + escapeHtml(vert.begriff) + '</div>' +
-      '<button class="didaktik-toggle" id="didaktik-toggle" aria-expanded="false">' +
+      '<button class="didaktik-toggle' + toggleCls + '" id="didaktik-toggle" aria-expanded="' + ariaOpen + '">' +
         '<span>Erkläre mir die Fachbegriffe</span>' +
         '<span class="caret">›</span>' +
       '</button>' +
-      '<div class="didaktik-body hidden" id="didaktik-body">' +
+      '<div class="didaktik-body' + bodyCls + '" id="didaktik-body">' +
         absaetze +
         '<div class="didaktik-sources">' +
           '<div class="didaktik-sources-title">Zum Weiterlesen — akademische Quellen</div>' +
@@ -286,7 +321,8 @@ function zeigeErgebnis() {
   $("stats-row").innerHTML =
     '<div class="stat"><div class="stat-n">' + b.total + '</div><div class="stat-l">Fragen</div></div>' +
     '<div class="stat"><div class="stat-n">' + b.richtigBeimErstenVersuch + '</div><div class="stat-l">1. Versuch richtig</div></div>' +
-    '<div class="stat"><div class="stat-n">' + b.richtigInsgesamt + '</div><div class="stat-l">insgesamt richtig</div></div>';
+    '<div class="stat"><div class="stat-n">' + b.richtigInsgesamt + '</div><div class="stat-l">insgesamt richtig</div></div>' +
+    '<div class="stat"><div class="stat-n">' + b.uebersprungen + '</div><div class="stat-l">übersprungen</div></div>';
 }
 
 // ── LOGGING AN GOOGLE SHEET ────────────────────────────────────────────────
