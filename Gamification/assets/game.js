@@ -1,7 +1,6 @@
 // KI-Manager Gamification — Prototyp
 // U. Nord 2026
 
-// ── KONFIGURATION ──────────────────────────────────────────────────────────
 const APPS_SCRIPT_URL = "";
 const SHARED_TOKEN    = "kim-2026-alpha";
 const FETCH_TIMEOUT_MS = 4000;
@@ -12,7 +11,13 @@ const LEVELS = [
   { nr: 3, datei: "data/level3.json" }
 ];
 
-// ── STATE ──────────────────────────────────────────────────────────────────
+// Punkte-Skala (intern, wird im Log gespeichert; nicht prominent angezeigt)
+const PUNKTE = {
+  1: { voll: 20, teilweise: 10 },
+  2: { voll: 40, teilweise: 20 },
+  3: { voll: 60, teilweise: 30 }
+};
+
 const state = {
   spieler: "anonym",
   session_id: crypto.randomUUID ? crypto.randomUUID() : "s_" + Date.now(),
@@ -23,15 +28,18 @@ const state = {
   ausgewaehlt: new Set(),
   attempts: 0,
   gesperrt: false,
-  bilanz: { total: 0, richtigBeimErstenVersuch: 0, richtigInsgesamt: 0, falsch: 0, uebersprungen: 0 }
+  bilanz: {
+    total: 0, richtigBeimErstenVersuch: 0, richtigInsgesamt: 0,
+    teilweise: 0, falsch: 0, uebersprungen: 0,
+    punkte: 0
+  },
+  karten: []   // { begriff, status: 'meister'|'verstanden'|'teilweise'|'kennengelernt'|'übersprungen' }
 };
 
-// ── DOM-HELFER ─────────────────────────────────────────────────────────────
 const $ = (id) => document.getElementById(id);
 const show = (id) => $(id).classList.remove("hidden");
 const hide = (id) => $(id).classList.add("hidden");
 
-// ── INIT ───────────────────────────────────────────────────────────────────
 document.addEventListener("DOMContentLoaded", () => {
   $("btn-start").addEventListener("click", startGame);
   $("btn-check").addEventListener("click", checkAnswer);
@@ -43,7 +51,6 @@ document.addEventListener("DOMContentLoaded", () => {
   if (gemerkt) $("vorname").value = gemerkt;
 });
 
-// ── SPIELSTART ─────────────────────────────────────────────────────────────
 async function startGame() {
   const eingabe = $("vorname").value.trim();
   state.spieler = eingabe || "anonym";
@@ -57,7 +64,6 @@ async function startGame() {
   await ladeLevel(0);
 }
 
-// ── LEVEL LADEN ────────────────────────────────────────────────────────────
 async function ladeLevel(idx) {
   state.levelIndex = idx;
   state.frageIndex = 0;
@@ -80,7 +86,6 @@ async function ladeLevel(idx) {
   }
 }
 
-// ── FRAGE ANZEIGEN ─────────────────────────────────────────────────────────
 function zeigeFrage() {
   const frage = state.fragenAktuellesLevel[state.frageIndex];
 
@@ -117,7 +122,6 @@ function zeigeFrage() {
   $("btn-next").textContent = "Weiter →";
   $("btn-next").classList.remove("btn-next-thema");
 
-  // Skip-Button nur zeigen, wenn eine Vertiefung hinterlegt ist
   if (frage.vertiefung) {
     $("btn-skip").classList.remove("hidden");
   } else {
@@ -138,7 +142,14 @@ function toggleOption(row, id) {
   }
 }
 
-// ── ANTWORT PRÜFEN ─────────────────────────────────────────────────────────
+function levelNr() {
+  return (state.daten[state.levelIndex] && state.daten[state.levelIndex].level) || (state.levelIndex + 1);
+}
+
+function begriffFuer(frage) {
+  return (frage.glossar && frage.glossar.begriff) || frage.id;
+}
+
 function checkAnswer() {
   const frage = state.fragenAktuellesLevel[state.frageIndex];
   if (state.ausgewaehlt.size === 0) {
@@ -153,10 +164,20 @@ function checkAnswer() {
   const allesRichtig = gewaehlt.size === korrekt.size &&
                        [...gewaehlt].every(id => korrekt.has(id));
 
+  const anzahlKorrektGewaehlt = [...gewaehlt].filter(id => korrekt.has(id)).length;
+  const anzahlFalschGewaehlt  = [...gewaehlt].filter(id => !korrekt.has(id)).length;
+  // "teilweise" = mindestens eine richtige, aber keine falsche markiert
+  const istTeilweise = anzahlKorrektGewaehlt > 0 && anzahlFalschGewaehlt === 0;
+
+  const lvl = levelNr();
+  const begriff = begriffFuer(frage);
+
   if (allesRichtig) {
     state.bilanz.total++;
     state.bilanz.richtigInsgesamt++;
+    state.bilanz.punkte += (PUNKTE[lvl] || PUNKTE[1]).voll;
     if (state.attempts === 1) state.bilanz.richtigBeimErstenVersuch++;
+    state.karten.push({ begriff, status: state.attempts === 1 ? "meister" : "verstanden" });
 
     markiereOptionen(korrekt, gewaehlt, true);
     zeigeFeedback("ok", "Richtig.", frage.feedback_richtig, frage.glossar);
@@ -174,10 +195,18 @@ function checkAnswer() {
   }
 
   state.bilanz.total++;
-  state.bilanz.falsch++;
+  if (istTeilweise) {
+    state.bilanz.teilweise++;
+    state.bilanz.punkte += (PUNKTE[lvl] || PUNKTE[1]).teilweise;
+    state.karten.push({ begriff, status: "teilweise" });
+  } else {
+    state.bilanz.falsch++;
+    state.karten.push({ begriff, status: "kennengelernt" });
+  }
   markiereOptionen(korrekt, gewaehlt, true);
   zeigeFeedback("wrong", "Nicht ganz.", frage.feedback_falsch, frage.glossar);
-  logAntwort(frage, false);
+  if (frage.vertiefung) zeigeDidaktik(frage.vertiefung);
+  logAntwort(frage, istTeilweise ? "teilweise" : false);
   schliesseFrageAb(false);
 }
 
@@ -209,15 +238,14 @@ function schliesseFrageAb(richtig) {
   $("btn-next").classList.remove("hidden");
 }
 
-// ── SKIP: direkt zur Erklärung ────────────────────────────────────────────
 function skipToExplanation() {
   const frage = state.fragenAktuellesLevel[state.frageIndex];
   if (!frage.vertiefung) return;
 
   state.bilanz.total++;
   state.bilanz.uebersprungen++;
+  state.karten.push({ begriff: begriffFuer(frage), status: "uebersprungen" });
 
-  // Optionen sperren, aber neutral markieren (weder richtig noch falsch)
   state.gesperrt = true;
   document.querySelectorAll(".opt").forEach(row => row.classList.add("disabled"));
 
@@ -225,13 +253,12 @@ function skipToExplanation() {
     "Alles klar — hier ist die Erklärung.",
     "Du hast diese Frage übersprungen, um direkt zur Vertiefung zu kommen. Kein Malus — das ist Teil des Spiels.");
 
-  zeigeDidaktik(frage.vertiefung, /*aufgeklappt*/ true);
+  zeigeDidaktik(frage.vertiefung, true);
 
-  logAntwort(frage, /*richtig*/ null); // null = übersprungen
-  schliesseFrageAb(/*richtig*/ false);
+  logAntwort(frage, null);
+  schliesseFrageAb(false);
 }
 
-// ── DIDAKTISCHE SEITE ─────────────────────────────────────────────────────
 function zeigeDidaktik(vert, aufgeklappt) {
   const quellenHtml = (vert.quellen || []).map(q =>
     '<div class="didaktik-source">' +
@@ -258,7 +285,7 @@ function zeigeDidaktik(vert, aufgeklappt) {
       '<div class="didaktik-body' + bodyCls + '" id="didaktik-body">' +
         absaetze +
         '<div class="didaktik-sources">' +
-          '<div class="didaktik-sources-title">Zum Weiterlesen — akademische Quellen</div>' +
+          '<div class="didaktik-sources-title">Zum Weiterlesen — öffentliche Quellen</div>' +
           quellenHtml +
         '</div>' +
       '</div>' +
@@ -281,7 +308,6 @@ function zeigeDidaktik(vert, aufgeklappt) {
   });
 }
 
-// ── FEEDBACK-BOX ───────────────────────────────────────────────────────────
 function zeigeFeedback(type, titel, text, glossar) {
   const cls = type === "ok" ? "fb-ok" : type === "wrong" ? "fb-wrong" : "fb-hint";
   let html = '<div class="feedback ' + cls + '">' +
@@ -294,7 +320,6 @@ function zeigeFeedback(type, titel, text, glossar) {
   $("feedback-slot").innerHTML = html;
 }
 
-// ── WEITER ─────────────────────────────────────────────────────────────────
 function nextQuestion() {
   state.frageIndex++;
   if (state.frageIndex >= state.fragenAktuellesLevel.length) {
@@ -308,24 +333,69 @@ function nextQuestion() {
   }
 }
 
-// ── ERGEBNIS ───────────────────────────────────────────────────────────────
 function zeigeErgebnis() {
   hide("game-view");
   show("result-view");
   const b = state.bilanz;
-  const quote = b.total ? Math.round((b.richtigInsgesamt / b.total) * 100) : 0;
-  const grade = quote >= 80 ? "Sehr gut" : quote >= 60 ? "Gut" : "Weiter dranbleiben";
-  $("result-grade").textContent = grade;
-  $("result-label").textContent = "Du hast " + quote + " % geschafft.";
-  $("result-sub").textContent = "Danke fürs Mitspielen — Fachbegriffe fühlen sich mit jedem Durchgang vertrauter an.";
+
+  // Karten-Chips rendern
+  const chips = state.karten.map(k => {
+    const cls = "karte karte-" + k.status;
+    const label = statusLabel(k.status);
+    return '<span class="' + cls + '" title="' + label + '">' + escapeHtml(k.begriff) + '</span>';
+  }).join(" ");
+
+  // Warmherziger, personalisierter Text
+  const anz = {
+    meister:       state.karten.filter(k => k.status === "meister").length,
+    verstanden:    state.karten.filter(k => k.status === "verstanden").length,
+    teilweise:     state.karten.filter(k => k.status === "teilweise").length,
+    kennengelernt: state.karten.filter(k => k.status === "kennengelernt").length,
+    uebersprungen: state.karten.filter(k => k.status === "uebersprungen").length
+  };
+
+  $("result-grade").textContent = "Deine Sammlung";
+  $("result-label").textContent =
+    "Du hast heute " + state.karten.length + " Fachbegriff" +
+    (state.karten.length === 1 ? "" : "e") + " kennengelernt.";
+  $("result-sub").textContent = ergebnisSatz(anz);
+
   $("stats-row").innerHTML =
-    '<div class="stat"><div class="stat-n">' + b.total + '</div><div class="stat-l">Fragen</div></div>' +
-    '<div class="stat"><div class="stat-n">' + b.richtigBeimErstenVersuch + '</div><div class="stat-l">1. Versuch richtig</div></div>' +
-    '<div class="stat"><div class="stat-n">' + b.richtigInsgesamt + '</div><div class="stat-l">insgesamt richtig</div></div>' +
-    '<div class="stat"><div class="stat-n">' + b.uebersprungen + '</div><div class="stat-l">übersprungen</div></div>';
+    '<div class="karten-collection">' + chips + '</div>' +
+    '<div class="karten-legende">' +
+      legendeEintrag("meister",       "sofort verstanden") +
+      legendeEintrag("verstanden",    "im zweiten Versuch") +
+      legendeEintrag("teilweise",     "teilweise erfasst") +
+      legendeEintrag("kennengelernt", "durch Erklärung") +
+      legendeEintrag("uebersprungen",  "direkt zur Erklärung") +
+    '</div>';
 }
 
-// ── LOGGING AN GOOGLE SHEET ────────────────────────────────────────────────
+function statusLabel(s) {
+  return {
+    "meister": "sofort verstanden",
+    "verstanden": "im zweiten Versuch verstanden",
+    "teilweise": "teilweise richtig",
+    "kennengelernt": "durch die Erklärung kennengelernt",
+    "uebersprungen": "direkt zur Erklärung gesprungen"
+  }[s] || s;
+}
+
+function legendeEintrag(status, text) {
+  return '<span class="legende-item"><span class="karte karte-' + status + ' karte-mini"></span>' + escapeHtml(text) + '</span>';
+}
+
+function ergebnisSatz(a) {
+  const teile = [];
+  if (a.meister)       teile.push(a.meister + " davon " + (a.meister === 1 ? "hattest Du" : "hattest Du") + " im ersten Anlauf parat");
+  if (a.verstanden)    teile.push(a.verstanden + " " + (a.verstanden === 1 ? "hast Du im zweiten Anlauf geknackt" : "hast Du im zweiten Anlauf geknackt"));
+  if (a.teilweise)     teile.push(a.teilweise + " " + (a.teilweise === 1 ? "war teilweise richtig" : "waren teilweise richtig"));
+  if (a.kennengelernt) teile.push(a.kennengelernt + " " + (a.kennengelernt === 1 ? "hast Du über die Erklärung kennengelernt" : "hast Du über die Erklärung kennengelernt"));
+  if (a.uebersprungen) teile.push(a.uebersprungen + " " + (a.uebersprungen === 1 ? "hast Du Dir direkt erklären lassen" : "hast Du Dir direkt erklären lassen"));
+  if (!teile.length) return "Danke fürs Mitspielen.";
+  return teile.join("; ") + ". Fachbegriffe fühlen sich mit jedem Durchgang vertrauter an.";
+}
+
 function logAntwort(frage, richtig) {
   if (!APPS_SCRIPT_URL) return;
 
@@ -339,6 +409,7 @@ function logAntwort(frage, richtig) {
     korrekt: frage.korrekt.join(","),
     richtig: richtig,
     versuche: state.attempts,
+    punkte_gesamt: state.bilanz.punkte,
     zeit: new Date().toISOString()
   };
 
@@ -355,7 +426,6 @@ function logAntwort(frage, richtig) {
   }).finally(() => clearTimeout(t));
 }
 
-// ── UTILS ──────────────────────────────────────────────────────────────────
 function escapeHtml(s) {
   return String(s).replace(/[&<>"']/g, c => ({
     "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
