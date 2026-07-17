@@ -1,0 +1,483 @@
+{
+  "titel": "KIM-Gamification — Fragen-Pool",
+  "beschreibung": "Alle verfügbaren Fragen. Die Spiel-Logik zieht daraus zufällig ein Paket.",
+  "fragen": [
+    {
+      "id": "L1-01",
+      "absender": "Data Scientist",
+      "kanal": "Slack",
+      "szenario": "Kim schreibt Dir: „Unser neues Klassifikationsmodell erreicht 99 % Genauigkeit auf den Trainingsdaten, aber im Test-Set nur 71 %. Ich bin ratlos. Woran liegt das wahrscheinlich?“",
+      "frage": "Wie ordnest Du das Phänomen ein?",
+      "optionen": [
+        {
+          "id": "a",
+          "text": "Das Modell zeigt klassisches Overfitting — es hat die Trainingsdaten quasi auswendig gelernt statt zu generalisieren."
+        },
+        {
+          "id": "b",
+          "text": "Das ist normaler Model Drift, wir müssen die Produktivdaten prüfen."
+        },
+        {
+          "id": "c",
+          "text": "Die Test-Set-Größe ist zu klein — die 71 % sind statistisch nicht aussagekräftig."
+        },
+        {
+          "id": "d",
+          "text": "Underfitting — das Modell ist zu einfach für die Daten und schafft es nicht, die Muster überhaupt zu lernen."
+        }
+      ],
+      "korrekt": [
+        "a"
+      ],
+      "feedback_richtig": "Genau. Wenn die Trainings-Performance stark über der Test-Performance liegt, ist Overfitting die naheliegendste Erklärung. Das Modell hat sich zu eng an die Trainingsdaten angepasst und generalisiert schlecht.",
+      "feedback_falsch": "Model Drift wäre eine Verschlechterung *im Betrieb über Zeit*. Und die Test-Set-Größe erklärt nicht die enorme Lücke zwischen Trainings- und Test-Performance. Der Klassiker für diese Kluft heißt Overfitting.",
+      "glossar": {
+        "begriff": "Overfitting",
+        "erklaerung": "Ein Modell ist so eng an die Trainingsdaten angepasst, dass es dort exzellent, aber auf neuen Daten deutlich schlechter abschneidet. Gegenmaßnahmen: Regularisierung, Dropout, Early Stopping, mehr/vielfältigere Trainingsdaten."
+      },
+      "vertiefung": {
+        "begriff": "Overfitting",
+        "laien_erklaerung": "Overfitting ist das Kern-Problem von „Auswendiglernen ohne Verstehen“. Stell Dir eine Schülerin vor, die für eine Prüfung alle Übungsaufgaben Wort für Wort auswendig lernt — inklusive der zufälligen Tippfehler und Formulierungs-Eigenheiten. In der Klausur bekommt sie neue Aufgaben mit denselben Themen — und scheitert, weil sie die zugrunde liegende Regel nie verstanden hat.\n\nGenau das passiert einem KI-Modell beim Overfitting: Es merkt sich die Trainingsdaten so gründlich, dass es auch deren Zufälligkeiten und Rauschen mitlernt. Auf neuen Daten schneidet es dann deutlich schlechter ab. Man erkennt das an der Kluft zwischen Trainings- und Test-Ergebnis: 99 % im Training, aber nur 71 % im Test ist ein klassisches Muster.\n\nGegenmaßnahmen setzen dem Modell absichtlich Grenzen: einfachere Architektur, mehr und vielfältigere Daten, oder Techniken wie Regularisierung, Dropout und Early Stopping.\n\nWarum das für Dich als KI-Managerin wichtig ist: Wenn ein Modell im Produktivbetrieb schlechter läuft als in den Präsentationen der Data-Science-Abteilung, ist Overfitting oft die erste Diagnose — bevor Du weitere Ursachen wie Model Drift oder Datenqualität ins Feld führst.",
+        "quellen": [
+          {
+            "titel": "Überanpassung — Wikipedia (deutsch)",
+            "art": "Enzyklopädie-Artikel",
+            "institution": "Wikipedia",
+            "url": "https://de.wikipedia.org/wiki/%C3%9Cberanpassung"
+          },
+          {
+            "titel": "Elements of AI — Overfitting (kostenfreier MOOC, deutschsprachig verfügbar)",
+            "art": "Online-Kurs (frei)",
+            "institution": "University of Helsinki / MinnaLearn",
+            "url": "https://buildingai.elementsofai.com/Machine-Learning/overfitting"
+          },
+          {
+            "titel": "Maschinelles Lernen — Wikipedia (deutsch), Überblick zum Gesamtkontext",
+            "art": "Enzyklopädie-Artikel",
+            "institution": "Wikipedia",
+            "url": "https://de.wikipedia.org/wiki/Maschinelles_Lernen"
+          }
+        ]
+      },
+      "schwierigkeit": 1
+    },
+    {
+      "id": "L1-02",
+      "absender": "MLOps-Engineer",
+      "kanal": "E-Mail",
+      "szenario": "Marc mailt: „Das Betrugserkennungs-Modell soll morgen live gehen. Der Validation-Loss hört seit drei Epochen nicht mehr auf zu sinken, aber der Training-Loss fällt weiter. Was empfiehlst Du?“",
+      "frage": "Welcher Vorschlag adressiert das Problem am direktesten?",
+      "optionen": [
+        {
+          "id": "a",
+          "text": "Training abbrechen (Early Stopping) und die letzte Version mit dem besten Validation-Loss deployen."
+        },
+        {
+          "id": "b",
+          "text": "Weiter trainieren — je länger, desto besser."
+        },
+        {
+          "id": "c",
+          "text": "Learning Rate verdreifachen, damit das Modell aus dem Plateau ausbricht."
+        },
+        {
+          "id": "d",
+          "text": "Testdaten mit ins Training aufnehmen, damit das Modell auch deren Verteilung sieht."
+        }
+      ],
+      "korrekt": [
+        "a"
+      ],
+      "feedback_richtig": "Richtig. Wenn der Validation-Loss stagniert, während der Training-Loss weiter sinkt, beginnt das Modell zu überanpassen. Early Stopping schneidet das Training an genau dem Punkt ab, an dem es aufhört, echt zu lernen.",
+      "feedback_falsch": "Weiter trainieren verschärft das Overfitting. Learning Rate zu erhöhen wäre ein Kunstgriff für ein Konvergenzproblem — hier ist das Problem aber Überanpassung, nicht Konvergenz.",
+      "glossar": {
+        "begriff": "Early Stopping",
+        "erklaerung": "Regularisierungstechnik, die das Training abbricht, sobald der Validation-Loss sich nicht mehr verbessert. Verhindert Overfitting, ohne Hyperparameter aufwendig neu suchen zu müssen."
+      },
+      "vertiefung": {
+        "begriff": "Early Stopping",
+        "laien_erklaerung": "Early Stopping ist eine der einfachsten und wirksamsten Techniken gegen Overfitting. Der Grundgedanke: Ein Modell lernt bei jedem Trainingsdurchlauf (jeder Epoche) ein Stück besser — aber irgendwann hört das Lernen auf und das Modell fängt an, die Trainingsdaten „auswendig zu lernen“, statt zu generalisieren.\n\nUm diesen Punkt zu erkennen, teilt man die Daten vor dem Training in drei Teile: Trainingsdaten (womit das Modell lernt), Validierungsdaten (mit denen laufend geprüft wird, wie gut das Modell auf neue Daten reagiert) und Testdaten (die für die abschließende Bewertung reserviert bleiben). Early Stopping beobachtet den Validation-Loss und bricht das Training genau dann ab, wenn sich dieser nicht mehr verbessert — auch wenn der Trainings-Loss theoretisch weiter sinken könnte.\n\nDas Ergebnis: Das Modell ist an dem Punkt eingefroren, an dem es am besten generalisiert. Kein aufwendiges Hyperparameter-Tuning, keine zusätzliche Rechenzeit — nur ein einfaches Stopp-Kriterium.\n\nWarum das für Dich als KI-Managerin wichtig ist: Wenn Dein Team von „wir trainieren einfach weiter, dann wird es schon besser“ spricht, ist das ein Warnzeichen. Early Stopping gehört zum Handwerk und sollte in jedem seriösen ML-Prozess Standard sein — es kostet nichts und schützt vor einer der häufigsten Fehlerquellen.",
+        "quellen": [
+          {
+            "titel": "Early stopping — Wikipedia (englisch), Definition und Verfahren",
+            "art": "Enzyklopädie-Artikel",
+            "institution": "Wikipedia",
+            "url": "https://en.wikipedia.org/wiki/Early_stopping"
+          },
+          {
+            "titel": "Hyperparameteroptimierung — Wikipedia (deutsch), Einordnung als Regularisierungs-Kriterium",
+            "art": "Enzyklopädie-Artikel",
+            "institution": "Wikipedia",
+            "url": "https://de.wikipedia.org/wiki/Hyperparameteroptimierung"
+          },
+          {
+            "titel": "Dropout (künstliches neuronales Netz) — Wikipedia (deutsch), verwandte Regularisierungstechnik",
+            "art": "Enzyklopädie-Artikel",
+            "institution": "Wikipedia",
+            "url": "https://de.wikipedia.org/wiki/Dropout_(k%C3%BCnstliches_neuronales_Netz)"
+          }
+        ]
+      },
+      "schwierigkeit": 1
+    },
+    {
+      "id": "L1-03",
+      "absender": "Data Scientist",
+      "kanal": "Slack",
+      "szenario": "Kim schreibt: „Wir bauen ein System, das aus Röntgenbildern automatisch erkennt, ob eine Pneumonie vorliegt. Es lernt aus 100.000 gelabelten Bildern und findet dabei selbst heraus, welche Bildmerkmale relevant sind. Wie würde man diese Technologie fachlich einordnen?“",
+      "frage": "Welche Einordnung ist am präzisesten?",
+      "optionen": [
+        {
+          "id": "a",
+          "text": "Deep Learning — ein tiefes künstliches neuronales Netz, das Merkmale automatisch aus unstrukturierten Daten (hier: Bildern) extrahiert."
+        },
+        {
+          "id": "b",
+          "text": "Regelbasiertes Expertensystem, in dem Radiolog:innen vorab die diagnostisch relevanten Bildmerkmale (Kontrast, Textur, Form) explizit definieren."
+        },
+        {
+          "id": "c",
+          "text": "Klassisches Maschinelles Lernen mit Feature-Engineering durch die Fachleute — die Merkmale werden vor dem Training manuell festgelegt."
+        },
+        {
+          "id": "d",
+          "text": "Reinforcement Learning — das Modell lernt durch Belohnungssignale, die richtigen Diagnosen zu treffen."
+        }
+      ],
+      "korrekt": [
+        "a"
+      ],
+      "feedback_richtig": "Genau. Der Markenkern von Deep Learning ist, dass das Modell die relevanten Merkmale selbst aus unstrukturierten Daten (Bildern, Audio, Text, Video) lernt — ohne dass Fachleute die Features vorab definieren müssen.",
+      "feedback_falsch": "Regelbasierte und klassische ML-Ansätze verlangen, dass Menschen die relevanten Merkmale vorab benennen. Deep Learning zeichnet sich gerade dadurch aus, dass es die Merkmalsextraktion selbst übernimmt — deshalb ist es das Mittel der Wahl bei Bildern, Sprache und Video.",
+      "glossar": {
+        "begriff": "Deep Learning",
+        "erklaerung": "Spezialisierung des Maschinellen Lernens, die tiefe künstliche neuronale Netze nutzt, um aus unstrukturierten Daten selbstständig Merkmale zu extrahieren. Besonders leistungsfähig bei Bildern, Sprache und Video. Braucht große Datenmengen und viel Rechenleistung."
+      },
+      "vertiefung": {
+        "begriff": "Deep Learning",
+        "laien_erklaerung": "Deep Learning („tiefes Lernen“) ist eine spezielle Form des Maschinellen Lernens. Der Name kommt von der Architektur: Viele hintereinandergeschaltete Schichten künstlicher Neuronen, die zusammen ein „tiefes“ Netz bilden.\n\nDer entscheidende Unterschied zu klassischem ML: Bei klassischem ML muss ein Mensch dem Modell erst sagen, worauf es achten soll — welche Merkmale wichtig sind. Bei Deep Learning findet das Modell diese Merkmale selbst heraus, indem es aus vielen Beispielen lernt. Bei einem Röntgenbild bedeutet das: Statt einem Modell zu sagen „achte auf Kontrast X in Region Y“, zeigen wir ihm 100.000 Bilder mit Diagnose, und es findet die relevanten Muster von selbst.\n\nDeshalb steht Deep Learning hinter fast allen aktuellen KI-Durchbrüchen: Sprachassistenten, Bildersuche, Übersetzung, autonomes Fahren, ChatGPT. Der Preis dafür ist hoher Datenbedarf und viel Rechenleistung (GPUs/TPUs).\n\nWarum das für Dich als KI-Managerin wichtig ist: Wenn ein Vorhaben unstrukturierte Daten (Bilder, Audio, Text, Video) im Kern hat, ist Deep Learning meistens die richtige Technologiewahl. Bei strukturierten Tabellen-Daten (Kundenlisten, Buchungen, Sensormessungen) sind klassische ML-Verfahren oft die bessere, günstigere und besser erklärbare Wahl.",
+        "quellen": [
+          {
+            "titel": "Künstliches neuronales Netz — Wikipedia (deutsch), enthält Abschnitt zu Deep Learning",
+            "art": "Enzyklopädie-Artikel",
+            "institution": "Wikipedia",
+            "url": "https://de.wikipedia.org/wiki/K%C3%BCnstliches_neuronales_Netz"
+          },
+          {
+            "titel": "Künstliche Intelligenz — Themenseite des BSI (u. a. mit Publikationen zu Deep Learning und XAI)",
+            "art": "Behördenpublikation",
+            "institution": "Bundesamt für Sicherheit in der Informationstechnik (BSI)",
+            "url": "https://www.bsi.bund.de/DE/Themen/Unternehmen-und-Organisationen/Informationen-und-Empfehlungen/Kuenstliche-Intelligenz/kuenstliche-intelligenz_node.html"
+          },
+          {
+            "titel": "Maschinelles Lernen — Wikipedia (deutsch), zur Einordnung in das Gesamt-Feld",
+            "art": "Enzyklopädie-Artikel",
+            "institution": "Wikipedia",
+            "url": "https://de.wikipedia.org/wiki/Maschinelles_Lernen"
+          }
+        ]
+      },
+      "schwierigkeit": 1
+    },
+    {
+      "id": "L2-01",
+      "absender": "Product Owner",
+      "kanal": "Chat",
+      "szenario": "Sabine meldet: „Unser Kunden-Ticket-Klassifikator läuft seit sechs Monaten stabil, aber der Support sagt, seit vier Wochen wandern immer mehr Tickets in die falsche Kategorie. An den Trainingsdaten haben wir nichts geändert.“",
+      "frage": "Was ist die plausibelste Diagnose und der erste sinnvolle Schritt?",
+      "optionen": [
+        {
+          "id": "a",
+          "text": "Model Drift. Ich vergleiche die aktuellen Eingabedaten mit der Trainingsverteilung und plane ein Retraining mit frischen Daten."
+        },
+        {
+          "id": "b",
+          "text": "Overfitting. Ich empfehle Early Stopping und Neuvalidierung."
+        },
+        {
+          "id": "c",
+          "text": "Bias im Trainingsdatensatz. Wir prüfen die Repräsentativität der ursprünglichen Daten."
+        },
+        {
+          "id": "d",
+          "text": "Das Modell hat einen zu hohen Recall — wir müssen den Precision-Recall-Tradeoff neu abstimmen."
+        }
+      ],
+      "korrekt": [
+        "a"
+      ],
+      "feedback_richtig": "Genau. Stabile Trainingsdaten, aber schleichende Verschlechterung im Produktivbetrieb — das ist die klassische Signatur von Model Drift. Die Realität hat sich verschoben (neue Ticket-Formulierungen, neue Produkte), das Modell nicht.",
+      "feedback_falsch": "Overfitting hätte man schon vor sechs Monaten gemerkt. Bias im Trainingsset erklärt keine Verschlechterung *über die Zeit*. Precision/Recall wäre eine Design-Entscheidung, nicht die Ursache einer Verschiebung.",
+      "glossar": {
+        "begriff": "Model Drift",
+        "erklaerung": "Leistungsverschlechterung eines Modells im Produktivbetrieb, weil sich Eingabedaten oder Realität gegenüber dem Trainingszeitpunkt verändert haben. Gegenmaßnahmen: kontinuierliches Monitoring der Datenverteilung, geplantes Retraining, ggf. Shadow Mode für die neue Modellversion."
+      },
+      "vertiefung": {
+        "begriff": "Model Drift",
+        "laien_erklaerung": "Model Drift beschreibt das Phänomen, dass ein KI-Modell im Produktivbetrieb schleichend schlechter wird — obwohl niemand am Code oder am Modell etwas verändert hat. Der Grund liegt in den Daten: Die Welt, die das Modell abbildet, verändert sich.\n\nZwei Varianten sind wichtig: Bei „Data Drift“ verschieben sich die Eingabedaten (neue Ticket-Formulierungen, neue Kundengruppen, veränderte Sensorwerte). Bei „Concept Drift“ verändert sich der Zusammenhang zwischen Eingabe und Ergebnis (das gleiche Symptom weist plötzlich auf eine andere Ursache hin). In beiden Fällen wird ein Modell, das ursprünglich gut war, für die Realität immer weniger passend.\n\nErkennen lässt sich Drift durch kontinuierliches Monitoring: statistische Vergleiche zwischen Trainingsdaten-Verteilung und aktueller Produktivdaten-Verteilung, Metriken pro Segment, Nutzer-Beschwerden als Frühindikator. Gegenmaßnahmen sind Retraining mit frischen Daten, ggf. parallel ein Shadow-Model, das die neue Version prüft, bevor sie live geht.\n\nWarum das für Dich als KI-Managerin wichtig ist: Ein Modell „läuft“ nicht dauerhaft — es altert. Wenn Deine Organisation keinen Prozess für Drift-Erkennung und Retraining hat, verliert jedes produktive Modell mit der Zeit an Qualität, ohne dass jemand es bemerkt. Genau dieser „stille Verfall“ ist einer der häufigsten Gründe, warum KI-Projekte nach 12–18 Monaten enttäuschen.",
+        "quellen": [
+          {
+            "titel": "Concept drift — Wikipedia (englisch), umfassende Definition von Data Drift und Concept Drift",
+            "art": "Enzyklopädie-Artikel",
+            "institution": "Wikipedia",
+            "url": "https://en.wikipedia.org/wiki/Concept_drift"
+          },
+          {
+            "titel": "MLOps — Themenseite des Fraunhofer-Instituts IAIS, behandelt Drift-Monitoring als Kernaufgabe",
+            "art": "Institutsseite",
+            "institution": "Fraunhofer IAIS",
+            "url": "https://www.iais.fraunhofer.de/de/branchen-themen/themen/intelligente-prozessautomatisierung/mlops.html"
+          },
+          {
+            "titel": "MLOps-Studie 2024 (Fraunhofer IAIS / KI.NRW) — Grundlagen, Chancen, Herausforderungen (PDF, deutschsprachig)",
+            "art": "Studie / Whitepaper",
+            "institution": "Fraunhofer IAIS · KI.NRW",
+            "url": "https://www.iais.fraunhofer.de/content/dam/iais/publikationen/studien-und-whitepaper/2024/KI-NRW_MLOps_Studie-2024.pdf"
+          }
+        ]
+      },
+      "schwierigkeit": 2
+    },
+    {
+      "id": "L2-02",
+      "absender": "Compliance-Beauftragte",
+      "kanal": "E-Mail",
+      "szenario": "Petra schreibt: „Unser Betrugserkennungs-Modell hat 94 % Accuracy — sehr gut. Aber der Fachbereich fragt, warum das System bei Kunden aus zwei bestimmten Postleitzahlgebieten dreimal so oft Alarm schlägt wie im Durchschnitt. Ist das ein Problem?“",
+      "frage": "Wie ordnest Du die Situation ein und was schlägst Du vor?",
+      "optionen": [
+        {
+          "id": "a",
+          "text": "Das ist ein Verdacht auf algorithmischen Bias. Wir sollten die Accuracy segmentiert nach Postleitzahl auswerten und die Trainingsdaten auf Repräsentativität prüfen."
+        },
+        {
+          "id": "b",
+          "text": "Kein Problem — 94 % Accuracy ist ein exzellenter Wert, die Verteilung der Alarme ist statistisch erklärbar."
+        },
+        {
+          "id": "c",
+          "text": "Wir müssen den Precision-Recall-Tradeoff überprüfen — eventuell ist die Precision in diesen Gebieten schlechter."
+        },
+        {
+          "id": "d",
+          "text": "Wir dokumentieren das als bekannten Grenzfall und lassen das Modell weiterlaufen."
+        }
+      ],
+      "korrekt": [
+        "a",
+        "c"
+      ],
+      "feedback_richtig": "Genau. Eine hohe Gesamt-Accuracy kann systematische Ungleichbehandlung einzelner Gruppen verbergen. Sowohl die segmentierte Analyse (Bias-Test) als auch der Blick auf Precision pro Gruppe sind angemessene erste Schritte. Beides gehört zur Detective-Ebene der Risikokontrolle.",
+      "feedback_falsch": "„Statistisch erklärbar“ ohne segmentierte Auswertung ist eine Behauptung, keine Analyse. Und ein bekannter Verdacht auf Bias unverändert weiterlaufen zu lassen, verstößt gegen die Governance-Grundsätze von ISO 42001 und die Fairness-Anforderungen des EU AI Act.",
+      "glossar": {
+        "begriff": "Algorithmischer Bias",
+        "erklaerung": "Systematische Verzerrung in Modell-Ausgaben, oft verursacht durch unausgewogene Trainingsdaten. Wird erkannt durch segmentierte Metriken (Accuracy, Precision, Recall getrennt nach relevanten Gruppen) und durch Counterfactual Testing."
+      },
+      "vertiefung": {
+        "begriff": "Algorithmischer Bias",
+        "laien_erklaerung": "Algorithmischer Bias bedeutet: Ein KI-System trifft systematisch unterschiedliche Entscheidungen für unterschiedliche Personengruppen — und zwar so, dass eine Gruppe strukturell benachteiligt wird. Der Effekt ist selten böse Absicht; er entsteht meistens dadurch, dass die Trainingsdaten die Wirklichkeit unvollständig oder verzerrt abbilden.\n\nEin Beispiel: Ein Bewerbungssystem, das auf zehn Jahre historischer Einstellungsdaten trainiert wurde, lernt die impliziten Muster dieser Vergangenheit mit — inklusive Diskriminierungen, die dort schon steckten. Das Modell produziert dann nicht neutralere Entscheidungen als die Menschen vorher, sondern reproduziert deren Voreingenommenheit skaliert und unsichtbar.\n\nErkennen lässt sich Bias nur durch segmentierte Auswertung: Man rechnet Metriken wie Accuracy, Precision und Recall getrennt nach relevanten Gruppen (Alter, Geschlecht, Region, Postleitzahl). Wenn eine Gruppe systematisch schlechter abschneidet, ist das Ergebnis nicht durch die Gesamt-Accuracy legitimiert. Ergänzend nutzt man Counterfactual Testing — dieselbe Eingabe mit nur einem geänderten Merkmal (Name, Geschlecht) durch das Modell schicken und prüfen, ob die Antwort divergiert.\n\nWarum das für Dich als KI-Managerin wichtig ist: Bias-Prävention ist keine Kür, sondern regulatorische Pflicht — sowohl unter der EU-KI-Verordnung als auch unter ISO 42001. „Wir haben 94 % Accuracy“ ist keine ausreichende Verteidigung, wenn eine Gruppe systematisch benachteiligt wird. Segmentierte Metriken gehören in jedes Monitoring-Dashboard.",
+        "quellen": [
+          {
+            "titel": "Diskriminierungsrisiken bei maschinellem Lernen — Wikipedia (deutsch)",
+            "art": "Enzyklopädie-Artikel",
+            "institution": "Wikipedia",
+            "url": "https://de.wikipedia.org/wiki/Diskriminierungsrisiken_bei_maschinellem_Lernen"
+          },
+          {
+            "titel": "Künstliche Intelligenz und Diskriminierung — Herausforderungen und Lösungsansätze (Whitepaper, deutschsprachig)",
+            "art": "Whitepaper",
+            "institution": "Plattform Lernende Systeme (BMBF-gefördert)",
+            "url": "https://www.plattform-lernende-systeme.de/publikationen-details/kuenstliche-intelligenz-und-diskriminierung-herausforderungen-und-loesungsansaetze.html"
+          },
+          {
+            "titel": "Algorithmic bias — Wikipedia (englisch), tiefergehende Definition und Beispielsammlung",
+            "art": "Enzyklopädie-Artikel",
+            "institution": "Wikipedia",
+            "url": "https://en.wikipedia.org/wiki/Algorithmic_bias"
+          }
+        ]
+      },
+      "schwierigkeit": 2
+    },
+    {
+      "id": "L2-03",
+      "absender": "Data Scientist",
+      "kanal": "E-Mail",
+      "szenario": "Kim mailt: „Wir schaffen es, gute Modelle zu bauen. Aber jeder Deployment-Zyklus dauert drei Wochen, kein Modell wird nach dem Rollout überwacht, und nach vier Monaten weiß niemand mehr, welche Datenversion welches Modell erzeugt hat. Ich glaube, wir haben ein grundsätzliches Prozess-Problem. Was schlägst Du vor?“",
+      "frage": "Welche Empfehlung packt das strukturelle Problem an?",
+      "optionen": [
+        {
+          "id": "a",
+          "text": "MLOps-Praktiken einführen: CI/CD-Pipelines für Modelle, Versionierung von Daten und Modellen, automatisiertes Monitoring, geplantes Retraining."
+        },
+        {
+          "id": "b",
+          "text": "Ein weiteres, besseres Modell entwickeln — die aktuellen Modelle sind offenbar zu einfach."
+        },
+        {
+          "id": "c",
+          "text": "Mehr Data Scientists einstellen, damit sie jeden Deployment-Zyklus manuell begleiten können."
+        },
+        {
+          "id": "d",
+          "text": "Reine DevOps-Praktiken übernehmen — das Team soll wie ein klassisches Software-Team arbeiten."
+        }
+      ],
+      "korrekt": [
+        "a"
+      ],
+      "feedback_richtig": "Genau. MLOps überträgt DevOps-Prinzipien (Automatisierung, CI/CD, Monitoring) auf den ML-Lebenszyklus und ergänzt sie um Daten-Versionierung, Model-Registry und Drift-Erkennung. Genau das adressiert alle drei Symptome, die Kim beschreibt.",
+      "feedback_falsch": "Ein besseres Modell löst kein Prozess-Problem. Mehr Personal skaliert das Problem, statt es zu beheben. Reines DevOps kennt keine Daten-Versionierung und keine Model-Drift-Überwachung — deshalb gibt es MLOps als eigene Disziplin oberhalb von DevOps.",
+      "glossar": {
+        "begriff": "MLOps (Machine Learning Operations)",
+        "erklaerung": "Erweiterung von DevOps für den ML-Lebenszyklus. Umfasst CI/CD für Modelle, Versionierung von Daten und Modellen, automatisiertes Monitoring, Retraining-Pipelines. Ziel: reproduzierbare, überwachte und wartbare ML-Systeme im Produktivbetrieb."
+      },
+      "vertiefung": {
+        "begriff": "MLOps",
+        "laien_erklaerung": "MLOps steht für „Machine Learning Operations“ und beschreibt die Praktiken, mit denen ein Unternehmen ML-Modelle nicht nur einmal baut, sondern zuverlässig im Produktivbetrieb hält.\n\nDer Unterschied zu klassischer Softwareentwicklung ist wichtig: Bei normaler Software ist der Code das Herzstück; wenn er funktioniert, funktioniert die Anwendung. Bei ML gibt es drei bewegliche Teile — Code, Daten und Modell —, und alle drei können sich ändern. Wenn die Daten in der Realität sich verschieben (Model Drift), verschlechtert sich das Modell, ohne dass am Code etwas geändert wurde.\n\nMLOps überträgt daher DevOps-Prinzipien (Automatisierung, kontinuierliche Integration) auf den ML-Lebenszyklus und ergänzt sie um ML-spezifische Elemente: Versionierung der Trainingsdaten, Nachvollziehbarkeit, welche Datenversion welches Modell erzeugt hat, kontinuierliche Überwachung der Modell-Performance im Betrieb, und automatisiertes Retraining bei Bedarf.\n\nWarum das für Dich als KI-Managerin wichtig ist: Ohne MLOps landen Modelle als Prototypen im Produktivbetrieb, ohne dass jemand sie überwacht. Sie werden schleichend schlechter, ohne dass es auffällt — und die Ursache ist am Ende kaum noch rekonstruierbar. MLOps ist die Voraussetzung dafür, dass KI im Unternehmen professionell und auditierbar betrieben werden kann — auch eine Kernanforderung von ISO 42001.",
+        "quellen": [
+          {
+            "titel": "MLOps — Themenseite des Fraunhofer-Instituts für Intelligente Analyse- und Informationssysteme (IAIS)",
+            "art": "Institutsseite",
+            "institution": "Fraunhofer IAIS",
+            "url": "https://www.iais.fraunhofer.de/de/branchen-themen/themen/intelligente-prozessautomatisierung/mlops.html"
+          },
+          {
+            "titel": "MLOps-Studie 2024 (Fraunhofer IAIS / KI.NRW) — Grundlagen, Chancen, Herausforderungen (PDF, deutschsprachig)",
+            "art": "Studie / Whitepaper",
+            "institution": "Fraunhofer IAIS · KI.NRW",
+            "url": "https://www.iais.fraunhofer.de/content/dam/iais/publikationen/studien-und-whitepaper/2024/KI-NRW_MLOps_Studie-2024.pdf"
+          },
+          {
+            "titel": "Kontinuierliche Integration — Wikipedia (deutsch), Basiskonzept, auf dem MLOps aufbaut",
+            "art": "Enzyklopädie-Artikel",
+            "institution": "Wikipedia",
+            "url": "https://de.wikipedia.org/wiki/Kontinuierliche_Integration"
+          }
+        ]
+      },
+      "schwierigkeit": 2
+    },
+    {
+      "id": "L3-01",
+      "absender": "CTO",
+      "kanal": "Anruf",
+      "szenario": "Der CTO ruft Dich an: „Wir wollen einen KI-Agenten bauen, der eigenständig auf unsere Buchhaltungs-API zugreift, Rechnungen prüft und bei plausiblen Fällen automatisch zur Zahlung freigibt. Bei unklaren Fällen soll er eskalieren. Was müssen wir aus Deiner Sicht mitdenken?“",
+      "frage": "Welche Empfehlungen gehören zwingend in Deine Antwort?",
+      "optionen": [
+        {
+          "id": "a",
+          "text": "Human-in-the-loop für jede Zahlungsfreigabe oberhalb eines definierten Schwellwerts — der Agent darf vorschlagen, aber nicht abschließend entscheiden."
+        },
+        {
+          "id": "b",
+          "text": "Least Agency: Der Agent bekommt API-Rechte pro Vorgang, nicht dauerhaft, und nur für die Schritte, die er wirklich braucht."
+        },
+        {
+          "id": "c",
+          "text": "Vollständige Logging der Agenten-Aktionen (welches Tool wann mit welchen Parametern aufgerufen wurde) für Auditierbarkeit."
+        },
+        {
+          "id": "d",
+          "text": "Wir vertrauen auf die Modellgenauigkeit und lassen den Agenten in einer initialen Beobachtungsphase voll autonom laufen, um Trainingsdaten zu sammeln."
+        }
+      ],
+      "korrekt": [
+        "a",
+        "b",
+        "c"
+      ],
+      "feedback_richtig": "Genau — die drei sind ein zusammenhängendes Set: Human-in-the-loop begrenzt die Wirkung, Least Agency begrenzt den Handlungsraum, Logging schafft die Grundlage für Nachvollziehbarkeit und Auditierbarkeit. Diese Kombination macht Art. 14 der KI-VO (Menschliche Aufsicht) bei einem Agenten operativ erfüllbar.",
+      "feedback_falsch": "Ein autonomer Agent, der direkt auf Zahlungssysteme zugreift, ohne diese Schutzmechanismen wäre ein Lehrbuchfall für „Tool Misuse“ und „Rogue Agent“-Risiken (OWASP Agentic Top 10). „Trainingsdaten sammeln“ ist kein Freibrief für fehlende Kontrolle.",
+      "glossar": {
+        "begriff": "Human-in-the-loop / Least Agency",
+        "erklaerung": "Zwei komplementäre Sicherungsprinzipien für KI-Agenten. Human-in-the-loop verlangt menschliche Bestätigung an definierten Punkten. Least Agency (auch Least Privilege / POLP) gibt dem Agenten nur die minimal nötigen Rechte pro Aktion — nicht das technisch mögliche Maximum."
+      },
+      "vertiefung": {
+        "begriff": "Human-in-the-loop und Least Agency",
+        "laien_erklaerung": "Ein KI-Agent unterscheidet sich vom klassischen KI-Modell dadurch, dass er nicht nur eine Antwort gibt, sondern selbstständig Werkzeuge aufruft, Schritte plant und Aktionen in der realen Welt auslöst — z. B. eine Rechnung freigeben, eine E-Mail versenden, einen API-Call ausführen. Genau diese Autonomie macht Agenten mächtig — und riskant.\n\nZwei Prinzipien wirken zusammen, um dieses Risiko beherrschbar zu machen:\n\n„Human-in-the-loop“ bedeutet, dass ein Mensch an definierten kritischen Punkten die Entscheidung bestätigen muss. Der Agent darf vorschlagen, aber nicht abschließend handeln. Die KI-Verordnung verlangt diese menschliche Aufsicht in Art. 14 für Hochrisiko-KI-Systeme ausdrücklich.\n\n„Least Agency“ (oder Least Privilege / POLP, „Principle of Least Privilege“) bedeutet, dass der Agent nur die minimal nötigen Rechte für den jeweiligen Schritt bekommt — nicht das, was technisch möglich wäre. Statt einem Agenten dauerhaft Vollzugriff auf das Buchhaltungssystem zu geben, bekommt er pro Vorgang einen zeitlich begrenzten Token für genau die Aktionen, die er wirklich braucht.\n\nBeide Prinzipien wirken komplementär: Human-in-the-loop begrenzt die *Wirkung* des Agenten (was zählt am Ende), Least Agency begrenzt seinen *Handlungsraum* (was er überhaupt tun kann). Ergänzt durch lückenloses Logging sind sie das Grundgerüst, mit dem sich der EU-KI-Verordnung-Anspruch der „menschlichen Aufsicht“ bei einem Agenten, der in 30 Sekunden 50 Aktionen ausführt, überhaupt operativ erfüllen lässt.\n\nWarum das für Dich als KI-Managerin wichtig ist: Wenn der Fachbereich Dir einen Agenten bringen will, der „einfach mal autonom loslegt“, ist Deine erste Frage: An welchen Punkten hält er an? Wie viele Rechte hat er? Wer sieht seine Aktionen? Ohne belastbare Antworten auf diese drei Fragen ist das Vorhaben nicht produktionsreif — egal wie gut das Modell dahinter ist.",
+        "quellen": [
+          {
+            "titel": "Human-in-the-loop — Wikipedia (englisch), Definition und Anwendungsfelder",
+            "art": "Enzyklopädie-Artikel",
+            "institution": "Wikipedia",
+            "url": "https://en.wikipedia.org/wiki/Human-in-the-loop"
+          },
+          {
+            "titel": "OWASP Top 10 for Agentic Applications 2026 — Risikokatalog für autonome KI-Agenten (u. a. Least Privilege)",
+            "art": "Sicherheits-Framework",
+            "institution": "OWASP Gen AI Security Project",
+            "url": "https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications-for-2026/"
+          },
+          {
+            "titel": "Künstliche Intelligenz — Themenseite des BSI mit Publikationen zur Absicherung von KI-Systemen",
+            "art": "Behördenseite",
+            "institution": "Bundesamt für Sicherheit in der Informationstechnik (BSI)",
+            "url": "https://www.bsi.bund.de/DE/Themen/Unternehmen-und-Organisationen/Informationen-und-Empfehlungen/Kuenstliche-Intelligenz/kuenstliche-intelligenz_node.html"
+          }
+        ]
+      },
+      "schwierigkeit": 3
+    },
+    {
+      "id": "L3-02",
+      "absender": "Leiter Radiologie",
+      "kanal": "E-Mail",
+      "szenario": "Der Leiter der Radiologie schreibt: „Wir haben festgestellt, dass unsere Ärztinnen und Ärzte den KI-Empfehlungen unseres Diagnose-Tools in über 95 % der Fälle folgen — auch dann, wenn ihre eigene Erst-Einschätzung anders war. Der Vorstand freut sich über die hohe Nutzungsrate. Solltet Ihr als KI-Team da irgendetwas anders sehen?“",
+      "frage": "Wie ordnest Du die Situation ein und was empfiehlst Du?",
+      "optionen": [
+        {
+          "id": "a",
+          "text": "Das ist ein Warnsignal für Automation Bias. Wir sollten Abweichungs- und Widerspruchsrate laufend messen und Grenzwerte definieren, ab denen Nachfrage-Prozesse greifen."
+        },
+        {
+          "id": "b",
+          "text": "Regelmäßige Kalibrations-Übungen mit den Ärzt:innen einführen — Fälle mit bekannter korrekter Diagnose, bei denen das Tool bewusst mal falsch liegt, um kritisches Prüfen zu trainieren."
+        },
+        {
+          "id": "c",
+          "text": "Alles gut — eine hohe Nutzungsrate ist genau das Ziel, das man bei einer KI-Investition erreichen will."
+        },
+        {
+          "id": "d",
+          "text": "Prozess-Umstellung auf „Double-Blinded First Look“: Die Ärzt:innen dokumentieren ihre eigene Einschätzung, bevor sie die KI-Empfehlung sehen — damit ihre Ersteinschätzung nicht durch die KI geprägt wird."
+        }
+      ],
+      "korrekt": [
+        "a",
+        "b",
+        "d"
+      ],
+      "feedback_richtig": "Genau. Eine Zustimmungsrate von 95 %+ zu KI-Empfehlungen ist kein Erfolg, sondern ein Alarm. Wenn die Ärzt:innen ihre eigene Fachexpertise systematisch der Maschine unterordnen, verlieren sie ihre Rolle als kompensierende Instanz — und der Zweck von menschlicher Aufsicht geht verloren. Alle drei genannten Maßnahmen adressieren das direkt.",
+      "feedback_falsch": "Hohe Nutzungsrate ist bei Entscheidungsunterstützung nicht das Erfolgskriterium — im Gegenteil. Wenn die KI perfekt wäre, bräuchte man die Ärzt:innen nicht mehr; wenn sie nicht perfekt ist, müssen die Ärzt:innen die Fähigkeit behalten, ihr zu widersprechen. Automation Bias verschließt genau diese Sicherung — und macht die menschliche Aufsicht nach Art. 14 KI-VO zur Formalie.",
+      "glossar": {
+        "begriff": "Automation Bias",
+        "erklaerung": "Neigung von Menschen, Empfehlungen automatisierter Systeme unkritisch zu folgen, selbst wenn eigene Fachkenntnis dagegen spräche. Erkennungsindikator: Die Widerspruchsrate zwischen menschlicher und KI-Entscheidung geht gegen 0."
+      },
+      "vertiefung": {
+        "begriff": "Automation Bias",
+        "laien_erklaerung": "Automation Bias ist eine gut belegte psychologische Verzerrung: Menschen neigen dazu, Empfehlungen automatischer Systeme mehr zu vertrauen, als sachlich angemessen wäre. Der Effekt wurde erstmals in der Luftfahrt beschrieben (Autopilot), tritt aber überall auf, wo Menschen mit KI-Empfehlungen arbeiten — vom Rechtschreib-Vorschlag bis zur medizinischen Diagnose.\n\nDer problematische Kern: Wenn eine KI in 90 % der Fälle richtig liegt, ist das ein guter Wert. Aber wenn die Fachkraft in den verbleibenden 10 % einfach mitgeht, statt zu widersprechen, wird der Mensch zur Legitimation der KI — statt zu ihrer Korrektur. Genau das war bei mehreren tödlichen Flugunfällen die Ursache: Der Autopilot hatte einen Fehler, die Piloten vertrauten ihm länger, als sie sollten.\n\nIn der Medizin ist der Effekt besonders untersucht. In der Radiologie folgen Ärzt:innen KI-Empfehlungen oft in weit über 90 % der Fälle, auch wenn ihre eigene Erst-Einschätzung anders war. Wenn das nicht überwacht wird, verliert die menschliche Aufsicht ihren Zweck — und mit ihr die rechtliche Absicherung, die Art. 14 der KI-Verordnung eigentlich vorsieht.\n\nWarum das für Dich als KI-Managerin wichtig ist: Automation Bias ist einer der wichtigsten Gründe, warum Human-in-the-loop nicht automatisch funktioniert. Man muss aktiv Gegenmaßnahmen einbauen — Abweichungs-Metriken, Kalibrations-Übungen, „Double-Blinded First Look“-Prozesse. Ohne diese wird das schöne Prinzip zum Papier-Konstrukt.",
+        "quellen": [
+          {
+            "titel": "Automation bias — Wikipedia (englisch), grundlegende Definition und Forschungsstand",
+            "art": "Enzyklopädie-Artikel",
+            "institution": "Wikipedia",
+            "url": "https://en.wikipedia.org/wiki/Automation_bias"
+          },
+          {
+            "titel": "Blickwinkel: Künstliche Intelligenz und Radiologie — Deutsches Ärzteblatt, mit Bezug auf Automation Bias in der ärztlichen Praxis",
+            "art": "Fachartikel",
+            "institution": "Deutsches Ärzteblatt",
+            "url": "https://www.aerzteblatt.de/archiv/blickwinkel-kuenstliche-intelligenz-und-radiologie-916b588c-4169-46ba-9bc6-a87126ba4f32"
+          },
+          {
+            "titel": "Medizin — Künstliche Intelligenz im Gesundheitswesen (Magazin des Fraunhofer-Instituts für Kognitive Systeme IKS)",
+            "art": "Magazin-Artikel",
+            "institution": "Fraunhofer IKS",
+            "url": "https://safe-intelligence.fraunhofer.de/artikel/medizin-kuenstliche-intelligenz-im-gesundheitswesen"
+          }
+        ]
+      },
+      "schwierigkeit": 3
+    }
+  ]
+}
