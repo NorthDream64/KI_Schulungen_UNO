@@ -1,0 +1,47 @@
+{
+  "level": 2,
+  "titel": "Diagnose",
+  "beschreibung": "Symptom → richtige Maßnahme. Der Fachbegriff steht nicht in der Frage, sondern in der Antwort.",
+  "fragen": [
+    {
+      "id": "L2-01",
+      "absender": "Product Owner",
+      "kanal": "Chat",
+      "szenario": "Sabine meldet: „Unser Kunden-Ticket-Klassifikator läuft seit sechs Monaten stabil, aber der Support sagt, seit vier Wochen wandern immer mehr Tickets in die falsche Kategorie. An den Trainingsdaten haben wir nichts geändert.“",
+      "frage": "Was ist die plausibelste Diagnose und der erste sinnvolle Schritt?",
+      "optionen": [
+        { "id": "a", "text": "Model Drift. Ich vergleiche die aktuellen Eingabedaten mit der Trainingsverteilung und plane ein Retraining mit frischen Daten." },
+        { "id": "b", "text": "Overfitting. Ich empfehle Early Stopping und Neuvalidierung." },
+        { "id": "c", "text": "Bias im Trainingsdatensatz. Wir prüfen die Repräsentativität der ursprünglichen Daten." },
+        { "id": "d", "text": "Das Modell hat einen zu hohen Recall — wir müssen den Precision-Recall-Tradeoff neu abstimmen." }
+      ],
+      "korrekt": ["a"],
+      "feedback_richtig": "Genau. Stabile Trainingsdaten, aber schleichende Verschlechterung im Produktivbetrieb — das ist die klassische Signatur von Model Drift. Die Realität hat sich verschoben (neue Ticket-Formulierungen, neue Produkte), das Modell nicht.",
+      "feedback_falsch": "Overfitting hätte man schon vor sechs Monaten gemerkt. Bias im Trainingsset erklärt keine Verschlechterung *über die Zeit*. Precision/Recall wäre eine Design-Entscheidung, nicht die Ursache einer Verschiebung.",
+      "glossar": {
+        "begriff": "Model Drift",
+        "erklaerung": "Leistungsverschlechterung eines Modells im Produktivbetrieb, weil sich Eingabedaten oder Realität gegenüber dem Trainingszeitpunkt verändert haben. Gegenmaßnahmen: kontinuierliches Monitoring der Datenverteilung, geplantes Retraining, ggf. Shadow Mode für die neue Modellversion."
+      }
+    },
+    {
+      "id": "L2-02",
+      "absender": "Compliance-Beauftragte",
+      "kanal": "E-Mail",
+      "szenario": "Petra schreibt: „Unser Betrugserkennungs-Modell hat 94 % Accuracy — sehr gut. Aber der Fachbereich fragt, warum das System bei Kunden aus zwei bestimmten Postleitzahlgebieten dreimal so oft Alarm schlägt wie im Durchschnitt. Ist das ein Problem?“",
+      "frage": "Wie ordnest Du die Situation ein und was schlägst Du vor?",
+      "optionen": [
+        { "id": "a", "text": "Das ist ein Verdacht auf algorithmischen Bias. Wir sollten die Accuracy segmentiert nach Postleitzahl auswerten und die Trainingsdaten auf Repräsentativität prüfen." },
+        { "id": "b", "text": "Kein Problem — 94 % Accuracy ist ein exzellenter Wert, die Verteilung der Alarme ist statistisch erklärbar." },
+        { "id": "c", "text": "Wir müssen den Precision-Recall-Tradeoff überprüfen — eventuell ist die Precision in diesen Gebieten schlechter." },
+        { "id": "d", "text": "Wir dokumentieren das als bekannten Grenzfall und lassen das Modell weiterlaufen." }
+      ],
+      "korrekt": ["a", "c"],
+      "feedback_richtig": "Genau. Eine hohe Gesamt-Accuracy kann systematische Ungleichbehandlung einzelner Gruppen verbergen. Sowohl die segmentierte Analyse (Bias-Test) als auch der Blick auf Precision pro Gruppe sind angemessene erste Schritte. Beides gehört zur Detective-Ebene der Risikokontrolle.",
+      "feedback_falsch": "„Statistisch erklärbar“ ohne segmentierte Auswertung ist eine Behauptung, keine Analyse. Und ein bekannter Verdacht auf Bias unverändert weiterlaufen zu lassen, verstößt gegen die Governance-Grundsätze von ISO 42001 und die Fairness-Anforderungen des EU AI Act.",
+      "glossar": {
+        "begriff": "Algorithmischer Bias",
+        "erklaerung": "Systematische Verzerrung in Modell-Ausgaben, oft verursacht durch unausgewogene Trainingsdaten. Wird erkannt durch segmentierte Metriken (Accuracy, Precision, Recall getrennt nach relevanten Gruppen) und durch Counterfactual Testing."
+      }
+    }
+  ]
+}

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KI-Manager · Fachbegriffs-Spiel</title>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="eyebrow">Alfatraining · KI-Manager:in · Gamification</div>
+  <h1>Fachbegriffe im Einsatz</h1>
+  <div class="header-meta">
+    <span>Prototyp</span>
+    <span>3 Level</span>
+    <span>ca. 10 Minuten</span>
+  </div>
+</header>
+
+<main class="main" id="app">
+  <!-- ── START-KARTE ── -->
+  <section class="setup-card" id="start-view">
+    <h2>Willkommen</h2>
+    <p class="intro">
+      In diesem kurzen Spiel bekommst Du kleine, realistische Situationen aus dem Alltag einer KI-Managerin — Slack-Nachrichten, E-Mails, Anrufe.
+      Für jede Situation wählst Du die Reaktion, die Du für richtig hältst. Falsche Antworten führen zu einer sokratischen Rückfrage und zweiten Chance, nicht zu einem Punktabzug.
+    </p>
+
+    <div class="privacy-box">
+      <div class="privacy-title">Datenschutz — bitte lesen, bevor Du beginnst</div>
+      <div class="privacy-text">
+        Die Eingabe des Vornamens ist <strong>freiwillig</strong>. Wenn Du das Feld leer lässt, wirst Du als „anonym" gespeichert.
+        Deine Antworten werden pseudonym in einem Google Sheet gesammelt, um Kurs-Ergebnisse auszuwerten.
+        Verantwortlich: Ulrich Nord (Kursleitung). Speicherdauer: max. 14 Tage, danach automatische Löschung.
+        Auf Wunsch lösche ich Deinen Eintrag jederzeit sofort — schreib mir kurz eine E-Mail.
+      </div>
+    </div>
+
+    <div class="setup-field">
+      <label class="field-label" for="vorname">Vorname (freiwillig)</label>
+      <input type="text" id="vorname" class="setup-input" placeholder="z. B. Kim — oder leer lassen für „anonym"" maxlength="30" autocomplete="off">
+      <span class="hint-text">Kürzel oder Fantasienamen sind auch okay.</span>
+    </div>
+
+    <button class="btn-start" id="btn-start">Los geht's — Level 1 starten</button>
+  </section>
+
+  <!-- ── SPIEL-VIEW ── -->
+  <section id="game-view" class="game-view hidden">
+    <div class="quiz-header-strip">
+      <span class="strip-tag strip-level" id="level-tag">Level 1</span>
+      <span class="strip-tag strip-level-name" id="level-name">Vokabeln im Alltag</span>
+      <span class="strip-name" id="player-tag">— anonym</span>
+    </div>
+
+    <div class="progress-label" id="progress-label">Frage 1 von 2</div>
+    <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:0"></div></div>
+
+    <div class="scenario-box">
+      <div class="scenario-label" id="scenario-label">Slack · Data Scientist</div>
+      <div class="scenario-text" id="scenario-text"></div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-text" id="q-text"></div>
+      <div class="opt-list" id="opt-list"></div>
+      <div id="feedback-slot"></div>
+      <div class="nav-row">
+        <button class="btn btn-submit" id="btn-check">Antwort prüfen</button>
+        <button class="btn hidden" id="btn-next">Weiter →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── ERGEBNIS-VIEW ── -->
+  <section id="result-view" class="result-block hidden">
+    <div class="result-grade" id="result-grade">🎉</div>
+    <div class="result-label" id="result-label">Fertig!</div>
+    <div class="result-sub" id="result-sub">Du hast alle Level dieses Prototyps abgeschlossen.</div>
+    <div class="stats-row" id="stats-row"></div>
+    <button class="btn btn-full" id="btn-restart">Nochmal spielen</button>
+  </section>
+</main>
+
+<footer>
+  <div class="footer-brand">Alfatraining · KI-Manager:in · U. Nord 2026</div>
+</footer>
+
+<script src="assets/game.js"></script>
+</body>
+</html>

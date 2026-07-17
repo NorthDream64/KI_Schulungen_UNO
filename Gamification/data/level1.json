@@ -1,0 +1,45 @@
+{
+  "level": 1,
+  "titel": "Vokabeln im Alltag",
+  "beschreibung": "Ein Fachbegriff pro Situation. Kurz, konkret, mit sofortiger Erklärung.",
+  "fragen": [
+    {
+      "id": "L1-01",
+      "absender": "Data Scientist",
+      "kanal": "Slack",
+      "szenario": "Kim schreibt Dir: „Unser neues Klassifikationsmodell erreicht 99 % Genauigkeit auf den Trainingsdaten, aber im Test-Set nur 71 %. Ich bin ratlos. Woran liegt das wahrscheinlich?“",
+      "frage": "Wie ordnest Du das Phänomen ein?",
+      "optionen": [
+        { "id": "a", "text": "Das Modell zeigt klassisches Overfitting — es hat die Trainingsdaten quasi auswendig gelernt statt zu generalisieren." },
+        { "id": "b", "text": "Das ist normaler Model Drift, wir müssen die Produktivdaten prüfen." },
+        { "id": "c", "text": "Die Test-Set-Größe ist zu klein — die 71 % sind statistisch nicht aussagekräftig." }
+      ],
+      "korrekt": ["a"],
+      "feedback_richtig": "Genau. Wenn die Trainings-Performance stark über der Test-Performance liegt, ist Overfitting die naheliegendste Erklärung. Das Modell hat sich zu eng an die Trainingsdaten angepasst und generalisiert schlecht.",
+      "feedback_falsch": "Model Drift wäre eine Verschlechterung *im Betrieb über Zeit*. Und die Test-Set-Größe erklärt nicht die enorme Lücke zwischen Trainings- und Test-Performance. Der Klassiker für diese Kluft heißt Overfitting.",
+      "glossar": {
+        "begriff": "Overfitting",
+        "erklaerung": "Ein Modell ist so eng an die Trainingsdaten angepasst, dass es dort exzellent, aber auf neuen Daten deutlich schlechter abschneidet. Gegenmaßnahmen: Regularisierung, Dropout, Early Stopping, mehr/vielfältigere Trainingsdaten."
+      }
+    },
+    {
+      "id": "L1-02",
+      "absender": "MLOps-Engineer",
+      "kanal": "E-Mail",
+      "szenario": "Marc mailt: „Das Betrugserkennungs-Modell soll morgen live gehen. Der Validation-Loss hört seit drei Epochen nicht mehr auf zu sinken, aber der Training-Loss fällt weiter. Was empfiehlst Du?“",
+      "frage": "Welcher Vorschlag adressiert das Problem am direktesten?",
+      "optionen": [
+        { "id": "a", "text": "Training abbrechen (Early Stopping) und die letzte Version mit dem besten Validation-Loss deployen." },
+        { "id": "b", "text": "Weiter trainieren — je länger, desto besser." },
+        { "id": "c", "text": "Learning Rate verdreifachen, damit das Modell aus dem Plateau ausbricht." }
+      ],
+      "korrekt": ["a"],
+      "feedback_richtig": "Richtig. Wenn der Validation-Loss stagniert, während der Training-Loss weiter sinkt, beginnt das Modell zu überanpassen. Early Stopping schneidet das Training an genau dem Punkt ab, an dem es aufhört, echt zu lernen.",
+      "feedback_falsch": "Weiter trainieren verschärft das Overfitting. Learning Rate zu erhöhen wäre ein Kunstgriff für ein Konvergenzproblem — hier ist das Problem aber Überanpassung, nicht Konvergenz.",
+      "glossar": {
+        "begriff": "Early Stopping",
+        "erklaerung": "Regularisierungstechnik, die das Training abbricht, sobald der Validation-Loss sich nicht mehr verbessert. Verhindert Overfitting, ohne Hyperparameter aufwendig neu suchen zu müssen."
+      }
+    }
+  ]
+}

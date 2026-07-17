@@ -1,0 +1,27 @@
+{
+  "level": 3,
+  "titel": "Governance-Fall",
+  "beschreibung": "Mehrere Aspekte, mehrere richtige Antworten. Priorisiere sauber.",
+  "fragen": [
+    {
+      "id": "L3-01",
+      "absender": "CTO",
+      "kanal": "Anruf",
+      "szenario": "Der CTO ruft Dich an: „Wir wollen einen KI-Agenten bauen, der eigenständig auf unsere Buchhaltungs-API zugreift, Rechnungen prüft und bei plausiblen Fällen automatisch zur Zahlung freigibt. Bei unklaren Fällen soll er eskalieren. Was müssen wir aus Deiner Sicht mitdenken?“",
+      "frage": "Welche Empfehlungen gehören zwingend in Deine Antwort?",
+      "optionen": [
+        { "id": "a", "text": "Human-in-the-loop für jede Zahlungsfreigabe oberhalb eines definierten Schwellwerts — der Agent darf vorschlagen, aber nicht abschließend entscheiden." },
+        { "id": "b", "text": "Least Agency: Der Agent bekommt API-Rechte pro Vorgang, nicht dauerhaft, und nur für die Schritte, die er wirklich braucht." },
+        { "id": "c", "text": "Vollständige Logging der Agenten-Aktionen (welches Tool wann mit welchen Parametern aufgerufen wurde) für Auditierbarkeit." },
+        { "id": "d", "text": "Wir vertrauen auf die Modellgenauigkeit und lassen den Agenten in einer initialen Beobachtungsphase voll autonom laufen, um Trainingsdaten zu sammeln." }
+      ],
+      "korrekt": ["a", "b", "c"],
+      "feedback_richtig": "Genau — die drei sind ein zusammenhängendes Set: Human-in-the-loop begrenzt die Wirkung, Least Agency begrenzt den Handlungsraum, Logging schafft die Grundlage für Nachvollziehbarkeit und Auditierbarkeit. Diese Kombination macht Art. 14 der KI-VO (Menschliche Aufsicht) bei einem Agenten operativ erfüllbar.",
+      "feedback_falsch": "Ein autonomer Agent, der direkt auf Zahlungssysteme zugreift, ohne diese Schutzmechanismen wäre ein Lehrbuchfall für „Tool Misuse“ und „Rogue Agent“-Risiken (OWASP Agentic Top 10). „Trainingsdaten sammeln“ ist kein Freibrief für fehlende Kontrolle.",
+      "glossar": {
+        "begriff": "Human-in-the-loop / Least Agency",
+        "erklaerung": "Zwei komplementäre Sicherungsprinzipien für KI-Agenten. Human-in-the-loop verlangt menschliche Bestätigung an definierten Punkten. Least Agency (auch Least Privilege / POLP) gibt dem Agenten nur die minimal nötigen Rechte pro Aktion — nicht das technisch mögliche Maximum."
+      }
+    }
+  ]
+}
