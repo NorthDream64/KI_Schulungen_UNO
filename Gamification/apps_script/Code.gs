@@ -49,23 +49,18 @@ function doPost(e) {
     let sheet = ss.getSheetByName(SHEET_NAME);
     if (!sheet) {
       sheet = ss.insertSheet(SHEET_NAME);
-      sheet.appendRow(["Zeit", "Session", "Spieler", "Paket", "Schwierigkeit", "Frage-ID", "Begriff", "Frage", "Gewählt", "Korrekt", "Richtig?", "Versuche"]);
+      sheet.appendRow(["Zeit", "Spieler", "Paket", "Schwerpunkt", "Fragetext", "Antwortoptionen", "Richtig?"]);
       console.log("Log-Tab neu angelegt");
     }
 
     sheet.appendRow([
       payload.zeit || new Date().toISOString(),
-      payload.session || "",
       payload.spieler || "anonym",
       payload.paket || payload.level || "",
-      payload.schwierigkeit || "",
-      payload.frage_id || "",
       payload.begriff || "",
       payload.frage_text || "",
-      payload.gewaehlt || "",
-      payload.korrekt || "",
-      payload.richtig === true ? "ja" : (payload.richtig === null ? "übersprungen" : "nein"),
-      payload.versuche || 1
+      formatiereOptionen(payload.optionen, payload.korrekt, payload.gewaehlt),
+      payload.richtig === true ? "ja" : (payload.richtig === null ? "übersprungen" : "nein")
     ]);
     console.log("Zeile geschrieben");
 
@@ -74,6 +69,27 @@ function doPost(e) {
     console.log("EXCEPTION: " + err);
     return ausgabe({ ok: false, err: String(err) });
   }
+}
+
+// ── JSON-Antwort an Browser ──────────────────────────────────────────────
+function ausgabe(obj) {
+  return ContentService
+    .createTextOutput(JSON.stringify(obj))
+    .setMimeType(ContentService.MimeType.JSON);
+}
+
+// ── Antwortoptionen für das Sheet als lesbaren Mehrzeiler formatieren ────
+function formatiereOptionen(optionen, korrektStr, gewaehltStr) {
+  if (!Array.isArray(optionen) || optionen.length === 0) return "";
+  const korrekt  = String(korrektStr  || "").split(",").filter(Boolean);
+  const gewaehlt = String(gewaehltStr || "").split(",").filter(Boolean);
+  return optionen.map(o => {
+    const marker = [];
+    if (korrekt.includes(o.id))  marker.push("korrekt");
+    if (gewaehlt.includes(o.id)) marker.push("gewählt");
+    const prefix = marker.length ? "[" + marker.join(", ") + "] " : "";
+    return prefix + o.id + ") " + o.text;
+  }).join("\n");
 }
 
 // ── AUTO-LÖSCHUNG > 14 TAGE ──────────────────────────────────────────────
@@ -121,10 +137,10 @@ function testeSheetVerbindung() {
     let sheet = ss.getSheetByName(SHEET_NAME);
     if (!sheet) {
       sheet = ss.insertSheet(SHEET_NAME);
-      sheet.appendRow(["Zeit", "Session", "Spieler", "Level", "Frage-ID", "Gewählt", "Korrekt", "Richtig?", "Versuche"]);
+      sheet.appendRow(["Zeit", "Spieler", "Paket", "Schwerpunkt", "Fragetext", "Antwortoptionen", "Richtig?"]);
       console.log("Log-Tab neu angelegt");
     }
-    sheet.appendRow([new Date().toISOString(), "MANUELL", "Test", "0", "TEST", "a", "a", "ja", 1]);
+    sheet.appendRow([new Date().toISOString(), "Test", "0", "MANUELL", "Testfrage", "a) …", "ja"]);
     console.log("Testzeile geschrieben");
     return "OK";
   } catch (err) {
