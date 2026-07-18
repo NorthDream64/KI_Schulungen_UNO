@@ -443,6 +443,7 @@ function logAntwort(frage, richtig) {
   const payload = {
     token: SHARED_TOKEN, session: state.session_id, spieler: state.spieler,
     paket: state.paketNr, schwierigkeit: schwierigkeitVon(frage), frage_id: frage.id,
+    begriff: begriffFuer(frage), frage_text: frage.frage,
     gewaehlt: [...state.ausgewaehlt].join(","), korrekt: frage.korrekt.join(","),
     richtig: richtig, versuche: state.attempts, punkte_gesamt: state.bilanz.punkte,
     zeit: new Date().toISOString()

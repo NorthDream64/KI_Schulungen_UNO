@@ -49,7 +49,7 @@ function doPost(e) {
     let sheet = ss.getSheetByName(SHEET_NAME);
     if (!sheet) {
       sheet = ss.insertSheet(SHEET_NAME);
-      sheet.appendRow(["Zeit", "Session", "Spieler", "Level", "Frage-ID", "Gewählt", "Korrekt", "Richtig?", "Versuche"]);
+      sheet.appendRow(["Zeit", "Session", "Spieler", "Paket", "Schwierigkeit", "Frage-ID", "Begriff", "Frage", "Gewählt", "Korrekt", "Richtig?", "Versuche"]);
       console.log("Log-Tab neu angelegt");
     }
 
@@ -57,8 +57,11 @@ function doPost(e) {
       payload.zeit || new Date().toISOString(),
       payload.session || "",
       payload.spieler || "anonym",
-      payload.level || payload.paket || "",
+      payload.paket || payload.level || "",
+      payload.schwierigkeit || "",
       payload.frage_id || "",
+      payload.begriff || "",
+      payload.frage_text || "",
       payload.gewaehlt || "",
       payload.korrekt || "",
       payload.richtig === true ? "ja" : (payload.richtig === null ? "übersprungen" : "nein"),
