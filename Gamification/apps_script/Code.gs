@@ -28,28 +28,28 @@ const SHEET_NAME       = "Log";
 // ── POST-Handler ─────────────────────────────────────────────────────────
 function doPost(e) {
   try {
-    Logger.log("doPost aufgerufen");
+    console.log("doPost aufgerufen");
     const payload = JSON.parse(e.postData.contents);
-    Logger.log("Payload empfangen: " + JSON.stringify(payload));
+    console.log("Payload empfangen: " + JSON.stringify(payload));
 
     if (payload.token !== SHARED_TOKEN) {
-      Logger.log("TOKEN FALSCH — erwartet: " + SHARED_TOKEN + ", bekommen: " + payload.token);
+      console.log("TOKEN FALSCH — erwartet: " + SHARED_TOKEN + ", bekommen: " + payload.token);
       return ausgabe({ ok: false, err: "invalid token" });
     }
-    Logger.log("Token ok");
+    console.log("Token ok");
 
     const ss = SpreadsheetApp.getActiveSpreadsheet();
     if (!ss) {
-      Logger.log("KEIN SHEET GEBUNDEN — Script ist standalone");
+      console.log("KEIN SHEET GEBUNDEN — Script ist standalone");
       return ausgabe({ ok: false, err: "no bound sheet" });
     }
-    Logger.log("Sheet: " + ss.getName() + " (ID " + ss.getId() + ")");
+    console.log("Sheet: " + ss.getName() + " (ID " + ss.getId() + ")");
 
     let sheet = ss.getSheetByName(SHEET_NAME);
     if (!sheet) {
       sheet = ss.insertSheet(SHEET_NAME);
       sheet.appendRow(["Zeit", "Session", "Spieler", "Level", "Frage-ID", "Gewählt", "Korrekt", "Richtig?", "Versuche"]);
-      Logger.log("Log-Tab neu angelegt");
+      console.log("Log-Tab neu angelegt");
     }
 
     sheet.appendRow([
@@ -63,11 +63,11 @@ function doPost(e) {
       payload.richtig === true ? "ja" : (payload.richtig === null ? "übersprungen" : "nein"),
       payload.versuche || 1
     ]);
-    Logger.log("Zeile geschrieben");
+    console.log("Zeile geschrieben");
 
     return ausgabe({ ok: true });
   } catch (err) {
-    Logger.log("EXCEPTION: " + err);
+    console.log("EXCEPTION: " + err);
     return ausgabe({ ok: false, err: String(err) });
   }
 }
