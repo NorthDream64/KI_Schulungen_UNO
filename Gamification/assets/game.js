@@ -1,4 +1,4 @@
-// KI-Manager Gamification — Paket-Modell (Pilot: Paket 1)
+// KI-Manager Gamification — Paket-Modell
 // U. Nord 2026
 
 const APPS_SCRIPT_URL = "";
@@ -6,10 +6,9 @@ const SHARED_TOKEN    = "kim-2026-alpha";
 const FETCH_TIMEOUT_MS = 4000;
 
 const FRAGEN_DATEI = "data/fragen.json";
-const PAKET_GROESSE = 10;   // Zielgröße; falls Pool kleiner, werden alle Fragen genommen
-const PAKET_NR = 1;         // Piloten-Paket
+const PAKETE_DATEI = "data/pakete.json";
+const PAKET_GROESSE = 5;
 
-// Punkte-Skala je nach Frage-Schwierigkeit (intern, nicht prominent angezeigt)
 const PUNKTE = {
   1: { voll: 20, teilweise: 10 },
   2: { voll: 40, teilweise: 20 },
@@ -19,7 +18,9 @@ const PUNKTE = {
 const state = {
   spieler: "anonym",
   session_id: crypto.randomUUID ? crypto.randomUUID() : "s_" + Date.now(),
-  fragen: [],
+  pakete: [],           // Metadaten aller Pakete (aus pakete.json)
+  paketNr: 1,           // aktuell gespieltes Paket
+  fragen: [],           // Fragen des aktuellen Pakets
   frageIndex: 0,
   ausgewaehlt: new Set(),
   attempts: 0,
@@ -45,31 +46,82 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const gemerkt = localStorage.getItem("kim_game_vorname");
   if (gemerkt) $("vorname").value = gemerkt;
+
+  // Konditionaler Datenschutz-Hinweis
+  const dsBox = $("datenschutz-text");
+  if (dsBox && !APPS_SCRIPT_URL) {
+    dsBox.innerHTML =
+      "Diese Version wird ohne Verbindung zu einem Backend betrieben. " +
+      "Alle Antworten bleiben ausschließlich in Deinem Browser — nichts wird gespeichert oder übertragen. " +
+      "Die Vornamen-Eingabe ist rein für die Anrede im Spiel; sie verlässt Deinen Rechner nicht.";
+  }
 });
 
 async function startGame() {
   const eingabe = $("vorname").value.trim();
   state.spieler = eingabe || "anonym";
   if (eingabe) localStorage.setItem("kim_game_vorname", eingabe);
-
   $("player-tag").textContent = "— " + state.spieler;
 
   hide("start-view");
-  show("game-view");
-
-  await ladePaket();
+  await ladePaketeMeta();
+  zeigePaketAuswahl();
 }
 
-async function ladePaket() {
+async function ladePaketeMeta() {
+  try {
+    const resp = await fetch(PAKETE_DATEI + "?v=" + Date.now());
+    const data = await resp.json();
+    state.pakete = data.pakete || [];
+  } catch (e) {
+    console.warn("pakete.json nicht ladbar, Fallback:", e);
+    state.pakete = [
+      { nr: 1, titel: "Paket 1", beschreibung: "Grundlagen-Mix", aktiv: true },
+      { nr: 2, titel: "Paket 2", beschreibung: "GenAI aktuell",  aktiv: true }
+    ];
+  }
+}
+
+function zeigePaketAuswahl() {
+  show("paket-auswahl-view");
+  const grid = $("paket-grid");
+  grid.innerHTML = "";
+  state.pakete.forEach(p => {
+    const card = document.createElement("div");
+    card.className = "paket-card" + (p.aktiv ? " aktiv" : " inaktiv");
+    card.innerHTML =
+      '<div class="paket-nr">Paket ' + p.nr + '</div>' +
+      '<div class="paket-titel">' + escapeHtml(p.titel) + '</div>' +
+      '<div class="paket-beschr">' + escapeHtml(p.beschreibung || "") + '</div>' +
+      (p.aktiv
+        ? '<button class="btn btn-submit paket-play">Spielen →</button>'
+        : '<span class="paket-locked">bald verfügbar</span>');
+    if (p.aktiv) {
+      card.querySelector(".paket-play").addEventListener("click", () => {
+        hide("paket-auswahl-view");
+        show("game-view");
+        ladePaket(p.nr);
+      });
+    }
+    grid.appendChild(card);
+  });
+}
+
+async function ladePaket(nr) {
+  state.paketNr = nr;
+  // Bilanz für dieses Spiel zurücksetzen
+  state.bilanz = { total: 0, richtigBeimErstenVersuch: 0, richtigInsgesamt: 0, teilweise: 0, falsch: 0, uebersprungen: 0, punkte: 0 };
+  state.karten = [];
+  state.frageIndex = 0;
+
   try {
     const resp = await fetch(FRAGEN_DATEI + "?v=" + Date.now());
     const data = await resp.json();
-    const pool = data.fragen || [];
+    const pool = (data.fragen || []).filter(f => f.paket === nr);
     const gezogen = shuffle([...pool]).slice(0, PAKET_GROESSE);
     state.fragen = gezogen;
-    state.frageIndex = 0;
 
-    $("level-tag").textContent = "Paket " + PAKET_NR;
+    $("level-tag").textContent = "Paket " + nr;
     $("level-tag").className = "strip-tag strip-paket";
     $("level-name").textContent = gezogen.length + " Fragen";
 
@@ -136,13 +188,8 @@ function toggleOption(row, id) {
   }
 }
 
-function schwierigkeitVon(frage) {
-  return frage.schwierigkeit || 1;
-}
-
-function begriffFuer(frage) {
-  return (frage.glossar && frage.glossar.begriff) || frage.id;
-}
+function schwierigkeitVon(f) { return f.schwierigkeit || 1; }
+function begriffFuer(f) { return (f.glossar && f.glossar.begriff) || f.id; }
 
 function checkAnswer() {
   const frage = state.fragen[state.frageIndex];
@@ -158,9 +205,9 @@ function checkAnswer() {
   const allesRichtig = gewaehlt.size === korrekt.size &&
                        [...gewaehlt].every(id => korrekt.has(id));
 
-  const anzahlKorrektGewaehlt = [...gewaehlt].filter(id => korrekt.has(id)).length;
-  const anzahlFalschGewaehlt  = [...gewaehlt].filter(id => !korrekt.has(id)).length;
-  const istTeilweise = anzahlKorrektGewaehlt > 0 && anzahlFalschGewaehlt === 0;
+  const nRichtig = [...gewaehlt].filter(id => korrekt.has(id)).length;
+  const nFalsch  = [...gewaehlt].filter(id => !korrekt.has(id)).length;
+  const istTeilweise = nRichtig > 0 && nFalsch === 0;
 
   const s = schwierigkeitVon(frage);
   const begriff = begriffFuer(frage);
@@ -171,7 +218,6 @@ function checkAnswer() {
     state.bilanz.punkte += (PUNKTE[s] || PUNKTE[1]).voll;
     if (state.attempts === 1) state.bilanz.richtigBeimErstenVersuch++;
     state.karten.push({ begriff, status: state.attempts === 1 ? "meister" : "verstanden" });
-
     markiereOptionen(korrekt, gewaehlt, true);
     zeigeFeedback("ok", "Richtig.", frage.feedback_richtig, frage.glossar);
     if (frage.vertiefung) zeigeDidaktik(frage.vertiefung);
@@ -320,52 +366,25 @@ function nextQuestion() {
   }
 }
 
-// ── FEUERWERK ─────────────────────────────────────────────────────────────
 function feuerwerk(gross) {
-  if (typeof confetti !== "function") return;   // Library nicht geladen — Fallback still
-
+  if (typeof confetti !== "function") return;
   const farben = ["#5a3a7a", "#2a7a50", "#7a4a00", "#0a4a7a", "#f0eaf7", "#eaf5ee"];
-
-  // Zentraler Regen
-  confetti({
-    particleCount: gross ? 180 : 100,
-    spread: 80,
-    origin: { y: 0.55 },
-    colors: farben
-  });
-
-  // Von den Seiten
-  setTimeout(() => confetti({
-    particleCount: gross ? 90 : 55,
-    angle: 60, spread: 55, origin: { x: 0, y: 0.7 }, colors: farben
-  }), 250);
-  setTimeout(() => confetti({
-    particleCount: gross ? 90 : 55,
-    angle: 120, spread: 55, origin: { x: 1, y: 0.7 }, colors: farben
-  }), 400);
-
-  // Bonus-Salve nur beim großen Feuerwerk
-  if (gross) {
-    setTimeout(() => confetti({
-      particleCount: 120,
-      spread: 100, origin: { y: 0.3 }, colors: farben
-    }), 900);
-  }
+  confetti({ particleCount: gross ? 180 : 100, spread: 80, origin: { y: 0.55 }, colors: farben });
+  setTimeout(() => confetti({ particleCount: gross ? 90 : 55, angle: 60,  spread: 55, origin: { x: 0, y: 0.7 }, colors: farben }), 250);
+  setTimeout(() => confetti({ particleCount: gross ? 90 : 55, angle: 120, spread: 55, origin: { x: 1, y: 0.7 }, colors: farben }), 400);
+  if (gross) setTimeout(() => confetti({ particleCount: 120, spread: 100, origin: { y: 0.3 }, colors: farben }), 900);
 }
 
 function zeigeErgebnis() {
   hide("game-view");
   show("result-view");
   const b = state.bilanz;
-
-  // Bonus-Feuerwerk, wenn alle Fragen im 1. Versuch richtig
   const alleErsterVersuch = b.total > 0 && b.richtigBeimErstenVersuch === b.total;
   feuerwerk(alleErsterVersuch);
 
   const chips = state.karten.map(k => {
     const cls = "karte karte-" + k.status;
-    const label = statusLabel(k.status);
-    return '<span class="' + cls + '" title="' + label + '">' + escapeHtml(k.begriff) + '</span>';
+    return '<span class="' + cls + '" title="' + statusLabel(k.status) + '">' + escapeHtml(k.begriff) + '</span>';
   }).join(" ");
 
   const anz = {
@@ -377,12 +396,11 @@ function zeigeErgebnis() {
   };
 
   const gruss = alleErsterVersuch
-    ? "Paket " + PAKET_NR + " glatt durchgezogen — alle Fragen im ersten Anlauf!"
-    : "Paket " + PAKET_NR + " geschafft.";
+    ? "Paket " + state.paketNr + " glatt durchgezogen — alle Fragen im ersten Anlauf!"
+    : "Paket " + state.paketNr + " geschafft.";
 
   $("result-grade").textContent = gruss;
-  $("result-label").textContent =
-    "Du hast " + state.karten.length + " Fachbegriff" +
+  $("result-label").textContent = "Du hast " + state.karten.length + " Fachbegriff" +
     (state.karten.length === 1 ? "" : "e") + " kennengelernt.";
   $("result-sub").textContent = ergebnisSatz(anz);
 
@@ -406,11 +424,9 @@ function statusLabel(s) {
     "uebersprungen": "direkt zur Erklärung gesprungen"
   }[s] || s;
 }
-
 function legendeEintrag(status, text) {
   return '<span class="legende-item"><span class="karte karte-' + status + ' karte-mini"></span>' + escapeHtml(text) + '</span>';
 }
-
 function ergebnisSatz(a) {
   const teile = [];
   if (a.meister)       teile.push(a.meister + " davon hattest Du im ersten Anlauf parat");
@@ -424,33 +440,21 @@ function ergebnisSatz(a) {
 
 function logAntwort(frage, richtig) {
   if (!APPS_SCRIPT_URL) return;
-
   const payload = {
-    token: SHARED_TOKEN,
-    session: state.session_id,
-    spieler: state.spieler,
-    paket: PAKET_NR,
-    schwierigkeit: schwierigkeitVon(frage),
-    frage_id: frage.id,
-    gewaehlt: [...state.ausgewaehlt].join(","),
-    korrekt: frage.korrekt.join(","),
-    richtig: richtig,
-    versuche: state.attempts,
-    punkte_gesamt: state.bilanz.punkte,
+    token: SHARED_TOKEN, session: state.session_id, spieler: state.spieler,
+    paket: state.paketNr, schwierigkeit: schwierigkeitVon(frage), frage_id: frage.id,
+    gewaehlt: [...state.ausgewaehlt].join(","), korrekt: frage.korrekt.join(","),
+    richtig: richtig, versuche: state.attempts, punkte_gesamt: state.bilanz.punkte,
     zeit: new Date().toISOString()
   };
-
   const ctrl = new AbortController();
   const t = setTimeout(() => ctrl.abort(), FETCH_TIMEOUT_MS);
   fetch(APPS_SCRIPT_URL, {
-    method: "POST",
-    mode: "no-cors",
+    method: "POST", mode: "no-cors",
     headers: { "Content-Type": "text/plain;charset=utf-8" },
-    body: JSON.stringify(payload),
-    signal: ctrl.signal
-  }).catch(err => {
-    console.warn("Log-Fehler (ignoriert):", err);
-  }).finally(() => clearTimeout(t));
+    body: JSON.stringify(payload), signal: ctrl.signal
+  }).catch(err => console.warn("Log-Fehler (ignoriert):", err))
+    .finally(() => clearTimeout(t));
 }
 
 function escapeHtml(s) {
@@ -458,7 +462,6 @@ function escapeHtml(s) {
     "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
   }[c]));
 }
-
 function shuffle(arr) {
   for (let i = arr.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
