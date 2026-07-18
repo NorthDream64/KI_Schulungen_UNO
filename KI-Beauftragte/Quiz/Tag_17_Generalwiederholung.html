@@ -1203,7 +1203,7 @@ function sendBlock(bi, onDone) {
 
   var st = document.getElementById('submit-status');
   st.className = 'submit-status sending';
-  st.textContent = 'Übertrage Block ' + (bi + 1) + ': 1 von ' + toSend.length + ' — Seite bitte offen lassen …';
+  st.textContent = 'Daten werden übertragen (Block ' + (bi + 1) + ', 1 von ' + toSend.length + ') — je nach Bandbreite kann das etwas länger dauern (ca. 30 Sekunden). Bitte schließe die Seite währenddessen nicht.';
 
   var transferDone = false;
   function beforeUnloadGuard(e) {
@@ -1221,7 +1221,7 @@ function sendBlock(bi, onDone) {
       if (onDone) onDone();
       return;
     }
-    st.textContent = 'Übertrage Block ' + (bi + 1) + ': ' + (idx + 1) + ' von ' + toSend.length + ' — Seite bitte offen lassen …';
+    st.textContent = 'Daten werden übertragen (Block ' + (bi + 1) + ', ' + (idx + 1) + ' von ' + toSend.length + ') — je nach Bandbreite kann das etwas länger dauern (ca. 30 Sekunden). Bitte schließe die Seite währenddessen nicht.';
     fetch(toSend[idx], { mode: 'no-cors' })
       .catch(function() {})
       .then(function() { idx++; setTimeout(sendNext, 200); });
