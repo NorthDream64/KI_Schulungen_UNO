@@ -24,6 +24,7 @@
 const SHARED_TOKEN     = "kim-2026-alpha";  // muss mit game.js übereinstimmen
 const AUFBEWAHRUNGSTAGE = 14;
 const SHEET_NAME       = "Log";
+const SHEET_ID = "1rl2SofJfY6DPf6UYqYnB9tZ6WTihzkVr-FUwmTssoT0";
 
 // ── POST-Handler ─────────────────────────────────────────────────────────
 function doPost(e) {
@@ -74,7 +75,7 @@ function doPost(e) {
 
 // ── AUTO-LÖSCHUNG > 14 TAGE ──────────────────────────────────────────────
 function cleanupAlt() {
-  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const ss = SpreadsheetApp.openById(SHEET_ID);
   const sheet = ss.getSheetByName(SHEET_NAME);
   if (!sheet) return;
 
