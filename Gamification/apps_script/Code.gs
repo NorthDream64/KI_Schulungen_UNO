@@ -110,3 +110,22 @@ function installTrigger() {
     .create();
   Logger.log("Trigger cleanupAlt installiert (täglich, ca. 03:00 Uhr).");
 }
+
+function testeSheetVerbindung() {
+  try {
+    const ss = SpreadsheetApp.openById(SHEET_ID);
+    console.log("Sheet geöffnet: " + ss.getName());
+    let sheet = ss.getSheetByName(SHEET_NAME);
+    if (!sheet) {
+      sheet = ss.insertSheet(SHEET_NAME);
+      sheet.appendRow(["Zeit", "Session", "Spieler", "Level", "Frage-ID", "Gewählt", "Korrekt", "Richtig?", "Versuche"]);
+      console.log("Log-Tab neu angelegt");
+    }
+    sheet.appendRow([new Date().toISOString(), "MANUELL", "Test", "0", "TEST", "a", "a", "ja", 1]);
+    console.log("Testzeile geschrieben");
+    return "OK";
+  } catch (err) {
+    console.log("FEHLER: " + err);
+    throw err;
+  }
+}
