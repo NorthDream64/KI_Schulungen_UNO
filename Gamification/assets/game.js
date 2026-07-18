@@ -1,7 +1,7 @@
 // KI-Manager Gamification — Paket-Modell
 // U. Nord 2026
 
-const APPS_SCRIPT_URL = "";
+const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzQSUgTDZ1VYk7mTLnb9hWaO1yXoDvWJT1-5mQ3-hC4kZbgz3l20rLeG6lhgn1T8EtFjw/exec";
 const SHARED_TOKEN    = "kim-2026-alpha";
 const FETCH_TIMEOUT_MS = 4000;
 
