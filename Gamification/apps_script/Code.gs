@@ -39,7 +39,7 @@ function doPost(e) {
     }
     console.log("Token ok");
 
-    const ss = SpreadsheetApp.getActiveSpreadsheet();
+    const ss = SpreadsheetApp.openById(SHEET_ID);
     if (!ss) {
       console.log("KEIN SHEET GEBUNDEN — Script ist standalone");
       return ausgabe({ ok: false, err: "no bound sheet" });
