@@ -80,7 +80,9 @@ function ausgabe(obj) {
 
 // ── Antwortoptionen für das Sheet als lesbaren Mehrzeiler formatieren ────
 function formatiereOptionen(optionen, korrektStr, gewaehltStr) {
-  if (!Array.isArray(optionen) || optionen.length === 0) return "";
+  if (!optionen)                    return "[keine Optionen im Payload — game.js sendet sie nicht mit]";
+  if (!Array.isArray(optionen))     return "[Optionen kein Array — Typ: " + typeof optionen + "]";
+  if (optionen.length === 0)        return "[Optionen leer]";
   const korrekt  = String(korrektStr  || "").split(",").filter(Boolean);
   const gewaehlt = String(gewaehltStr || "").split(",").filter(Boolean);
   return optionen.map(o => {
