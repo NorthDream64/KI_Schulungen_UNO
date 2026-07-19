@@ -1465,7 +1465,7 @@
       "paket": 2,
       "absender": "Data Scientist",
       "kanal": "Chat",
-      "szenario": "Marc pingt Dich mit einem Screenshot: „Beim Training des Bauplanungs-Modells (Dr. Seika) sinkt der Trainings-Verlust weiter, aber der Validation Loss steigt seit Epoche 15 wieder an. Wir denken über Regularisierung nach — L2, Dropout, Early Stopping. Was ist das Muster hier?“",
+      "szenario": "Marc pingt Dich mit einem Screenshot: „Beim Training des Bauplanungs-Modells (Dr. Seika) sinkt der Trainings-Verlust (Fehler auf den Trainingsdaten, die das Modell im Lernen sieht) weiter, aber der Validation Loss (Fehler auf einem separaten Validierungs-Datensatz, den das Modell im Training nicht sieht) steigt seit Epoche 15 wieder an. Wir denken über Regularisierung nach — L2, Dropout, Early Stopping. Was ist das Muster hier?“",
       "frage": "Welche Aussagen sind zutreffend? (Mehrfachauswahl)",
       "optionen": [
         {
@@ -1821,6 +1821,68 @@
             "art": "Enzyklopädie-Artikel",
             "institution": "Wikipedia",
             "url": "https://en.wikipedia.org/wiki/Low-code_development_platform"
+          }
+        ]
+      }
+    },
+    {
+      "id": "L3-09",
+      "schwierigkeit": 3,
+      "paket": 3,
+      "absender": "Chefarzt",
+      "kanal": "E-Mail",
+      "szenario": "Aus dem Krankenhaus St. Ulrich schreibt der Chefarzt der Radiologie: „Wir evaluieren einen neuen KI-Test für eine bestimmte Krebsart. Der Anbieter wirbt mit 99 % Sensitivität (99 % der tatsächlich Erkrankten werden erkannt) und 95 % Spezifität (95 % der Gesunden werden korrekt als gesund klassifiziert). Die Krankheit tritt bei etwa 1 % der Screening-Population auf. Ein Kollege sagt: „Bei einem positiven Test hat der Patient dann fast sicher die Krankheit.“ Stimmt das?“",
+      "frage": "Welche Aussagen sind zutreffend? (Mehrfachauswahl)",
+      "optionen": [
+        {
+          "id": "a",
+          "text": "Nein — die tatsächliche Wahrscheinlichkeit, bei positivem Test krank zu sein (Positive Predictive Value), liegt bei etwa 17 %. Grund: Von 10 000 Getesteten sind nur 100 krank (99 richtige Alarme), aber unter den 9 900 Gesunden gibt es 495 Fehlalarme — die Fehlalarme dominieren, weil die Basisrate klein ist."
+        },
+        {
+          "id": "b",
+          "text": "Das ist der klassische Base-Rate-Fallacy (auch Basisraten-Fehlschluss): Der Kollege ignoriert die Prior Probability (die Vor-Wahrscheinlichkeit für die Krankheit vor dem Test) und liest 99 % Sensitivität, als wäre das die Wahrscheinlichkeit für Erkrankung nach positivem Test."
+        },
+        {
+          "id": "c",
+          "text": "Ja, der Kollege hat recht — bei 99 % Sensitivität heißt ein positiver Test zu 99 % Krankheit, unabhängig davon, wie häufig die Krankheit in der Population ist."
+        },
+        {
+          "id": "d",
+          "text": "Das Beispiel zeigt, warum Prior Probability (Basisrate) im ML-Reporting mitgedacht werden muss: Dieselbe Modell-Sensitivität liefert je nach Populations-Basisrate völlig andere praktische Ergebnisse — das gilt gleichermaßen für Betrugserkennung, Frühwarnsysteme und Bewerber-Screening."
+        }
+      ],
+      "korrekt": [
+        "a",
+        "b",
+        "d"
+      ],
+      "feedback_richtig": "Genau. Das ist einer der wichtigsten und am häufigsten übersehenen Effekte in der KI-Bewertung. Sensitivität und Spezifität sagen nichts über die Wahrscheinlichkeit einer Diagnose nach positivem Test — der Positive Predictive Value hängt zusätzlich immer an der Basisrate. Bei seltenen Ereignissen kann selbst ein sehr guter Test einen überraschend niedrigen PPV liefern.",
+      "feedback_falsch": "Der Kollege liegt falsch — das ist der Base-Rate-Fallacy. Sensitivität misst „Wie oft schlägt der Test bei tatsächlich Kranken an?“ — nicht „Wie wahrscheinlich ist Krankheit bei positivem Test?“. Bei niedriger Basisrate (hier 1 %) machen die Fehlalarme aus dem großen Gesunden-Pool den größten Teil der Positiven aus. Der wahre Wert der Diagnose (PPV) ist mit Bayes zu berechnen und liegt hier bei ca. 17 %.",
+      "glossar": {
+        "begriff": "Prior Probability (Basisrate) und Base-Rate-Fallacy",
+        "erklaerung": "Prior Probability: die A-priori-Wahrscheinlichkeit eines Ereignisses vor jeder Zusatz-Information (bei Diagnostik: die Häufigkeit der Krankheit in der Population, auch Basisrate). Base-Rate-Fallacy: der systematische Denkfehler, die Basisrate zu ignorieren und Test-Genauigkeit (Sensitivität) mit dem Positive Predictive Value zu verwechseln. Praktische Folge: Bei seltenen Ereignissen kann selbst ein sehr guter Test überraschend viele Fehlalarme unter den Alarmen produzieren."
+      },
+      "vertiefung": {
+        "begriff": "Prior Probability und Base-Rate-Fallacy",
+        "laien_erklaerung": "Der Base-Rate-Fallacy ist einer der wichtigsten Denkfehler in der KI-Bewertung — und einer der ungewöhnlichsten, weil er auch trainierten Fachleuten regelmäßig unterläuft. Das Konzept dahinter hat einen Namen: Bayes-Statistik.\n\nDer Kern in einem Satz: Wie aussagekräftig ein positiver Test ist, hängt nicht nur an der Test-Genauigkeit, sondern zusätzlich immer an der Basisrate — also daran, wie häufig das gesuchte Ereignis in der untersuchten Population überhaupt vorkommt.\n\nRechenbeispiel mit den Zahlen aus dem Szenario:\n• 10 000 Getestete, Basisrate 1 %: 100 sind krank, 9 900 sind gesund.\n• Von den 100 Kranken erkennt der Test 99 (Sensitivität 99 %) — 99 „wahre Alarme“.\n• Von den 9 900 Gesunden meldet der Test 5 % fälschlich positiv — 495 „Fehlalarme“.\n• Positive Alarme gesamt: 99 + 495 = 594.\n• Anteil „wirklich krank“ unter den positiven Alarmen: 99 / 594 ≈ 17 %.\n\nEin perfekt klingender Test mit 99 %/95 % erzeugt in der Realität mehr Fehl- als Echt-Alarme. Das nennt der Statistiker „Positive Predictive Value“ (PPV) — und der PPV kollabiert mathematisch, sobald die Basisrate klein ist. Bei einer Basisrate von 0,1 % läge der PPV in diesem Beispiel bei rund 2 %.\n\nWarum das Denk-Fehler-Muster so hartnäckig ist: Unser Gehirn ankert auf der Test-Genauigkeit („99 % — fast sicher“) und blendet die Prior aus. Untersuchungen zeigen: Etwa die Hälfte auch von medizinisch geschulten Fachleuten liegt bei solchen Aufgaben deutlich daneben. Der Effekt hat einen Namen: Base-Rate-Fallacy.\n\nWarum das für Dich als KI-Managerin wichtig ist: Prior Probability ist der Grund, warum Metriken wie Accuracy und Precision je nach Anwendungskontext völlig unterschiedlich zu interpretieren sind. Dasselbe Modell, das im Screening der Allgemeinbevölkerung einen niedrigen PPV hat, kann im Hochrisiko-Segment (höhere Basisrate) einen brauchbaren PPV liefern. Die Frage „Wie hoch ist die Basisrate in Deiner Ziel-Population?“ gehört an den Anfang jedes ML-Business-Cases — nicht ans Ende. Konkret: Bei Betrugserkennung mit 0,1 % Basisrate, medizinischer Diagnostik seltener Krankheiten, Ausfall-Vorhersage bei zuverlässigen Anlagen ist die Basisrate der entscheidende Hebel, den viele Data Scientists in ihrer Metrik-Präsentation weglassen — und wo Du als KI-Managerin nachfragen musst.",
+        "quellen": [
+          {
+            "titel": "Base rate fallacy — Wikipedia (englisch), mit dem medizinischen Test-Beispiel",
+            "art": "Enzyklopädie-Artikel",
+            "institution": "Wikipedia",
+            "url": "https://en.wikipedia.org/wiki/Base_rate_fallacy"
+          },
+          {
+            "titel": "A-priori-Wahrscheinlichkeit — Wikipedia (deutsch), Grundlagen",
+            "art": "Enzyklopädie-Artikel",
+            "institution": "Wikipedia",
+            "url": "https://de.wikipedia.org/wiki/A-priori-Wahrscheinlichkeit"
+          },
+          {
+            "titel": "A-posteriori-Wahrscheinlichkeit — Wikipedia (deutsch), Ergänzung zum Nach-Test-Wert (PPV)",
+            "art": "Enzyklopädie-Artikel",
+            "institution": "Wikipedia",
+            "url": "https://de.wikipedia.org/wiki/A-posteriori-Wahrscheinlichkeit"
           }
         ]
       }
