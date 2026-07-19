@@ -49,7 +49,7 @@ function doPost(e) {
     let sheet = ss.getSheetByName(SHEET_NAME);
     if (!sheet) {
       sheet = ss.insertSheet(SHEET_NAME);
-      sheet.appendRow(["Zeit", "Spieler", "Paket", "Schwerpunkt", "Fragetext", "Antwortoptionen", "Richtig?"]);
+      sheet.appendRow(["Zeit", "Spieler", "Reise", "Schwerpunkt", "Fragetext", "Antwortoptionen", "Richtig?"]);
       console.log("Log-Tab neu angelegt");
     }
 
@@ -139,7 +139,7 @@ function testeSheetVerbindung() {
     let sheet = ss.getSheetByName(SHEET_NAME);
     if (!sheet) {
       sheet = ss.insertSheet(SHEET_NAME);
-      sheet.appendRow(["Zeit", "Spieler", "Paket", "Schwerpunkt", "Fragetext", "Antwortoptionen", "Richtig?"]);
+      sheet.appendRow(["Zeit", "Spieler", "Reise", "Schwerpunkt", "Fragetext", "Antwortoptionen", "Richtig?"]);
       console.log("Log-Tab neu angelegt");
     }
     sheet.appendRow([new Date().toISOString(), "Test", "0", "MANUELL", "Testfrage", "a) …", "ja"]);

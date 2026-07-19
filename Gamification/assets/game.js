@@ -121,7 +121,7 @@ async function ladePaket(nr) {
     const gezogen = shuffle([...pool]).slice(0, PAKET_GROESSE);
     state.fragen = gezogen;
 
-    $("level-tag").textContent = "Paket " + nr;
+    $("level-tag").textContent = "Reise " + nr;
     $("level-tag").className = "strip-tag strip-paket";
     $("level-name").textContent = gezogen.length + " Fragen";
 
@@ -268,10 +268,10 @@ function schliesseFrageAb(richtig) {
   $("btn-skip").classList.add("hidden");
   const isLast = state.frageIndex === state.fragen.length - 1;
   if (richtig) {
-    $("btn-next").textContent = isLast ? "Paket abschließen →" : "OK, nächstes Thema →";
+    $("btn-next").textContent = isLast ? "Reise abschließen →" : "OK, nächstes Thema →";
     $("btn-next").classList.add("btn-next-thema");
   } else {
-    $("btn-next").textContent = isLast ? "Paket abschließen →" : "Weiter →";
+    $("btn-next").textContent = isLast ? "Reise abschließen →" : "Weiter →";
   }
   $("btn-next").classList.remove("hidden");
 }
@@ -396,8 +396,8 @@ function zeigeErgebnis() {
   };
 
   const gruss = alleErsterVersuch
-    ? "Paket " + state.paketNr + " glatt durchgezogen — alle Fragen im ersten Anlauf!"
-    : "Paket " + state.paketNr + " geschafft.";
+    ? "Reise " + state.paketNr + " glatt durchgezogen — alle Fragen im ersten Anlauf!"
+    : "Reise " + state.paketNr + " geschafft.";
 
   $("result-grade").textContent = gruss;
   $("result-label").textContent = "Du hast " + state.karten.length + " Fachbegriff" +
