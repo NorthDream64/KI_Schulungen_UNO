@@ -1520,6 +1520,186 @@
           }
         ]
       }
+    },
+    {
+      "id": "L4-03",
+      "schwierigkeit": 2,
+      "paket": 4,
+      "absender": "Risk-Analyst",
+      "kanal": "E-Mail",
+      "szenario": "Bei SolidFinanz AG schreibt eine Risk-Analystin: „Unser Kredit-Scoring-Modell wurde 2024 mit Daten aus einer Niedrigzins-Phase trainiert. Seit dem Zinsanstieg beobachten wir: Die Vorhersagen wirken „konservativer“ als die Realität. Der Data Scientist spricht von „Data Drift“ und möglicherweise „Domain Shift“. Was ist der Unterschied?“",
+      "frage": "Welche Aussagen sind zutreffend? (Mehrfachauswahl)",
+      "optionen": [
+        {
+          "id": "a",
+          "text": "Data Drift (auch Covariate Shift): Die Verteilung der Eingabe-Merkmale ändert sich — Kunden nehmen andere Kredithöhen auf, ihre Einkommens-Struktur verschiebt sich. Das Modell sieht Daten, die es so im Training nicht gesehen hat."
+        },
+        {
+          "id": "b",
+          "text": "Concept Drift (auch „Actual Drift“): Der Zusammenhang zwischen Eingabe und Zielvariable ändert sich — dieselbe Einkommens-Kredit-Konstellation ist im Hochzins-Umfeld ein anderes Risiko als im Niedrigzins-Umfeld."
+        },
+        {
+          "id": "c",
+          "text": "Domain Shift bezeichnet insbesondere den Wechsel des Anwendungs-Kontexts (etwa: gleiches Modell für andere Regionen, andere Kundenkohorten, andere Rechtsordnung) — verwandt mit, aber weiter gefasst als Data Drift."
+        },
+        {
+          "id": "d",
+          "text": "Beide Phänomene sind harmlose Kalibrierungs-Effekte, die sich mit einem Verhältnis-Faktor korrigieren lassen — Retraining ist typischerweise nicht nötig."
+        }
+      ],
+      "korrekt": [
+        "a",
+        "b",
+        "c"
+      ],
+      "feedback_richtig": "Genau. In der Praxis treten Data Drift und Concept Drift oft gemeinsam auf und lassen sich nicht sauber trennen. Die Zinswende ist ein Musterfall: Eingabe-Verteilungen verschieben sich (Data Drift), gleichzeitig ändert sich die tatsächliche Risiko-Relation (Concept Drift). Beides erfordert in aller Regel Retraining — nicht nur Feinjustierung.",
+      "feedback_falsch": "Data und Concept Drift sind selten mit einem Faktor korrigierbar — sie sind Struktur-Verschiebungen, nicht Skalen-Fehler. Wer sie ignoriert oder nur kalibriert, riskiert schleichenden Qualitäts-Verlust bis zum völligen Fehl-Scoring. Retraining mit aktuellen Daten ist meist der einzige seriöse Weg.",
+      "glossar": {
+        "begriff": "Data Drift, Concept Drift, Domain Shift",
+        "erklaerung": "Data Drift (Covariate Shift): Verteilung der Eingabemerkmale ändert sich. Concept Drift: Zusammenhang zwischen Eingabe und Ziel ändert sich. Domain Shift: das gesamte Anwendungs-Umfeld verschiebt sich. Alle drei können die Modell-Qualität schleichend erodieren — Monitoring und Retraining sind Pflicht im laufenden Betrieb."
+      },
+      "vertiefung": {
+        "begriff": "Data Drift, Concept Drift und Domain Shift",
+        "laien_erklaerung": "Drift ist eines der zentralen Themen im ML-Betrieb: Die Welt ändert sich, das Modell aber ist eingefroren im Wissensstand seines Trainings. Ohne Gegenmaßnahmen wird jedes Modell mit der Zeit schlechter — nicht weil es „kaputt geht“, sondern weil die Realität weiterläuft.\n\nData Drift (fachlich auch „Covariate Shift“): Die Verteilung der Eingabe-Merkmale verschiebt sich. Beispiel: Ein Kredit-Modell wurde in einer Niedrigzins-Phase trainiert — die Kunden nahmen kleinere Kredite auf, hatten anderes Einkommens-Sparverhältnis. Nach der Zinswende sind die Eingabe-Daten strukturell anders. Das Modell rechnet mit einer Welt, die es so nicht mehr gibt.\n\nConcept Drift (auch „Actual Drift“): Der Zusammenhang zwischen Eingabe und Ausgabe ändert sich. Dasselbe Einkommens-Kredit-Verhältnis, das früher ein niedriges Ausfallrisiko war, ist im Hochzins-Umfeld ein hohes. Nicht die Eingaben haben sich verändert — die Wirklichkeit, die aus ihnen folgt.\n\nDomain Shift ist die weiter gefasste Kategorie: Der gesamte Anwendungs-Kontext verschiebt sich. Ein deutsches Kredit-Modell auf den österreichischen Markt anzuwenden, ein Diagnose-Modell aus einem Universitätsklinikum in eine ländliche Kreisklinik — jedes Mal treffen alte Muster auf neue Umstände.\n\nIn der Praxis sind diese Kategorien Analyse-Instrumente, keine sauberen Kompartimente. Meist tritt Mehreres gleichzeitig auf. Wichtig sind zwei Reflexe: Erstens Drift-Monitoring einrichten (siehe PSI und Kolmogorov-Smirnov aus Reise 3). Zweitens im Voraus festlegen, ab welchem Schwellwert Retraining ausgelöst wird — und wer die Verantwortung dafür trägt.\n\nWarum das für Dich als KI-Managerin wichtig ist: Ein Modell, das ohne Drift-Monitoring produktiv läuft, ist ein Zeit-Zünder. Der Ausfall kommt nicht plötzlich, sondern schleichend — die Reports sehen weiter „stabil“ aus, bis eine geschäftliche Konsequenz sichtbar wird. Frühwarnung ist billig, Nachsteuerung nach einem falschen Vierteljahr teuer.",
+        "quellen": [
+          {
+            "titel": "Concept drift — Wikipedia (englisch), umfassende Einführung mit Kategorien und Detektionsmethoden",
+            "art": "Enzyklopädie-Artikel",
+            "institution": "Wikipedia",
+            "url": "https://en.wikipedia.org/wiki/Concept_drift"
+          },
+          {
+            "titel": "MLOps-Studie 2024 (Fraunhofer IAIS / KI.NRW) — Drift-Management im MLOps-Betrieb",
+            "art": "Studie / Whitepaper",
+            "institution": "Fraunhofer IAIS · KI.NRW",
+            "url": "https://www.iais.fraunhofer.de/content/dam/iais/publikationen/studien-und-whitepaper/2024/KI-NRW_MLOps_Studie-2024.pdf"
+          }
+        ]
+      }
+    },
+    {
+      "id": "L4-04",
+      "schwierigkeit": 2,
+      "paket": 4,
+      "absender": "IT-Bereichsleitung",
+      "kanal": "Chat",
+      "szenario": "Die IT-Bereichsleitung schreibt: „Für unsere Software-Deployments haben wir seit Jahren DevOps eingespielt. Der Data-Science-Team sagt: „Für ML-Modelle brauchen wir MLOps — das ist etwas anderes.“ Ist das wirklich ein eigenes Konzept oder nur ein neues Buzzword?“",
+      "frage": "Welche Aussagen sind zutreffend? (Mehrfachauswahl)",
+      "optionen": [
+        {
+          "id": "a",
+          "text": "DevOps verzahnt Software-Entwicklung und Betrieb — mit Continuous Integration und Continuous Deployment als Kern-Praktiken. Es kümmert sich um Code als Artefakt."
+        },
+        {
+          "id": "b",
+          "text": "MLOps erweitert DevOps um zwei zusätzliche Artefakte: Daten (Versionierung, Qualität, Herkunft) und Modelle (Training, Validierung, Registry) — plus Continuous Training (CT) als drittes Rad neben CI/CD."
+        },
+        {
+          "id": "c",
+          "text": "DevOps und MLOps sind identisch — die Umbenennung ist reines Marketing und bringt keine technisch neuen Anforderungen."
+        },
+        {
+          "id": "d",
+          "text": "Ein wesentlicher Unterschied: Software degradiert nicht von selbst, weil die Welt sich ändert — Modelle schon. Deshalb braucht MLOps zwingend Drift-Monitoring und automatisiertes Retraining, was DevOps nicht hat."
+        }
+      ],
+      "korrekt": [
+        "a",
+        "b",
+        "d"
+      ],
+      "feedback_richtig": "Genau. MLOps ist DevOps + Daten + Modelle + Continuous Training. Wer ein ML-System als Software-Deployment behandelt, unterschätzt die Ansprüche an Reproduzierbarkeit (Trainings-Daten und Modell-Version müssen zusammen verwaltet werden) und an laufendes Monitoring (Drift, Fairness, Performance über die Zeit).",
+      "feedback_falsch": "Der Unterschied ist substanziell. Software-Code läuft, bis sich das Umfeld ändert — dann muss man ihn anpassen. ML-Modelle verlieren dagegen von selbst an Qualität, weil die Realität weiterläuft. Ohne Continuous Training und Drift-Monitoring ist ein produktives ML-System keine belastbare Konstruktion.",
+      "glossar": {
+        "begriff": "DevOps und MLOps",
+        "erklaerung": "DevOps: Sammelbegriff für Praktiken, die Entwicklung (Dev) und Betrieb (Ops) verzahnen — CI/CD als Kernwerkzeuge. MLOps: Übertragung und Erweiterung auf ML-Systeme mit den zusätzlichen Artefakten Daten und Modelle sowie Continuous Training (CT). MLOps ist strukturell komplexer als DevOps, weil sich neben Code auch Daten und Modell-Verhalten über die Zeit verändern."
+      },
+      "vertiefung": {
+        "begriff": "DevOps und MLOps",
+        "laien_erklaerung": "DevOps und MLOps sind verwandt, aber nicht dasselbe — der Unterschied entscheidet über den Alltags-Betrieb von KI-Systemen.\n\nDevOps ist die Antwort auf die Frage: Wie bringen wir Software zuverlässig und schnell in Produktion, ohne dass Entwicklung und Betrieb in getrennten Silos gegeneinander arbeiten? Die Antwort besteht aus zwei Säulen: Continuous Integration (jede Code-Änderung wird automatisch getestet und in den Hauptzweig zusammengeführt) und Continuous Deployment (getesteter Code wird automatisch in Produktion gebracht). Kern-Artefakt ist der Code.\n\nMLOps überträgt diese Idee auf ML-Systeme — und stößt dabei auf zwei zusätzliche Artefakte, die DevOps so nicht kennt: Daten (Trainingsdatensätze müssen versioniert werden, Qualität und Herkunft sind nachvollziehbar zu halten) und Modelle (jedes Modell braucht einen Trainings-Nachweis, eine Metriken-Karte, eine Registry-Version). Und es kommt eine dritte Prozess-Schleife hinzu: Continuous Training (CT). Das ist der zentrale strukturelle Unterschied.\n\nWarum CT? Weil Software nicht von selbst verwittert. Ein Login-Formular funktioniert im Januar genauso wie im Juli. Ein Kredit-Scoring-Modell dagegen wird ohne Retraining schleichend schlechter, weil die Welt weiterläuft (siehe Drift-Frage in dieser Reise). MLOps muss diese Erosion aktiv managen — mit Drift-Monitoring, mit definierten Retraining-Triggern, mit automatisierten Trainings-Pipelines.\n\nWarum das für Dich als KI-Managerin wichtig ist: Wenn Dein IT-Bereich ein ML-System betreiben soll, ohne MLOps-Kompetenz aufzubauen, ist das ein strukturelles Risiko. DevOps-Teams sind ausgezeichnet in Software-Deployments — aber Daten- und Modell-Lifecycle sind eigene Disziplinen. Aus Erfahrungswerten scheitert die Mehrheit der KI-Initiativen nicht am Modell, sondern am Betriebs-Konzept.",
+        "quellen": [
+          {
+            "titel": "DevOps — Wikipedia (englisch), Grundlagen und Praktiken",
+            "art": "Enzyklopädie-Artikel",
+            "institution": "Wikipedia",
+            "url": "https://en.wikipedia.org/wiki/DevOps"
+          },
+          {
+            "titel": "CI/CD — Wikipedia (englisch), Continuous Integration und Deployment",
+            "art": "Enzyklopädie-Artikel",
+            "institution": "Wikipedia",
+            "url": "https://en.wikipedia.org/wiki/CI/CD"
+          },
+          {
+            "titel": "MLOps-Studie 2024 (Fraunhofer IAIS / KI.NRW)",
+            "art": "Studie / Whitepaper",
+            "institution": "Fraunhofer IAIS · KI.NRW",
+            "url": "https://www.iais.fraunhofer.de/content/dam/iais/publikationen/studien-und-whitepaper/2024/KI-NRW_MLOps_Studie-2024.pdf"
+          }
+        ]
+      }
+    },
+    {
+      "id": "L4-05",
+      "schwierigkeit": 3,
+      "paket": 4,
+      "absender": "Compliance-Beauftragte",
+      "kanal": "E-Mail",
+      "szenario": "Petra, die Compliance-Beauftragte, schreibt: „Der EU AI Act verlangt für unsere hochriskante KI-Anwendung (Bewerber-Vorauswahl bei Arventis) ein „Post-Market Monitoring“ nach Artikel 72. Was heißt das operativ — und wie unterscheidet es sich von unserem normalen MLOps-Monitoring?“",
+      "frage": "Welche Aussagen sind zutreffend? (Mehrfachauswahl)",
+      "optionen": [
+        {
+          "id": "a",
+          "text": "Post-Market Monitoring nach Artikel 72 EU AI Act ist eine dokumentierte, systematische Überwachungspflicht — nicht nur ein technisches Dashboard, sondern ein schriftlich niedergelegter Plan als Teil der technischen Dokumentation (Annex IV)."
+        },
+        {
+          "id": "b",
+          "text": "Der Plan verpflichtet Anbieter hochriskanter KI-Systeme dazu, Leistungs-Daten aktiv zu sammeln, Drift zu erkennen und die fortlaufende Einhaltung der Kapitel-III-Anforderungen zu belegen — auch nach Marktzulassung."
+        },
+        {
+          "id": "c",
+          "text": "Verzahnt mit Artikel 73 (Meldung schwerwiegender Vorfälle): Serious Incidents sind grundsätzlich innerhalb von 15 Tagen an die zuständige Marktüberwachungsbehörde zu melden — bei weitreichenden Vorfällen 2 Tage, bei Todesfällen 10 Tage."
+        },
+        {
+          "id": "d",
+          "text": "Post-Market Monitoring ist eine Empfehlung ohne rechtliche Verbindlichkeit — die Erfüllung liegt im Ermessen des Anbieters."
+        }
+      ],
+      "korrekt": [
+        "a",
+        "b",
+        "c"
+      ],
+      "feedback_richtig": "Genau. Post-Market Monitoring ist der regulatorische Zwilling des technischen MLOps-Monitorings — mit dokumentierter Struktur, definierten Melde-Fristen und Prüfbarkeit durch die Marktüberwachungsbehörden. Die Verpflichtungen für hochriskante KI-Systeme gelten ab dem 2. August 2026.",
+      "feedback_falsch": "Post-Market Monitoring nach Artikel 72 ist eine rechtliche Verpflichtung, kein Vorschlag. Bei Nicht-Einhaltung drohen Bußgelder nach Artikel 99 EU AI Act. Der Plan muss Teil der technischen Dokumentation nach Annex IV sein und die Behörden können ihn jederzeit einsehen.",
+      "glossar": {
+        "begriff": "Post-Market Monitoring (EU AI Act Art. 72)",
+        "erklaerung": "Pflicht nach Artikel 72 der EU-KI-Verordnung: Anbieter hochriskanter KI-Systeme müssen ein dokumentiertes System zur fortlaufenden Überwachung von Leistung, Drift und Compliance nach Markteintritt einrichten. Der Plan gehört zur technischen Dokumentation (Annex IV). Verzahnt mit Meldepflicht für Serious Incidents (Art. 73). Anwendbar ab 2. August 2026."
+      },
+      "vertiefung": {
+        "begriff": "Post-Market Monitoring nach EU AI Act",
+        "laien_erklaerung": "Post-Market Monitoring ist die regulatorische Anerkennung eines simplen Fakts: Ein KI-System, das heute konform ist, ist es in einem Jahr vielleicht nicht mehr. Der EU AI Act macht daraus in Artikel 72 eine harte Verpflichtung für Anbieter hochriskanter KI-Systeme.\n\nKern-Anforderung: Ein dokumentiertes, verhältnismäßiges Überwachungs-System, das die Leistung des KI-Systems über die gesamte Lebensdauer aktiv beobachtet — nicht sporadisch, nicht auf Zuruf, sondern systematisch. Der Monitoring-Plan ist Teil der technischen Dokumentation nach Annex IV der Verordnung, muss also vor Markteintritt vorliegen und ist prüfbar durch die Marktüberwachungsbehörden.\n\nInhaltlich verlangt der Plan (nach den Delegierten Rechtsakten, die die Kommission bis Februar 2026 erlassen soll): aktive Sammlung von Performance-Daten aus dem Realbetrieb, Detektion von Drift und Degradation, laufende Bewertung der Compliance mit den Kapitel-III-Anforderungen (Datenqualität, Transparenz, menschliche Aufsicht, Robustheit), Verfahren zur Ableitung von Korrektur- oder Rückrufmaßnahmen. Ähnlich zum Medizinprodukterecht (MDR), das PMS seit Jahren kennt.\n\nEng verzahnt mit Artikel 73 (Meldung schwerwiegender Vorfälle): Serious Incidents (Verletzungen, Todesfälle, Grundrechts-Beeinträchtigungen, kritische Infrastruktur-Ausfälle) sind zu melden — Standard-Frist 15 Tage, verkürzt auf 10 Tage bei Todesfällen, auf 2 Tage bei weit verbreiteten Vorfällen. Diese Fristen laufen ab Kenntnis des Vorfalls.\n\nFür Anbieter hochriskanter KI-Systeme (Anhang III des AI Act — dazu gehören Bewerber-Vorauswahl, Kredit-Scoring, Bildungs-Bewertung, viele weitere) gelten diese Verpflichtungen ab 2. August 2026.\n\nWarum das für Dich als KI-Managerin wichtig ist: Post-Market Monitoring ist kein separates System, das man neben MLOps aufbaut — sondern die dokumentierte, rechtsprüfbare Verzahnung des ohnehin nötigen MLOps-Monitorings mit dem regulatorischen Nachweis. Wer MLOps sauber aufgesetzt hat, muss es „nur“ noch dokumentieren. Wer beides nicht hat, fängt spät an.",
+        "quellen": [
+          {
+            "titel": "Article 72: Post-market monitoring by providers — AI Act Service Desk (offizielle EU-Kommission)",
+            "art": "Rechtsvorschrift (Kommissions-Dienstleistung)",
+            "institution": "Europäische Kommission — AI Act Service Desk",
+            "url": "https://ai-act-service-desk.ec.europa.eu/en/ai-act/article-72"
+          },
+          {
+            "titel": "Article 72 — EU AI Act (Übersichts-Portal Future of Life Institute)",
+            "art": "Rechtstext-Aggregator",
+            "institution": "Future of Life Institute",
+            "url": "https://artificialintelligenceact.eu/article/72/"
+          },
+          {
+            "titel": "Chapter IX: Post-Market Monitoring, Information Sharing and Market Surveillance",
+            "art": "Rechtstext (Kapitel-Übersicht)",
+            "institution": "Future of Life Institute",
+            "url": "https://artificialintelligenceact.eu/chapter/9/"
+          }
+        ]
+      }
     }
   ]
 }
