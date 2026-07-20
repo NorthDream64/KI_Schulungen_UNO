@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lernkontrolle · Tag 11 · Ethik und Datenschutz</title>
+<style>
+:root {
+  --ink:#1a1a18;--paper:#f5f2ec;--card:#fff;--rule:#d5d0c5;--muted:#888880;
+  --accent:#2a4a8a;--accent-soft:#e8edf7;
+  --level-1:#5a3a7a;--level-1-soft:#f0eaf7;
+  --level-2:#0a5a7a;--level-2-soft:#e0eff7;
+  --correct:#2a7a50;--correct-bg:#eaf5ee;--correct-border:#a0d8b8;
+  --wrong:#9a2a2a;--wrong-bg:#faeaea;--wrong-border:#d8a0a0;--missed:#b85c00;--missed-bg:#fff4e6;--missed-border:#f0b070;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;background:var(--paper);color:var(--ink);line-height:1.65;font-size:15px;}
+a{color:var(--accent);}
+.site-header{border-bottom:2px solid var(--ink);padding:1.8rem 2rem 1.4rem;max-width:820px;margin:0 auto;}
+.eyebrow{font-family:"SFMono-Regular", Consolas, "Liberation Mono", monospace;font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:var(--muted);margin-bottom:.5rem;}
+.site-header h1{font-family:Georgia, "Times New Roman", serif;font-size:clamp(1.5rem,4vw,2.1rem);line-height:1.15;margin-bottom:.4rem;}
+.header-meta{font-size:12px;color:var(--muted);display:flex;gap:1rem;flex-wrap:wrap;}
+.header-meta span::before{content:"· ";}
+.header-meta span:first-child::before{content:"";}
+.main{max-width:820px;margin:0 auto;padding:1.8rem 2rem 4rem;}
+.setup-card{background:var(--card);border:1px solid var(--rule);border-radius:12px;padding:2rem;max-width:480px;margin:0 auto;}
+.setup-card h2{font-family:Georgia, "Times New Roman", serif;font-size:1.3rem;margin-bottom:1.2rem;}
+.field-label{font-family:"SFMono-Regular", Consolas, "Liberation Mono", monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:.35rem;}
+.setup-input{width:100%;border:1px solid var(--rule);border-radius:8px;padding:.6rem .9rem;font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;font-size:14px;background:var(--paper);outline:none;color:var(--ink);transition:border-color .15s;}
+.setup-input:focus{border-color:var(--ink);}
+.hint-text{font-size:12px;color:var(--muted);margin-top:.3rem;display:block;}
+.level-btns{display:flex;gap:.5rem;margin-top:.3rem;}
+.sel-btn{flex:1;padding:.55rem .6rem;border:1px solid var(--rule);border-radius:8px;background:none;font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;font-size:13px;cursor:pointer;text-align:center;transition:all .15s;color:var(--ink);}
+.sel-btn.active-1{background:var(--level-1-soft);border-color:var(--level-1);color:var(--level-1);font-weight:500;}
+.sel-btn.active-2{background:var(--level-2-soft);border-color:var(--level-2);color:var(--level-2);font-weight:500;}
+.btn-start{width:100%;padding:.75rem;background:var(--ink);color:#fff;border:none;border-radius:8px;font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;font-size:15px;font-weight:500;cursor:pointer;margin-top:1rem;transition:background .15s;}
+.btn-start:hover{background:#333;}
+.btn-start:disabled{background:#aaa;cursor:not-allowed;}
+.quiz-header-strip{display:flex;gap:.6rem;align-items:center;margin-bottom:1.4rem;flex-wrap:wrap;}
+.strip-tag{display:inline-block;font-size:11px;font-weight:600;padding:2px 10px;border-radius:100px;letter-spacing:.5px;}
+.strip-role-1{background:var(--level-1-soft);color:var(--level-1);}
+.strip-role-2{background:var(--level-2-soft);color:var(--level-2);}
+.strip-name{font-size:12px;color:var(--muted);}
+.separator-card{background:var(--accent-soft);border:1px solid var(--rule);border-radius:12px;padding:1.2rem 1.5rem;margin:1.5rem 0;text-align:center;}
+.separator-card h3{font-family:Georgia,serif;font-size:1.1rem;color:var(--accent);margin:0;}
+.progress-bar{height:3px;background:var(--rule);border-radius:2px;margin-bottom:1.2rem;}
+.progress-fill{height:100%;background:var(--ink);border-radius:2px;transition:width .3s;}
+.progress-label{font-family:"SFMono-Regular", Consolas, "Liberation Mono", monospace;font-size:10px;color:var(--muted);margin-bottom:.5rem;}
+.q-card{background:var(--card);border:1px solid var(--rule);border-radius:12px;padding:1.5rem;margin-bottom:1rem;}
+.q-num{font-family:"SFMono-Regular", Consolas, "Liberation Mono", monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:.6rem;}
+.q-text{font-size:15px;font-weight:500;line-height:1.55;margin-bottom:.5rem;}
+.q-hint{font-size:12px;color:var(--muted);margin-bottom:.9rem;font-style:italic;}
+.opt-list{display:flex;flex-direction:column;gap:.5rem;}
+.opt{display:flex;align-items:flex-start;gap:.7rem;padding:.75rem 1rem;border:1px solid var(--rule);border-radius:8px;cursor:pointer;background:#fdfdfb;transition:all .12s;-webkit-user-select:none;user-select:none;}
+.opt:hover:not(.disabled){border-color:#888;background:#f5f2ec;}
+.opt.selected{background:var(--accent-soft);border-color:#8090b8;}
+.opt.disabled{cursor:default;}
+.opt.correct-sel{background:var(--correct-bg);border-color:var(--correct-border);}
+.opt.wrong-sel{background:var(--wrong-bg);border-color:var(--wrong-border);}
+.opt.missed{background:var(--missed-bg);border-color:var(--missed-border);}
+.opt-cb{width:18px;height:18px;min-width:18px;border:1.5px solid #bbb;border-radius:4px;flex-shrink:0;margin-top:2px;display:flex;align-items:center;justify-content:center;transition:all .12s;}
+.opt-cb.chk{background:var(--ink);border-color:var(--ink);}
+.opt-cb.chk::after{content:'';display:block;width:8px;height:8px;background:#fff;border-radius:2px;}
+.opt.correct-sel .opt-cb{background:var(--correct);border-color:var(--correct);}
+.opt.correct-sel .opt-cb::after{content:'✓';color:#fff;font-size:11px;background:none;width:auto;height:auto;}
+.opt.wrong-sel .opt-cb{background:var(--wrong);border-color:var(--wrong);}
+.opt.wrong-sel .opt-cb::after{content:'✗';color:#fff;font-size:11px;background:none;width:auto;height:auto;}
+.opt.missed .opt-cb{background:var(--missed);border-color:var(--missed);}
+.opt.missed .opt-cb::after{content:'→';color:#fff;font-size:11px;background:none;width:auto;height:auto;}
+.opt-letter{font-family:"SFMono-Regular", Consolas, "Liberation Mono", monospace;font-size:12px;color:var(--muted);min-width:16px;flex-shrink:0;margin-top:2px;}
+.opt-text{font-size:14px;line-height:1.5;}
+.feedback{border-radius:8px;padding:.9rem 1.1rem;margin-top:.9rem;}
+.feedback.fb-ok{background:var(--correct-bg);border:1px solid var(--correct-border);}
+.feedback.fb-wrong{background:var(--wrong-bg);border:1px solid var(--wrong-border);}
+.fb-title{font-weight:500;font-size:14px;margin-bottom:.4rem;}
+.fb-ok .fb-title{color:var(--correct);}
+.fb-wrong .fb-title{color:var(--wrong);}
+.fb-text{font-size:13px;line-height:1.65;color:#444;margin-bottom:.5rem;}
+.fb-source{font-size:12px;color:var(--muted);border-top:1px solid var(--rule);padding-top:.5rem;}
+.btn{display:inline-flex;align-items:center;padding:.55rem 1.2rem;border:1px solid var(--rule);border-radius:8px;background:none;font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;font-size:14px;font-weight:500;cursor:pointer;color:var(--ink);transition:all .15s;}
+.btn:hover{background:var(--paper);border-color:#888;}
+.btn-full{width:100%;justify-content:center;padding:.7rem;font-size:15px;margin-top:1rem;}
+.btn-submit{background:#2a5c3f;color:#fff;border-color:#2a5c3f;}
+.btn-submit:hover{background:#1e4530;}
+.result-block{max-width:600px;margin:0 auto;text-align:center;}
+.result-grade{font-family:Georgia, "Times New Roman", serif;font-size:4.5rem;line-height:1;margin-bottom:.3rem;}
+.result-label{font-size:1.1rem;font-weight:500;margin-bottom:.3rem;}
+.result-sub{font-size:13px;color:var(--muted);margin-bottom:1.5rem;}
+.stats-row{display:flex;justify-content:center;gap:1rem;flex-wrap:wrap;margin-bottom:1.5rem;}
+.stat{background:var(--card);border:1px solid var(--rule);border-radius:10px;padding:.9rem 1.2rem;text-align:center;min-width:90px;}
+.stat-n{font-size:1.8rem;font-weight:500;}
+.stat-l{font-size:11px;color:var(--muted);margin-top:2px;}
+.comp-title{font-size:13px;font-weight:500;text-align:left;margin-bottom:.8rem;}
+.comp-row{margin-bottom:.7rem;text-align:left;}
+.comp-labels{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-bottom:3px;}
+.comp-track{height:4px;background:var(--rule);border-radius:2px;}
+.comp-fill{height:100%;border-radius:2px;}
+.fill-ok{background:var(--correct);}
+.fill-wrong{background:var(--wrong);}
+.submit-status{display:none;font-size:12px;margin-top:.5rem;padding:.4rem .8rem;border-radius:6px;}
+.submit-status.sending{display:block;background:#fffbe8;color:#806a00;border:1px solid #d0c060;}
+.submit-status.success{display:block;background:var(--correct-bg);color:var(--correct);border:1px solid var(--correct-border);}
+.submit-status.error{display:block;background:var(--wrong-bg);color:var(--wrong);border:1px solid var(--wrong-border);}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="eyebrow">alfatraining · KI-Beauftragte:r · Tag 11 · Quiz</div>
+  <h1>Lernkontrolle<br>Ethik und Datenschutz</h1>
+  <div class="header-meta">
+    <span>10 Fragen</span>
+    <span>Eine oder mehrere Antworten können richtig sein</span>
+  </div>
+</header>
+
+<main class="main">
+
+<!-- ── SETUP ── -->
+<div id="setup-section">
+  <div class="setup-card">
+    <h2>Quiz starten</h2>
+
+    <div style="margin-bottom:1.2rem;">
+      <span class="field-label">Dein Name (oder Teilnehmer-Nummer)</span>
+      <input type="text" id="participant-name" class="setup-input" placeholder="z. B. Teilnehmer-07 oder Vorname">
+    </div>
+
+    <button class="btn-start" id="btn-start" onclick="startQuiz()">Quiz starten</button>
+  </div>
+</div>
+
+<!-- ── QUIZ ── -->
+<div id="quiz-section" style="display:none">
+  <div class="quiz-header-strip" id="quiz-header-strip"></div>
+  <div class="progress-label" id="progress-label"></div>
+  <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+
+  <div id="questions-container"></div>
+
+  <div style="margin-top:1.5rem">
+    <button class="btn btn-submit btn-full" id="btn-submit" onclick="submitQuiz()" disabled>Auswertung anzeigen →</button>
+  </div>
+  <div class="submit-status" id="submit-status"></div>
+</div>
+
+<!-- ── RESULTS ── -->
+<div id="results-section" style="display:none">
+  <div class="result-block">
+    <div class="result-grade" id="result-grade"></div>
+    <div class="result-label" id="result-label"></div>
+    <div class="result-sub" id="result-sub"></div>
+    <div class="stats-row" id="stats-row"></div>
+    <div class="comp-title">Kompetenzprofil</div>
+    <div id="comp-bars"></div>
+    <div style="margin-top:.8rem;display:flex;justify-content:center;">
+      <button class="btn" onclick="location.reload()">Neu starten</button>
+    </div>
+    </div>
+
+  <hr style="border:none;border-top:1px solid var(--rule);margin:2rem 0">
+  <h2 style="font-family:Georgia, serif;font-size:1.2rem;margin-bottom:1rem">Detailauswertung</h2>
+  <div id="review-container"></div>
+</div>
+
+</main>
+
+<script>
+var APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyPs358GF_E1xsvTh08PpTpZcBDS1OvsU9XQ0qi0MkZoCCnAk4dyo3Aii0OYxILdvCRYA/exec';
+var ROLE2  = 'Geschäftsführerin';
+
+/* ═══════ FRAGENBANK ═══════════════════════════════════════════ */
+/* Verteilung: 2x eine richtig, 4x zwei richtig, 4x drei richtig; nie vier */
+
+var QUESTIONS = [
+
+  /* ═══ SET 1: KI-Beauftragte:r (Fragen 1–5) ═══ */
+  {
+    set: 'KI-Beauftragte:r',
+    q: 'Du erklärst dem Projektteam das Drei-Zonen-Modell (Legal – Ethical – Optimal) für die Bewertung von KI-Systemen. Welche Aussage(n) ist oder sind korrekt?',
+    opts: [
+      'Die Zone „Legal" fragt, ob ein KI-System die gesetzlichen Anforderungen erfüllt — z. B. DSGVO und KI-Verordnung.',
+      'Wenn ein KI-System die rechtlichen Anforderungen erfüllt, ist automatisch auch die ethische Dimension abgedeckt.',
+      'Die Zone „Ethical" prüft, ob der Einsatz gegenüber Betroffenen, Presse und Betriebsrat vertretbar und erklärbar wäre.',
+      'Die Zone „Optimal" bezieht sich ausschließlich auf die technische Leistungsfähigkeit des Systems.'
+    ],
+    correct: [0,2],
+    exp: 'Das Drei-Zonen-Modell unterscheidet: „Legal" (gesetzliche Anforderungen erfüllt?), „Ethical" (gegenüber Betroffenen, Presse, Betriebsrat erklärbar?) und „Optimal" (Best Practice nach SUM Values, NIST AI RMF). Die Toeslagenaffaire, Character.AI und der Hangzhou-Fall zeigen: alle drei Systeme haben Compliance-Checks bestanden — und sind trotzdem gescheitert. Compliance ist Untergrenze, nicht Ziel. „Optimal" meint gesellschaftliche Best Practice, nicht nur technische Leistung.',
+    src: 'Alan Turing Institute · SUM Values', url: 'https://www.turing.ac.uk/research/research-projects/ai-ethics-and-governance-practice'
+  },
+  {
+    set: 'KI-Beauftragte:r',
+    q: 'Du bewertest ein KI-System anhand der SUM Values des Alan Turing Institute. Welche Aussage(n) ist oder sind korrekt?',
+    opts: [
+      'SUM steht für Support, Underwrite, Motivate — der Rahmen soll ethisches Handeln unterstützen, bekräftigen und motivieren.',
+      'Die vier Leitwerte sind Respect, Connect, Care und Protect.',
+      'Die SUM Values ersetzen die Anforderungen der DSGVO und machen eine separate Datenschutzprüfung überflüssig.',
+      'Der Wert „Protect" fordert, soziale Werte, Gerechtigkeit und das Gemeinwohl über individuelle Interessen hinaus zu schützen.'
+    ],
+    correct: [0,1,3],
+    exp: 'SUM (Support · Underwrite · Motivate) ist ein ethischer Werterahmen mit vier Leitwerten: Respect (Würde und Autonomie), Connect (offene Kommunikation), Care (aktive Fürsorge) und Protect (Gemeinwohl schützen). SUM ergänzt die DSGVO, ersetzt sie aber nicht — beide adressieren unterschiedliche Dimensionen. In der Toeslagenaffaire war „Protect" verletzt, bei Character.AI sowohl „Care" als auch „Connect".',
+    src: 'Alan Turing Institute · SUM Values', url: 'https://www.turing.ac.uk/research/research-projects/ai-ethics-and-governance-practice'
+  },
+  {
+    set: 'KI-Beauftragte:r',
+    q: 'Du erklärst dem Team das Fairness-Dilemma nach Chouldechova (2017). Welche Aussage(n) ist oder sind korrekt?',
+    opts: [
+      'Demographic Parity, Equalized Odds und Calibration lassen sich bei unterschiedlichen Basisraten gleichzeitig erfüllen, wenn das Modell gut genug kalibriert ist.',
+      'Bei unterschiedlichen Basisraten zwischen Gruppen sind die drei Fairness-Definitionen mathematisch nicht gleichzeitig erfüllbar — die Wahl der Definition ist eine politische Entscheidung.',
+      'Das Fairness-Dilemma betrifft nur KI-Systeme mit mehr als 10.000 Trainingsdatensätzen.',
+      'Calibration bedeutet, dass alle Gruppen die gleiche Anzahl positiver Entscheidungen erhalten.'
+    ],
+    correct: [1],
+    exp: 'Chouldechova (2017) hat mathematisch bewiesen, dass Demographic Parity, Equalized Odds und Calibration bei unterschiedlichen Basisraten nicht gleichzeitig erfüllt werden können — unabhängig von der Modellqualität oder der Datenmenge. Die Wahl der Fairness-Definition ist deshalb keine technische, sondern eine politische Entscheidung. Calibration bedeutet Treffsicherheit je Score-Wert (wer 80 % Risiko bekommt, hat wirklich 80 %), nicht gleiche Quoten. Der oder die KI-Beauftragte moderiert und dokumentiert die Entscheidung.',
+    src: 'Chouldechova 2017 · Fair Prediction with Disparate Impact', url: 'https://www.turing.ac.uk/research/research-projects/ai-ethics-and-governance-practice'
+  },
+  {
+    set: 'KI-Beauftragte:r',
+    q: 'Du wendest die FAST-Prinzipien des Alan Turing Institute auf ein KI-Projekt an. Welche Aussage(n) ist oder sind korrekt?',
+    opts: [
+      'FAST steht für Fairness, Accountability, Sustainability und Transparency — vier operative Handlungsprinzipien.',
+      'Während die SUM Values die ethischen Leitwerte benennen, geben die FAST-Prinzipien an, wie diese in der Projektarbeit umgesetzt werden.',
+      'Sustainability bezieht sich ausschließlich auf den ökologischen Fußabdruck des KI-Systems.',
+      'Accountability umfasst klare Verantwortlichkeiten, Dokumentation und Auditierbarkeit aller Entscheidungen im KI-Lebenszyklus.'
+    ],
+    correct: [0,1,3],
+    exp: 'Die FAST-Prinzipien übersetzen den SUM-Werterahmen in operative Handlungsanweisungen: Fairness (Bias-Audit, disaggregierte Metriken), Accountability (Dokumentation, RACI, Audit-Logs), Sustainability (nicht nur ökologisch, sondern auch gesellschaftlich und ökonomisch — z. B. Arbeitsmarkt-Folgen wie im Hangzhou-Fall) und Transparency (Art. 13/26/50 KI-Verordnung, Erklärbarkeit). SUM sagt, was zählt — FAST sagt, wie du es umsetzt.',
+    src: 'Alan Turing Institute · FAST Track Principles', url: 'https://www.turing.ac.uk/research/research-projects/ai-ethics-and-governance-practice'
+  },
+  {
+    set: 'KI-Beauftragte:r',
+    q: 'Du klärst das Projektteam über den Unterschied zwischen Pseudonymisierung und Anonymisierung auf. Welche Aussage(n) ist oder sind korrekt?',
+    opts: [
+      'Pseudonymisierte Daten fallen nicht unter die DSGVO, weil der Klarname entfernt wurde.',
+      'Bei pseudonymisierten Daten ist eine Rückführung auf die Person mit dem Schlüssel möglich — die DSGVO gilt weiter.',
+      'Die Kombination von Alter, Postleitzahl und Geschlecht reicht in der Regel nicht aus, um Personen zu identifizieren.',
+      'Echte Anonymisierung — bei der eine Rückführung dauerhaft ausgeschlossen ist — wird in der Praxis selten wirklich erreicht.'
+    ],
+    correct: [1,3],
+    exp: 'Pseudonymisierung (Art. 4 Nr. 5 DSGVO) ersetzt den Klarnamen durch ein Token — die Rückführung bleibt mit dem Schlüssel möglich, deshalb gilt die DSGVO weiter. Anonymisierung schließt die Rückführung dauerhaft aus — dann gilt die DSGVO nicht mehr. In der Praxis wird echte Anonymisierung selten erreicht: Studien zeigen, dass die Kombination von Alter, Postleitzahl und Geschlecht über 85 % aller Personen eindeutig identifiziert.',
+    src: 'DSGVO Art. 4 Nr. 5', url: 'https://eur-lex.europa.eu/legal-content/DE/TXT/?uri=CELEX:32016R0679'
+  },
+
+  /* ═══ SET 2: Geschäftsführerin (Fragen 6–10) ═══ */
+  {
+    set: 'Geschäftsführerin',
+    q: 'Als Geschäftsführerin prüfst du, ob die Verträge mit einem KI-Dienstleister den Datenschutzanforderungen genügen. Welche Aussage(n) ist oder sind korrekt?',
+    opts: [
+      'Standard-AGB erfüllen in der Praxis nahezu nie die Mindestanforderungen des Art. 28 Abs. 3 DSGVO an einen Auftragsverarbeitungsvertrag (AVV).',
+      'Volkswagen wurde 2022 mit 1,1 Millionen Euro Bußgeld belegt, weil kein AVV mit einem Dienstleister abgeschlossen war.',
+      'Mit der Unterzeichnung eines AVV enden die Kontrollpflichten des Verantwortlichen — weitere Überwachung ist freiwillig.',
+      'Der Bundesgerichtshof (BGH) hat 2025 entschieden, dass die laufende Überwachung der AVV-Einhaltung und die aktive Einholung von Löschbestätigungen Pflicht sind.'
+    ],
+    correct: [0,1,3],
+    exp: 'Standard-AGB erfüllen die Art.-28-Mindestanforderungen fast nie — Weisungsgebundenheit, Unterbeauftragungsregelungen und Löschpflichten fehlen regelmäßig. Volkswagen zahlte 1,1 Mio. Euro Bußgeld (LfD Niedersachsen 2022) für einen fehlenden AVV. Der BGH (VI ZR 396/24, November 2025) hat die Kontrollpflichten verschärft: die Verantwortung des Verantwortlichen endet nicht mit der Vertragsunterzeichnung — laufende Überwachung und aktive Löschbestätigungen sind Pflicht.',
+    src: 'LfD Niedersachsen 2022 · BGH VI ZR 396/24', url: 'https://petersenpartners.de/en/news/haftung-nach-beendigung-eines-auftragsverarbeitungsvertrages-avv-bgh-verschaerft-pflichten-des-verantwortlichen/'
+  },
+  {
+    set: 'Geschäftsführerin',
+    q: 'Als Geschäftsführerin möchtest du verstehen, welche Privacy-Enhancing Technologies (PETs) den Datenschutz bei KI-Anwendungen stärken können. Welche Aussage(n) ist oder sind korrekt?',
+    opts: [
+      'Federated Learning bedeutet, dass alle Trainingsdaten an einen zentralen Server gesendet und dort verarbeitet werden.',
+      'Differential Privacy fügt statistisches Rauschen hinzu, das Einzelpersonen schützt, ohne die Gesamtstatistik wesentlich zu verfälschen.',
+      'Synthetische Daten bieten vollständigen Schutz vor Re-Identifikation, weil sie keine Informationen über echte Personen enthalten.',
+      'Homomorphe Verschlüsselung ermöglicht Berechnungen direkt auf verschlüsselten Daten — eine Entschlüsselung beim Verarbeiter ist nicht erforderlich.'
+    ],
+    correct: [1,3],
+    exp: 'Differential Privacy schützt Einzelpersonen durch statistisches Rauschen — die Gesamtstatistik bleibt nutzbar. Homomorphe Verschlüsselung ermöglicht Berechnungen auf verschlüsselten Daten ohne Entschlüsselung beim Verarbeiter. Federated Learning ist das Gegenteil zentraler Datensammlung: das Modell trainiert lokal, nur Gradienten werden geteilt. Synthetische Daten bieten keinen vollständigen Schutz — MITRE ATLAS (AML.T0024) beschreibt Membership Inference Attacks, bei denen aus einem trainierten Modell auf die Zugehörigkeit echter Personen zu den Originaldaten geschlossen werden kann.',
+    src: 'MITRE ATLAS · AML.T0024', url: 'https://atlas.mitre.org/'
+  },
+  {
+    set: 'Geschäftsführerin',
+    q: 'Dein Unternehmen erwägt den Einsatz synthetischer Daten für das Training eines KI-Modells. Welche Aussage(n) ist oder sind korrekt?',
+    opts: [
+      'Synthetische Daten enthalten grundsätzlich keine Informationen über echte Personen und sind daher ohne Einschränkungen nutzbar.',
+      'Ein Membership Inference Attack ist nur möglich, wenn der Angreifer direkten Zugriff auf die Originaldaten hat.',
+      'Je besser ein auf synthetischen Daten basierendes Modell die Realität abbildet, desto mehr Information über echte Personen steckt implizit in seinen Parametern — das Re-Identifikationsrisiko steigt.',
+      'Differential Privacy beim Training hat keinen Einfluss auf das Re-Identifikationsrisiko bei synthetischen Daten.'
+    ],
+    correct: [2],
+    exp: 'Synthetische Daten sind kein Freifahrtschein. Je besser ein Modell die Realität abbildet, desto mehr implizite Information über echte Personen steckt in seinen Parametern. Bei einem Membership Inference Attack (MITRE ATLAS AML.T0024) trainiert ein Angreifer ein Shadow-Modell auf dem öffentlichen Modell — direkter Zugriff auf Originaldaten ist dafür nicht nötig. Differential Privacy beim Training ist eine wirksame Gegenmaßnahme, weil sie den Informationsgehalt über Einzelpersonen systematisch begrenzt.',
+    src: 'MITRE ATLAS · AML.T0024', url: 'https://atlas.mitre.org/'
+  },
+  {
+    set: 'Geschäftsführerin',
+    q: 'Als Geschäftsführerin wirst du nach den Transparenzpflichten der KI-Verordnung gefragt. Welche Aussage(n) ist oder sind korrekt?',
+    opts: [
+      'Die Transparenzpflichten der KI-Verordnung greifen auf drei unabhängigen Ebenen: Anbieter gegenüber Betreiber (Art. 13), Betreiber gegenüber Beschäftigten (Art. 26 Abs. 7) und Betreiber gegenüber Endbetroffenen (Art. 50).',
+      'Die allgemeinen Transparenzpflichten nach Art. 50 treten erst am 2. Dezember 2026 in Kraft.',
+      'Ab dem 2. August 2026 müssen Betreiber Nutzer aktiv darüber informieren, dass sie mit einem KI-System interagieren — die maschinenlesbare Kennzeichnung folgt am 2. Dezember 2026.',
+      'Eine erfüllte Transparenzschicht befreit den Betreiber von den Pflichten der anderen Schichten.'
+    ],
+    correct: [0,2],
+    exp: 'Die KI-Verordnung kennt drei unabhängige Transparenzschichten: Art. 13 (Anbieter → Betreiber), Art. 26 Abs. 7 (Betreiber → Beschäftigte) und Art. 50 (Betreiber → Endbetroffene). Keine Schicht ersetzt die andere. Die allgemeinen Transparenzpflichten nach Art. 50 Abs. 1, 3, 4 gelten bereits ab dem 2. August 2026. Nur die maschinenlesbare Kennzeichnung KI-generierter Inhalte (Art. 50 Abs. 2) wurde durch den Digital Omnibus auf den 2. Dezember 2026 verschoben.',
+    src: 'EU AI Act Art. 50 · Digital Omnibus', url: 'https://artificialintelligenceact.eu/article/50/'
+  },
+  {
+    set: 'Geschäftsführerin',
+    q: 'Dein Unternehmen möchte ein KI-Governancekonzept aufbauen und orientiert sich an internationalen Frameworks. Welche Aussage(n) ist oder sind korrekt?',
+    opts: [
+      'Das NIST AI Risk Management Framework definiert sieben Merkmale vertrauenswürdiger KI, die mit den Anforderungen des EU AI Act korrespondieren.',
+      'Die DSK-Orientierungshilfe von Juni 2025 richtet sich ausschließlich an Anbieter von KI-Systemen — Betreiber sind nicht adressiert.',
+      'Die DSK-Orientierungshilfe konkretisiert Datenschutzpflichten entlang des gesamten KI-Lebenszyklus — von Planung über Training bis Betrieb.',
+      '„Privacy-Enhanced" ist eines der sieben NIST-Merkmale und fordert, Datenschutz strukturell einzubauen — nicht nachträglich aufzusetzen.'
+    ],
+    correct: [0,2,3],
+    exp: 'Das NIST AI RMF 1.0 (2023) definiert sieben Merkmale vertrauenswürdiger KI — darunter „Privacy-Enhanced" (Datenschutz strukturell einbauen, Art. 10 Abs. 5 EU AI Act). Die DSK-Orientierungshilfe (Juni 2025) richtet sich an Entwickler und Betreiber — nicht nur an Anbieter. Sie konkretisiert Datenschutzpflichten über den gesamten KI-Lebenszyklus auf Basis des Standard-Datenschutzmodells (SDM) mit sieben Schutzzielen.',
+    src: 'NIST AI RMF 1.0 · DSK-Orientierungshilfe Juni 2025', url: 'https://airc.nist.gov/'
+  }
+
+];
+
+/* ═══════ STATE ════════════════════════════════════════════════ */
+var S = { name:'', questions:[], selections:[], submitted:false };
+
+function startQuiz() {
+  S.name = document.getElementById('participant-name').value.trim() || 'Anonym';
+  S.questions = QUESTIONS.map(function(q){
+    var n=q.opts.length, idx=[];
+    for(var k=0;k<n;k++) idx.push(k);
+    for(var j=n-1;j>0;j--){ var r=Math.floor(Math.random()*(j+1)),t=idx[j];idx[j]=idx[r];idx[r]=t; }
+    return {
+      set:q.set,
+      q:q.q,
+      opts:idx.map(function(i){return q.opts[i];}),
+      correct:q.correct.map(function(c){return idx.indexOf(c);}),
+      exp:q.exp, src:q.src, url:q.url
+    };
+  });
+  S.selections = S.questions.map(function(){return [];});
+  S.submitted = false;
+
+  document.getElementById('setup-section').style.display='none';
+  document.getElementById('quiz-section').style.display='block';
+
+  document.getElementById('quiz-header-strip').innerHTML =
+    '<span class="strip-tag strip-role-1">KI-Beauftragte:r</span>'
+    +'<span class="strip-tag strip-role-2">'+ROLE2+'</span>'
+    +'<span class="strip-name">'+S.name+'</span>';
+
+  renderQuestions();
+}
+
+function renderQuestions() {
+  var container = document.getElementById('questions-container');
+  container.innerHTML = '';
+  var total = S.questions.length;
+  var letters = ['A','B','C','D'];
+
+  S.questions.forEach(function(q, qi) {
+    if (qi === 5) {
+      var sep = document.createElement('div');
+      sep.className = 'separator-card';
+      sep.innerHTML = '<h3>Perspektivwechsel: '+ROLE2+'</h3>';
+      container.appendChild(sep);
+    }
+
+    var card = document.createElement('div');
+    card.className = 'q-card';
+
+    var numEl = document.createElement('div');
+    numEl.className = 'q-num';
+    numEl.textContent = 'Frage '+(qi+1)+' von '+total;
+    card.appendChild(numEl);
+
+    var qEl = document.createElement('div');
+    qEl.className = 'q-text';
+    qEl.textContent = q.q;
+    card.appendChild(qEl);
+
+    var hEl = document.createElement('div');
+    hEl.className = 'q-hint';
+    hEl.textContent = 'Eine oder mehrere Antworten können richtig sein.';
+    card.appendChild(hEl);
+
+    var optList = document.createElement('div');
+    optList.className = 'opt-list';
+
+    q.opts.forEach(function(opt, oi) {
+      var row = document.createElement('div');
+      row.className = 'opt';
+      row.id = 'opt-'+qi+'-'+oi;
+      row.onclick = (function(a,b){ return function(){ toggleOpt(a,b); }; })(qi,oi);
+
+      var cb = document.createElement('div');
+      cb.className = 'opt-cb';
+      cb.id = 'cb-'+qi+'-'+oi;
+      row.appendChild(cb);
+
+      var letter = document.createElement('div');
+      letter.className = 'opt-letter';
+      letter.textContent = letters[oi]+'.';
+      row.appendChild(letter);
+
+      var text = document.createElement('div');
+      text.className = 'opt-text';
+      text.textContent = opt;
+      row.appendChild(text);
+
+      optList.appendChild(row);
+    });
+
+    card.appendChild(optList);
+    var fb = document.createElement('div');
+    fb.id = 'fb-'+qi;
+    card.appendChild(fb);
+    container.appendChild(card);
+  });
+
+  updateProgress();
+}
+
+function toggleOpt(qi, oi) {
+  if (S.submitted) return;
+  var sel = S.selections[qi];
+  var pos = sel.indexOf(oi);
+  if (pos >= 0) sel.splice(pos,1); else sel.push(oi);
+  document.getElementById('cb-'+qi+'-'+oi).className = 'opt-cb'+(sel.indexOf(oi)>=0?' chk':'');
+  document.getElementById('opt-'+qi+'-'+oi).className = 'opt'+(sel.indexOf(oi)>=0?' selected':'');
+  checkSubmitReady();
+  updateProgress();
+}
+
+function checkSubmitReady() {
+  document.getElementById('btn-submit').disabled =
+    S.selections.filter(function(s){return s.length>0;}).length < S.questions.length;
+}
+
+function updateProgress() {
+  var answered = S.selections.filter(function(s){return s.length>0;}).length;
+  document.getElementById('progress-fill').style.width = Math.round(answered/S.questions.length*100)+'%';
+  document.getElementById('progress-label').textContent = answered+' von '+S.questions.length+' Fragen beantwortet';
+}
+
+function submitQuiz() {
+  S.submitted = true;
+  document.getElementById('btn-submit').disabled = true;
+  var correct=0, wrong=0;
+
+  S.questions.forEach(function(q, qi) {
+    var sel = S.selections[qi].slice().sort().join(',');
+    var cor = q.correct.slice().sort().join(',');
+    var isFull = sel===cor;
+    if (isFull) correct++; else wrong++;
+
+    q.opts.forEach(function(opt,oi){
+      var isSel = S.selections[qi].indexOf(oi)>=0;
+      var isCorr = q.correct.indexOf(oi)>=0;
+      document.getElementById('opt-'+qi+'-'+oi).className =
+        'opt disabled'+(isSel&&isCorr?' correct-sel':isSel&&!isCorr?' wrong-sel':!isSel&&isCorr?' missed':'');
+      document.getElementById('cb-'+qi+'-'+oi).className = 'opt-cb'+(isSel?' chk':'');
+    });
+
+    document.getElementById('fb-'+qi).innerHTML =
+      '<div class="feedback '+(isFull?'fb-ok':'fb-wrong')+'">'
+      +'<div class="fb-title">'+(isFull?'Richtig — alle Antworten korrekt.':'Falsch — nicht alle richtigen Antworten gewählt oder falsche angekreuzt.')+'</div>'
+      +'<div class="fb-text">'+q.exp+'</div>'
+      +'<div class="fb-source">Quelle: <a href="'+q.url+'" target="_blank">'+q.src+'</a></div>'
+      +'</div>';
+  });
+
+  showResults(correct, wrong);
+  sendToSheets(correct, wrong);
+}
+
+function showResults(correct, wrong) {
+  var total = S.questions.length;
+  var pct = Math.round(correct/total*100);
+  var grade, label, sub;
+  if(pct>=80){grade='A';label='Sehr gut!';sub='Solide Wissensbasis für dieses Thema nachgewiesen.';}
+  else if(pct>=60){grade='B';label='Gut';sub='Solide Basis — Quellenlinks gezielt nutzen.';}
+  else if(pct>=40){grade='C';label='Ausbaufähig';sub='Grundlagen vorhanden — Theorieblock nochmals lesen.';}
+  else{grade='D';label='Weiter üben';sub='Lücken mit den verlinkten Quellen schließen.';}
+
+  document.getElementById('result-grade').textContent=grade;
+  document.getElementById('result-label').textContent=label;
+  document.getElementById('result-sub').textContent=sub;
+  document.getElementById('stats-row').innerHTML=
+    '<div class="stat"><div class="stat-n" style="color:var(--correct)">'+correct+'</div><div class="stat-l">Richtig</div></div>'
+    +'<div class="stat"><div class="stat-n" style="color:var(--wrong)">'+wrong+'</div><div class="stat-l">Falsch</div></div>'
+    +'<div class="stat"><div class="stat-n">'+pct+'%</div><div class="stat-l">Ergebnis</div></div>';
+
+  document.getElementById('comp-bars').innerHTML=S.questions.map(function(q,i){
+    var ok=S.selections[i].slice().sort().join(',')===q.correct.slice().sort().join(',');
+    return '<div class="comp-row"><div class="comp-labels"><span>Frage '+(i+1)+'</span>'
+      +'<span style="color:'+(ok?'var(--correct)':'var(--wrong)')+'">'+(ok?'✓ Richtig':'✗ Falsch')+'</span></div>'
+      +'<div class="comp-track"><div class="comp-fill '+(ok?'fill-ok':'fill-wrong')+'" style="width:'+(ok?100:0)+'%"></div></div></div>';
+  }).join('');
+
+  renderReview();
+  document.getElementById('quiz-section').style.display='none';
+  document.getElementById('results-section').style.display='block';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function renderReview() {
+  var letters = ['A','B','C','D'];
+  var container = document.getElementById('review-container');
+  container.innerHTML = '';
+
+  S.questions.forEach(function(q, qi) {
+    var isFull = S.selections[qi].slice().sort().join(',')===q.correct.slice().sort().join(',');
+    var card = document.createElement('div');
+    card.className = 'q-card';
+    card.style.marginBottom = '.8rem';
+
+    var header = document.createElement('div');
+    header.style.cssText = 'display:flex;gap:.6rem;align-items:baseline;margin-bottom:.5rem;';
+    var numEl = document.createElement('div');
+    numEl.className = 'q-num';
+    numEl.textContent = 'Frage '+(qi+1);
+    var badge = document.createElement('span');
+    badge.style.cssText = 'font-size:12px;font-weight:500;padding:2px 10px;border-radius:100px;'
+      +(isFull?'background:var(--correct-bg);color:var(--correct);':'background:var(--wrong-bg);color:var(--wrong);');
+    badge.textContent = isFull?'✓ Richtig':'✗ Falsch';
+    header.appendChild(numEl); header.appendChild(badge);
+    card.appendChild(header);
+
+    var qEl = document.createElement('div');
+    qEl.className = 'q-text';
+    qEl.style.marginBottom = '.7rem';
+    qEl.textContent = q.q;
+    card.appendChild(qEl);
+
+    var optList = document.createElement('div');
+    optList.className = 'opt-list';
+    q.opts.forEach(function(opt, oi) {
+      var isSel = S.selections[qi].indexOf(oi)>=0;
+      var isCorr = q.correct.indexOf(oi)>=0;
+      var row = document.createElement('div');
+      var cls = 'opt disabled';
+      if(isSel&&isCorr) cls+=' correct-sel';
+      else if(isSel&&!isCorr) cls+=' wrong-sel';
+      else if(!isSel&&isCorr) cls+=' missed';
+      row.className = cls;
+      var cb = document.createElement('div');
+      cb.className = 'opt-cb'+(isSel?' chk':'');
+      row.appendChild(cb);
+      var letter = document.createElement('div');
+      letter.className = 'opt-letter';
+      letter.textContent = letters[oi]+'.';
+      row.appendChild(letter);
+      var text = document.createElement('div');
+      text.className = 'opt-text';
+      text.textContent = opt;
+      row.appendChild(text);
+      optList.appendChild(row);
+    });
+    card.appendChild(optList);
+
+    var fb = document.createElement('div');
+    fb.innerHTML = '<div class="feedback '+(isFull?'fb-ok':'fb-wrong')+'" style="margin-top:.7rem">'
+      +'<div class="fb-title">'+(isFull?'Richtig.':'Falsch.')+'</div>'
+      +'<div class="fb-text">'+q.exp+'</div>'
+      +'<div class="fb-source">Quelle: <a href="'+q.url+'" target="_blank">'+q.src+'</a></div></div>';
+    card.appendChild(fb);
+    container.appendChild(card);
+  });
+}
+
+function sendToSheets(correct, wrong) {
+  if (!APPS_SCRIPT_URL) return;
+  var TAG_NR = 11;
+  var THEMA  = 'Ethik und Datenschutz';
+  var letters = ['A','B','C','D'];
+  var status = document.getElementById('submit-status');
+  status.className = 'submit-status sending';
+  status.style.display = 'block';
+  status.textContent = 'Ergebnis wird übermittelt...';
+
+  var toSend = [];
+  S.questions.forEach(function(q, i) {
+    var selIndices  = S.selections[i].slice().sort();
+    var corrIndices = q.correct.slice().sort();
+    var isFull      = selIndices.join(',') === corrIndices.join(',');
+    var gewaehlt    = selIndices.map(function(idx) { return letters[idx]; }).join(',') || '-';
+    var korrekt     = corrIndices.map(function(idx) { return letters[idx]; }).join(',');
+    var ergebnis    = isFull ? 'RICHTIG' : 'FALSCH';
+
+    toSend.push(
+      APPS_SCRIPT_URL
+      + '?tab='        + encodeURIComponent('KI-Beauftragter')
+      + '&teilnehmer=' + encodeURIComponent(S.name)
+      + '&tag='        + TAG_NR
+      + '&thema='      + encodeURIComponent(THEMA)
+      + '&stufe='      + encodeURIComponent(S.questions[i].set)
+      + '&frage_nr='   + (i + 1)
+      + '&frage_text=' + encodeURIComponent(q.q.substring(0, 80))
+      + '&gewaehlt='   + encodeURIComponent(gewaehlt)
+      + '&korrekt='    + encodeURIComponent(korrekt)
+      + '&ergebnis='   + encodeURIComponent(ergebnis)
+    );
+  });
+
+  var idx = 0;
+  function sendNext() {
+    if (idx >= toSend.length) {
+      status.className = 'submit-status success';
+      status.textContent = '✓ ' + toSend.length + ' Antworten übermittelt ('
+        + new Date().toLocaleTimeString('de-DE') + ')';
+      return;
+    }
+    fetch(toSend[idx], { mode: 'no-cors' })
+      .catch(function() {})
+      .then(function() { idx++; setTimeout(sendNext, 400); });
+  }
+  sendNext();
+}
+
+</script>
+</body>
+</html>
