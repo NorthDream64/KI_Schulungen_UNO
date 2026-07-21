@@ -1886,6 +1886,136 @@
           }
         ]
       }
+    },
+    {
+      "id": "L4-06",
+      "schwierigkeit": 3,
+      "paket": 4,
+      "absender": "Data Scientist",
+      "kanal": "E-Mail",
+      "szenario": "Marc mailt aus SolidFinanz: „Unser neues Kredit-Scoring-Modell ist trainiert und in der Validierung überzeugend. Bevor es das alte Modell komplett ablöst, will die IT-Sicherheit einen kontrollierten Rollout. Ich habe drei Optionen im Kopf: Shadow Deployment, A/B Testing, Interleaved Testing. Wie ordnest Du die drei ein — und was empfiehlst Du für unseren Fall?“",
+      "frage": "Welche Aussagen sind zutreffend? (Mehrfachauswahl)",
+      "optionen": [
+        {
+          "id": "a",
+          "text": "Shadow Deployment: Das neue Modell läuft parallel zum alten und bekommt dieselben Anfragen gespiegelt — trifft aber keine Entscheidungen. Nur seine Vorhersagen werden geloggt und mit dem alten Modell verglichen. Sichere Vor-Produktions-Prüfung an realem Traffic, ohne Kunden-Risiko."
+        },
+        {
+          "id": "b",
+          "text": "A/B Testing: Der Live-Traffic wird zwischen altem (Kontrolle) und neuem Modell (Variante) aufgeteilt — typischerweise erst wenige Prozent, dann steigend. Beide Modelle treffen echte Entscheidungen, die Auswirkungen werden statistisch verglichen."
+        },
+        {
+          "id": "c",
+          "text": "Interleaved Testing: Für dieselbe Anfrage werden Vorschläge beider Modelle gemischt, die Nutzer:innen wählen implizit über Klicks/Nutzung. Effizienter als A/B, wenn viele parallele Vorschläge sinnvoll sind (typisch: Ranking, Empfehlungen) — für binäre Kreditentscheidungen weniger geeignet."
+        },
+        {
+          "id": "d",
+          "text": "Alle drei Strategien sind identisch — die Namen sind nur unterschiedliche Marketing-Bezeichnungen für dasselbe Vorgehen."
+        }
+      ],
+      "korrekt": [
+        "a",
+        "b",
+        "c"
+      ],
+      "feedback_richtig": "Genau. Die drei Strategien decken unterschiedliche Risiko-Niveaus ab. Für Kredit-Scoring (binäre, folgenschwere Entscheidung) ist die naheliegende Reihenfolge: Zuerst Shadow Deployment (nur Log-Vergleich, null Kunden-Risiko), dann Canary/A/B mit kleinem Prozentsatz (echter Live-Test mit begrenzter Reichweite), dann Voll-Umstellung. Interleaved passt hier nicht, weil es nicht zwei Ranglisten sind, die gemischt werden können — sondern eine Ja/Nein-Entscheidung.",
+      "feedback_falsch": "Die drei Strategien sind klar unterscheidbare Vorgehensweisen mit unterschiedlichen Risiko-Profilen: Shadow (kein Nutzer-Impact, nur Log-Vergleich) → A/B (echter Live-Test, statistischer Vergleich der Auswirkung) → Interleaved (implizite Nutzer-Präferenz, meist für Ranking-Aufgaben). Wer die Unterschiede nicht kennt, wählt oft die falsche Strategie für seinen Anwendungsfall.",
+      "glossar": {
+        "begriff": "Rollout-Strategien: Shadow Deployment, A/B Testing, Interleaved Testing",
+        "erklaerung": "Shadow Deployment: neues Modell läuft parallel und bekommt gespiegelte Anfragen, trifft aber keine Entscheidungen — nur Log-Vergleich. A/B Testing: echter Live-Split (typisch 90/10 oder ähnlich), beide Modelle treffen Entscheidungen, statistischer Wirkungs-Vergleich. Interleaved Testing: Ergebnisse beider Modelle werden für dieselbe Anfrage gemischt präsentiert, Nutzer-Klicks bestimmen den Sieger — typisch für Ranking-Aufgaben. Verwandt: Canary Release (schrittweises Ramp-up), siehe Reise Reiseapotheke."
+      },
+      "vertiefung": {
+        "begriff": "Rollout-Strategien für Modell-Ablösungen",
+        "laien_erklaerung": "Ein trainiertes Modell in Produktion zu bringen ist selten der letzte, sondern eher der riskanteste Schritt. Die drei Strategien decken unterschiedliche Punkte auf dem Risiko-Kontinuum ab.\n\nShadow Deployment ist der Golden Standard für sichere Vor-Produktions-Tests: Das neue Modell wird live installiert und bekommt jede Anfrage in Kopie — aber es entscheidet nichts. Nur seine Vorhersagen wandern ins Log. Man kann sie nach beliebigen Kriterien mit dem alten Modell vergleichen: Wo weichen sie ab? Wie stark? Bei welchen Fällen? Ein Fehler im neuen Modell kostet null Kundenschaden, weil kein Kunde je die Ausgabe sieht.\n\nA/B Testing ist der klassische Live-Vergleich: Ein Teil des echten Traffics geht auf das neue Modell, der Rest bleibt auf dem alten. Typische Anfangs-Verteilungen sind 90/10 oder 99/1 — je nach Risiko. Der Sinn ist statistisch: Man will nicht nur wissen, ob das neue Modell „besser aussieht“, sondern ob der Unterschied zu einem geschäftlich relevanten Ergebnis (Umsatz, Fehlerrate, Kundenzufriedenheit) führt. Nahe verwandt: Canary Release (schrittweises Ramp-up des Prozentsatzes je nach Metrik) — siehe Reise Reiseapotheke.\n\nInterleaved Testing ist die spezialisierte Variante für Ranking- und Empfehlungs-Systeme (Suche, Produkt-Vorschläge). Für dieselbe Anfrage werden Vorschläge aus beiden Systemen zu einer Liste gemischt, die Nutzerin klickt eines an — dieser Klick wird als Präferenz-Signal gewertet. Wesentlich stichproben-effizienter als A/B, weil beide Ranker denselben Nutzer sehen (kein Split-Rauschen). Ursprung: Filip Radlinski und Kolleg:innen, 2008–2013 bei Microsoft Research entwickelt.\n\nFür den Kredit-Scoring-Fall (binäre, folgenschwere Entscheidung ohne Ranking) ist die typische Sequenz: Shadow zuerst (Wochen, bis die Vorhersagen des neuen Modells stabil und plausibel sind), dann A/B / Canary mit 1–5 % (weitere Wochen, mit engem Monitoring), dann Voll-Umstellung. Interleaved fällt hier raus, weil man nicht „zwei Empfehlungslisten mischen“ kann — es gibt nur bewilligt/abgelehnt.\n\nWarum das für Dich als KI-Managerin wichtig ist: Die Wahl der Rollout-Strategie ist eine Governance-Entscheidung, keine reine Technik-Frage. Sie bestimmt, wie viele Kunden im Worst Case einen Fehler des neuen Modells zu spüren bekommen, und wie schnell Rückschritte möglich sind. Wer als Team ein neues Modell ohne definierte Rollout-Strategie einführt, hat entweder ein sehr risikoarmes Anwendungsfeld — oder ein Governance-Defizit.",
+        "quellen": [
+          {
+            "titel": "A/B testing — Wikipedia (englisch), Grundlagen und Verfahren",
+            "art": "Enzyklopädie-Artikel",
+            "institution": "Wikipedia",
+            "url": "https://en.wikipedia.org/wiki/A/B_testing"
+          },
+          {
+            "titel": "Canarying Releases — Google SRE Workbook (Praxis-Standard)",
+            "art": "Fach-Referenzwerk (frei)",
+            "institution": "Google Site Reliability Engineering",
+            "url": "https://sre.google/workbook/canarying-releases/"
+          },
+          {
+            "titel": "Optimized Interleaving for Online Retrieval Evaluation — Radlinski & Craswell (WSDM 2013)",
+            "art": "Wissenschaftliches Paper",
+            "institution": "Microsoft Research",
+            "url": "https://www.microsoft.com/en-us/research/wp-content/uploads/2013/02/Radlinski_Optimized_WSDM2013.pdf.pdf"
+          }
+        ]
+      }
+    },
+    {
+      "id": "L6-06",
+      "schwierigkeit": 3,
+      "paket": 6,
+      "absender": "Klinik-CTO",
+      "kanal": "E-Mail",
+      "szenario": "Der CTO des Krankenhauses St. Ulrich schreibt: „Wir wollen unseren neuen medizinischen Assistenz-Chatbot so bauen, dass er einerseits die Sprachfähigkeit eines großen Sprachmodells nutzt, andererseits aber garantiert nie gegen unsere internen Leitlinien und die S3-Leitlinien der AWMF verstößt. Ein Berater spricht von „Neuro-Symbolic AI“ mit einer „Ontologie“ und einem „Content Layer“. Was heißt das — und ist das der richtige Weg für uns?“",
+      "frage": "Welche Aussagen sind zutreffend? (Mehrfachauswahl)",
+      "optionen": [
+        {
+          "id": "a",
+          "text": "Neuro-Symbolic AI ist die gezielte Kombination aus neuronalen Modellen (LLM: sprachfähig, lernend, unscharf) und symbolischen Verfahren (Regeln, Logik, Ontologien: deterministisch, prüfbar, formal). Ziel: die Stärken beider Welten vereinen — Sprachverständnis plus verlässliche Regelanwendung."
+        },
+        {
+          "id": "b",
+          "text": "Eine Ontologie ist eine formale Beschreibung der Begriffe und ihrer Beziehungen in einer Domäne — bei Euch: Diagnosen, Medikamente, Kontraindikationen, Leitlinien-Kategorien mit definierten Relationen („Medikament X ist kontraindiziert bei Diagnose Y“). Sie macht Domain-Wissen maschinell prüfbar."
+        },
+        {
+          "id": "c",
+          "text": "Der Content Layer ist die Architektur-Schicht zwischen Foundation Model und Nutzer:in, in der die firmenspezifischen Inhalte — hier die Leitlinien und Ontologie — als Filter, Prompt-Ergänzung und Nachprüfung eingezogen werden. Der Content Layer verbindet das allgemeine Sprachmodell mit Eurem spezifischen Fach-Wissen."
+        },
+        {
+          "id": "d",
+          "text": "Neuro-Symbolic AI ist ein reines Marketing-Wort — technisch dasselbe wie ein normales LLM, nur teurer."
+        }
+      ],
+      "korrekt": [
+        "a",
+        "b",
+        "c"
+      ],
+      "feedback_richtig": "Genau. Für regulierte oder sicherheitskritische Domänen (Medizin, Recht, Compliance, Finanzen) ist der Neuro-Symbolic-Ansatz eine der aktuell wichtigsten Architekturen: Ein LLM allein halluziniert und kann nicht garantiert Regeln einhalten; ein rein regelbasiertes System kann keine natürliche Sprache. Die Verheiratung — LLM für Sprache, Ontologie für Fach-Wissen, Content Layer als Verbindung mit definierten Prüf-Punkten — deckt beide Anforderungen ab.",
+      "feedback_falsch": "Neuro-Symbolic AI ist kein Marketing-Begriff, sondern ein etabliertes Forschungs-Paradigma und zunehmend eine Produktions-Architektur. Der Kern: reines LLM = kein garantierbares Regelverhalten; rein symbolisches System = keine natürliche Sprache. Die Kombination ist speziell für regulierte Domänen (Medizin, Recht) heute oft der einzige verantwortbare Weg.",
+      "glossar": {
+        "begriff": "Neuro-Symbolic AI, Ontology, Content Layer",
+        "erklaerung": "Neuro-Symbolic AI: Verbindung von neuronaler Statistik (LLMs) und symbolischer Logik (Regeln, Ontologien). Ontology: formale Beschreibung der Begriffe und Beziehungen einer Domäne — maschinell prüfbar. Content Layer: Architektur-Schicht in modernen GenAI-Systemen, die firmenspezifische Inhalte, Regeln und Prüf-Logik zwischen Foundation Model und Ausgabe einzieht. Zusammen bilden sie eine der wichtigsten Architekturen für sicherheitskritische GenAI-Anwendungen."
+      },
+      "vertiefung": {
+        "begriff": "Neuro-Symbolic AI, Ontology und Content Layer",
+        "laien_erklaerung": "Der Krankenhaus-Fall ist typisch für die Grenzen eines rein statistischen LLMs: Ein Foundation Model wie GPT oder Claude ist sprachlich beeindruckend, aber es kann grundsätzlich keine harte Regel garantieren. Wenn eine medizinische Leitlinie sagt „Wirkstoff X ist bei Diagnose Y kontraindiziert“, dann kann ein LLM diese Regel im Trainings-Text gelesen haben und sie meistens beachten — aber „meistens“ ist im medizinischen Kontext keine akzeptable Sicherheit.\n\nNeuro-Symbolic AI ist das Paradigma, das diese Lücke schließt. Der Grundgedanke ist einfach: Neuronale Modelle sind stark in Wahrnehmung und Sprache, aber schwach in Logik und Nachweisbarkeit; symbolische Systeme (Regeln, Logik, Wissens-Graphen, Ontologien) sind umgekehrt. Die Verbindung — nicht das eine oder das andere, sondern beides in derselben Architektur — bringt die Stärken zusammen und kompensiert die Schwächen.\n\nEine Ontologie ist der Baustein für den symbolischen Teil: Sie beschreibt formal, welche Begriffe es in Eurer Fach-Domäne gibt und wie sie zusammenhängen. Für ein Krankenhaus: Klassen wie „Diagnose“, „Medikament“, „Wirkstoff“, „Kontraindikation“, „Leitlinie“, plus Relationen („Medikament X enthält Wirkstoff Y“, „Wirkstoff Y ist kontraindiziert bei Diagnose Z“). Diese Struktur ist maschinell prüfbar und deterministisch — anders als der Assoziations-Speicher eines LLMs. Konzeptionell verwandt mit Knowledge Graphs (Wikidata, DBpedia, YAGO).\n\nDer Content Layer ist die Praxis-Umsetzung in der Architektur: die Schicht zwischen dem Foundation Model und der Ausgabe an die Nutzer:in. Dort passieren in einer typischen Architektur drei Dinge: (1) Der Prompt wird um relevante Fach-Inhalte angereichert (Retrieval — wie bei RAG). (2) Die vom LLM formulierte Antwort wird gegen die Ontologie geprüft (Prüf-Schicht: Verletzt sie eine Kontraindikations-Regel? Zitiert sie eine nicht existierende Leitlinie?). (3) Bei Verletzungen wird die Antwort korrigiert, blockiert oder zur menschlichen Freigabe eskaliert. Der Content Layer ist also Vermittler, Wächter und Anreicherung zugleich.\n\nWarum das für Dich als KI-Managerin wichtig ist: Für regulierte und sicherheitskritische Anwendungen (Medizin, Recht, Finanzen, kritische Infrastruktur) ist die Frage „Wie garantieren wir Regel-Einhaltung?“ heute nicht mehr durch ein besseres LLM allein zu beantworten. Die Antwort ist Architektur: Neuro-Symbolic-Ansatz mit Ontologie und Content Layer. Wenn ein Anbieter eine GenAI-Lösung für regulierte Bereiche verkauft und dieses Vokabular nicht kennt oder nicht braucht, ist das ein Warnsignal — dann wird versprochen, was ein reines LLM technisch nicht halten kann.",
+        "quellen": [
+          {
+            "titel": "Neuro-symbolic AI — Wikipedia (englisch), Definition und Ansätze",
+            "art": "Enzyklopädie-Artikel",
+            "institution": "Wikipedia",
+            "url": "https://en.wikipedia.org/wiki/Neuro-symbolic_AI"
+          },
+          {
+            "titel": "Hybrid intelligent system — Wikipedia (englisch), Oberbegriff hybrider Ansätze",
+            "art": "Enzyklopädie-Artikel",
+            "institution": "Wikipedia",
+            "url": "https://en.wikipedia.org/wiki/Hybrid_intelligent_system"
+          },
+          {
+            "titel": "Knowledge graph — Wikipedia (englisch), verwandtes Konzept zur Ontologie",
+            "art": "Enzyklopädie-Artikel",
+            "institution": "Wikipedia",
+            "url": "https://en.wikipedia.org/wiki/Knowledge_graph"
+          },
+          {
+            "titel": "Ontology and Information Systems — Stanford Encyclopedia of Philosophy (akademische Referenz)",
+            "art": "Wissenschaftliche Enzyklopädie",
+            "institution": "Stanford University",
+            "url": "https://plato.stanford.edu/entries/ontology-is/"
+          }
+        ]
+      }
     }
   ]
 }
