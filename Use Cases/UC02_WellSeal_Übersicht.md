@@ -27,8 +27,11 @@ Hersteller von Wellenkomponenten und Abdichtungssystemen für die maritime Indus
 
 **Erwartung an den KI-Beauftragten:** Strategischer Verbündeter, der KI-Projekte vorantreibt und gleichzeitig intern Widerstände abbaut.
 
-### Heinrich Mäurer sen. — Seniorchef (nicht mehr aktiv)
+### Heinrich Mäurer Sen. — Seniorchef (nicht mehr aktiv)
 Hat das Unternehmen aufgebaut. Vertraut dem Junior, ist aber informal weiterhin präsent. Hat bewusst ein konservatives Führungsteam hinterlassen ("Das schützt uns vor Schnellschüssen").
+
+### Heinrich ("Henry") Mäurer Jun. — Geschäftsführer
+Hat vor 6 Monaten die Leitung übernommen. Er möchte "frischen Wind" und neue Technologien wie KI in das Unternehmen bringen und hat deshalb die Rolle eines "KI-Integrators" geschaffen und Dich dafür eingestellt. Er schätzt die "alte Garde", die mit seinem Vater das Unternehmen groß gemacht haben, versucht sie einzubeziehen, spürt aber auch das Spannungsverhältnis zwsichen Innovation und Traditon.
 
 ### Dr. Petra Schreiber — Chief Information Security Officer (CISO)
 15 Jahre im Unternehmen. Tiefes Vertrauen des Seniors. Geprägt durch einen Sicherheitsvorfall 2019 (Ransomware-Angriff auf die Produktionssteuerung). Betrachtet KI grundsätzlich als Angriffsfläche. Wird keine Initiative absegnen, die nicht vollständig dokumentiert und risikobewertet ist. **Nicht zu unterschätzen:** Ihre Skepsis ist fachlich begründet, nicht nur politisch.
@@ -42,7 +45,13 @@ Seit 12 Jahren im Unternehmen. Hat SAP eingeführt und pflegt es. Versteht M365 
 ### Roxanne Aubieu — Leiterin Controlling
 Seit 1 Jahr im Unternehmen. Kommt ursprünglich aus der Unternehmensberatung und ist ein "Zahlenmensch", kennt aber das Geschäft noch nicht in der Tiefe. Sie orientiert sich stark an Heinrich Mäurer jun. und sieht sich in der Rolle, seine Ideen und Initiativen auf ihren strategischen und operativen Geschäftswert hin zu validieren.
 
-### Sie — KI-Beauftragter:in (neu geschaffene Stelle)
+### Alfons Brockmann — Teamleiter Service
+Seit 30 Jahren im Unternehmen, praktisch zusammen mit Heinrich Mäurer Sr. einer der "Gründer". Die "graue Eminenz" im Unternehmen: Hoher Einfluss auf die Serviceingenieure, bei den meisten Kunden seit Jahren bekannt, hat an allen Standorten gearbeitet. Heinrich Mäurer Sr. hört auf ihn; zu Henry Mäurer hat er ein väterliches, aber nicht ganz spannungsfreies Verhältnis.
+
+### Bernd Kruse — Werkleuter Busan
+Zögling Brockmanns. Wurde nach einem Korruptionsfall, wegen dessen die frühere, koreanische Leiterin des Standorts abgelöst werden mußte, kurzfrisitg nach Busan entsendet. Kennt das Geschäft und die koreanischen Kunden (Hyundai Heavy Industries, Daewoo Shipbuilding & Marine Engineering, Samsung Heavy Industries) gut, spricht aber kein Koreanisch und nur gebrochen Englisch. Als Führungskraft ist Busan für ihn die erste Station.
+
+### Du — KI-Beauftragter:in (neu geschaffene Stelle, perspektivisch KI Integrator)
 Die Teilnehmenden nehmen diese Rolle ein. Die Stelle wurde auf Initiative des Juniors geschaffen — sie ist im Organigramm noch nicht verankert. Es gibt keine direkte Berichtslinie, kein Budget, keine formale Weisungsbefugnis. Der KI-Beauftragte wirkt beratend und koordinierend.
 
 ---
