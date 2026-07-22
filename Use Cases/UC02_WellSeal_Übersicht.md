@@ -22,16 +22,11 @@ Hersteller von Wellenkomponenten und Abdichtungssystemen für die maritime Indus
 
 ## Personen
 
-### Heinrich Mäurer jun. — Geschäftsführer ("der Junior")
-Übernahme des Unternehmens vor ca. 6 Monaten vom Vater. Betriebswirt, MBA, 38 Jahre alt. Hat in den USA studiert und gearbeitet — ist mit modernen digitalen Arbeitsweisen und KI-Tools vertraut. Empfindet das Unternehmen als technologisch rückständig ("Digitalisierungsstau"). Möchte schnell Ergebnisse zeigen, ist dabei aber auf die Unterstützung der alten Garde angewiesen.
-
-**Erwartung an den KI-Beauftragten:** Strategischer Verbündeter, der KI-Projekte vorantreibt und gleichzeitig intern Widerstände abbaut.
+### Heinrich ("Henry") Mäurer jun. — Geschäftsführer
+Hat vor 6 Monaten die Leitung übernommen. Betriebswirt, MBA, 38 Jahre alt. Hat in den USA studiert und gearbeitet — ist mit modernen digitalen Arbeitsweisen und KI-Tools vertraut. Empfindet das Unternehmen als technologisch rückständig ("Digitalisierungsstau"). Möchte schnell Ergebnisse zeigen, ist dabei aber auf die Unterstützung der alten Garde angewiesen. Er möchte "frischen Wind" und neue Technologien wie KI in das Unternehmen bringen und hat deshalb die Rolle eines "KI-Integrators" geschaffen und Dich dafür eingestellt. Er schätzt die "alte Garde", die mit seinem Vater das Unternehmen groß gemacht haben, versucht sie einzubeziehen, spürt aber auch das Spannungsverhältnis zwsichen Innovation und Traditon.
 
 ### Heinrich Mäurer Sen. — Seniorchef (nicht mehr aktiv)
 Hat das Unternehmen aufgebaut. Vertraut dem Junior, ist aber informal weiterhin präsent. Hat bewusst ein konservatives Führungsteam hinterlassen ("Das schützt uns vor Schnellschüssen").
-
-### Heinrich ("Henry") Mäurer Jun. — Geschäftsführer
-Hat vor 6 Monaten die Leitung übernommen. Er möchte "frischen Wind" und neue Technologien wie KI in das Unternehmen bringen und hat deshalb die Rolle eines "KI-Integrators" geschaffen und Dich dafür eingestellt. Er schätzt die "alte Garde", die mit seinem Vater das Unternehmen groß gemacht haben, versucht sie einzubeziehen, spürt aber auch das Spannungsverhältnis zwsichen Innovation und Traditon.
 
 ### Dr. Petra Schreiber — Chief Information Security Officer (CISO)
 15 Jahre im Unternehmen. Tiefes Vertrauen des Seniors. Geprägt durch einen Sicherheitsvorfall 2019 (Ransomware-Angriff auf die Produktionssteuerung). Betrachtet KI grundsätzlich als Angriffsfläche. Wird keine Initiative absegnen, die nicht vollständig dokumentiert und risikobewertet ist. **Nicht zu unterschätzen:** Ihre Skepsis ist fachlich begründet, nicht nur politisch.
