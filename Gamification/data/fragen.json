@@ -2028,6 +2028,74 @@
           }
         ]
       }
+    },
+    {
+      "id": "L1-09",
+      "schwierigkeit": 2,
+      "paket": 1,
+      "absender": "Innovations-Managerin",
+      "kanal": "E-Mail",
+      "szenario": "Die Innovations-Managerin schreibt Dir: „Wir haben drei parallele Projekte, die alle als „KI-Projekt“ markiert sind: (1) Kunden-Segmentierung aus tabellarischen Bestellhistorien, (2) automatische Qualitätsprüfung von Produktfotos am Fließband, (3) Transkription der Kundenservice-Anrufe. Ein Berater sagt: „Für alles das Gleiche — ein großes Sprachmodell.“ Stimmt das, oder braucht jeder Fall etwas anderes?“",
+      "frage": "Welche Zuordnungen sind fachlich zutreffend? (Mehrfachauswahl)",
+      "optionen": [
+        {
+          "id": "a",
+          "text": "Fall (2), Produktfotos: Klassischer Anwendungsfall für ein Convolutional Neural Network (CNN) — die Standard-Architektur für Bild-Analyse. Modernere Alternative: Vision-Transformer, ebenfalls speziell auf Bilder ausgelegt."
+        },
+        {
+          "id": "b",
+          "text": "Fall (1), tabellarische Bestellhistorien: Standard-Werkzeug ist ein Gradient-Boosted Tree (z. B. XGBoost, LightGBM). Diese Familie schlägt Deep Learning bei tabellarischen Business-Daten in der Praxis meist deutlich — bei weniger Rechenaufwand und besserer Erklärbarkeit."
+        },
+        {
+          "id": "c",
+          "text": "Fall (3), Anruf-Transkription: Aufgabe für ein ASR-System (Automatic Speech Recognition) wie z. B. OpenAIs Whisper. Erst nach der Umwandlung Sprache→Text kommt gegebenenfalls ein Sprachmodell für die weitere Auswertung ins Spiel."
+        },
+        {
+          "id": "d",
+          "text": "Der Berater hat recht: Ein einziges großes Sprachmodell (LLM) ist heute die beste Wahl für alle drei Fälle — Bilder, tabellarische Daten und Anrufe eingeschlossen."
+        }
+      ],
+      "korrekt": [
+        "a",
+        "b",
+        "c"
+      ],
+      "feedback_richtig": "Genau. „KI-Projekt“ ist kein Werkzeug, sondern eine Kategorie. Jeder Datentyp hat eine etablierte Modellfamilie, die besser passt als die reflexartige LLM-Wahl. CNNs sind seit über einem Jahrzehnt Standard für Bilder, Gradient-Boosted Trees dominieren tabellarische Business-Daten (Bank, Versicherung, Handel), ASR-Systeme wandeln Sprache in Text — häufig als Vorstufe zu einem LLM. Die Werkzeugwahl ist eine der wichtigsten Entscheidungen im KI-Projekt.",
+      "feedback_falsch": "Der Berater irrt — sein Rat ist Ausdruck des LLM-Hype-Reflexes, nicht fachlich fundiert. LLMs sind stark bei Sprachverständnis, aber bei Bildern (CNNs/Vision-Transformer sind besser), bei tabellarischen Daten (Gradient-Boosted Trees dominieren die Benchmarks) und bei roher Audio-Transkription (spezialisierte ASR-Systeme sind Standard) sind sie das falsche Werkzeug. Das führt zu höheren Kosten, längeren Projektzeiten und schlechteren Ergebnissen als die etablierten Alternativen.",
+      "glossar": {
+        "begriff": "Modellfamilien: CNN, Gradient-Boosted Tree, ASR",
+        "erklaerung": "Convolutional Neural Network (CNN): Deep-Learning-Architektur, Standard für Bild-Analyse (Klassifikation, Objekterkennung, Segmentierung). Gradient-Boosted Tree: ensemble-basiertes klassisches ML (XGBoost, LightGBM), Champion bei tabellarischen Business-Daten. Automatic Speech Recognition (ASR): Sprache-zu-Text-Systeme (z. B. Whisper), oft Vorstufe zu weiterer NLP-Auswertung. Jede Datenart hat ihre etablierte Werkzeugfamilie — LLMs sind keine Universal-Lösung."
+      },
+      "vertiefung": {
+        "begriff": "Modellfamilien — die richtige Wahl für die richtige Aufgabe",
+        "laien_erklaerung": "Der LLM-Hype der letzten Jahre hat einen unbeabsichtigten Nebeneffekt: Viele Fachbereiche und Berater:innen greifen reflexartig zu Sprachmodellen, auch wenn spezialisierte, oft ältere Werkzeuge deutlich besser wären. Als KI-Managerin lohnt es sich, die drei wichtigsten Alternativ-Familien zu kennen und zu wissen, wann welche passt.\n\nConvolutional Neural Networks (CNNs) sind seit dem AlexNet-Durchbruch 2012 die Standard-Architektur für Bild-Analyse: Klassifikation (welche Katze ist auf dem Bild?), Objekterkennung (wo im Bild ist die Katze?), Segmentierung (welche Pixel gehören zur Katze?). Sie sind speziell darauf getrimmt, räumliche Muster in Bildern zu erkennen — durch „Convolutional Layer“, die kleine Bildausschnitte scannen und daraus Merkmale extrahieren. In den letzten Jahren treten Vision-Transformer als moderne Alternative auf, aber CNNs sind weiterhin die verlässliche, oft ausreichende Wahl.\n\nGradient-Boosted Trees (GBTs) sind der unangefochtene Champion für tabellarische Daten — also alles, was in Zeilen und Spalten steht: Kundendaten, Transaktionen, Bestellhistorien, Sensor-Messreihen, Buchhaltungsdaten. Bekannte Umsetzungen: XGBoost, LightGBM, CatBoost. Der Grund für die Überlegenheit gegenüber Deep Learning bei tabellarischen Daten ist gut untersucht: Baum-basierte Modelle passen strukturell besser zu heterogenen Merkmalen (numerisch, kategorisch, fehlend) und brauchen deutlich weniger Trainingsdaten. In Bank, Versicherung, Handel, Fertigung ist Gradient Boosting die stille Arbeitsbiene hinter vielen produktiven ML-Systemen.\n\nAutomatic Speech Recognition (ASR) — auch Speech-to-Text — wandelt gesprochene Sprache in Text um. Seit OpenAIs Whisper (2022, trainiert auf 680 000 Stunden Audio) sind auch mehrsprachige und robuste Transkriptions-Systeme frei verfügbar. Wichtig: ASR ist kein LLM — es ist ein spezialisiertes Audio-zu-Text-Modell. In einer typischen Anwendungs-Pipeline (Callcenter-Analyse, Interview-Auswertung) kommt ASR zuerst, dann ein LLM für Zusammenfassung, Kategorisierung oder Sentiment.\n\nWarum das für Dich als KI-Managerin wichtig ist: „Was für ein Modell braucht das Problem?“ ist eine der ersten Fragen im KI-Projekt und eine, die häufig falsch beantwortet wird. Der Reflex „Wir nehmen ein LLM“ ist bei Sprach-Aufgaben richtig, bei Bildern, tabellarischen Daten oder Audio-Transkription falsch — und die Fehlwahl kostet Faktor 10 bei Rechenaufwand, macht Erklärbarkeit schwerer und liefert oft schlechtere Ergebnisse. Anbieter, die „KI-Lösung“ verkaufen, ohne zwischen den Modellfamilien zu differenzieren, haben entweder keinen Fach-Anspruch oder ein Vertriebs-Interesse.",
+        "quellen": [
+          {
+            "titel": "Convolutional neural network — Wikipedia (englisch), Standardartikel",
+            "art": "Enzyklopädie-Artikel",
+            "institution": "Wikipedia",
+            "url": "https://en.wikipedia.org/wiki/Convolutional_neural_network"
+          },
+          {
+            "titel": "Gradient boosting — Wikipedia (englisch), Grundlagen von Friedman 1999/2001",
+            "art": "Enzyklopädie-Artikel",
+            "institution": "Wikipedia",
+            "url": "https://en.wikipedia.org/wiki/Gradient_boosting"
+          },
+          {
+            "titel": "LightGBM — Wikipedia (englisch), verbreitete Gradient-Boosting-Umsetzung",
+            "art": "Enzyklopädie-Artikel",
+            "institution": "Wikipedia",
+            "url": "https://en.wikipedia.org/wiki/LightGBM"
+          },
+          {
+            "titel": "Speech recognition — Wikipedia (englisch), Grundlagen ASR",
+            "art": "Enzyklopädie-Artikel",
+            "institution": "Wikipedia",
+            "url": "https://en.wikipedia.org/wiki/Speech_recognition"
+          }
+        ]
+      }
     }
   ]
 }
