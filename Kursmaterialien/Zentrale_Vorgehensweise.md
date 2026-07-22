@@ -203,4 +203,16 @@ Diese Regeln gelten für Hand-Outs, Gamma-Präsentationen, Quizze, Übungsblätt
 
 ---
 
-*Erstellt: 2026-06-22 · Ersetzt: Quellen_Workflow.md · Maintainer: Uli Nord · Dozenten-Assistent: Claude (Anthropic)*
+## 7 · Quiz-Auswertung: Quelle & Score-Definition
+
+Für alle Auswertungen von Teilnehmer-Quizzen (Tagesquizze **und** Tag-17-„Prüfungssimulation"):
+
+- **Einzige verbindliche Quelle:** das Live-Google-Sheet **„KI_Beauftragter_Quiz_Auswertung"**, Reiter „KI-Beauftragter" (bzw. „KI-Manager"). Immer **als XLSX** exportieren (alle Reiter) und **frisch** ziehen — die Stände ändern sich täglich, auch morgens.
+- **Nicht verwenden:** `Auswertung_*.pbix` (statischer, oft veralteter/unvollständiger Stand) und der CSV-Export (liefert nur einen Reiter — Tag 17 fehlt dabei). Beides nur als Notbehelf, nie als Wahrheit.
+- **Score-Definition (deckt sich mit dem Power BI des Dozenten):** **alle Antwortzeilen** werten — richtig / gesamt über sämtliche Antworten, **inklusive Wiederholungen**. Nicht „Erstantwort je Frage", nicht „Letztantwort". Bestehensgrenze **60 %**.
+- **Teilabbrüche kenntlich machen:** Wer weniger als die volle Fragenzahl (Tag 17 = 51) beantwortet hat, wird als unvollständig markiert — sein Prozentwert ist nicht mit einem vollen Durchlauf vergleichbar.
+- **Datenhygiene:** „Anonym"-Einträge und offensichtliche Doppelerfassungen (uneinheitliche Namensschreibung) vor der Auswertung prüfen bzw. ausschließen.
+
+---
+
+*Erstellt: 2026-06-22 · Zuletzt ergänzt: 2026-07-22 (Abschnitt 7) · Ersetzt: Quellen_Workflow.md · Maintainer: Uli Nord · Dozenten-Assistent: Claude (Anthropic)*
