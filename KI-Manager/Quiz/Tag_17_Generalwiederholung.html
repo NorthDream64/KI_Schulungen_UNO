@@ -671,22 +671,22 @@ var QBANK = [
     q: 'Das AIMS nach ISO 42001 verlangt umfassende Nachvollziehbarkeit für alle im Unternehmen eingesetzten KI-Systeme, und du musst dem Auditor die konkreten Umsetzungsmaßnahmen erläutern. Welche Aussage(n) zu Maßnahmen für Nachvollziehbarkeit nach ISO 42001 ist oder sind korrekt?',
     opts: [
       'Versionierung von Trainingsdaten, Code, Modellen und Konfigurationen ermöglicht die Rekonstruktion einzelner Modellstände über den gesamten Lebenszyklus.',
-      'Nachvollziehbarkeit ist ein rein technisches Thema und muss nicht in der organisatorischen Dokumentation des AIMS abgebildet werden.',
-      'Ein einmaliger Modell-Dump zum Zeitpunkt des Go-Live erfüllt die Traceability-Anforderungen der ISO 42001 vollständig und dauerhaft.',
-      'Dokumentation von Trainingsprozessen, Metriken und Entscheidungen im Modelllebenszyklus ist zentraler Bestandteil der Nachvollziehbarkeit nach der Norm.',
+      'Nachvollziehbarkeit ist primär ein technisches Thema und muss nicht in der organisatorischen Dokumentation des AIMS abgebildet werden.',
+      'Ein einmaliger Modell-Dump zum Zeitpunkt des Go-Live erfüllt die Traceability-Anforderungen der ISO 42001.',
+      'Dokumentation von Trainingsprozessen, Metriken und Entscheidungen im Modelllebenszyklus ist zentraler Bestandteil der Nachvollziehbarkeit nach ISO 42001.',
     ],
-    correct: [1, 3],
+    correct: [0, 3],
     exp: 'Versionierung von Trainingsdaten, Code, Modellen und Konfigurationen (z. B. DVC, MLflow, Git) ermöglicht die Rekonstruktion einzelner Modellstände über den gesamten Lebenszyklus — Grundlage für Audit-Konformität nach ISO 42001. Dokumentation von Trainingsprozessen, Metriken und Entscheidungen im Modelllebenszyklus ist zentraler Bestandteil der Nachvollziehbarkeit — sie beantwortet die Frage: wer hat wann warum was entschieden? Nachvollziehbarkeit ist nicht rein technisch: sie muss in der organisatorischen Dokumentation des AIMS verankert sein (Verantwortlichkeiten, Prozesse, Freigaben). Ein einmaliger Modell-Snapshot beim Go-Live erfüllt Traceability nicht — der laufende Nachweis über den Lebenszyklus ist Pflicht.',
     src: 'KIM Tag 8 · ISO 42001 Traceability'
   },
   /* Q36 · Modelltraining & Einsatz · 3r */
   {
     nr: 37, cat: 'Modelltraining & Einsatz',
-    q: 'Im Produktivbetrieb beobachtest du eine schrittweise Verschlechterung der Modell-Performance und musst der IT-Leitung ein tragfähiges Monitoring-Konzept für das KI-System vorschlagen. Welche Aussage(n) zu Bestandteilen und Zielen eines belastbaren Modell-Monitorings ist oder sind korrekt?',
+    q: 'Im Produktivbetrieb beobachtest du eine schrittweise Verschlechterung der Modell-Performance und möchtest der Geschäftsleitung nunmehr ein tragfähiges Monitoring-Konzept für das KI-System vorschlagen. Welche Aussage(n) zu Bestandteilen und Zielen eines belastbaren Modell-Monitorings ist oder sind korrekt?',
     opts: [
-      'Monitoring erfasst technische Metriken (Latenz, Verfügbarkeit) und fachliche Metriken (Vorhersagequalität, Drift-Indikatoren) gleichermaßen strukturiert.',
+      'Monitoring erfasst technische Metriken (Latenz, Verfügbarkeit) und fachliche Metriken (Vorhersagequalität, Drift-Indikatoren) auf strukturierte Weise.',
       'Automatisierte Alerts bei Performance-Einbrüchen oder Data-Drift-Signalen ermöglichen frühzeitige Reaktion und minimieren Auswirkungen im Geschäftsbetrieb.',
-      'Ein reines Monitoring der Systemverfügbarkeit reicht aus, um Modellqualität und Aussagekraft im Produktivbetrieb belastbar sicherzustellen.',
+      'Das Monitoring der Systemverfügbarkeit reicht aus, um Modellqualität und Aussagekraft im Produktivbetrieb belastbar sicherzustellen.',
       'Regelmäßige Überprüfung gegen aktuelle Ground-Truth-Daten liefert die belastbarste Aussage über die tatsächliche Modellqualität im Zeitverlauf.',
     ],
     correct: [0, 1, 3],
@@ -698,12 +698,12 @@ var QBANK = [
     nr: 38, cat: 'Modelltraining & Einsatz',
     q: 'Das Team diskutiert im Vorfeld eines Kreditbewertungsprojekts die Notwendigkeit von Explainable AI (XAI) und du sollst der Fachabteilung Zweck und Grenzen dieses Ansatzes erläutern. Welche Aussage(n) zu Zweck, Nutzen und Grenzen von XAI-Verfahren ist oder sind korrekt?',
     opts: [
+      'XAI garantiert Modell-Transparenz und macht die menschliche Aufsicht über KI-Entscheidungen weitgehend überflüssig.',      
       'XAI-Verfahren machen Modellentscheidungen für Menschen nachvollziehbar und unterstützen damit Vertrauen, Governance und regulatorische Anforderungen.',
       'XAI ist besonders wichtig für Hochrisiko-KI, wo Betroffene ein Recht auf verständliche Begründung individueller Entscheidungen haben können.',
-      'XAI garantiert absolute Modell-Transparenz und macht jegliche menschliche Aufsicht über KI-Entscheidungen vollständig überflüssig.',
       'XAI-Methoden wie Feature Importance oder Attention Maps liefern Näherungen der Modelllogik, keine vollständigen Beweise für die Entscheidungsursache.',
     ],
-    correct: [0, 1, 3],
+    correct: [1, 2, 3],
     exp: 'Explainable AI (XAI) macht Modellentscheidungen für Menschen nachvollziehbar und unterstützt Vertrauen, Governance sowie regulatorische Anforderungen (EU AI Act Art. 13, 14, DSGVO Art. 22). XAI ist besonders wichtig für Hochrisiko-KI: Betroffene haben nach EU AI Act und DSGVO Anspruch auf verständliche Begründung individueller Entscheidungen. XAI-Methoden wie SHAP, LIME, Feature Importance oder Attention Maps liefern Näherungen der Modelllogik — nicht vollständige Beweise: sie zeigen, welche Features die Entscheidung stark beeinflusst haben, nicht warum ursächlich. XAI macht menschliche Aufsicht keinesfalls überflüssig — sie ist ihr Werkzeug, nicht ihr Ersatz; Human Oversight bleibt regulatorisch Pflicht.',
     src: 'KIM Tag 8 · XAI'
   },
@@ -1239,7 +1239,7 @@ var QBANK = [
     opts: [
       'Klare Verantwortlichkeiten, ein steuerndes Gremium und eine verbindliche KI-Policy bilden das strukturelle Grundgerüst einer wirksamen KI-Governance.',
       'Prozesse für Risikoanalyse, Freigabe, Auditierung und Incident-Management sind zentraler Bestandteil einer organisationsweiten Governance im KI-Kontext.',
-      'KI-Governance ist ein reines IT-Thema; die Einbindung von Fachbereichen, Recht und Betriebsrat ist für eine wirksame Governance entbehrlich.',
+      'KI-Governance ist ein IT-Thema; Fachbereiche oder der Betriebsrat sollten nur in Ausnahmefällen in die Governance eingebunden werden.',
       'Kontinuierliches Monitoring von KI-Systemen und deren Wirkung ist Voraussetzung für eine lernende, adaptive Governance-Struktur im Unternehmen.',
     ],
     correct: [0, 1, 3],
