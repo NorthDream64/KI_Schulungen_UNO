@@ -5,10 +5,7 @@
 
 ## Das Unternehmen
 
-**SolidFinanz AG**, Frankfurt am Main  
-Traditioneller Finanzdienstleister · Spezialisierung: Bau- und Autokredite mit langen Laufzeiten  
-Gründung: 1962 · Mitarbeitende: 420 · Bilanzsumme: ca. 3,2 Mrd. EUR  
-Regulierung: BaFin-beaufsichtigt · KWG, MaRisk, DSGVO
+**SolidFinanz AG**, mit Sitz in Frankfurt am Main ist ein traditioneller Finanzdienstleister, spezialisiert auf Immobilien- und Autokredite mit langen Laufzeiten. Das Finanzinstitut wurde 1962 gegründet und hat heute 420 Mitarbeitende in Frankfurt, Luxemburg, Saarbrücken und Guernsey. Die Bilanzsumme beträgt 3,2 Mrd. EUR. Die SolidFinanz AG wird vom BaFin-beaufsichtigt, einschlägige Rechtsvorschriften sind das KWG, MaRisk, DSGVO sowie DORA (Digital Operational Resilience Act) und die bankenaufsichtlichen Anforderungen an die IT (BAIT) - https://www.bundesbank.de/de/aufgaben/finanzaufsicht/einzelaspekte/risikomanagement/bait-dora-598580
 
 **Kerngeschäft:**
 - Baufinanzierungen (10–30 Jahre Laufzeit)
