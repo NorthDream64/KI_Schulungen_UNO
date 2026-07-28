@@ -42,7 +42,7 @@ Berichtslinie direkt an Dr. Hofer. Kein eigenes Budget zum Start. Die Zusammenar
 
 ## 3 · Ausgangslage und Auftrag
 
-**Der Auslöser.** Ein Kreditanalyst hat einen vollständigen Kreditantrag — mit Einkommensnachweisen, Kontoauszügen, Schufa-Auskunft, Klarnamen und Adresse — in die kostenlose Version von ChatGPT eingegeben, um vor einem kurzfristig angesetzten Kundengespräch eine Bonitätszusammenfassung zu erhalten. Der Vorfall wurde intern gemeldet und im Vorstand behandelt. Ergebnis: Dr. Hofer und der Aufsichtsrat haben die Rolle der KI-Manager:in geschaffen — und Dich in diese Rolle berufen.
+**Der Auslöser.** Ein Kreditanalyst hat einen vollständigen Kreditantrag — mit Einkommensnachweisen, Kontoauszügen, Schufa-Auskunft, Klarnamen und Adresse — in die kostenlose Version von ChatGPT eingegeben, um vor einem kurzfristig angesetzten Kundengespräch eine Bonitätszusammenfassung zu erhalten. Der Vorfall wurde intern gemeldet und im Vorstand behandelt. Ergebnis: Dr. Hofer und der Aufsichtsrat haben die Rolle der KI-Manager:in ("Chief AI Officer") geschaffen — und Dich in diese Rolle berufen.
 
 **Dein Auftrag laut Vorstandsbeschluss.** Vier Aufgabenblöcke definieren Deine Verantwortung:
 
