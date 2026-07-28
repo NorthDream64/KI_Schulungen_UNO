@@ -5,14 +5,9 @@
 
 ## Das Unternehmen
 
-**SolidFinanz AG**, mit Sitz in Frankfurt am Main ist ein traditioneller Finanzdienstleister, spezialisiert auf Immobilien- und Autokredite mit langen Laufzeiten. Das Finanzinstitut wurde 1962 gegründet und hat heute 420 Mitarbeitende in Frankfurt, Luxemburg, Saarbrücken und Guernsey. Die Bilanzsumme beträgt 3,2 Mrd. EUR. Die SolidFinanz AG wird vom BaFin-beaufsichtigt, einschlägige Rechtsvorschriften sind das KWG, MaRisk, DSGVO sowie DORA (Digital Operational Resilience Act) und die bankenaufsichtlichen Anforderungen an die IT (BAIT) - https://www.bundesbank.de/de/aufgaben/finanzaufsicht/einzelaspekte/risikomanagement/bait-dora-598580
+**SolidFinanz AG**, mit Sitz in Frankfurt am Main ist ein traditioneller Finanzdienstleister, spezialisiert auf Immobilien- und Autokredite mit langen Laufzeiten. Das Finanzinstitut wurde 1962 gegründet und hat heute 420 Mitarbeitende in Frankfurt, Luxemburg, Saarbrücken und Guernsey. Die Bilanzsumme beträgt 3,2 Mrd. EUR. Die SolidFinanz AG wird vom BaFin-beaufsichtigt, einschlägige Rechtsvorschriften sind das KWG, MaRisk, DSGVO sowie DORA (Digital Operational Resilience Act) und die bankenaufsichtlichen Anforderungen an die IT (BAIT) - https://www.bundesbank.de/de/aufgaben/finanzaufsicht/einzelaspekte/risikomanagement/bait-dora-598580.
 
-**Kerngeschäft:**
-- Baufinanzierungen (10–30 Jahre Laufzeit)
-- Autofinanzierungen (3–7 Jahre Laufzeit)
-- Refinanzierung über Kapitalmarkt und Pfandbriefe
-
-**Strategische Kennzahlen, die täglich entscheidungsrelevant sind:**
+**Wesentlich KPI sind:**
 - Bonitätsbewertung der Kreditnehmer
 - Zinsentwicklung und Kapitalmarktdaten
 - Refinanzierungskosten (Spread zu Bundesanleihen)
@@ -42,28 +37,16 @@ Berichtslinie direkt an Dr. Hofer. Kein eigenes Budget. Formale Zusammenarbeit m
 
 ---
 
-## Die Schatten-KI-Situation
+## Hintergrund
 
-**Was die IT weiß:** Erhöhter ausgehender Traffic zu OpenAI, Anthropic, Grammarly, DeepL, Notion. Keine vollständige Übersicht möglich ohne Purview.
+Ein Kreditanalyst hat einen vollständigen Kreditantrag (inkl. Einkommensnachweise, Kontoauszüge, Schufa-Auskunft, Klarnamen, Adresse) in ChatGPT (kostenlose Version) eingegeben, um eine Bonitätszusammenfassung für ein kurzfristig anberaumtes Kundengespräch zu erstellen. Aufgrund dieses Vorfall wurde u.a. beschlossen, die Position eines "Chief AI Officers" zu schaffen. Diese Rolle hat folgende wesentliche Aufgaben 
 
-**Was bekannt ist durch den Vorfall:** Ein Kreditanalyst hat einen vollständigen Kreditantrag (inkl. Einkommensnachweise, Kontoauszüge, Schufa-Auskunft) in ChatGPT (kostenlose Version) eingegeben, um eine Bonitätszusammenfassung zu erstellen. Der Vorfall wurde intern gemeldet.
+- Sicherstellung der Compliance der SolidFinanz AG mit den aufsichts-rechtlichen Anforderungen sowie der EU AI Act
+- Identifizierung, Bewertung und Steuerung von KI-Initiativen, die der Bank einen nachhaltigen wirtschaftlichen Vorteil verschaffen können
+- Organisatorische und prozessuale Verankerung von KI-Kompetenz im Unternehmen, "AI capability" gegenüber Kundinnen und Kunden (Endverbrauchern) sowie Geldgebern und Lieferanten
+- Aufbau der "AI independence", d.h. weitgehende Unabhängigkeit von externen Beratern, aber auch Rechenzentren (z.B. in der Cloud) und KI-Modellen, die von Dritten manipuliert oder ganz abgeschaltet werden können.
 
-**Was vermutet wird:**
-- Verwendung von KI für Zusammenfassungen von Jahresabschlüssen und Ratings
-- Formulierungshilfen bei Kundenkorrespondenz (möglicherweise mit Kundendaten)
-- Übersetzungen von internationalen Kreditunterlagen (DeepL, Google Translate)
-- Marktanalysen und Zinsprognosen über KI-Tools
-
-**Was noch nicht bekannt ist:** Gesamtumfang, welche Tools genau, welche Daten betroffen.
-
----
-
-## Die zwei Zeitstränge
-
-| Zeitstrang | Aufgabe | Dringlichkeit |
-|---|---|---|
-| **Gegenwart** | Inventur Schatten-KI · Risikobewertung · SWOT · Sofortmaßnahmen | Hoch — BaFin-Risiko |
-| **Zukunft** | Governance-Rahmen für M365 Copilot · KI-Nutzungsrichtlinie · Genehmigungsprozess für neue KI-Tools | Mittel — strategisch |
+Der Vorstand hat außerdem die Vision entwickelt, innerhalb der nächsten 5 Jahre die "intelligenste Bank in unserer Branche" zu werden.
 
 ---
 
@@ -79,27 +62,9 @@ Die SolidFinanz AG unterliegt als BaFin-beaufsichtigtes Institut zusätzlichen A
 
 ---
 
-## Verbindung zur Antragsprüfung (Zeithorizont-Risiko)
-
-Die Antragsprüfung mit KI ist "noch kein Thema" — aber die Weichen werden heute gestellt. Kreditwürdigkeitsprüfung ist **Hochrisiko nach EU AI Act Anhang III Nr. 5b**. Wer heute keine Governance-Strukturen aufbaut, wird morgen unter erheblichem Zeitdruck stehen. Das ist die strategische Begründung für die Arbeit des KI-Beauftragten jetzt.
-
----
-
 ## Best Practices in Finance
 
 SolidFinanz AG orientiert sich bei seiner KI-Strategie an Marktführern wie z.B. der asiatischen Bank DBS (https://www.dbs.com/artificial-intelligence-machine-learning/artificial-intelligence/singapore-fintech-festival-ai-in-banking-finance.html oder https://www.edb.gov.sg/en/business-insights/insights/how-dbs-southeast-asias-largest-bank-is-capturing-the-full-value-of-ai-and-machine-learning-in-singapore.html).
-
----
-
-## Verwendung in der Schulung
-
-| Kontext | Verwendung |
-|---|---|
-| **UC-04a** (Schatten-KI-Inventur) | Technische Blöcke: Was ist KI, wie erkenne ich sie |
-| **UC-04b** (M365 Governance) | Tag 8 (M365-Block), Purview, Sensitivity Labels |
-| **UC-04c** (KI-Nutzungsrichtlinie) | Prompting, Datenschutz beim Prompting |
-| **UC-04d** (Zeithorizont Antragsprüfung) | Hochrisiko-Preview, strategische Governance |
-| **Alle Stufen** | Technische Begleitszenarien für Woche 1–2 |
 
 ---
 *Letzte Aktualisierung: April 2026 — Ulrich Nord / Claude (Anthropic)*
