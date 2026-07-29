@@ -52,6 +52,7 @@
 | https://platform.openai.com/docs | OpenAI API Docs | Technisch | GPT-4, Prompting, Token-Limits, Sicherheitsfilter |
 | https://cset.georgetown.edu/research-area/cyberai/ | CSET (Center for Security and Emergign Technology) | Forschung | USA Cybersecurity |
 | https://ocw.mit.edu/search/?t=Artificial+Intelligence | MIT (Open Course Ware) | Gratis-Videos des MIT zu KI- Themen, z.B. https://ocw.mit.edu/courses/6-s087-foundation-models-and-generative-ai-january-iap-2024/ zu Foundation Models & Generative AI
+| https://watchdogsecurity.io/frameworks/iso-42001 | Wtachdog Security | Übersicht eines Beratungsunternehmens zu ISO 42001
 
 ### 2.2 Large Language Models & Prompting
 | URL | Name | Typ | Schlagwörter |
