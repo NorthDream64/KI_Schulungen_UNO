@@ -42,7 +42,7 @@ Berichtslinie direkt an Dr. Hofer. Kein eigenes Budget zum Start. Die Zusammenar
 
 ## 3 · Ausgangslage und Auftrag
 
-**Der Auslöser.** Ein Kreditanalyst hat einen vollständigen Kreditantrag — mit Einkommensnachweisen, Kontoauszügen, Schufa-Auskunft, Klarnamen und Adresse — in die kostenlose Version von ChatGPT eingegeben, um vor einem kurzfristig angesetzten Kundengespräch eine Bonitätszusammenfassung zu erhalten. Der Vorfall wurde intern gemeldet und im Vorstand behandelt. Ergebnis: Dr. Hofer und der Aufsichtsrat haben die Rolle der KI-Manager:in geschaffen — und Dich in diese Rolle berufen.
+**Der Auslöser.** Ein Kreditanalyst hat einen vollständigen Kreditantrag — mit Einkommensnachweisen, Kontoauszügen, Schufa-Auskunft, Klarnamen und Adresse — in die kostenlose Version von ChatGPT eingegeben, um vor einem kurzfristig angesetzten Kundengespräch eine Bonitätszusammenfassung zu erhalten. Der Vorfall wurde intern gemeldet und im Vorstand behandelt. Ergebnis: Dr. Hofer und der Aufsichtsrat haben die Rolle der KI-Manager:in ("Chief AI Officer") geschaffen — und Dich in diese Rolle berufen.
 
 **Dein Auftrag laut Vorstandsbeschluss.** Vier Aufgabenblöcke definieren Deine Verantwortung:
 
@@ -175,23 +175,11 @@ Strategie · Governance und Compliance · Daten und Infrastruktur · Kompetenzen
 
 Für die Bearbeitung der Aufgaben stehen Dir öffentlich zugängliche Quellen zur Verfügung. Nutze eine gezielte Web-Suche mit den passenden Schlagworten; verwende nicht ungeprüft Links, die Du nicht selbst geöffnet hast.
 
-- **BaFin** — Merkblätter zu Big Data und KI, aufsichtliche Mitteilungen
-- **Bundesbank** — BAIT/DORA-Übersicht (siehe oben verlinkt)
-- **EBA** — Leitlinien zur Kreditvergabe (EBA/GL/2020/06), Bericht Machine Learning im Kredit-Scoring
-- **EU-Kommission** — EU AI Act Volltext, MDCG-/AIB-Leitlinien
-- **ISO** — Standards ISO 42001 (AI Management System), ISO 27001 (Information Security)
-- **Deutsche Bundesbank / EZB** — Publikationen zu digitalen Finanzdienstleistungen
-- **DBS Bank, Deutsche Bank, ING, JPMorgan** — Praxisberichte und Case Studies
-
----
-
-## 9 · Abgabekriterien für Deine Vorstands-Vorlage am Ende der Woche
-
-- **Umfang:** maximal 10 Seiten Unterlage (Fließtext + Tabellen/Grafiken), zusätzlich 4–5 Vortragsfolien für 15 Minuten Redezeit.
-- **Adressat:** Vorstandsvorsitzende Dr. Hofer und die zwei weiteren Vorstände (ohne fachliche KI-Vorkenntnisse).
-- **Ton:** präzise Führungssprache, Aussagen belegt (Quelle oder eigene Analyse), Empfehlungen mit Begründung.
-- **Struktur (Vorschlag):** (a) Ausgangslage und Auftrag, (b) Reifegrad, SWOT, GAP als Zusammenfassung, (c) priorisierte Use Cases, (d) Governance-Grundstruktur (AIMS-Skizze), (e) Ressourcenbedarf und Meilensteine, (f) Business-Case-Beispiel, (g) Risiken und Show-Stopper, (h) Bitte um Beschluss.
-- **Format:** Word- oder PowerPoint-Datei; die Erwartung ist eine Version, die intern versendbar wäre.
+- **BaFin** — Prinzipien für den Einsatz von Algorithmen in Entscheidungsprozessen (<https://www.bafin.de/SharedDocs/Downloads/DE/Aufsichtsrecht/dl_Prinzipienpapier_BDAI.pdf?__blob=publicationFile&v=1>)
+- **Bundesbank** — BAIT/DORA-Übersicht (<https://www.bundesbank.de/de/aufgaben/finanzaufsicht/einzelaspekte/risikomanagement/bait-dora-598580>)
+- **EBA** — Leitlinien zur Kreditvergabe (<https://banktracker.de/wissen/compliance-governance/eba-leitlinien/eba-kreditvergabe>
+- **Deutsche Bundesbank / EZB** — Publikationen zu digitalen Finanzdienstleistungen (<https://publikationen.bundesbank.de/publikationen-de>)
+- **DBS Bank, Deutsche Bank, ING, JPMorgan** — Praxisberichte und Case Studies (z.B. <https://www.aibmag.com/ai-business-case-studies-and-real-world-enterprise-use-cases/jpmorgans-18b-ai-blueprint-transforming-banking-workflows-april-2026>)
 
 ---
 *Letzte Aktualisierung: Juli 2026 — Ulrich Nord*
