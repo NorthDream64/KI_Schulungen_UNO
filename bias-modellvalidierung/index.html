@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lab · Modellvalidierung &amp; Bias — interaktiv</title>
+<style>
+:root{--ink:#1a1a18;--paper:#f8f6f1;--card:#ffffff;--rule:#d5d0c5;--muted:#6b6b60;--accent:#0a4a7a;--teal:#0a6b6b;--green:#2a5c3f;--amber:#7a4a00;--red:#8a2a2a;--blue:#1a3a7a;--purple:#5a3a7a;--phase:#f2f0eb;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'DM Sans',system-ui,sans-serif;background:var(--paper);color:var(--ink);font-size:14px;line-height:1.6;}
+.page{max-width:900px;margin:0 auto;padding:2.2rem 1.6rem 5rem;}
+.head{border-bottom:3px solid var(--ink);padding-bottom:1.1rem;margin-bottom:1.6rem;}
+.eyebrow{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-bottom:.4rem;}
+h1{font-family:'Playfair Display',Georgia,serif;font-size:clamp(1.6rem,4vw,2.2rem);line-height:1.1;}
+h1 em{font-style:italic;color:var(--teal);}
+.lead{margin-top:.6rem;color:var(--muted);font-size:13.5px;max-width:70ch;}
+.sec{background:var(--card);border:1px solid var(--rule);border-radius:10px;padding:1.2rem 1.3rem;margin-bottom:1.3rem;}
+.sec-t{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--rule);padding-bottom:.4rem;margin-bottom:1rem;}
+.sec-t b{color:var(--teal);}
+.ctrl{display:flex;align-items:center;gap:1rem;flex-wrap:wrap;margin-bottom:1rem;}
+.ctrl label{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);}
+input[type=range]{flex:1;min-width:220px;accent-color:var(--teal);}
+.pill{font-family:'DM Mono',monospace;font-size:13px;background:var(--phase);border:1px solid var(--rule);border-radius:100px;padding:3px 12px;min-width:70px;text-align:center;}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:1.1rem;}
+@media(max-width:680px){.grid2{grid-template-columns:1fr;}}
+.cm{display:grid;grid-template-columns:auto 1fr 1fr;gap:5px;font-size:12.5px;}
+.cm .lbl{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.5px;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;justify-content:center;text-align:center;padding:.3rem;}
+.cell{border-radius:8px;padding:.7rem .6rem;text-align:center;color:#fff;}
+.cell .n{font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:700;display:block;}
+.cell .c{font-size:10.5px;opacity:.95;}
+.tp{background:#2a5c3f;}.tn{background:#3a6b8a;}.fp{background:#a06a2a;}.fn{background:#8a2a2a;}
+.metrics{display:flex;gap:.6rem;flex-wrap:wrap;}
+.met{flex:1;min-width:96px;background:var(--phase);border:1px solid var(--rule);border-radius:8px;padding:.6rem .7rem;text-align:center;}
+.met .v{font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:700;color:var(--accent);}
+.met .k{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-top:.1rem;}
+.met .d{font-size:11px;color:var(--muted);margin-top:.25rem;line-height:1.35;}
+.note{font-size:12.5px;color:var(--muted);margin-top:.7rem;line-height:1.5;}
+.bar-row{display:grid;grid-template-columns:80px 1fr 52px;align-items:center;gap:.5rem;margin-bottom:.45rem;font-size:12.5px;}
+.bar-track{background:var(--phase);border:1px solid var(--rule);border-radius:100px;height:16px;overflow:hidden;}
+.bar-fill{height:100%;border-radius:100px;}
+.bf-m{background:var(--blue);}.bf-w{background:var(--purple);}
+.gap{font-family:'DM Mono',monospace;font-weight:700;}
+.gap.bad{color:var(--red);}.gap.ok{color:var(--green);}
+.callout{background:#faf3ea;border:1px solid #e6cfa8;border-left:4px solid var(--amber);border-radius:0 8px 8px 0;padding:.7rem .9rem;font-size:12.5px;margin-top:.7rem;}
+.callout b{color:var(--amber);}
+.verdict{font-family:'DM Mono',monospace;font-size:12px;letter-spacing:1px;text-transform:uppercase;font-weight:700;padding:4px 12px;border-radius:100px;display:inline-block;}
+.v-under{background:#eef3f8;color:var(--blue);border:1px solid var(--blue);}
+.v-good{background:#eaf5ea;color:var(--green);border:1px solid var(--green);}
+.v-over{background:#f8ecec;color:var(--red);border:1px solid var(--red);}
+svg{width:100%;height:auto;display:block;}
+.legend{display:flex;gap:1.2rem;font-size:11.5px;color:var(--muted);margin-top:.4rem;font-family:'DM Mono',monospace;}
+.legend i{display:inline-block;width:14px;height:3px;vertical-align:middle;margin-right:5px;}
+.toggle{display:inline-flex;border:1px solid var(--rule);border-radius:100px;overflow:hidden;font-family:'DM Mono',monospace;font-size:11px;}
+.toggle button{border:none;background:var(--card);padding:4px 12px;cursor:pointer;color:var(--muted);}
+.toggle button.on{background:var(--teal);color:#fff;}
+table.gloss{width:100%;border-collapse:collapse;font-size:12.5px;margin-top:.3rem;}
+table.gloss td{border-bottom:1px solid var(--rule);padding:.45rem .5rem;vertical-align:top;}
+table.gloss tr:last-child td{border-bottom:none;}
+table.gloss td:first-child{font-weight:600;white-space:nowrap;width:150px;}
+.foot{margin-top:1.5rem;font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);border-top:1px solid var(--rule);padding-top:.8rem;}
+.proxybar{margin-bottom:.7rem;}
+.proxybar .h{display:flex;justify-content:space-between;font-size:12.5px;margin-bottom:.2rem;}
+</style>
+</head>
+<body>
+<div class="page">
+
+<div class="head">
+ <div class="eyebrow">KI-Manager:in · Woche 2 · Lab — Modellvalidierung</div>
+ <h1>Wie gut ist ein Modell — <em>und für wen?</em></h1>
+ <p class="lead">Ein Modell wurde auf <strong>echten, aber historisch voreingenommenen</strong> Einstellungsdaten trainiert (synthetisch, alle Zahlen erfunden). Schiebe die Regler und beobachte, wie sich Trefferquoten, Fehler und Fairness verändern. Kein Setup, keine Programmierung — nur Anschauung.</p>
+</div>
+
+<!-- METRIKEN -->
+<div class="sec">
+ <div class="sec-t">1 · Schwellenwert, Konfusionsmatrix &amp; <b>Precision / Recall / F-Wert</b></div>
+ <div class="ctrl">
+  <label>Entscheidungsschwelle</label>
+  <input type="range" id="thr" min="0" max="18" value="9" step="1">
+  <span class="pill" id="thrVal">0.50</span>
+ </div>
+ <p class="note" style="margin-top:0;margin-bottom:.8rem;">Die Schwelle bestimmt, ab welcher „Eignungs‑Wahrscheinlichkeit" das Modell jemanden <strong>empfiehlt</strong>. Niedrige Schwelle = großzügig (mehr Treffer, mehr Fehlalarme). Hohe Schwelle = streng.</p>
+ <div class="grid2">
+  <div>
+   <div class="cm">
+    <div class="lbl"></div><div class="lbl">Modell: empfohlen</div><div class="lbl">Modell: abgelehnt</div>
+    <div class="lbl">wirklich&nbsp;geeignet</div>
+    <div class="cell tp"><span class="n" id="tp">0</span><span class="c">Richtig empfohlen (TP)</span></div>
+    <div class="cell fn"><span class="n" id="fn">0</span><span class="c">Übersehen (FN)</span></div>
+    <div class="lbl">nicht&nbsp;geeignet</div>
+    <div class="cell fp"><span class="n" id="fp">0</span><span class="c">Fehlalarm (FP)</span></div>
+    <div class="cell tn"><span class="n" id="tn">0</span><span class="c">Richtig abgelehnt (TN)</span></div>
+   </div>
+  </div>
+  <div>
+   <div style="display:flex;justify-content:flex-end;margin-bottom:.5rem;">
+    <span class="toggle"><button id="b1" class="on">F1</button><button id="b2">F2</button></span>
+   </div>
+   <div class="metrics">
+    <div class="met"><div class="v" id="mPrec">0</div><div class="k">Precision</div><div class="d">Von den <em>Empfohlenen</em> wirklich geeignet</div></div>
+    <div class="met"><div class="v" id="mRec">0</div><div class="k">Recall</div><div class="d">Von den <em>Geeigneten</em> gefunden</div></div>
+    <div class="met"><div class="v" id="mF">0</div><div class="k" id="mFk">F1</div><div class="d" id="mFd">Balance aus beidem</div></div>
+   </div>
+   <div class="callout" id="tradeoff"></div>
+  </div>
+ </div>
+ <p class="note"><strong>Merksatz fürs Management:</strong> Es gibt kein „genau" — es gibt eine <em>Abwägung</em>. Hoher <strong>Recall</strong> zählt, wenn ein Übersehen teuer ist (Betrug, Krankheit, verpasste Talente). Hohe <strong>Precision</strong> zählt, wenn ein Fehlalarm teuer ist (wichtige Mail im Spam). <strong>F1</strong> gewichtet beides gleich, <strong>F2</strong> gewichtet Recall doppelt.</p>
+</div>
+
+<!-- BIAS -->
+<div class="sec">
+ <div class="sec-t">2 · <b>Bias</b> — dasselbe Modell, zwei Gruppen</div>
+ <p class="note" style="margin-top:0;margin-bottom:.9rem;">Die Regel ist für alle gleich — trotzdem behandelt das Modell Männer und Frauen unterschiedlich, weil es die <strong>Voreingenommenheit der Vergangenheit gelernt</strong> hat. Schiebe oben die Schwelle: Die Lücke bleibt auf jeder Stufe.</p>
+ <div class="grid2">
+  <div>
+   <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:.5rem;">Auswahlrate — wer wird empfohlen?</div>
+   <div class="bar-row"><span>Männer</span><div class="bar-track"><div class="bar-fill bf-m" id="selM"></div></div><span class="pill" id="selMv">0</span></div>
+   <div class="bar-row"><span>Frauen</span><div class="bar-track"><div class="bar-fill bf-w" id="selW"></div></div><span class="pill" id="selWv">0</span></div>
+   <div style="font-size:12px;margin-top:.3rem;">Lücke: <span class="gap bad" id="selGap">0</span></div>
+  </div>
+  <div>
+   <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:.5rem;">Recall — geeignete Personen gefunden?</div>
+   <div class="bar-row"><span>Männer</span><div class="bar-track"><div class="bar-fill bf-m" id="recM"></div></div><span class="pill" id="recMv">0</span></div>
+   <div class="bar-row"><span>Frauen</span><div class="bar-track"><div class="bar-fill bf-w" id="recW"></div></div><span class="pill" id="recWv">0</span></div>
+   <div style="font-size:12px;margin-top:.3rem;">Lücke: <span class="gap bad" id="recGap">0</span></div>
+  </div>
+ </div>
+ <div class="callout"><b>Lies das so:</b> Eine Auswahlraten‑Lücke heißt: gleich geeignete Frauen werden seltener empfohlen. Eine Recall‑Lücke heißt: das Modell übersieht geeignete Frauen häufiger als geeignete Männer. Beides ist messbar — und genau das ist der Punkt: <em>Fairness ist eine Kennzahl, kein Gefühl.</em></div>
+</div>
+
+<!-- PROXY -->
+<div class="sec">
+ <div class="sec-t">3 · <b>Proxy‑Falle</b> — reicht es, „Geschlecht" wegzulassen?</div>
+ <p class="note" style="margin-top:0;margin-bottom:.9rem;">Der naheliegende Reflex: das Merkmal „Geschlecht" einfach entfernen. Wir haben das Modell dreimal trainiert und die Auswahlraten‑Lücke gemessen:</p>
+ <div id="proxyBars"></div>
+ <div class="callout"><b>Die Lehre:</b> „Geschlecht" wegzulassen halbiert die Lücke nur — die <strong>Karrierelücke verrät das Geschlecht weiter</strong> (ein sogenannter Proxy). Erst wenn man auch den Proxy adressiert, verschwindet die Diskriminierung. <em>Fairness durch Wegschauen funktioniert nicht — man muss messen und gezielt gegensteuern.</em></div>
+</div>
+
+<!-- OVERFITTING -->
+<div class="sec">
+ <div class="sec-t">4 · <b>Overfitting vs. Underfitting</b> — auswendig lernen statt verstehen</div>
+ <div class="ctrl">
+  <label>Modell‑Komplexität (Baumtiefe)</label>
+  <input type="range" id="dep" min="0" max="14" value="3" step="1">
+  <span class="pill" id="depVal">4</span>
+  <span class="verdict" id="ofVerdict">—</span>
+ </div>
+ <svg id="ofChart" viewBox="0 0 580 240" role="img" aria-label="Lernkurve"></svg>
+ <div class="legend"><span><i style="background:#8a2a2a"></i>Trainingsdaten (auswendig)</span><span><i style="background:#0a6b6b"></i>neue Daten (Test — was zählt)</span></div>
+ <div class="callout" id="ofText"></div>
+</div>
+
+<!-- GLOSSAR -->
+<div class="sec">
+ <div class="sec-t">5 · Einordnung fürs Management — <b>Black‑Box vs. White‑Box</b></div>
+ <table class="gloss">
+  <tr><td>White‑Box</td><td>Nachvollziehbares Modell (z. B. Entscheidungsbaum, lineare Regression). Man kann die Regel lesen — gut für Erklärpflicht und Audit (ISO/IEC 42001, EU AI Act).</td></tr>
+  <tr><td>Black‑Box</td><td>Sehr leistungsfähig, aber undurchsichtig (tiefe neuronale Netze). Braucht zusätzliche Erklärwerkzeuge und strengeres Monitoring.</td></tr>
+  <tr><td>Model Drift</td><td>Ein einmal gutes Modell verschlechtert sich im Betrieb, weil sich die Welt ändert. Darum: Precision/Recall dauerhaft überwachen, nicht nur beim Start messen.</td></tr>
+  <tr><td>Deine Aufgabe</td><td>Als KI-Manager:in rechnest du diese Werte nicht selbst — du <strong>verlangst</strong> die richtige Kennzahl (Recall? Precision? Fairness je Gruppe?) und hinterfragst sie.</td></tr>
+ </table>
+</div>
+
+<div class="foot">Synthetischer Datensatz (n=2000, Test n=800) · alle Personen und Zahlen erfunden · Kennzahlen mit scikit-learn berechnet · Lab „Modellvalidierung &amp; Bias" · KI-Manager:in</div>
+
+</div>
+
+<script>
+const DATA = {
+ base_rate:0.38,
+ sweep:[
+  {t:0.05,tp:299,fp:341,fn:5,tn:155,precision:0.467,recall:0.984,sel_w:0.74,sel_m:0.861,rec_w:0.984,rec_m:0.983},
+  {t:0.10,tp:293,fp:272,fn:11,tn:224,precision:0.519,recall:0.964,sel_w:0.629,sel_m:0.785,rec_w:0.969,rec_m:0.960},
+  {t:0.15,tp:284,fp:224,fn:20,tn:272,precision:0.559,recall:0.934,sel_w:0.557,sel_m:0.715,rec_w:0.922,rec_m:0.943},
+  {t:0.20,tp:275,fp:192,fn:29,tn:304,precision:0.589,recall:0.905,sel_w:0.507,sel_m:0.662,rec_w:0.875,rec_m:0.926},
+  {t:0.25,tp:266,fp:164,fn:38,tn:332,precision:0.619,recall:0.875,sel_w:0.468,sel_m:0.609,rec_w:0.852,rec_m:0.892},
+  {t:0.30,tp:259,fp:126,fn:45,tn:370,precision:0.673,recall:0.852,sel_w:0.399,sel_m:0.566,rec_w:0.812,rec_m:0.881},
+  {t:0.35,tp:245,fp:107,fn:59,tn:389,precision:0.696,recall:0.806,sel_w:0.366,sel_m:0.515,rec_w:0.766,rec_m:0.835},
+  {t:0.40,tp:230,fp:90,fn:74,tn:406,precision:0.719,recall:0.757,sel_w:0.319,sel_m:0.482,rec_w:0.688,rec_m:0.807},
+  {t:0.45,tp:219,fp:74,fn:85,tn:422,precision:0.747,recall:0.720,sel_w:0.280,sel_m:0.455,rec_w:0.641,rec_m:0.778},
+  {t:0.50,tp:202,fp:62,fn:102,tn:434,precision:0.765,recall:0.664,sel_w:0.250,sel_m:0.412,rec_w:0.586,rec_m:0.722},
+  {t:0.55,tp:191,fp:46,fn:113,tn:450,precision:0.806,recall:0.628,sel_w:0.225,sel_m:0.369,rec_w:0.531,rec_m:0.699},
+  {t:0.60,tp:177,fp:39,fn:127,tn:457,precision:0.819,recall:0.582,sel_w:0.196,sel_m:0.346,rec_w:0.461,rec_m:0.670},
+  {t:0.65,tp:161,fp:32,fn:143,tn:464,precision:0.834,recall:0.530,sel_w:0.173,sel_m:0.311,rec_w:0.414,rec_m:0.614},
+  {t:0.70,tp:144,fp:24,fn:160,tn:472,precision:0.857,recall:0.474,sel_w:0.144,sel_m:0.278,rec_w:0.359,rec_m:0.557},
+  {t:0.75,tp:134,fp:17,fn:170,tn:479,precision:0.887,recall:0.441,sel_w:0.119,sel_m:0.260,rec_w:0.305,rec_m:0.540},
+  {t:0.80,tp:116,fp:10,fn:188,tn:486,precision:0.921,recall:0.382,sel_w:0.092,sel_m:0.225,rec_w:0.258,rec_m:0.472},
+  {t:0.85,tp:92,fp:7,fn:212,tn:489,precision:0.929,recall:0.303,sel_w:0.072,sel_m:0.177,rec_w:0.203,rec_m:0.375},
+  {t:0.90,tp:66,fp:5,fn:238,tn:491,precision:0.930,recall:0.217,sel_w:0.047,sel_m:0.131,rec_w:0.125,rec_m:0.284},
+  {t:0.95,tp:36,fp:1,fn:268,tn:495,precision:0.973,recall:0.118,sel_w:0.020,sel_m:0.073,rec_w:0.055,rec_m:0.165}
+ ],
+ overfit:{depth:[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],
+  train:[0.688,0.782,0.799,0.812,0.846,0.863,0.888,0.915,0.945,0.970,0.987,0.994,0.998,0.998,0.999],
+  test:[0.650,0.760,0.759,0.770,0.767,0.764,0.766,0.736,0.726,0.723,0.725,0.726,0.726,0.730,0.725]},
+ proxy:{mit_geschlecht:[0.162,0.412,0.250],ohne_geschlecht:[0.094,0.374,0.280],ohne_gpluslucke:[-0.018,0.323,0.342]}
+};
+
+let beta = 1;
+const $ = id => document.getElementById(id);
+const pct = x => Math.round(x*100)+'%';
+
+function fbeta(p,r,b){const d=b*b*p+r; return d? (1+b*b)*p*r/d : 0;}
+
+function renderMetrics(){
+ const s = DATA.sweep[+$('thr').value];
+ $('thrVal').textContent = s.t.toFixed(2);
+ $('tp').textContent=s.tp; $('fp').textContent=s.fp; $('fn').textContent=s.fn; $('tn').textContent=s.tn;
+ $('mPrec').textContent=pct(s.precision); $('mRec').textContent=pct(s.recall);
+ const f=fbeta(s.precision,s.recall,beta);
+ $('mF').textContent=pct(f); $('mFk').textContent='F'+beta; $('mFd').textContent = beta===1?'Balance aus beidem':'Recall zählt doppelt';
+ // trade-off text
+ let msg;
+ if(s.recall>=0.9) msg='<b>Sehr großzügig.</b> Fast alle Geeigneten werden gefunden (hoher Recall) — aber viele Fehlalarme (niedrige Precision).';
+ else if(s.precision>=0.9) msg='<b>Sehr streng.</b> Wer empfohlen wird, ist fast sicher geeignet (hohe Precision) — aber viele Geeignete werden übersehen (niedriger Recall).';
+ else msg='<b>Mittlerer Bereich.</b> Precision und Recall halten sich die Waage — welche Seite wichtiger ist, entscheidet der Geschäftsfall, nicht die Technik.';
+ $('tradeoff').innerHTML=msg;
+ // bias
+ $('selM').style.width=pct(s.sel_m); $('selW').style.width=pct(s.sel_w);
+ $('selMv').textContent=pct(s.sel_m); $('selWv').textContent=pct(s.sel_w);
+ $('recM').style.width=pct(s.rec_m); $('recW').style.width=pct(s.rec_w);
+ $('recMv').textContent=pct(s.rec_m); $('recWv').textContent=pct(s.rec_w);
+ const sg=(s.sel_m-s.sel_w), rg=(s.rec_m-s.rec_w);
+ $('selGap').textContent='+'+Math.round(sg*100)+' Pp. zugunsten Männer';
+ $('recGap').textContent='+'+Math.round(rg*100)+' Pp. zugunsten Männer';
+}
+
+function renderProxy(){
+ const rows=[['mit „Geschlecht"','mit_geschlecht'],['ohne „Geschlecht"','ohne_geschlecht'],['ohne „Geschlecht" + Karrierelücke','ohne_gpluslucke']];
+ const maxg=0.17;
+ $('proxyBars').innerHTML = rows.map(([label,key])=>{
+  const g=DATA.proxy[key][0]; const w=Math.min(Math.abs(g)/maxg,1)*100;
+  const bad = Math.abs(g)>=0.05;
+  const col = bad? 'var(--red)':'var(--green)';
+  return `<div class="proxybar"><div class="h"><span>${label}</span><span class="gap ${bad?'bad':'ok'}">Lücke ${g>=0?'+':''}${Math.round(g*100)} Pp.</span></div>
+   <div class="bar-track"><div class="bar-fill" style="width:${w}%;background:${col}"></div></div></div>`;
+ }).join('');
+}
+
+function renderOverfit(){
+ const i=+$('dep').value, d=DATA.overfit.depth[i], tr=DATA.overfit.train[i], te=DATA.overfit.test[i];
+ $('depVal').textContent=d;
+ const gap=tr-te;
+ let cls,txt,label;
+ if(d<=2){cls='v-under';label='Underfitting';txt=`Bei Tiefe ${d} ist das Modell <b>zu einfach</b>: Es trifft schon die Trainingsdaten schlecht (${pct(tr)}) und neue Daten kaum besser (${pct(te)}). Es hat das Muster nicht gelernt.`;}
+ else if(gap<=0.06){cls='v-good';label='Gut generalisiert';txt=`Bei Tiefe ${d} liegen Training (${pct(tr)}) und neue Daten (${pct(te)}) <b>nah beieinander</b>. Das Modell hat das Muster verstanden, statt es auswendig zu lernen — hier ist der „Sweet Spot".`;}
+ else {cls='v-over';label='Overfitting';txt=`Bei Tiefe ${d} kann das Modell die Trainingsdaten fast perfekt (${pct(tr)}), scheitert aber an neuen Daten (${pct(te)}). Es hat <b>auswendig gelernt</b> statt verstanden — die Lücke von ${Math.round(gap*100)} Pp. ist das Warnsignal.`;}
+ const v=$('ofVerdict'); v.className='verdict '+cls; v.textContent=label;
+ $('ofText').innerHTML=txt;
+ drawChart(i);
+}
+
+function drawChart(sel){
+ const W=580,H=240,mL=40,mR=15,mT=15,mB=30, ov=DATA.overfit;
+ const xs=ov.depth, n=xs.length;
+ const x=k=>mL+(W-mL-mR)*(k)/(n-1);
+ const y=v=>mT+(H-mT-mB)*(1-(v-0.6)/(1.0-0.6));
+ const line=arr=>arr.map((v,k)=>`${x(k).toFixed(1)},${y(v).toFixed(1)}`).join(' ');
+ let g='';
+ // y gridlines
+ [0.6,0.7,0.8,0.9,1.0].forEach(v=>{g+=`<line x1="${mL}" y1="${y(v)}" x2="${W-mR}" y2="${y(v)}" stroke="#e5e0d6"/><text x="${mL-6}" y="${y(v)+3}" text-anchor="end" font-size="9" fill="#6b6b60" font-family="monospace">${Math.round(v*100)}%</text>`;});
+ // x labels
+ xs.forEach((d,k)=>{ if(d%2===1||d===xs.length) g+=`<text x="${x(k)}" y="${H-10}" text-anchor="middle" font-size="9" fill="#6b6b60" font-family="monospace">${d}</text>`;});
+ g+=`<text x="${(W)/2}" y="${H-0}" text-anchor="middle" font-size="9" fill="#6b6b60" font-family="monospace">Komplexität (Baumtiefe) →</text>`;
+ // selected marker
+ g+=`<line x1="${x(sel)}" y1="${mT}" x2="${x(sel)}" y2="${H-mB}" stroke="#1a1a18" stroke-dasharray="3 3" opacity="0.5"/>`;
+ // lines
+ g+=`<polyline points="${line(ov.train)}" fill="none" stroke="#8a2a2a" stroke-width="2.5"/>`;
+ g+=`<polyline points="${line(ov.test)}" fill="none" stroke="#0a6b6b" stroke-width="2.5"/>`;
+ // dots at selection
+ g+=`<circle cx="${x(sel)}" cy="${y(ov.train[sel])}" r="4.5" fill="#8a2a2a"/><circle cx="${x(sel)}" cy="${y(ov.test[sel])}" r="4.5" fill="#0a6b6b"/>`;
+ $('ofChart').innerHTML=g;
+}
+
+$('thr').addEventListener('input',renderMetrics);
+$('dep').addEventListener('input',renderOverfit);
+$('b1').addEventListener('click',()=>{beta=1;$('b1').classList.add('on');$('b2').classList.remove('on');renderMetrics();});
+$('b2').addEventListener('click',()=>{beta=2;$('b2').classList.add('on');$('b1').classList.remove('on');renderMetrics();});
+renderMetrics(); renderProxy(); renderOverfit();
+</script>
+</body>
+</html>
