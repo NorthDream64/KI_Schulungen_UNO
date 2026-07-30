@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Lernkontrolle · KI-Manager Tag 3 · Rollenabgrenzung &amp; Anwendungsfallidentifikation</title>
+<title>Lernkontrolle · KI-Manager Tag 3 · Rollen · Use Cases · SMART</title>
 <style>
 :root {
   --ink:#1a1a18;--paper:#f5f2ec;--card:#fff;--rule:#d5d0c5;--muted:#888880;
@@ -115,12 +115,12 @@ a{color:var(--accent);}
 <body>
 
 <header class="site-header">
-  <div class="eyebrow">Alfatraining &middot; KI-Manager:in &middot; Tag 3</div>
-  <h1>Lernkontrolle<br>Rollenabgrenzung &amp; Anwendungsfallidentifikation</h1>
+  <div class="eyebrow">KI-Manager:in &middot; Tag 1</div>
+  <h1>Lernkontrolle<br>Rollen · Use Cases · SMART</h1>
   <div class="header-meta">
-    <span>5 Fragen je Rolle &amp; Stufe</span>
+    <span>5 Fragen je Rolle</span>
     <span>Eine oder mehrere Antworten k&ouml;nnen richtig sein</span>
-    <span>Use Case: SolidFinanz AG &mdash; erster Vorstandsbericht</span>
+    <span>Themenfeld: Rollen · Use-Case-Canvas · SMART · Machbarkeit</span>
   </div>
 </header>
 
@@ -128,7 +128,7 @@ a{color:var(--accent);}
 
 <div id="setup-section">
   <div class="setup-card">
-    <h2>Bitte w&auml;hle deine Rolle und Schwierigkeitsstufe</h2>
+    <h2>Bitte w&auml;hle deine Rolle</h2>
     <div style="margin-bottom:1rem;">
       <span class="field-label">Dein Name (oder Teilnehmer-Nummer)</span>
       <input type="text" id="participant-name" class="setup-input" placeholder="z. B. Teilnehmer-07 oder Vorname">
@@ -142,14 +142,6 @@ a{color:var(--accent);}
         </div>
         <span class="hint-text">W&auml;hle deine Rolle im Unternehmen</span>
       </div>
-      <div>
-        <span class="field-label">Schwierigkeitsstufe</span>
-        <div class="level-btns">
-          <button class="sel-btn" id="btn-level-1" onclick="selectLevel('1')">Anf&auml;nger</button>
-          <button class="sel-btn" id="btn-level-2" onclick="selectLevel('2')">Fortgeschrittene</button>
-        </div>
-        <span class="hint-text">Anf&auml;nger = Konzepte &middot; Fortgeschr. = Szenarien</span>
-      </div>
     </div>
     <button class="btn-start" id="btn-start" onclick="startQuiz()" disabled>Quiz starten &rarr;</button>
   </div>
@@ -159,10 +151,6 @@ a{color:var(--accent);}
   <div class="quiz-header-strip" id="quiz-header-strip"></div>
   <div class="progress-label" id="progress-label"></div>
   <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
-  <div class="scenario-box">
-    <div class="scenario-label">Fallbeispiel &middot; Gilt f&uuml;r alle Fragen</div>
-    <div class="scenario-text" id="scenario-text"></div>
-  </div>
   <div id="questions-container"></div>
   <div class="nav-row" style="margin-top:1.5rem">
     <button class="btn btn-submit btn-full" id="btn-submit" onclick="submitQuiz()" disabled>Auswertung anzeigen &rarr;</button>
@@ -190,303 +178,167 @@ a{color:var(--accent);}
 </main>
 
 <script>
-/* ═══ SZENARIEN ═══════════════════════════════════════════════ */
+/* ═══════════════════════════════════════════════════════════════
+   SZENARIEN
+═══════════════════════════════════════════════════════════════ */
 
 var SCENARIOS = {
-  a: 'Sie sind KI-Manager:in bei der SolidFinanz AG. Dr. Hofer hat Sie beauftragt, die KI-Governance-Rollen zu definieren und drei Use-Case-Ideen zu identifizieren und zu bewerten. Auslöser war ein Shadow-KI-Vorfall in der Kreditabteilung. Die Bank ist BaFin-reguliert und baut gerade ISO 27001 auf.',
-  b: 'Sie leiten als Projektleiter:in ein KI-Pilotprojekt bei der SolidFinanz AG. Ihre Aufgabe ist es, die richtige Use-Case-Wahl zu begründen, den Machbarkeitscheck durchzuführen und das Projekt methodisch sauber aufzusetzen. Sie koordinieren zwischen IT, Fachbereich und Governance.'
+  a: 'Du bist KI-Manager:in bei der SolidFinanz AG. Dr. Hofer hat dich beauftragt, die KI-Governance-Rollen zu definieren und drei Use-Case-Ideen zu identifizieren und zu bewerten. Auslöser war ein Shadow-KI-Vorfall in der Kreditabteilung. Die Bank ist BaFin-reguliert und baut gerade ISO 27001 auf.',
+  b: 'Du leitest als Projektleiter:in ein KI-Pilotprojekt bei der SolidFinanz AG. Deine Aufgabe ist es, die richtige Use-Case-Wahl zu begründen, den Machbarkeitscheck durchzuführen und das Projekt methodisch sauber aufzusetzen. Du koordinierst zwischen IT, Fachbereich und Governance.'
 };
+
+/* ═══════════════════════════════════════════════════════════════
+   FRAGENBANK
+   Frage 1 darf nie 1 richtige Antwort haben
+   a: 3,3,3,3,2  ·  b: 3,2,3,3,2
+═══════════════════════════════════════════════════════════════ */
 
 var QBANK = {
 
-/* ─── KI-Manager:in · Anfänger · 1r,2r,2r,3r,3r ─── */
-a1: [
+/* ─── KI-Manager:in · 5 Fragen · richtige Antworten: 3,3,3,3,2 ─── */
+a: [
   {
-    sc: 'Dr. Hofer fragt im Onboarding-Gespräch, worin sich die Aufgabe der KI-Managerin grundlegend von der des KI-Beauftragten unterscheidet.',
-    q: 'Was ist die primäre Aufgabe der KI-Manager:in im Vergleich zum KI-Beauftragten?',
+    sc: 'Die KI-Managerin erklärt dem Workshop-Team, wie man aus einer vagen Projektidee ein prüfbares Ziel formuliert — bevor der Canvas ausgefüllt wird.',
+    q: 'Welche Aussage(n) zur SMART-Methode in der Zieldefinition für KI-Use-Cases ist oder sind korrekt?',
     opts: [
-      'KI-Manager:in und KI-Beauftragter haben identische Aufgaben — der Unterschied ist nur der Titel',
-      'Der KI-Beauftragte ist für die IT-Infrastruktur zuständig — die KI-Manager:in für die Compliance',
-      'Die KI-Manager:in setzt operativ um und koordiniert KI-Projekte — der KI-Beauftragte prüft, ob die Umsetzung mit den Regularien compliant und ethisch korrekt ist',
-      'Die KI-Manager:in prüft unabhängig, ob KI-Systeme korrekt eingesetzt werden'
+      'SMART steht für Specific, Measurable, Achievable, Relevant, Time-bound — ein vages Ziel wie „wir wollen schneller werden“ wird damit zu einer prüfbaren Anforderung',
+      'Das „A“ im Original von George T. Doran (1981) stand für Assignable — jedes Ziel braucht eine klar benannte verantwortliche Person',
+      'Die SMART-Methode ist nur für technische Anforderungen geeignet, nicht für strategische oder organisatorische KI-Ziele',
+      'Ein SMART-konformes Ziel für UC-A könnte lauten: „Die durchschnittliche Kreditentscheidungszeit von drei Tagen auf unter vier Stunden senken — bis Ende Q3, gemessen an 1.000 Kreditanträgen pro Monat“'
     ],
-    correct: [2],
-    exp: 'Die KI-Manager:in setzt operativ um (Macher) — der KI-Beauftragte überwacht und sichert Compliance (Wächter). Beide Rollen sind komplementär. Die KI-Manager:in ist nicht für Prüfung zuständig — das ist Aufgabe des KI-Beauftragten.',
-    src: 'ISO/IEC 42001:2023, Kl. 5.3 (Rollen & Verantwortlichkeiten) · iso.org/standard/81230.html · EU AI Act Art. 3 Nr. 8 (Betreiber) · eur-lex.europa.eu/legal-content/EN/TXT/?uri=OJ:L_202401689'
+    correct: [0, 1, 3],
+    exp: 'SMART macht aus vagen Absichten prüfbare Anforderungen. Das Original von Doran (Management Review, 1981) verwendete „Assignable“ statt „Achievable“ — ein Hinweis, dass jedes Ziel einen klaren Eigentümer braucht. SMART ist universell einsetzbar: für technische Anforderungen ebenso wie für strategische Ziele. Das Beispielziel für UC-A erfüllt alle fünf Kriterien: Spezifisch (Kreditentscheidungszeit), Messbar (Ticketsystem, 1.000 Anträge), Erreichbar (realistischer Q3-Horizont), Relevant (BaFin-Compliance + Effizienz), Terminiert (Ende Q3).',
+    src: 'Doran (1981) — „There’s a S.M.A.R.T. way…“, Management Review · UC Davis — Think SMART when writing objectives · ucop.edu'
   },
   {
-    sc: 'Die KI-Managerin stellt dem Vorstand der SolidFinanz AG die drei KI-Governance-Rollen vor und grenzt sie voneinander ab.',
-    q: 'Welche Aussagen zur Rollenabgrenzung der drei KI-Governance-Rollen sind korrekt?',
+    sc: 'Im Team-Workshop erklärst du, wie das Use-Case-Canvas als strukturiertes Arbeitswerkzeug eingesetzt wird.',
+    q: 'Welche Aussage(n) zum Use-Case-Canvas als Arbeitswerkzeug ist oder sind korrekt?',
     opts: [
-      'Die KI-Manager:in gehört zur 2. Linie of Defense — sie koordiniert Governance-Regeln und eskaliert Risiken',
-      'Der KI-Auditor:in gehört zur 3. Linie of Defense — er prüft unabhängig, ob 1. und 2. Linie funktionieren',
-      'KI-Auditor:in und KI-Manager:in können in Personalunion besetzt werden, wenn die Person unabhängig agiert',
-      'Fachbereiche, die KI-Systeme nutzen, gehören zur 1. Linie of Defense'
+      'Feld ① (Prozess) muss den IST-Zustand ehrlich beschreiben — nicht den Wunsch-Zustand oder den SOLL-Zustand',
+      'Feld ⑨ (Akzeptanz) muss messbare Erfolgskriterien enthalten, z. B. konkrete KPIs mit Zeithorizont und Stichprobengröße',
+      'Der Canvas ist ein einmaliges Dokument: Einmal erstellt, wird er nicht mehr verändert',
+      'Feld ⑦ (Stakeholder) schließt alle Betroffenen ein — interne wie externe, z. B. auch Kunden oder Lieferanten'
     ],
-    correct: [0,1],
-    exp: '1. Linie = operative Ausführung (Fachbereiche). 2. Linie = Governance (KI-Manager:in, KI-BA, DSB). 3. Linie = unabhängige Prüfung (KI-Auditor:in). Die Personalunion KI-Auditor:in + KI-Manager:in ist nicht möglich — Auditor:in darf nie eigene Arbeit prüfen.',
-    src: 'ISO/IEC 42001:2023 · iso.org/standard/81230.html · IIA – Three Lines Model (2020) · theiia.org/en/standards/the-iia-three-lines-model/'
+    correct: [0, 1, 3],
+    exp: 'Feld ① beschreibt den IST-Prozess ehrlich und vollständig — nicht geschönt oder als Zielzustand. Feld ⑨ braucht messbare Kriterien: KPI + Datum + Stichprobengröße. Der Canvas ist ein lebendes Dokument: Er wird bei neuen Erkenntnissen aktualisiert, nicht eingefroren. Feld ⑦ schließt alle Betroffenen ein — auch externe wie Kreditnehmer, Lieferanten oder Aufsichtsbehörden.',
+    src: 'EU AI Act Art. 9 · eur-lex.europa.eu/legal-content/EN/TXT/?uri=OJ:L_202401689 · GPM – KI in der Projektwirtschaft (2024) · gpm-ipma.de'
   },
   {
-    sc: 'Die KI-Managerin nutzt die Impact/Effort-Matrix, um drei Use-Case-Ideen zu priorisieren und dem Vorstand eine Empfehlung zu geben.',
-    q: 'SolidFinanz plant drei KI-Projekte. Welche Zuordnung zur Impact/Effort-Matrix ist korrekt?',
-    opts: [
-      'Kredit-Scoring (UC-A): Hoher Impact (Kerngeschäft, BaFin-relevant) — mittlerer Effort (bestehende Datenbasis) → Strategisches Projekt',
-      'Support-Chatbot (UC-C): Mittlerer Impact (intern) — niedriger Effort (kein Hochrisiko) → Quick Win oder Experiment',
-      'Betrugserkennung (UC-B): Niedriger Impact — hoher Effort → sofort umsetzen',
-      'Kredit-Scoring: Niedriger Impact — niedriger Effort → sofort umsetzen ohne Prüfung'
-    ],
-    correct: [0,1],
-    exp: 'Kredit-Scoring: hoch/mittel → Strategisches Projekt. Chatbot: mittel/niedrig → Quick Win. Betrugserkennung: hoch/hoch → Strategisches Projekt nach UC-A, nicht sofort. Kredit-Scoring hat hohen Impact wegen BaFin-Relevanz und Kerngeschäft.',
-    src: 'PMI – Business Analysis Standard · pmi.org/pmbok-guide-standards/foundational/business-analysis · HBR – Decision Making · hbr.org/topic/subject/decision-making-and-problem-solving'
-  },
-  {
-    sc: 'Im Team-Workshop erklärt die KI-Managerin, wie das Use-Case-Canvas als strukturiertes Arbeitswerkzeug eingesetzt wird.',
-    q: 'Welche Aussagen zum Use-Case-Canvas als Arbeitswerkzeug sind korrekt?',
-    opts: [
-      'Feld ① (Prozess) muss den IST-Zustand beschreiben — nicht den Wunsch-Zustand oder den SOLL-Zustand',
-      'Feld ⑨ (Akzeptanz) muss messbare Erfolgskriterien enthalten, z. B. konkrete KPIs mit Zeithorizont',
-      'Der Canvas ist ein einmaliges Dokument, das zu Projektbeginn erstellt und danach nicht mehr verändert wird',
-      'Feld ⑦ (Stakeholder) nennt nur interne Beteiligte — externe Betroffene wie Kunden sind separat zu dokumentieren'
-    ],
-    correct: [0,1,3],
-    exp: 'Feld ① beschreibt den IST-Prozess (ehrlich, nicht geschönt). Feld ⑨ braucht messbare Kriterien (KPI + Datum + Stichprobe). Der Canvas ist ein lebendes Dokument. Feld ⑦ schließt alle Betroffenen ein — auch externe wie Kreditnehmer.',
-    src: 'EU AI Act Art. 9 (Risikomanagement) · eur-lex.europa.eu/legal-content/EN/TXT/?uri=OJ:L_202401689 · GPM – KI in der Projektwirtschaft (2024) · gpm-ipma.de'
-  },
-  {
-    sc: 'Die KI-Managerin bewertet, ob der Use Case Kredit-Scoring (UC-A) bei der SolidFinanz AG technisch und regulatorisch machbar ist.',
-    q: 'Welche Aussagen zum Machbarkeitscheck für den Use Case Kredit-Scoring (UC-A) bei SolidFinanz sind korrekt?',
-    opts: [
-      'Eine rote Flagge im Machbarkeitscheck bedeutet nicht automatisch Projektstopp — sie erfordert einen Mitigationsplan',
-      'Kredit-Scoring fällt unter EU AI Act Anhang III Nr. 5b (Hochrisiko-KI) — eine Konformitätsbewertung ist vor Go-Live Pflicht',
-      'Die Dimension Compliance spielt beim Machbarkeitscheck keine Rolle, da sie erst bei Go-Live relevant wird',
-      'Wenn die Datenverfügbarkeit unklar ist, sollte das Projekt sofort gestoppt werden'
-    ],
-    correct: [0,1,2],
-    exp: 'Ein Veto ist kein Stopp-Signal — es fordert einen Mitigationsplan. Kredit-Scoring ist definitiv Hochrisiko-KI (Anhang III Nr. 5b). FALSCH: Compliance ist von Tag 1 an relevant, nicht erst bei Go-Live. Bei unklarer Datenverfügbarkeit: prüfen und Mitigationsplan erstellen, nicht sofort stoppen.',
-    src: 'EU AI Act Anhang III Nr. 5b + Art. 9 · artificialintelligenceact.eu/annex/3/ · ISO/IEC 42001:2023, Kl. 8.4 · iso.org/standard/81230.html'
-  }
-],
-
-/* ─── KI-Manager:in · Fortgeschrittene · 2r,1r,3r,2r,3r ─── */
-a2: [
-  {
-    sc: 'Dr. Hofer schlägt vor, dass CISO Kern zusätzlich die Rolle des KI-Beauftragten übernimmt. Die KI-Managerin bewertet diesen Vorschlag.',
-    q: 'Bei SolidFinanz soll CISO Kern auch die Rolle des KI-Beauftragten übernehmen. Welche Aussagen zu dieser Kombination sind korrekt?',
-    opts: [
-      'Die Kombination ist strukturell problematisch: Kern verantwortet IT-Sicherheitsmaßnahmen, die der KI-Beauftragte unabhängig prüfen müsste',
-      'Die Kombination ist zulässig und empfehlenswert, da CISO und KI-Beauftragter denselben Fokus auf Risikominimierung haben',
-      'In kleinen Organisationen kann die Kombination akzeptiert werden, wenn ein Interessenkonflikt-Management dokumentiert ist',
-      'Die Kombination ist nach ISO 42001 ausdrücklich verboten'
-    ],
-    correct: [0,2],
-    exp: 'Der Interessenkonflikt ist strukturell: Kern verantwortet Sicherheitsmaßnahmen — der KI-Beauftragte soll diese prüfen. ISO 42001 verbietet Personalunion nicht explizit, fordert aber Unabhängigkeit. In kleinen Organisationen ist ein dokumentierter Kompromiss möglich. Kein absolutes Verbot.',
-    src: 'EU AI Act Art. 26 Abs. 10 (Betreiberpflichten) · eur-lex.europa.eu/legal-content/EN/TXT/?uri=OJ:L_202401689 · ISO/IEC 42001:2023, Kl. 5.3 · iso.org/standard/81230.html'
-  },
-  {
-    sc: 'Dr. Hofer fragt die KI-Managerin, wie ihre Rolle organisatorisch am sinnvollsten in der Bankstruktur verankert werden soll.',
-    q: 'Welches Einbindungsmodell für die KI-Manager:in ist für SolidFinanz am sinnvollsten?',
-    opts: [
-      'Stabsstelle direkt bei Dr. Hofer: maximale Unabhängigkeit, direkte GF-Anbindung, kann CISO/DSB/Fachbereich koordinieren ohne Weisungsgebundenheit',
-      'Linienfunktion unter dem CISO: direkter Infrastrukturzugang, enge Abstimmung bei Sicherheitsfragen',
-      'Linienfunktion unter dem CFO: enge Verbindung zu finanziellen Risiken',
-      'Matrix-Funktion ohne feste Zuordnung: maximale Flexibilität'
-    ],
-    correct: [0],
-    exp: 'Stabsstelle bei Dr. Hofer ist für eine BaFin-regulierte Bank mit regulatorischem Druck die stärkste Variante: Unabhängigkeit von IT und Fachbereich, direkte Eskalationsmöglichkeit, Sichtbarkeit beim Vorstand. Linienfunktionen schränken Unabhängigkeit ein; Matrix ohne Weisungsbefugnis ist oft wirkungslos.',
-    src: 'ISO/IEC 42001:2023, Kl. 5.1+5.3 · iso.org/standard/81230.html · EU AI Act Art. 26 (Betreiberpflichten) · eur-lex.europa.eu/legal-content/EN/TXT/?uri=OJ:L_202401689'
-  },
-  {
-    sc: 'Im Workshop-Debriefing bespricht die KI-Managerin mit dem Team, welche Fehler beim Ausfüllen des Use-Case-Canvas am häufigsten passieren.',
-    q: 'Welche Aussagen zu den häufigsten Fehlern beim Ausfüllen des Use-Case-Canvas sind korrekt?',
-    opts: [
-      'Feld ① (Prozess) wird oft verschönert statt ehrlich beschrieben — der IST-Zustand sollte Schwächen zeigen dürfen',
-      'Feld ⑨ (Akzeptanz) bleibt häufig vage: „Das System soll gut laufen" ist kein Akzeptanzkriterium',
-      'Feld ⑦ (Stakeholder) sollte ausschließlich interne Stakeholder enthalten, da externe keine Projektmacht haben',
-      'Der Canvas kann iterativ aktualisiert werden, wenn neue Informationen vorliegen — z. B. bei Datenzugang-Problemen oder Scope-Änderungen'
-    ],
-    correct: [0,1],
-    exp: 'IST-Prozess muss ehrlich sein (Fehler ①). Akzeptanzkriterien müssen messbar sein — „soll gut laufen" ist kein Kriterium (Fehler ⑨). Feld ⑦ schließt externe Stakeholder wie Kreditnehmer und Aufsichtsbehörden ausdrücklich ein. Der Canvas ist ein lebendes Dokument — Anpassungen sind erwünscht.',
-    src: 'PMI – Business Analysis Standard · pmi.org/pmbok-guide-standards/foundational/business-analysis · GPM – KI in der Projektwirtschaft (2024) · gpm-ipma.de'
-  },
-  {
-    sc: 'Die KI-Managerin erklärt dem Projektteam die Stärken und Grenzen der Impact/Effort-Matrix als Priorisierungswerkzeug.',
-    q: 'Welche Aussagen zur Impact/Effort-Matrix als Priorisierungswerkzeug sind korrekt?',
+    sc: 'Du erklärst dem Projektteam die Stärken und Grenzen der Impact/Effort-Matrix als Priorisierungswerkzeug.',
+    q: 'Welche Aussage(n) zur Impact/Effort-Matrix als Priorisierungswerkzeug ist oder sind korrekt?',
     opts: [
       'Quick Wins (hoher Impact, niedriger Effort) sollten sofort gestartet werden — sie schaffen politisches Momentum und Vertrauensaufbau',
       'Die Matrix gibt eine bindende Entscheidung vor — ein Use Case in Q3 (Sackgasse) darf nicht weiterverfolgt werden',
       'Strategische Projekte (hoher Impact, hoher Effort) erfordern sorgfältige Planung, nicht sofortigen Start',
       'Der Support-Chatbot (UC-C) bei SolidFinanz eignet sich als Quick Win, weil er kein Hochrisiko-KI-System ist'
     ],
-    correct: [0,2,3],
-    exp: 'Quick Wins sofort starten: Vertrauen aufbauen, Momentum schaffen ✓. Die Matrix ist kein Befehl — sie ist eine Empfehlung. Auch Q3-Projekte können aus strategischen Gründen weiterverfolgt werden. Strategische Projekte brauchen Planung, keine sofortige Umsetzung ✓. UC-C als Quick Win: kein Hochrisiko, niedrige Kosten, schnelle Umsetzung ✓.',
-    src: 'PMI PMBOK® Guide, 7. Aufl. · pmi.org/pmbok-guide-standards · HBR – Prioritization · hbr.org/topic/subject/decision-making-and-problem-solving'
+    correct: [0, 2, 3],
+    exp: 'Quick Wins sofort starten: Vertrauen aufbauen, Momentum schaffen ✓. Die Matrix ist kein Befehl — sie ist eine Empfehlung. Auch Q3-Projekte können aus strategischen Gründen weiterverfolgt werden. Strategische Projekte brauchen Planung, keinen sofortigen Start ✓. UC-C als Quick Win: kein Hochrisiko, niedrige Kosten, schnelle Umsetzung ✓.',
+    src: 'PMI PMBOK® Guide, 7. Aufl. · pmi.org/pmbok-guide-standards · HBR – Prioritization · hbr.org/topic/subject/decision-making-and-problem-solving'
   },
   {
-    sc: 'Vor dem Projektstart für UC-A prüft die KI-Managerin, ob die interne Datenlage bei SolidFinanz für ein Kredit-Scoring-Modell ausreicht.',
-    q: 'Welche Aussagen zur Datenverfügbarkeit als Voraussetzung für KI-Projekte sind korrekt?',
+    sc: 'Vor dem Projektauftrag für UC-A führst du den strukturierten Machbarkeitscheck durch — nach vier Dimensionen.',
+    q: 'Welche Aussage(n) zum Machbarkeitscheck (vier Dimensionen) vor einem KI-Projekt ist oder sind korrekt?',
     opts: [
-      'Datenverfügbarkeit hat drei Dimensionen: technische Verfügbarkeit, Datenqualität und rechtliche Nutzbarkeit',
-      'Historische Kreditentscheidungsdaten können Bias enthalten, da sie vergangene Diskriminierungsmuster widerspiegeln',
-      'Wenn Daten rechtlich nicht nutzbar sind, muss das Projekt immer gestoppt werden',
-      'Bei SolidFinanz UC-A sind die Kredithistorie-Daten technisch vorhanden, aber 3 Jahre alt — eine Qualitätsprüfung ist nötig'
+      'Daten-Dimension: Es reicht nicht, dass Daten vorhanden sind — sie müssen in ausreichender Menge, Qualität und rechtlicher Nutzbarkeit vorliegen',
+      'Infrastruktur-Dimension: Die technische Bereitschaft umfasst Rechenkapazität, Integration der Umsysteme und eine funktionierende MLOps-Pipeline (Machine-Learning-Operations)',
+      'Kompetenz-Dimension: Wenn das interne Team die nötigen Fähigkeiten nicht hat, ist der Use Case abzulehnen — externe Partner sind im Machbarkeitscheck nicht zulässig',
+      'Compliance-Dimension: Bekannte regulatorische Hürden (EU AI Act, DSGVO, Betriebsratsrechte) werden im Machbarkeitscheck identifiziert und an die KI-Beauftragte:r übergeben'
     ],
-    correct: [0,1,3],
-    exp: 'Drei Dimensionen: technisch, qualitativ, rechtlich ✓. Historical Bias ist ein reales Risiko bei Kreditdaten ✓. Rechtlich nicht nutzbare Daten erfordern Mitigationsmaßnahmen (z.B. Anonymisierung, neue Rechtsgrundlage) — kein automatischer Projektstopp. UC-A Daten: vorhanden aber veraltet ✓.',
-    src: 'EU AI Act Art. 10 (Anforderungen an Trainingsdaten) · eur-lex.europa.eu/legal-content/EN/TXT/?uri=OJ:L_202401689 · ISO/IEC 42001:2023, Kl. 8.4 · iso.org/standard/81230.html'
+    correct: [0, 1, 3],
+    exp: 'Alle vier Dimensionen müssen vor Projektauftrag geprüft sein: (1) Daten — Existenz reicht nicht; Menge, Qualität und Nutzungsrecht müssen stimmen. (2) Infrastruktur — Rechenkapazität, API-Integration, MLOps-Pipeline. (3) Kompetenz — externe Partner sind ausdrücklich erlaubt; entscheidend ist, wer nach dem Go-Live das System betreibt und wartet. (4) Compliance — Regulatorik, DSGVO, Betriebsratsrechte werden identifiziert und an die KI-Beauftragte:r übergeben.',
+    src: 'KI-Manager Tag 3 Hand-Out · ISO/IEC 42001:2023, Kl. 8 · EU AI Act Art. 9'
+  },
+  {
+    sc: 'Du stellst dem Vorstand der SolidFinanz AG die drei KI-Governance-Rollen vor und grenzt sie voneinander ab.',
+    q: 'Welche Aussage(n) zur Rollenabgrenzung der drei KI-Governance-Rollen ist oder sind korrekt?',
+    opts: [
+      'Die KI-Manager:in gehört zur 2. Linie of Defense — sie koordiniert Governance-Regeln und eskaliert Risiken',
+      'Der KI-Auditor:in gehört zur 3. Linie of Defense — er prüft unabhängig, ob 1. und 2. Linie funktionieren',
+      'KI-Auditor:in und KI-Manager:in können in Personalunion besetzt werden, wenn die Person unabhängig agiert',
+      'Fachbereiche, die KI-Systeme nutzen, gehören zur 1. Linie of Defense'
+    ],
+    correct: [0, 1],
+    exp: '1. Linie = operative Ausführung (Fachbereiche). 2. Linie = Governance (KI-Manager:in, KI-Beauftragte:r, DSB). 3. Linie = unabhängige Prüfung (KI-Auditor:in). Die Personalunion KI-Auditor:in + KI-Manager:in ist strukturell ausgeschlossen — Auditor:innen dürfen nie eigene Arbeit prüfen.',
+    src: 'ISO/IEC 42001:2023, Kl. 5.3 · iso.org/standard/81230.html · IIA – Three Lines Model (2020) · theiia.org/en/standards/the-iia-three-lines-model/'
   }
 ],
 
-/* ─── Projektleiter:in · Anfänger · 2r,3r,1r,2r,3r ─── */
-b1: [
+/* ─── Projektleiter:in · 5 Fragen · richtige Antworten: 3,2,3,3,2 ─── */
+b: [
   {
-    sc: 'Als Projektleiter:in des UC-A-Piloten klärt er im Kick-off-Gespräch mit der KI-Managerin die Rollenverteilung im Projekt.',
-    q: 'Als Projektleiter:in des UC-A-Projekts bei SolidFinanz: Welche Aussagen zur Rollenabgrenzung in Ihrem Projekt sind korrekt?',
+    sc: 'Du sollst für UC-A das Projektziel SMART formulieren, bevor der Canvas fertiggestellt wird.',
+    q: 'Welche Aussage(n) zur SMART-Zieldefinition für Canvas-Feld ① des Kredit-Scoring-Projekts (UC-A) ist oder sind korrekt?',
     opts: [
-      'Sie sind in der 1. Linie: Sie nutzen KI-Systeme operativ und melden Risiken an die KI-Manager:in',
-      'Die KI-Manager:in koordiniert das Projekt und ist in der 2. Linie for Defense verantwortlich',
-      'Als Projektleiter:in haben Sie dieselbe Rolle wie die KI-Beauftragte — beide prüfen Compliance',
-      'Der KI-Auditor:in kann Sie als Projektleiter:in vertreten, wenn Sie verhindert sind'
+      'Ein SMART-konformes Ziel für UC-A könnte lauten: „Die Kreditentscheidungszeit von durchschnittlich 3 Tagen auf unter 4 Stunden senken — bis Ende Q3, gemessen an 1.000 Kreditanträgen pro Monat“',
+      '„Das Kredit-Scoring soll besser werden“ ist ein ausreichendes SMART-Ziel, weil das Kredit-Scoring-System klar definiert ist',
+      'Das „M“ (Measurable) ist bei UC-A besonders kritisch: Ohne definierte Messgröße lässt sich der Projekterfolg nicht prüfen — und das Budget nicht rechtfertigen',
+      'Das „T“ (Time-bound) schützt das Projekt vor schleichendem Scope-Creep — ein Termin zwingt zur Priorisierung der wichtigsten Features'
     ],
-    correct: [0,1],
-    exp: 'Projektleiter:innen operieren in der 1. Linie — sie führen aus und melden. KI-Manager:in ist 2. Linie — sie koordiniert Governance. Projektleiter:in und KI-Beauftragter haben völlig verschiedene Rollen. KI-Auditor:in prüft unabhängig — er vertritt keine operative Rolle.',
-    src: 'ISO/IEC 42001:2023, Kl. 5.3 · iso.org/standard/81230.html · PMI PMBOK® Guide · pmi.org/pmbok-guide-standards'
+    correct: [0, 2, 3],
+    exp: 'Das SMART-Beispielziel für UC-A erfüllt alle fünf Kriterien: Spezifisch (Kreditentscheidungszeit), Messbar (1.000 Anträge, Ticketsystem), Erreichbar (realistisch in Q3), Relevant (BaFin-Compliance + Effizienz), Terminiert (Ende Q3). „Soll besser werden“ verletzt „Specific“ und „Measurable“ gleichzeitig — kein prüfbares Erfolgskriterium. Messbarkeit (M) ist bei regulierten KI-Systemen besonders kritisch, weil Aufsichtsbehörden Nachweise verlangen. Terminierung (T) ist ein Schutzmechanismus gegen unkontrollierten Scope-Creep.',
+    src: 'Doran (1981) — „There’s a S.M.A.R.T. way…“, Management Review · KI-Manager Tag 3 Hand-Out'
   },
   {
-    sc: 'Der Projektleiter erstellt den ersten Use-Case-Canvas für das Kredit-Scoring-Projekt UC-A bei der SolidFinanz AG.',
-    q: 'Für UC-A sollen Sie einen Use-Case-Canvas erstellen. Welche Aussagen zu den Canvas-Feldern sind korrekt?',
+    sc: 'Du erstellst den ersten Use-Case-Canvas für das Kredit-Scoring-Projekt UC-A bei der SolidFinanz AG.',
+    q: 'Welche Aussage(n) zu den Canvas-Feldern für UC-A ist oder sind korrekt?',
     opts: [
       'Feld ① (Prozess): Beschreibt den IST-Prozess der Kreditprüfung bei SolidFinanz — nicht den zukünftigen KI-gestützten Prozess',
       'Feld ③ (KI-Typ): Kredit-Scoring ist Supervised Learning (Classification) — das Modell lernt aus historischen Kreditentscheidungen',
-      'Feld ⑨ (Akzeptanz): „Das System soll besser sein als heute" ist ein ausreichendes Akzeptanzkriterium',
+      'Feld ⑨ (Akzeptanz): „Das System soll besser sein als heute“ ist ein ausreichendes Akzeptanzkriterium',
       'Feld ⑥ (Risiken): Sollte nur technische Risiken enthalten, da regulatorische Risiken separat dokumentiert werden'
     ],
-    correct: [0,1],
-    exp: 'Feld ① = IST-Beschreibung (ehrlich) ✓. Feld ③ = Supervised Learning ist korrekt für Kredit-Scoring ✓. Feld ⑨: „besser als heute" ist kein messbares Kriterium — konkrete KPIs mit Datum sind Pflicht. Feld ⑥ enthält ALLE Risiken: technisch, regulatorisch, ethisch.',
-    src: 'EU AI Act Art. 9 + Art. 10 (Risikomanagement & Daten) · eur-lex.europa.eu/legal-content/EN/TXT/?uri=OJ:L_202401689 · GPM – KI in der Projektwirtschaft (2024) · gpm-ipma.de'
+    correct: [0, 1],
+    exp: 'Feld ① = IST-Beschreibung (ehrlich, nicht geschönt) ✓. Feld ③ = Supervised Learning (Classification) ist korrekt für Kredit-Scoring ✓. Feld ⑨: „besser als heute“ ist kein messbares Kriterium — konkrete KPIs mit Datum sind Pflicht. Feld ⑥ enthält ALLE Risiken: technisch, regulatorisch, ethisch — nicht nur technische.',
+    src: 'EU AI Act Art. 9 + Art. 10 · eur-lex.europa.eu/legal-content/EN/TXT/?uri=OJ:L_202401689 · GPM – KI in der Projektwirtschaft (2024) · gpm-ipma.de'
   },
   {
-    sc: 'Die Zertifizierungsstelle fragt, ob UC-A als Hochrisiko-KI nach EU AI Act Anhang III eingestuft ist und was das für das Projekt bedeutet.',
-    q: 'Kredit-Scoring ist nach EU AI Act Anhang III Nr. 5b als Hochrisiko-KI eingestuft. Was bedeutet das für den Machbarkeitscheck?',
-    opts: [
-      'Das Projekt ist verboten und darf nicht weiterverfolgt werden',
-      'Das Projekt ist erlaubt, aber eine Konformitätsbewertung nach EU AI Act Art. 43 ist vor Go-Live Pflicht',
-      'Hochrisiko-KI erfordert Human Oversight — vollautomatische Kreditentscheidungen sind nicht zulässig',
-      'Die Hochrisiko-Einstufung macht das Projekt wirtschaftlich unrentabel'
-    ],
-    correct: [1],
-    exp: 'Hochrisiko-KI ist ERLAUBT — aber mit erheblichen Pflichten: Konformitätsbewertung (Art. 43), Human Oversight (Art. 14), Transparenz (Art. 13), Logging (Art. 12), Post-Market-Monitoring (Art. 72). Das Projekt ist nicht verboten. Wirtschaftlichkeit ist eine separate Frage.',
-    src: 'EU AI Act Anhang III Nr. 5b + Art. 9–15 (Hochrisiko-Anforderungen) · eur-lex.europa.eu/legal-content/EN/TXT/?uri=OJ:L_202401689'
-  },
-  {
-    sc: 'Der Projektleiter empfiehlt der Geschäftsleitung, den Support-Chatbot (UC-C) als Quick Win vor UC-A zu starten.',
-    q: 'Als Projektleiter:in empfehlen Sie, zuerst den Support-Chatbot (UC-C) als Quick Win zu starten. Welche Argumente unterstützen diese Empfehlung?',
+    sc: 'Du empfiehlst der Geschäftsleitung, den Support-Chatbot (UC-C) als Quick Win vor UC-A zu starten.',
+    q: 'Welche Aussage(n) unterstützt oder unterstützen die Empfehlung, den Support-Chatbot (UC-C) zuerst als Quick Win zu starten?',
     opts: [
       'UC-C ist kein Hochrisiko-KI-System — weniger regulatorische Auflagen, schnellere Umsetzung',
       'UC-C hat mittleren Impact und niedrigen Effort — idealer Kandidat für einen Beweis, dass KI bei SolidFinanz funktioniert',
       'UC-C hat höheren strategischen Wert als UC-A — deshalb sollte es zuerst umgesetzt werden',
       'Ein erfolgreicher Quick Win schafft politisches Momentum und erleichtert das Budget-Gespräch für UC-A'
     ],
-    correct: [0,1,3],
-    exp: 'Kein Hochrisiko → weniger Compliance-Aufwand, schnellere Umsetzung ✓. Mittlerer Impact / niedriger Effort = Quick Win ✓. UC-A (Kredit-Scoring) hat höheren strategischen Wert — UC-C ist nicht wichtiger, aber schneller umzusetzen. Momentum für UC-A ist ein weicher Nutzen, kein primäres Argument.',
+    correct: [0, 1, 3],
+    exp: 'Kein Hochrisiko → weniger Compliance-Aufwand, schnellere Umsetzung ✓. Mittlerer Impact / niedriger Effort = typischer Quick Win ✓. UC-A (Kredit-Scoring) hat höheren strategischen Wert — UC-C ist nicht wichtiger, sondern schneller umsetzbar. Ein erfolgreicher Quick Win schafft Vertrauen und politisches Momentum für das Budget-Gespräch rund um UC-A ✓.',
     src: 'PMI – Agile Practice Guide · pmi.org/pmbok-guide-standards/agile · HBR – Change Management · hbr.org/topic/subject/change-management'
   },
   {
-    sc: 'Der Machbarkeitscheck zeigt ein Problem: Die Trainingsdaten für das Kredit-Scoring-Modell sind drei Jahre alt und möglicherweise verzerrt.',
-    q: 'Der Machbarkeitscheck für UC-A zeigt: Die Trainingsdaten sind 3 Jahre alt und möglicherweise biased. Welche Maßnahmen sind korrekt?',
+    sc: 'Der Machbarkeitscheck zeigt Unsicherheiten: Datenqualität für UC-A ist fraglich, die MLOps-Infrastruktur noch nicht stabil. Du musst entscheiden, ob ein PoC sinnvoll ist.',
+    q: 'Welche Aussage(n) zur Machbarkeitsanalyse und zum PoC (Proof of Concept) als Instrument ist oder sind korrekt?',
     opts: [
-      'Eine Bias-Analyse der historischen Kreditentscheidungen durchführen, bevor das Modell trainiert wird',
-      'Das Projekt sofort stoppen — veraltete und möglicherweise biased Daten machen UC-A unrealisierbar',
-      'EU AI Act Art. 10 fordert für Hochrisiko-KI repräsentative und fehlerfreie Trainingsdaten',
-      'Den DSB (Dr. Lenz) einbeziehen, da Kreditnehmer-Daten als Trainingsdaten DSGVO-relevant sind'
+      'Ein PoC ist ein begrenzter Pilotversuch, der unter realen Bedingungen prüft, ob ein KI-Ansatz technisch und fachlich funktioniert — bevor das Vollprojekt genehmigt wird',
+      'Wenn der Machbarkeitscheck kritische Unsicherheiten zeigt, empfiehlt sich ein PoC statt eines sofortigen Vollstarts — er reduziert das Investitionsrisiko',
+      'Ein PoC erhöht immer den Gesamtaufwand und ist daher nur bei sehr kleinen Projekten sinnvoll',
+      'Ein erfolgreicher PoC liefert drei Outputs: Machbarkeitsnachweis, erste Datenerkenntnisse und eine belastbare Aufwandsschätzung für das Vollprojekt'
     ],
-    correct: [0,2,3],
-    exp: 'Bias-Analyse vor Training ist eine konkrete Mitigationsmaßnahme ✓. Veraltete Daten sind ein Risiko, aber kein Projektstopp — sie erfordern Qualitätsprüfung und ggf. Nacherhebung. EU AI Act Art. 10 verlangt repräsentative Daten für Hochrisiko-KI ✓. Dr. Lenz einbeziehen wegen DSGVO ✓.',
-    src: 'EU AI Act Art. 10 (Anforderungen an Trainingsdaten, inkl. Bias) · eur-lex.europa.eu/legal-content/EN/TXT/?uri=OJ:L_202401689 · EDPB Guidelines on AI · edpb.europa.eu/our-work-tools/general-guidance/guidelines-recommendations-best-practices_en'
-  }
-],
-
-/* ─── Projektleiter:in · Fortgeschrittene · 3r,2r,1r,3r,2r ─── */
-b2: [
-  {
-    sc: 'Der Projektleiter erstellt die Stakeholder-Map für UC-A und ordnet die SolidFinanz-Personas in die Mendelow-Matrix ein.',
-    q: 'Als Projektleiter:in erstellen Sie die Mendelow-Matrix für UC-A. Welche Einordnung der SolidFinanz-Personas ist korrekt?',
-    opts: [
-      'Dr. Hofer (CEO): hohe Macht (Budgetentscheidung) + hohes Interesse (KI-Governance-Initiative) → Q1: eng einbinden',
-      'Neumann (Kreditabteilung): mittlere Macht (kann System im Alltag sabotieren) + hohes Interesse (direkt betroffen) → Q3 oder Q1',
-      'Dr. Lenz (DSB): niedrige Macht + mittleres Interesse → Q2: zufriedenstellen',
-      'Kern (CISO): hohe Macht (IT-Infrastruktur) + niedriges Interesse (KI nicht Kernthema) → Q2: zufriedenstellen'
-    ],
-    correct: [0,1,3],
-    exp: 'Dr. Hofer = Q1 ✓. Neumann ist Q3 (mittlere operative Macht, hohes Interesse) — kann aber zu Q1 werden bei aktivem Widerstand ✓. Dr. Lenz hat mittlere Macht (DSFA-Freigabe ist kritisch) — eher Q3 als Q2. Kern = Q2 ✓ (IT-Macht, aber wenig KI-Eigeninteresse).',
-    src: 'PMI PMBOK® Guide (Stakeholder Management) · pmi.org/pmbok-guide-standards · HBR – Stakeholder Management · hbr.org/topic/subject/stakeholder-management'
+    correct: [0, 1, 3],
+    exp: 'Ein PoC (Proof of Concept) prüft unter realen Bedingungen, ob der KI-Ansatz grundsätzlich funktioniert — bevor signifikante Ressourcen investiert werden. Bei kritischen Unsicherheiten (Datenqualität, Infrastruktur) reduziert ein PoC das Investitionsrisiko erheblich. Ein PoC kann den Gesamtaufwand sogar senken, weil er Fehlinvestitionen in ungeeignete Ansätze verhindert — er ist besonders bei großen, riskanten Projekten sinnvoll. Die drei Outputs: Machbarkeitsnachweis + Datenerkenntnisse + Aufwandsschätzung.',
+    src: 'PMI – Project Management Body of Knowledge, 7. Aufl. · pmi.org · GPM – KI in der Projektwirtschaft (2024) · gpm-ipma.de'
   },
   {
-    sc: 'Im Projekt-Kick-off wird diskutiert, wer für den Machbarkeitscheck bei UC-A verantwortlich ist — KI-Managerin oder Projektleitung.',
-    q: 'Welche Aussagen zur Rollenverantwortung für den Machbarkeitscheck bei UC-A sind korrekt?',
+    sc: 'Im Kick-off-Gespräch mit der KI-Managerin klärst du die Rollenverteilung im UC-A-Pilotprojekt.',
+    q: 'Als Projektleiter:in bei SolidFinanz: Welche Aussage(n) zur Rollenabgrenzung in deinem Projekt ist oder sind korrekt?',
     opts: [
-      'Die KI-Manager:in koordiniert den Machbarkeitscheck und ist für die Vollständigkeit verantwortlich',
-      'Der DSB (Dr. Lenz) muss bei der Compliance-Dimension des Machbarkeitschecks konsultiert werden',
-      'Die Compliance-Dimension muss erst unmittelbar vor Go-Live geprüft werden',
-      'Der Machbarkeitscheck ist ausschließlich Aufgabe der IT-Abteilung'
+      'Du bist in der 1. Linie: Du nutzt KI-Systeme operativ und meldest Risiken an die KI-Manager:in',
+      'Die KI-Manager:in koordiniert das Projekt und ist in der 2. Linie of Defense verantwortlich',
+      'Als Projektleiter:in hast du dieselbe Rolle wie die KI-Beauftragte:r — beide prüfen Compliance',
+      'Der KI-Auditor:in kann dich als Projektleiter:in vertreten, wenn du verhindert bist'
     ],
-    correct: [0,1],
-    exp: 'KI-Manager:in koordiniert und verantwortet den Machbarkeitscheck ✓. Dr. Lenz ist bei Compliance (DSGVO, EU AI Act) zwingend Consulted ✓. Compliance MUSS vor dem Budget-Commitment geprüft werden, nicht erst vor Go-Live. Der Machbarkeitscheck ist eine Cross-funktionale Aufgabe.',
-    src: 'ISO/IEC 42001:2023, Kl. 5.3 + 8.4 · iso.org/standard/81230.html · EU AI Act Art. 26 · eur-lex.europa.eu/legal-content/EN/TXT/?uri=OJ:L_202401689'
-  },
-  {
-    sc: 'Die fertige Mendelow-Matrix für UC-A zeigt ein charakteristisches Stakeholder-Muster. Der Projektleiter analysiert die Implikationen.',
-    q: 'Welches Muster zeigt die Mendelow-Matrix für SolidFinanz UC-A — und was folgt daraus?',
-    opts: [
-      'Es gibt drei Q1-Stakeholder (Dr. Hofer, Betriebsrat, IT-Leitung) — das ist außergewöhnlich viele und erfordert intensive Koordination',
-      'Neumann ist formal Q3, kann aber durch aktiven Widerstand zu Q1 werden — das macht ihn zum kritischsten Stakeholder',
-      'Die Matrix ist dynamisch — Stakeholder können im Projektverlauf Quadranten wechseln, wenn sich ihre Macht oder ihr Interesse verändert',
-      'Die Mendelow-Einordnung ist statisch — sie verändert sich während des Projektverlaufs nicht'
-    ],
-    correct: [0,1,2],
-    exp: 'Mehrere Q1-Stakeholder gleichzeitig sind anspruchsvoll — intensive Steuerungsarbeit nötig ✓. Neumann als potenzieller Q1 ist das zentrale Managementrisiko bei UC-A ✓. Q2-Stakeholder werden zufriedengestellt, nicht ignoriert. Die Matrix ist dynamisch — Stakeholder wechseln Quadranten (z.B. Betriebsrat kann von Q2 zu Q1 springen).',
-    src: 'PMI PMBOK® Guide (Stakeholder Management) · pmi.org/pmbok-guide-standards · HBR – Stakeholder Management · hbr.org/topic/subject/stakeholder-management'
-  },
-  {
-    sc: 'Der Projektleiter bereitet die Use-Case-Bewertung für die Präsentation vor Dr. Hofer vor und formuliert die Priorisierungsempfehlung.',
-    q: 'Sie bereiten die Präsentation der Use-Case-Bewertung für Dr. Hofer vor. Welche Aussagen zur Priorisierungsempfehlung sind korrekt?',
-    opts: [
-      'UC-A (Kredit-Scoring) sollte als strategisches Projekt gestartet werden — nicht als sofortiger Quick Win',
-      'UC-C (Support-Chatbot) eignet sich als paralleler Quick Win: niedriger Effort, schnelle Sichtbarkeit, kein Hochrisiko',
-      'UC-B (Betrugserkennung) sollte vor UC-A gestartet werden, da das Verlustpräventionspotenzial höher ist',
-      'UC-A hat hohen regulatorischen Handlungsdruck (BaFin, EU AI Act) — das erhöht seinen strategischen Impact'
-    ],
-    correct: [0,1,3],
-    exp: 'UC-A ist strategisches Projekt, kein Quick Win (6+ Monate, regulatorische Prüfung) ✓. UC-C als Quick Win parallel starten ✓. UC-B hat hohen Impact, aber auch hohen Effort (neues System, Echtzeit) — es kommt nach UC-A. UC-As regulatorischer Handlungsdruck erhöht seinen strategischen Wert ✓.',
-    src: 'PMI – Business Analysis Standard · pmi.org/pmbok-guide-standards/foundational/business-analysis · EU AI Act Art. 9 · eur-lex.europa.eu/legal-content/EN/TXT/?uri=OJ:L_202401689'
-  },
-  {
-    sc: 'Der Projektleiter fragt die KI-Managerin, wie der Use-Case-Canvas mit dem offiziellen KI-Anwendungsfall-Steckbrief zusammenhängt.',
-    q: 'Welche Aussagen zur Verbindung zwischen Use-Case-Canvas und dem KI-Anwendungsfall-Steckbrief sind korrekt?',
-    opts: [
-      'Canvas-Felder ①②⑦⑨ liefern den Hauptinhalt für Steckbrief-Abschnitt 1 (Anwendungsfall-Übersicht)',
-      'Canvas-Felder ③④⑧ liefern den Hauptinhalt für Steckbrief-Abschnitt 2 (KI-System-Profil)',
-      'Der Canvas und der Steckbrief sind voneinander unabhängige Werkzeuge mit völlig verschiedenen Zwecken',
-      'Der Steckbrief-Abschnitt 4 (Geschäftlicher Mehrwert) entspricht Canvas-Feld ⑤ (Nutzen)'
-    ],
-    correct: [0,1],
-    exp: 'Canvas → Steckbrief: Feld ① (Prozess) → Abschn. 1 Prozessbeschreibung; Feld ② (Problem) → Abschn. 1 Problemstellung; Feld ③ (KI-Typ) → Abschn. 2 KI-System-Typ; Feld ④ (Daten) → Abschn. 2 Datenquellen ✓. Canvas und Steckbrief sind komplementär, nicht unabhängig. Abschnitt 4 (Mehrwert) entspricht Feld ⑤ + quantifiziertem ROI.',
-    src: 'EU AI Act Art. 13 (Transparenz) + Art. 9 (Risikomanagement) · eur-lex.europa.eu/legal-content/EN/TXT/?uri=OJ:L_202401689 · ISO/IEC 42001:2023 · iso.org/standard/81230.html'
+    correct: [0, 1],
+    exp: 'Projektleiter:innen operieren in der 1. Linie — sie führen aus und melden Risiken aufwärts. KI-Manager:in ist 2. Linie — sie koordiniert Governance und trägt Verantwortung für das AIMS. Projektleiter:in und KI-Beauftragte:r haben völlig verschiedene Rollen: Projektleiter:in steuert die Umsetzung, KI-Beauftragte:r sichert Compliance. KI-Auditor:in prüft unabhängig — er oder sie vertritt keine operative Rolle.',
+    src: 'ISO/IEC 42001:2023, Kl. 5.3 · iso.org/standard/81230.html · PMI PMBOK® Guide · pmi.org/pmbok-guide-standards'
   }
 ]
-
 };
 /* Ende QBANK */
-
-var APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwTfP8ygOun58rmvY9hQXFmPEgVyxppQGEPYjar1e78N6uanaGHuzBNOyU5P4kgvmz7/exec';
-var selectedRole = null, selectedLevel = null, questions = [], userAnswers = [];
-var participantName = '';
-
 
 /* ═══════════════════════════════════════════════════════════════
    ENGINE (unverändert aus dem Standard-Quiz-Template)
 ═══════════════════════════════════════════════════════════════ */
-
+var APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwTfP8ygOun58rmvY9hQXFmPEgVyxppQGEPYjar1e78N6uanaGHuzBNOyU5P4kgvmz7/exec';
 var selectedRole = null, selectedLevel = null, questions = [], userAnswers = [];
 var participantName = '';
 
@@ -496,14 +348,8 @@ function selectRole(r) {
   document.getElementById('btn-role-b').className = 'sel-btn' + (r==='b' ? ' active-b' : '');
   checkReady();
 }
-function selectLevel(l) {
-  selectedLevel = l;
-  document.getElementById('btn-level-1').className = 'sel-btn' + (l==='1' ? ' active-1' : '');
-  document.getElementById('btn-level-2').className = 'sel-btn' + (l==='2' ? ' active-2' : '');
-  checkReady();
-}
 function checkReady() {
-  document.getElementById('btn-start').disabled = !(selectedRole && selectedLevel);
+  document.getElementById('btn-start').disabled = !(selectedRole);
 }
 
 function shuffle(arr) {
@@ -513,7 +359,7 @@ function shuffle(arr) {
 }
 
 function startQuiz() {
-  var key = selectedRole + selectedLevel;
+  var key = selectedRole;
   var pool = QBANK[key] || [];
   questions = pool.map(function(q) {
     var letters = ['A','B','C','D','E'];
@@ -528,17 +374,15 @@ function startQuiz() {
   document.getElementById('setup-section').style.display = 'none';
   document.getElementById('quiz-section').style.display = 'block';
 
-  var roleLabels = {a:'KI-Manager:in', b:'Leiterin Qualitätsmanagement'};
+  var roleLabels = {a:'KI-Manager:in', b:'Projektleiter:in'};
   var levelLabels = {1:'Anfänger', 2:'Fortgeschrittene'};
   var name = document.getElementById('participant-name').value.trim() || 'Anonym';
   participantName = name;
   var strip = document.getElementById('quiz-header-strip');
   strip.innerHTML =
     '<span class="strip-tag strip-role-' + selectedRole + '">' + roleLabels[selectedRole] + '</span>' +
-    '<span class="strip-tag strip-level-' + selectedLevel + '">' + levelLabels[selectedLevel] + '</span>' +
     '<span class="strip-name">' + name + '</span>';
 
-  document.getElementById('scenario-text').textContent = SCENARIOS[selectedRole];
   renderQuestions();
   updateProgress();
 }
@@ -672,12 +516,12 @@ function submitQuiz() {
 
 function sendToSheets(correct, wrong) {
   if (!APPS_SCRIPT_URL) return;
-  var TAG_NR = 2;
-  var THEMA  = 'ISO 42001 & KI-Managementsystem';
+  var TAG_NR = 3;
+  var THEMA  = 'Rollen · Use Cases · SMART · Machbarkeit';
   var letters = ['A','B','C','D','E'];
-  var roleLabels = {a:'KI-Manager:in', b:'Leiterin Qualitätsmanagement'};
+  var roleLabels = {a:'KI-Manager:in', b:'Projektleiter:in'};
   var levelLabels = {1:'Anfänger', 2:'Fortgeschrittene'};
-  var stufe = (roleLabels[selectedRole] || selectedRole) + ' / ' + (levelLabels[selectedLevel] || selectedLevel);
+  var stufe = (roleLabels[selectedRole] || selectedRole);
 
   var status = document.getElementById('submit-status');
   if (status) {
@@ -710,20 +554,24 @@ function sendToSheets(correct, wrong) {
     );
   });
 
-  toSend.forEach(function(url, i) {
-    setTimeout(function() {
-      fetch(url, { mode: 'no-cors' }).catch(function() {});
-    }, i * 300);
-  });
-  if (status) {
-    setTimeout(function() {
-      status.className = 'submit-status success';
-      status.textContent = '✓ ' + toSend.length + ' Antworten übermittelt ('
-        + new Date().toLocaleTimeString('de-DE') + ')';
-    }, toSend.length * 300 + 500);
+  var idx = 0;
+  function sendNext() {
+    if (idx >= toSend.length) {
+      if (status) {
+        status.className = 'submit-status success';
+        status.textContent = '✓ ' + toSend.length + ' Antworten übermittelt ('
+          + new Date().toLocaleTimeString('de-DE') + ')';
+      }
+      return;
+    }
+    fetch(toSend[idx], { mode: 'no-cors' })
+      .catch(function() {})
+      .then(function() { idx++; setTimeout(sendNext, 400); });
   }
+  sendNext();
 }
 </script>
 
 </body>
 </html>
+                                                                                                                                                   
