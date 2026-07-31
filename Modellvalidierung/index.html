@@ -94,14 +94,13 @@ table.gloss td:first-child{font-weight:600;white-space:nowrap;width:150px;}
 <!-- METRIKEN -->
 <div class="sec">
  <div class="sec-t">1 · Schwellenwert, Konfusionsmatrix &amp; <b>Precision / Recall / F-Wert</b></div>
- <div class="szenario"><b>Fallbeispiel:</b> Ein Unternehmen erhält auf eine offene Stelle 400 Bewerbungen und möchte nur 5–7 Personen tatsächlich zum Gespräch einladen. Stellst du den Bewerbungsregler auf das Maximum (0,95), wählt das Modell nur wenige, dafür fast durchweg tatsächlich geeignete Kandidat:innen aus — es sortiert aber auch relativ viele potenziell geeignete Bewerbende aus. Für die Personalabteilung ist das effizient; dem Unternehmen gehen dabei möglicherweise interessante künftige Mitarbeitende verloren (= niedriger Recall).</div>
- <div class="callout" style="margin-top:0;margin-bottom:.9rem;"><b>Woher kommt die Wahrscheinlichkeit — und woher der Bias darin?</b> Das Modell „denkt" nicht in Kategorien wie „Männer sind erfolgreicher" — es hat kein Konzept davon. Es sucht rein rechnerisch die Gewichte, die die historischen Einstellungsentscheidungen im Datensatz möglichst gut nachbilden. Und in diesen historischen Daten wurden Männer häufiger eingestellt als Frauen: 44 % vs. 28 % insgesamt — und selbst bei vergleichbarer Qualifikation (mittleres Drittel bei Fachscore/Interview) 44 % vs. nur 16 %. Dieses Muster übernimmt das Modell als eigenes, gelerntes Gewicht auf „Geschlecht" — unabhängig von Fachscore oder Interview. Wie die Merkmale technisch zu einer Wahrscheinlichkeit zusammengeführt werden, steht in der Fußnote.¹</div>
- <div class="ctrl" style="margin-top:0;">
+ <div class="ctrl">
   <label>Bewerbungsregler</label>
   <input type="range" id="thr" min="0" max="18" value="9" step="1">
   <span class="pill" id="thrVal">0.50</span>
-  <p class="note" style="margin-top:0;margin-bottom:.8rem;">Der Regler bestimmt, ab welcher „Eignungs‑Wahrscheinlichkeit" das Modell jemanden <strong>empfiehlt</strong>. Niedriger Wert = großzügig (mehr Treffer, mehr Fehlalarme). Hoher Wert = streng.</p>
  </div>
+ <p class="note" style="margin-top:0;margin-bottom:.8rem;">Der Regler bestimmt, ab welcher „Eignungs‑Wahrscheinlichkeit" das Modell jemanden <strong>empfiehlt</strong>. Niedriger Wert = großzügig (mehr Treffer, mehr Fehlalarme). Hoher Wert = streng. Wie diese Wahrscheinlichkeit technisch zustande kommt, steht in der Fußnote.¹</p>
+ <div class="szenario"><b>Fallbeispiel:</b> Ein Unternehmen erhält auf eine offene Stelle 400 Bewerbungen und möchte nur 5–7 Personen tatsächlich zum Gespräch einladen. Stellst du den Bewerbungsregler auf das Maximum (0,95), wählt das Modell nur wenige, dafür fast durchweg tatsächlich geeignete Kandidat:innen aus — es sortiert aber auch relativ viele potenziell geeignete Bewerbende aus. Für die Personalabteilung ist das effizient; dem Unternehmen gehen dabei möglicherweise interessante künftige Mitarbeitende verloren (= niedriger Recall).</div>
  <div class="grid2">
   <div>
    <div class="cm">
@@ -129,7 +128,7 @@ table.gloss td:first-child{font-weight:600;white-space:nowrap;width:150px;}
  <p class="note"><strong>Merksatz fürs Management:</strong> Es gibt kein „genau" — es gibt eine <em>Abwägung</em>. Hoher <strong>Recall</strong> zählt, wenn ein Übersehen teuer ist (Betrug, Krankheit, verpasste Talente). Hohe <strong>Precision</strong> zählt, wenn ein Fehlalarm teuer ist (wichtige Mail im Spam). <strong>F1</strong> gewichtet beides gleich, <strong>F2</strong> gewichtet Recall doppelt.</p>
  <div class="footnote">
   <div class="fn-t">Fußnote — Technik &amp; Fachbegriffe</div>
-  <p>¹ Rohwerte lassen sich nicht einfach addieren — 100 Punkte Fachscore plus 1 für „männlich" plus Alter in Monaten wären gar nicht vergleichbar. Jedes Merkmal wird deshalb zunächst <strong>standardisiert</strong>: Es zählt nicht der absolute Wert, sondern die Abweichung vom Durchschnitt aller Bewerbenden. Bei Fachscore ist das ein Spektrum („5 Punkte über dem Mittel"); bei „Geschlecht" (0/1) gibt es trotzdem einen Durchschnitt — hier 50 % männlich —, aber nur zwei mögliche Abweichungen: „männlich" wird immer zu genau +1, „weiblich" immer zu genau −1. Das Modell multipliziert das mit dem gelernten Gewicht (aktuell +0,641 für „Geschlecht") — ein fester Bonus für die ganze Gruppe, keine individuelle Bewertung. Alle gewichteten Abweichungen zusammen ergeben eine Zahl, die über eine mathematische Kurve in eine Wahrscheinlichkeit zwischen 0 % und 100 % übersetzt wird — und genau darauf schneidet der Bewerbungsregler.</p>
+  <p>¹ Rohwerte lassen sich nicht einfach addieren — 100 Punkte Fachscore plus ein Ja/Nein-Merkmal plus Alter in Monaten wären gar nicht vergleichbar. Jedes Merkmal wird deshalb zunächst <strong>standardisiert</strong>: Es zählt nicht der absolute Wert, sondern die Abweichung vom Durchschnitt aller Bewerbenden. Bei Fachscore ist das ein Spektrum („5 Punkte über dem Mittel"); bei einem Ja/Nein-Merkmal gibt es trotzdem einen Durchschnitt (z. B. „60 % Ja"), aber nur zwei mögliche Abweichungen. Das Modell multipliziert jede Abweichung mit einem <strong>gelernten Gewicht</strong> — woher diese Gewichte kommen und wo dabei Diskriminierung entstehen kann, zeigt Abschnitt 2. Alle gewichteten Abweichungen zusammen ergeben eine Zahl, die über eine mathematische Kurve in eine Wahrscheinlichkeit zwischen 0 % und 100 % übersetzt wird — und genau darauf schneidet der Bewerbungsregler.</p>
   <p style="margin-top:.5rem;">Fachbegriffe in diesem Abschnitt:</p>
   <dl>
    <div class="fn-item"><dt>Accuracy —</dt> <dd>Anteil aller korrekt beurteilten Bewerbungen (richtig empfohlen + richtig abgelehnt) an allen Bewerbungen. Wird hier nicht separat angezeigt, ist aber z. B. das, was in Abschnitt 4 als „Training"/„neue Daten" auf der Lernkurve steht.</dd></div>
@@ -144,7 +143,14 @@ table.gloss td:first-child{font-weight:600;white-space:nowrap;width:150px;}
 <!-- BIAS -->
 <div class="sec">
  <div class="sec-t">2 · <b>Bias</b> — dasselbe Modell, zwei Gruppen</div>
- <p class="note" style="margin-top:0;margin-bottom:.9rem;">Die Regel ist für alle gleich — trotzdem behandelt das Modell Männer und Frauen unterschiedlich, weil es die <strong>Voreingenommenheit der Vergangenheit gelernt</strong> hat. Schiebe oben die Schwelle: Die Lücke bleibt auf jeder Stufe.</p>
+ <div class="szenario"><b>Szenario:</b> Du hörst als KI‑Manager:in zufällig, dass das KI-gestützte Auswahlsystem überproportional viele Frauen aussortiert. Es bewerben sich etwa gleich viele Frauen wie Männer — aber es werden signifikant mehr Männer ausgewählt. Stichwort: historischer Bias.</div>
+ <p class="note" style="margin-top:0;margin-bottom:.9rem;">Und tatsächlich: Das Modell „denkt" nicht in Kategorien wie „Männer sind erfolgreicher" — es hat kein Konzept davon. Es sucht rein rechnerisch die Gewichte, die die historischen Einstellungsentscheidungen im Datensatz möglichst gut nachbilden. Und in diesen historischen Daten wurden Männer häufiger eingestellt als Frauen: 44 % vs. 28 % insgesamt — und selbst bei vergleichbarer Qualifikation (mittleres Drittel bei Fachscore/Interview) 44 % vs. nur 16 %. Dieses Muster übernimmt das Modell als eigenes, gelerntes Gewicht auf „Geschlecht" (aktuell +0,641) — unabhängig von Fachscore oder Interview. Die Regel ist für alle gleich, das Ergebnis nicht: <strong>Voreingenommenheit der Vergangenheit, rechnerisch gelernt.</strong></p>
+ <div class="ctrl" style="margin-top:0;margin-bottom:1rem;">
+  <label>Bewerbungsregler</label>
+  <input type="range" id="thrBias" min="0" max="18" value="9" step="1">
+  <span class="pill" id="thrValBias">0.50</span>
+ </div>
+ <p class="note" style="margin-top:0;margin-bottom:.9rem;">Schiebe den Regler: Die Lücke bleibt auf jeder Stufe.</p>
  <div class="grid2">
   <div>
    <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:.5rem;">Auswahlrate — wer wird empfohlen?</div>
@@ -165,9 +171,10 @@ table.gloss td:first-child{font-weight:600;white-space:nowrap;width:150px;}
 <!-- PROXY -->
 <div class="sec">
  <div class="sec-t">3 · <b>Proxy‑Falle</b> — reicht es, „Geschlecht" wegzulassen?</div>
- <p class="note" style="margin-top:0;margin-bottom:.9rem;">Der naheliegende Reflex: das Merkmal „Geschlecht" einfach entfernen. Wir haben das Modell dreimal trainiert und die Auswahlraten‑Lücke gemessen:</p>
+ <p class="note" style="margin-top:0;margin-bottom:.9rem;">Zwei naheliegende Reflexe: das Merkmal „Geschlecht" einfach entfernen — oder synthetische Daten pro Frauen „nachfüttern", um die Zahlen auszugleichen. Wir haben das Modell dreimal trainiert und die Auswahlraten‑Lücke gemessen:</p>
  <div id="proxyBars"></div>
- <div class="callout"><b>Die Lehre:</b> „Geschlecht" wegzulassen halbiert die Lücke nur — die <strong>Karrierelücke verrät das Geschlecht weiter</strong> (ein sogenannter Proxy). Erst wenn man auch den Proxy adressiert, verschwindet die Diskriminierung. <em>Fairness durch Wegschauen funktioniert nicht — man muss messen und gezielt gegensteuern.</em></div>
+ <div class="callout"><b>Die Lehre:</b> „Geschlecht" wegzulassen halbiert die Lücke nur — die <strong>Karrierelücke verrät das Geschlecht weiter</strong> (ein sogenannter Proxy). Auch synthetisches Nachfüttern pro Frauen würde daran nichts Grundsätzliches ändern: Solange die Karrierelücke unverändert im Datensatz steht, lernt das Modell das Muster weiter über sie — am Zielwert zu drehen behebt nicht die Ursache im Merkmal selbst. Erst wenn man den Proxy adressiert, verschwindet die Diskriminierung. <em>Fairness durch Wegschauen oder Nachjustieren an der falschen Stelle funktioniert nicht — man muss messen und gezielt gegensteuern.</em></div>
+ <div class="callout"><b>Wie entdeckt man das — außer durch Gerüchte?</b> Vier Wege statt Zufall: <strong>Fairness-Audits</strong> — Auswahlrate und Recall regelmäßig je Gruppe messen, nicht nur die Gesamt-Genauigkeit (wie in Abschnitt 2). <strong>Proxy-Tests</strong> — Merkmale gezielt herausnehmen und prüfen, ob sich die Lücke schließt (wie in diesem Abschnitt). <strong>Gesetzliche Pflicht statt Zufall</strong> — der EU AI Act stuft KI-Systeme zur Bewerberauswahl als Hochrisiko-System ein und verlangt ausdrücklich Maßnahmen zur Erkennung, Verhinderung und Minderung von Verzerrungen, dokumentiert im technischen Datensatz (<a href="https://eur-lex.europa.eu/legal-content/DE/TXT/?uri=CELEX%3A32024R1689" target="_blank" rel="noopener">VO (EU) 2024/1689, Art. 6 Abs. 2 i. V. m. Anhang III Nr. 4, Art. 10 Abs. 2 lit. g, Art. 11</a>) — Bias-Tests sind also Pflicht vor dem Einsatz, nicht erst nach einem Gerücht. <strong>Governance</strong> — Ergebnisse gehören verpflichtend in den Modellvalidierungsbericht, mit Eskalation an Menschen bei Auffälligkeiten.</div>
 </div>
 
 <!-- OVERFITTING -->
@@ -238,6 +245,7 @@ function fbeta(p,r,b){const d=b*b*p+r; return d? (1+b*b)*p*r/d : 0;}
 function renderMetrics(){
  const s = DATA.sweep[+$('thr').value];
  $('thrVal').textContent = s.t.toFixed(2);
+ $('thrValBias').textContent = s.t.toFixed(2);
  $('tp').textContent=s.tp; $('fp').textContent=s.fp; $('fn').textContent=s.fn; $('tn').textContent=s.tn;
  $('mPrec').textContent=pct(s.precision); $('mRec').textContent=pct(s.recall);
  const f=fbeta(s.precision,s.recall,beta);
@@ -305,7 +313,8 @@ function drawChart(sel){
  $('ofChart').innerHTML=g;
 }
 
-$('thr').addEventListener('input',renderMetrics);
+$('thr').addEventListener('input',()=>{$('thrBias').value=$('thr').value;renderMetrics();});
+$('thrBias').addEventListener('input',()=>{$('thr').value=$('thrBias').value;renderMetrics();});
 $('dep').addEventListener('input',renderOverfit);
 $('b1').addEventListener('click',()=>{beta=1;$('b1').classList.add('on');$('b2').classList.remove('on');renderMetrics();});
 $('b2').addEventListener('click',()=>{beta=2;$('b2').classList.add('on');$('b1').classList.remove('on');renderMetrics();});
