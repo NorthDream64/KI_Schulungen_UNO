@@ -99,8 +99,8 @@ table.gloss td:first-child{font-weight:600;white-space:nowrap;width:150px;}
  <div class="callout" style="margin-top:0;margin-bottom:.9rem;"><b>Woher kommt die Wahrscheinlichkeit — und woher der Bias darin?</b> Das Modell „denkt" nicht in Kategorien wie „Männer sind erfolgreicher" — es hat kein Konzept davon. Es sucht rein rechnerisch die Gewichte, die die historischen Einstellungsentscheidungen im Datensatz möglichst gut nachbilden. Und in diesen historischen Daten wurden Männer häufiger eingestellt als Frauen: 44 % vs. 28 % insgesamt — und selbst bei vergleichbarer Qualifikation (mittleres Drittel bei Fachscore/Interview) 44 % vs. nur 16 %. Dieses Muster übernimmt das Modell als eigenes, gelerntes Gewicht auf „Geschlecht" — unabhängig von Fachscore oder Interview. Wie die Merkmale technisch zu einer Wahrscheinlichkeit zusammengeführt werden, steht in der Fußnote.¹</div>
  <div class="ctrl" style="margin-top:0;">
   <label>Bewerbungsregler</label>
-  <input type="range" id="thr2" min="0" max="18" value="9" step="1">
-  <span class="pill" id="thrVal2">0.50</span>
+  <input type="range" id="thr" min="0" max="18" value="9" step="1">
+  <span class="pill" id="thrVal">0.50</span>
  </div>
  <div class="grid2">
   <div>
@@ -238,7 +238,6 @@ function fbeta(p,r,b){const d=b*b*p+r; return d? (1+b*b)*p*r/d : 0;}
 function renderMetrics(){
  const s = DATA.sweep[+$('thr').value];
  $('thrVal').textContent = s.t.toFixed(2);
- $('thrVal2').textContent = s.t.toFixed(2);
  $('tp').textContent=s.tp; $('fp').textContent=s.fp; $('fn').textContent=s.fn; $('tn').textContent=s.tn;
  $('mPrec').textContent=pct(s.precision); $('mRec').textContent=pct(s.recall);
  const f=fbeta(s.precision,s.recall,beta);
@@ -306,8 +305,7 @@ function drawChart(sel){
  $('ofChart').innerHTML=g;
 }
 
-$('thr').addEventListener('input',()=>{$('thr2').value=$('thr').value;renderMetrics();});
-$('thr2').addEventListener('input',()=>{$('thr').value=$('thr2').value;renderMetrics();});
+$('thr').addEventListener('input',renderMetrics);
 $('dep').addEventListener('input',renderOverfit);
 $('b1').addEventListener('click',()=>{beta=1;$('b1').classList.add('on');$('b2').classList.remove('on');renderMetrics();});
 $('b2').addEventListener('click',()=>{beta=2;$('b2').classList.add('on');$('b1').classList.remove('on');renderMetrics();});
