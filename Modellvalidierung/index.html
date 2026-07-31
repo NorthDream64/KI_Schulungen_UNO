@@ -78,8 +78,8 @@ table.gloss td:first-child{font-weight:600;white-space:nowrap;width:150px;}
  <table class="gloss">
   <tr><td>Fachscore / Interview</td><td>Punktzahl 0–100, <strong>unabhängig</strong> von Geschlecht und Alter simuliert (reines Testergebnis bzw. Interviewnote). Bewusst so gebaut: Die im Tool sichtbare Ungleichbehandlung kommt nicht vom Test, sondern ausschließlich aus der historischen Einstellungsentscheidung und der Karrierelücke (siehe unten).</td></tr>
   <tr><td>Geschlecht</td><td><strong>1 = männlich, 0 = weiblich</strong> — binäre Vereinfachung für dieses Lab, keine Aussage über reale Erfassungspraxis.</td></tr>
-  <tr><td>Alter</td><td><strong>1 = 40 Jahre oder älter, 0 = jünger als 40</strong>.</td></tr>
-  <tr><td>Berufserfahrung</td><td>Jahre im Beruf laut Lebenslauf. Bei „älter" im Schnitt etwas höher, weil ältere Bewerber:innen im Mittel länger im Berufsleben stehen — keine Wertung der Positionen.</td></tr>
+  <tr><td>Alter</td><td><strong>Lebensalter in Monaten</strong>, kontinuierlich erfasst (240–780 Monate ≈ 20–65 Jahre) — bewusst <strong>keine</strong> feste 40-Jahre-Grenze: Ein Unternehmen würde eine Altersschwelle kaum so hart codieren. Die im Modell nachgebildete Altersdiskriminierung wirkt stattdessen als schleichender, linearer Effekt — pro Lebensjahr ein kleiner Nachteil.</td></tr>
+  <tr><td>Berufserfahrung</td><td>Jahre im Beruf laut Lebenslauf, realistisch an das Lebensalter gekoppelt (mehr Lebensjahre → im Schnitt mehr Erfahrung, mit Streuung) — keine Wertung der Positionen.</td></tr>
   <tr><td>Karrierelücke</td><td>Monate <strong>ohne Erwerbstätigkeit</strong> laut Lebenslauf (z. B. Eltern- oder Pflegezeit) — keine „fehlenden Jahre", sondern eine in Monaten gemessene Unterbrechung. Im Datensatz bei Frauen gezielt im Schnitt 8 Monate länger angesetzt als bei Männern. Das bildet ein reales Muster ab: Mütter beziehen Elterngeld im Schnitt rund 10–12 Monate, Väter nur rund 3–4 Monate (<a href="https://www.destatis.de/DE/Themen/Gesellschaft-Umwelt/Soziales/Elterngeld/geburten.html" target="_blank" rel="noopener">Destatis 2024/2025</a>); auch OECD-weit nehmen Frauen häufiger und längere familienbedingte Erwerbsunterbrechungen als Männer (<a href="https://www.oecd.org/en/publications/gender-gaps-in-paid-and-unpaid-work-persist_25a6c5dc-en/full-report.html" target="_blank" rel="noopener">OECD 2025</a>). Im Lab ist die Karrierelücke deshalb der Kanal, über den das Modell das Geschlecht „erschließt" — selbst wenn man „Geschlecht" direkt entfernt (siehe Abschnitt 3, Proxy-Falle).</td></tr>
  </table>
 </div>
@@ -180,32 +180,32 @@ table.gloss td:first-child{font-weight:600;white-space:nowrap;width:150px;}
 
 <script>
 const DATA = {
- base_rate:0.38,
+ base_rate:0.361,
  sweep:[
-  {t:0.05,tp:299,fp:341,fn:5,tn:155,precision:0.467,recall:0.984,sel_w:0.74,sel_m:0.861,rec_w:0.984,rec_m:0.983},
-  {t:0.10,tp:293,fp:272,fn:11,tn:224,precision:0.519,recall:0.964,sel_w:0.629,sel_m:0.785,rec_w:0.969,rec_m:0.960},
-  {t:0.15,tp:284,fp:224,fn:20,tn:272,precision:0.559,recall:0.934,sel_w:0.557,sel_m:0.715,rec_w:0.922,rec_m:0.943},
-  {t:0.20,tp:275,fp:192,fn:29,tn:304,precision:0.589,recall:0.905,sel_w:0.507,sel_m:0.662,rec_w:0.875,rec_m:0.926},
-  {t:0.25,tp:266,fp:164,fn:38,tn:332,precision:0.619,recall:0.875,sel_w:0.468,sel_m:0.609,rec_w:0.852,rec_m:0.892},
-  {t:0.30,tp:259,fp:126,fn:45,tn:370,precision:0.673,recall:0.852,sel_w:0.399,sel_m:0.566,rec_w:0.812,rec_m:0.881},
-  {t:0.35,tp:245,fp:107,fn:59,tn:389,precision:0.696,recall:0.806,sel_w:0.366,sel_m:0.515,rec_w:0.766,rec_m:0.835},
-  {t:0.40,tp:230,fp:90,fn:74,tn:406,precision:0.719,recall:0.757,sel_w:0.319,sel_m:0.482,rec_w:0.688,rec_m:0.807},
-  {t:0.45,tp:219,fp:74,fn:85,tn:422,precision:0.747,recall:0.720,sel_w:0.280,sel_m:0.455,rec_w:0.641,rec_m:0.778},
-  {t:0.50,tp:202,fp:62,fn:102,tn:434,precision:0.765,recall:0.664,sel_w:0.250,sel_m:0.412,rec_w:0.586,rec_m:0.722},
-  {t:0.55,tp:191,fp:46,fn:113,tn:450,precision:0.806,recall:0.628,sel_w:0.225,sel_m:0.369,rec_w:0.531,rec_m:0.699},
-  {t:0.60,tp:177,fp:39,fn:127,tn:457,precision:0.819,recall:0.582,sel_w:0.196,sel_m:0.346,rec_w:0.461,rec_m:0.670},
-  {t:0.65,tp:161,fp:32,fn:143,tn:464,precision:0.834,recall:0.530,sel_w:0.173,sel_m:0.311,rec_w:0.414,rec_m:0.614},
-  {t:0.70,tp:144,fp:24,fn:160,tn:472,precision:0.857,recall:0.474,sel_w:0.144,sel_m:0.278,rec_w:0.359,rec_m:0.557},
-  {t:0.75,tp:134,fp:17,fn:170,tn:479,precision:0.887,recall:0.441,sel_w:0.119,sel_m:0.260,rec_w:0.305,rec_m:0.540},
-  {t:0.80,tp:116,fp:10,fn:188,tn:486,precision:0.921,recall:0.382,sel_w:0.092,sel_m:0.225,rec_w:0.258,rec_m:0.472},
-  {t:0.85,tp:92,fp:7,fn:212,tn:489,precision:0.929,recall:0.303,sel_w:0.072,sel_m:0.177,rec_w:0.203,rec_m:0.375},
-  {t:0.90,tp:66,fp:5,fn:238,tn:491,precision:0.930,recall:0.217,sel_w:0.047,sel_m:0.131,rec_w:0.125,rec_m:0.284},
-  {t:0.95,tp:36,fp:1,fn:268,tn:495,precision:0.973,recall:0.118,sel_w:0.020,sel_m:0.073,rec_w:0.055,rec_m:0.165}
+  {t:0.05,tp:283,fp:316,fn:6,tn:195,precision:0.472,recall:0.979,sel_w:0.653,sel_m:0.843,rec_w:0.966,rec_m:0.988},
+  {t:0.10,tp:272,fp:249,fn:17,tn:262,precision:0.522,recall:0.941,sel_w:0.545,sel_m:0.756,rec_w:0.882,rec_m:0.982},
+  {t:0.15,tp:261,fp:204,fn:28,tn:307,precision:0.561,recall:0.903,sel_w:0.472,sel_m:0.689,rec_w:0.840,rec_m:0.947},
+  {t:0.20,tp:255,fp:177,fn:34,tn:334,precision:0.590,recall:0.882,sel_w:0.432,sel_m:0.647,rec_w:0.815,rec_m:0.929},
+  {t:0.25,tp:245,fp:147,fn:44,tn:364,precision:0.625,recall:0.848,sel_w:0.374,sel_m:0.604,rec_w:0.782,rec_m:0.894},
+  {t:0.30,tp:236,fp:119,fn:53,tn:392,precision:0.665,recall:0.817,sel_w:0.334,sel_m:0.552,rec_w:0.739,rec_m:0.871},
+  {t:0.35,tp:223,fp:102,fn:66,tn:409,precision:0.686,recall:0.772,sel_w:0.291,sel_m:0.520,rec_w:0.664,rec_m:0.847},
+  {t:0.40,tp:209,fp:84,fn:80,tn:427,precision:0.713,recall:0.723,sel_w:0.249,sel_m:0.483,rec_w:0.588,rec_m:0.818},
+  {t:0.45,tp:199,fp:70,fn:90,tn:441,precision:0.740,recall:0.689,sel_w:0.214,sel_m:0.458,rec_w:0.529,rec_m:0.800},
+  {t:0.50,tp:188,fp:58,fn:101,tn:453,precision:0.764,recall:0.651,sel_w:0.191,sel_m:0.423,rec_w:0.487,rec_m:0.765},
+  {t:0.55,tp:173,fp:46,fn:116,tn:465,precision:0.790,recall:0.599,sel_w:0.158,sel_m:0.388,rec_w:0.429,rec_m:0.718},
+  {t:0.60,tp:157,fp:33,fn:132,tn:478,precision:0.826,recall:0.543,sel_w:0.131,sel_m:0.343,rec_w:0.370,rec_m:0.665},
+  {t:0.65,tp:145,fp:26,fn:144,tn:485,precision:0.848,recall:0.502,sel_w:0.113,sel_m:0.313,rec_w:0.345,rec_m:0.612},
+  {t:0.70,tp:129,fp:21,fn:160,tn:490,precision:0.860,recall:0.446,sel_w:0.083,sel_m:0.291,rec_w:0.252,rec_m:0.582},
+  {t:0.75,tp:117,fp:16,fn:172,tn:495,precision:0.880,recall:0.405,sel_w:0.073,sel_m:0.259,rec_w:0.227,rec_m:0.529},
+  {t:0.80,tp:95,fp:12,fn:194,tn:499,precision:0.888,recall:0.329,sel_w:0.060,sel_m:0.206,rec_w:0.193,rec_m:0.424},
+  {t:0.85,tp:72,fp:10,fn:217,tn:501,precision:0.878,recall:0.249,sel_w:0.043,sel_m:0.162,rec_w:0.134,rec_m:0.329},
+  {t:0.90,tp:53,fp:5,fn:236,tn:506,precision:0.914,recall:0.183,sel_w:0.030,sel_m:0.114,rec_w:0.092,rec_m:0.247},
+  {t:0.95,tp:21,fp:3,fn:268,tn:508,precision:0.875,recall:0.073,sel_w:0.013,sel_m:0.047,rec_w:0.034,rec_m:0.100}
  ],
  overfit:{depth:[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],
-  train:[0.688,0.782,0.799,0.812,0.846,0.863,0.888,0.915,0.945,0.970,0.987,0.994,0.998,0.998,0.999],
-  test:[0.650,0.760,0.759,0.770,0.767,0.764,0.766,0.736,0.726,0.723,0.725,0.726,0.726,0.730,0.725]},
- proxy:{mit_geschlecht:[0.162,0.412,0.250],ohne_geschlecht:[0.094,0.374,0.280],ohne_gpluslucke:[-0.018,0.323,0.342]}
+  train:[0.729,0.739,0.790,0.805,0.845,0.863,0.885,0.911,0.937,0.960,0.973,0.982,0.990,0.993,0.996],
+  test:[0.713,0.711,0.739,0.769,0.776,0.774,0.767,0.746,0.716,0.708,0.711,0.703,0.708,0.705,0.709]},
+ proxy:{mit_geschlecht:[0.232,0.423,0.191],ohne_geschlecht:[0.184,0.4,0.216],ohne_gpluslucke:[-0.018,0.306,0.324]}
 };
 
 let beta = 1;
@@ -239,7 +239,7 @@ function renderMetrics(){
 
 function renderProxy(){
  const rows=[['mit „Geschlecht"','mit_geschlecht'],['ohne „Geschlecht"','ohne_geschlecht'],['ohne „Geschlecht" + Karrierelücke','ohne_gpluslucke']];
- const maxg=0.17;
+ const maxg=0.25;
  $('proxyBars').innerHTML = rows.map(([label,key])=>{
   const g=DATA.proxy[key][0]; const w=Math.min(Math.abs(g)/maxg,1)*100;
   const bad = Math.abs(g)>=0.05;

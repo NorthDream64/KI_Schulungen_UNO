@@ -23,7 +23,7 @@ print(f"Datensatz: {len(df)} Bewerber:innen · Einstellungsquote historisch: {df
 print("Achtung: Die historischen Entscheidungen sind bewusst voreingenommen.")
 print("="*70)
 
-feat = ["geschlecht","aelter","fachscore","interview","erfahrung_jahre","karriere_luecke_monate"]
+feat = ["geschlecht","alter_monate","fachscore","interview","erfahrung_jahre","karriere_luecke_monate"]
 X, y = df[feat].values, df["eingestellt"].values
 Xtr,Xte,ytr,yte,gtr,gte = train_test_split(X,y,df["geschlecht"].values,test_size=0.4,random_state=1,stratify=y)
 sc = StandardScaler().fit(Xtr)

@@ -8,6 +8,9 @@ Was dieses Skript tut (und warum):
 2. In die HISTORISCHEN Einstellungsentscheidungen ist bewusst eine Voreingenommenheit
    (Bias) eingebaut: Männer und jüngere Bewerber wurden in der Vergangenheit systematisch
    bevorzugt. Ein Modell, das aus diesen Daten lernt, ÜBERNIMMT diese Diskriminierung.
+   Das Alter geht dabei KONTINUIERLICH ein (Jahre/Monate, kein fester 40-Jahre-Schnitt) —
+   ein Unternehmen würde eine Altersgrenze kaum so hart codieren; Altersdiskriminierung
+   wirkt in der Praxis eher als schleichender linearer Effekt.
 3. Es berechnet alle Kennzahlen, die das Interaktiv-Tool anzeigt: Konfusionsmatrix,
    Precision/Recall/F1 über verschiedene Schwellenwerte, Fairness je Gruppe,
    Overfitting-Kurve sowie den Proxy-Leakage-Vergleich.
@@ -15,6 +18,7 @@ Was dieses Skript tut (und warum):
 Abhängigkeiten: numpy, pandas, scikit-learn  (pip install scikit-learn)
 """
 import numpy as np, pandas as pd, json
+
 from sklearn.linear_model import LogisticRegression
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.model_selection import train_test_split
@@ -25,38 +29,48 @@ N = 2000
 
 # --- 1. Merkmale erzeugen ---
 geschlecht = rng.integers(0, 2, N)          # 0 = weiblich, 1 = männlich
-aelter     = rng.integers(0, 2, N)          # 0 = jünger (<40), 1 = älter (>=40)
+
+# Alter KONTINUIERLICH (Jahre, daraus Monate) — bewusst kein binärer 40-Jahre-Schnitt,
+# das wäre eine künstliche, in der Praxis unrealistische Vereinfachung.
+alter_jahre  = np.clip(rng.normal(38, 10, N), 20, 65)
+alter_monate = np.round(alter_jahre * 12).astype(int)
+
 fachscore  = np.clip(rng.normal(60, 15, N), 0, 100)      # Fachtest 0-100 (echtes Können)
 interview  = np.clip(rng.normal(60, 15, N), 0, 100)      # Interview 0-100 (echtes Können)
-erfahrung  = np.clip(rng.normal(8, 4, N) + aelter*4, 0, 35)  # Berufsjahre
+# Berufserfahrung realistisch ans Lebensalter gekoppelt (mehr Lebensjahre -> im Schnitt mehr Erfahrung)
+erfahrung  = np.clip(0.45*(alter_jahre - 20) + rng.normal(0, 3.5, N), 0, 40)
 
-# Proxy-Merkmal: Karrierelücke (Monate). Historisch bei Frauen im Schnitt größer.
+# Proxy-Merkmal: Karrierelücke (Monate). Historisch bei Frauen im Schnitt deutlich größer
+# (vgl. Elterngeld-Bezugsdauer: Mütter ca. 10-12 Monate, Väter ca. 3-4 Monate — Destatis 2024/2025;
+# OECD 2025: Frauen nehmen häufiger und längere familienbedingte Erwerbsunterbrechungen).
 # Es ist der "Stellvertreter", über den das Geschlecht ins Modell zurückleckt,
 # selbst wenn man die Spalte Geschlecht weglässt.
-karriere_luecke = np.clip(rng.normal(6, 5, N) + (1-geschlecht)*8, 0, 60)
+karriere_luecke = np.clip(rng.normal(6, 4, N) + (1-geschlecht)*12, 0, 60)
 
 # --- 2. Echtes Verdienst ("wer wäre wirklich gut?") ---
 merit = 0.45*fachscore + 0.45*interview + 0.10*(erfahrung/35*100)
 merit_z = (merit - merit.mean())/merit.std()
 
 # --- 3. Historische, VOREINGENOMMENE Einstellungsentscheidung ---
-# Echter Verdienst zählt (2.2*merit), ABER: Bonus für Männer (+0.9) und Jüngere (+0.5),
+# Echter Verdienst zählt (2.2*merit), ABER: Bonus für Männer (+0.9), ein kontinuierlicher
+# Alterseffekt (pro Jahr über/unter 40 ein kleiner linearer Bonus/Malus — kein harter Schnitt),
 # und eine überzogene Bestrafung der Karrierelücke, die über ihren echten Wert hinausgeht.
-logit = (-1.15 + 2.2*merit_z + 0.9*geschlecht + 0.5*(1-aelter) - 0.035*karriere_luecke)
+alter_effekt = -0.025*(alter_jahre - 40)
+logit = (-1.15 + 2.2*merit_z + 0.9*geschlecht + alter_effekt - 0.035*karriere_luecke)
 p_hire = 1/(1+np.exp(-logit))
 eingestellt = (rng.random(N) < p_hire).astype(int)
 
 df = pd.DataFrame({
-    "geschlecht": geschlecht, "aelter": aelter, "fachscore": fachscore.round(1),
+    "geschlecht": geschlecht, "alter_monate": alter_monate, "fachscore": fachscore.round(1),
     "interview": interview.round(1), "erfahrung_jahre": erfahrung.round(1),
     "karriere_luecke_monate": karriere_luecke.round(1), "eingestellt": eingestellt,
 })
-df.to_csv("/sessions/trusting-focused-mendel/mnt/Schulungsmaterial/KI-Manager/Lab_Modellvalidierung/bewerber_screening.csv", index=False)
+df.to_csv("bewerber_screening.csv", index=False)
 
 base_rate = eingestellt.mean()
 
 # --- 4. Hauptmodell (mit allen Merkmalen inkl. Geschlecht) ---
-feat_all = ["geschlecht","aelter","fachscore","interview","erfahrung_jahre","karriere_luecke_monate"]
+feat_all = ["geschlecht","alter_monate","fachscore","interview","erfahrung_jahre","karriere_luecke_monate"]
 X = df[feat_all].values; y = df["eingestellt"].values
 Xtr,Xte,ytr,yte,gtr,gte = train_test_split(X,y,df["geschlecht"].values,test_size=0.4,random_state=1,stratify=y)
 sc = StandardScaler().fit(Xtr)
@@ -109,11 +123,12 @@ proxy["ohne_gpluslucke"]     = parity_gap([f for f in feat_all if f not in ("ges
 
 out={"base_rate":round(float(base_rate),3),"n_test":int(len(yte)),
      "sweep":sweep,"overfit":overfit,"proxy":proxy}
-with open("/sessions/trusting-focused-mendel/mnt/Schulungsmaterial/KI-Manager/Lab_Modellvalidierung/kennzahlen.json","w") as f:
+with open("kennzahlen.json","w") as f:
     json.dump(out,f,indent=1)
 
 # --- Sanity-Ausgabe ---
 print("Base rate (Einstellungsquote):", round(base_rate,3), "| Test-N:", len(yte))
+print("Alter (Jahre) min/mean/max:", round(alter_jahre.min(),1), round(alter_jahre.mean(),1), round(alter_jahre.max(),1))
 print("\nSchwelle 0.50:")
 row=[s for s in sweep if s['t']==0.5][0]
 print("  P/R/F1:",row['precision'],row['recall'],row['f1'],"| Konfusion tp,fp,fn,tn:",row['tp'],row['fp'],row['fn'],row['tn'])
