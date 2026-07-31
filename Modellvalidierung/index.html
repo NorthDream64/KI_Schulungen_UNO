@@ -13,7 +13,15 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--paper);color:va
 .eyebrow{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-bottom:.4rem;}
 h1{font-family:'Playfair Display',Georgia,serif;font-size:clamp(1.6rem,4vw,2.2rem);line-height:1.1;}
 h1 em{font-style:italic;color:var(--teal);}
-.lead{margin-top:.6rem;color:var(--muted);font-size:13.5px;max-width:70ch;}
+.lead{margin-top:.6rem;color:var(--muted);font-size:13.5px;}
+.szenario{background:var(--phase);border:1px solid var(--rule);border-left:4px solid var(--teal);border-radius:0 8px 8px 0;padding:.7rem .9rem;font-size:12.5px;margin-bottom:.9rem;}
+.szenario b{color:var(--teal);}
+.footnote{margin-top:1rem;padding-top:.7rem;border-top:1px solid var(--rule);font-size:11.5px;color:var(--muted);line-height:1.55;}
+.footnote .fn-t{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:.5rem;}
+.footnote dl{margin-top:.5rem;}
+.footnote dt{font-weight:600;color:var(--ink);display:inline;}
+.footnote dd{display:inline;margin:0;}
+.footnote .fn-item{margin-bottom:.3rem;}
 .sec{background:var(--card);border:1px solid var(--rule);border-radius:10px;padding:1.2rem 1.3rem;margin-bottom:1.3rem;}
 .sec-t{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--rule);padding-bottom:.4rem;margin-bottom:1rem;}
 .sec-t b{color:var(--teal);}
@@ -69,14 +77,13 @@ table.gloss td:first-child{font-weight:600;white-space:nowrap;width:150px;}
  <div class="eyebrow">Lab — Modellvalidierung</div>
  <h1>Wie gut ist ein Modell — <em>und für wen?</em></h1>
  <p class="lead">Ein Modell wurde auf <strong>synthetischen, aber realistisch voreingenommenen</strong> Einstellungsdaten trainiert (alle Personen und Zahlen erfunden — n = 2.000 Bewerbungen). Der Leitgedanke: Aus der Information, wer in der Vergangenheit eingestellt und im Sinne des Unternehmens „erfolgreich" wurde — abzulesen etwa an Kundenfeedback, Jahresgesprächen oder Beförderungen —, sollen sinnvolle Merkmale für eine KI-gestützte (Vor-)Auswahl abgeleitet werden (Details dazu im Datenwörterbuch unten).</p>
- <p class="lead" style="margin-top:.5rem;"</p>
 </div>
 
 <!-- DATENWÖRTERBUCH -->
 <div class="sec">
  <div class="sec-t">0 · Datenwörterbuch — was die Merkmale bedeuten</div>
  <table class="gloss">
-  <tr><td>Fachscore / Interview</td><td>Punktzahl 0–100, im Datensatz <strong>unabhängig</strong> von Geschlecht und Alter simuliert. „Fachscore" bildet ab, was eine KI aus den Bewerbungsunterlagen (Lebenslauf, Zeugnisse, Anschreiben, freigegebenes LinkedIn-Profil) an fachlicher Passung extrahieren könnte. „Interview" steht für „Teamfähigkeit" — hier wird versucht, diesen schwer quantifizierbaren ("Nasen"-)Faktor aus historischen daten abzuleiten (Kundenfeedback, Jahresgespräche, Beförderungen seit 2009). Dieses „Passt ins Team" soll hier als Kontrollgröße für fachliche Eignung usw. wirken. Für bestimmte Positionen ist die fachliche Eignung ein untergeordneter Punkt gegenüber Team- oder Führungsfähigkeit. Der persönliche Auswahlprozess (Stufe 2) ist so ausgelegt, die Führungs- und Teamfähigkeit strukturiert zu erfassen. Die Daten aus diesem Prozessschritt werden (auch für Kandidatinnen oder Kandidaten, die es nicht "geschafft" haben) benutzt, um das Modell weiter zu trainieren und seine Fähigkeit zu verbessern, "weiche Faktoren" zu bewerten.</td></tr>
+  <tr><td>Fachscore / Interview</td><td>Punktzahl 0–100, im Datensatz <strong>unabhängig</strong> von Geschlecht und Alter simuliert. „Fachscore" bildet ab, was eine KI aus den Bewerbungsunterlagen (Lebenslauf, Zeugnisse, Anschreiben, freigegebenes LinkedIn-Profil) an fachlicher Passung extrahieren könnte. „Interview" steht für „Teamfähigkeit" — hier wird versucht, diesen schwer quantifizierbaren ("Nasen"-)Faktor aus historischen Daten abzuleiten (Kundenfeedback, Jahresgespräche, Beförderungen seit 2009).<br><br>Dieses „Passt ins Team" soll hier als Kontrollgröße für fachliche Eignung usw. wirken. Für bestimmte Positionen ist die fachliche Eignung ein untergeordneter Punkt gegenüber Team- oder Führungsfähigkeit. Der persönliche Auswahlprozess (Stufe 2) ist so ausgelegt, die Führungs- und Teamfähigkeit strukturiert zu erfassen. Die Daten aus diesem Prozessschritt werden (auch für Kandidatinnen oder Kandidaten, die es nicht "geschafft" haben) benutzt, um das Modell weiter zu trainieren und seine Fähigkeit zu verbessern, "weiche Faktoren" zu bewerten.</td></tr>
   <tr><td>Geschlecht</td><td><strong>1 = männlich, 0 = weiblich</strong> — binäre Vereinfachung für dieses Lab, keine Aussage über reale Erfassungspraxis.</td></tr>
   <tr><td>Alter</td><td><strong>Lebensalter in Monaten</strong>, kontinuierlich erfasst (240–780 Monate ≈ 20–65 Jahre).</td></tr>
   <tr><td>Berufserfahrung</td><td>Jahre im Beruf laut Lebenslauf, realistisch an das Lebensalter gekoppelt (mehr Lebensjahre → im Schnitt mehr Erfahrung, mit Streuung) — keine Wertung der Positionen oder Inhalte der Tätigkeit.</td></tr>
@@ -88,12 +95,13 @@ table.gloss td:first-child{font-weight:600;white-space:nowrap;width:150px;}
 <div class="sec">
  <div class="sec-t">1 · Schwellenwert, Konfusionsmatrix &amp; <b>Precision / Recall / F-Wert</b></div>
  <div class="ctrl">
-  <label>Entscheidungsschwelle</label>
+  <label>Bewerbungsregler</label>
   <input type="range" id="thr" min="0" max="18" value="9" step="1">
   <span class="pill" id="thrVal">0.50</span>
  </div>
- <p class="note" style="margin-top:0;margin-bottom:.8rem;">Die Schwelle bestimmt, ab welcher „Eignungs‑Wahrscheinlichkeit" das Modell jemanden <strong>empfiehlt</strong>. Niedrige Schwelle = großzügig (mehr Treffer, mehr Fehlalarme). Hohe Schwelle = streng.</p>
- <div class="callout" style="margin-top:0;margin-bottom:.9rem;"><b>Woher kommt die Wahrscheinlichkeit — und woher der Bias darin?</b> Das Modell „denkt" nicht in Kategorien wie „Männer sind erfolgreicher" — es hat kein Konzept davon. Es sucht rein rechnerisch die Gewichte, die die historischen Einstellungsentscheidungen im Datensatz möglichst gut nachbilden. Und in diesen historischen Daten wurden Männer häufiger eingestellt als Frauen: 44 % vs. 28 % insgesamt — und selbst bei vergleichbarer Qualifikation (mittleres Drittel bei Fachscore/Interview) 44 % vs. nur 16 %. Dieses Muster übernimmt das Modell als eigenes, gelerntes Gewicht auf „Geschlecht" — unabhängig von Fachscore oder Interview.<br><br><strong>Technisch läuft das so:</strong> Rohwerte lassen sich nicht einfach addieren — 100 Punkte Fachscore plus 1 für „männlich" plus Alter in Monaten wären gar nicht vergleichbar. Jedes Merkmal wird deshalb zunächst <strong>standardisiert</strong>: Es zählt nicht der absolute Wert, sondern die Abweichung vom Durchschnitt aller Bewerbenden. Bei Fachscore ist das ein Spektrum („5 Punkte über dem Mittel"); bei „Geschlecht" (0/1) gibt es trotzdem einen Durchschnitt — hier 50 % männlich —, aber nur zwei mögliche Abweichungen: „männlich" wird immer zu genau +1, „weiblich" immer zu genau −1. Das Modell multipliziert das mit dem gelernten Gewicht (aktuell +0,641) — ein fester Bonus für die ganze Gruppe, keine individuelle Bewertung. Alle gewichteten Abweichungen zusammen ergeben eine Zahl, die über eine mathematische Kurve in eine Wahrscheinlichkeit zwischen 0 % und 100 % übersetzt wird — und genau darauf schneidet die Entscheidungsschwelle. Die Auswirkung siehst du in Abschnitt 2.</div>
+ <p class="note" style="margin-top:0;margin-bottom:.8rem;">Der Regler bestimmt, ab welcher „Eignungs‑Wahrscheinlichkeit" das Modell jemanden <strong>empfiehlt</strong>. Niedriger Wert = großzügig (mehr Treffer, mehr Fehlalarme). Hoher Wert = streng.</p>
+ <div class="szenario"><b>Fallbeispiel:</b> Ein Unternehmen erhält auf eine offene Stelle 400 Bewerbungen und möchte nur 5–7 Personen tatsächlich zum Gespräch einladen. Stellst du den Bewerbungsregler auf das Maximum (0,95), wählt das Modell nur wenige, dafür fast durchweg tatsächlich geeignete Kandidat:innen aus — es sortiert aber auch relativ viele potenziell geeignete Bewerbende aus. Für die Personalabteilung ist das effizient; dem Unternehmen gehen dabei möglicherweise interessante künftige Mitarbeitende verloren (= niedriger Recall).</div>
+ <div class="callout" style="margin-top:0;margin-bottom:.9rem;"><b>Woher kommt die Wahrscheinlichkeit — und woher der Bias darin?</b> Das Modell „denkt" nicht in Kategorien wie „Männer sind erfolgreicher" — es hat kein Konzept davon. Es sucht rein rechnerisch die Gewichte, die die historischen Einstellungsentscheidungen im Datensatz möglichst gut nachbilden. Und in diesen historischen Daten wurden Männer häufiger eingestellt als Frauen: 44 % vs. 28 % insgesamt — und selbst bei vergleichbarer Qualifikation (mittleres Drittel bei Fachscore/Interview) 44 % vs. nur 16 %. Dieses Muster übernimmt das Modell als eigenes, gelerntes Gewicht auf „Geschlecht" — unabhängig von Fachscore oder Interview. Wie die Merkmale technisch zu einer Wahrscheinlichkeit zusammengeführt werden, steht in der Fußnote.¹</div>
  <div class="grid2">
   <div>
    <div class="cm">
@@ -119,6 +127,18 @@ table.gloss td:first-child{font-weight:600;white-space:nowrap;width:150px;}
   </div>
  </div>
  <p class="note"><strong>Merksatz fürs Management:</strong> Es gibt kein „genau" — es gibt eine <em>Abwägung</em>. Hoher <strong>Recall</strong> zählt, wenn ein Übersehen teuer ist (Betrug, Krankheit, verpasste Talente). Hohe <strong>Precision</strong> zählt, wenn ein Fehlalarm teuer ist (wichtige Mail im Spam). <strong>F1</strong> gewichtet beides gleich, <strong>F2</strong> gewichtet Recall doppelt.</p>
+ <div class="footnote">
+  <div class="fn-t">Fußnote — Technik &amp; Fachbegriffe</div>
+  <p>¹ Rohwerte lassen sich nicht einfach addieren — 100 Punkte Fachscore plus 1 für „männlich" plus Alter in Monaten wären gar nicht vergleichbar. Jedes Merkmal wird deshalb zunächst <strong>standardisiert</strong>: Es zählt nicht der absolute Wert, sondern die Abweichung vom Durchschnitt aller Bewerbenden. Bei Fachscore ist das ein Spektrum („5 Punkte über dem Mittel"); bei „Geschlecht" (0/1) gibt es trotzdem einen Durchschnitt — hier 50 % männlich —, aber nur zwei mögliche Abweichungen: „männlich" wird immer zu genau +1, „weiblich" immer zu genau −1. Das Modell multipliziert das mit dem gelernten Gewicht (aktuell +0,641 für „Geschlecht") — ein fester Bonus für die ganze Gruppe, keine individuelle Bewertung. Alle gewichteten Abweichungen zusammen ergeben eine Zahl, die über eine mathematische Kurve in eine Wahrscheinlichkeit zwischen 0 % und 100 % übersetzt wird — und genau darauf schneidet der Bewerbungsregler.</p>
+  <p style="margin-top:.5rem;">Fachbegriffe in diesem Abschnitt:</p>
+  <dl>
+   <div class="fn-item"><dt>Accuracy —</dt> <dd>Anteil aller korrekt beurteilten Bewerbungen (richtig empfohlen + richtig abgelehnt) an allen Bewerbungen. Wird hier nicht separat angezeigt, ist aber z. B. das, was in Abschnitt 4 als „Training"/„neue Daten" auf der Lernkurve steht.</dd></div>
+   <div class="fn-item"><dt>Precision —</dt> <dd>Anteil der tatsächlich Geeigneten unter allen vom Modell Empfohlenen. Hoch = wenige Fehlalarme.</dd></div>
+   <div class="fn-item"><dt>Recall —</dt> <dd>Anteil der tatsächlich Geeigneten, die das Modell auch findet statt sie zu übersehen. Hoch = wenige verpasste Talente.</dd></div>
+   <div class="fn-item"><dt>F1 —</dt> <dd>Fasst Precision und Recall in einer Zahl zusammen, beide gleich gewichtet.</dd></div>
+   <div class="fn-item"><dt>F2 —</dt> <dd>Wie F1, aber Recall zählt doppelt so stark wie Precision — sinnvoll, wenn ein übersehener geeigneter Kandidat teurer ist als ein Fehlalarm.</dd></div>
+  </dl>
+ </div>
 </div>
 
 <!-- BIAS -->
