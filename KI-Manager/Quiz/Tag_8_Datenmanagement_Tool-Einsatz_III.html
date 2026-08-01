@@ -10,8 +10,6 @@
   --accent:#5a3a7a;--accent-soft:#f0eaf7;
   --role-a:#1a6a5a;--role-a-soft:#e6f4f1;
   --role-b:#5a3a7a;--role-b-soft:#f0eaf7;
-  --level-1:#7a4a00;--level-1-soft:#fdf0e0;
-  --level-2:#0a4a7a;--level-2-soft:#e0eff7;
   --correct:#2a7a50;--correct-bg:#eaf5ee;--correct-border:#a0d8b8;
   --wrong:#9a2a2a;--wrong-bg:#faeaea;--wrong-border:#d8a0a0;
 }
@@ -30,14 +28,10 @@ a{color:var(--accent);}
 .field-label{font-family:"SFMono-Regular", Consolas, "Liberation Mono", monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:.35rem;}
 .setup-input{width:100%;border:1px solid var(--rule);border-radius:8px;padding:.6rem .9rem;font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;font-size:14px;background:var(--paper);outline:none;color:var(--ink);transition:border-color .15s;}
 .setup-input:focus{border-color:var(--ink);}
-.setup-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.2rem;}
-@media(max-width:480px){.setup-grid{grid-template-columns:1fr;}}
-.role-btns,.level-btns{display:flex;gap:.5rem;}
+.role-btns{display:flex;gap:.5rem;}
 .sel-btn{flex:1;padding:.55rem .6rem;border:1px solid var(--rule);border-radius:8px;background:none;font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;font-size:13px;cursor:pointer;text-align:center;transition:all .15s;color:var(--ink);}
 .sel-btn.active-a{background:var(--role-a-soft);border-color:var(--role-a);color:var(--role-a);font-weight:500;}
 .sel-btn.active-b{background:var(--role-b-soft);border-color:var(--role-b);color:var(--role-b);font-weight:500;}
-.sel-btn.active-1{background:var(--level-1-soft);border-color:var(--level-1);color:var(--level-1);font-weight:500;}
-.sel-btn.active-2{background:var(--level-2-soft);border-color:var(--level-2);color:var(--level-2);font-weight:500;}
 .hint-text{font-size:12px;color:var(--muted);margin-top:.3rem;display:block;}
 .btn-start{width:100%;padding:.75rem;background:var(--ink);color:#fff;border:none;border-radius:8px;font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;font-size:15px;font-weight:500;cursor:pointer;margin-top:1rem;transition:background .15s;}
 .btn-start:hover{background:#333;}
@@ -46,18 +40,13 @@ a{color:var(--accent);}
 .strip-tag{font-family:"SFMono-Regular", Consolas, "Liberation Mono", monospace;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;padding:4px 12px;border-radius:100px;}
 .strip-role-a{background:var(--role-a-soft);color:var(--role-a);}
 .strip-role-b{background:var(--role-b-soft);color:var(--role-b);}
-.strip-level-1{background:var(--level-1-soft);color:var(--level-1);}
-.strip-level-2{background:var(--level-2-soft);color:var(--level-2);}
 .strip-name{font-size:13px;color:var(--muted);margin-left:auto;}
 .progress-bar{height:3px;background:var(--rule);border-radius:2px;margin-bottom:1.2rem;}
 .progress-fill{height:100%;background:var(--ink);border-radius:2px;transition:width .3s;}
 .progress-label{font-family:"SFMono-Regular", Consolas, "Liberation Mono", monospace;font-size:10px;color:var(--muted);margin-bottom:.5rem;}
-.scenario-box{background:var(--accent-soft);border:1px solid #c8b8e0;border-left:3px solid var(--accent);border-radius:0 8px 8px 0;padding:.9rem 1.1rem;margin-bottom:1.2rem;}
-.scenario-label{font-family:"SFMono-Regular", Consolas, "Liberation Mono", monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:.3rem;}
-.scenario-text{font-size:13px;color:var(--ink);line-height:1.6;}
+.q-sc{font-size:13px;color:#555;font-style:italic;border-left:3px solid var(--accent);padding:.4rem .8rem;margin-bottom:.5rem;background:var(--accent-soft);border-radius:0 6px 6px 0;}
 .q-card{background:var(--card);border:1px solid var(--rule);border-radius:12px;padding:1.5rem;margin-bottom:1rem;}
 .q-num{font-family:"SFMono-Regular", Consolas, "Liberation Mono", monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:.6rem;}
-.q-sc{font-size:13px;color:#555;font-style:italic;border-left:3px solid var(--accent);padding:.4rem .8rem;margin-bottom:.5rem;background:var(--accent-soft);border-radius:0 6px 6px 0;}
 .q-text{font-size:15px;font-weight:500;line-height:1.55;margin-bottom:.5rem;}
 .opt-list{display:flex;flex-direction:column;gap:.5rem;}
 .opt{display:flex;align-items:flex-start;gap:.7rem;padding:.75rem 1rem;border:1px solid var(--rule);border-radius:8px;cursor:pointer;background:#fdfdfb;transition:all .12s;-webkit-user-select:none;user-select:none;}
@@ -118,9 +107,8 @@ a{color:var(--accent);}
   <div class="eyebrow">Alfatraining &middot; KI-Manager:in &middot; Tag 8</div>
   <h1>Lernkontrolle<br>Datenmanagement &amp; Tool-Einsatz III</h1>
   <div class="header-meta">
-    <span>5 Fragen je Rolle &amp; Stufe</span>
+    <span>5 Fragen je Rolle</span>
     <span>Eine oder mehrere Antworten k&ouml;nnen richtig sein</span>
-    <span>Use Case: AIktiv-Invest (AI) GmbH &mdash; MLOps &amp; Produktivsetzung UC-06</span>
   </div>
 </header>
 
@@ -128,28 +116,18 @@ a{color:var(--accent);}
 
 <div id="setup-section">
   <div class="setup-card">
-    <h2>Bitte w&auml;hle deine Rolle und Schwierigkeitsstufe</h2>
-    <div style="margin-bottom:1rem;">
+    <h2>Bitte w&auml;hle deine Rolle</h2>
+    <div style="margin-bottom:1.2rem;">
       <span class="field-label">Dein Name (oder Teilnehmer-Nummer)</span>
       <input type="text" id="participant-name" class="setup-input" placeholder="z. B. Teilnehmer-07 oder Vorname">
     </div>
-    <div class="setup-grid">
-      <div>
-        <span class="field-label">Rolle</span>
-        <div class="role-btns">
-          <button class="sel-btn" id="btn-role-a" onclick="selectRole('a')">KI-Manager:in</button>
-          <button class="sel-btn" id="btn-role-b" onclick="selectRole('b')">Externe KI-Auditorin</button>
-        </div>
-        <span class="hint-text">W&auml;hle deine Rolle im Use Case</span>
+    <div style="margin-bottom:1rem;">
+      <span class="field-label">Rolle</span>
+      <div class="role-btns">
+        <button class="sel-btn" id="btn-role-a" onclick="selectRole('a')">KI-Manager:in</button>
+        <button class="sel-btn" id="btn-role-b" onclick="selectRole('b')">Externe KI-Auditorin</button>
       </div>
-      <div>
-        <span class="field-label">Schwierigkeitsstufe</span>
-        <div class="level-btns">
-          <button class="sel-btn" id="btn-level-1" onclick="selectLevel('1')">Anf&auml;nger</button>
-          <button class="sel-btn" id="btn-level-2" onclick="selectLevel('2')">Fortgeschrittene</button>
-        </div>
-        <span class="hint-text">Anf&auml;nger = Konzepte &middot; Fortgeschr. = Szenarien</span>
-      </div>
+      <span class="hint-text">W&auml;hle deine Rolle im Unternehmen</span>
     </div>
     <button class="btn-start" id="btn-start" onclick="startQuiz()" disabled>Quiz starten &rarr;</button>
   </div>
@@ -159,10 +137,6 @@ a{color:var(--accent);}
   <div class="quiz-header-strip" id="quiz-header-strip"></div>
   <div class="progress-label" id="progress-label"></div>
   <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
-  <div class="scenario-box">
-    <div class="scenario-label">Fallbeispiel &middot; Gilt f&uuml;r alle Fragen</div>
-    <div class="scenario-text" id="scenario-text"></div>
-  </div>
   <div id="questions-container"></div>
   <div class="nav-row" style="margin-top:1.5rem">
     <button class="btn btn-submit btn-full" id="btn-submit" onclick="submitQuiz()" disabled>Auswertung anzeigen &rarr;</button>
@@ -170,7 +144,7 @@ a{color:var(--accent);}
 </div>
 
 <div id="results-section" style="display:none">
-  <div id="submit-status" class="submit-status" style="display:none;max-width:600px;margin:1rem auto;text-align:center;padding:.6rem 1rem;border-radius:8px;font-family:"SFMono-Regular", Consolas, "Liberation Mono", monospace;font-size:12px;"></div>
+  <div id="submit-status" class="submit-status" style="display:none;max-width:600px;margin:1rem auto;text-align:center;padding:.6rem 1rem;border-radius:8px;font-family:'SFMono-Regular', Consolas, 'Liberation Mono', monospace;font-size:12px;"></div>
   <div class="result-block">
     <div class="result-grade" id="result-grade"></div>
     <div class="result-label" id="result-label"></div>
@@ -183,25 +157,35 @@ a{color:var(--accent);}
     </div>
   </div>
   <hr style="border:none;border-top:1px solid var(--rule);margin:2rem 0">
-  <h2 style="font-family:Georgia, "Times New Roman", serif;font-size:1.2rem;margin-bottom:1rem">Detailauswertung</h2>
+  <h2 style="font-family:Georgia, 'Times New Roman', serif;font-size:1.2rem;margin-bottom:1rem">Detailauswertung</h2>
   <div id="review-container"></div>
 </div>
 
 </main>
 
 <script>
-var SCENARIOS = {
-  a: 'Du bist KI-Managerin bei der AIktiv-Invest (AI) GmbH. Das Scoring-Modell für das Grob-Screening von Investitionsvorschlägen — aufgebaut auf der Datenpipeline (Tag 6) und den Prompt-Strategien (Tag 7) — steht kurz vor dem produktiven Einsatz. Jetzt geht es um die unbequemeren Fragen: Mit welcher Strategie geht das Modell live — leise im Hintergrund oder gleich für alle sichtbar? Wie merkt ihr frühzeitig, wenn sich die Welt um das Modell herum verändert? Und wie begegnest du den Kolleg:innen, die dem Algorithmus aus ganz unterschiedlichen Gründen misstrauen?',
-  b: 'Du bist externe KI-Auditorin und von AIktiv-Invest beauftragt, das neue Scoring-System vor der Produktivsetzung zu prüfen — mit Blick auf ISO 42001 und kommende EU-AI-Act-Pflichten. Deine Aufgabe ist nicht, das Modell technisch nachzubauen, sondern zu beurteilen: Ist die Organisation bereit, ein KI-System verantwortungsvoll im Betrieb zu führen? Du schaust auf Dokumentation, Monitoring-Konzept, Rückfallpläne und Entscheidungsprozesse — und stellst die Frage, die im Tagesgeschäft oft untergeht: Was passiert, wenn etwas schiefläuft, und wer hat das vorher zu Ende gedacht?'
-};
+/* ═══ FRAGEN ══════════════════════════════════════════════════ */
 
 var QBANK = {
 
-/* ─── KI-Manager:in · Anfänger · 1r,2r,2r,3r,3r ─── */
-a1: [
+/* ─── KI-Manager:in · 2r,1r,2r,3r,3r ─── */
+a: [
   {
-    sc: 'Die KI-Managerin erläutert dem Investment-Team, warum das neue Scoring-Modell für das Grob-Screening von Investitionsvorschlägen auch nach dem Produktivstart weiter „betreut" werden muss.',
-    q: 'Welche Aussage beschreibt den Kerngedanken des ML-Lifecycle am treffendsten?',
+    sc: 'Beim Screening fällt der KI-Managerin auf, dass das Scoring-Modell Proposals aus einer beim Training kaum vertretenen Branche auffällig oft falsch einordnet.',
+    q: 'Welche Aussage(n) zu Data Drift und Concept Drift ist oder sind korrekt?',
+    opts: [
+      'Data Drift beschreibt eine Verschiebung in der Verteilung der Eingangsdaten — etwa wenn plötzlich viele Proposals aus einer beim Training kaum vertretenen Branche eintreffen',
+      'Concept Drift beschreibt, dass sich die Definition von „förderungswürdig" selbst verändert — etwa wenn das Steuerungskomitee seine Bewertungskriterien anpasst und bisherige Modell-Urteile dadurch überholt sind',
+      'Data Drift und Concept Drift sind zwei Bezeichnungen für denselben Effekt — die Unterscheidung ist rein akademisch und für die Praxis ohne Bedeutung',
+      'Drift tritt nur auf, wenn der zugrunde liegende Programmcode des Modells verändert wird — bei unverändertem Code bleibt die Modellleistung stets konstant'
+    ],
+    correct: [0,1],
+    exp: 'Data Drift bezeichnet eine Verschiebung in der Verteilung der Eingangsdaten — etwa eine neue Branchenzusammensetzung der eingehenden Proposals, die beim Training kaum vertreten war. Concept Drift bezeichnet dagegen, dass sich die Definition von „richtig" selbst ändert — etwa wenn das Steuerungskomitee seine Bewertungsmaßstäbe anpasst. Beide Phänomene sind klar unterscheidbar und erfordern unterschiedliche Reaktionen. Und Drift entsteht gerade unabhängig von Code-Änderungen — das ist der Kernunterschied zu klassischer Software, bei der ohne Code-Änderung nichts „altert".',
+    src: 'Google Cloud — MLOps: Continuous Delivery and Automation · cloud.google.com/architecture/mlops-continuous-delivery-and-automation-pipelines-in-machine-learning · Microsoft — MLOps Maturity Model · learn.microsoft.com/en-us/azure/architecture/ai-ml/guide/mlops-maturity-model'
+  },
+  {
+    sc: 'Die KI-Managerin erläutert dem Team, warum das neue Scoring-Modell auch nach dem Produktivstart weiter „betreut" werden muss.',
+    q: 'Welche Aussage(n) zum Kerngedanken des ML-Lifecycle ist oder sind korrekt?',
     opts: [
       'Der ML-Lifecycle ist ein fortlaufender Kreislauf aus Datenbeschaffung, Training, Evaluierung, Deployment und Monitoring — Monitoring liefert die Erkenntnisse, die ein erneutes Training auslösen',
       'Sobald ein Modell erfolgreich trainiert und in Produktion gebracht wurde, ist der Lifecycle formal abgeschlossen — weitere Schritte sind freiwillige Kür',
@@ -209,25 +193,12 @@ a1: [
       'Ein einmal evaluiertes Modell behält seine Performance dauerhaft, solange der zugrunde liegende Code nicht verändert wird'
     ],
     correct: [0],
-    exp: 'Der ML-Lifecycle ist als Kreislauf angelegt: Datenbeschaffung, Training, Evaluierung und Deployment münden ins Monitoring — und genau das Monitoring liefert die Erkenntnisse (etwa über Drift), die ein erneutes Training auslösen. Ein Modell „altert" im Betrieb, ohne dass sich der Code ändert — Performance kann sinken, weil sich die Welt um das Modell herum verändert. Die Vorstellung, der Lifecycle sei mit der Evaluierung oder dem Deployment „fertig", verkennt genau diesen Punkt: Gerade Deployment und Monitoring entscheiden darüber, ob ein Modell im Betrieb seinen Wert behält.',
+    exp: 'Der ML-Lifecycle ist als Kreislauf angelegt: Datenbeschaffung, Training, Evaluierung und Deployment münden ins Monitoring — und genau das Monitoring liefert die Erkenntnisse (etwa über Drift), die ein erneutes Training auslösen. Ein Modell „altert" im Betrieb, ohne dass sich der Code ändert — Performance kann sinken, weil sich die Welt um das Modell herum verändert. Die Vorstellung, der Lifecycle sei mit der Evaluierung oder dem Deployment „fertig", verkennt diesen Punkt.',
     src: 'Google Cloud — MLOps: Continuous Delivery and Automation · cloud.google.com/architecture/mlops-continuous-delivery-and-automation-pipelines-in-machine-learning · Huyen, C. (2022): Designing Machine Learning Systems. O\'Reilly Media'
   },
   {
-    sc: 'Beim Grob-Screening fällt der KI-Managerin auf, dass das Scoring-Modell neue Investitionsvorschläge aus einer Branche, die beim Training kaum vertreten war, auffällig oft falsch einordnet.',
-    q: 'Welche Aussagen zu Data Drift und Concept Drift treffen zu?',
-    opts: [
-      'Data Drift beschreibt eine Verschiebung in der Verteilung der Eingangsdaten — etwa wenn plötzlich viele Proposals aus einer beim Training kaum vertretenen Branche eintreffen',
-      'Concept Drift beschreibt, dass sich die Definition von „förderungswürdig" selbst verändert — etwa wenn das Investment-Komitee seine Bewertungskriterien anpasst und bisherige „gut"-Urteile des Modells dadurch überholt sind',
-      'Data Drift und Concept Drift sind zwei Bezeichnungen für denselben Effekt — die Unterscheidung ist rein akademisch und für die Praxis ohne Bedeutung',
-      'Drift tritt nur auf, wenn der zugrunde liegende Programmcode des Modells verändert wird — bei unverändertem Code bleibt die Modellleistung stets konstant'
-    ],
-    correct: [0,1],
-    exp: 'Data Drift bezeichnet eine Verschiebung in der Verteilung der Eingangsdaten — etwa eine neue Branchenzusammensetzung der eingehenden Proposals, die beim Training kaum vertreten war. Concept Drift bezeichnet dagegen, dass sich die Definition von „richtig" selbst ändert — etwa wenn das Investment-Komitee seine Bewertungsmaßstäbe anpasst und bisherige Modell-Urteile dadurch nicht mehr zur neuen Realität passen. Beide Phänomene sind klar unterscheidbar und erfordern unterschiedliche Reaktionen — sie als „dasselbe" zu behandeln, würde zu falschen Gegenmaßnahmen führen. Und Drift entsteht gerade unabhängig von Code-Änderungen — das ist der Kernunterschied zu klassischer Software, bei der ohne Code-Änderung nichts „altert".',
-    src: 'Google Cloud — MLOps: Continuous Delivery and Automation · cloud.google.com/architecture/mlops-continuous-delivery-and-automation-pipelines-in-machine-learning · Microsoft — MLOps Maturity Model · learn.microsoft.com/en-us/azure/architecture/ai-ml/guide/mlops-maturity-model'
-  },
-  {
-    sc: 'Markus Reiner schlägt vor, die Vorprüfung eingehender Förderunterlagen per Regelwerk zu automatisieren: feste Formularfelder, klar definierte Schwellenwerte, immer dasselbe Format.',
-    q: 'Welche Aussagen zur Abgrenzung von RPA und KI-Automatisierung treffen in diesem Fall zu?',
+    sc: 'Ein Teammitglied schlägt vor, die Vorprüfung eingehender Unterlagen per Regelwerk zu automatisieren: feste Formularfelder, klar definierte Schwellenwerte, immer dasselbe Format.',
+    q: 'Welche Aussage(n) zur Abgrenzung von RPA und KI-Automatisierung ist oder sind korrekt?',
     opts: [
       'Wenn die Aufgabe regelbasiert ist und ein Mensch sie anhand einer festen Schritt-für-Schritt-Anleitung erledigen könnte, ist RPA die naheliegende Wahl — sie arbeitet präzise mit strukturierten, formal konstanten Daten',
       'RPA lernt nicht aus neuen Beispielen und erkennt keine Muster in unstrukturierten Daten — ändert sich das Antragsformat grundlegend, muss das Regelwerk manuell angepasst werden',
@@ -235,12 +206,12 @@ a1: [
       'KI-Automatisierung ist grundsätzlich präziser als RPA, weil sie auf neuronalen Netzen basiert, die jede Eingabe korrekt verarbeiten'
     ],
     correct: [0,1],
-    exp: 'Wenn eine Aufgabe regelbasiert ist und mit konstantem Format arbeitet, ist RPA die naheliegende, präzise und transparente Wahl. RPA lernt jedoch nicht aus neuen Beispielen und erkennt keine Muster in unstrukturierten Daten — ändert sich das Format grundlegend, muss das Regelwerk manuell nachgepflegt werden, sonst bricht die Automatisierung. RPA ist gerade keine KI: Sie ist regelbasiert und nicht adaptiv — das ist der zentrale Abgrenzungspunkt. Und „grundsätzlich präziser, weil neuronale Netze jede Eingabe korrekt verarbeiten" beschreibt KI-Systeme unzutreffend — sie arbeiten probabilistisch und liefern keine Garantie auf Korrektheit.',
+    exp: 'Wenn eine Aufgabe regelbasiert ist und mit konstantem Format arbeitet, ist RPA die naheliegende, präzise und transparente Wahl. RPA lernt jedoch nicht aus neuen Beispielen und erkennt keine Muster in unstrukturierten Daten — ändert sich das Format grundlegend, muss das Regelwerk manuell nachgepflegt werden, sonst bricht die Automatisierung. RPA ist gerade keine KI: Sie ist regelbasiert und nicht adaptiv. Und „grundsätzlich präziser, weil neuronale Netze jede Eingabe korrekt verarbeiten" beschreibt KI-Systeme unzutreffend — sie arbeiten probabilistisch und liefern keine Korrektheit-Garantie.',
     src: 'UiPath — Was ist RPA? · uipath.com/de/rpa/robotic-process-automation · DeepLearning.AI — MLOps Specialization · deeplearning.ai/courses/machine-learning-engineering-for-production-mlops/'
   },
   {
-    sc: 'Bevor das neue Scoring-Modell produktiv geht, diskutiert das Team, wie der Wechsel vom alten zum neuen Modell ablaufen soll — und wie viel davon schiefgehen darf.',
-    q: 'Welche Aussagen zu den drei Deployment-Strategien Shadow Mode, Canary Release und Blue-Green sind korrekt?',
+    sc: 'Vor dem Go-Live diskutiert das Team, wie der Wechsel vom alten zum neuen Modell ablaufen soll — und wie viel davon schiefgehen darf.',
+    q: 'Welche Aussage(n) zu den drei Deployment-Strategien Shadow Mode, Canary Release und Blue-Green ist oder sind korrekt?',
     opts: [
       'Im Shadow Mode läuft das neue Modell parallel mit, seine Ausgaben werden aber nicht verwendet — das Risiko ist null, weil ausschließlich beobachtet wird',
       'Bei einem Canary Release erhält zunächst nur ein kleiner Anteil der Anfragen das neue Modell, der Anteil wird schrittweise erhöht — ein Rollback bedeutet lediglich, den Anteil wieder auf null zu setzen',
@@ -248,12 +219,12 @@ a1: [
       'Die Wahl der Deployment-Strategie ist eine rein technische Entscheidung der IT-Abteilung — das Risikoprofil des jeweiligen Anwendungsfalls spielt dabei keine Rolle'
     ],
     correct: [0,1,2],
-    exp: 'Shadow Mode beobachtet risikofrei, weil die Ausgaben des neuen Modells nicht verwendet werden. Ein Canary Release startet mit einem kleinen Traffic-Anteil, der schrittweise erhöht wird — ein Rollback bedeutet, diesen Anteil wieder auf null zu setzen, was technisch einfach ist. Blue-Green schaltet zwischen zwei vollständigen Umgebungen sofort und vollständig um — das spart Übergangszeit, bringt aber ein mittleres Risiko und höhere Infrastrukturkosten mit sich. Die Wahl der Strategie ist daher keine rein technische Frage, sondern hängt unmittelbar vom Risikoprofil des jeweiligen Anwendungsfalls ab — eine pauschal „bequeme" Standardwahl gibt es nicht.',
+    exp: 'Shadow Mode beobachtet risikofrei, weil die Ausgaben des neuen Modells nicht verwendet werden. Ein Canary Release startet mit einem kleinen Traffic-Anteil, der schrittweise erhöht wird — ein Rollback bedeutet, diesen Anteil wieder auf null zu setzen, was technisch einfach ist. Blue-Green schaltet zwischen zwei vollständigen Umgebungen sofort und vollständig um — das spart Übergangszeit, bringt aber ein mittleres Risiko und höhere Infrastrukturkosten. Die Wahl der Strategie ist keine rein technische Frage, sondern hängt unmittelbar vom Risikoprofil des Anwendungsfalls ab.',
     src: 'Microsoft — MLOps Maturity Model · learn.microsoft.com/en-us/azure/architecture/ai-ml/guide/mlops-maturity-model · Google Cloud — MLOps: Continuous Delivery and Automation · cloud.google.com/architecture/mlops-continuous-delivery-and-automation-pipelines-in-machine-learning'
   },
   {
-    sc: 'Vor dem Go-Live des Scoring-Modells legt die KI-Managerin dem Investment-Komitee eine Checkliste vor, die vor jeder Produktivsetzung durchlaufen werden soll.',
-    q: 'Welche Punkte gehören laut Produktivsetzungs-Checkliste zu den Mindestvoraussetzungen vor einem Go-Live?',
+    sc: 'Vor dem Go-Live legt die KI-Managerin dem Steuerungskomitee eine Checkliste vor, die vor jeder Produktivsetzung durchlaufen werden soll.',
+    q: 'Welche Aussage(n) zu den Mindestvoraussetzungen vor einem KI-Go-Live ist oder sind korrekt?',
     opts: [
       'Eine Modell-Dokumentation im Model Registry — mit Version, Datenbasis und Performance-Kennzahlen',
       'Eine definierte Performance-Baseline mit der Frage, ab welcher Abweichung automatisch ein Alert ausgelöst wird',
@@ -261,85 +232,29 @@ a1: [
       'Eine Garantie, dass das Modell ab dem Go-Live keine Fehler mehr produziert — andernfalls darf die Produktivsetzung nicht erfolgen'
     ],
     correct: [0,1,2],
-    exp: 'Modell-Dokumentation, Performance-Baseline und Rollback-Plan zählen zu den Mindestpunkten, die vor jedem Go-Live geklärt sein sollten — ohne sie fehlt die Grundlage, um Abweichungen zu erkennen und im Ernstfall geordnet zurückzuschalten. Die Vorstellung, ein Modell könne ab dem Go-Live fehlerfrei arbeiten, widerspricht der Grunderkenntnis, dass es 100-%-Genauigkeit in der Praxis nicht gibt — die eigentliche Frage ist, ob die verbleibenden Fehler beherrschbar sind und etwa durch Human-in-the-Loop aufgefangen werden, nicht, ob sie vollständig ausgeschlossen werden können.',
+    exp: 'Modell-Dokumentation, Performance-Baseline und Rollback-Plan sind Mindestpunkte, die vor jedem Go-Live geklärt sein sollten — ohne sie fehlt die Grundlage, um Abweichungen zu erkennen und im Ernstfall geordnet zurückzuschalten. Die Vorstellung, ein Modell könne ab dem Go-Live fehlerfrei arbeiten, widerspricht der Grunderkenntnis, dass 100-%-Genauigkeit in der Praxis nicht existiert — die eigentliche Frage ist, ob die verbleibenden Fehler beherrschbar sind und z. B. durch Human-in-the-Loop aufgefangen werden, nicht, ob sie vollständig ausgeschlossen werden können.',
     src: 'Google Cloud — MLOps: Continuous Delivery and Automation · cloud.google.com/architecture/mlops-continuous-delivery-and-automation-pipelines-in-machine-learning · Huyen, C. (2022): Designing Machine Learning Systems. O\'Reilly Media'
-  },
+  }
 ],
 
-/* ─── KI-Manager:in · Fortgeschrittene · 1r,2r,2r,3r,3r ─── */
-a2: [
+/* ─── Externe KI-Auditorin · 2r,1r,2r,3r,3r ─── */
+b: [
   {
-    sc: 'Die KI-Managerin lässt sich von der Data-Science-Abteilung erklären, mit welcher Methode sich eine schleichende Verschiebung der Branchenverteilung in den eingehenden Proposals am zuverlässigsten quantitativ nachweisen lässt.',
-    q: 'Welche Aussage zu Methoden der Drift-Erkennung trifft zu?',
+    sc: 'Die Auditorin fragt nach, woran das Team eigentlich erkennen würde, dass das Scoring-Modell schlechter arbeitet als zum Zeitpunkt der Freigabe.',
+    q: 'Welche Aussage(n) zur Funktion einer Performance-Baseline ist oder sind korrekt?',
     opts: [
-      'Der Population Stability Index (PSI) misst die Verteilungsverschiebung von Eingabewerten und liefert mit Schwellenwerten wie „PSI unter 0,1 = stabil" bzw. „über 0,25 = kritisch" eine handhabbare Management-Kennzahl',
-      'Der Kolmogorov-Smirnov-Test (KS-Test) misst, wie viele Investitionsvorschläge das Modell durchschnittlich pro Tag verarbeitet — also die reine Systemauslastung',
-      'Feature Importance Tracking zeigt an, wie viele Mitarbeitende täglich auf das Modell zugreifen, und warnt bei ungewöhnlichem Nutzungsverhalten',
-      'Alle drei Methoden — PSI, KS-Test und Feature Importance Tracking — messen exakt denselben Sachverhalt und unterscheiden sich nur in der Berechnungsformel'
-    ],
-    correct: [0],
-    exp: 'Der Population Stability Index liefert mit klaren Schwellenwerten (etwa „unter 0,1 stabil", „über 0,25 kritisch") eine Kennzahl, die sich auch im Management gut kommunizieren lässt. Der Kolmogorov-Smirnov-Test ist dagegen ein formeller statistischer Signifikanztest für den Abstand zweier Verteilungen — er misst keine Nutzungszahlen oder Auslastung. Feature Importance Tracking beobachtet, welche Merkmale das Modell tatsächlich für seine Entscheidungen heranzieht, und schlägt bei unerwarteten Gewichtsverschiebungen Alarm — auch das hat nichts mit Zugriffszahlen zu tun. Die drei Methoden messen damit unterschiedliche Aspekte von Drift — Verteilungsverschiebung, statistische Signifikanz, Merkmalsgewichtung — und sind keineswegs austauschbare Varianten derselben Messung.',
-    src: 'Huyen, C. (2022): Designing Machine Learning Systems. O\'Reilly Media · Google Cloud — MLOps: Continuous Delivery and Automation · cloud.google.com/architecture/mlops-continuous-delivery-and-automation-pipelines-in-machine-learning'
-  },
-  {
-    sc: 'Das Investment-Komitee fragt, warum die KI-Managerin für den Wechsel auf das neue Scoring-Modell nicht einfach sofort komplett umschaltet, sondern einen mehrstufigen Plan vorschlägt.',
-    q: 'Welche Aussagen zur Abwägung zwischen Shadow Mode, Canary Release und Blue-Green sind korrekt?',
-    opts: [
-      'Shadow Mode eignet sich besonders, um vor jeder Risikoübernahme erste Erkenntnisse über das Verhalten des neuen Modells im echten Betrieb zu sammeln, ohne dass dessen Ausgaben bereits Wirkung entfalten',
-      'Ein Canary Release ermöglicht es, Probleme an einem kleinen Anteil der Fälle zu erkennen und den Rollout zu stoppen, bevor die gesamte Organisation betroffen ist — der Rollback ist vergleichsweise einfach',
-      'Blue-Green ist in jedem Fall die sicherste Strategie, weil zwei vollständige Umgebungen parallel existieren und somit kein Risiko entstehen kann',
-      'Je risikoärmer eine Strategie ist, desto geringer sind grundsätzlich auch ihre Infrastrukturkosten — Shadow Mode ist daher in jedem Szenario die wirtschaftlichste Wahl'
+      'Eine Baseline legt fest, welches Leistungsniveau als „normal" gilt — Abweichungen davon können dann als Signal für Drift oder andere Probleme erkannt werden',
+      'Ohne dokumentierte Baseline lässt sich kaum objektiv beurteilen, ob ein Alert auf eine reale Verschlechterung hinweist oder ob es sich um normale Schwankungen handelt',
+      'Eine Baseline ist ein einmal festgelegter Wert, der für die gesamte Lebensdauer eines Modells unverändert gültig bleibt',
+      'Baselines sind ausschließlich für hochregulierte Branchen wie Banken oder Versicherungen relevant — für alle anderen Branchen sind sie verzichtbar'
     ],
     correct: [0,1],
-    exp: 'Shadow Mode liefert risikofreie erste Erkenntnisse, bevor das neue Modell überhaupt Wirkung entfaltet — ein sinnvoller erster Schritt vor jeder Risikoübernahme. Ein Canary Release macht Probleme an einem kleinen, kontrollierbaren Anteil sichtbar und erlaubt einen einfachen Rollback, bevor die gesamte Organisation betroffen ist. Dass Blue-Green „in jedem Fall am sichersten" sei, widerspricht der Einordnung als Strategie mit mittlerem Risiko und höheren Infrastrukturkosten — die sofortige vollständige Umschaltung lässt gerade keinen schrittweisen Lerneffekt zu. Und die Annahme, risikoärmere Strategien seien automatisch auch die günstigeren, geht an der Realität vorbei: Der Parallelbetrieb im Shadow Mode erzeugt selbst zusätzliche Infrastrukturkosten — die Wahl ist eine Abwägung zwischen Risiko, Kosten und Geschwindigkeit, kein Automatismus.',
+    exp: 'Eine Baseline beschreibt, welches Leistungsniveau als „normal" gilt — sie macht Abweichungen erst erkennbar und einordnbar. Ohne sie lässt sich kaum unterscheiden, ob ein auffälliger Wert eine reale Verschlechterung anzeigt oder schlicht im Bereich gewöhnlicher Schwankungen liegt. Eine Baseline ist jedoch kein für immer fixierter Wert — sie muss überprüft und bei Bedarf neu gesetzt werden, etwa wenn sich die Datengrundlage oder die Bewertungskriterien selbst ändern. Und Baselines sind keineswegs auf hochregulierte Branchen beschränkt — sie sind ein grundlegendes Werkzeug für jedes produktiv betriebene ML-System.',
     src: 'Microsoft — MLOps Maturity Model · learn.microsoft.com/en-us/azure/architecture/ai-ml/guide/mlops-maturity-model · Huyen, C. (2022): Designing Machine Learning Systems. O\'Reilly Media'
   },
   {
-    sc: 'In einer Retrospektive berichtet ein Analyst, das neue Scoring-Modell habe ihm bei zwei Proposals „offensichtlich falsche" Einstufungen geliefert — er traue dem System grundsätzlich nicht.',
-    q: 'Welche Aussagen zu den drei Widerstandsformen und ihren Gegenmaßnahmen treffen zu?',
-    opts: [
-      'Die geschilderte Reaktion lässt sich als rationaler Widerstand einordnen — eine geeignete Gegenmaßnahme ist, Fehlerquoten transparent zu kommunizieren und Mitarbeitende aktiv in die Fehleranalyse einzubinden',
-      'Emotionaler Widerstand äußert sich eher in Aussagen wie „Das nimmt mir meinen Job" — hier hilft frühe, klare Kommunikation und die Positionierung der Mitarbeitenden als Supervisor:innen der KI (Human-in-the-Loop)',
-      'Politischer Widerstand entsteht ausschließlich bei Mitarbeitenden auf operativer Ebene — Führungskräfte und Investment-Komitee sind von dieser Widerstandsform grundsätzlich ausgenommen',
-      'Wenn alle drei Widerstandsformen gleichzeitig auftreten, ist eine Produktivsetzung grundsätzlich abzubrechen — eine parallele Bearbeitung ist nicht möglich'
-    ],
-    correct: [0,1],
-    exp: 'Die Aussage „Das funktioniert nicht — ich sehe die Fehler" ist das Lehrbuchbeispiel für rationalen Widerstand — hier helfen Transparenz über Fehlerquoten und die aktive Einbindung in die Fehleranalyse, etwa über einen vorgeschalteten Shadow-Mode-Zeitraum. „Das nimmt mir meinen Job" ist dagegen die typische Formulierung für emotionalen Widerstand — hier wirken frühe, klare Kommunikation und die Positionierung der Mitarbeitenden als Supervisor:innen der KI. Politischer Widerstand („über unsere Köpfe entschieden") ist nicht auf operative Ebenen beschränkt — er kann ebenso in Führungsgremien wie einem Investment-Komitee auftreten, wenn Entscheidungswege als intransparent erlebt werden. Und die drei Formen treten in der Praxis häufig gleichzeitig auf; sie lassen sich mit jeweils passenden Maßnahmen parallel bearbeiten — ein pauschaler Abbruch der Produktivsetzung ist weder notwendig noch als Regelreaktion vorgesehen.',
-    src: 'Kotter, J. P. (1996): Leading Change. Harvard Business School Press · Prosci — ADKAR Model · prosci.com/methodology/adkar'
-  },
-  {
-    sc: 'Markus schlägt vor, für die Vorprüfung von Förderunterlagen nicht alles neu zu bauen, sondern auf die im Haus bereits vorhandene RPA-Infrastruktur aufzusetzen und sie um KI-Funktionen zu ergänzen.',
-    q: 'Welche Aussagen zum hybriden Ansatz von Plattformen wie UiPath treffen zu?',
-    opts: [
-      'Funktionen wie Document Understanding nutzen KI, um Daten aus unstrukturierten, variabel formatierten Dokumenten zu extrahieren — eine Aufgabe, an der klassische, rein regelbasierte RPA scheitern würde',
-      'Ein Action Center kann unsichere Fälle automatisch an Menschen eskalieren — eine konkrete Umsetzung des Prinzips Human-in-the-Loop',
-      'Für Unternehmen mit etablierter RPA-Infrastruktur kann ein hybrider Ansatz oft der schnellste Einstieg in KI-Automatisierung sein, weil KI-Funktionen modular ergänzt statt komplett neu aufgebaut werden',
-      'Sobald eine RPA-Plattform um KI-Funktionen erweitert wird, verschwinden die typischen RPA-Schwächen — etwa die Fragilität bei sich ändernden Formaten — vollständig'
-    ],
-    correct: [0,1,2],
-    exp: 'Document Understanding nutzt KI, um Daten aus unstrukturierten, variabel formatierten Dokumenten zu extrahieren — eine Aufgabe, an der klassische, rein regelbasierte RPA scheitern würde. Ein Action Center setzt das Prinzip Human-in-the-Loop technisch um, indem es unsichere Fälle automatisch an Menschen weiterleitet. Und für Unternehmen mit etablierter RPA-Basis ist die modulare Ergänzung um KI-Funktionen oft der schnellste, risikoärmste Einstieg, weil nicht alles neu aufgebaut werden muss. Die Vorstellung, eine solche Erweiterung lasse die typischen RPA-Schwächen „vollständig verschwinden", greift jedoch zu kurz: Die hinzukommenden KI-Komponenten bringen eigene Anforderungen mit — etwa Drift-Monitoring und Retraining —, die die Wartungsfrage nicht lösen, sondern in eine neue Form überführen.',
-    src: 'UiPath — Intelligent Document Processing · uipath.com/platform/agentic-automation/idp · UiPath — Was ist RPA? · uipath.com/de/rpa/robotic-process-automation'
-  },
-  {
-    sc: 'Nach der Einführung mehrerer KI-gestützter Automatisierungen weist ein externer Sicherheitsbericht darauf hin, dass Unternehmen mit zunehmendem Agenteneinsatz eine wachsende Angriffsfläche aufbauen — und dass Angreifer KI mittlerweile nutzen, um Schwachstellen schneller zu finden, als Verteidiger sie schließen können.',
-    q: 'Welche Schlussfolgerungen für die Produktivsetzung bei AIktiv-Invest lassen sich daraus ziehen?',
-    opts: [
-      'Sicherheit ist kein nachgelagertes IT-Thema, sondern gehört in dieselbe Produktivsetzungs-Checkliste wie Drift-Monitoring, Rollback-Plan und Human-Review-Prozess',
-      'Je mehr automatisierte Prozesse — RPA-Bots wie KI-Agenten — produktiv laufen, desto wichtiger wird die Frage, wer im Unternehmen für deren laufende Überwachung und Absicherung verantwortlich ist',
-      'Die Geschwindigkeit, mit der Schwachstellen heute gefunden werden, spricht dafür, Sicherheitsprüfungen nicht als einmaligen Vorab-Check, sondern als kontinuierlichen Bestandteil des Betriebs zu verstehen',
-      'Da Sicherheitsrisiken vor allem große Tech-Konzerne betreffen, kann ein kleiner VC-Fonds wie AIktiv-Invest dieses Thema in der Produktivsetzungsplanung nachrangig behandeln'
-    ],
-    correct: [0,1,2],
-    exp: 'Sicherheit gehört aus genau diesem Grund auf dieselbe Checkliste wie Drift-Monitoring, Rollback-Plan und Human-Review-Prozess — sie ist kein nachgelagertes IT-Detail, sondern Teil der Produktivsetzungsreife. Mit jedem zusätzlichen automatisierten Prozess — ob RPA-Bot oder KI-Agent — wächst die Fläche, die laufend beobachtet und abgesichert werden muss, und damit auch die Frage, wer dafür zuständig ist. Die beschriebene Geschwindigkeit, mit der neue Schwachstellen auftauchen, spricht dafür, Sicherheitsprüfungen als kontinuierlichen Bestandteil des Betriebs zu verstehen statt als einmaligen Haken vor dem Go-Live. Und die Annahme, das Thema betreffe vor allem große Konzerne, widerspricht gerade der zugrunde liegenden Asymmetrie-These: Angreifer brauchen nur einmal Erfolg zu haben — kleinere Organisationen sind davon nicht ausgenommen, oft sogar schlechter abgesichert.',
-    src: 'The Economist — „AI has to fight AI" (Mai 2026) · economist.com/science-and-technology · Google Cloud — MLOps: Continuous Delivery and Automation · cloud.google.com/architecture/mlops-continuous-delivery-and-automation-pipelines-in-machine-learning'
-  },
-],
-
-/* ─── Externe KI-Auditorin · Anfänger · 1r,2r,2r,3r,3r ─── */
-b1: [
-  {
-    sc: 'Die externe KI-Auditorin bittet AIktiv-Invest vor ihrem ersten Termin um Einsicht in die Dokumentation des Scoring-Modells für das Grob-Screening.',
-    q: 'Welche Aussage beschreibt am treffendsten, was eine prüffähige Modell-Dokumentation aus Audit-Sicht mindestens enthalten sollte?',
+    sc: 'Die Auditorin bittet vor ihrem ersten Termin um Einsicht in die Dokumentation des Scoring-Modells.',
+    q: 'Welche Aussage(n) zu einer prüffähigen Modell-Dokumentation ist oder sind korrekt?',
     opts: [
       'Angaben zu Modellversion, verwendeter Datenbasis, Trainingsdatum und Performance-Kennzahlen — eingetragen in einem nachvollziehbaren Model Registry',
       'Eine allgemeine Beschreibung der Unternehmensvision sowie ein Organigramm der beteiligten Abteilungen — technische Details sind für ein Audit nicht relevant',
@@ -347,25 +262,12 @@ b1: [
       'Es genügt die mündliche Zusicherung der KI-Managerin, dass das Modell „gut funktioniert" — eine schriftliche Dokumentation ist für interne Systeme nicht erforderlich'
     ],
     correct: [0],
-    exp: 'Eine prüffähige Modell-Dokumentation muss konkrete, nachvollziehbare Angaben enthalten — Version, Datenbasis, Trainingsdatum und Performance-Kennzahlen, eingetragen in einem Model Registry, das diese Informationen über die Zeit zugänglich hält. Eine allgemeine Unternehmensbeschreibung oder ein Organigramm mögen Kontext liefern, ersetzen aber nicht die technische Nachvollziehbarkeit, auf die ein Audit angewiesen ist. Eine vollständige Liste aller jemals Zugriffsberechtigten ohne Bezug zur tatsächlichen Nutzung liefert ebenfalls keine Aussage über die Qualität des Modells. Und eine mündliche Zusicherung ersetzt keine Dokumentation — gerade weil Auditierbarkeit verlangt, dass Modell-Version, Datenbasis und Trainingsdatum nachvollziehbar und überprüfbar festgehalten sind.',
+    exp: 'Eine prüffähige Modell-Dokumentation muss konkrete, nachvollziehbare Angaben enthalten — Version, Datenbasis, Trainingsdatum und Performance-Kennzahlen, eingetragen in einem Model Registry, das diese Informationen über die Zeit zugänglich hält. Eine allgemeine Unternehmensbeschreibung oder ein Organigramm liefern Kontext, ersetzen aber nicht die technische Nachvollziehbarkeit. Eine vollständige Liste aller Zugriffsberechtigten ohne Bezug zur tatsächlichen Nutzung liefert keine Aussage über die Qualität des Modells. Und eine mündliche Zusicherung ersetzt keine Dokumentation.',
     src: 'Google Cloud — MLOps: Continuous Delivery and Automation · cloud.google.com/architecture/mlops-continuous-delivery-and-automation-pipelines-in-machine-learning · ISO/IEC 42001:2023 — AI management systems · iso.org/standard/81230.html'
   },
   {
-    sc: 'Die Auditorin fragt nach, woran das Team eigentlich erkennen würde, dass das Scoring-Modell schlechter arbeitet als zum Zeitpunkt der Freigabe.',
-    q: 'Welche Aussagen zur Funktion einer Performance-Baseline treffen zu?',
-    opts: [
-      'Eine Baseline legt fest, welches Leistungsniveau als „normal" gilt — Abweichungen davon können dann als Signal für Drift oder andere Probleme erkannt werden',
-      'Ohne dokumentierte Baseline lässt sich kaum objektiv beurteilen, ob ein Alert auf eine reale Verschlechterung hinweist oder ob es sich um normale Schwankungen handelt',
-      'Eine Baseline ist ein einmal festgelegter Wert, der für die gesamte Lebensdauer eines Modells unverändert gültig bleibt',
-      'Baselines sind ausschließlich für hochregulierte Branchen wie Banken oder Versicherungen vorgeschrieben — für einen VC-Fonds sind sie verzichtbar'
-    ],
-    correct: [0,1],
-    exp: 'Eine Baseline beschreibt, welches Leistungsniveau als „normal" gilt — sie macht Abweichungen erst erkennbar und einordnbar. Ohne sie lässt sich kaum unterscheiden, ob ein auffälliger Wert eine reale Verschlechterung anzeigt oder schlicht im Bereich gewöhnlicher Schwankungen liegt. Eine Baseline ist jedoch kein für immer fixierter Wert — sie muss überprüft und bei Bedarf neu gesetzt werden, etwa wenn sich die Datengrundlage oder die Bewertungskriterien selbst ändern (Stichwort Concept Drift). Und Baselines sind keineswegs auf hochregulierte Branchen beschränkt — sie sind ein grundlegendes Werkzeug für jedes produktiv betriebene ML-System, unabhängig von der Branche.',
-    src: 'Microsoft — MLOps Maturity Model · learn.microsoft.com/en-us/azure/architecture/ai-ml/guide/mlops-maturity-model · Huyen, C. (2022): Designing Machine Learning Systems. O\'Reilly Media'
-  },
-  {
-    sc: 'Die Auditorin möchte wissen, was passiert, wenn das Scoring-Modell sich bei einem Investitionsvorschlag „unsicher" ist — etwa weil die Bewertung knapp zwischen zwei Kategorien liegt.',
-    q: 'Welche Aussagen zum Human-Review-Prozess sind aus Prüf-Sicht zutreffend?',
+    sc: 'Die Auditorin möchte wissen, was passiert, wenn das Scoring-Modell sich bei einem Fall „unsicher" ist — etwa weil die Bewertung knapp zwischen zwei Kategorien liegt.',
+    q: 'Welche Aussage(n) zum Human-Review-Prozess aus Prüf-Sicht ist oder sind korrekt?',
     opts: [
       'Ein dokumentierter Human-Review-Prozess legt fest, wer Low-Confidence-Fälle übernimmt — und ist damit ein zentraler Baustein der Produktivsetzungs-Checkliste',
       'Human-in-the-Loop bedeutet, dass Mitarbeitende die Rolle von Supervisor:innen der KI einnehmen — eine strukturelle Antwort auf die Tatsache, dass auch ein gut funktionierendes Modell nicht zu 100 % korrekt urteilt',
@@ -373,12 +275,12 @@ b1: [
       'Human-Review-Prozesse dienen in erster Linie dazu, den Mitarbeitenden das Gefühl zu geben, gebraucht zu werden — einen fachlichen Mehrwert haben sie nicht'
     ],
     correct: [0,1],
-    exp: 'Ein dokumentierter Human-Review-Prozess legt fest, wer Fälle mit geringer Modell-Sicherheit übernimmt — und ist damit explizit Teil der Produktivsetzungs-Checkliste. Human-in-the-Loop bedeutet, dass Menschen die Rolle von Supervisor:innen einnehmen — eine strukturelle Antwort darauf, dass auch ein gut funktionierendes Modell keine 100-prozentige Trefferquote erreicht. Eine Trefferquote von über 90 % macht einen solchen Prozess nicht überflüssig — im Gegenteil, je automatisierter ein Prozess, desto wichtiger wird die Frage, wer die verbleibenden Grenzfälle auffängt. Und Human-Review-Prozesse haben einen klaren fachlichen Mehrwert: Sie fangen genau die Fälle auf, in denen das Modell an seine Grenzen stößt — sie sind kein reines Akzeptanz-Placebo.',
+    exp: 'Ein dokumentierter Human-Review-Prozess legt fest, wer Fälle mit geringer Modell-Sicherheit übernimmt — und ist damit explizit Teil der Produktivsetzungs-Checkliste. Human-in-the-Loop bedeutet, dass Menschen die Rolle von Supervisor:innen einnehmen — eine strukturelle Antwort darauf, dass auch ein gut funktionierendes Modell keine 100-prozentige Trefferquote erreicht. Eine Trefferquote von über 90 % macht einen solchen Prozess nicht überflüssig — im Gegenteil, gerade bei hochautomatisierten Prozessen ist die Frage wichtig, wer die verbleibenden Grenzfälle auffängt. Human-Review-Prozesse haben einen klaren fachlichen Mehrwert und sind kein Akzeptanz-Placebo.',
     src: 'Google Cloud — MLOps: Continuous Delivery and Automation · cloud.google.com/architecture/mlops-continuous-delivery-and-automation-pipelines-in-machine-learning · UiPath — Intelligent Document Processing · uipath.com/platform/agentic-automation/idp'
   },
   {
-    sc: 'Vor ihrem Abschlussgespräch geht die Auditorin die Produktivsetzungs-Checkliste von AIktiv-Invest Punkt für Punkt durch und notiert, wo sie noch Nachweise einfordern will.',
-    q: 'Welche der folgenden Punkte gehören aus Prüf-Sicht zwingend zur Bewertung der Produktivsetzungsreife?',
+    sc: 'Vor ihrem Abschlussgespräch geht die Auditorin die Produktivsetzungs-Checkliste Punkt für Punkt durch und notiert, wo sie noch Nachweise einfordern will.',
+    q: 'Welche Aussage(n) zu den Punkten, die aus Prüf-Sicht zwingend zur Produktivsetzungsreife gehören, ist oder sind korrekt?',
     opts: [
       'Compliance-Freigabe — ist die DSGVO-Konformität, die EU-AI-Act-Risikoklasse und ggf. eine aufsichtsrechtliche Prüfung dokumentiert?',
       'Schulung — sind alle Nutzer:innen darin geschult, wie sie auf unerwartete Modell-Ausgaben reagieren sollen?',
@@ -386,97 +288,29 @@ b1: [
       'Die Lieblingsfarbe der Projektleitung — relevante Information, um die Akzeptanz im Team einzuschätzen'
     ],
     correct: [0,1,2],
-    exp: 'Eine dokumentierte Compliance-Freigabe (DSGVO, EU-AI-Act-Risikoklasse, ggf. aufsichtsrechtliche Prüfung), ein nachweisbarer Schulungsstand der Nutzer:innen und ein definierter Incident-Response-Plan mit klarer Eskalationskette sind aus Prüf-Sicht zentrale Bausteine, weil sie zeigen, ob eine Organisation auf den realen Betrieb — inklusive Störungen und regulatorischer Anforderungen — vorbereitet ist. Persönliche Vorlieben Einzelner sagen dagegen nichts über die Produktivsetzungsreife aus und gehören nicht zu den Kriterien einer sachlichen Prüfung.',
+    exp: 'Eine dokumentierte Compliance-Freigabe (DSGVO, EU-AI-Act-Risikoklasse, ggf. aufsichtsrechtliche Prüfung), ein nachweisbarer Schulungsstand der Nutzer:innen und ein definierter Incident-Response-Plan mit klarer Eskalationskette sind aus Prüf-Sicht zentrale Bausteine — sie zeigen, ob eine Organisation auf den realen Betrieb inklusive Störungen und regulatorischer Anforderungen vorbereitet ist. Persönliche Vorlieben Einzelner sagen dagegen nichts über die Produktivsetzungsreife aus.',
     src: 'ISO/IEC 42001:2023 — AI management systems · iso.org/standard/81230.html · DSGVO Art. 5 + Art. 6 · gdpr-info.eu/art-6-gdpr/'
   },
   {
-    sc: 'Die Auditorin erläutert dem Investment-Komitee, warum sie ihre Bewertung nicht „aus dem Bauch heraus" trifft, sondern sich an einem anerkannten Rahmenwerk für KI-Managementsysteme orientiert.',
-    q: 'Welche Aussagen zur Rolle von Normen wie ISO 42001 in einem KI-Audit treffen zu?',
+    sc: 'Die Auditorin erläutert dem Steuerungskomitee, warum sie ihre Bewertung nicht aus dem Bauch heraus trifft, sondern sich an einem anerkannten Rahmenwerk für KI-Managementsysteme orientiert.',
+    q: 'Welche Aussage(n) zur Rolle von Normen wie ISO 42001 in einem KI-Audit ist oder sind korrekt?',
     opts: [
       'Ein Rahmenwerk wie ISO 42001 gibt vor, welche Prozesse — etwa Risikobewertung, Dokumentation und Überwachung — ein Unternehmen rund um seine KI-Systeme nachweisbar etabliert haben sollte',
       'Eine Orientierung an anerkannten Normen macht die Bewertung der Auditorin nachvollziehbarer und vergleichbarer, als wenn jede Prüfung nach individuellen, nicht offengelegten Kriterien erfolgen würde',
-      'Auch wenn AIktiv-Invest nicht gesetzlich zur Zertifizierung verpflichtet ist, kann die Orientierung an einer solchen Norm helfen, sich auf künftige regulatorische Anforderungen vorzubereiten',
+      'Auch wenn ein Unternehmen nicht gesetzlich zur Zertifizierung verpflichtet ist, kann die Orientierung an einer solchen Norm helfen, sich auf künftige regulatorische Anforderungen vorzubereiten',
       'Eine Zertifizierung nach einer solchen Norm bedeutet automatisch, dass das geprüfte KI-System fehlerfrei arbeitet und keiner weiteren Kontrolle mehr bedarf'
     ],
     correct: [0,1,2],
-    exp: 'Rahmenwerke wie ISO 42001 machen konkret, welche Prozesse — etwa Risikobewertung, Dokumentation, Überwachung — ein Unternehmen rund um seine KI-Systeme nachweisbar etablieren sollte, und geben einer Prüfung damit eine gemeinsame, nachvollziehbare Bezugsgröße. Das macht Bewertungen vergleichbarer und nachvollziehbarer, als wenn jede Auditorin nach eigenen, nicht offengelegten Maßstäben urteilen würde. Auch ohne gesetzliche Zertifizierungspflicht kann die Orientierung an einer solchen Norm helfen, sich frühzeitig auf kommende regulatorische Anforderungen einzustellen. Eine Zertifizierung ist jedoch kein Freibrief: Sie bestätigt, dass bestimmte Prozesse nachweislich etabliert sind — sie garantiert nicht, dass das System fehlerfrei arbeitet oder künftig keiner Kontrolle mehr bedarf.',
+    exp: 'Rahmenwerke wie ISO 42001 machen konkret, welche Prozesse — Risikobewertung, Dokumentation, Überwachung — ein Unternehmen rund um seine KI-Systeme nachweisbar etablieren sollte, und geben einer Prüfung damit eine gemeinsame, nachvollziehbare Bezugsgröße. Das macht Bewertungen vergleichbarer als Prüfungen nach individuellen, nicht offengelegten Maßstäben. Auch ohne gesetzliche Zertifizierungspflicht hilft die Orientierung, sich frühzeitig auf kommende regulatorische Anforderungen einzustellen. Eine Zertifizierung ist jedoch kein Freibrief: Sie bestätigt, dass bestimmte Prozesse nachweislich etabliert sind — sie garantiert nicht, dass das System fehlerfrei arbeitet oder keiner weiteren Kontrolle bedarf.',
     src: 'ISO/IEC 42001:2023 — AI management systems · iso.org/standard/81230.html · TÜV Rheinland — Harmonisierte Normen im AI Act · consulting.tuv.com/aktuelles/ki-im-fokus/harmonisierte-normen-ai-act'
-  },
-],
-
-/* ─── Externe KI-Auditorin · Fortgeschrittene · 2r,3r,3r,3r,2r ─── */
-b2: [
-  {
-    sc: 'Die Auditorin verlangt Einsicht in das Monitoring-Konzept für das Scoring-Modell — nicht nur in die Dashboards selbst, sondern in die Prozesse dahinter.',
-    q: 'Welche Fragen würde eine sorgfältige Auditorin zum Drift-Monitoring von AIktiv-Invest stellen?',
-    opts: [
-      'Mit welchem Intervall wird auf Drift geprüft, und wer erhält den Alert, wenn ein Schwellenwert wie ein PSI über 0,25 überschritten wird?',
-      'Was passiert konkret nach einem Drift-Alert — wird automatisch ein Retraining angestoßen, eine Person informiert, oder beides?',
-      'Wie viele Gigabyte Speicherplatz das Monitoring-Dashboard insgesamt belegt — das ist die zentrale Kennzahl für ein funktionierendes Monitoring',
-      'Ob das Monitoring-Tool optisch zum Corporate Design von AIktiv-Invest passt — Konsistenz im Erscheinungsbild ist das wichtigste Prüfkriterium'
-    ],
-    correct: [0,1],
-    exp: 'Eine sorgfältige Prüfung fragt nach dem konkreten Ablauf: in welchem Intervall auf Drift geprüft wird, welche Schwellenwerte (etwa ein PSI-Wert) einen Alert auslösen, wer diesen Alert erhält und was anschließend passiert — automatisches Retraining, menschliche Prüfung oder beides. Speicherplatzverbrauch oder das optische Erscheinungsbild eines Dashboards sagen dagegen nichts darüber aus, ob Drift zuverlässig erkannt und bearbeitet wird — das sind keine sachgerechten Prüfkriterien für ein Monitoring-Konzept.',
-    src: 'Google Cloud — MLOps: Continuous Delivery and Automation · cloud.google.com/architecture/mlops-continuous-delivery-and-automation-pipelines-in-machine-learning · Huyen, C. (2022): Designing Machine Learning Systems. O\'Reilly Media'
-  },
-  {
-    sc: 'Die Auditorin bittet um den Rollback-Plan für das Scoring-Modell — und stellt fest, dass dort lediglich steht: „Bei Problemen schalten wir notfalls auf das alte Modell zurück."',
-    q: 'Welche Kriterien würde die Auditorin an diesem Punkt zu Recht nachschärfen?',
-    opts: [
-      'Wer konkret die Entscheidung zum Rollback trifft — und ob diese Person auch außerhalb der regulären Arbeitszeiten erreichbar und entscheidungsbefugt ist',
-      'In welcher Zeitspanne ein Rollback technisch durchführbar ist — und ob diese Zeitspanne in einem Test nachweislich eingehalten wurde',
-      'Auf welche konkrete Vorgängerversion zurückgeschaltet wird — und ob diese Version selbst noch lauffähig, dokumentiert und in einem bekannten Zustand ist',
-      'Ob der Rollback-Plan in einer ansprechenden Formatierung vorliegt — der formale Aufbau des Dokuments ist das entscheidende Prüfkriterium'
-    ],
-    correct: [0,1,2],
-    exp: 'Ein Satz wie „im Notfall zurückschalten" beantwortet keine der entscheidenden Fragen: Wer trifft die Entscheidung — auch außerhalb der Kernarbeitszeiten und mit der nötigen Befugnis? In welcher nachweislich getesteten Zeitspanne ist ein Rollback technisch durchführbar? Und auf welche konkrete, selbst noch lauffähige und dokumentierte Vorgängerversion wird zurückgeschaltet? Erst diese drei Angaben machen aus einer Absichtserklärung einen belastbaren Plan. Die äußere Form des Dokuments ist dagegen kein inhaltliches Prüfkriterium — ein gut formatierter, aber inhaltsleerer Plan bietet im Ernstfall keinen Schutz.',
-    src: 'Microsoft — MLOps Maturity Model · learn.microsoft.com/en-us/azure/architecture/ai-ml/guide/mlops-maturity-model · ISO/IEC 42001:2023 — AI management systems · iso.org/standard/81230.html'
-  },
-  {
-    sc: 'Die Auditorin fragt, welche Belege AIktiv-Invest ihr für die Wahl der Deployment-Strategie beim Rollout des Scoring-Modells vorlegen kann.',
-    q: 'Welche Aussagen zur Aussagekraft der drei Deployment-Strategien aus Prüf-Sicht treffen zu?',
-    opts: [
-      'Ein dokumentierter Shadow-Mode-Zeitraum liefert Belege dafür, dass das neue Modell vor der ersten Risikoübernahme im echten Betrieb beobachtet wurde — ein Pluspunkt für eine sorgfältige Einführung',
-      'Protokolle aus einem Canary-Rollout zeigen, bei welchem Anteil und in welchem Tempo das neue Modell hochgefahren wurde — und belegen, dass Probleme früh und mit überschaubarem Schaden hätten auffallen können',
-      'Bei einem Blue-Green-Wechsel ohne vorgelagerte Beobachtungsphase müsste die Auditorin genauer nachfragen, worauf sich die Entscheidung für die sofortige vollständige Umschaltung stützt — etwa auf welche Tests oder Validierungen vorab',
-      'Die gewählte Deployment-Strategie hat aus Prüf-Sicht keinerlei Aussagekraft — entscheidend ist ausschließlich, ob das Modell am Ende produktiv läuft'
-    ],
-    correct: [0,1,2],
-    exp: 'Ein dokumentierter Shadow-Mode-Zeitraum belegt, dass das neue Modell vor jeder Risikoübernahme beobachtet wurde — ein Pluspunkt für eine sorgfältige Einführung. Protokolle aus einem Canary-Rollout zeigen nachvollziehbar, in welchem Tempo und bei welchem Anteil das neue Modell hochgefahren wurde, und belegen damit, dass Probleme früh und mit begrenztem Schaden hätten auffallen können. Bei einem Blue-Green-Wechsel ohne vorgelagerte Beobachtungsphase fehlt dieser stufenweise Nachweis — eine Auditorin würde hier gezielt nachfragen, auf welche Tests und Validierungen sich die Entscheidung für die sofortige vollständige Umschaltung stützt. Die gewählte Strategie ist also keineswegs prüfungsirrelevant — sie liefert (oder verweigert) genau die Belege, an denen sich Sorgfalt und Risikobewusstsein der Einführung ablesen lassen.',
-    src: 'Microsoft — MLOps Maturity Model · learn.microsoft.com/en-us/azure/architecture/ai-ml/guide/mlops-maturity-model · Google Cloud — MLOps: Continuous Delivery and Automation · cloud.google.com/architecture/mlops-continuous-delivery-and-automation-pipelines-in-machine-learning'
-  },
-  {
-    sc: 'Die Auditorin testet den Incident-Response-Plan von AIktiv-Invest anhand eines hypothetischen Szenarios: Das Scoring-Modell beginnt an einem Freitagnachmittag plötzlich, vielversprechende Proposals systematisch niedrig zu bewerten.',
-    q: 'Welche Eigenschaften eines Incident-Response-Plans würde die Auditorin in diesem Szenario konkret prüfen?',
-    opts: [
-      'Ob eine Eskalationskette existiert, die auch außerhalb der Kernarbeitszeiten funktioniert — und nicht erst am folgenden Montag greift',
-      'Ob ein manueller Rückfallprozess definiert ist, mit dem das Investment-Team auch ohne funktionierendes Scoring-Modell handlungsfähig bleibt',
-      'Ob im Vorfeld festgelegt wurde, wer die Entscheidung über Sofortmaßnahmen trifft — und ob diese Person tatsächlich informiert und erreichbar ist',
-      'Ob das Modell dieses Szenario aus eigener Kraft erkennt und sich selbstständig abschaltet — ein Incident-Response-Plan ist nur für Systeme relevant, die nicht selbstständig reagieren können'
-    ],
-    correct: [0,1,2],
-    exp: 'In einem Szenario wie diesem würde eine Auditorin konkret prüfen, ob die Eskalationskette auch außerhalb der Kernarbeitszeiten funktioniert, ob ein manueller Rückfallprozess das Investment-Team auch ohne funktionierendes Scoring-Modell handlungsfähig hält, und ob im Vorfeld klar geregelt wurde, wer Sofortmaßnahmen entscheidet — und ob diese Person tatsächlich erreichbar ist. Die Erwartung, ein Modell könne ein solches Problem selbstständig erkennen und sich abschalten, verkehrt den Sinn eines Incident-Response-Plans ins Gegenteil: Gerade weil Systeme nicht zuverlässig ihre eigenen Fehlfunktionen erkennen, braucht es einen von Menschen getragenen, im Vorfeld geplanten Rückfallprozess.',
-    src: 'ISO/IEC 42001:2023 — AI management systems · iso.org/standard/81230.html · Huyen, C. (2022): Designing Machine Learning Systems. O\'Reilly Media'
-  },
-  {
-    sc: 'Die Auditorin erkundigt sich, ob und wie der Betriebsrat von AIktiv-Invest in die Einführung des Scoring-Modells eingebunden wurde.',
-    q: 'Welche Aussagen zur Rolle des Betriebsrats als Prüfkriterium treffen zu?',
-    opts: [
-      'Bei personalrelevanter Automatisierung kann eine Mitbestimmungspflicht nach § 87 BetrVG bestehen — eine Auditorin würde prüfen, ob dieser Punkt erkannt und bearbeitet wurde',
-      'Eine frühzeitige Einbindung des Betriebsrats kann zugleich helfen, politischem Widerstand vorzubeugen — Audit- und Change-Management-Perspektive verstärken sich hier gegenseitig',
-      'Der Betriebsrat ist ausschließlich bei klassischen RPA-Projekten relevant — bei KI-gestützten Automatisierungen entfällt seine Mitbestimmung grundsätzlich',
-      'Sobald die Geschäftsführung ein KI-Projekt beschlossen hat, ist eine nachträgliche Information des Betriebsrats ausreichend — eine vorherige Einbindung ist rechtlich nicht vorgesehen'
-    ],
-    correct: [0,1],
-    exp: 'Bei personalrelevanter Automatisierung kann eine Mitbestimmungspflicht nach § 87 BetrVG greifen — eine Auditorin würde prüfen, ob dieser Punkt erkannt und bearbeitet wurde. Eine frühzeitige Einbindung des Betriebsrats kann zugleich helfen, politischem Widerstand vorzubeugen — Audit- und Change-Management-Perspektive verstärken sich hier gegenseitig. Die Vorstellung, der Betriebsrat sei nur bei klassischen RPA-Projekten relevant, trifft nicht zu — Mitbestimmungsfragen stellen sich grundsätzlich dort, wo Automatisierung personalrelevante Auswirkungen hat, unabhängig von der zugrunde liegenden Technologie. Und eine nachträgliche Information ersetzt keine vorherige Einbindung, wo eine Mitbestimmungspflicht besteht — das widerspricht dem Sinn der Regelung.',
-    src: 'Betriebsverfassungsgesetz (BetrVG) § 87 · gesetze-im-internet.de/betrvg/__87.html · Kotter, J. P. (1996): Leading Change. Harvard Business School Press'
-  },
+  }
 ]
 
 };
+/* Ende QBANK */
 
 var APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwTfP8ygOun58rmvY9hQXFmPEgVyxppQGEPYjar1e78N6uanaGHuzBNOyU5P4kgvmz7/exec';
-var selectedRole = null, selectedLevel = null, questions = [], userAnswers = [];
+var selectedRole = null, questions = [], userAnswers = [];
 var participantName = '';
 
 function selectRole(r) {
@@ -485,14 +319,8 @@ function selectRole(r) {
   document.getElementById('btn-role-b').className = 'sel-btn' + (r==='b' ? ' active-b' : '');
   checkReady();
 }
-function selectLevel(l) {
-  selectedLevel = l;
-  document.getElementById('btn-level-1').className = 'sel-btn' + (l==='1' ? ' active-1' : '');
-  document.getElementById('btn-level-2').className = 'sel-btn' + (l==='2' ? ' active-2' : '');
-  checkReady();
-}
 function checkReady() {
-  document.getElementById('btn-start').disabled = !(selectedRole && selectedLevel);
+  document.getElementById('btn-start').disabled = !selectedRole;
 }
 
 function shuffle(arr) {
@@ -502,8 +330,7 @@ function shuffle(arr) {
 }
 
 function startQuiz() {
-  var key = selectedRole + selectedLevel;
-  var pool = QBANK[key] || [];
+  var pool = QBANK[selectedRole] || [];
   questions = pool.map(function(q) {
     var indices = q.opts.map(function(_,i){return i;});
     var shuffled = shuffle(indices);
@@ -517,16 +344,13 @@ function startQuiz() {
   document.getElementById('quiz-section').style.display = 'block';
 
   var roleLabels = {a:'KI-Manager:in', b:'Externe KI-Auditorin'};
-  var levelLabels = {1:'Anfänger', 2:'Fortgeschrittene'};
   var name = document.getElementById('participant-name').value.trim() || 'Anonym';
   participantName = name;
   var strip = document.getElementById('quiz-header-strip');
   strip.innerHTML =
     '<span class="strip-tag strip-role-' + selectedRole + '">' + roleLabels[selectedRole] + '</span>' +
-    '<span class="strip-tag strip-level-' + selectedLevel + '">' + levelLabels[selectedLevel] + '</span>' +
     '<span class="strip-name">' + name + '</span>';
 
-  document.getElementById('scenario-text').textContent = SCENARIOS[selectedRole];
   renderQuestions();
   updateProgress();
 }
@@ -627,32 +451,88 @@ function submitQuiz() {
     card.className = 'q-card';
     var html = '<div class="q-num">Frage ' + (qi+1) + '</div>';
     if (q.sc) html += '<div class="q-sc">' + q.sc + '</div>';
-    html += '<div class="q-text">' + q.q + '</div><div class="opt-list">';
+    html += '<div class="q-text">' + q.q + '</div>';
+    html += '<div class="opt-list" style="margin-top:.7rem">';
     q.opts.forEach(function(opt, oi) {
-      var isCorrect = ca.indexOf(oi) >= 0;
-      var isSelected = ua.indexOf(oi) >= 0;
-      var cls = 'opt disabled';
-      if (isCorrect && isSelected) cls += ' correct-sel';
-      else if (!isCorrect && isSelected) cls += ' wrong-sel';
-      else if (isCorrect && !isSelected) cls += ' missed';
+      var sel = ua.indexOf(oi) >= 0;
+      var cor = ca.indexOf(oi) >= 0;
+      var cls = 'opt disabled ';
+      if (sel && cor) cls += 'correct-sel';
+      else if (sel && !cor) cls += 'wrong-sel';
+      else if (!sel && cor) cls += 'missed';
       var cbCls = 'opt-cb';
-      if (isCorrect && isSelected) cbCls += ' chk';
-      else if (!isCorrect && isSelected) cbCls += ' chk';
       html += '<div class="' + cls + '"><div class="' + cbCls + '"></div>' +
-        '<span class="opt-letter">' + letters[oi] + '.</span>' +
-        '<span class="opt-text">' + opt + '</span></div>';
+        '<span class="opt-letter">' + letters[oi] + '.</span><span class="opt-text">' + opt + '</span></div>';
     });
     html += '</div>';
-    var fbCls = isOk ? 'fb-ok' : 'fb-wrong';
-    var fbTitle = isOk ? '✓ Richtig' : '✗ Nicht vollständig richtig';
-    html += '<div class="feedback ' + fbCls + '"><div class="fb-title">' + fbTitle + '</div>' +
-      '<div class="fb-text">' + q.exp + '</div>';
-    if (q.src) html += '<div class="fb-source">Quelle: ' + q.src + '</div>';
-    html += '</div>';
+    if (q.exp) {
+      html += '<div class="feedback ' + (isOk ? 'fb-ok' : 'fb-wrong') + '">';
+      html += '<div class="fb-title">' + (isOk ? '✓ Richtig' : '✗ Nicht vollständig richtig') + '</div>';
+      html += '<div class="fb-text">' + q.exp + '</div>';
+      if (q.src) html += '<div class="fb-source">Quelle: ' + q.src + '</div>';
+      html += '</div>';
+    }
     card.innerHTML = html;
     rev.appendChild(card);
   });
+
+  sendToSheets(score, questions.length - score);
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+function sendToSheets(correct, wrong) {
+  if (!APPS_SCRIPT_URL) return;
+  var TAG_NR = 8;
+  var THEMA  = 'Datenmanagement & Tool-Einsatz III';
+  var letters = ['A','B','C','D','E'];
+  var roleLabels = {a:'KI-Manager:in', b:'Externe KI-Auditorin'};
+  var stufe = roleLabels[selectedRole] || selectedRole;
+
+  var status = document.getElementById('submit-status');
+  if (status) {
+    status.className = 'submit-status sending';
+    status.style.display = 'block';
+    status.textContent = 'Ergebnis wird übermittelt...';
+  }
+
+  var toSend = [];
+  questions.forEach(function(q, i) {
+    var selIndices  = userAnswers[i].slice().sort();
+    var corrIndices = q.correct.slice().sort();
+    var isFull      = selIndices.join(',') === corrIndices.join(',');
+    var gewaehlt    = selIndices.map(function(idx) { return letters[idx]; }).join(',') || '-';
+    var korrekt     = corrIndices.map(function(idx) { return letters[idx]; }).join(',');
+    var ergebnis    = isFull ? 'RICHTIG' : 'FALSCH';
+
+    toSend.push(
+      APPS_SCRIPT_URL
+      + '?tab='        + encodeURIComponent('KI-Manager')
+      + '&teilnehmer=' + encodeURIComponent(participantName)
+      + '&tag='        + TAG_NR
+      + '&thema='      + encodeURIComponent(THEMA)
+      + '&stufe='      + encodeURIComponent(stufe)
+      + '&frage_nr='   + (i + 1)
+      + '&frage_text=' + encodeURIComponent(q.q.substring(0, 80))
+      + '&gewaehlt='   + encodeURIComponent(gewaehlt)
+      + '&korrekt='    + encodeURIComponent(korrekt)
+      + '&ergebnis='   + encodeURIComponent(ergebnis)
+    );
+  });
+
+  toSend.forEach(function(url, i) {
+    setTimeout(function() {
+      fetch(url, { mode: 'no-cors' }).catch(function() {});
+    }, i * 300);
+  });
+  if (status) {
+    setTimeout(function() {
+      status.className = 'submit-status success';
+      status.textContent = '✓ ' + toSend.length + ' Antworten übermittelt ('
+        + new Date().toLocaleTimeString('de-DE') + ')';
+    }, toSend.length * 300 + 500);
+  }
 }
 </script>
+
 </body>
 </html>
