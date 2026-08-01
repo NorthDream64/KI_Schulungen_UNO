@@ -10,8 +10,6 @@
   --accent:#5a3a7a;--accent-soft:#f0eaf7;
   --role-a:#1a6a5a;--role-a-soft:#e6f4f1;
   --role-b:#5a3a7a;--role-b-soft:#f0eaf7;
-  --level-1:#7a4a00;--level-1-soft:#fdf0e0;
-  --level-2:#0a4a7a;--level-2-soft:#e0eff7;
   --correct:#2a7a50;--correct-bg:#eaf5ee;--correct-border:#a0d8b8;
   --wrong:#9a2a2a;--wrong-bg:#faeaea;--wrong-border:#d8a0a0;
 }
@@ -30,14 +28,10 @@ a{color:var(--accent);}
 .field-label{font-family:"SFMono-Regular", Consolas, "Liberation Mono", monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:.35rem;}
 .setup-input{width:100%;border:1px solid var(--rule);border-radius:8px;padding:.6rem .9rem;font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;font-size:14px;background:var(--paper);outline:none;color:var(--ink);transition:border-color .15s;}
 .setup-input:focus{border-color:var(--ink);}
-.setup-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.2rem;}
-@media(max-width:480px){.setup-grid{grid-template-columns:1fr;}}
-.role-btns,.level-btns{display:flex;gap:.5rem;}
+.role-btns{display:flex;gap:.5rem;}
 .sel-btn{flex:1;padding:.55rem .6rem;border:1px solid var(--rule);border-radius:8px;background:none;font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;font-size:13px;cursor:pointer;text-align:center;transition:all .15s;color:var(--ink);}
 .sel-btn.active-a{background:var(--role-a-soft);border-color:var(--role-a);color:var(--role-a);font-weight:500;}
 .sel-btn.active-b{background:var(--role-b-soft);border-color:var(--role-b);color:var(--role-b);font-weight:500;}
-.sel-btn.active-1{background:var(--level-1-soft);border-color:var(--level-1);color:var(--level-1);font-weight:500;}
-.sel-btn.active-2{background:var(--level-2-soft);border-color:var(--level-2);color:var(--level-2);font-weight:500;}
 .hint-text{font-size:12px;color:var(--muted);margin-top:.3rem;display:block;}
 .btn-start{width:100%;padding:.75rem;background:var(--ink);color:#fff;border:none;border-radius:8px;font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;font-size:15px;font-weight:500;cursor:pointer;margin-top:1rem;transition:background .15s;}
 .btn-start:hover{background:#333;}
@@ -46,18 +40,13 @@ a{color:var(--accent);}
 .strip-tag{font-family:"SFMono-Regular", Consolas, "Liberation Mono", monospace;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;padding:4px 12px;border-radius:100px;}
 .strip-role-a{background:var(--role-a-soft);color:var(--role-a);}
 .strip-role-b{background:var(--role-b-soft);color:var(--role-b);}
-.strip-level-1{background:var(--level-1-soft);color:var(--level-1);}
-.strip-level-2{background:var(--level-2-soft);color:var(--level-2);}
 .strip-name{font-size:13px;color:var(--muted);margin-left:auto;}
 .progress-bar{height:3px;background:var(--rule);border-radius:2px;margin-bottom:1.2rem;}
 .progress-fill{height:100%;background:var(--ink);border-radius:2px;transition:width .3s;}
 .progress-label{font-family:"SFMono-Regular", Consolas, "Liberation Mono", monospace;font-size:10px;color:var(--muted);margin-bottom:.5rem;}
-.scenario-box{background:var(--accent-soft);border:1px solid #c8b8e0;border-left:3px solid var(--accent);border-radius:0 8px 8px 0;padding:.9rem 1.1rem;margin-bottom:1.2rem;}
-.scenario-label{font-family:"SFMono-Regular", Consolas, "Liberation Mono", monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:.3rem;}
-.scenario-text{font-size:13px;color:var(--ink);line-height:1.6;}
+.q-sc{font-size:13px;color:#555;font-style:italic;border-left:3px solid var(--accent);padding:.4rem .8rem;margin-bottom:.5rem;background:var(--accent-soft);border-radius:0 6px 6px 0;}
 .q-card{background:var(--card);border:1px solid var(--rule);border-radius:12px;padding:1.5rem;margin-bottom:1rem;}
 .q-num{font-family:"SFMono-Regular", Consolas, "Liberation Mono", monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:.6rem;}
-.q-sc{font-size:13px;color:#555;font-style:italic;border-left:3px solid var(--accent);padding:.4rem .8rem;margin-bottom:.5rem;background:var(--accent-soft);border-radius:0 6px 6px 0;}
 .q-text{font-size:15px;font-weight:500;line-height:1.55;margin-bottom:.5rem;}
 .opt-list{display:flex;flex-direction:column;gap:.5rem;}
 .opt{display:flex;align-items:flex-start;gap:.7rem;padding:.75rem 1rem;border:1px solid var(--rule);border-radius:8px;cursor:pointer;background:#fdfdfb;transition:all .12s;-webkit-user-select:none;user-select:none;}
@@ -118,9 +107,8 @@ a{color:var(--accent);}
   <div class="eyebrow">Alfatraining &middot; KI-Manager:in &middot; Tag 6</div>
   <h1>Lernkontrolle<br>Datenmanagement &amp; Tool-Einsatz I</h1>
   <div class="header-meta">
-    <span>5 Fragen je Rolle &amp; Stufe</span>
+    <span>5 Fragen je Rolle</span>
     <span>Eine oder mehrere Antworten k&ouml;nnen richtig sein</span>
-    <span>Use Case: AIktiv-Invest (AI) GmbH &mdash; KI-Screening UC-06</span>
   </div>
 </header>
 
@@ -128,28 +116,18 @@ a{color:var(--accent);}
 
 <div id="setup-section">
   <div class="setup-card">
-    <h2>Bitte w&auml;hle deine Rolle und Schwierigkeitsstufe</h2>
-    <div style="margin-bottom:1rem;">
+    <h2>Bitte w&auml;hle deine Rolle</h2>
+    <div style="margin-bottom:1.2rem;">
       <span class="field-label">Dein Name (oder Teilnehmer-Nummer)</span>
       <input type="text" id="participant-name" class="setup-input" placeholder="z. B. Teilnehmer-07 oder Vorname">
     </div>
-    <div class="setup-grid">
-      <div>
-        <span class="field-label">Rolle</span>
-        <div class="role-btns">
-          <button class="sel-btn" id="btn-role-a" onclick="selectRole('a')">KI-Manager:in</button>
-          <button class="sel-btn" id="btn-role-b" onclick="selectRole('b')">Investitionsanalystin</button>
-        </div>
-        <span class="hint-text">W&auml;hle deine Rolle im Unternehmen</span>
+    <div style="margin-bottom:1rem;">
+      <span class="field-label">Rolle</span>
+      <div class="role-btns">
+        <button class="sel-btn" id="btn-role-a" onclick="selectRole('a')">KI-Manager:in</button>
+        <button class="sel-btn" id="btn-role-b" onclick="selectRole('b')">Investitionsanalyst:in</button>
       </div>
-      <div>
-        <span class="field-label">Schwierigkeitsstufe</span>
-        <div class="level-btns">
-          <button class="sel-btn" id="btn-level-1" onclick="selectLevel('1')">Anf&auml;nger</button>
-          <button class="sel-btn" id="btn-level-2" onclick="selectLevel('2')">Fortgeschrittene</button>
-        </div>
-        <span class="hint-text">Anf&auml;nger = Konzepte &middot; Fortgeschr. = Szenarien</span>
-      </div>
+      <span class="hint-text">W&auml;hle deine Rolle im Unternehmen</span>
     </div>
     <button class="btn-start" id="btn-start" onclick="startQuiz()" disabled>Quiz starten &rarr;</button>
   </div>
@@ -159,10 +137,6 @@ a{color:var(--accent);}
   <div class="quiz-header-strip" id="quiz-header-strip"></div>
   <div class="progress-label" id="progress-label"></div>
   <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
-  <div class="scenario-box">
-    <div class="scenario-label">Fallbeispiel &middot; Gilt f&uuml;r alle Fragen</div>
-    <div class="scenario-text" id="scenario-text"></div>
-  </div>
   <div id="questions-container"></div>
   <div class="nav-row" style="margin-top:1.5rem">
     <button class="btn btn-submit btn-full" id="btn-submit" onclick="submitQuiz()" disabled>Auswertung anzeigen &rarr;</button>
@@ -170,7 +144,7 @@ a{color:var(--accent);}
 </div>
 
 <div id="results-section" style="display:none">
-  <div id="submit-status" class="submit-status" style="display:none;max-width:600px;margin:1rem auto;text-align:center;padding:.6rem 1rem;border-radius:8px;font-family:"SFMono-Regular", Consolas, "Liberation Mono", monospace;font-size:12px;"></div>
+  <div id="submit-status" class="submit-status" style="display:none;max-width:600px;margin:1rem auto;text-align:center;padding:.6rem 1rem;border-radius:8px;font-family:'SFMono-Regular', Consolas, 'Liberation Mono', monospace;font-size:12px;"></div>
   <div class="result-block">
     <div class="result-grade" id="result-grade"></div>
     <div class="result-label" id="result-label"></div>
@@ -183,303 +157,160 @@ a{color:var(--accent);}
     </div>
   </div>
   <hr style="border:none;border-top:1px solid var(--rule);margin:2rem 0">
-  <h2 style="font-family:Georgia, "Times New Roman", serif;font-size:1.2rem;margin-bottom:1rem">Detailauswertung</h2>
+  <h2 style="font-family:Georgia, 'Times New Roman', serif;font-size:1.2rem;margin-bottom:1rem">Detailauswertung</h2>
   <div id="review-container"></div>
 </div>
 
 </main>
 
 <script>
-var SCENARIOS = {
-  a: 'Sie sind KI-Manager:in bei der AIktiv-Invest (AI) GmbH, einem Venture-Capital-Fonds (15 Mio. EUR, München). Investitionsanalystin Sophie Krane bewertet monatlich 15–20 Proposals in heterogenen Formaten: Pitch Decks (PDF/PPTX), Financial Models (Excel), Founder-CVs und Marktanalysen. Dr. Vogt hat Sie beauftragt, das Datenmanagement für das KI-Screening-System aufzubauen.',
-  b: 'Sie sind Investitionsanalystin Sophie Krane bei der AIktiv-Invest (AI) GmbH. Monatlich bewerten Sie 15–20 Investitionsvorschläge. Jedes Proposal kommt in einem anderen Format — manche unvollständig, manche mit veralteten Marktdaten. Das neue KI-Screening-System soll Ihre Arbeit effizienter machen, aber Sie fragen sich: Wie gut kann die KI mit dieser Datenlage umgehen?'
-};
+/* ═══ FRAGEN ══════════════════════════════════════════════════ */
 
 var QBANK = {
 
-/* ─── KI-Manager:in · Anfänger · 2r,2r,1r,3r,3r ─── */
-a1: [
+/* ─── KI-Manager:in · 2r,2r,1r,3r,3r ─── */
+a: [
   {
-    sc: 'Die KI-Managerin hält das erste Strategie-Meeting zum Datenmanagement bei AIktiv-Invest. Dr. Vogt fragt, welche Qualitätsdimensionen bei den Proposals am kritischsten sind.',
-    q: 'Welche zwei DAMA-Datenqualitätsdimensionen sind bei AIktiv-Invest (UC-06) am akutesten verletzt?',
+    sc: 'Die KI-Managerin hält das erste Strategie-Meeting zum Datenmanagement. Die Geschäftsführung fragt, welche Qualitätsdimensionen bei den Eingangsdaten am kritischsten sind.',
+    q: 'Welche Aussage(n) zu den am häufigsten verletzten DAMA-Datenqualitätsdimensionen bei heterogenen Eingangsdaten ist oder sind korrekt?',
     opts: [
-      'Konsistenz — weil sechs verschiedene Excel-Templates im Umlauf sind und die KI die Daten nicht vereinheitlichen kann',
-      'Vollständigkeit — weil 30 % der Proposals keine Umsatzdaten enthalten und die KI ohne diese nicht bewerten kann',
-      'Eindeutigkeit — weil seit Bestehen von AIktiv-Invest noch nie ein Duplikat aufgetreten ist',
-      'Aktualität — weil alle Proposals dem aktuellen Quartal entstammen und daher stets aktuell sind'
+      'Konsistenz — wenn verschiedene Templates im Umlauf sind und die KI die Daten nicht automatisch vereinheitlichen kann',
+      'Vollständigkeit — wenn ein erheblicher Teil der Datensätze relevante Pflichtfelder nicht enthält und die KI ohne diese nicht zuverlässig bewerten kann',
+      'Eindeutigkeit — weil Duplikate in den bisherigen Daten nachweislich noch nie aufgetreten sind',
+      'Aktualität — weil alle Eingangsdaten stets aus dem laufenden Jahr stammen und daher immer aktuell sind'
     ],
     correct: [0,1],
-    exp: 'Konsistenz (verschiedene Templates, inkonsistente ARR-Angaben) und Vollständigkeit (fehlende Finanzdaten bei Pre-Revenue-Startups) sind die kritischsten Probleme bei UC-06. Eindeutigkeit ist kein akutes Problem (bisher keine bekannten Duplikate). Aktualität betrifft vor allem die Marktdaten aus den Proposals — nicht die Proposals selbst.',
+    exp: 'Konsistenz (verschiedene Templates, inkonsistente Datenformate) und Vollständigkeit (fehlende Pflichtfelder bei einem Teil der Einreichungen) sind die kritischsten Probleme bei heterogenen Eingangsdaten. Eindeutigkeit ist kein akutes Problem, wenn Duplikate bisher nicht nachgewiesen wurden. Aktualität betrifft vor allem Marktdaten in den Dokumenten — nicht die Eingangsdokumente selbst.',
     src: 'DAMA International – DMBOK · dama.org/cpages/body-of-knowledge · ISO/IEC 42001:2023, Kl. 8.4 · iso.org/standard/81230.html'
   },
   {
-    sc: 'Dr. Vogt fragt die KI-Managerin, warum die Datenvorbereitung so viel Zeit in Anspruch nimmt. Die KI-Managerin erklärt die Datentypen-Verteilung in Unternehmen.',
-    q: 'Welche Aussagen zu strukturierten und unstrukturierten Daten im UC-06-Kontext sind korrekt?',
+    sc: 'Die Geschäftsführung fragt die KI-Managerin, warum die Datenvorbereitung so viel Zeit in Anspruch nimmt.',
+    q: 'Welche Aussage(n) zu strukturierten und unstrukturierten Daten im Unternehmenskontext ist oder sind korrekt?',
     opts: [
-      '80–90 % der Unternehmensdaten sind unstrukturiert — Pitch Decks, PDFs, E-Mails und CVs fallen in diese Kategorie',
-      'Strukturierte Daten wie Excel-Financial-Models sind direkt maschinenlesbar — sie erfordern kaum Vorverarbeitung',
+      '80–90 % der Unternehmensdaten sind unstrukturiert — Präsentationen, PDFs, E-Mails und Lebensläufe fallen in diese Kategorie',
+      'Strukturierte Daten wie Tabellendokumente sind direkt maschinenlesbar — sie erfordern deutlich weniger Vorverarbeitungsaufwand als unstrukturierte Daten',
       'Unstrukturierte Daten können von KI-Modellen direkt ohne Vorverarbeitung analysiert werden',
-      'Semi-strukturierte Daten gibt es bei AIktiv-Invest nicht — alle Daten sind entweder vollständig strukturiert oder vollständig unstrukturiert'
+      'Semi-strukturierte Daten gibt es in Unternehmen nicht — alle Daten sind entweder vollständig strukturiert oder vollständig unstrukturiert'
     ],
     correct: [0,1],
-    exp: '80–90 % der Unternehmensdaten sind unstrukturiert ✓ (Pitch Decks, PDFs, E-Mails). Strukturierte Daten (Excel) sind direkt maschinenlesbar und erfordern vergleichsweise wenig Aufwand ✓. Unstrukturierte Daten brauchen zwingend Feature-Extraktion (OCR, NLP, Embeddings) — sie können nicht direkt verarbeitet werden. Semi-strukturierte Daten (JSON-Exports, E-Mails mit Formular-Anteil) existieren bei jedem Unternehmen.',
+    exp: '80–90 % der Unternehmensdaten sind unstrukturiert (Präsentationen, PDFs, E-Mails). Strukturierte Daten (z. B. Excel-Tabellen) sind direkt maschinenlesbar und erfordern vergleichsweise wenig Aufwand. Unstrukturierte Daten brauchen zwingend Feature-Extraktion (OCR, NLP, Embeddings). Semi-strukturierte Daten (JSON-Exporte, Formulare) existieren in jedem Unternehmen.',
     src: 'DeepLearning.AI – AI for Everyone · deeplearning.ai · Stanford HAI AI Index 2024 · aiindex.stanford.edu'
   },
   {
-    sc: 'Das Team fragt die KI-Managerin, womit der Aufbau der Datenpipeline für UC-06 beginnen soll. Sie erklärt den ETL-Prozess.',
-    q: 'Was ist der korrekte erste Schritt in einem ETL-Prozess für das AIktiv-Invest-Screening-System?',
+    sc: 'Das Team fragt die KI-Managerin, womit der Aufbau der Datenpipeline beginnen soll. Sie erklärt den ETL-Prozess.',
+    q: 'Welche Aussage(n) zum korrekten ersten Schritt in einem ETL-Prozess ist oder sind korrekt?',
     opts: [
-      'Extract — Daten aus allen Quellen (E-Mail-Anhänge, SharePoint, Excel-Uploads) einsammeln, bevor Bereinigung oder Transformation beginnt',
+      'Extract — Daten aus allen Quellen einsammeln, bevor Bereinigung oder Transformation beginnt',
       'Transform — zuerst alle Dokumente in ein einheitliches Format bringen, dann erst einsammeln',
-      'Load — zuerst die Datenbank aufsetzen, in die später geladen wird',
-      'Validate — zuerst Qualitätsprobleme dokumentieren, bevor überhaupt Daten bewegt werden'
+      'Load — zuerst die Zieldatenbank aufsetzen, in die später geladen wird',
+      'Validate — zuerst alle Qualitätsprobleme dokumentieren, bevor überhaupt Daten bewegt werden'
     ],
     correct: [0],
-    exp: 'ETL beginnt mit Extract: alle Daten aus den Quellen einsammeln, ohne sie vorher zu verändern. Erst dann folgt Transform (Bereinigung und Normalisierung) und schließlich Load (Ablage in der Zieldatenbank oder im KI-Modell). In der modernen ELT-Variante wird zuerst geladen, dann transformiert — aber auch hier kommt Extract zuerst.',
+    exp: 'ETL beginnt mit Extract: alle Daten aus den Quellen einsammeln, ohne sie vorher zu verändern. Erst dann folgt Transform (Bereinigung und Normalisierung) und schließlich Load (Ablage in der Zieldatenbank). In der modernen ELT-Variante wird zuerst geladen, dann in der Zielumgebung transformiert — aber auch hier kommt Extract an erster Stelle.',
     src: 'PMI – Business Analysis Standard · pmi.org/pmbok-guide-standards/foundational/business-analysis · Azure Data Architecture Guide · learn.microsoft.com/de-de/azure/architecture/data-guide/'
   },
   {
-    sc: 'Die KI-Managerin führt einen Data-Cleaning-Workshop mit dem Team durch. Sie prüft, welche Maßnahmen korrekt sind.',
-    q: 'Welche Maßnahmen gehören in den Data-Cleaning-Prozess für das UC-06-Screening-System?',
+    sc: 'Die KI-Managerin führt einen Data-Cleaning-Workshop mit dem Team durch und prüft, welche Maßnahmen korrekt sind.',
+    q: 'Welche Aussage(n) zu Maßnahmen im Data-Cleaning-Prozess für ein KI-System ist oder sind korrekt?',
     opts: [
-      'Fehlende Umsatzdaten als "fehlend" markieren — nicht schätzen, wenn keine verlässliche Grundlage vorhanden ist',
-      'Datumsformate vereinheitlichen: alle auf ISO 8601 (YYYY-MM-DD) normieren, um Inkonsistenz zwischen Proposals zu beseitigen',
-      'Duplikate identifizieren: Startups, die unter verschiedenen Namen zweimal eingereicht haben, zu einem Datensatz zusammenführen',
-      'Alle Proposals mit fehlenden Finanzdaten sofort löschen — unvollständige Daten sind für das Modell wertlos'
+      'Fehlende Werte als „fehlend" markieren — nicht schätzen, wenn keine verlässliche Grundlage vorhanden ist',
+      'Datumsformate vereinheitlichen: alle auf ISO 8601 (YYYY-MM-DD) normieren, um Inkonsistenz zwischen Dokumenten zu beseitigen',
+      'Duplikate identifizieren und zusammenführen: Einträge, die unter verschiedenen Bezeichnungen doppelt vorhanden sind, zu einem Datensatz konsolidieren',
+      'Alle Datensätze mit fehlenden Pflichtfeldern sofort löschen — unvollständige Daten sind für das Modell wertlos'
     ],
     correct: [0,1,2],
-    exp: 'Fehlende Werte markieren ✓, Formate normieren ✓, Duplikate zusammenführen ✓ — diese drei sind klassische Data-Cleaning-Schritte. Unvollständige Proposals sofort löschen ist falsch: das führt zu Bias, weil Pre-Revenue-Startups systematisch ausgeschlossen werden. Besser: als "fehlend" kennzeichnen und das Modell entsprechend trainieren.',
+    exp: 'Fehlende Werte markieren, Formate normieren und Duplikate zusammenführen sind klassische Data-Cleaning-Schritte. Unvollständige Datensätze sofort zu löschen ist falsch: Das führt zu Bias, weil bestimmte Gruppen systematisch ausgeschlossen werden. Besser: als „fehlend" kennzeichnen und das Modell entsprechend trainieren.',
     src: 'DAMA International – DMBOK · dama.org/cpages/body-of-knowledge · EU AI Act Art. 10 (Anforderungen an Trainingsdaten) · eur-lex.europa.eu/legal-content/EN/TXT/?uri=OJ:L_202401689'
   },
   {
-    sc: 'Dr. Vogt fragt, ob AIktiv-Invest ein eigenes KI-Screening-Tool entwickeln oder eine fertige Lösung kaufen soll. Die KI-Managerin erklärt die Make-or-Buy-Kriterien.',
-    q: 'Welche Aussagen zur Make-or-Buy-Entscheidung für das UC-06-Screening-System sind korrekt?',
+    sc: 'Die KI-Managerin plant die Datenpipeline und erklärt dem Team, warum jeder Schritt ein Qualitäts-Gate benötigt.',
+    q: 'Welche Aussage(n) zu Qualitäts-Gates in einer KI-Datenpipeline ist oder sind korrekt?',
     opts: [
-      'Integration: Azure ist bereits vorhanden — der Einsatz nativer Azure-Dienste reduziert den Integrationsaufwand erheblich',
-      'Compliance: DSGVO Art. 22 und KAGB müssen bei der Plattformwahl geprüft werden — EU-Datenhaltung ist eine Mindestanforderung',
-      'Eigenentwicklung: lohnt sich nur, wenn kein marktreifes Tool verfügbar ist oder ein proprietärer Datenvorteil entsteht',
-      'Skalierbarkeit: da AIktiv-Invest auf 50+ Proposals/Monat wachsen will, sollte die Lösung keine Nutzer-Ober-Limits haben'
-    ],
-    correct: [0,1,2],
-    exp: 'Integration (Azure vorhanden) ✓, Compliance-Prüfung (DSGVO/KAGB) ✓ und Eigenentwicklung nur bei strategischem Vorteil ✓ sind alle korrekt. Skalierbarkeit ist zwar ein wichtiges Kriterium — aber "keine Nutzer-Ober-Limits" ist keine treffende Formulierung des Make-or-Buy-Kriteriums. Das eigentliche Kriterium ist: Kann das Tool mit dem Datenvolumen und der Fondsgröße wachsen?',
-    src: 'PMI PMBOK® Guide, 7. Aufl. · pmi.org/pmbok-guide-standards · ISO/IEC 42001:2023, Kl. 8 · iso.org/standard/81230.html'
-  },
-],
-
-
-/* ─── KI-Manager:in · Fortgeschrittene · 2r,1r,2r,3r,3r ─── */
-a2: [
-  {
-    sc: 'Das KI-Screening-System soll automatisch Proposals vorprüfen und einen Score vergeben. Die KI-Managerin prüft die regulatorische Anforderungslage.',
-    q: 'Welche Aussagen zu DSGVO Art. 22 im Kontext des UC-06-Screening-Systems sind korrekt?',
-    opts: [
-      'Art. 22 greift, wenn das KI-System automatisiert Entscheidungen trifft, die für Gründer erhebliche Auswirkungen haben — Kreditverweigerung oder Investitionsablehnung fallen darunter',
-      'Sophie Krane muss als Human-in-the-Loop die finale Investitionsentscheidung treffen — der KI-Score darf nicht alleinige Grundlage sein',
-      'Art. 22 gilt nicht für VC-Fonds, weil es sich nicht um Kreditentscheidungen handelt, sondern um private Investitionen',
-      'Die DSGVO gilt für AIktiv-Invest nicht, weil Gründer juristische Personen sind und keine natürlichen Personen'
-    ],
-    correct: [0,1],
-    exp: 'Art. 22 greift bei automatisierten Entscheidungen mit erheblichen Auswirkungen auf natürliche Personen ✓ — Investitionsablehnung kann existenzielle Bedeutung für Gründer haben. Human-in-the-Loop ist daher regulatorisch vorgeschrieben ✓. Art. 22 gilt unabhängig vom Entscheidungstyp (Kredit vs. Investment). Gründer sind natürliche Personen — auch wenn sie im Geschäftskontext handeln.',
-    src: 'DSGVO Art. 22 (automatisierte Entscheidungen) · gdpr-info.eu/art-22-gdpr/ · EU AI Act Art. 14 (menschliche Aufsicht) · eur-lex.europa.eu/legal-content/EN/TXT/?uri=OJ:L_202401689'
-  },
-  {
-    sc: 'Dr. Vogt fragt, wie AIktiv-Invest eine langfristige Abhängigkeit von Azure verhindern kann. Die KI-Managerin erklärt Vendor-Lock-in-Strategien.',
-    q: 'Welche Maßnahme schützt am wirksamsten vor Vendor-Lock-in bei der Azure-Implementierung von UC-06?',
-    opts: [
-      'Standardformate für Daten (CSV, Parquet) und Modelle (ONNX) verwenden — so sind Daten und Modelle auf anderen Plattformen lauffähig',
-      'Die Vertragsverhandlung mit Microsoft priorisieren — günstige Konditionen kompensieren Lock-in-Risiken',
-      'Ausschließlich Open-Source-Tools einsetzen — proprietäre Dienste erzeugen immer Lock-in',
-      'Azure-Dienste vermeiden und einen lokalen Server aufbauen — On-Premise schließt Lock-in aus'
-    ],
-    correct: [0],
-    exp: 'Standardformate (CSV, Parquet für Daten; ONNX für Modelle) sind die wirksamste Schutzmaßnahme — sie machen Daten und Modelle plattformunabhängig portierbar. Günstige Konditionen reduzieren Kosten, nicht Lock-in. Open-Source-Dienste können ebenfalls Lock-in erzeugen (z.B. Kubernetes auf Azure). On-Premise schafft neues Lock-in und erhöht TCO deutlich.',
-    src: 'PMI PMBOK® Guide (Risk Management) · pmi.org/pmbok-guide-standards · Azure Data Architecture Guide · learn.microsoft.com/de-de/azure/architecture/data-guide/'
-  },
-  {
-    sc: 'Die KI-Managerin erklärt dem Entwicklungsteam, wie Pitch Decks für das Screening-Modell aufbereitet werden müssen.',
-    q: 'Welche Feature-Extraktions-Techniken sind für die Verarbeitung von Pitch Decks (PDF/PPTX) im UC-06-System korrekt?',
-    opts: [
-      'OCR (Optical Character Recognition) für gescannte oder bildbasierte Seiten im Pitch Deck — wandelt Bilder in maschinenlesbaren Text um',
-      'Embedding: der extrahierte Text wird in numerische Vektoren umgewandelt, um semantische Ähnlichkeit zwischen Proposals vergleichen zu können',
-      'Pitch Decks können direkt ohne Vorverarbeitung in das KI-Modell geladen werden — moderne LLMs lesen PDFs nativ',
-      'NLP-Parsing reicht aus, um alle relevanten Informationen aus einem Pitch Deck zu extrahieren — OCR ist veraltet'
-    ],
-    correct: [0,1],
-    exp: 'OCR für bildbasierte PDF-Seiten ✓ und Embedding für semantischen Vergleich ✓ sind korrekte und komplementäre Techniken. LLMs können keine PDFs direkt lesen — sie benötigen Text als Input, der vorher extrahiert werden muss. OCR ist nicht veraltet, sondern der Standard für gescannte oder bilddominante Dokumente.',
-    src: 'DeepLearning.AI – AI for Everyone · deeplearning.ai · Azure Document Intelligence · azure.microsoft.com/de-de/products/ai-services/ai-document-intelligence'
-  },
-  {
-    sc: 'Die KI-Managerin plant die Datenpipeline für UC-06. Sie erklärt dem Team, warum jeder Schritt ein Qualitäts-Gate benötigt.',
-    q: 'Welche Aussagen zu Qualitäts-Gates in der UC-06-Datenpipeline sind korrekt?',
-    opts: [
-      'Nach der Extraktion (Extract) muss geprüft werden, ob alle erwarteten Felder vorhanden sind — fehlt das Financial Model, stoppt die Pipeline und meldet den Fehler',
-      'Nach der Transformation muss geprüft werden, ob Datumsformate und Währungen normiert wurden — ein unbereinigter Datensatz darf nicht ins Modell',
-      'Das Scoring-Ergebnis muss protokolliert werden, damit Sophie Krane nachvollziehen kann, welche Daten in die Bewertung eingeflossen sind',
+      'Nach der Extraktion muss geprüft werden, ob alle erwarteten Pflichtfelder vorhanden sind — fehlt ein Pflichtdokument, stoppt die Pipeline und meldet den Fehler',
+      'Nach der Transformation muss geprüft werden, ob Datumsformate und Einheiten normiert wurden — ein unbereinigter Datensatz darf nicht ins Modell',
+      'Das Scoring-Ergebnis muss protokolliert werden, damit die verantwortliche Person nachvollziehen kann, welche Daten in die Bewertung eingeflossen sind',
       'Qualitäts-Gates sind optional, wenn das Modell ausreichend Trainingsdaten hat — dann gleicht es schlechte Eingaben selbst aus'
     ],
     correct: [0,1,2],
-    exp: 'Gate nach Extract (Vollständigkeit) ✓, Gate nach Transform (Normierung) ✓ und Protokollierung des Scorings (Nachvollziehbarkeit) ✓ sind alle richtig. Das Modell gleicht schlechte Daten nicht selbst aus — im Gegenteil: "Garbage in, garbage out" gilt auch mit großen Trainingsdatensätzen.',
+    exp: 'Gate nach Extract (Vollständigkeit), Gate nach Transform (Normierung) und Protokollierung des Scorings (Nachvollziehbarkeit) sind alle korrekt. Das Modell gleicht schlechte Daten nicht selbst aus — im Gegenteil: „Garbage in, garbage out" gilt auch bei großen Trainingsdatensätzen.',
     src: 'ISO/IEC 42001:2023, Kl. 8 (Betrieb) · iso.org/standard/81230.html · DSGVO Art. 22 · gdpr-info.eu/art-22-gdpr/'
-  },
-  {
-    sc: 'Das interne Audit für ISO 42001 steht an. Die KI-Managerin bereitet die Daten-Governance-Dokumentation vor.',
-    q: 'Welche Anforderungen stellt ISO 42001 Kl. 8.4 an das Datenmanagement im UC-06-Screening-System?',
-    opts: [
-      'Datenherkunft muss dokumentiert sein: welche Quellen (Pitch Deck, Excel, CV) fließen in das Screening-Modell ein',
-      'Datenqualitätskriterien müssen definiert sein: die sechs DAMA-Dimensionen als formale Akzeptanzkriterien',
-      'Bias in den Trainingsdaten muss geprüft werden: sind bestimmte Branchen, Regionen oder Gründer-Profile überrepräsentiert?',
-      'Datenmanagement ist ausschließlich Aufgabe der IT-Abteilung — die KI-Manager:in trägt dafür keine Verantwortung'
-    ],
-    correct: [0,1,2],
-    exp: 'ISO 42001 Kl. 8.4 verlangt Dokumentation der Datenherkunft ✓, definierte Qualitätskriterien ✓ und aktive Bias-Prüfung ✓. Die KI-Manager:in ist explizit für die Daten-Governance-Verantwortung zuständig — sie ist nicht delegierbar an die IT-Abteilung.',
-    src: 'ISO/IEC 42001:2023, Kl. 8.4 (Daten-Governance) · iso.org/standard/81230.html · EU AI Act Art. 10 (Anforderungen an Trainingsdaten) · eur-lex.europa.eu/legal-content/EN/TXT/?uri=OJ:L_202401689'
-  },
+  }
 ],
 
-
-/* ─── Investitionsanalystin · Anfänger · 2r,3r,3r,2r,3r ─── */
-b1: [
+/* ─── Investitionsanalyst:in · 2r,3r,3r,2r,3r ─── */
+b: [
   {
-    sc: 'Sophie Krane öffnet das neue Proposal eines Startups. Das Pitch Deck ist auf Englisch, das Financial Model hat ein unbekanntes Template und die Marktdaten stammen aus 2021.',
-    q: 'Welche zwei DAMA-Qualitätsprobleme sind in diesem Proposal direkt erkennbar?',
+    sc: 'Du öffnest ein neues eingereichtes Dokument. Das Pitch Deck ist auf Englisch, das Financial Model hat ein unbekanntes Template und die Marktdaten stammen aus 2021.',
+    q: 'Welche Aussage(n) zu den direkt erkennbaren DAMA-Qualitätsproblemen in diesem Dokument ist oder sind korrekt?',
     opts: [
-      'Aktualität: Marktdaten von 2021 sind für eine 2026er Investitionsentscheidung möglicherweise nicht repräsentativ',
-      'Konsistenz: Das Financial Model verwendet ein Template, das nicht dem Standard von AIktiv-Invest entspricht',
-      'Eindeutigkeit: Das Startup hat sich bereits einmal beworben, weil es auf Englisch verfasst ist',
-      'Vollständigkeit: Englischsprachige Proposals sind per Definition unvollständig'
+      'Aktualität: Marktdaten von 2021 sind für eine aktuelle Bewertungsentscheidung möglicherweise nicht repräsentativ',
+      'Konsistenz: Das Financial Model verwendet ein Template, das nicht dem internen Standard entspricht',
+      'Eindeutigkeit: Das Dokument ist auf Englisch verfasst — daher handelt es sich um ein Duplikat einer früheren Einreichung',
+      'Vollständigkeit: Englischsprachige Dokumente sind per Definition unvollständig'
     ],
     correct: [0,1],
-    exp: 'Aktualität (Marktdaten aus 2021) ✓ und Konsistenz (abweichendes Template) ✓ sind die erkennbaren Probleme. Sprache ist kein Eindeutigkeitsmerkmal — ein englisches Proposal bedeutet nicht, dass das Startup schon einmal eingereicht hat. Vollständigkeit bezieht sich auf fehlende Pflichtfelder, nicht auf die Sprache.',
+    exp: 'Aktualität (Marktdaten aus 2021) und Konsistenz (abweichendes Template) sind die erkennbaren Qualitätsprobleme. Sprache ist kein Eindeutigkeitsmerkmal — ein englischsprachiges Dokument bedeutet nicht, dass es sich um ein Duplikat handelt. Vollständigkeit bezieht sich auf fehlende Pflichtfelder, nicht auf die Sprache.',
     src: 'DAMA International – DMBOK · dama.org/cpages/body-of-knowledge'
   },
   {
-    sc: 'Sophie möchte, dass zukünftige Proposals eine bessere Datengrundlage für das Screening-System liefern. Sie diskutiert Standardisierungsmaßnahmen mit der KI-Managerin.',
-    q: 'Welche Maßnahmen verbessern die Datenstandardisierung beim Proposal-Eingang bei AIktiv-Invest?',
+    sc: 'Du diskutierst Standardisierungsmaßnahmen mit der KI-Managerin, um die Datengrundlage für das Screening-System zu verbessern.',
+    q: 'Welche Aussage(n) zu Maßnahmen zur Verbesserung der Datenstandardisierung beim Dokumenteneingang ist oder sind korrekt?',
     opts: [
-      'Ein standardisiertes Proposal-Template einführen: Pflichtfelder für ARR (in EUR), Team-Größe, Gründungsjahr und Branche',
+      'Ein standardisiertes Einreichungs-Template einführen: Pflichtfelder für relevante Kerndaten wie Umsatz, Team-Größe, Gründungsjahr und Branche',
       'Ein Online-Einreichungsformular mit Validierung: verhindert inkonsistente Formate bereits bei der Eingabe',
-      'Alle Proposals auf Deutsch verlangen: Sprachstandardisierung reduziert NLP-Aufwand erheblich',
-      'Marktdaten aus dem Proposal mit einer externen Datenbank (z. B. Crunchbase) automatisch abgleichen lassen'
+      'Ausschließlich eine Sprache für alle Einreichungen zulassen: Sprachstandardisierung reduziert den NLP-Aufwand erheblich',
+      'Eingaben automatisch mit einer externen Datenbank abgleichen: ermöglicht die Validierung von Marktdaten gegen aktuelle Quellen'
     ],
     correct: [0,1,3],
-    exp: 'Standardisiertes Template ✓, Online-Formular mit Validierung ✓ und automatischer Abgleich mit externen Quellen ✓ sind sinnvolle Maßnahmen. Rein deutschsprachige Proposals schließen internationale Startups aus — das wäre eine strategische Einschränkung, keine Qualitätsmaßnahme.',
+    exp: 'Standardisiertes Template, Online-Formular mit Validierung und automatischer Abgleich mit externen Quellen sind sinnvolle Maßnahmen. Eine Sprachbeschränkung schließt internationale Einreichungen aus — das ist eine strategische Einschränkung, keine Qualitätsmaßnahme.',
     src: 'DAMA International – DMBOK · dama.org/cpages/body-of-knowledge · ISO/IEC 42001:2023, Kl. 8.4 · iso.org/standard/81230.html'
   },
   {
-    sc: 'Sophie fragt die KI-Managerin, welche Azure-Dienste für das Screening-System konkret eingesetzt werden sollen.',
-    q: 'Welche Azure-Dienste sind für das UC-06-Screening-System sinnvoll einzusetzen?',
+    sc: 'Du fragst die KI-Managerin, welche KI-Dienste für das dokumentenbasierte Screening-System konkret eingesetzt werden sollen.',
+    q: 'Welche Aussage(n) zu sinnvoll einzusetzenden Azure-Diensten für ein dokumentenbasiertes KI-Screening-System ist oder sind korrekt?',
     opts: [
-      'Azure Document Intelligence: für das automatische Parsen und Strukturieren von Pitch-Deck-PDFs',
-      'Azure OpenAI Service: für das NLP-basierte Scoring der Proposal-Texte und Zusammenfassungen',
-      'Azure AI Search: für semantische Ähnlichkeitssuche zwischen Proposals und historischen Investment-Entscheidungen',
-      'Azure Active Directory: als primäres Modell für das Investitions-Scoring'
+      'Azure Document Intelligence: für das automatische Parsen und Strukturieren von PDF-Dokumenten',
+      'Azure OpenAI Service: für das NLP-basierte Scoring von Texten und die Erstellung von Zusammenfassungen',
+      'Azure AI Search: für semantische Ähnlichkeitssuche zwischen eingehenden Dokumenten und historischen Referenzdaten',
+      'Azure Active Directory: als primäres Modell für das inhaltliche Scoring von Dokumenten'
     ],
     correct: [0,1,2],
-    exp: 'Azure Document Intelligence (PDF-Parsing) ✓, Azure OpenAI (NLP-Scoring) ✓ und Azure AI Search (Ähnlichkeitssuche) ✓ sind alle korrekte und komplementäre Dienste für das Screening-System. Azure Active Directory ist ein Identitäts- und Zugriffsmanagement-Dienst — kein KI-Scoring-Tool.',
+    exp: 'Azure Document Intelligence (PDF-Parsing), Azure OpenAI (NLP-Scoring) und Azure AI Search (Ähnlichkeitssuche) sind alle korrekte und komplementäre Dienste für ein Screening-System. Azure Active Directory ist ein Identitäts- und Zugriffsmanagement-Dienst — kein KI-Scoring-Tool.',
     src: 'Azure Document Intelligence · azure.microsoft.com/de-de/products/ai-services/ai-document-intelligence · Azure OpenAI · azure.microsoft.com/de-de/products/ai-services/openai-service'
   },
   {
-    sc: 'Dr. Vogt möchte das Screening-System sofort für alle eingehenden Proposals nutzen. Sophie empfiehlt einen Pilotansatz.',
-    q: 'Welche Argumente sprechen für einen Pilotansatz bei der Einführung des UC-06-Screening-Systems?',
+    sc: 'Du erhältst das erste Screening-Ergebnis des KI-Systems. Das Modell hat drei Einreichungen mit einem niedrigen Score bewertet — obwohl du zwei davon als interessant eingestuft hättest.',
+    q: 'Welche Aussage(n) erklärt, warum das Modell und deine Einschätzung zu unterschiedlichen Bewertungen kommen können?',
     opts: [
-      'Ein Pilot mit 50 historischen Proposals begrenzt das Risiko: wenn das Modell nicht funktioniert, hat AIktiv-Invest keine Investitionsentscheidungen auf falscher Grundlage getroffen',
-      'Der Pilot liefert messbare Erfolgskriterien: z. B. Score korreliert in ≥ 70 % der Fälle mit tatsächlichen Investment-Entscheidungen',
-      'Ein Pilot ist regulatorisch zwingend vorgeschrieben — EU AI Act verlangt einen Testlauf vor Go-Live',
-      'Ein Pilot verhindert jede Form von Vendor Lock-in, weil das finale Tool erst nach dem Pilot gewählt wird'
+      'Das Modell lernt aus historischen Daten — wenn vergangene Entscheidungen bestimmte Kategorien systematisch benachteiligt haben, reproduziert es diesen Bias',
+      'Die Datenvorbereitung nimmt bis zu 80 % des ML-Projektaufwands in Anspruch — ein Fehler bei der Feature-Extraktion verfälscht den Score',
+      'Das Modell ist per Definition objektiver als ein Mensch — KI-Scores sind immer zuverlässiger als menschliche Urteile',
+      'Ein niedriger Score bedeutet, dass die Einreichung regulatorisch nicht förderfähig ist — das ist eine Compliance-Grenze'
     ],
     correct: [0,1],
-    exp: 'Risikobegrenzung ✓ und messbare Erfolgskriterien ✓ sind die stärksten Argumente für einen Pilot. Der EU AI Act schreibt keinen Testlauf in dieser Form vor — er fordert Konformitätsbewertungen, keine Pilotphasen. Vendor Lock-in wird durch den Pilot nicht verhindert, weil der Azure-Stack bereits gewählt ist.',
-    src: 'PMI – Agile Practice Guide · pmi.org/pmbok-guide-standards/agile · ISO/IEC 42001:2023, Kl. 8 · iso.org/standard/81230.html'
-  },
-  {
-    sc: 'Der KAGB-Compliance-Beauftrage von AIktiv-Invest prüft das geplante KI-Screening-System auf regulatorische Anforderungen.',
-    q: 'Welche Compliance-Anforderungen sind für das UC-06-Screening-System relevant?',
-    opts: [
-      'DSGVO Art. 5: Gründer-Daten (Name, CV, LinkedIn) dürfen nur für den Screening-Zweck verarbeitet werden (Zweckbindung)',
-      'DSGVO Art. 22: Da das System automatisiert Scores für Gründer berechnet, muss eine menschliche Überprüfung (Sophie Krane) die finale Entscheidung treffen',
-      'KAGB: Investitionsentscheidungen müssen dokumentiert und nachvollziehbar sein — der KI-Score muss in der Due-Diligence-Akte erscheinen',
-      'EU AI Act: Investitions-Screening durch KI ist regulatorisch nicht eingeschränkt, weil es sich um einen privaten Fonds handelt'
-    ],
-    correct: [0,1,2],
-    exp: 'DSGVO Art. 5 (Zweckbindung) ✓, Art. 22 (Human-in-the-Loop) ✓ und KAGB-Dokumentationspflicht ✓ sind korrekt. Der EU AI Act gilt unabhängig davon, ob der Fonds privat oder öffentlich ist — entscheidend ist, ob das System erhebliche Auswirkungen auf natürliche Personen hat.',
-    src: 'DSGVO Art. 5 + Art. 22 · gdpr-info.eu · KAGB § 67 ff. · gesetze-im-internet.de/kagb/ · EU AI Act Art. 26 · eur-lex.europa.eu/legal-content/EN/TXT/?uri=OJ:L_202401689'
-  },
-],
-
-
-/* ─── Investitionsanalystin · Fortgeschrittene · 2r,1r,2r,3r,3r ─── */
-b2: [
-  {
-    sc: 'Sophie Krane erhält das erste Screening-Ergebnis des KI-Systems. Das Modell hat drei Proposals mit einem Score unter 30 % bewertet — obwohl sie zwei davon als interessant eingestuft hätte.',
-    q: 'Welche Aussagen erklären, warum das Modell und Sophie unterschiedliche Bewertungen kommen könnten?',
-    opts: [
-      'Das Modell lernt aus historischen Daten — wenn vergangene Investitionsentscheidungen bestimmte Branchen systematisch benachteiligt haben, reproduziert es diesen Bias',
-      'Die Datenvorbereitung nimmt bis zu 80 % des ML-Projektaufwands in Anspruch — ein Fehler bei der Feature-Extraktion aus den Pitch Decks verfälscht den Score',
-      'Das Modell ist per Definition objektiver als Sophie — KI-Scores sind immer zuverlässiger als menschliche Urteile',
-      'Ein Score unter 30 % bedeutet, dass das Startup regulatorisch nicht förderfähig ist — das ist eine Compliance-Grenze'
-    ],
-    correct: [0,1],
-    exp: 'Historischer Bias in Trainingsdaten ✓ und Fehler bei der Feature-Extraktion ✓ sind valide Erklärungen für abweichende Bewertungen. KI-Modelle sind nicht per Definition objektiver — sie lernen die Muster ihrer Trainingsdaten, einschließlich Verzerrungen. Ein Score unter 30 % ist keine regulatorische Grenze, sondern eine interne Schwellenwert-Entscheidung.',
+    exp: 'Historischer Bias in Trainingsdaten und Fehler bei der Feature-Extraktion sind valide Erklärungen für abweichende Bewertungen. KI-Modelle sind nicht per Definition objektiver — sie lernen die Muster ihrer Trainingsdaten, einschließlich Verzerrungen. Ein niedriger Score ist keine regulatorische Grenze, sondern eine interne Schwellenwert-Entscheidung.',
     src: 'DeepLearning.AI – Machine Learning Specialization · deeplearning.ai · AlgorithmWatch · algorithmwatch.org · DAMA DMBOK · dama.org'
   },
   {
-    sc: 'Sophie diskutiert mit der KI-Managerin den Unterschied zwischen ETL und ELT für die Datenpipeline von AIktiv-Invest.',
-    q: 'Welche Aussage zum Unterschied zwischen ETL und ELT ist korrekt?',
-    opts: [
-      'Bei ELT (Extract – Load – Transform) werden Daten zuerst in die Zielumgebung geladen und dort transformiert — dies nutzt die Rechenleistung moderner Cloud-Infrastruktur',
-      'ETL und ELT sind identisch — der Unterschied liegt nur im Namen, nicht im Prozess',
-      'ELT ist für kleine Unternehmen wie AIktiv-Invest ungeeignet — es erfordert mindestens 1 TB Datenmenge',
-      'Bei ETL werden Daten direkt im Quellsystem transformiert, ohne vorher extrahiert zu werden'
-    ],
-    correct: [0],
-    exp: 'ELT lädt zuerst, transformiert dann in der Zielumgebung ✓ — das ist der wesentliche Unterschied zu ETL (erst transformieren, dann laden). ELT nutzt die Skalierbarkeit von Cloud-Data-Warehouses. ETL und ELT sind nicht identisch. ELT ist nicht an Mindestdatenmengen gebunden. Bei ETL wird zuerst extrahiert — dann transformiert — dann geladen.',
-    src: 'Azure Data Architecture Guide · learn.microsoft.com/de-de/azure/architecture/data-guide/ · PMI – Business Analysis Standard · pmi.org/pmbok-guide-standards/foundational/business-analysis'
-  },
-  {
-    sc: 'Dr. Vogt fragt Sophie, ob AIktiv-Invest ein eigenes KI-Screening-Tool entwickeln oder bestehende Azure-Dienste nutzen sollte.',
-    q: 'Welche Argumente sprechen für die "Buy"-Entscheidung (Azure-Dienste nutzen statt selbst entwickeln) bei AIktiv-Invest?',
-    opts: [
-      'Azure Document Intelligence und Azure OpenAI sind marktreife, sofort einsetzbare Dienste — keine eigene Entwicklung eines OCR- oder NLP-Modells nötig',
-      'Azure ist bereits als M365-Anbieter vorhanden — die Integration in bestehende Prozesse ist minimal invasiv',
-      'Eigenentwicklung würde strategischen Datenvorteil schaffen — aber dieser Vorteil ist bei AIktiv-Invest nicht vorhanden, weil keine proprietären Daten existieren',
-      'Eigenentwicklung ist immer kostengünstiger als Cloud-Dienste bei kleinen Unternehmen'
-    ],
-    correct: [0,1],
-    exp: 'Marktreife Dienste sofort einsetzen ✓ und bestehende M365-Integration nutzen ✓ sind starke Buy-Argumente. Eigenentwicklung erzeugt keinen strategischen Datenvorteil für AIktiv-Invest, weil die Proposals nicht exklusiv sind — aber das ist ein Argument gegen Make, nicht für Buy per se. Eigenentwicklung ist nicht per se kostengünstiger — bei kleinen Teams und kurzer Laufzeit ist Buy meist günstiger.',
-    src: 'PMI PMBOK® Guide (Make-or-Buy Analysis) · pmi.org/pmbok-guide-standards · NIST AI RMF · airc.nist.gov'
-  },
-  {
-    sc: 'Sophie Krane sorgt sich, dass AIktiv-Invest langfristig zu stark von Azure abhängig wird. Sie fragt die KI-Managerin nach konkreten Schutzstrategien.',
-    q: 'Welche Maßnahmen reduzieren das Vendor-Lock-in-Risiko bei der Azure-Implementierung von UC-06?',
-    opts: [
-      'Daten in Standardformaten speichern: CSV und Parquet für strukturierte Daten — diese sind auf AWS, GCP und On-Premise gleichermaßen lauffähig',
-      'ML-Modelle im ONNX-Format exportieren: ONNX-Modelle laufen auf verschiedenen Inference-Engines unabhängig vom Trainingsanbieter',
-      'Vertragliche Datenmitnahme-Klausel mit Microsoft: AIktiv-Invest hat das Recht, alle Daten in Standardformaten zu exportieren',
-      'Ausschließlich Microsoft-proprietäre Formate nutzen: das sichert die langfristige Unterstützung durch Microsoft'
-    ],
-    correct: [0,1,2],
-    exp: 'Standardformate (CSV/Parquet) ✓, ONNX-Modell-Export ✓ und Datenmitnahme-Klausel ✓ sind alle wirksame Lock-in-Reduktionsmaßnahmen. Microsoft-proprietäre Formate zu nutzen ist das Gegenteil einer Lock-in-Strategie — es verstärkt die Abhängigkeit.',
-    src: 'PMI PMBOK® Guide (Risk Management) · pmi.org/pmbok-guide-standards · Azure Data Architecture Guide · learn.microsoft.com/de-de/azure/architecture/data-guide/'
-  },
-  {
-    sc: 'Der Beirat von AIktiv-Invest fragt, warum Sophie Krane jeden Score des KI-Systems manuell prüfen muss und nicht einfach alle automatisierten Ablehnungen direkt versenden kann.',
-    q: 'Welche Aussagen begründen, warum Human-in-the-Loop bei UC-06 zwingend erforderlich ist?',
+    sc: 'Im Steuerungskomitee wird gefragt, warum jede KI-Empfehlung manuell geprüft werden muss und nicht automatisiert abgelehnt werden kann.',
+    q: 'Welche Aussage(n) begründet, warum Human-in-the-Loop bei einem KI-Screening-System zwingend erforderlich ist?',
     opts: [
       'DSGVO Art. 22: Entscheidungen mit erheblichen Auswirkungen auf natürliche Personen dürfen nicht ausschließlich automatisiert getroffen werden',
-      'KAGB: Investitionsentscheidungen eines regulierten Fonds müssen dokumentiert und von einer verantwortlichen Person unterzeichnet sein',
-      'Qualitätssicherung: KI-Modelle können Bias aus Trainingsdaten reproduzieren — die menschliche Prüfung ist das letzte Sicherheitsnetz vor einer Fehlentscheidung',
+      'Dokumentationspflichten: Entscheidungen müssen von einer verantwortlichen Person nachvollziehbar dokumentiert und freigegeben werden',
+      'Qualitätssicherung: KI-Modelle können Bias aus Trainingsdaten reproduzieren — die menschliche Prüfung ist das letzte Sicherheitsnetz vor Fehlentscheidungen',
       'EU AI Act: Human-in-the-Loop ist für alle KI-Systeme ohne Ausnahme vorgeschrieben, unabhängig von der Risikostufe'
     ],
     correct: [0,1,2],
-    exp: 'DSGVO Art. 22 ✓, KAGB-Dokumentationspflicht ✓ und Qualitätssicherung gegen Modell-Bias ✓ sind alle valide Begründungen. Der EU AI Act schreibt Human-in-the-Loop nicht für alle Systeme vor — nur für Hochrisiko-KI nach Anhang III und für bestimmte Systemkategorien. Ein allgemeines "immer" ist falsch.',
+    exp: 'DSGVO Art. 22, Dokumentationspflichten und Qualitätssicherung gegen Modell-Bias sind alle valide Begründungen. Der EU AI Act schreibt Human-in-the-Loop nicht für alle Systeme vor — nur für Hochrisiko-KI nach Anhang III und bestimmte Systemkategorien. Ein allgemeines „immer" ist falsch.',
     src: 'DSGVO Art. 22 · gdpr-info.eu/art-22-gdpr/ · KAGB § 67 ff. · gesetze-im-internet.de/kagb/ · EU AI Act Art. 14 · eur-lex.europa.eu/legal-content/EN/TXT/?uri=OJ:L_202401689'
-  },
+  }
 ]
 
 };
+/* Ende QBANK */
 
 var APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwTfP8ygOun58rmvY9hQXFmPEgVyxppQGEPYjar1e78N6uanaGHuzBNOyU5P4kgvmz7/exec';
-var selectedRole = null, selectedLevel = null, questions = [], userAnswers = [];
+var selectedRole = null, questions = [], userAnswers = [];
 var participantName = '';
 
 function selectRole(r) {
@@ -488,14 +319,8 @@ function selectRole(r) {
   document.getElementById('btn-role-b').className = 'sel-btn' + (r==='b' ? ' active-b' : '');
   checkReady();
 }
-function selectLevel(l) {
-  selectedLevel = l;
-  document.getElementById('btn-level-1').className = 'sel-btn' + (l==='1' ? ' active-1' : '');
-  document.getElementById('btn-level-2').className = 'sel-btn' + (l==='2' ? ' active-2' : '');
-  checkReady();
-}
 function checkReady() {
-  document.getElementById('btn-start').disabled = !(selectedRole && selectedLevel);
+  document.getElementById('btn-start').disabled = !selectedRole;
 }
 
 function shuffle(arr) {
@@ -505,8 +330,7 @@ function shuffle(arr) {
 }
 
 function startQuiz() {
-  var key = selectedRole + selectedLevel;
-  var pool = QBANK[key] || [];
+  var pool = QBANK[selectedRole] || [];
   questions = pool.map(function(q) {
     var indices = q.opts.map(function(_,i){return i;});
     var shuffled = shuffle(indices);
@@ -519,17 +343,14 @@ function startQuiz() {
   document.getElementById('setup-section').style.display = 'none';
   document.getElementById('quiz-section').style.display = 'block';
 
-  var roleLabels = {a:'KI-Manager:in', b:'Investitionsanalystin'};
-  var levelLabels = {1:'Anfänger', 2:'Fortgeschrittene'};
+  var roleLabels = {a:'KI-Manager:in', b:'Investitionsanalyst:in'};
   var name = document.getElementById('participant-name').value.trim() || 'Anonym';
   participantName = name;
   var strip = document.getElementById('quiz-header-strip');
   strip.innerHTML =
     '<span class="strip-tag strip-role-' + selectedRole + '">' + roleLabels[selectedRole] + '</span>' +
-    '<span class="strip-tag strip-level-' + selectedLevel + '">' + levelLabels[selectedLevel] + '</span>' +
     '<span class="strip-name">' + name + '</span>';
 
-  document.getElementById('scenario-text').textContent = SCENARIOS[selectedRole];
   renderQuestions();
   updateProgress();
 }
@@ -630,32 +451,88 @@ function submitQuiz() {
     card.className = 'q-card';
     var html = '<div class="q-num">Frage ' + (qi+1) + '</div>';
     if (q.sc) html += '<div class="q-sc">' + q.sc + '</div>';
-    html += '<div class="q-text">' + q.q + '</div><div class="opt-list">';
+    html += '<div class="q-text">' + q.q + '</div>';
+    html += '<div class="opt-list" style="margin-top:.7rem">';
     q.opts.forEach(function(opt, oi) {
-      var isCorrect = ca.indexOf(oi) >= 0;
-      var isSelected = ua.indexOf(oi) >= 0;
-      var cls = 'opt disabled';
-      if (isCorrect && isSelected) cls += ' correct-sel';
-      else if (!isCorrect && isSelected) cls += ' wrong-sel';
-      else if (isCorrect && !isSelected) cls += ' missed';
+      var sel = ua.indexOf(oi) >= 0;
+      var cor = ca.indexOf(oi) >= 0;
+      var cls = 'opt disabled ';
+      if (sel && cor) cls += 'correct-sel';
+      else if (sel && !cor) cls += 'wrong-sel';
+      else if (!sel && cor) cls += 'missed';
       var cbCls = 'opt-cb';
-      if (isCorrect && isSelected) cbCls += ' chk';
-      else if (!isCorrect && isSelected) cbCls += ' chk';
       html += '<div class="' + cls + '"><div class="' + cbCls + '"></div>' +
-        '<span class="opt-letter">' + letters[oi] + '.</span>' +
-        '<span class="opt-text">' + opt + '</span></div>';
+        '<span class="opt-letter">' + letters[oi] + '.</span><span class="opt-text">' + opt + '</span></div>';
     });
     html += '</div>';
-    var fbCls = isOk ? 'fb-ok' : 'fb-wrong';
-    var fbTitle = isOk ? '✓ Richtig' : '✗ Nicht vollständig richtig';
-    html += '<div class="feedback ' + fbCls + '"><div class="fb-title">' + fbTitle + '</div>' +
-      '<div class="fb-text">' + q.exp + '</div>';
-    if (q.src) html += '<div class="fb-source">Quelle: ' + q.src + '</div>';
-    html += '</div>';
+    if (q.exp) {
+      html += '<div class="feedback ' + (isOk ? 'fb-ok' : 'fb-wrong') + '">';
+      html += '<div class="fb-title">' + (isOk ? '✓ Richtig' : '✗ Nicht vollständig richtig') + '</div>';
+      html += '<div class="fb-text">' + q.exp + '</div>';
+      if (q.src) html += '<div class="fb-source">Quelle: ' + q.src + '</div>';
+      html += '</div>';
+    }
     card.innerHTML = html;
     rev.appendChild(card);
   });
+
+  sendToSheets(score, questions.length - score);
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+function sendToSheets(correct, wrong) {
+  if (!APPS_SCRIPT_URL) return;
+  var TAG_NR = 6;
+  var THEMA  = 'Datenmanagement & Tool-Einsatz I';
+  var letters = ['A','B','C','D','E'];
+  var roleLabels = {a:'KI-Manager:in', b:'Investitionsanalyst:in'};
+  var stufe = roleLabels[selectedRole] || selectedRole;
+
+  var status = document.getElementById('submit-status');
+  if (status) {
+    status.className = 'submit-status sending';
+    status.style.display = 'block';
+    status.textContent = 'Ergebnis wird übermittelt...';
+  }
+
+  var toSend = [];
+  questions.forEach(function(q, i) {
+    var selIndices  = userAnswers[i].slice().sort();
+    var corrIndices = q.correct.slice().sort();
+    var isFull      = selIndices.join(',') === corrIndices.join(',');
+    var gewaehlt    = selIndices.map(function(idx) { return letters[idx]; }).join(',') || '-';
+    var korrekt     = corrIndices.map(function(idx) { return letters[idx]; }).join(',');
+    var ergebnis    = isFull ? 'RICHTIG' : 'FALSCH';
+
+    toSend.push(
+      APPS_SCRIPT_URL
+      + '?tab='        + encodeURIComponent('KI-Manager')
+      + '&teilnehmer=' + encodeURIComponent(participantName)
+      + '&tag='        + TAG_NR
+      + '&thema='      + encodeURIComponent(THEMA)
+      + '&stufe='      + encodeURIComponent(stufe)
+      + '&frage_nr='   + (i + 1)
+      + '&frage_text=' + encodeURIComponent(q.q.substring(0, 80))
+      + '&gewaehlt='   + encodeURIComponent(gewaehlt)
+      + '&korrekt='    + encodeURIComponent(korrekt)
+      + '&ergebnis='   + encodeURIComponent(ergebnis)
+    );
+  });
+
+  toSend.forEach(function(url, i) {
+    setTimeout(function() {
+      fetch(url, { mode: 'no-cors' }).catch(function() {});
+    }, i * 300);
+  });
+  if (status) {
+    setTimeout(function() {
+      status.className = 'submit-status success';
+      status.textContent = '✓ ' + toSend.length + ' Antworten übermittelt ('
+        + new Date().toLocaleTimeString('de-DE') + ')';
+    }, toSend.length * 300 + 500);
+  }
 }
 </script>
+
 </body>
 </html>
