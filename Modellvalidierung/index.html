@@ -182,34 +182,16 @@ table.gloss td:first-child{font-weight:600;white-space:nowrap;width:150px;}
 <div class="sec">
  <div class="sec-t">4 · <b>Overfitting vs. Underfitting</b> — auswendig lernen statt verstehen</div>
  <div class="szenario"><b>Fallbeispiel:</b> Ein Modell soll für eine Tankstellenkette in Luxemburg vorhersagen, ob ein Tag <strong>überdurchschnittlichen Umsatz</strong> bei Sandwiches &amp; Getränken bringt.¹ Haupttreiber: die Nähe zum Ferienbeginn in Frankreich, Belgien, Deutschland und den Niederlanden — grenznaher Pendler- und Reiseverkehr. Diese Termine verschieben sich aber <strong>jedes Jahr</strong>. Die Tankstellenkette möchte die Nachfrage möglichst genau vorhersagen, um entsprechende Bestellungen aufgeben zu können. Bei leicht verderblichen Waren ist es teuer, Zutaten und Produkte zu kaufen, die dann „Ladenhüter" sind und liegen bleiben. Trainiert wird mit den Jahren 1–3, getestet mit dem noch ungesehenen Jahr 4 — nicht zufällig gemischt, sondern bewusst zeitlich getrennt.</div>
- <div class="grid2">
-  <div>
-   <div class="ctrl">
-    <label>Modell‑Komplexität (Baumtiefe)</label>
-    <input type="range" id="dep" min="0" max="14" value="3" step="1">
-    <span class="pill" id="depVal">4</span>
-    <span class="verdict" id="ofVerdict">—</span>
-   </div>
-   <svg id="ofChart" viewBox="0 0 580 240" role="img" aria-label="Lernkurve"></svg>
-   <div class="legend"><span><i style="background:#8a2a2a"></i>Trainingsjahre 1–3 (auswendig)</span><span><i style="background:#0a6b6b"></i>Testjahr 4 (was zählt)</span></div>
-   <div class="callout" id="ofText"></div>
-  </div>
-  <div>
-   <div class="drift"><b>Ein ganz anderes Problem: Model Drift</b><br><br>In Jahr 4 werden plötzlich drei Snacks populär, die es in den Trainingsjahren <strong>gar nicht gab</strong>: „Matjespizza" (Niederlande), „Pommespizza" (Belgien), „Pizza Tricolore" (Frankreich). An den rund 50 betroffenen Tagen (Ferienzeit im jeweiligen Land) machen sie im Schnitt 15,1 % des Snack-Umsatzes aus, an Spitzentagen bis zu 27,6 %.<br><br><strong>Keine Baumtiefe behebt das</strong> — dem Modell fehlt für diese Kategorien schlicht das Merkmal, es kann sie nicht „falsch gewichten", weil es sie nie gesehen hat. Die Lösung ist nicht mehr Komplexität, sondern <strong>neu trainieren</strong> mit aktuellen Daten.</div>
-  </div>
+ <div class="callout" style="margin-top:0;margin-bottom:.9rem;"><b>Was ist „Tiefe" bzw. „Baumtiefe"?</b> Das Modell dahinter ist ein <strong>Entscheidungsbaum</strong>: Es trifft seine Vorhersage über eine Kette von Ja/Nein-Fragen an die Daten (z. B. „Liegt der Tag in der Ferienzeit?" → „Ist es ein Wochenende?" → „Wie viele Tage bis zum Ferienbeginn?" → …). Die <strong>Baumtiefe</strong> legt fest, wie viele solcher Fragen hintereinander gestellt werden dürfen, bevor eine Vorhersage feststeht. Tiefe 0–1: sehr wenige, grobe Fragen — das Modell unterscheidet kaum zwischen Tagen. Tiefe 10 und mehr: viele, immer speziellere Fragen — bis hinunter zu Fragen, die im Extremfall nur noch auf einzelne Tage im Trainingsdatensatz zutreffen. Der Regler unten steuert genau das.</div>
+ <div class="ctrl">
+  <label>Modell‑Komplexität (Baumtiefe)</label>
+  <input type="range" id="dep" min="0" max="14" value="3" step="1">
+  <span class="pill" id="depVal">4</span>
+  <span class="verdict" id="ofVerdict">—</span>
  </div>
-
- <div class="callout" style="margin-top:.2rem;">
- <b>Die Einkaufsperspektive:</b> Das Modell wurde ausschließlich mit den Umsatzdaten der Jahre 1–3 trainiert. Jetzt will ein Einkäufer wissen: Wie viele Sandwiches, Eis und Limonade soll er für die <strong>erste Augustwoche</strong> bestellen? Anders als in allen drei Trainingsjahren liegt in dieser Woche weder in den Niederlanden noch in Deutschland ein Ferienbeginn oder -ende — der grenznahe Reiseverkehr, auf dem die Vorhersage im Kern beruht, fällt in diesem Jahr schlicht weg. Das Modell selbst „merkt" das nicht: Ein Rechenmodell verweigert nie eine Vorhersage, es liefert trotzdem eine Zahl — indem es über den Bereich hinaus <strong>extrapoliert</strong>, den es je gesehen hat.
- <p style="margin-top:.6rem;">Weder mehr noch weniger Baumtiefe löst das — es ist streng genommen kein klassisches Over- oder Underfitting, sondern eine <strong>Extrapolation</strong>: eine Anfrage, für die es in den Trainingsdaten kein passendes Beispiel gab. Vier Fragen helfen einer KI-Managerin oder einem KI-Manager, das <strong>frühzeitig</strong> zu erkennen, bevor die Modellzahl ungeprüft in eine Bestellung übersetzt wird:</p>
- <ul style="padding-left:1.2rem;margin-top:.5rem;">
- <li style="margin-bottom:.3rem;"><strong>Merkmalsabdeckung prüfen:</strong> Gab es in den Jahren 1–3 überhaupt eine Woche ohne Ferienüberlappung in NL und DE? Wenn nein, bewegt sich die Anfrage außerhalb dessen, was das Modell je gesehen hat.</li>
- <li style="margin-bottom:.3rem;"><strong>Unsicherheitsangabe einfordern:</strong> Liefert das Modell neben der Punktschätzung auch ein Konfidenzintervall oder eine Wahrscheinlichkeit? Eine ungewöhnlich breite Bandbreite ist ein Warnsignal.</li>
- <li style="margin-bottom:.3rem;"><strong>Plausibilitätsprüfung durch die Fachseite:</strong> Bevor die Vorhersage in eine Bestellmenge übersetzt wird, sollte jemand mit Marktkenntnis gegenprüfen, ob die Prämisse (hier: Reiseverkehr durch Ferienüberlappung) in diesem Jahr überhaupt noch gilt.</li>
- <li><strong>Sicherheitsspanne statt Punktschätzung:</strong> Bei erkennbar untypischen Situationen empfiehlt sich ein Vorsichtsabschlag oder eine Bandbreite in der Bestellung, statt der Modellzahl blind zu vertrauen.</li>
- </ul>
- <p style="margin-top:.6rem;font-size:12px;color:var(--muted);">Verwandt mit dem Model-Drift-Beispiel oben: Beide Fälle zeigen, dass ein einmal gutes Modell an der Realität scheitern kann, wenn diese von dem abweicht, was es gelernt hat — Model Drift schleicht sich über die Zeit ein, eine Extrapolation wie hier kann dagegen sofort auftreten, sobald eine neue Situation eintrifft.</p>
- </div>
+ <svg id="ofChart" viewBox="0 0 580 240" role="img" aria-label="Lernkurve"></svg>
+ <div class="legend"><span><i style="background:#8a2a2a"></i>Trainingsjahre 1–3 (auswendig)</span><span><i style="background:#0a6b6b"></i>Testjahr 4 (was zählt)</span></div>
+ <div class="callout" id="ofText"></div>
 
  <div class="footnote">
   <div class="fn-t">Fußnote — Vereinfachung</div>
@@ -217,15 +199,19 @@ table.gloss td:first-child{font-weight:600;white-space:nowrap;width:150px;}
  </div>
 </div>
 
-<!-- GLOSSAR -->
+<!-- EINKAUFSPERSPEKTIVE -->
 <div class="sec">
- <div class="sec-t">5 · Einordnung fürs Management — <b>Black‑Box vs. White‑Box</b></div>
- <table class="gloss">
-  <tr><td>White‑Box</td><td>Nachvollziehbares Modell (z. B. Entscheidungsbaum, lineare Regression). Man kann die Regel lesen — gut für Erklärpflicht und Audit (ISO/IEC 42001, EU AI Act).</td></tr>
-  <tr><td>Black‑Box</td><td>Sehr leistungsfähig, aber undurchsichtig (tiefe neuronale Netze). Braucht zusätzliche Erklärwerkzeuge und strengeres Monitoring.</td></tr>
-  <tr><td>Model Drift</td><td>Ein einmal gutes Modell verschlechtert sich im Betrieb, weil sich die Welt ändert. Darum: Precision/Recall dauerhaft überwachen, nicht nur beim Start messen.</td></tr>
-  <tr><td>Deine Aufgabe</td><td>Als KI-Manager:in rechnest du diese Werte nicht selbst — du <strong>verlangst</strong> die richtige Kennzahl (Recall? Precision? Fairness je Gruppe?) und hinterfragst sie.</td></tr>
- </table>
+ <div class="sec-t">5 · <b>Die Einkaufsperspektive</b> — wie erkennt man das frühzeitig?</div>
+ <div class="callout" style="margin-top:0;">
+ Das Modell wurde ausschließlich mit den Umsatzdaten der Jahre 1–3 trainiert. Jetzt will ein Einkäufer wissen: Wie viele Sandwiches, Eis und Limonade soll er für die <strong>erste Augustwoche</strong> bestellen? Anders als in allen drei Trainingsjahren liegt in dieser Woche weder in den Niederlanden noch in Deutschland ein Ferienbeginn oder -ende — der grenznahe Reiseverkehr, auf dem die Vorhersage im Kern beruht, fällt in diesem Jahr schlicht weg. Das Modell selbst „merkt" das nicht: Ein Rechenmodell verweigert nie eine Vorhersage, es liefert trotzdem eine Zahl — indem es über den Bereich hinaus <strong>extrapoliert</strong>, den es je gesehen hat.
+ <p style="margin-top:.6rem;">Weder mehr noch weniger Baumtiefe löst das — es ist streng genommen kein klassisches Over- oder Underfitting, sondern eine <strong>Extrapolation</strong>: eine Anfrage, für die es in den Trainingsdaten kein passendes Beispiel gab. Vier Fragen helfen einer KI-Managerin oder einem KI-Manager, das <strong>frühzeitig</strong> zu erkennen, bevor die Modellzahl ungeprüft in eine Bestellung übersetzt wird:</p>
+ <ul style="padding-left:1.2rem;margin-top:.5rem;">
+ <li style="margin-bottom:.3rem;"><strong>Merkmalsabdeckung prüfen:</strong> Gab es in den Jahren 1–3 überhaupt eine Woche ohne Ferienüberlappung in NL und DE? Wenn nein, bewegt sich die Anfrage außerhalb dessen, was das Modell je gesehen hat.</li>
+ <li style="margin-bottom:.3rem;"><strong>Unsicherheitsangabe einfordern:</strong> Liefert das Modell neben der Punktschätzung auch ein Konfidenzintervall oder eine Wahrscheinlichkeit? Eine ungewöhnlich breite Bandbreite ist ein Warnsignal.</li>
+ <li style="margin-bottom:.3rem;"><strong>Plausibilitätsprüfung durch die Fachseite:</strong> Bevor die Vorhersage in eine Bestellmenge übersetzt wird, sollte jemand mit Marktkenntnis gegenprüfen, ob die Prämisse (hier: Reiseverkehr durch Ferienüberlappung) in diesem Jahr überhaupt noch gilt.</li>
+ <li><strong>Sicherheitsspanne statt Punktschätzung:</strong> Bei erkennbar untypischen Situationen empfiehlt sich ein Vorsichtsabschlag oder eine Bandbreite in der Bestellung, statt der Modellzahl blind zu vertrauen.</li>
+ </ul>
+ </div>
 </div>
 
 <div class="foot">Synthetischer Datensatz (n=2000, Test n=800) · alle Personen und Zahlen erfunden · Kennzahlen mit scikit-learn berechnet · Lab „Modellvalidierung &amp; Bias" · KI-Manager:in</div>
