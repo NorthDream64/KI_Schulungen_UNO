@@ -133,7 +133,7 @@ table.gloss td:first-child{font-weight:600;white-space:nowrap;width:150px;}
   <p>¹ Rohwerte lassen sich nicht einfach addieren — 100 Punkte Fachscore plus ein Ja/Nein-Merkmal plus Alter in Monaten wären gar nicht vergleichbar. Jedes Merkmal wird deshalb zunächst <strong>standardisiert</strong>: Es zählt nicht der absolute Wert, sondern die Abweichung vom Durchschnitt aller Bewerbenden. Bei Fachscore ist das ein Spektrum („5 Punkte über dem Mittel"); bei einem Ja/Nein-Merkmal gibt es trotzdem einen Durchschnitt (z. B. „60 % Ja"), aber nur zwei mögliche Abweichungen. Das Modell multipliziert jede Abweichung mit einem <strong>gelernten Gewicht</strong> — woher diese Gewichte kommen und wo dabei Diskriminierung entstehen kann, zeigt Abschnitt 2. Alle gewichteten Abweichungen zusammen ergeben eine Zahl, die über eine mathematische Kurve in eine Wahrscheinlichkeit zwischen 0 % und 100 % übersetzt wird — und genau darauf schneidet der Bewerbungsregler.</p>
   <p style="margin-top:.5rem;">Fachbegriffe in diesem Abschnitt:</p>
   <dl>
-   <div class="fn-item"><dt>Accuracy —</dt> <dd>Anteil aller korrekt beurteilten Bewerbungen (richtig empfohlen + richtig abgelehnt) an allen Bewerbungen. Wird hier nicht separat angezeigt, ist aber z. B. das, was in Abschnitt 5 als „Training"/„neue Daten" auf der Lernkurve steht.</dd></div>
+   <div class="fn-item"><dt>Accuracy —</dt> <dd>Anteil aller korrekt beurteilten Bewerbungen (richtig empfohlen + richtig abgelehnt) an allen Bewerbungen. Wird hier nicht separat angezeigt, ist aber z. B. das, was in Abschnitt 4 als „Training"/„neue Daten" auf der Lernkurve steht.</dd></div>
    <div class="fn-item"><dt>Precision —</dt> <dd>Anteil der tatsächlich Geeigneten unter allen vom Modell Empfohlenen. Hoch = wenige Fehlalarme.</dd></div>
    <div class="fn-item"><dt>Recall —</dt> <dd>Anteil der tatsächlich Geeigneten, die das Modell auch findet statt sie zu übersehen. Hoch = wenige verpasste Talente.</dd></div>
    <div class="fn-item"><dt>F1 —</dt> <dd>Fasst Precision und Recall in einer Zahl zusammen, beide gleich gewichtet.</dd></div>
@@ -178,21 +178,10 @@ table.gloss td:first-child{font-weight:600;white-space:nowrap;width:150px;}
  <div class="callout"><b>Die Lehre:</b> „Geschlecht" wegzulassen halbiert die Lücke nur — die <strong>Karrierelücke verrät das Geschlecht weiter</strong> (ein sogenannter Proxy). Auch synthetisches Nachfüttern pro Frauen würde daran nichts Grundsätzliches ändern: Solange die Karrierelücke unverändert im Datensatz steht, lernt das Modell das Muster weiter über sie — am Zielwert zu drehen behebt nicht die Ursache im Merkmal selbst. Erst wenn man den Proxy adressiert, verschwindet die Diskriminierung. <em>Fairness durch Wegschauen oder Nachjustieren an der falschen Stelle funktioniert nicht — man muss messen und gezielt gegensteuern.</em></div>
 </div>
 
-<!-- ERKENNUNG -->
-<div class="sec">
- <div class="sec-t">4 · <b>Erkennung</b> — wie entdeckt man das, außer durch Gerüchte?</div>
- <div class="callout"><b>Vier Wege statt Zufall:</b>
- <p style="margin-top:.5rem;"><strong>Fairness-Audits</strong> — Auswahlrate und Recall regelmäßig je Gruppe messen, nicht nur die Gesamt-Genauigkeit (wie in Abschnitt 2). Methodischer Standard: <a href="https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.1270.pdf" target="_blank" rel="noopener">NIST SP 1270 — Towards a Standard for Identifying and Managing Bias in AI</a>.</p>
- <p style="margin-top:.5rem;"><strong>Proxy-Tests</strong> — Merkmale gezielt herausnehmen und prüfen, ob sich die Lücke schließt (wie in Abschnitt 3). Grundlegend hierzu: <a href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2477899" target="_blank" rel="noopener">Barocas &amp; Selbst (2016), „Big Data's Disparate Impact", California Law Review 104</a>.</p>
- <p style="margin-top:.5rem;"><strong>Gesetzliche Pflicht statt Zufall</strong> — der EU AI Act stuft KI-Systeme zur Bewerberauswahl als Hochrisiko-System ein und verlangt ausdrücklich Maßnahmen zur Erkennung, Verhinderung und Minderung von Verzerrungen, dokumentiert im technischen Datensatz (<a href="https://eur-lex.europa.eu/legal-content/DE/TXT/?uri=CELEX%3A32024R1689" target="_blank" rel="noopener">VO (EU) 2024/1689, Art. 6 Abs. 2 i. V. m. Anhang III Nr. 4, Art. 10 Abs. 2 lit. g, Art. 11</a>) — Bias-Tests sind also Pflicht vor dem Einsatz, nicht erst nach einem Gerücht.</p>
- <p style="margin-top:.5rem;"><strong>Governance</strong> — Ergebnisse gehören verpflichtend in den Modellvalidierungsbericht, mit Eskalation an Menschen bei Auffälligkeiten. Vorbild aus dem regulierten Finanzsektor: <a href="https://www.federalreserve.gov/supervisionreg/srletters/SR2602.htm" target="_blank" rel="noopener">Federal Reserve/OCC/FDIC, SR 26-2 — Revised Guidance on Model Risk Management (2026)</a>, das u. a. unabhängig geprüfte Validierungsberichte für jedes materielle Modell verlangt.</p>
- </div>
-</div>
-
 <!-- OVERFITTING -->
 <div class="sec">
- <div class="sec-t">5 · <b>Overfitting vs. Underfitting</b> — auswendig lernen statt verstehen</div>
- <div class="szenario"><b>Fallbeispiel:</b> Ein Modell soll für eine Tankstellenkette in Luxemburg vorhersagen, ob ein Tag <strong>überdurchschnittlichen Umsatz</strong> bei Sandwiches &amp; Getränken bringt.¹ Haupttreiber: die Nähe zum Ferienbeginn in Frankreich, Belgien, Deutschland und den Niederlanden — grenznaher Pendler- und Reiseverkehr. Diese Termine verschieben sich aber <strong>jedes Jahr</strong>. Trainiert wird mit den Jahren 1–3, getestet mit dem noch ungesehenen Jahr 4 — nicht zufällig gemischt, sondern bewusst zeitlich getrennt.</div>
+ <div class="sec-t">4 · <b>Overfitting vs. Underfitting</b> — auswendig lernen statt verstehen</div>
+ <div class="szenario"><b>Fallbeispiel:</b> Ein Modell soll für eine Tankstellenkette in Luxemburg vorhersagen, ob ein Tag <strong>überdurchschnittlichen Umsatz</strong> bei Sandwiches &amp; Getränken bringt.¹ Haupttreiber: die Nähe zum Ferienbeginn in Frankreich, Belgien, Deutschland und den Niederlanden — grenznaher Pendler- und Reiseverkehr. Diese Termine verschieben sich aber <strong>jedes Jahr</strong>. Die Tankstellenkette möchte die Nachfrage möglichst genau vorhersagen, um entsprechende Bestellungen aufgeben zu können. Bei leicht verderblichen Waren ist es teuer, Zutaten und Produkte zu kaufen, die dann „Ladenhüter" sind und liegen bleiben. Trainiert wird mit den Jahren 1–3, getestet mit dem noch ungesehenen Jahr 4 — nicht zufällig gemischt, sondern bewusst zeitlich getrennt.</div>
  <div class="grid2">
   <div>
    <div class="ctrl">
@@ -209,6 +198,19 @@ table.gloss td:first-child{font-weight:600;white-space:nowrap;width:150px;}
    <div class="drift"><b>Ein ganz anderes Problem: Model Drift</b><br><br>In Jahr 4 werden plötzlich drei Snacks populär, die es in den Trainingsjahren <strong>gar nicht gab</strong>: „Matjespizza" (Niederlande), „Pommespizza" (Belgien), „Pizza Tricolore" (Frankreich). An den rund 50 betroffenen Tagen (Ferienzeit im jeweiligen Land) machen sie im Schnitt 15,1 % des Snack-Umsatzes aus, an Spitzentagen bis zu 27,6 %.<br><br><strong>Keine Baumtiefe behebt das</strong> — dem Modell fehlt für diese Kategorien schlicht das Merkmal, es kann sie nicht „falsch gewichten", weil es sie nie gesehen hat. Die Lösung ist nicht mehr Komplexität, sondern <strong>neu trainieren</strong> mit aktuellen Daten.</div>
   </div>
  </div>
+
+ <div class="callout" style="margin-top:.2rem;">
+ <b>Die Einkaufsperspektive:</b> Das Modell wurde ausschließlich mit den Umsatzdaten der Jahre 1–3 trainiert. Jetzt will ein Einkäufer wissen: Wie viele Sandwiches, Eis und Limonade soll er für die <strong>erste Augustwoche</strong> bestellen? Anders als in allen drei Trainingsjahren liegt in dieser Woche weder in den Niederlanden noch in Deutschland ein Ferienbeginn oder -ende — der grenznahe Reiseverkehr, auf dem die Vorhersage im Kern beruht, fällt in diesem Jahr schlicht weg. Das Modell selbst „merkt" das nicht: Ein Rechenmodell verweigert nie eine Vorhersage, es liefert trotzdem eine Zahl — indem es über den Bereich hinaus <strong>extrapoliert</strong>, den es je gesehen hat.
+ <p style="margin-top:.6rem;">Weder mehr noch weniger Baumtiefe löst das — es ist streng genommen kein klassisches Over- oder Underfitting, sondern eine <strong>Extrapolation</strong>: eine Anfrage, für die es in den Trainingsdaten kein passendes Beispiel gab. Vier Fragen helfen einer KI-Managerin oder einem KI-Manager, das <strong>frühzeitig</strong> zu erkennen, bevor die Modellzahl ungeprüft in eine Bestellung übersetzt wird:</p>
+ <ul style="padding-left:1.2rem;margin-top:.5rem;">
+ <li style="margin-bottom:.3rem;"><strong>Merkmalsabdeckung prüfen:</strong> Gab es in den Jahren 1–3 überhaupt eine Woche ohne Ferienüberlappung in NL und DE? Wenn nein, bewegt sich die Anfrage außerhalb dessen, was das Modell je gesehen hat.</li>
+ <li style="margin-bottom:.3rem;"><strong>Unsicherheitsangabe einfordern:</strong> Liefert das Modell neben der Punktschätzung auch ein Konfidenzintervall oder eine Wahrscheinlichkeit? Eine ungewöhnlich breite Bandbreite ist ein Warnsignal.</li>
+ <li style="margin-bottom:.3rem;"><strong>Plausibilitätsprüfung durch die Fachseite:</strong> Bevor die Vorhersage in eine Bestellmenge übersetzt wird, sollte jemand mit Marktkenntnis gegenprüfen, ob die Prämisse (hier: Reiseverkehr durch Ferienüberlappung) in diesem Jahr überhaupt noch gilt.</li>
+ <li><strong>Sicherheitsspanne statt Punktschätzung:</strong> Bei erkennbar untypischen Situationen empfiehlt sich ein Vorsichtsabschlag oder eine Bandbreite in der Bestellung, statt der Modellzahl blind zu vertrauen.</li>
+ </ul>
+ <p style="margin-top:.6rem;font-size:12px;color:var(--muted);">Verwandt mit dem Model-Drift-Beispiel oben: Beide Fälle zeigen, dass ein einmal gutes Modell an der Realität scheitern kann, wenn diese von dem abweicht, was es gelernt hat — Model Drift schleicht sich über die Zeit ein, eine Extrapolation wie hier kann dagegen sofort auftreten, sobald eine neue Situation eintrifft.</p>
+ </div>
+
  <div class="footnote">
   <div class="fn-t">Fußnote — Vereinfachung</div>
   <p>¹ Der tatsächliche Tagesumsatz ist eine Zahl in Euro (eine sogenannte Regression). Hier vereinfacht als Ja/Nein-Frage dargestellt („überdurchschnittlicher Umsatztag?"), damit dieselbe Trainings-/Test-Grafik wie beim Bewerbungsmodell in Abschnitt 1 genutzt werden kann. In der Praxis würde man eine echte Fehlerkennzahl verwenden (z. B. „im Schnitt X € daneben"), nicht nur richtig/falsch.</p>
@@ -217,7 +219,7 @@ table.gloss td:first-child{font-weight:600;white-space:nowrap;width:150px;}
 
 <!-- GLOSSAR -->
 <div class="sec">
- <div class="sec-t">6 · Einordnung fürs Management — <b>Black‑Box vs. White‑Box</b></div>
+ <div class="sec-t">5 · Einordnung fürs Management — <b>Black‑Box vs. White‑Box</b></div>
  <table class="gloss">
   <tr><td>White‑Box</td><td>Nachvollziehbares Modell (z. B. Entscheidungsbaum, lineare Regression). Man kann die Regel lesen — gut für Erklärpflicht und Audit (ISO/IEC 42001, EU AI Act).</td></tr>
   <tr><td>Black‑Box</td><td>Sehr leistungsfähig, aber undurchsichtig (tiefe neuronale Netze). Braucht zusätzliche Erklärwerkzeuge und strengeres Monitoring.</td></tr>
