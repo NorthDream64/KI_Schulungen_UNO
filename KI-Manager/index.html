@@ -471,7 +471,7 @@ footer{border-top:1px solid var(--rule);padding:1.5rem 2rem;max-width:820px;marg
    Format: '2026-08-03'
    Beispiel: var KURSSTART = new Date('2026-09-01');
 ═══════════════════════════════════════════════════════════════ */
-var KURSSTART = ('2026-08-03'); // ← Datum eintragen wenn bekannt: new Date('YYYY-MM-DD')
+var KURSSTART = new Date('2026-08-03'); // KIM-Kursstart (unabhängig von KIB)
 
 /* ═══════════════════════════════════════════════════════════════
    QUIZ-DATEIEN
@@ -480,8 +480,15 @@ var KURSSTART = ('2026-08-03'); // ← Datum eintragen wenn bekannt: new Date('Y
    Einfach neue Einträge ergänzen wenn Quiz fertig sind
 ═══════════════════════════════════════════════════════════════ */
 var QUIZ_FILES = {
-  // 1: 'Quiz/Tag_1_KI-Manager.html',
-  // weitere Tage hier ergänzen
+  1: 'Quiz/Tag_1_Grundlagen_operativer_Projekte%20I.html',
+  2: 'Quiz/Tag_2_Grundlagen_operativer_Projekte%20II.html',
+  3: 'Quiz/Tag_3_Grundlagen_operativer_Projekte%20III.html',
+  4: 'Quiz/Tag_4_Projektinitiierung_Stakeholder.html',
+  5: 'Quiz/Tag_5_ROI_Business_Case.html',
+  6: 'Quiz/Tag_6_Datenmanagement_Tool-Einsatz_I.html',
+  7: 'Quiz/Tag_7_Datenmanagement_Tool-Einsatz_II.html',
+  8: 'Quiz/Tag_8_Datenmanagement_Tool-Einsatz_III.html',
+  17: 'Quiz/Tag_17_Generalwiederholung.html'
 };
 
 function getAktuellerKurstag() {
@@ -545,6 +552,13 @@ function renderStatus(kurstag) {
   renderStatus(kurstag);
   for (var t = 1; t <= Math.min(kurstag, 20); t++) {
     freischalten(t);
+  }
+  // Generalwiederholung (Tag 17) bereits ab Tag 12 verfügbar
+  var SAMMELKARTEN = { 17: 12 };
+  for (var sammel in SAMMELKARTEN) {
+    if (kurstag >= SAMMELKARTEN[sammel]) {
+      freischalten(parseInt(sammel));
+    }
   }
 })();
 </script>
