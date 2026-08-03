@@ -175,6 +175,52 @@ canvas{max-width:100%;display:block;margin:0 auto;}
   aber neu berechnet. Alle Werte aktualisieren sich sofort.
 </div>
 
+<!-- ─── GEGENÜBERSTELLUNG ─────────────────────────────── -->
+<div class="section-card full">
+  <div class="sec-title t-purple">Gegenüberstellung &middot; Baseline vs. Future State</div>
+  <div class="vs-grid">
+
+    <div class="vs-block">
+      <div class="vs-head">Kosten der Vorgangsbearbeitung</div>
+      <div class="vs-body">
+        <div class="vs-side base">
+          <div class="vs-tag">Baseline</div>
+          <div class="vs-num" id="vs_mo_base">—</div>
+          <div class="vs-unit">€/Monat</div>
+        </div>
+        <div class="vs-arrow">→</div>
+        <div class="vs-side fut">
+          <div class="vs-tag">Future State</div>
+          <div class="vs-num" id="vs_mo_fut">—</div>
+          <div class="vs-unit">€/Monat &middot; inkl. KI</div>
+        </div>
+      </div>
+      <div class="vs-meter"><div class="m-base" id="vs_mo_meter_b" style="width:50%"></div><div class="m-fut" id="vs_mo_meter_f" style="width:50%"></div></div>
+      <div class="vs-foot">Differenz <b id="vs_mo_delta">—</b> &middot; <span id="vs_mo_pct">—</span></div>
+    </div>
+
+    <div class="vs-block">
+      <div class="vs-head">Kosten je Vorgang</div>
+      <div class="vs-body">
+        <div class="vs-side base">
+          <div class="vs-tag">Baseline</div>
+          <div class="vs-num" id="vs_case_base">—</div>
+          <div class="vs-unit">€/Vorgang</div>
+        </div>
+        <div class="vs-arrow">→</div>
+        <div class="vs-side fut">
+          <div class="vs-tag">Future State</div>
+          <div class="vs-num" id="vs_case_fut">—</div>
+          <div class="vs-unit">€/Vorgang &middot; inkl. KI</div>
+        </div>
+      </div>
+      <div class="vs-meter"><div class="m-base" id="vs_case_meter_b" style="width:50%"></div><div class="m-fut" id="vs_case_meter_f" style="width:50%"></div></div>
+      <div class="vs-foot">Differenz <b id="vs_case_delta">—</b> &middot; <span id="vs_case_pct">—</span></div>
+    </div>
+
+  </div>
+</div>
+
 <!-- ─── ① BASELINE / ② SAVINGS ─────────────────────────── -->
 <div class="two-col">
 
@@ -254,12 +300,12 @@ canvas{max-width:100%;display:block;margin:0 auto;}
       <div class="calc-out is-total"><span class="cv" id="sv_h_total">—</span><span class="cu">Stunden/Monat</span></div>
     </div>
     <div class="calc-field">
-      <span class="cf-label">Wert der eingesparten Zeit <span class="cf-hint">vor KI-Kosten</span></span>
-      <div class="calc-out is-save"><span class="cv" id="sv_value_mo">—</span><span class="cu">€/Monat</span></div>
-    </div>
-    <div class="calc-field">
       <span class="cf-label">Entspricht <span class="cf-hint">220 Arbeitstage × 8 h</span></span>
       <div class="calc-out is-carry"><span class="cv" id="sv_fte">—</span><span class="cu">% einer Vollzeitstelle</span></div>
+    </div>
+    <div class="calc-field">
+      <span class="cf-label">Wert der eingesparten Zeit <span class="cf-hint">vor KI-Kosten</span></span>
+      <div class="calc-out is-save"><span class="cv" id="sv_value_mo">—</span><span class="cu">€/Monat</span></div>
     </div>
   </div>
 </div>
@@ -327,7 +373,6 @@ canvas{max-width:100%;display:block;margin:0 auto;}
 
     <div class="btn-row">
       <button class="btn" onclick="resetDefaults()">↺ Beispielwerte laden</button>
-      <button class="btn btn-primary" onclick="calculate()">Berechnen</button>
     </div>
   </div>
 
@@ -370,52 +415,6 @@ canvas{max-width:100%;display:block;margin:0 auto;}
       <span class="cf-label">Kosten der Vorgangsbearbeitung <span class="cf-hint">Personal + KI, je Monat</span></span>
       <div class="calc-out is-total"><span class="cv" id="fs_cost_mo">—</span><span class="cu">€/Monat</span></div>
     </div>
-  </div>
-</div>
-
-<!-- ─── GEGENÜBERSTELLUNG ─────────────────────────────── -->
-<div class="section-card full">
-  <div class="sec-title t-purple">Gegenüberstellung &middot; Baseline vs. Future State</div>
-  <div class="vs-grid">
-
-    <div class="vs-block">
-      <div class="vs-head">Kosten der Vorgangsbearbeitung</div>
-      <div class="vs-body">
-        <div class="vs-side base">
-          <div class="vs-tag">Baseline</div>
-          <div class="vs-num" id="vs_mo_base">—</div>
-          <div class="vs-unit">€/Monat</div>
-        </div>
-        <div class="vs-arrow">→</div>
-        <div class="vs-side fut">
-          <div class="vs-tag">Future State</div>
-          <div class="vs-num" id="vs_mo_fut">—</div>
-          <div class="vs-unit">€/Monat &middot; inkl. KI</div>
-        </div>
-      </div>
-      <div class="vs-meter"><div class="m-base" id="vs_mo_meter_b" style="width:50%"></div><div class="m-fut" id="vs_mo_meter_f" style="width:50%"></div></div>
-      <div class="vs-foot">Differenz <b id="vs_mo_delta">—</b> &middot; <span id="vs_mo_pct">—</span></div>
-    </div>
-
-    <div class="vs-block">
-      <div class="vs-head">Kosten je Vorgang</div>
-      <div class="vs-body">
-        <div class="vs-side base">
-          <div class="vs-tag">Baseline</div>
-          <div class="vs-num" id="vs_case_base">—</div>
-          <div class="vs-unit">€/Vorgang</div>
-        </div>
-        <div class="vs-arrow">→</div>
-        <div class="vs-side fut">
-          <div class="vs-tag">Future State</div>
-          <div class="vs-num" id="vs_case_fut">—</div>
-          <div class="vs-unit">€/Vorgang &middot; inkl. KI</div>
-        </div>
-      </div>
-      <div class="vs-meter"><div class="m-base" id="vs_case_meter_b" style="width:50%"></div><div class="m-fut" id="vs_case_meter_f" style="width:50%"></div></div>
-      <div class="vs-foot">Differenz <b id="vs_case_delta">—</b> &middot; <span id="vs_case_pct">—</span></div>
-    </div>
-
   </div>
 </div>
 
