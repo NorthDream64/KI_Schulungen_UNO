@@ -561,21 +561,18 @@ function sendToSheets(correct, wrong) {
     );
   });
 
-  var idx = 0;
-  function sendNext() {
-    if (idx >= toSend.length) {
-      if (status) {
-        status.className = 'submit-status success';
-        status.textContent = '✓ ' + toSend.length + ' Antworten übermittelt ('
-          + new Date().toLocaleTimeString('de-DE') + ')';
-      }
-      return;
-    }
-    fetch(toSend[idx], { mode: 'no-cors' })
-      .catch(function() {})
-      .then(function() { idx++; setTimeout(sendNext, 400); });
+  toSend.forEach(function(url, i) {
+    setTimeout(function() {
+      fetch(url, { mode: 'no-cors' }).catch(function() {});
+    }, i * 300);
+  });
+  if (status) {
+    setTimeout(function() {
+      status.className = 'submit-status success';
+      status.textContent = '✓ ' + toSend.length + ' Antworten übermittelt ('
+        + new Date().toLocaleTimeString('de-DE') + ')';
+    }, toSend.length * 300 + 500);
   }
-  sendNext();
 }
 </script>
 
