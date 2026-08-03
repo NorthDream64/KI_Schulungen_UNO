@@ -285,11 +285,14 @@ function skipToExplanation() {
   state.karten.push({ begriff: begriffFuer(frage), status: "uebersprungen" });
 
   state.gesperrt = true;
-  document.querySelectorAll(".opt").forEach(row => row.classList.add("disabled"));
+  const korrekt = new Set(frage.korrekt);
+  // Beim Skip: korrekte Antworten grün hervorheben (als wären sie gewählt),
+  // damit die Lösung sichtbar ist. Falsche bleiben neutral disabled.
+  markiereOptionen(korrekt, korrekt, true);
 
   zeigeFeedback("hint",
     "Alles klar — hier ist die Erklärung.",
-    "Du hast diese Frage übersprungen, um direkt zur Vertiefung zu kommen. Kein Malus — das ist Teil des Spiels.");
+    "Du hast diese Frage übersprungen. Die richtige(n) Antwort(en) sind oben grün markiert. Kein Malus — das ist Teil des Spiels.");
 
   zeigeDidaktik(frage.vertiefung, true);
   logAntwort(frage, null);
