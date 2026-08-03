@@ -68,6 +68,28 @@ a{color:var(--accent);}
 .calc-out.is-save .cv{color:var(--green);}
 .cf-divider{border-top:1px solid var(--rule);margin:.9rem 0 .8rem;}
 
+/* Gegenüberstellung Baseline vs. Future State */
+.vs-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+@media(max-width:700px){.vs-grid{grid-template-columns:1fr;}}
+.vs-block{border:1px solid var(--rule);border-radius:10px;overflow:hidden;background:var(--card);}
+.vs-head{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);
+  background:var(--phase);padding:.55rem .9rem;border-bottom:1px solid var(--rule);}
+.vs-body{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:.5rem;padding:1rem .9rem .8rem;}
+.vs-side{text-align:center;}
+.vs-side .vs-tag{font-size:9px;letter-spacing:1.2px;text-transform:uppercase;color:var(--muted);margin-bottom:.25rem;}
+.vs-side .vs-num{font-size:1.35rem;font-weight:700;line-height:1.15;font-variant-numeric:tabular-nums;}
+.vs-side.base .vs-num{color:var(--red);}
+.vs-side.fut  .vs-num{color:var(--green);}
+.vs-side .vs-unit{font-size:10px;color:var(--muted);margin-top:.15rem;}
+.vs-arrow{font-size:1.1rem;color:var(--muted);padding:0 .2rem;}
+.vs-foot{border-top:1px dashed var(--rule);padding:.5rem .9rem .7rem;text-align:center;font-size:11.5px;color:var(--muted);}
+.vs-foot b{font-size:13px;font-variant-numeric:tabular-nums;}
+.vs-foot b.pos{color:var(--green);}
+.vs-foot b.neg{color:var(--red);}
+.vs-meter{height:8px;background:#f0f0ea;border-radius:100px;overflow:hidden;margin:0 .9rem .8rem;display:flex;}
+.vs-meter .m-base{background:linear-gradient(90deg,#c0392b,#e74c3c);}
+.vs-meter .m-fut{background:linear-gradient(90deg,#27ae60,#2ecc71);}
+
 /* Results */
 .results-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:.8rem;margin-bottom:1.2rem;}
 @media(max-width:700px){.results-grid{grid-template-columns:1fr 1fr;}}
@@ -341,7 +363,7 @@ canvas{max-width:100%;display:block;margin:0 auto;}
       <div class="calc-out"><span class="cv" id="fs_h_mo">—</span><span class="cu">Stunden/Monat</span></div>
     </div>
     <div class="calc-field">
-      <span class="cf-label">davon Personalkosten</span>
+      <span class="cf-label">Verbleibende Personalkosten (Future State)</span>
       <div class="calc-out is-carry"><span class="cv" id="fs_personal">—</span><span class="cu">€/Monat</span></div>
     </div>
     <div class="calc-field">
@@ -356,6 +378,52 @@ canvas{max-width:100%;display:block;margin:0 auto;}
       <span class="cf-label">Veränderung gegenüber Baseline</span>
       <div class="calc-out is-save"><span class="cv" id="fs_delta_mo">—</span><span class="cu">€/Monat</span></div>
     </div>
+  </div>
+</div>
+
+<!-- ─── GEGENÜBERSTELLUNG ─────────────────────────────── -->
+<div class="section-card full">
+  <div class="sec-title t-purple">Gegenüberstellung &middot; Baseline vs. Future State</div>
+  <div class="vs-grid">
+
+    <div class="vs-block">
+      <div class="vs-head">Kosten der Vorgangsbearbeitung</div>
+      <div class="vs-body">
+        <div class="vs-side base">
+          <div class="vs-tag">Baseline</div>
+          <div class="vs-num" id="vs_mo_base">—</div>
+          <div class="vs-unit">€/Monat</div>
+        </div>
+        <div class="vs-arrow">→</div>
+        <div class="vs-side fut">
+          <div class="vs-tag">Future State</div>
+          <div class="vs-num" id="vs_mo_fut">—</div>
+          <div class="vs-unit">€/Monat &middot; inkl. KI</div>
+        </div>
+      </div>
+      <div class="vs-meter"><div class="m-base" id="vs_mo_meter_b" style="width:50%"></div><div class="m-fut" id="vs_mo_meter_f" style="width:50%"></div></div>
+      <div class="vs-foot">Differenz <b id="vs_mo_delta">—</b> &middot; <span id="vs_mo_pct">—</span></div>
+    </div>
+
+    <div class="vs-block">
+      <div class="vs-head">Kosten je Vorgang</div>
+      <div class="vs-body">
+        <div class="vs-side base">
+          <div class="vs-tag">Baseline</div>
+          <div class="vs-num" id="vs_case_base">—</div>
+          <div class="vs-unit">€/Vorgang</div>
+        </div>
+        <div class="vs-arrow">→</div>
+        <div class="vs-side fut">
+          <div class="vs-tag">Future State</div>
+          <div class="vs-num" id="vs_case_fut">—</div>
+          <div class="vs-unit">€/Vorgang &middot; inkl. KI</div>
+        </div>
+      </div>
+      <div class="vs-meter"><div class="m-base" id="vs_case_meter_b" style="width:50%"></div><div class="m-fut" id="vs_case_meter_f" style="width:50%"></div></div>
+      <div class="vs-foot">Differenz <b id="vs_case_delta">—</b> &middot; <span id="vs_case_pct">—</span></div>
+    </div>
+
   </div>
 </div>
 
@@ -534,6 +602,29 @@ function compute(p){
   };
 }
 
+// Rendert einen Gegenüberstellungs-Block (Baseline vs. Future State)
+function renderVs(prefix, base, fut, unit){
+  set(prefix + '_base', fmtEur(base));
+  set(prefix + '_fut',  fmtEur(fut));
+
+  const delta = base - fut;                       // positiv = Ersparnis
+  const pct   = base > 0 ? delta / base * 100 : 0;
+
+  const dEl = document.getElementById(prefix + '_delta');
+  if(dEl){
+    dEl.textContent = (delta >= 0 ? '− ' : '+ ') + fmtEur(Math.abs(delta));
+    dEl.className   = delta >= 0 ? 'pos' : 'neg';
+  }
+  set(prefix + '_pct', (delta >= 0 ? '−' : '+') + fmt(Math.abs(pct),1) + ' % gegenüber Baseline');
+
+  // Balkenverhältnis: beide Werte relativ zum grösseren
+  const max = Math.max(base, fut, 1);
+  const bEl = document.getElementById(prefix + '_meter_b');
+  const fEl = document.getElementById(prefix + '_meter_f');
+  if(bEl) bEl.style.width = (base/max*50) + '%';
+  if(fEl) fEl.style.width = (fut /max*50) + '%';
+}
+
 function calculate(){
   const p = getInputs();
   const r = compute(p);
@@ -568,6 +659,10 @@ function calculate(){
 
   const deltaEl = document.getElementById('fs_delta_mo').parentElement;
   deltaEl.className = 'calc-out ' + (r.fs_delta_mo >= 0 ? 'is-save' : 'is-ki');
+
+  // ── Gegenüberstellung Baseline vs. Future State ──
+  renderVs('vs_mo',   r.bl_cost_mo,   r.fs_cost_mo,   '€/Monat');
+  renderVs('vs_case', r.bl_cost_case, r.fs_cost_case, '€/Vorgang');
 
   // ── KPIs ──
   set('kpi_saving',  fmtEur(r.saving_net_yr));
