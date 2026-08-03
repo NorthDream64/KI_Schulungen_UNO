@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ROI-Rechner · KI-Projekt · KI-Manager:in</title>
+<style>
+:root{
+  --ink:#1a1a18;--paper:#f8f6f1;--card:#ffffff;--rule:#d5d0c5;
+  --muted:#6b6b60;--accent:#0a4a7a;--teal:#0a6b6b;--green:#2a5c3f;
+  --amber:#7a4a00;--red:#6a1a1a;--blue:#1a3a7a;--phase:#f2f0eb;
+  --input-bg:#fffbe6;--result-bg:#e8f4f8;--good-bg:#e8f5e8;
+  --bad-bg:#fde8e8;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Segoe UI',Arial,sans-serif;background:var(--paper);color:var(--ink);font-size:14px;line-height:1.6;}
+a{color:var(--accent);}
+.page{max-width:960px;margin:0 auto;padding:2rem 1.5rem 5rem;}
+
+/* Header */
+.calc-header{background:linear-gradient(135deg,#1F3864 0%,#0a4a7a 100%);color:white;border-radius:12px;padding:1.8rem 2rem;margin-bottom:1.8rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;}
+.calc-header-text h1{font-size:1.5rem;font-weight:700;letter-spacing:-.3px;margin-bottom:.2rem;}
+.calc-header-text p{font-size:12px;opacity:.8;letter-spacing:.5px;}
+.calc-badge{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);border-radius:8px;padding:.5rem 1rem;font-size:11px;letter-spacing:1px;text-transform:uppercase;}
+
+/* Layout */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;margin-bottom:1.2rem;}
+@media(max-width:700px){.two-col{grid-template-columns:1fr;}}
+.section-card{background:var(--card);border:1px solid var(--rule);border-radius:10px;padding:1.2rem 1.4rem;margin-bottom:1rem;}
+.section-card.full{grid-column:1/-1;}
+.sec-title{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--rule);padding-bottom:.4rem;margin-bottom:.9rem;}
+.sec-title.t-blue{color:var(--blue);}
+.sec-title.t-green{color:var(--green);}
+.sec-title.t-teal{color:var(--teal);}
+
+/* Inputs */
+.field{margin-bottom:.8rem;}
+.field label{display:block;font-size:12px;font-weight:600;color:var(--ink);margin-bottom:.25rem;}
+.field .hint{font-weight:400;color:var(--muted);font-size:11px;margin-left:.3rem;}
+.field input[type=number],.field input[type=text]{
+  width:100%;padding:.45rem .7rem;border:1.5px solid var(--rule);border-radius:6px;
+  font-size:13px;background:var(--input-bg);color:var(--ink);
+  transition:border-color .15s;
+}
+.field input:focus{border-color:var(--accent);outline:none;background:#fffdf0;}
+.field .unit{font-size:11px;color:var(--muted);margin-top:.15rem;}
+
+/* Results */
+.results-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:.8rem;margin-bottom:1.2rem;}
+@media(max-width:700px){.results-grid{grid-template-columns:1fr 1fr;}}
+.kpi-card{background:var(--card);border:1px solid var(--rule);border-radius:10px;padding:1rem;text-align:center;}
+.kpi-card.kpi-main{background:linear-gradient(135deg,#e8f5e8,#d4edda);border-color:#2a5c3f;}
+.kpi-card.kpi-warn{background:#fff8e1;border-color:#f0a500;}
+.kpi-label{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:.3rem;}
+.kpi-value{font-size:1.7rem;font-weight:700;color:var(--ink);line-height:1.1;}
+.kpi-value.green{color:var(--green);}
+.kpi-value.blue{color:var(--blue);}
+.kpi-value.amber{color:var(--amber);}
+.kpi-sub{font-size:11px;color:var(--muted);margin-top:.2rem;}
+
+/* Timeline table */
+.tbl{width:100%;border-collapse:collapse;font-size:12.5px;}
+.tbl th{font-size:9px;letter-spacing:1.5px;text-transform:uppercase;background:var(--phase);padding:.5rem .7rem;text-align:center;border-bottom:2px solid var(--rule);color:var(--muted);}
+.tbl th:first-child{text-align:left;}
+.tbl td{padding:.45rem .7rem;border-bottom:1px solid var(--rule);text-align:right;}
+.tbl td:first-child{text-align:left;font-weight:500;}
+.tbl tr.tr-good td{background:var(--good-bg);}
+.tbl tr.tr-result td{background:var(--result-bg);font-weight:600;}
+.tbl .neg{color:var(--red);}
+.tbl .pos{color:var(--green);}
+
+/* Waterfall bars */
+.bar-row{display:flex;align-items:center;gap:.6rem;margin-bottom:.5rem;font-size:12px;}
+.bar-label{min-width:180px;color:var(--ink);}
+.bar-track{flex:1;height:22px;background:#f0f0ea;border-radius:4px;overflow:hidden;position:relative;}
+.bar-fill{height:100%;border-radius:4px;transition:width .4s ease;display:flex;align-items:center;justify-content:flex-end;padding-right:6px;font-size:11px;font-weight:600;color:white;}
+.bar-fill.cost{background:linear-gradient(90deg,#c0392b,#e74c3c);}
+.bar-fill.save{background:linear-gradient(90deg,#27ae60,#2ecc71);}
+.bar-fill.net{background:linear-gradient(90deg,#2980b9,#3498db);}
+.bar-val{min-width:90px;text-align:right;font-weight:600;font-size:12px;}
+
+/* Assumption note */
+.note-box{background:#f0f7ff;border:1px solid #b8d4f0;border-radius:8px;padding:.8rem 1rem;font-size:12px;color:#1a3a7a;margin-bottom:1rem;}
+.note-box strong{display:block;margin-bottom:.2rem;}
+
+/* Reset button */
+.btn{font-family:inherit;font-size:11px;letter-spacing:1px;text-transform:uppercase;padding:6px 16px;border-radius:6px;cursor:pointer;border:1.5px solid var(--rule);background:var(--card);color:var(--muted);transition:all .15s;}
+.btn:hover{border-color:var(--accent);color:var(--accent);}
+.btn.btn-primary{background:var(--accent);color:white;border-color:var(--accent);}
+.btn.btn-primary:hover{background:#083d68;}
+.btn-row{display:flex;gap:.6rem;flex-wrap:wrap;margin-top:.5rem;}
+
+/* Section label */
+.section-label{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:.8rem;padding-bottom:.3rem;border-bottom:1px solid var(--rule);}
+
+/* canvas chart */
+canvas{max-width:100%;display:block;margin:0 auto;}
+
+/* break-even marker */
+.be-row{background:#fff8e1!important;}
+.be-marker{display:inline-block;font-size:9px;background:#f0a500;color:white;border-radius:3px;padding:1px 5px;margin-left:4px;letter-spacing:.5px;}
+
+.footer{margin-top:3rem;padding-top:1rem;border-top:1px solid var(--rule);font-size:10px;color:var(--muted);letter-spacing:.5px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:.5rem;}
+</style>
+</head>
+<body>
+<div class="page">
+
+<div class="calc-header">
+  <div class="calc-header-text">
+    <h1>ROI-Rechner · KI-Projekt</h1>
+    <p>KI-Manager:in · Tag 5 · Woche 1</p>
+  </div>
+  <div class="calc-badge">Interaktive Berechnung</div>
+</div>
+
+<div class="note-box">
+  <strong>So nutzen Sie diesen Rechner</strong>
+  Die Felder sind mit den Daten der <strong>AIktiv-Invest (AI) GmbH (UC-06)</strong> vorausgefüllt — als gemeinsames Ankerbeispiel. Dabei geht es im Beispiel darum, KI für die (Vor-)Auswahl und automatisierte Bewertung von Investitionsvorschlägen zu verwenden.
+  Ersetzen Sie die Werte im Abschnitt <em>Eigenes Projekt</em> mit Ihren eigenen Projektdaten.
+  Alle Kennzahlen aktualisieren sich automatisch.
+</div>
+
+<!-- ─── INPUTS ─────────────────────────────────────────── -->
+<div class="two-col">
+
+  <!-- Prozess IST -->
+  <div class="section-card">
+    <div class="sec-title t-blue">① Aktueller Prozess (ohne KI)</div>
+
+    <div class="field">
+      <label>Vorgänge pro Monat <span class="hint">z. B. Anträge, Dokumente, Fälle</span></label>
+      <input type="number" id="vol" value="17" min="1" step="1">
+      <div class="unit">Stück/Monat</div>
+    </div>
+    <div class="field">
+      <label>Grobprüfung je Vorgang <span class="hint">Ja/Nein-Entscheidung</span></label>
+      <input type="number" id="h_gross" value="3.0" min="0" step="0.5">
+      <div class="unit">Stunden/Vorgang</div>
+    </div>
+    <div class="field">
+      <label>Anteil mit Detailprüfung <span class="hint">% der Vorgänge nach Grobprüfung</span></label>
+      <input type="number" id="pct_detail" value="50" min="0" max="100" step="5">
+      <div class="unit">% (0–100)</div>
+    </div>
+    <div class="field">
+      <label>Detailprüfung je Vorgang</label>
+      <input type="number" id="h_detail" value="12.0" min="0" step="0.5">
+      <div class="unit">Stunden/Vorgang</div>
+    </div>
+    <div class="field">
+      <label>Vollkosten Analyst:in <span class="hint">inkl. Lohnnebenkosten</span></label>
+      <input type="number" id="rate" value="120" min="1" step="5">
+      <div class="unit">€/Stunde</div>
+    </div>
+  </div>
+
+  <!-- Prozess SOLL + Kosten -->
+  <div class="section-card">
+    <div class="sec-title t-teal">② KI-Effizienzgewinne &amp; Systemkosten</div>
+
+    <div class="field">
+      <label>Zeitersparnis Grobprüfung</label>
+      <input type="number" id="eff_gross" value="70" min="0" max="95" step="5">
+      <div class="unit">% Reduktion (realistisch: 60–80 %)</div>
+    </div>
+    <div class="field">
+      <label>Zeitersparnis Detailprüfung</label>
+      <input type="number" id="eff_detail" value="50" min="0" max="95" step="5">
+      <div class="unit">% Reduktion (realistisch: 40–60 %)</div>
+    </div>
+
+    <div style="border-top:1px solid var(--rule);margin:.8rem 0;padding-top:.8rem;">
+      <div class="section-label">Einmalige Investition</div>
+      <div class="field">
+        <label>Entwicklung &amp; Implementierung</label>
+        <input type="number" id="c_dev" value="55000" min="0" step="1000">
+        <div class="unit">€</div>
+      </div>
+      <div class="field">
+        <label>Datenvorbereitung &amp; Integration</label>
+        <input type="number" id="c_data" value="15000" min="0" step="1000">
+        <div class="unit">€</div>
+      </div>
+      <div class="field">
+        <label>Schulung &amp; Change Management</label>
+        <input type="number" id="c_train" value="5000" min="0" step="500">
+        <div class="unit">€</div>
+      </div>
+    </div>
+
+    <div style="border-top:1px solid var(--rule);margin:.8rem 0;padding-top:.8rem;">
+      <div class="section-label">Jährliche Betriebskosten</div>
+      <div class="field">
+        <label>Cloud-Infrastruktur</label>
+        <input type="number" id="c_infra" value="8000" min="0" step="500">
+        <div class="unit">€/Jahr</div>
+      </div>
+      <div class="field">
+        <label>Updates, Re-Training &amp; Fine-Tuning</label>
+        <input type="number" id="c_maint" value="7000" min="0" step="500">
+        <div class="unit">€/Jahr</div>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn" onclick="resetToAIGmbH()">↺ Beispiel AI GmbH laden</button>
+      <button class="btn btn-primary" onclick="calculate()">Berechnen</button>
+    </div>
+  </div>
+</div>
+
+<!-- ─── KPI RESULTS ───────────────────────────────────── -->
+<div class="section-label" style="margin-bottom:.8rem;">Kernergebnisse</div>
+<div class="results-grid">
+  <div class="kpi-card kpi-main">
+    <div class="kpi-label">Jährl. Einsparung</div>
+    <div class="kpi-value green" id="kpi_saving">—</div>
+    <div class="kpi-sub">€ pro Jahr</div>
+  </div>
+  <div class="kpi-card kpi-main">
+    <div class="kpi-label">ROI (3 Jahre)</div>
+    <div class="kpi-value green" id="kpi_roi">—</div>
+    <div class="kpi-sub">auf Gesamtinvestition</div>
+  </div>
+  <div class="kpi-card kpi-warn">
+    <div class="kpi-label">Amortisation</div>
+    <div class="kpi-value amber" id="kpi_payback">—</div>
+    <div class="kpi-sub">Monate bis Break-even</div>
+  </div>
+  <div class="kpi-card">
+    <div class="kpi-label">Gesamtinvestition</div>
+    <div class="kpi-value blue" id="kpi_invest">—</div>
+    <div class="kpi-sub">einmalig</div>
+  </div>
+</div>
+
+<!-- ─── BREAKDOWN ─────────────────────────────────────── -->
+<div class="two-col">
+  <div class="section-card">
+    <div class="sec-title">Kosten-Nutzen-Übersicht</div>
+    <div id="bars"></div>
+  </div>
+  <div class="section-card">
+    <div class="sec-title">Stunden-Einsparung / Jahr</div>
+    <div id="hours_detail" style="font-size:13px;line-height:1.9;"></div>
+  </div>
+</div>
+
+<!-- ─── TIMELINE TABLE ────────────────────────────────── -->
+<div class="section-card">
+  <div class="sec-title">Kumulierte Kosten-Nutzen-Rechnung — 5 Jahre</div>
+  <div style="overflow-x:auto;">
+  <table class="tbl" id="timeline_tbl">
+    <thead>
+      <tr>
+        <th style="text-align:left;">Posten</th>
+        <th>Jahr 0</th><th>Jahr 1</th><th>Jahr 2</th><th>Jahr 3</th><th>Jahr 4</th><th>Jahr 5</th>
+      </tr>
+    </thead>
+    <tbody id="timeline_body"></tbody>
+  </table>
+  </div>
+</div>
+
+<!-- ─── CHART ─────────────────────────────────────────── -->
+<div class="section-card">
+  <div class="sec-title">Kumulierter Cashflow (€)</div>
+  <canvas id="chart" height="220"></canvas>
+</div>
+
+<!-- ─── FOOTER ────────────────────────────────────────── -->
+<div class="note-box" style="margin-top:1.2rem;">
+  <strong>Methodische Hinweise</strong>
+  Dieses Modell arbeitet ohne Diskontierung (kein NPV/DCF) und ist auf Plausibilitätsbewertung ausgelegt.
+  Berücksichtigt werden direkte Personalzeitersparnisse auf Basis des <em>aktuellen</em> Volumens (Ø 17 Vorgänge/Monat).
+  Das angestrebte Fondwachstum impliziert steigende Proposal-Volumina (von ~17 auf bis zu 50/Monat in 5 Jahren) —
+  die tatsächlichen Einsparungen über den 5-Jahres-Zeitraum liegen daher voraussichtlich deutlich über den hier dargestellten Werten.
+  Strategische Zusatznutzen (Skalierung, Qualität, Time-to-Decision) sind nicht eingerechnet.
+  Quelle ROI-Formel: <a href="https://welt-der-bwl.de/ROI-Return-on-Investment" target="_blank">Welt der BWL — ROI-Methodik</a>
+</div>
+
+<div class="footer">
+  <span>KI-Manager:in Modul 763 · Tag 5 · UC-06 AIktiv-Invest (AI) GmbH</span>
+  <span>© 2026 — Kursunterlagen · Weitergabe nur im Kurskontext</span>
+</div>
+
+</div><!-- /page -->
+
+<script>
+// ── helpers ──────────────────────────────────────────────
+const fmt = (n, dec=0) => isFinite(n)
+  ? n.toLocaleString('de-DE', {minimumFractionDigits:dec,maximumFractionDigits:dec})
+  : '—';
+const fmtEur  = n => isFinite(n) ? fmt(n) + ' €' : '—';
+const fmtPct  = n => isFinite(n) ? fmt(n,1) + ' %' : '—';
+const fmtMo   = n => isFinite(n) ? fmt(n,1) + ' Mo.' : '—';
+const v = id  => parseFloat(document.getElementById(id).value) || 0;
+
+function getInputs(){
+  return {
+    vol:        v('vol'),
+    h_gross:    v('h_gross'),
+    pct_detail: v('pct_detail')/100,
+    h_detail:   v('h_detail'),
+    rate:       v('rate'),
+    eff_gross:  v('eff_gross')/100,
+    eff_detail: v('eff_detail')/100,
+    c_dev:      v('c_dev'),
+    c_data:     v('c_data'),
+    c_train:    v('c_train'),
+    c_infra:    v('c_infra'),
+    c_maint:    v('c_maint'),
+  };
+}
+
+function compute(p){
+  const perYear = p.vol * 12;
+  // IST hours
+  const h_gross_yr  = perYear * p.h_gross;
+  const h_detail_yr = perYear * p.pct_detail * p.h_detail;
+  const h_total_ist = h_gross_yr + h_detail_yr;
+  const cost_ist    = h_total_ist * p.rate;
+  // SOLL hours
+  const h_gross_ki  = perYear * p.h_gross * (1 - p.eff_gross);
+  const h_detail_ki = perYear * p.pct_detail * p.h_detail * (1 - p.eff_detail);
+  const h_total_ki  = h_gross_ki + h_detail_ki;
+  const cost_soll   = h_total_ki * p.rate;
+  // savings
+  const saving_yr   = cost_ist - cost_soll;
+  const h_saved_yr  = h_total_ist - h_total_ki;
+  // investment
+  const invest_once = p.c_dev + p.c_data + p.c_train;
+  const running_yr  = p.c_infra + p.c_maint;
+  // payback
+  const net_mo      = (saving_yr - running_yr) / 12;
+  const payback_mo  = net_mo > 0 ? invest_once / net_mo : Infinity;
+  // ROI 3yr
+  const n = 3;
+  const total_benefit = n * saving_yr;
+  const total_cost    = invest_once + n * running_yr;
+  const roi3          = total_cost > 0 ? (total_benefit - total_cost) / total_cost : 0;
+  // timeline — invest_once shown only in Year 0; running_yr shown only in Years 1–5
+  const years        = [0,1,2,3,4,5];
+  const invest_disp  = years.map(y => y===0 ? invest_once : 0);
+  const running_disp = years.map(y => y===0 ? 0 : running_yr);
+  const bens         = years.map(y => y===0 ? 0 : saving_yr);
+  const nets         = years.map((y,i) => bens[i] - invest_disp[i] - running_disp[i]);
+  const cumul        = [];
+  years.forEach((y,i) => cumul.push((cumul[i-1]||0) + nets[i]));
+  return {h_gross_yr, h_detail_yr, h_total_ist, h_gross_ki, h_detail_ki, h_total_ki,
+          h_saved_yr, cost_ist, cost_soll, saving_yr,
+          invest_once, running_yr, net_mo, payback_mo, roi3,
+          invest_disp, running_disp, bens, nets, cumul};
+}
+
+function calculate(){
+  const p = getInputs();
+  const r = compute(p);
+
+  // KPIs
+  document.getElementById('kpi_saving').textContent  = fmtEur(r.saving_yr);
+  document.getElementById('kpi_roi').textContent      = fmtPct(r.roi3*100);
+  document.getElementById('kpi_payback').textContent  = fmtMo(r.payback_mo);
+  document.getElementById('kpi_invest').textContent   = fmtEur(r.invest_once);
+
+  // colour ROI
+  const roiEl = document.getElementById('kpi_roi');
+  roiEl.className = 'kpi-value ' + (r.roi3 >= 0.5 ? 'green' : r.roi3 >= 0 ? 'amber' : 'neg');
+
+  // bars
+  const maxVal = Math.max(r.cost_ist, r.invest_once + 3*r.running_yr, r.saving_yr*3);
+  const barPct = v => Math.min(100, Math.max(2, v/maxVal*100));
+  document.getElementById('bars').innerHTML = `
+    <div class="bar-row"><span class="bar-label">Jährl. Prozesskosten IST</span>
+      <div class="bar-track"><div class="bar-fill cost" style="width:${barPct(r.cost_ist)}%"></div></div>
+      <span class="bar-val neg">${fmtEur(r.cost_ist)}</span></div>
+    <div class="bar-row"><span class="bar-label">Jährl. Prozesskosten SOLL</span>
+      <div class="bar-track"><div class="bar-fill cost" style="width:${barPct(r.cost_soll)}%;opacity:.5"></div></div>
+      <span class="bar-val">${fmtEur(r.cost_soll)}</span></div>
+    <div class="bar-row"><span class="bar-label">Jährl. Einsparung</span>
+      <div class="bar-track"><div class="bar-fill save" style="width:${barPct(r.saving_yr)}%">&nbsp;</div></div>
+      <span class="bar-val pos">${fmtEur(r.saving_yr)}</span></div>
+    <div class="bar-row"><span class="bar-label">Einmalige Investition</span>
+      <div class="bar-track"><div class="bar-fill cost" style="width:${barPct(r.invest_once)}%;opacity:.7"></div></div>
+      <span class="bar-val neg">${fmtEur(r.invest_once)}</span></div>
+    <div class="bar-row"><span class="bar-label">Jährl. Betriebskosten KI</span>
+      <div class="bar-track"><div class="bar-fill cost" style="width:${barPct(r.running_yr)}%;opacity:.5"></div></div>
+      <span class="bar-val neg">${fmtEur(r.running_yr)}</span></div>
+    <div class="bar-row"><span class="bar-label" style="font-weight:700;color:var(--blue)">Netto-Monatsvorteil</span>
+      <div style="flex:1"></div>
+      <span class="bar-val pos" style="font-size:14px;font-weight:700">${fmtEur(r.net_mo)}/Mo.</span></div>
+  `;
+
+  // hours detail
+  document.getElementById('hours_detail').innerHTML = `
+    <table style="width:100%;font-size:12.5px;border-collapse:collapse;">
+      <tr style="border-bottom:1px solid var(--rule)">
+        <td style="padding:.3rem .5rem;color:var(--muted);">Grobprüfung IST</td>
+        <td style="text-align:right;padding:.3rem .5rem;">${fmt(r.h_gross_yr,0)} h/Jahr</td></tr>
+      <tr style="border-bottom:1px solid var(--rule)">
+        <td style="padding:.3rem .5rem;color:var(--muted);">Detailprüfung IST</td>
+        <td style="text-align:right;padding:.3rem .5rem;">${fmt(r.h_detail_yr,0)} h/Jahr</td></tr>
+      <tr style="border-bottom:2px solid var(--rule);font-weight:600;">
+        <td style="padding:.3rem .5rem;">Gesamt IST</td>
+        <td style="text-align:right;padding:.3rem .5rem;">${fmt(r.h_total_ist,0)} h/Jahr</td></tr>
+      <tr style="border-bottom:1px solid var(--rule)">
+        <td style="padding:.3rem .5rem;color:var(--muted);">Grobprüfung mit KI</td>
+        <td style="text-align:right;padding:.3rem .5rem;">${fmt(r.h_gross_ki,0)} h/Jahr</td></tr>
+      <tr style="border-bottom:1px solid var(--rule)">
+        <td style="padding:.3rem .5rem;color:var(--muted);">Detailprüfung mit KI</td>
+        <td style="text-align:right;padding:.3rem .5rem;">${fmt(r.h_detail_ki,0)} h/Jahr</td></tr>
+      <tr style="border-bottom:2px solid var(--rule);font-weight:600;">
+        <td style="padding:.3rem .5rem;">Gesamt SOLL</td>
+        <td style="text-align:right;padding:.3rem .5rem;">${fmt(r.h_total_ki,0)} h/Jahr</td></tr>
+      <tr style="background:var(--good-bg);font-weight:700;">
+        <td style="padding:.4rem .5rem;">Gesparte Stunden/Jahr</td>
+        <td style="text-align:right;padding:.4rem .5rem;color:var(--green);">${fmt(r.h_saved_yr,0)} h</td></tr>
+      <tr>
+        <td colspan="2" style="padding:.5rem .5rem;font-size:11px;color:var(--muted);">
+          entspricht ${fmt(r.h_saved_yr/8/220*100,1)} % einer Vollzeitstelle (220 AT × 8 h)
+        </td></tr>
+    </table>
+  `;
+
+  // timeline table
+  const beMonth = isFinite(r.payback_mo) ? r.payback_mo : null;
+  const rows = [
+    {label:'Einmalige Investition (€)',                 vals:r.invest_disp,  cls:'neg', isCost:true},
+    {label:'Jährl. Betriebskosten (Updates, Re-Training, Fine-Tuning) (€)', vals:r.running_disp, cls:'neg', isCost:true},
+    {label:'Jährl. Einsparung (€)',                    vals:r.bens,          cls:'pos', isCost:false},
+    {label:'Netto-Cashflow / Jahr (€)',                vals:r.nets,          cls:'',    bold:true, isNet:true},
+    {label:'Kumulierter Cashflow (€)',                 vals:r.cumul,         cls:'',    bold:true, isCumul:true},
+  ];
+  const tbody = document.getElementById('timeline_body');
+  tbody.innerHTML = '';
+  rows.forEach(row => {
+    const tr = document.createElement('tr');
+    if(row.isNet) tr.className='tr-result';
+    if(row.isCumul) tr.className='tr-good';
+    tr.innerHTML = `<td style="font-weight:${row.bold?'600':'400'}">${row.label}</td>` +
+      row.vals.map((val,i) => {
+        const isBreak = row.isCumul && i>0 && beMonth && (i-1)*12 < beMonth && i*12 >= beMonth;
+        const cls = val < 0 ? 'neg' : val > 0 ? 'pos' : '';
+        const mk  = isBreak ? '<span class="be-marker">Break-even ↑</span>' : '';
+        return `<td class="${cls}">${fmtEur(val)}${mk}</td>`;
+      }).join('');
+    tbody.appendChild(tr);
+  });
+
+  // chart
+  drawChart(r);
+}
+
+function drawChart(r){
+  const canvas = document.getElementById('chart');
+  const ctx    = canvas.getContext('2d');
+  const W = canvas.parentElement.clientWidth - 40;
+  canvas.width  = W;
+  canvas.height = 220;
+  ctx.clearRect(0,0,W,220);
+
+  const labels = ['Jahr 0','Jahr 1','Jahr 2','Jahr 3','Jahr 4','Jahr 5'];
+  const data   = r.cumul;
+  const minVal = Math.min(0, ...data);
+  const maxVal = Math.max(0, ...data);
+  const range  = maxVal - minVal || 1;
+  const PAD    = {t:20,b:30,l:80,r:20};
+  const chartW = W - PAD.l - PAD.r;
+  const chartH = 220 - PAD.t - PAD.b;
+
+  const toX = i => PAD.l + (i / (labels.length-1)) * chartW;
+  const toY = v => PAD.t + chartH - ((v - minVal) / range) * chartH;
+
+  // zero line
+  const zeroY = toY(0);
+  ctx.strokeStyle = '#c0c0b8';
+  ctx.lineWidth   = 1;
+  ctx.setLineDash([4,3]);
+  ctx.beginPath(); ctx.moveTo(PAD.l,zeroY); ctx.lineTo(W-PAD.r,zeroY); ctx.stroke();
+  ctx.setLineDash([]);
+
+  // fill under curve
+  ctx.beginPath();
+  ctx.moveTo(toX(0), toY(data[0]));
+  data.forEach((v,i) => ctx.lineTo(toX(i), toY(v)));
+  ctx.lineTo(toX(data.length-1), PAD.t+chartH);
+  ctx.lineTo(toX(0), PAD.t+chartH);
+  ctx.closePath();
+  const grad = ctx.createLinearGradient(0,PAD.t,0,PAD.t+chartH);
+  grad.addColorStop(0,'rgba(42,92,63,.3)');
+  grad.addColorStop(1,'rgba(42,92,63,.02)');
+  ctx.fillStyle = grad;
+  ctx.fill();
+
+  // line
+  ctx.beginPath();
+  ctx.strokeStyle = '#2a5c3f';
+  ctx.lineWidth   = 2.5;
+  data.forEach((v,i) => i===0 ? ctx.moveTo(toX(i),toY(v)) : ctx.lineTo(toX(i),toY(v)));
+  ctx.stroke();
+
+  // dots
+  data.forEach((v,i) => {
+    ctx.beginPath();
+    ctx.arc(toX(i), toY(v), 5, 0, Math.PI*2);
+    ctx.fillStyle = v < 0 ? '#c0392b' : '#2a5c3f';
+    ctx.fill();
+    ctx.strokeStyle = 'white'; ctx.lineWidth = 1.5; ctx.stroke();
+  });
+
+  // labels
+  ctx.fillStyle = '#555';
+  ctx.font      = '11px Arial';
+  ctx.textAlign = 'center';
+  labels.forEach((l,i) => ctx.fillText(l, toX(i), 220-8));
+
+  ctx.textAlign = 'right';
+  const steps = 4;
+  for(let s=0; s<=steps; s++){
+    const val = minVal + (range/steps)*s;
+    const y   = toY(val);
+    ctx.fillStyle = '#888';
+    ctx.fillText(fmtEur(Math.round(val/1000)*1000), PAD.l-6, y+4);
+    ctx.strokeStyle='#eee'; ctx.lineWidth=1;
+    ctx.beginPath(); ctx.moveTo(PAD.l,y); ctx.lineTo(W-PAD.r,y); ctx.stroke();
+  }
+
+  // value labels on dots
+  ctx.fillStyle = '#333';
+  ctx.font      = 'bold 11px Arial';
+  data.forEach((v,i) => {
+    ctx.textAlign = 'center';
+    const offset = v >= 0 ? -10 : 16;
+    ctx.fillText(fmtEur(Math.round(v/1000)*1000), toX(i), toY(v)+offset);
+  });
+}
+
+function resetToAIGmbH(){
+  const defaults = {vol:17,h_gross:3,pct_detail:50,h_detail:12,rate:120,
+                    eff_gross:70,eff_detail:50,c_dev:55000,c_data:15000,
+                    c_train:5000,c_infra:8000,c_maint:7000};
+  Object.entries(defaults).forEach(([k,v])=>document.getElementById(k).value=v);
+  calculate();
+}
+
+// live recalc on any input change
+document.querySelectorAll('input').forEach(el =>
+  el.addEventListener('input', calculate));
+
+// initial calculation
+calculate();
+</script>
+</body>
+</html>
