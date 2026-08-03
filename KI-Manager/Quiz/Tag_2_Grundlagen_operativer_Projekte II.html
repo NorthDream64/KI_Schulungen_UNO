@@ -489,7 +489,7 @@ function submitQuiz() {
       html += '<div class="feedback ' + (isOk ? 'fb-ok' : 'fb-wrong') + '">';
       html += '<div class="fb-title">' + (isOk ? '✓ Richtig' : '✗ Nicht vollständig richtig') + '</div>';
       html += '<div class="fb-text">' + q.exp + '</div>';
-      if (q.src) html += '<div class="fb-source">Quelle: ' + q.src + '</div>';
+      if (q.src) html += '<div class="fb-source">Quelle: ' + linkify(q.src) + '</div>';
       html += '</div>';
     }
     card.innerHTML = html;
@@ -500,6 +500,17 @@ function submitQuiz() {
   window.scrollTo({top:0, behavior:'smooth'});
 }
 
+
+function linkify(src) {
+  return src.split(' · ').map(function(part) {
+    var t = part.trim();
+    if (!/\s/.test(t) && /\.[a-zA-Z]{2,}/.test(t) && t.length > 4) {
+      var href = /^https?:\/\//i.test(t) ? t : 'https://' + t;
+      return '<a href="' + href + '" target="_blank">' + t + '</a>';
+    }
+    return part;
+  }).join(' · ');
+}
 function sendToSheets(correct, wrong) {
   if (!APPS_SCRIPT_URL) return;
   var TAG_NR = 2;
