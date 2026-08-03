@@ -151,6 +151,7 @@ a{color:var(--accent);}
   <div class="quiz-header-strip" id="quiz-header-strip"></div>
   <div class="progress-label" id="progress-label"></div>
   <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+  <div id="scenario-container" style="display:none"></div>
   <div id="questions-container"></div>
   <div class="nav-row" style="margin-top:1.5rem">
     <button class="btn btn-submit btn-full" id="btn-submit" onclick="submitQuiz()" disabled>Auswertung anzeigen &rarr;</button>
@@ -373,6 +374,12 @@ function startQuiz() {
 
   document.getElementById('setup-section').style.display = 'none';
   document.getElementById('quiz-section').style.display = 'block';
+
+  var sc = document.getElementById('scenario-container');
+  if (sc && SCENARIOS[key]) {
+    sc.innerHTML = '<div class="scenario-box"><div class="scenario-label">Dein Szenario</div><div class="scenario-text">' + SCENARIOS[key] + '</div></div>';
+    sc.style.display = 'block';
+  }
 
   var roleLabels = {a:'KI-Manager:in', b:'Projektleiter:in'};
   var levelLabels = {1:'Anfänger', 2:'Fortgeschrittene'};
