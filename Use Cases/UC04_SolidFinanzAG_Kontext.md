@@ -57,7 +57,7 @@ Berichtslinie direkt an Dr. Hofer. Kein eigenes Budget zum Start. Die Zusammenar
 
 ## 4 · Portfolio möglicher KI-Initiativen
 
-In den Fachbereichen und im Vorstand sind neun Vorschläge zusammengekommen. Sie stehen **unbewertet und ungeordnet** nebeneinander: unterschiedlich reif, unterschiedlich riskant, unterschiedlich gut belegt. Genau das ist die Ausgangslage, die Du als KI-Manager:in vorfindest.
+In den Fachbereichen und im Vorstand sind zehn Vorschläge zusammengekommen. Sie stehen **unbewertet und ungeordnet** nebeneinander: unterschiedlich reif, unterschiedlich riskant, unterschiedlich gut belegt. Genau das ist die Ausgangslage, die Du als KI-Manager:in vorfindest.
 
 | Nr. | Initiative | Worum es geht |
 |---|---|---|
@@ -70,14 +70,17 @@ In den Fachbereichen und im Vorstand sind neun Vorschläge zusammengekommen. Sie
 | 7 | **„Invest" — Immobilienbewertung** | Schätzt Immobilienpreise anhand von Lage, Baujahr, Grundfläche, Zimmerzahl, Verkehrsanbindung u. a. und unterstützt die Kalkulation des Risikoaufschlags. |
 | 8 | **Personalisierte Kundenhinweise** | Wertet Kontobewegungen und Produktnutzung aus und spielt Kundinnen und Kunden individuelle Hinweise zu Sparen, Anlegen und Absicherung aus. |
 | 9 | **Research- und Marktanalyse-Assistent** | Fasst Marktdaten, Geschäftsberichte und Analystenkommentare zusammen und erstellt Entwurfsfassungen interner Analysen. |
+| 10 | **Executive Assistant („Executive Coach")** | Bereitet Entscheidungsvorlagen für den Vorstand auf: verknüpft Unternehmensstrategie, Marktlage und die eigene Entscheidungshistorie des Hauses zu einer faktenbasierten Einschätzung von Vorhaben. |
 
-**Reale Vorbilder.** Sieben der neun Initiativen haben produktive Entsprechungen bei großen Instituten — Nr. 1 bei JPMorgan („COiN", Analyse von Kreditverträgen), Nr. 3 und 4 als Branchenstandard im Zahlungsverkehr bzw. bei Deutsche Bank („Black Forest"), Nr. 8 bei DBS (personalisierte „Nudges"), Nr. 9 bei Deutsche Bank („DB Lumina") und ING („Katana"). Die Belege und Quellenhinweise dazu stehen in Abschnitt 6. Für Nr. 5, 6 und 7 gibt es keine vergleichbar dokumentierten Referenzfälle — auch das ist eine Information.
+**Zum Vorschlag Nr. 10.** Die Initiative kommt aus dem Vorstandsbüro und ist die einzige, die bereits mit einer Außenkommunikation verknüpft wurde: *„SolidFinanz — die Bank mit Intelligenz."* Als Datengrundlage vorgesehen sind die Unternehmensstrategie, lizenzierte Marktstudien, öffentlich geführte Branchendiskussionen in sozialen Medien sowie die dokumentierte Entscheidungshistorie des Hauses. Ausdrücklicher Bestandteil des Vorschlags: Jede Empfehlung wird nachvollziehbar aufbewahrt und den Aufsichtsbehörden bei Bedarf zur Verfügung gestellt.
+
+**Reale Vorbilder.** Sechs der zehn Initiativen haben produktive Entsprechungen bei großen Instituten — Nr. 1 bei JPMorgan („COiN", Analyse von Kreditverträgen), Nr. 2 als Branchenstandard mit eigener aufsichtlicher Literatur, Nr. 3 im Zahlungsverkehr, Nr. 4 bei Deutsche Bank („Black Forest"), Nr. 8 bei DBS (personalisierte „Nudges") und Nr. 9 bei Deutsche Bank („DB Lumina") sowie ING („Katana"). Die Belege stehen in Abschnitt 6. Für Nr. 5, 6, 7 und 10 gibt es keine vergleichbar dokumentierten Referenzfälle — auch das ist eine Information.
 
 ### Deine Aufgabe
 
 Der Vorstand erwartet keine Umsetzungsplanung, sondern eine **nachvollziehbare Grundlage für die Auswahl**. Entwickle dafür ein Bewertungsraster:
 
-1. **Welche Kriterien** braucht es, um diese neun Initiativen sinnvoll miteinander zu vergleichen? Vier bis sieben Kriterien genügen — mehr macht die Bewertung nicht besser, nur langsamer.
+1. **Welche Kriterien** braucht es, um diese zehn Initiativen sinnvoll miteinander zu vergleichen? Vier bis sieben Kriterien genügen — mehr macht die Bewertung nicht besser, nur langsamer.
 2. **Wie wird gemessen?** Lege je Kriterium fest, woran Du es festmachst und in welchen Stufen bewertet wird. Ein Kriterium, das sich nicht begründen lässt, ist keines.
 3. **Wie werden die Kriterien gewichtet** — und warum? Nicht jedes Kriterium wiegt gleich schwer.
 4. **Woher kommen die Informationen?** Halte fest, was Du belegen kannst und was eine Annahme ist. Beides ist zulässig — vermischen darfst Du es nicht.
