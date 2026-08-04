@@ -369,6 +369,16 @@ hr.divider{border:none;border-top:1px solid var(--rule);margin:1rem 0;}
     </div>
     <div class="field-row">
       <div class="field-group">
+        <label>Version des Steckbriefs <span class="hint">— bei jeder Überarbeitung hochzählen</span></label>
+        <input type="text" id="uc-version" placeholder="z. B. 1.0 · 1.1 · 2.0">
+      </div>
+      <div class="field-group">
+        <label>Datum der letzten Neubewertung <span class="hint">— Pflicht nach wesentlicher Änderung (Art. 43 Abs. 4 KI-VO)</span></label>
+        <input type="date" id="uc-reassessed">
+      </div>
+    </div>
+    <div class="field-row">
+      <div class="field-group">
         <label>Unternehmen / Organisation</label>
         <input type="text" id="uc-company" placeholder="z. B. WellSeal GmbH, Krankenhaus St. Ulrich">
       </div>
@@ -386,9 +396,13 @@ hr.divider{border:none;border-top:1px solid var(--rule);margin:1rem 0;}
         <label>Use Case</label>
         <select id="uc-kursnummer">
           <option value="">— Use Case auswählen —</option>
-          <option>UC-01 Bauplanungsbüro Dr. Seika</option>
+          <option>UC-01 Bauplanungsbüro</option>
           <option>UC-02 WellSeal GmbH</option>
           <option>UC-03 Krankenhaus St. Ulrich</option>
+          <option>UC-04 SolidFinanz AG</option>
+          <option>UC-05 SdT</option>
+          <option>UC-06 AktivInvest</option>
+          <option>UC-07 Arventis GmbH</option>
           <option>Eigenes Unternehmensbeispiel</option>
         </select>
       </div>
@@ -472,7 +486,60 @@ hr.divider{border:none;border-top:1px solid var(--rule);margin:1rem 0;}
       <label class="radio-card" onclick="selectRadio(this,'ai-type')"><input type="radio" name="ai-type" value="other"><div><strong>Sonstiges</strong>Recommender, Optimierung, Regelbasiert+KI</div></label>
     </div>
     <div class="agent-expand" id="agent-warning">
-      <div class="alert alert-warn"><p><strong>KI-Agent erkannt:</strong> Autonome Entscheidungsketten begründen erhöhte Haftungsrisiken und erfordern besondere Kontrollmechanismen. Bitte Abschnitt 7 (Risikoregister → Agenten-Risiken) vollständig ausfüllen. Vgl. Kursinhalt Tag 9 Exkurs.</p></div>
+      <div class="alert alert-warn"><p><strong>KI-Agent erkannt:</strong> Autonome Entscheidungsketten begründen erhöhte Haftungsrisiken und erfordern besondere Kontrollmechanismen. Bitte zusätzlich die Einstufung unten sowie im Risikoregister (Abschnitt 7) die Agenten-Risiken vollständig ausfüllen.</p></div>
+
+      <h4 style="font-family:var(--font-mono);font-size:0.62rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--teal);margin:0.9rem 0 0.6rem;padding-bottom:0.35rem;border-bottom:1px solid var(--rule)">Einstufung des Agenten — Handlungsspielraum × Autonomiegrad</h4>
+      <p style="font-size:0.8rem;color:#555;margin-bottom:0.7rem;line-height:1.5">Beide Dimensionen sind unabhängig voneinander zu bewerten: <em>Was</em> darf der Agent tun (Handlungsspielraum) und <em>wie eigenständig</em> entscheidet er dabei (Autonomiegrad). Je weiter beide Werte oben liegen, desto höher die Kontrollanforderung — unabhängig von der Leistungsfähigkeit des Modells.</p>
+      <div class="field-row">
+        <div class="field-group">
+          <label>Handlungsspielraum (Action Space)</label>
+          <select id="agent-actionspace">
+            <option value="">— Auswahl —</option>
+            <option>Eng — ausschließlich lesender Zugriff, keine Systemänderung</option>
+            <option>Mittel — schreibend, aber auf ein einzelnes System begrenzt</option>
+            <option>Weit — schreibend über mehrere Systeme hinweg</option>
+            <option>Sehr weit — zusätzlich externe Wirkung (Zahlungen, Versand, Vertragsauslösung)</option>
+          </select>
+        </div>
+        <div class="field-group">
+          <label>Autonomiegrad</label>
+          <select id="agent-autonomy">
+            <option value="">— Auswahl —</option>
+            <option>Niedrig — folgt einem festgelegten Ablauf (SOP), keine eigene Planung</option>
+            <option>Mittel — wählt Zwischenschritte selbst, Ergebnis wird freigegeben</option>
+            <option>Hoch — plant und handelt eigenständig, Mensch nur stichprobenhaft</option>
+            <option>Sehr hoch — vollständig eigenständig, keine regelmäßige Prüfung vorgesehen</option>
+          </select>
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field-group">
+          <label>Zugriffsrechte technisch begrenzt? <span class="hint">— Least Privilege auf Systemebene</span></label>
+          <select id="agent-leastpriv">
+            <option value="">— Auswahl —</option>
+            <option>Ja — deterministische Zugriffsrechte auf Infrastrukturebene gesetzt</option>
+            <option>Teilweise — technische Grenzen vorhanden, aber nicht vollständig</option>
+            <option>Nein — Einschränkung erfolgt nur über Anweisungen im System-Prompt</option>
+            <option>Zu klären</option>
+          </select>
+          <div class="field-note">Anweisungen im Prompt können umgangen oder nicht befolgt werden und ersetzen keine technisch erzwungenen Rechte.</div>
+        </div>
+        <div class="field-group">
+          <label>Freigabe-Gate für nicht umkehrbare Aktionen?</label>
+          <select id="agent-approval">
+            <option value="">— Auswahl —</option>
+            <option>Ja — jede irreversible Aktion erfordert menschliche Bestätigung</option>
+            <option>Teilweise — nur oberhalb definierter Schwellenwerte</option>
+            <option>Nein — kein Freigabe-Gate vorgesehen</option>
+            <option>Nicht zutreffend — Agent kann keine irreversiblen Aktionen auslösen</option>
+          </select>
+        </div>
+      </div>
+      <div class="field-group">
+        <label>Messung von Automation Bias <span class="hint">— wie wird geprüft, ob Menschen noch wirklich prüfen?</span></label>
+        <textarea id="agent-autobias" rows="2" placeholder="z. B. Human Override Rate wird monatlich ausgewertet (Alarm unter 3 %); Human Response Time unter 10 Sekunden gilt als Hinweis auf reflexhaftes Bestätigen und wird stichprobenhaft nachgeprüft."></textarea>
+      </div>
+      <p style="font-size:0.76rem;color:#777;font-style:italic;margin-top:0.5rem">Bezugsrahmen: <a href="https://www.imda.gov.sg/-/media/imda/files/about/emerging-tech-and-research/artificial-intelligence/mgf-for-agentic-ai.pdf" target="_blank">IMDA Singapur — Model AI Governance Framework for Agentic AI</a> (staatliche Regulierungsbehörde, Version 1.5, 2026).</p>
     </div>
   </div>
 
@@ -607,6 +674,47 @@ hr.divider{border:none;border-top:1px solid var(--rule);margin:1rem 0;}
         <label>Out-of-Scope <span class="hint">— Was ist explizit ausgeschlossen?</span></label>
         <textarea id="z-outscope" rows="3" placeholder="z. B. Finale Kreditentscheidung (verbleibt beim Menschen); Integration in Legacy-Kernsystem (Phase 2); Bearbeitung von Firmenkundenkrediten."></textarea>
       </div>
+    </div>
+  </div>
+
+  <div class="form-card">
+    <h4>Proof of Concept (PoC) / Pilotierung</h4>
+    <div class="alert alert-info"><p>Ein <strong>Proof of Concept</strong> ist ein kleiner, zeitlich begrenzter Testlauf, der eine offene Machbarkeitsfrage überprüft, <em>bevor</em> das volle Budget gebunden wird — Wochen, nicht Monate, und ohne Produktivbetrieb. Er ersetzt weder die Konformitätsbewertung (Abschnitt 9) noch den Go-Live-Plan (Abschnitt 14).</p></div>
+    <div class="field-group">
+      <label>Ist ein PoC vorgesehen?</label>
+      <div class="radio-grid" style="grid-template-columns:repeat(3,1fr)">
+        <label class="radio-card" onclick="selectRadio(this,'poc-geplant')"><input type="radio" name="poc-geplant" value="ja"><div><strong>Ja</strong>PoC geplant oder bereits gestartet</div></label>
+        <label class="radio-card" onclick="selectRadio(this,'poc-geplant')"><input type="radio" name="poc-geplant" value="abgeschlossen"><div><strong>Abgeschlossen</strong>Ergebnis liegt vor</div></label>
+        <label class="radio-card" onclick="selectRadio(this,'poc-geplant')"><input type="radio" name="poc-geplant" value="nein"><div><strong>Nein</strong>Machbarkeit gilt als geklärt</div></label>
+      </div>
+    </div>
+    <div class="field-group">
+      <label>Welche offene Frage soll der PoC beantworten? <span class="hint">— genau eine, präzise formuliert</span></label>
+      <textarea id="poc-frage" rows="2" placeholder="z. B. Erreicht das Modell auf einer Stichprobe von 500 aktualisierten Datensätzen eine Trefferquote über 90 % — oder reicht die Datenqualität dafür nicht aus?"></textarea>
+    </div>
+    <div class="field-row">
+      <div class="field-group">
+        <label>Erfolgskriterium <span class="hint">— vorab festgelegt, messbar</span></label>
+        <textarea id="poc-kriterium" rows="2" placeholder="z. B. Trefferquote ≥ 90 % bei ≤ 5 % Falsch-Positiven; andernfalls Rückgabe an die Datenaufbereitung."></textarea>
+      </div>
+      <div class="field-group">
+        <label>Abgrenzung <span class="hint">— was der PoC bewusst NICHT prüft</span></label>
+        <textarea id="poc-abgrenzung" rows="2" placeholder="z. B. keine Integration ins Kernsystem, keine Echtdaten produktiv, keine Aussage zur Skalierbarkeit."></textarea>
+      </div>
+    </div>
+    <div class="field-row">
+      <div class="field-group">
+        <label>Zeitrahmen &amp; Budget</label>
+        <input type="text" id="poc-rahmen" placeholder="z. B. 6 Wochen, 15 T€, 0,5 FTE Data Science">
+      </div>
+      <div class="field-group">
+        <label>Entscheidung nach dem PoC <span class="hint">— wer entscheidet, auf welcher Grundlage</span></label>
+        <input type="text" id="poc-entscheider" placeholder="z. B. Steuerungsgremium auf Basis des PoC-Berichts, Termin KW 42">
+      </div>
+    </div>
+    <div class="field-group">
+      <label>Ergebnis des PoC <span class="hint">— erst nach Abschluss auszufüllen, auch bei negativem Ausgang</span></label>
+      <textarea id="poc-ergebnis" rows="2" placeholder="z. B. Erfolgskriterium knapp verfehlt (87 %); Ursache: fehlende Labels in zwei Produktgruppen. Empfehlung: Datenaufbereitung nachziehen, PoC in Q4 wiederholen."></textarea>
     </div>
   </div>
 
@@ -1023,6 +1131,7 @@ hr.divider{border:none;border-top:1px solid var(--rule);margin:1rem 0;}
     <div class="section-tag">Abschnitt 7 von 16</div>
     <h2>Risikoregister</h2>
     <p>Strukturierte Bewertung nach sechs KI-Risikoarten. Bewertungsschema: <strong>A × B × E</strong> — <strong>A</strong> (Auftreten/Eintrittswahrscheinlichkeit) × <strong>B</strong> (Bedeutung/Schadenshöhe) × <strong>E</strong> (Entdeckbarkeit/Schwierigkeit der Detektion), je 1–10, max. Score = 1.000. <strong>Verantwortlich/Owner:</strong> Bitte eine konkrete Person eintragen — keine Abteilung und keine Rolle.</p>
+    <p style="font-size:0.84rem;margin-top:0.5rem;line-height:1.55"><strong>Was der Score bedeutet:</strong> <span style="color:#2e7d32;font-weight:600">1–49 (grün)</span> = im Rahmen, Maßnahme dokumentieren und beobachten · <span style="color:#f57f17;font-weight:600">50–199 (gelb)</span> = Mitigationsmaßnahme mit Termin und benannter Person verbindlich festlegen · <span style="color:#b71c1c;font-weight:600">ab 200 (rot)</span> = Eskalation an das Steuerungsgremium; ohne dokumentierte Mitigation oder bewusste Risikoannahme keine Freigabeempfehlung in Abschnitt 16.</p>
   </div>
 
   <!-- Bias-Risiken -->
@@ -1097,7 +1206,7 @@ hr.divider{border:none;border-top:1px solid var(--rule);margin:1rem 0;}
   <!-- KI-Agenten-Risiken -->
   <div class="risk-category">
     <div class="risk-cat-header"><span class="risk-cat-icon">🤖</span> KI-Agenten-Risiken — Autonome Handlungsketten, Kontrollverlust</div>
-    <div class="alert alert-info" style="margin:0;border-radius:0"><p>Nur ausfüllen, wenn als KI-System-Typ „KI-Agent" ausgewählt wurde. Autonome Entscheidungsketten schaffen neue Haftungsebenen, da Zwischenschritte nicht mehr menschlich kontrolliert werden.</p></div>
+    <div class="alert alert-info" style="margin:0;border-radius:0"><p>Nur ausfüllen, wenn als KI-System-Typ „KI-Agent" ausgewählt wurde. Autonome Entscheidungsketten schaffen neue Haftungsebenen, da Zwischenschritte nicht mehr menschlich kontrolliert werden. Die Einstufung nach Handlungsspielraum und Autonomiegrad sowie die Angaben zu Least Privilege und Freigabe-Gate erfolgen in <strong>Abschnitt 2</strong> — die dort offen gebliebenen Punkte gehören als konkretes Risiko in diese Tabelle.</p></div>
     <table class="risk-rows">
       <thead><tr><th style="width:13%">Risikobeschreibung</th><th style="width:12%">Ursache / Quelle</th><th style="width:12%">Auswirkung</th><th style="width:12%">Mitigationsmaßnahme</th><th style="width:5%">A</th><th style="width:5%">B</th><th style="width:5%">E</th><th style="width:6%">Score</th><th style="width:6%">Status</th><th style="width:11%">Verantwortlich/Owner</th></tr></thead>
       <tbody id="agent-rows">
@@ -1690,7 +1799,7 @@ hr.divider{border:none;border-top:1px solid var(--rule);margin:1rem 0;}
     <div class="alert alert-info"><p>Den vollständigen ROI-Nachweis (Kosten-Nutzen-Rechnung, Payback-Periode, Break-even) in der separaten Berechnungsdatei dokumentieren. Hier nur Eckdaten und Verweis angeben.</p></div>
     <div class="field-row">
       <div class="field-group">
-        <label>ROI-Berechnung gemäß Dokument <span class="hint">— Dateiname / Link</span></label>
+        <label>ROI-Berechnung gemäß Dokument <span class="hint">— Dateiname / Link · <a href="ROI_Rechner.html" target="_blank">ROI-Rechner des Kurses öffnen</a></span></label>
         <input type="text" id="bv-roi-ref" placeholder="z. B. ROI_UC04_SolidFinanz_v1.xlsx">
       </div>
       <div class="field-group">
@@ -2335,7 +2444,7 @@ hr.divider{border:none;border-top:1px solid var(--rule);margin:1rem 0;}
     </div>
 
     <div class="alert alert-info" style="margin-top:1rem">
-      <p><strong>📋 Relevante Förderprogramme für KI-Vorhaben (Stand: Juni 2026)</strong></p>
+      <p><strong>📋 Relevante Förderprogramme für KI-Vorhaben</strong> <span style="font-family:var(--font-mono);font-size:0.68rem;background:var(--navy);color:#fff;padding:0.15em 0.5em;border-radius:3px;margin-left:0.4em">Stand Juni 2026 · nächste Prüfung: Januar 2027</span></p>
       <div style="overflow-x:auto;margin-top:0.7rem">
         <table style="width:100%;border-collapse:collapse;font-size:0.79rem">
           <thead>
@@ -2514,6 +2623,8 @@ hr.divider{border:none;border-top:1px solid var(--rule);margin:1rem 0;}
     <h2>Steckbrief — Vollständigkeit</h2>
     <p>Überblick über alle Pflichtfelder. Vor der Abgabe müssen alle Pflichtfelder ausgefüllt sein.</p>
   </div>
+
+  <div id="profile-note" class="alert alert-info" style="margin-bottom:1rem"></div>
 
   <div class="form-card">
     <div class="progress-bar-wrap"><div class="progress-bar" id="completion-bar" style="width:0%"></div></div>
@@ -2773,7 +2884,13 @@ function updateRiskResult() {
   };
   const m = map[v];
   el.className = 'alert ' + m.cls;
-  el.innerHTML = `<p><strong>${m.icon} ${m.title}</strong></p><p>${m.text}</p>`;
+  let extra = '';
+  if (v === 'hochrisiko' || v === 'verboten') {
+    extra = '<p style="margin-top:.4rem"><em>Auswirkung auf diesen Steckbrief:</em> Die Vollständigkeitsprüfung aktiviert dadurch zusätzliche Pflichtfelder — Konformitätsbewertung, technische Dokumentation, Logging, Post-Market-Monitoring sowie ein Cybersicherheits- und ein Rechtsrisiko im Risikoregister.</p>';
+  } else if (v === 'minimal' || v === 'begrenzt') {
+    extra = '<p style="margin-top:.4rem"><em>Auswirkung auf diesen Steckbrief:</em> Es gilt der Grundumfang. Die Felder zu Konformitätsbewertung, Logging und Post-Market-Monitoring bleiben freiwillig und werden in der Vollständigkeitsprüfung nicht eingefordert.</p>';
+  }
+  el.innerHTML = `<p><strong>${m.icon} ${m.title}</strong></p><p>${m.text}</p>` + extra;
   el.style.display = 'block';
 }
 
@@ -2791,11 +2908,16 @@ const PFLICHTFELDER = [
   [2,null,'KI-System-Typ','radio:ai-type'],
   [2,null,'Organisationsrolle KI-VO','radio:org-role'],
   [2,null,'Personenbezogene Daten','radio:personal-data'],
+  [2,'agent-actionspace','Handlungsspielraum des Agenten','select','agent'],
+  [2,'agent-autonomy','Autonomiegrad des Agenten','select','agent'],
+  [2,'agent-leastpriv','Zugriffsrechte technisch begrenzt','select','agent'],
+  [2,'agent-approval','Freigabe-Gate für irreversible Aktionen','select','agent'],
   [3,'z-smart1','SMART-Ziel 1','text'],
   [3,'z-smart2','SMART-Ziel 2','text'],
   [3,'z-inscope','In-Scope','text'],
   [3,'z-outscope','Out-of-Scope','text'],
   [3,'z-ksf','Kritische Erfolgsfaktoren','text'],
+  [3,null,'PoC vorgesehen?','radio:poc-geplant'],
   [4,'sh-liste','Stakeholder-Liste','text'],
   [4,'sh-key','Schlüsselakteure (Mendelow)','text'],
   [4,'sh-br-vorhanden','Betriebsrat vorhanden','select'],
@@ -2807,16 +2929,19 @@ const PFLICHTFELDER = [
   [6,'gdpr-dpia','DSFA erforderlich','select'],
   [6,'gdpr-art22','Art. 22 DSGVO','select'],
   [6,'ip-ownership','IP-Eigentümerschaft','select'],
+  [7,'__cyber_risk__','Cybersicherheits-Risiko beschrieben (Art. 15 KI-VO)','risktable:cyber-rows','hochrisiko'],
+  [7,'__legal_risk__','Rechts-/Compliance-Risiko beschrieben','risktable:legal-rows','hochrisiko'],
+  [7,'__agent_risk__','Agenten-Risiko beschrieben','risktable:agent-rows','agent'],
   [8,'dq-herkunft','Herkunft Trainingsdaten','select'],
   [8,'qs-kriterien','Abnahmekriterien','text'],
-  [9,'conf-verfahren','Konformitätsbewertungsverfahren','select'],
-  [9,'conf-techdok','Technische Dokumentation','select'],
-  [9,'conf-logging','Logging','select'],
+  [9,'conf-verfahren','Konformitätsbewertungsverfahren','select','hochrisiko'],
+  [9,'conf-techdok','Technische Dokumentation','select','hochrisiko'],
+  [9,'conf-logging','Logging','select','hochrisiko'],
   [10,'bv-quant','Quantifizierbarer Nutzen','text'],
   [10,'bv-qual','Qualitativer Nutzen','text'],
   [10,'bv-priority','Geschäftliche Priorität','select'],
   [10,'bv-investment','Investitionsrahmen','select'],
-  [11,'pmm-plan','Monitoring-Plan','select'],
+  [11,'pmm-plan','Monitoring-Plan','select','hochrisiko'],
   [12,'std-42001','ISO/IEC 42001 Status','select'],
   [13,'gov-owner','KI-System-Eigentümer','text'],
   [13,'gov-op-owner','Operativer Betreiber','text'],
@@ -2873,18 +2998,29 @@ const REF_TABELLE = [
   ['§16','Bewertungsausgang & Freigabe','Gesamtempfehlung, Unterzeichnung'],
 ];
 
+// Aktives Profil: welche bedingten Pflichtfelder gelten?
+function activeProfile() {
+  const tier  = document.querySelector('input[name="ai-act-tier"]:checked')?.value || '';
+  const aiTyp = document.querySelector('input[name="ai-type"]:checked')?.value || '';
+  return { hochrisiko: tier === 'hochrisiko' || tier === 'verboten', agent: aiTyp === 'agent', tier: tier };
+}
+
 function runCompletion() {
+  const prof = activeProfile();
   const missing = [];
-  PFLICHTFELDER.forEach(([sec, id, label, type]) => {
+  let applicable = 0;
+  PFLICHTFELDER.forEach(([sec, id, label, type, cond]) => {
+    if (cond && !prof[cond]) return;   // Bedingung nicht erfüllt -> Feld gilt nicht
+    applicable++;
     let filled = false;
     if (type.startsWith('radio:')) {
       filled = !!document.querySelector('input[name="' + type.split(':')[1] + '"]:checked');
+    } else if (type.startsWith('risktable:')) {
+      const tb = document.getElementById(type.split(':')[1]);
+      filled = tb ? Array.from(tb.querySelectorAll('td:first-child input')).some(el => el.value.trim() !== '') : false;
     } else if (type === 'select') {
       const el = document.getElementById(id);
       filled = el && el.value !== '' && !el.value.startsWith('—');
-    } else if (type === 'text_hidden') {
-      const el = document.getElementById(id);
-      filled = el && el.value.trim() !== '';
     } else {
       const el = document.getElementById(id);
       filled = el && el.value.trim() !== '';
@@ -2892,12 +3028,31 @@ function runCompletion() {
     if (!filled) missing.push({ sec, label });
   });
 
-  // Check risk register: at least one bias or tech row filled
+  // Risikoregister: mindestens ein Bias- oder technisches Risiko beschreiben
   const riskInputs = document.querySelectorAll('#bias-rows td:first-child input, #tech-rows td:first-child input');
   const riskFilled = Array.from(riskInputs).some(el => el.value.trim() !== '');
-  if (!riskFilled) missing.push({ sec: 8, label: 'Risikoregister — mind. ein Bias- oder Tech-Risiko beschreiben' });
+  applicable++;
+  if (!riskFilled) missing.push({ sec: 7, label: 'Risikoregister — mind. ein Bias- oder technisches Risiko beschreiben' });
 
-  const total = PFLICHTFELDER.length + 1;
+  // Hinweisbanner zum aktiven Prüfprofil
+  const profEl = document.getElementById('profile-note');
+  if (profEl) {
+    const parts = [];
+    if (prof.hochrisiko) parts.push('<strong>Hochrisiko-KI</strong> — zusätzliche Pflichtfelder aktiv: Konformitätsbewertung, technische Dokumentation, Logging, Post-Market-Monitoring sowie Cybersicherheits- und Rechtsrisiko im Risikoregister (Art. 15, 43, 72 KI-VO).');
+    if (prof.agent) parts.push('<strong>KI-Agent</strong> — zusätzliche Pflichtfelder aktiv: Handlungsspielraum, Autonomiegrad, Least Privilege, Freigabe-Gate sowie mindestens ein Agenten-Risiko.');
+    if (!prof.tier) {
+      profEl.className = 'alert alert-warn';
+      profEl.innerHTML = '<p>Die <strong>Risikostufe nach EU AI Act</strong> ist in Abschnitt 6 noch nicht gesetzt. Solange sie fehlt, wird nur der Grundumfang geprüft — die risikoklassenabhängigen Pflichtfelder sind noch nicht aktiv.</p>';
+    } else if (parts.length) {
+      profEl.className = 'alert alert-info';
+      profEl.innerHTML = '<p>Aktives Prüfprofil:</p><p>' + parts.join('</p><p>') + '</p>';
+    } else {
+      profEl.className = 'alert alert-ok';
+      profEl.innerHTML = '<p>Aktives Prüfprofil: <strong>Grundumfang</strong> — keine risikoklassenabhängigen Zusatzpflichten. Die Felder zu Konformitätsbewertung, Logging und Post-Market-Monitoring bleiben freiwillig.</p>';
+    }
+  }
+
+  const total = applicable;
   const filled = total - missing.length;
   const pct = Math.round(filled / total * 100);
 
