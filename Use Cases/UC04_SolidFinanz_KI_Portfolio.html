@@ -9,7 +9,7 @@
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:'DM Sans',system-ui,sans-serif;background:var(--paper);color:var(--ink);font-size:14px;line-height:1.65;}
 a{color:var(--accent);}a:hover{text-decoration:underline;}
-@media print{body{background:white;font-size:11pt;}.no-print{display:none!important;}.uc-card{break-inside:avoid;box-shadow:none!important;}details{open:true;}details summary::after{content:none!important;}a{color:inherit;text-decoration:none;}}
+@media print{body{background:white;font-size:11pt;}.no-print{display:none!important;}.uc-card{break-inside:avoid;box-shadow:none!important;}details{open:true;}details summary::after{content:none!important;}a{color:inherit;text-decoration:none;}.mx-b{min-height:auto;padding:.3rem;}.mx-b:not(.on){opacity:.35;}.eink-f textarea{border:1px solid #bbb;background:#fff;}}
 .page{max-width:860px;margin:0 auto;padding:2.5rem 2rem 5rem;}
 
 .ho-header{border-bottom:3px solid var(--ink);padding-bottom:1.4rem;margin-bottom:1.8rem;display:grid;grid-template-columns:1fr auto;gap:1rem;align-items:end;}
@@ -52,6 +52,31 @@ details.uc-card[open] summary::after{content:'▴ zu';}
 .uc-ref{background:var(--phase);border-radius:6px;padding:.5rem .8rem;font-size:12.5px;margin-top:.6rem;line-height:1.55;}
 .uc-ref .rl{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--teal);display:block;margin-bottom:.2rem;}
 .uc-noref{font-size:12px;color:var(--muted);font-style:italic;margin-top:.6rem;}
+/* ── Einschätzung der Teilnehmenden ─────────────────────────── */
+.eink{margin-top:1rem;padding-top:.9rem;border-top:2px solid var(--rule);}
+.eink-label{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--blue);font-weight:600;margin-bottom:.6rem;}
+.mx{display:grid;grid-template-columns:auto 1fr 1fr;gap:4px;margin-bottom:.8rem;max-width:520px;}
+.mx-h{font-family:'DM Mono',monospace;font-size:8.5px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);text-align:center;padding:.2rem;align-self:end;}
+.mx-s{font-family:'DM Mono',monospace;font-size:8.5px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;padding-right:.4rem;text-align:right;justify-content:flex-end;}
+.mx-b{border:1.5px solid var(--rule);border-radius:6px;background:var(--card);padding:.55rem .5rem;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:11px;line-height:1.35;color:var(--muted);text-align:center;transition:all .12s;min-height:46px;}
+.mx-b:hover{border-color:var(--teal);color:var(--ink);}
+.mx-b.on{border-color:var(--teal);border-width:2px;background:rgba(10,107,107,.08);color:var(--teal);font-weight:600;}
+.mx-b.on::before{content:'✓ ';}
+.eink-f{margin-bottom:.6rem;}
+.eink-f:last-child{margin-bottom:0;}
+.eink-f label{display:block;font-size:12px;font-weight:600;color:var(--ink);margin-bottom:.25rem;}
+.eink-f textarea{width:100%;font-family:'DM Sans',sans-serif;font-size:12.5px;line-height:1.55;border:1px solid var(--rule);border-radius:6px;padding:.5rem .65rem;background:#fdfdfb;color:var(--ink);resize:vertical;min-height:52px;overflow:hidden;}
+.eink-f textarea:focus{outline:none;border-color:var(--teal);box-shadow:0 0 0 2px rgba(10,107,107,.12);}
+.eink-f .fh{font-weight:400;font-style:italic;color:var(--muted);font-size:11.5px;}
+
+/* ── Überblick ──────────────────────────────────────────────── */
+.ovw{background:var(--card);border:1px solid var(--rule);border-radius:8px;padding:1.2rem 1.4rem;}
+.ovw-mx{display:grid;grid-template-columns:auto 1fr 1fr;gap:6px;margin-top:.6rem;}
+.ovw-cell{border:1px solid var(--rule);border-radius:6px;padding:.7rem;min-height:78px;background:var(--phase);}
+.ovw-cell .cl{font-family:'DM Mono',monospace;font-size:8.5px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:.35rem;}
+.chip{display:inline-block;font-family:'DM Mono',monospace;font-size:10.5px;font-weight:700;background:var(--teal);color:#fff;border-radius:4px;padding:2px 7px;margin:0 3px 3px 0;}
+.ovw-empty{font-size:11.5px;color:var(--muted);font-style:italic;}
+.ovw-stat{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);margin-top:.8rem;padding-top:.6rem;border-top:1px solid var(--rule);}
 
 .aufgabe{background:var(--card);border:1px solid var(--rule);border-radius:8px;padding:1.2rem 1.4rem;margin-bottom:1rem;}
 .aufgabe ol{padding-left:1.3rem;margin:.5rem 0;}
@@ -92,7 +117,10 @@ details.uc-card[open] summary::after{content:'▴ zu';}
 <div class="toolbar no-print">
  <button class="tb-btn" onclick="setAll(true)">Alle ausklappen</button>
  <button class="tb-btn" onclick="setAll(false)">Alle einklappen</button>
- <span class="tb-hint">Klick auf einen Titel öffnet die Kurzbeschreibung</span>
+ <button class="tb-btn" onclick="exportAll()">⬇ Einschätzung sichern</button>
+ <label class="tb-btn" style="margin:0">⬆ laden<input type="file" accept=".json" style="display:none" onchange="importJson(this)"></label>
+ <button class="tb-btn" onclick="resetAll()">✕ zurücksetzen</button>
+ <span class="tb-hint">Eingaben werden laufend im Browser gespeichert</span>
 </div>
 
 <details class="uc-card">
@@ -101,6 +129,28 @@ details.uc-card[open] summary::after{content:'▴ zu';}
   <p>Eingehende Kreditanträge und Investitionsvorhaben werden automatisch auf Vollständigkeit und Plausibilität geprüft. Stammdaten werden aus unterschiedlich formatierten Unterlagen ausgelesen und ins Kernsystem übergeben.</p>
   <div class="uc-row"><span class="uc-key">Datengrundlage</span><span class="uc-val">Eingereichte Unterlagen (PDF, Scans), historische geprüfte Anträge als Trainingsbasis</span></div>
   <div class="uc-ref"><span class="rl">Reales Vorbild</span><strong>JPMorgan „COiN"</strong> (seit 2017): Auslegung gewerblicher Kreditverträge, die zuvor rund 360.000 Arbeitsstunden pro Jahr bei Jurist:innen und Kreditsachbearbeitung banden. <a href="https://www.bloomberg.com/news/articles/2017-02-28/jpmorgan-marshals-an-army-of-developers-to-automate-high-finance" target="_blank">Bloomberg</a> · <a href="https://www.abajournal.com/news/article/jpmorgan_chase_uses_tech_to_save_360000_hours_of_annual_work_by_lawyers_and" target="_blank">ABA Journal</a></div>
+  <div class="eink">
+   <div class="eink-label">Eure Einschätzung</div>
+   <div class="mx" id="mx-01">
+    <div></div>
+    <div class="mx-h">Machbarkeit niedrig</div>
+    <div class="mx-h">Machbarkeit hoch</div>
+    <div class="mx-s">Wirkung<br>hoch</div>
+    <button type="button" class="mx-b" data-uc="01" data-q="hn" onclick="pick(this)">Wirkung hoch<br>Machbarkeit niedrig</button>
+    <button type="button" class="mx-b" data-uc="01" data-q="hh" onclick="pick(this)">Wirkung hoch<br>Machbarkeit hoch</button>
+    <div class="mx-s">Wirkung<br>niedrig</div>
+    <button type="button" class="mx-b" data-uc="01" data-q="nn" onclick="pick(this)">Wirkung niedrig<br>Machbarkeit niedrig</button>
+    <button type="button" class="mx-b" data-uc="01" data-q="nh" onclick="pick(this)">Wirkung niedrig<br>Machbarkeit hoch</button>
+   </div>
+   <div class="eink-f">
+    <label for="beg-01">Begründung der Verortung <span class="fh">— woran macht Ihr Wirkung und Machbarkeit fest?</span></label>
+    <textarea id="beg-01" rows="2" oninput="grow(this);store()" placeholder="Zwei bis drei Sätze genügen."></textarea>
+   </div>
+   <div class="eink-f">
+    <label for="frg-01">Welche Fragen stellt Ihr der Ownerin dieser Initiative?</label>
+    <textarea id="frg-01" rows="2" oninput="grow(this);store()" placeholder="Was müsstet Ihr wissen, um die Einschätzung zu belegen statt zu vermuten?"></textarea>
+   </div>
+  </div>
  </div>
 </details>
 
@@ -110,6 +160,28 @@ details.uc-card[open] summary::after{content:'▴ zu';}
   <p>Aus historischen Kreditdaten und Bonitätsinformationen wird ein Score berechnet, der das voraussichtliche Ausfallrisiko einer Kreditnehmerin oder eines Kreditnehmers abbildet.</p>
   <div class="uc-row"><span class="uc-key">Datengrundlage</span><span class="uc-val">Kredithistorie des Hauses, Einkommensangaben, externe Bonitätsauskünfte</span></div>
   <div class="uc-ref"><span class="rl">Reales Vorbild</span>Branchenstandard mit eigener aufsichtlicher Literatur — EBA-Leitlinien zur Kreditvergabe (EBA/GL/2020/06) sowie EBA-Bericht zu maschinellem Lernen im Kredit-Scoring.</div>
+  <div class="eink">
+   <div class="eink-label">Eure Einschätzung</div>
+   <div class="mx" id="mx-02">
+    <div></div>
+    <div class="mx-h">Machbarkeit niedrig</div>
+    <div class="mx-h">Machbarkeit hoch</div>
+    <div class="mx-s">Wirkung<br>hoch</div>
+    <button type="button" class="mx-b" data-uc="02" data-q="hn" onclick="pick(this)">Wirkung hoch<br>Machbarkeit niedrig</button>
+    <button type="button" class="mx-b" data-uc="02" data-q="hh" onclick="pick(this)">Wirkung hoch<br>Machbarkeit hoch</button>
+    <div class="mx-s">Wirkung<br>niedrig</div>
+    <button type="button" class="mx-b" data-uc="02" data-q="nn" onclick="pick(this)">Wirkung niedrig<br>Machbarkeit niedrig</button>
+    <button type="button" class="mx-b" data-uc="02" data-q="nh" onclick="pick(this)">Wirkung niedrig<br>Machbarkeit hoch</button>
+   </div>
+   <div class="eink-f">
+    <label for="beg-02">Begründung der Verortung <span class="fh">— woran macht Ihr Wirkung und Machbarkeit fest?</span></label>
+    <textarea id="beg-02" rows="2" oninput="grow(this);store()" placeholder="Zwei bis drei Sätze genügen."></textarea>
+   </div>
+   <div class="eink-f">
+    <label for="frg-02">Welche Fragen stellt Ihr der Ownerin dieser Initiative?</label>
+    <textarea id="frg-02" rows="2" oninput="grow(this);store()" placeholder="Was müsstet Ihr wissen, um die Einschätzung zu belegen statt zu vermuten?"></textarea>
+   </div>
+  </div>
  </div>
 </details>
 
@@ -119,6 +191,28 @@ details.uc-card[open] summary::after{content:'▴ zu';}
   <p>Transaktionen werden in Echtzeit auf auffällige Muster geprüft. Verdächtige Vorgänge werden angehalten oder zur manuellen Prüfung ausgesteuert.</p>
   <div class="uc-row"><span class="uc-key">Datengrundlage</span><span class="uc-val">Laufende Transaktionsströme, dokumentierte Betrugsfälle der Vergangenheit, Geräte- und Sitzungsmerkmale</span></div>
   <div class="uc-ref"><span class="rl">Reales Vorbild</span>Branchenstandard im Zahlungsverkehr. Erklärtes Ziel ist neben der Trefferquote vor allem die Senkung der Fehlalarme, die den Prüfaufwand treiben. <a href="https://www.ey.com/de_de/insights/consulting/betrugserkennung-im-zahlungsverkehr-mit-ki-staerken" target="_blank">EY Deutschland</a></div>
+  <div class="eink">
+   <div class="eink-label">Eure Einschätzung</div>
+   <div class="mx" id="mx-03">
+    <div></div>
+    <div class="mx-h">Machbarkeit niedrig</div>
+    <div class="mx-h">Machbarkeit hoch</div>
+    <div class="mx-s">Wirkung<br>hoch</div>
+    <button type="button" class="mx-b" data-uc="03" data-q="hn" onclick="pick(this)">Wirkung hoch<br>Machbarkeit niedrig</button>
+    <button type="button" class="mx-b" data-uc="03" data-q="hh" onclick="pick(this)">Wirkung hoch<br>Machbarkeit hoch</button>
+    <div class="mx-s">Wirkung<br>niedrig</div>
+    <button type="button" class="mx-b" data-uc="03" data-q="nn" onclick="pick(this)">Wirkung niedrig<br>Machbarkeit niedrig</button>
+    <button type="button" class="mx-b" data-uc="03" data-q="nh" onclick="pick(this)">Wirkung niedrig<br>Machbarkeit hoch</button>
+   </div>
+   <div class="eink-f">
+    <label for="beg-03">Begründung der Verortung <span class="fh">— woran macht Ihr Wirkung und Machbarkeit fest?</span></label>
+    <textarea id="beg-03" rows="2" oninput="grow(this);store()" placeholder="Zwei bis drei Sätze genügen."></textarea>
+   </div>
+   <div class="eink-f">
+    <label for="frg-03">Welche Fragen stellt Ihr der Ownerin dieser Initiative?</label>
+    <textarea id="frg-03" rows="2" oninput="grow(this);store()" placeholder="Was müsstet Ihr wissen, um die Einschätzung zu belegen statt zu vermuten?"></textarea>
+   </div>
+  </div>
  </div>
 </details>
 
@@ -128,6 +222,28 @@ details.uc-card[open] summary::after{content:'▴ zu';}
   <p>Ergänzung des bestehenden regelbasierten Transaktionsmonitorings um ein lernendes Modell, das Verdachtsfälle vorpriorisiert und damit die Bearbeitungsreihenfolge steuert.</p>
   <div class="uc-row"><span class="uc-key">Datengrundlage</span><span class="uc-val">Transaktionsdaten, KYC-Stammdaten, bisherige Verdachtsmeldungen und deren Ausgang</span></div>
   <div class="uc-ref"><span class="rl">Reales Vorbild</span><strong>Deutsche Bank „Black Forest"</strong> (seit 2019): Ergänzung bestehender regelbasierter Systeme; laut Bank u. a. Aufdeckung eines Falls mit Bezug zu organisierter Kriminalität, Geldwäsche und Steuerhinterziehung. <a href="https://www.db.com/what-next/digital-disruption/better-than-humans/how-artificial-intelligence-is-changing-banking/index?language_id=3" target="_blank">Deutsche Bank</a></div>
+  <div class="eink">
+   <div class="eink-label">Eure Einschätzung</div>
+   <div class="mx" id="mx-04">
+    <div></div>
+    <div class="mx-h">Machbarkeit niedrig</div>
+    <div class="mx-h">Machbarkeit hoch</div>
+    <div class="mx-s">Wirkung<br>hoch</div>
+    <button type="button" class="mx-b" data-uc="04" data-q="hn" onclick="pick(this)">Wirkung hoch<br>Machbarkeit niedrig</button>
+    <button type="button" class="mx-b" data-uc="04" data-q="hh" onclick="pick(this)">Wirkung hoch<br>Machbarkeit hoch</button>
+    <div class="mx-s">Wirkung<br>niedrig</div>
+    <button type="button" class="mx-b" data-uc="04" data-q="nn" onclick="pick(this)">Wirkung niedrig<br>Machbarkeit niedrig</button>
+    <button type="button" class="mx-b" data-uc="04" data-q="nh" onclick="pick(this)">Wirkung niedrig<br>Machbarkeit hoch</button>
+   </div>
+   <div class="eink-f">
+    <label for="beg-04">Begründung der Verortung <span class="fh">— woran macht Ihr Wirkung und Machbarkeit fest?</span></label>
+    <textarea id="beg-04" rows="2" oninput="grow(this);store()" placeholder="Zwei bis drei Sätze genügen."></textarea>
+   </div>
+   <div class="eink-f">
+    <label for="frg-04">Welche Fragen stellt Ihr der Ownerin dieser Initiative?</label>
+    <textarea id="frg-04" rows="2" oninput="grow(this);store()" placeholder="Was müsstet Ihr wissen, um die Einschätzung zu belegen statt zu vermuten?"></textarea>
+   </div>
+  </div>
  </div>
 </details>
 
@@ -137,6 +253,28 @@ details.uc-card[open] summary::after{content:'▴ zu';}
   <p>Beantwortet Fragen der Mitarbeitenden zu internen Belangen — Urlaubsanträge, Reisekosten, interne Richtlinien, Kantinenplan.</p>
   <div class="uc-row"><span class="uc-key">Datengrundlage</span><span class="uc-val">Interne Richtlinien, Intranet-Inhalte, bestehende HR-Fragensammlungen</span></div>
   <div class="uc-noref">Kein vergleichbar dokumentierter Referenzfall verfügbar.</div>
+  <div class="eink">
+   <div class="eink-label">Eure Einschätzung</div>
+   <div class="mx" id="mx-05">
+    <div></div>
+    <div class="mx-h">Machbarkeit niedrig</div>
+    <div class="mx-h">Machbarkeit hoch</div>
+    <div class="mx-s">Wirkung<br>hoch</div>
+    <button type="button" class="mx-b" data-uc="05" data-q="hn" onclick="pick(this)">Wirkung hoch<br>Machbarkeit niedrig</button>
+    <button type="button" class="mx-b" data-uc="05" data-q="hh" onclick="pick(this)">Wirkung hoch<br>Machbarkeit hoch</button>
+    <div class="mx-s">Wirkung<br>niedrig</div>
+    <button type="button" class="mx-b" data-uc="05" data-q="nn" onclick="pick(this)">Wirkung niedrig<br>Machbarkeit niedrig</button>
+    <button type="button" class="mx-b" data-uc="05" data-q="nh" onclick="pick(this)">Wirkung niedrig<br>Machbarkeit hoch</button>
+   </div>
+   <div class="eink-f">
+    <label for="beg-05">Begründung der Verortung <span class="fh">— woran macht Ihr Wirkung und Machbarkeit fest?</span></label>
+    <textarea id="beg-05" rows="2" oninput="grow(this);store()" placeholder="Zwei bis drei Sätze genügen."></textarea>
+   </div>
+   <div class="eink-f">
+    <label for="frg-05">Welche Fragen stellt Ihr der Ownerin dieser Initiative?</label>
+    <textarea id="frg-05" rows="2" oninput="grow(this);store()" placeholder="Was müsstet Ihr wissen, um die Einschätzung zu belegen statt zu vermuten?"></textarea>
+   </div>
+  </div>
  </div>
 </details>
 
@@ -146,6 +284,28 @@ details.uc-card[open] summary::after{content:'▴ zu';}
   <p>Nimmt Kundenanliegen auf, gibt unverbindliche Erstauskünfte und unterstützt bei der Terminvereinbarung mit der zuständigen Beratung.</p>
   <div class="uc-row"><span class="uc-key">Datengrundlage</span><span class="uc-val">Produktinformationen, öffentliche Konditionen, Terminverwaltung</span></div>
   <div class="uc-noref">Kein vergleichbar dokumentierter Referenzfall verfügbar.</div>
+  <div class="eink">
+   <div class="eink-label">Eure Einschätzung</div>
+   <div class="mx" id="mx-06">
+    <div></div>
+    <div class="mx-h">Machbarkeit niedrig</div>
+    <div class="mx-h">Machbarkeit hoch</div>
+    <div class="mx-s">Wirkung<br>hoch</div>
+    <button type="button" class="mx-b" data-uc="06" data-q="hn" onclick="pick(this)">Wirkung hoch<br>Machbarkeit niedrig</button>
+    <button type="button" class="mx-b" data-uc="06" data-q="hh" onclick="pick(this)">Wirkung hoch<br>Machbarkeit hoch</button>
+    <div class="mx-s">Wirkung<br>niedrig</div>
+    <button type="button" class="mx-b" data-uc="06" data-q="nn" onclick="pick(this)">Wirkung niedrig<br>Machbarkeit niedrig</button>
+    <button type="button" class="mx-b" data-uc="06" data-q="nh" onclick="pick(this)">Wirkung niedrig<br>Machbarkeit hoch</button>
+   </div>
+   <div class="eink-f">
+    <label for="beg-06">Begründung der Verortung <span class="fh">— woran macht Ihr Wirkung und Machbarkeit fest?</span></label>
+    <textarea id="beg-06" rows="2" oninput="grow(this);store()" placeholder="Zwei bis drei Sätze genügen."></textarea>
+   </div>
+   <div class="eink-f">
+    <label for="frg-06">Welche Fragen stellt Ihr der Ownerin dieser Initiative?</label>
+    <textarea id="frg-06" rows="2" oninput="grow(this);store()" placeholder="Was müsstet Ihr wissen, um die Einschätzung zu belegen statt zu vermuten?"></textarea>
+   </div>
+  </div>
  </div>
 </details>
 
@@ -155,6 +315,28 @@ details.uc-card[open] summary::after{content:'▴ zu';}
   <p>Schätzt Immobilienpreise anhand von Lage, Baujahr, Grundfläche, Zimmerzahl und Verkehrsanbindung und unterstützt die Kalkulation des Risikoaufschlags bei der Kreditvergabe.</p>
   <div class="uc-row"><span class="uc-key">Datengrundlage</span><span class="uc-val">Objektmerkmale aus Bestandsfinanzierungen, Kaufpreissammlungen, regionale Marktdaten</span></div>
   <div class="uc-noref">Kein vergleichbar dokumentierter Referenzfall verfügbar.</div>
+  <div class="eink">
+   <div class="eink-label">Eure Einschätzung</div>
+   <div class="mx" id="mx-07">
+    <div></div>
+    <div class="mx-h">Machbarkeit niedrig</div>
+    <div class="mx-h">Machbarkeit hoch</div>
+    <div class="mx-s">Wirkung<br>hoch</div>
+    <button type="button" class="mx-b" data-uc="07" data-q="hn" onclick="pick(this)">Wirkung hoch<br>Machbarkeit niedrig</button>
+    <button type="button" class="mx-b" data-uc="07" data-q="hh" onclick="pick(this)">Wirkung hoch<br>Machbarkeit hoch</button>
+    <div class="mx-s">Wirkung<br>niedrig</div>
+    <button type="button" class="mx-b" data-uc="07" data-q="nn" onclick="pick(this)">Wirkung niedrig<br>Machbarkeit niedrig</button>
+    <button type="button" class="mx-b" data-uc="07" data-q="nh" onclick="pick(this)">Wirkung niedrig<br>Machbarkeit hoch</button>
+   </div>
+   <div class="eink-f">
+    <label for="beg-07">Begründung der Verortung <span class="fh">— woran macht Ihr Wirkung und Machbarkeit fest?</span></label>
+    <textarea id="beg-07" rows="2" oninput="grow(this);store()" placeholder="Zwei bis drei Sätze genügen."></textarea>
+   </div>
+   <div class="eink-f">
+    <label for="frg-07">Welche Fragen stellt Ihr der Ownerin dieser Initiative?</label>
+    <textarea id="frg-07" rows="2" oninput="grow(this);store()" placeholder="Was müsstet Ihr wissen, um die Einschätzung zu belegen statt zu vermuten?"></textarea>
+   </div>
+  </div>
  </div>
 </details>
 
@@ -164,6 +346,28 @@ details.uc-card[open] summary::after{content:'▴ zu';}
   <p>Wertet Kontobewegungen und Produktnutzung aus und spielt Kundinnen und Kunden individuelle Hinweise zu Sparen, Anlegen und Absicherung aus.</p>
   <div class="uc-row"><span class="uc-key">Datengrundlage</span><span class="uc-val">Kontobewegungen, genutzte Produkte, Kundensegment</span></div>
   <div class="uc-ref"><span class="rl">Reales Vorbild</span><strong>DBS Bank</strong> (Singapur): Über 100 Algorithmen werten laut Bank rund 15.000 Datenpunkte aus und erzeugen individuelle Hinweise für über 13 Mio. Kundinnen und Kunden. <a href="https://www.dbs.com/artificial-intelligence-machine-learning/index.html" target="_blank">DBS</a> · <a href="https://www.edb.gov.sg/en/business-insights/insights/how-dbs-southeast-asias-largest-bank-is-capturing-the-full-value-of-ai-and-machine-learning-in-singapore.html" target="_blank">Singapore EDB</a></div>
+  <div class="eink">
+   <div class="eink-label">Eure Einschätzung</div>
+   <div class="mx" id="mx-08">
+    <div></div>
+    <div class="mx-h">Machbarkeit niedrig</div>
+    <div class="mx-h">Machbarkeit hoch</div>
+    <div class="mx-s">Wirkung<br>hoch</div>
+    <button type="button" class="mx-b" data-uc="08" data-q="hn" onclick="pick(this)">Wirkung hoch<br>Machbarkeit niedrig</button>
+    <button type="button" class="mx-b" data-uc="08" data-q="hh" onclick="pick(this)">Wirkung hoch<br>Machbarkeit hoch</button>
+    <div class="mx-s">Wirkung<br>niedrig</div>
+    <button type="button" class="mx-b" data-uc="08" data-q="nn" onclick="pick(this)">Wirkung niedrig<br>Machbarkeit niedrig</button>
+    <button type="button" class="mx-b" data-uc="08" data-q="nh" onclick="pick(this)">Wirkung niedrig<br>Machbarkeit hoch</button>
+   </div>
+   <div class="eink-f">
+    <label for="beg-08">Begründung der Verortung <span class="fh">— woran macht Ihr Wirkung und Machbarkeit fest?</span></label>
+    <textarea id="beg-08" rows="2" oninput="grow(this);store()" placeholder="Zwei bis drei Sätze genügen."></textarea>
+   </div>
+   <div class="eink-f">
+    <label for="frg-08">Welche Fragen stellt Ihr der Ownerin dieser Initiative?</label>
+    <textarea id="frg-08" rows="2" oninput="grow(this);store()" placeholder="Was müsstet Ihr wissen, um die Einschätzung zu belegen statt zu vermuten?"></textarea>
+   </div>
+  </div>
  </div>
 </details>
 
@@ -173,6 +377,28 @@ details.uc-card[open] summary::after{content:'▴ zu';}
   <p>Fasst Marktdaten, Geschäftsberichte und Analystenkommentare zusammen und erstellt Entwurfsfassungen interner Analysen für die Fachbereiche.</p>
   <div class="uc-row"><span class="uc-key">Datengrundlage</span><span class="uc-val">Marktdaten (Bloomberg-Terminal), veröffentlichte Geschäftsberichte, Analystenkommentare</span></div>
   <div class="uc-ref"><span class="rl">Reale Vorbilder</span><strong>Deutsche Bank „DB Lumina"</strong> (seit September 2024): rund 5.000 Nutzende im Research, laut Bank 30–45 Minuten Zeitersparnis je Ergebnisnotiz. <a href="https://cloud.google.com/blog/topics/financial-services/deutsche-bank-delivers-ai-powered-financial-research-with-db-lumina" target="_blank">Google Cloud Blog</a><br><strong>ING „Katana"</strong>: Preisvorschläge im Anleihehandel, ausdrücklich als Ergänzung und nicht als Ersatz der Händlerentscheidung konzipiert. <a href="https://ing.com/news/2020/07/katana-gives-bond-traders-a-cutting-edge.html" target="_blank">ING</a></div>
+  <div class="eink">
+   <div class="eink-label">Eure Einschätzung</div>
+   <div class="mx" id="mx-09">
+    <div></div>
+    <div class="mx-h">Machbarkeit niedrig</div>
+    <div class="mx-h">Machbarkeit hoch</div>
+    <div class="mx-s">Wirkung<br>hoch</div>
+    <button type="button" class="mx-b" data-uc="09" data-q="hn" onclick="pick(this)">Wirkung hoch<br>Machbarkeit niedrig</button>
+    <button type="button" class="mx-b" data-uc="09" data-q="hh" onclick="pick(this)">Wirkung hoch<br>Machbarkeit hoch</button>
+    <div class="mx-s">Wirkung<br>niedrig</div>
+    <button type="button" class="mx-b" data-uc="09" data-q="nn" onclick="pick(this)">Wirkung niedrig<br>Machbarkeit niedrig</button>
+    <button type="button" class="mx-b" data-uc="09" data-q="nh" onclick="pick(this)">Wirkung niedrig<br>Machbarkeit hoch</button>
+   </div>
+   <div class="eink-f">
+    <label for="beg-09">Begründung der Verortung <span class="fh">— woran macht Ihr Wirkung und Machbarkeit fest?</span></label>
+    <textarea id="beg-09" rows="2" oninput="grow(this);store()" placeholder="Zwei bis drei Sätze genügen."></textarea>
+   </div>
+   <div class="eink-f">
+    <label for="frg-09">Welche Fragen stellt Ihr der Ownerin dieser Initiative?</label>
+    <textarea id="frg-09" rows="2" oninput="grow(this);store()" placeholder="Was müsstet Ihr wissen, um die Einschätzung zu belegen statt zu vermuten?"></textarea>
+   </div>
+  </div>
  </div>
 </details>
 
@@ -184,8 +410,48 @@ details.uc-card[open] summary::after{content:'▴ zu';}
   <div class="uc-row"><span class="uc-key">Datengrundlage</span><span class="uc-val">Unternehmensstrategie, lizenzierte Marktstudien, öffentlich geführte Branchendiskussionen in sozialen Medien, dokumentierte Entscheidungshistorie des Hauses</span></div>
   <div class="uc-row"><span class="uc-key">Zusage</span><span class="uc-val">Ausdrücklicher Bestandteil des Vorschlags: Jede Empfehlung wird nachvollziehbar aufbewahrt und den Aufsichtsbehörden bei Bedarf zur Verfügung gestellt.</span></div>
   <div class="uc-noref">Kein vergleichbar dokumentierter Referenzfall verfügbar.</div>
+  <div class="eink">
+   <div class="eink-label">Eure Einschätzung</div>
+   <div class="mx" id="mx-10">
+    <div></div>
+    <div class="mx-h">Machbarkeit niedrig</div>
+    <div class="mx-h">Machbarkeit hoch</div>
+    <div class="mx-s">Wirkung<br>hoch</div>
+    <button type="button" class="mx-b" data-uc="10" data-q="hn" onclick="pick(this)">Wirkung hoch<br>Machbarkeit niedrig</button>
+    <button type="button" class="mx-b" data-uc="10" data-q="hh" onclick="pick(this)">Wirkung hoch<br>Machbarkeit hoch</button>
+    <div class="mx-s">Wirkung<br>niedrig</div>
+    <button type="button" class="mx-b" data-uc="10" data-q="nn" onclick="pick(this)">Wirkung niedrig<br>Machbarkeit niedrig</button>
+    <button type="button" class="mx-b" data-uc="10" data-q="nh" onclick="pick(this)">Wirkung niedrig<br>Machbarkeit hoch</button>
+   </div>
+   <div class="eink-f">
+    <label for="beg-10">Begründung der Verortung <span class="fh">— woran macht Ihr Wirkung und Machbarkeit fest?</span></label>
+    <textarea id="beg-10" rows="2" oninput="grow(this);store()" placeholder="Zwei bis drei Sätze genügen."></textarea>
+   </div>
+   <div class="eink-f">
+    <label for="frg-10">Welche Fragen stellt Ihr der Ownerin dieser Initiative?</label>
+    <textarea id="frg-10" rows="2" oninput="grow(this);store()" placeholder="Was müsstet Ihr wissen, um die Einschätzung zu belegen statt zu vermuten?"></textarea>
+   </div>
+  </div>
  </div>
 </details>
+
+<div class="section-title">Eure Verortung im Überblick</div>
+
+<div class="ovw">
+ <p style="font-size:13px;line-height:1.6;">Die Übersicht baut sich aus Euren Eingaben oben auf. Sie ist die Grundlage für das Gespräch im Plenum: <strong>Wo liegen die Initiativen gehäuft — und ist das ein Befund oder ein Zeichen dafür, dass die Kriterien nicht trennscharf sind?</strong></p>
+ <div class="ovw-mx">
+  <div></div>
+  <div class="mx-h">Machbarkeit niedrig</div>
+  <div class="mx-h">Machbarkeit hoch</div>
+  <div class="mx-s">Wirkung<br>hoch</div>
+  <div class="ovw-cell"><span class="cl">Wirkung hoch · Machbarkeit niedrig</span><div id="ov-hn"></div></div>
+  <div class="ovw-cell"><span class="cl">Wirkung hoch · Machbarkeit hoch</span><div id="ov-hh"></div></div>
+  <div class="mx-s">Wirkung<br>niedrig</div>
+  <div class="ovw-cell"><span class="cl">Wirkung niedrig · Machbarkeit niedrig</span><div id="ov-nn"></div></div>
+  <div class="ovw-cell"><span class="cl">Wirkung niedrig · Machbarkeit hoch</span><div id="ov-nh"></div></div>
+ </div>
+ <div class="ovw-stat" id="ov-stat"></div>
+</div>
 
 <div class="hinweis">
  <div class="hinweis-label">Quellenkritischer Hinweis</div>
@@ -200,9 +466,123 @@ details.uc-card[open] summary::after{content:'▴ zu';}
 </div>
 
 <script>
+var KEY = 'uc04-portfolio-v1';
+var NRS = ['01','02','03','04','05','06','07','08','09','10'];
+var NAMEN = {};
+var QL = {hn:'Wirkung hoch / Machbarkeit niedrig', hh:'Wirkung hoch / Machbarkeit hoch',
+          nn:'Wirkung niedrig / Machbarkeit niedrig', nh:'Wirkung niedrig / Machbarkeit hoch'};
+
 function setAll(open){
   document.querySelectorAll('details.uc-card').forEach(function(d){ d.open = open; });
 }
+
+function grow(el){ el.style.height = 'auto'; el.style.height = (el.scrollHeight + 2) + 'px'; }
+
+function pick(btn){
+  var uc = btn.dataset.uc, war = btn.classList.contains('on');
+  document.querySelectorAll('.mx-b[data-uc="' + uc + '"]').forEach(function(b){ b.classList.remove('on'); });
+  if (!war) btn.classList.add('on');
+  store();
+}
+
+function gather(){
+  var d = {};
+  NRS.forEach(function(nr){
+    var sel = document.querySelector('.mx-b[data-uc="' + nr + '"].on');
+    var tb = document.getElementById('beg-' + nr), tf = document.getElementById('frg-' + nr);
+    d[nr] = { q: sel ? sel.dataset.q : '', beg: tb ? tb.value : '', frg: tf ? tf.value : '' };
+  });
+  return d;
+}
+
+function store(){
+  try { localStorage.setItem(KEY, JSON.stringify(gather())); } catch(e){}
+  renderOverview();
+}
+
+function apply(d){
+  NRS.forEach(function(nr){
+    var e = d[nr]; if (!e) return;
+    document.querySelectorAll('.mx-b[data-uc="' + nr + '"]').forEach(function(b){
+      b.classList.toggle('on', b.dataset.q === e.q && !!e.q);
+    });
+    var tb = document.getElementById('beg-' + nr), tf = document.getElementById('frg-' + nr);
+    if (tb) { tb.value = e.beg || ''; grow(tb); }
+    if (tf) { tf.value = e.frg || ''; grow(tf); }
+  });
+  renderOverview();
+}
+
+function load(){
+  try { var raw = localStorage.getItem(KEY); if (raw) apply(JSON.parse(raw)); } catch(e){}
+}
+
+function renderOverview(){
+  var d = gather(), buckets = {hn:[], hh:[], nn:[], nh:[]}, gesetzt = 0, begruendet = 0, fragen = 0;
+  NRS.forEach(function(nr){
+    var e = d[nr];
+    if (e.q && buckets[e.q]) { buckets[e.q].push(nr); gesetzt++; }
+    if (e.beg.trim()) begruendet++;
+    if (e.frg.trim()) fragen++;
+  });
+  Object.keys(buckets).forEach(function(k){
+    var el = document.getElementById('ov-' + k); if (!el) return;
+    el.innerHTML = buckets[k].length
+      ? buckets[k].map(function(nr){ return '<span class="chip" title="' + (NAMEN[nr] || '') + '">' + nr + '</span>'; }).join('')
+      : '<span class="ovw-empty">noch keine Zuordnung</span>';
+  });
+  var st = document.getElementById('ov-stat');
+  if (st) st.textContent = gesetzt + ' von 10 verortet · ' + begruendet + ' begründet · ' + fragen + ' mit Fragen an die Ownerin';
+}
+
+function exportAll(){
+  var d = gather();
+  var t = 'UC-04 SolidFinanz AG — Einschätzung des KI-Portfolios\r\n';
+  t += 'Erstellt: ' + new Date().toLocaleString('de-DE') + '\r\n\r\n';
+  NRS.forEach(function(nr){
+    var e = d[nr];
+    t += '---- ' + nr + ' | ' + (NAMEN[nr] || '') + ' ----\r\n';
+    t += 'Verortung : ' + (e.q ? QL[e.q] : '(nicht gesetzt)') + '\r\n';
+    t += 'Begruendung: ' + (e.beg.trim() || '-') + '\r\n';
+    t += 'Fragen     : ' + (e.frg.trim() || '-') + '\r\n\r\n';
+  });
+  dl(t, 'UC04_Einschaetzung.txt', 'text/plain');
+  dl(JSON.stringify(d, null, 2), 'UC04_Einschaetzung.json', 'application/json');
+}
+
+function dl(inhalt, name, typ){
+  var b = new Blob(['\ufeff' + inhalt], {type: typ + ';charset=utf-8'});
+  var u = URL.createObjectURL(b), a = document.createElement('a');
+  a.href = u; a.download = name;
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  URL.revokeObjectURL(u);
+}
+
+function importJson(input){
+  var f = input.files[0]; if (!f) return;
+  var r = new FileReader();
+  r.onload = function(ev){
+    try { apply(JSON.parse(ev.target.result)); store(); }
+    catch(err){ alert('Datei konnte nicht gelesen werden: ' + err.message); }
+    input.value = '';
+  };
+  r.readAsText(f, 'utf-8');
+}
+
+function resetAll(){
+  if (!confirm('Alle Einschätzungen löschen? Das lässt sich nicht rückgängig machen.')) return;
+  try { localStorage.removeItem(KEY); } catch(e){}
+  document.querySelectorAll('.mx-b').forEach(function(b){ b.classList.remove('on'); });
+  document.querySelectorAll('.eink-f textarea').forEach(function(t){ t.value = ''; t.style.height = 'auto'; });
+  renderOverview();
+}
+
+document.addEventListener('DOMContentLoaded', function(){
+  document.querySelectorAll('details.uc-card').forEach(function(d){
+    NAMEN[d.querySelector('.uc-nr').textContent.trim()] = d.querySelector('.uc-name').textContent.trim();
+  });
+  load();
+});
 </script>
 </body>
 </html>
