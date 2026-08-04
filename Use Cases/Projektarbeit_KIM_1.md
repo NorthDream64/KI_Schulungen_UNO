@@ -17,19 +17,13 @@ Ihr seid eine Start-Up-Unternehmerin bzw- -Unternehmer, die ihre/seine Idee in e
 
 ## Aufgabe
 
-### Teil A*
+### Teil A - Technische Bewertung *(ca. 2 Seiten)*
 
-Recherchiert, wie KI in eurer Branche gerade eingesetzt wird oder in den nächsten zwei bis drei Jahren eingesetzt werden wird.
-
-- Welche **drei bis fünf KI-Anwendungen** sind in eurer Branche besonders relevant — als laufende Praxis oder als absehbarer Trend?
-- Wer sind die **Vorreiter** — Unternehmen oder Institutionen, die ihr (anonymisiert) benennen könnt?
-- Welche **Risiken** sind in eurem Sektor besonders ausgeprägt — regulatorisch, ethisch oder operativ? Und warum gerade dort?
-
-*Hinweis:* Wenn eine KI euch eine allgemeine Liste generiert, ist das ein Anfang — kein Ergebnis. Eure Aufgabe ist es, diese Liste auf das zu reduzieren, was in eurer konkreten Branche wirklich zutrifft, und das zu begründen.
+Gibt einen Überblick über die in der Applikation verfügbaren Features und welche KI-Technologie dabei zum Einsatz kommt. Erläutere, wie die dem Modell zu Grunde liegenden Daten erhoben, qualitätsgesichert und verarbeitet wurden. Wie soll die Leistung der Modelle überprüft warden? Welche "Trigger" bzw. welche "Service Level" willst Du mit den Kunden vereinbaren? 
 
 ---
 
-### Teil B — Mein Use Case *(ca. 2 Seiten)*
+### Teil B — Business Case *(ca. 2 Seiten)*
 
 Beschreibt einen konkreten KI-Anwendungsfall aus eurem eigenen Arbeitsumfeld — einen, der bereits läuft, geplant ist oder eurer Meinung nach sinnvoll wäre.
 
@@ -49,54 +43,28 @@ Nutzt dafür den **Steckbrief-Rahmen** aus dem Kurs:
 
 ---
 
-### Teil C — Mein größtes Umdenken *(ca. 1 Seite)*
+### Teil C — Rendite *(ca. 1 Seite)*
 
-Dieser Teil ist persönlich und kann nicht delegiert werden.
+Welche Beteiligung in welcher Höhe erwartest Du von den Investoren?
 
-- Was hat der Kurs an eurer Einschätzung von KI **konkret verändert**? Was dachtet ihr vorher — und was denkt ihr jetzt?
-- Welchen **einen Irrtum** habt ihr im Kurs revidiert?
-- Was werdet ihr in den **nächsten 90 Tagen** in eurem Arbeitsalltag konkret anders machen?
+- Welche Beteiligung durch die Investoren in welcher Höhe strebst Du an?
+- Was sind Deine Renditeerwartungen (z.B. RoI)? Wie viel davon würdest Du an die Investoren ausschüten, wie viel re-investieren?
+- Wie sieht der "Exit" für die Investoren aus?
 
 ---
 
 ## Präsentation *(10 Minuten, ca. 3 Folien)*
 
-| Folie | Inhalt |
-|---|---|
-| **1 — Meine Branche** | Der eine KI-Trend, der in eurer Branche gerade alles verändert — und warum |
-| **2 — Mein Use Case** | Der Kern eures Anwendungsfalls auf einer Folie: Was, für wen, warum jetzt |
-| **3 — Was ich jetzt tue** | Konkret, realistisch, in 90 Tagen umsetzbar |
-
 Die Präsentation ist kein Vortrag — sie ist ein Gespräch. Plant Zeit für Rückfragen ein.
 
 ---
 
-## Bewertung
-
-| Kriterium | Gewichtung | Woran wir es erkennen |
-|---|---|---|
-| **Branchenspezifität** | 40 % | Die Recherche zeigt echtes Branchenwissen — nicht das, was eine KI über "typische Branchen" weiss |
-| **Use-Case-Qualität** | 40 % | Der Fall ist konkret, realistisch und zeigt, dass der Steckbrief-Rahmen verstanden wurde |
-| **Reflexionstiefe** | 20 % | Teil C ist persönlich, ehrlich und zeigt echtes Umdenken — nicht eine generische Lernzusammenfassung |
-
 ### Extrapunkte
 
-- Für eine **Begründung, warum euer Use Case in eurer Branche anders bewertet werden muss** als in einer anderen Branche
+- Für eine **Liste möglicher weiterer Features** um die die Applikation erweitert warden könnte
 - Für den Nachweis, **wo die KI bei der Recherche falsch lag** — und wie ihr das korrigiert habt
 - Für eine **konkrete erste Maßnahme**, die ihr nach dem Kurs in eurem Unternehmen anstößt
 
 ---
 
-## Hinweise zur Zusammenarbeit mit KI
-
-Ihr dürft KI für Recherche, Strukturierung und Formulierung nutzen. Das ist ausdrücklich erwünscht — ihr seid KI-Beauftragte, keine KI-Verweigernden.
-
-Achtet dabei auf drei Dinge:
-
-1. **KI kennt eure Branche nur von außen.** Sie wird euch generische Antworten geben. Eure Aufgabe ist es, diese zu prüfen, zu korrigieren und mit echtem Branchenwissen zu füllen.
-2. **Teil C kann keine KI für euch schreiben.** Wenn ihr merkt, dass der Text klingt wie eine KI, fängt ihr von vorne an.
-3. **Dokumentiert einen Moment, in dem ihr der KI widersprochen habt** — das ist ein Bonuspunkt und zeigt genau die Kompetenz, die wir entwickeln wollen.
-
----
-
-*Letzte Aktualisierung: Juni 2026 — Ulrich Nord / Claude (Anthropic)*
+*Letzte Aktualisierung: August 2026 — Ulrich Nord / Claudia (Anthropic)*
