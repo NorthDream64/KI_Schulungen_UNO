@@ -55,15 +55,36 @@ Berichtslinie direkt an Dr. Hofer. Kein eigenes Budget zum Start. Die Zusammenar
 
 ---
 
-## 4 · Portfolio möglicher KI-Initiaitiven
+## 4 · Portfolio möglicher KI-Initiativen
 
-Folgende mögliche KI-Initiativen wurden vorgeschlagen. 
+In den Fachbereichen und im Vorstand sind neun Vorschläge zusammengekommen. Sie stehen **unbewertet und ungeordnet** nebeneinander: unterschiedlich reif, unterschiedlich riskant, unterschiedlich gut belegt. Genau das ist die Ausgangslage, die Du als KI-Manager:in vorfindest.
 
-1. **Optimierung Dokumentenprüfung** - KI prüft Kreditanträge und Investionsvorhaben (supervised learning)
-2. **Kredit-Scoring** - KI vergibt anhand von historischen Kreditdaten und SCHUFA-Informationen ein Scoring, an dem sich das voraussichtliche Ausfallrisiko berechnet.
-3. **Support-Bot** - KI beantwortet Fragen für Mitarbeiterinnen und Mitarbeiter rund um interne Belange (Urlaubsanträge, Geburtstage, Jubiläen, steuerliche Vorschriften, Kantinenplan usw.)
-4. **Kunden-Bot** - KI prüft Anliegen, gibt unverbindlich erste Auskünfte, hilft bei der Terminvereinbarung
-5. **Invest" - ML-basiertes Modell zur Berechnung der vermutlichen Immobilienpreise nach Lage, Alter des Hauses, Anzahl Zimmer, Baujahr, Grundfläche, Verkehrsanbindung usw., das den Mitarbeiterinnen und Mitarbeitern bei der Kalkulation des Risikoaufschlags für Kredite hilft
+| Nr. | Initiative | Worum es geht |
+|---|---|---|
+| 1 | **Dokumentenprüfung** | Eingehende Kreditanträge und Investitionsvorhaben werden automatisch auf Vollständigkeit und Plausibilität geprüft; Stammdaten werden aus unterschiedlich formatierten Unterlagen ausgelesen. |
+| 2 | **Kredit-Scoring** | Aus historischen Kreditdaten und Bonitätsinformationen wird ein Score berechnet, der das voraussichtliche Ausfallrisiko abbildet. |
+| 3 | **Betrugserkennung im Zahlungsverkehr** | Transaktionen werden in Echtzeit auf auffällige Muster geprüft; verdächtige Vorgänge werden angehalten oder zur Prüfung ausgesteuert. |
+| 4 | **Geldwäsche-Monitoring** | Ergänzung des bestehenden regelbasierten Transaktionsmonitorings um ein lernendes Modell, das Verdachtsfälle vorpriorisiert. |
+| 5 | **Interner Support-Bot** | Beantwortet Fragen der Mitarbeitenden zu internen Belangen (Urlaubsanträge, Reisekosten, interne Richtlinien, Kantinenplan). |
+| 6 | **Kunden-Bot** | Nimmt Kundenanliegen auf, gibt unverbindliche Erstauskünfte und unterstützt bei der Terminvereinbarung. |
+| 7 | **„Invest" — Immobilienbewertung** | Schätzt Immobilienpreise anhand von Lage, Baujahr, Grundfläche, Zimmerzahl, Verkehrsanbindung u. a. und unterstützt die Kalkulation des Risikoaufschlags. |
+| 8 | **Personalisierte Kundenhinweise** | Wertet Kontobewegungen und Produktnutzung aus und spielt Kundinnen und Kunden individuelle Hinweise zu Sparen, Anlegen und Absicherung aus. |
+| 9 | **Research- und Marktanalyse-Assistent** | Fasst Marktdaten, Geschäftsberichte und Analystenkommentare zusammen und erstellt Entwurfsfassungen interner Analysen. |
+
+**Reale Vorbilder.** Sieben der neun Initiativen haben produktive Entsprechungen bei großen Instituten — Nr. 1 bei JPMorgan („COiN", Analyse von Kreditverträgen), Nr. 3 und 4 als Branchenstandard im Zahlungsverkehr bzw. bei Deutsche Bank („Black Forest"), Nr. 8 bei DBS (personalisierte „Nudges"), Nr. 9 bei Deutsche Bank („DB Lumina") und ING („Katana"). Die Belege und Quellenhinweise dazu stehen in Abschnitt 6. Für Nr. 5, 6 und 7 gibt es keine vergleichbar dokumentierten Referenzfälle — auch das ist eine Information.
+
+### Deine Aufgabe
+
+Der Vorstand erwartet keine Umsetzungsplanung, sondern eine **nachvollziehbare Grundlage für die Auswahl**. Entwickle dafür ein Bewertungsraster:
+
+1. **Welche Kriterien** braucht es, um diese neun Initiativen sinnvoll miteinander zu vergleichen? Vier bis sieben Kriterien genügen — mehr macht die Bewertung nicht besser, nur langsamer.
+2. **Wie wird gemessen?** Lege je Kriterium fest, woran Du es festmachst und in welchen Stufen bewertet wird. Ein Kriterium, das sich nicht begründen lässt, ist keines.
+3. **Wie werden die Kriterien gewichtet** — und warum? Nicht jedes Kriterium wiegt gleich schwer.
+4. **Woher kommen die Informationen?** Halte fest, was Du belegen kannst und was eine Annahme ist. Beides ist zulässig — vermischen darfst Du es nicht.
+
+Drei Prüffragen an Dein fertiges Raster: Trennt es die Initiativen tatsächlich voneinander, oder landen alle im Mittelfeld? Ließe sich damit auch eine Initiative **begründet ablehnen**? Und würde Dr. Hofer die Bewertung ohne Deine mündliche Erläuterung verstehen?
+
+---
 
 ## 5 · Regulatorischer Sonderrahmen für Finanzdienstleister
 
@@ -79,11 +100,20 @@ Als BaFin-beaufsichtigtes Institut unterliegt die SolidFinanz AG Anforderungen, 
 
 ## 6 · Referenzen und Marktkontext
 
-**Best-Practice-Referenz Asien.** Die singapurische DBS Bank gilt als Musterbeispiel dafür, wie ein regulierter Finanzdienstleister KI und maschinelles Lernen in großem Maßstab produktiv nutzt. Zwei Einstiegsquellen (bei Bedarf über eine Web-Suche mit den Stichworten „DBS Bank AI machine learning" verifizieren):
-<https://www.dbs.com/artificial-intelligence-machine-learning/artificial-intelligence/singapore-fintech-festival-ai-in-banking-finance.html>
-<https://www.edb.gov.sg/en/business-insights/insights/how-dbs-southeast-asias-largest-bank-is-capturing-the-full-value-of-ai-and-machine-learning-in-singapore.html>
+Die folgenden Fälle sind reale, öffentlich dokumentierte Entsprechungen zu den Initiativen aus Abschnitt 4. Sie dienen als Orientierung — nicht als Beweis dafür, dass dasselbe bei SolidFinanz funktioniert.
 
-**Weitere Orientierungspunkte für die Recherche** (nicht abschließend): Deutsche-Bank-KI-Strategie „Beacon", ING „Katana" (Kapitalmarktanalyse), JPMorgan „COiN" (Vertragsanalyse), BaFin-Merkblatt zur Nutzung von Big Data und KI (2018/2021), EBA-Bericht zu maschinellem Lernen im Kredit-Scoring.
+| Initiative | Reales Vorbild | Was dokumentiert ist | Quelle |
+|---|---|---|---|
+| 1 · Dokumentenprüfung | **JPMorgan „COiN"** (seit 2017) | Auslegung gewerblicher Kreditverträge, die zuvor rund 360.000 Arbeitsstunden pro Jahr bei Jurist:innen und Kreditsachbearbeitung banden | [Bloomberg (2017)](https://www.bloomberg.com/news/articles/2017-02-28/jpmorgan-marshals-an-army-of-developers-to-automate-high-finance) · [ABA Journal](https://www.abajournal.com/news/article/jpmorgan_chase_uses_tech_to_save_360000_hours_of_annual_work_by_lawyers_and) |
+| 3 · Betrugserkennung | Branchenstandard im Zahlungsverkehr | Echtzeitbewertung von Transaktionen; erklärtes Ziel ist neben der Trefferquote vor allem die Senkung der Fehlalarme, die den Prüfaufwand treiben | [EY Deutschland — Betrugserkennung im Zahlungsverkehr](https://www.ey.com/de_de/insights/consulting/betrugserkennung-im-zahlungsverkehr-mit-ki-staerken) |
+| 4 · Geldwäsche-Monitoring | **Deutsche Bank „Black Forest"** (seit 2019) | Ergänzung bestehender regelbasierter Systeme; laut Bank u. a. Aufdeckung eines Falls mit Bezug zu organisierter Kriminalität, Geldwäsche und Steuerhinterziehung | [Deutsche Bank — Wie KI das Bankgeschäft verändert](https://www.db.com/what-next/digital-disruption/better-than-humans/how-artificial-intelligence-is-changing-banking/index?language_id=3) |
+| 8 · Personalisierte Kundenhinweise | **DBS Bank** (Singapur) | Über 100 Algorithmen werten laut Bank rund 15.000 Datenpunkte aus und erzeugen individuelle Hinweise für über 13 Mio. Kundinnen und Kunden | [DBS — AI & Machine Learning](https://www.dbs.com/artificial-intelligence-machine-learning/index.html) · [Singapore EDB](https://www.edb.gov.sg/en/business-insights/insights/how-dbs-southeast-asias-largest-bank-is-capturing-the-full-value-of-ai-and-machine-learning-in-singapore.html) |
+| 9 · Research-Assistent | **Deutsche Bank „DB Lumina"** (seit Sept. 2024) | Rund 5.000 Nutzende im Research; laut Bank 30–45 Min. Zeitersparnis je Ergebnisnotiz, bis zu 2 Std. je Analysebericht | [Google Cloud Blog — DB Lumina](https://cloud.google.com/blog/topics/financial-services/deutsche-bank-delivers-ai-powered-financial-research-with-db-lumina) |
+| 9 · Marktanalyse (Variante) | **ING „Katana"** | Preisvorschläge im Anleihehandel auf Basis historischer und Echtzeitdaten; ausdrücklich als Ergänzung, nicht als Ersatz der Händlerentscheidung konzipiert | [ING — Katana gives bond traders a cutting edge](https://ing.com/news/2020/07/katana-gives-bond-traders-a-cutting-edge.html) |
+
+**Quellenkritischer Hinweis — wichtig für die Bewertung.** Die Zahlen in dieser Tabelle stammen überwiegend von den Instituten selbst (DBS, Deutsche Bank, ING) oder von deren Technologiepartnern. Sie sind **Herstellerangaben ohne unabhängige Prüfung** und benennen durchweg Erfolge, keine gescheiterten Vorhaben. Die JPMorgan-Zahl ist von Bloomberg berichtet, stammt aber aus 2017 und wird seither ohne erneute Überprüfung weitergereicht. Für Dein Bewertungsraster heißt das: Solche Referenzen belegen, dass ein Anwendungsfall grundsätzlich machbar ist — sie belegen weder die Übertragbarkeit auf ein Haus mit 420 Mitarbeitenden noch die genannten Größenordnungen.
+
+**Weitere Orientierungspunkte für eigene Recherche** (nicht abschließend): BaFin-Merkblatt zur Nutzung von Big Data und künstlicher Intelligenz, EBA-Bericht zu maschinellem Lernen im Kredit-Scoring, Jahresberichte der genannten Institute.
 
 ---
 *Letzte Aktualisierung: August 2026 — Ulrich Nord*
