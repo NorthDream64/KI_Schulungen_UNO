@@ -3,19 +3,21 @@
 
 ---
 
-## Hintergrund
+## Ausgangslage
 
-Ihr habt vier intensive Wochen hinter euch. Ihr kennt jetzt die regulatorischen Grundlagen, die technischen Konzepte und die Governance-Strukturen rund um KI — auf einem Niveau, das die TÜV-Prüfung bestätigt hat.
+Ihr seid eine Start-Up-Unternehmerin bzw- -Unternehmer, die ihre/seine Idee in einen Pitch für mögliche Investoren "verpacken" will. Euer Start-Up (Arbeitstitel: "Rundum-Sorglos") soll Reisenden eien Applikation anbieten, die:
 
-Diese Projektarbeit ist keine Wiederholung davon. Sie fragt etwas anderes: **Könnt ihr das Gelernte in euren eigenen Kontext übersetzen?** Branchenkenntnis, Urteilsvermögen und ein ehrlicher Blick auf das eigene Arbeitsumfeld sind gefragt — das sind Dinge, die keine KI für euch erledigen kann.
-
-KI darf und soll bei der Recherche helfen. Ihr werdet schnell merken, wo sie an ihre Grenzen stößt — und genau dort beginnt eure eigentliche Arbeit.
+- vage Reiseideen ("ich hätte Lust, mal Venedig zu sehen…") in eine erste Planung übersetzt. Wann wäre günstige Flüge verfügbar? Wann sind Schulferien oder fereinfrei Zeiten? Welche Unterkünfte (Hotel, Airbnb) sind besonders attraktiv (Preis - Leistung, Bewertung)
+- nach Bestätigung durch die Reisenden direct Buchungen auf den üblichen Reiseportalen vornehmen kann
+- für die Reise selbst eine Planung, angelehnt an die Interessen und Vorlieben der Reisenden vornimmt
+- Restaurants vor Ort vorschlägt und auf Bestätigung hin reserviert (ebenso wie Taxis oder Ubers)
+- als Sprachassistent Konversationen in der Landessprache übersetzen und führen kann  
 
 ---
 
 ## Aufgabe
 
-### Teil A — KI in meiner Branche *(ca. 2 Seiten)*
+### Teil A*
 
 Recherchiert, wie KI in eurer Branche gerade eingesetzt wird oder in den nächsten zwei bis drei Jahren eingesetzt werden wird.
 
