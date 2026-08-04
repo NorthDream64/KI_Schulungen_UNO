@@ -55,7 +55,17 @@ Berichtslinie direkt an Dr. Hofer. Kein eigenes Budget zum Start. Die Zusammenar
 
 ---
 
-## 4 · Regulatorischer Sonderrahmen für Finanzdienstleister
+## 4 · Portfolio möglicher KI-Initiaitiven
+
+Folgende mögliche KI-Initiativen wurden vorgeschlagen. 
+
+1. **Optimierung Dokumentenprüfung** - KI prüft Kreditanträge und Investionsvorhaben (supervised learning)
+2. **Kredit-Scoring** - KI vergibt anhand von historischen Kreditdaten und SCHUFA-Informationen ein Scoring, an dem sich das voraussichtliche Ausfallrisiko berechnet.
+3. **Support-Bot** - KI beantwortet Fragen für Mitarbeiterinnen und Mitarbeiter rund um interne Belange (Urlaubsanträge, Geburtstage, Jubiläen, steuerliche Vorschriften, Kantinenplan usw.)
+4. **Kunden-Bot** - KI prüft Anliegen, gibt unverbindlich erste Auskünfte, hilft bei der Terminvereinbarung
+5. **Invest" - ML-basiertes Modell zur Berechnung der vermutlichen Immobilienpreise nach Lage, Alter des Hauses, Anzahl Zimmer, Baujahr, Grundfläche, Verkehrsanbindung usw., das den Mitarbeiterinnen und Mitarbeitern bei der Kalkulation des Risikoaufschlags für Kredite hilft
+
+## 5 · Regulatorischer Sonderrahmen für Finanzdienstleister
 
 Als BaFin-beaufsichtigtes Institut unterliegt die SolidFinanz AG Anforderungen, die über den EU AI Act hinausgehen und mit ihm zusammenspielen:
 
@@ -67,7 +77,7 @@ Als BaFin-beaufsichtigtes Institut unterliegt die SolidFinanz AG Anforderungen, 
 
 ---
 
-## 5 · Referenzen und Marktkontext
+## 6 · Referenzen und Marktkontext
 
 **Best-Practice-Referenz Asien.** Die singapurische DBS Bank gilt als Musterbeispiel dafür, wie ein regulierter Finanzdienstleister KI und maschinelles Lernen in großem Maßstab produktiv nutzt. Zwei Einstiegsquellen (bei Bedarf über eine Web-Suche mit den Stichworten „DBS Bank AI machine learning" verifizieren):
 <https://www.dbs.com/artificial-intelligence-machine-learning/artificial-intelligence/singapore-fintech-festival-ai-in-banking-finance.html>
@@ -76,110 +86,4 @@ Als BaFin-beaufsichtigtes Institut unterliegt die SolidFinanz AG Anforderungen, 
 **Weitere Orientierungspunkte für die Recherche** (nicht abschließend): Deutsche-Bank-KI-Strategie „Beacon", ING „Katana" (Kapitalmarktanalyse), JPMorgan „COiN" (Vertragsanalyse), BaFin-Merkblatt zur Nutzung von Big Data und KI (2018/2021), EBA-Bericht zu maschinellem Lernen im Kredit-Scoring.
 
 ---
-
-## 6 · Deine Aufgaben in Kurswoche 1
-
-Die erste Kurswoche behandelt fünf Grundlagenthemen. Jedes davon liefert einen Baustein Deiner Bestandsaufnahme und Deiner ersten Vorstands-Vorlage. Am Ende der Woche solltest Du in der Lage sein, Dr. Hofer eine strukturierte, belastbare Übersicht zu präsentieren.
-
-### Aufgabe A · Prinzipien des Maschinellen Lernens verstehen und einordnen
-
-Kläre für Dich (und später für Dr. Hofer): Welche der bei SolidFinanz denkbaren oder bereits genutzten KI-Anwendungen basieren auf **Supervised Learning**, welche auf **Unsupervised Learning**, welche auf **Reinforcement Learning**, welche auf **generativer KI** (LLM), welche auf **klassisch-regelbasierten Systemen**? Beispiele, die Du prüfen solltest: Bonitätsscoring, Betrugserkennung bei Kartentransaktionen, Zinsprognose, Kundensegmentierung, automatische Zusammenfassungen von Jahresabschlüssen, Kreditantragsformulierung, Übersetzungen internationaler Kreditunterlagen.
-
-**Ergebnis:** Zwei-Spalten-Tabelle „Anwendungsfall → ML-Prinzip" mit einer kurzen Begründung je Zeile.
-
-### Aufgabe B · Managementsystem nach ISO 42001 aufsetzen
-
-Skizziere, wie ein **AI-Management-System (AIMS) nach ISO 42001** bei der SolidFinanz AG aussehen könnte. Achte auf die Wechselwirkungen mit bestehenden Managementsystemen (Informationssicherheit nach ISO 27001, Datenschutz, MaRisk-Risikomanagement, BAIT-Auslagerungsmanagement).
-
-**Ergebnis:** Übersichtsgrafik oder Aufzählung mit den zentralen AIMS-Bausteinen (Politik, Rollen, Prozesse, Risikoanalyse, KVP, Auditierung) plus je Baustein ein Satz, was ihn bei SolidFinanz konkret bedeutet.
-
-### Aufgabe C · Operative Anwendungsfälle identifizieren und priorisieren
-
-Führe für die SolidFinanz AG **drei parallele Analysen** durch:
-
-1. **Reifegradanalyse** — Wo steht die Bank heute in ihrer KI-Nutzung (siehe § 7 unten)?
-2. **SWOT-Analyse** — Welche internen Stärken/Schwächen und externen Chancen/Risiken bestehen im KI-Kontext (siehe § 7 unten)?
-3. **GAP-Analyse** — Welche Lücken bestehen zwischen dem Ist-Zustand und der Vision der „intelligentesten Bank ihrer Branche" (siehe § 7 unten)?
-
-Aus diesen drei Analysen leitest Du **fünf bis sieben priorisierte Anwendungsfälle** ab, die die SolidFinanz AG in den nächsten 12–18 Monaten angehen sollte. Nutze klare Priorisierungskriterien: Wertbeitrag (siehe Aufgabe E), Aufwand, Risiko, regulatorische Machbarkeit, Time-to-Value.
-
-**Ergebnis:** Reifegrad-Kurzbewertung, SWOT-Matrix (2 × 2), GAP-Analyse (Ist → Ziel → Lücke → Maßnahme) und eine priorisierte Use-Case-Liste.
-
-### Aufgabe D · Stakeholder-Management
-
-Erstelle eine **Stakeholder-Map** der SolidFinanz AG (mindestens die vier oben genannten Personen plus Betriebsrat, Aufsichtsrat, externe Wirtschaftsprüfer, BaFin, Kundschaft, Mitarbeitende). Analysiere je Stakeholder-Gruppe: Einfluss (hoch / mittel / niedrig), Interesse (hoch / mittel / niedrig), erwartete Haltung zu Deinen Vorhaben (Förderer / Neutral / Skeptiker / Blockierer). Leite je Gruppe eine passende Kommunikations- und Einbindungsstrategie ab.
-
-**Ergebnis:** Einfluss-Interesse-Matrix mit Handlungsempfehlung je Quadrant.
-
-### Aufgabe E · Wertschöpfung durch KI (ROI-Skizze)
-
-Wähle **einen** der von Dir priorisierten Anwendungsfälle aus Aufgabe C und skizziere einen **Business Case über drei Jahre**: erwartete Nutzeneffekte (quantitativ und qualitativ), Investitions- und Betriebskosten (Modellentwicklung, Datenaufbereitung, Cloud/On-Prem, laufende Pflege, Governance), ROI-Berechnung mit realistischen Annahmen, Sensitivitätsanalyse (Best/Base/Worst Case), Risiken und Show-Stopper.
-
-**Ergebnis:** Business-Case-Einseiter mit Zahlen, Annahmen und Empfehlung (Go / Prüfen / No-Go).
-
----
-
-## 7 · Analysewerkzeuge — Kurzeinführung
-
-Die drei Werkzeuge sind Standardinstrumente der strategischen Analyse. Für UC-04 werden sie speziell auf die KI-Situation der SolidFinanz AG angewendet.
-
-### 7.1 · Reifegradanalyse
-
-**Idee.** Die Reifegradanalyse bewertet, wie fortgeschritten eine Organisation in einer bestimmten Fähigkeit ist — hier: die produktive, gesteuerte Nutzung von KI. Grundlage ist ein Stufenmodell.
-
-**Empfohlenes 5-Stufen-Modell für die SolidFinanz AG:**
-
-| Stufe | Bezeichnung | Kennzeichen |
-|---|---|---|
-| 1 | Unbewusst / Ad-hoc | KI wird ungesteuert genutzt; keine Übersicht, keine Governance |
-| 2 | Bewusst | Erste Übersicht vorhanden; punktuelle Regeln, aber kein Managementsystem |
-| 3 | Definiert | KI-Governance und Managementsystem sind aufgebaut; erste Anwendungsfälle produktiv |
-| 4 | Gesteuert | KI ist strategisch verankert; Portfolio-Management; messbare Wertbeiträge |
-| 5 | Optimierend | KI ist Kernbestandteil des Geschäftsmodells; Lernende Organisation; Wettbewerbsvorteil |
-
-**Bewertungsdimensionen** (jede einzeln bewerten, dann Gesamtbild):
-Strategie · Governance und Compliance · Daten und Infrastruktur · Kompetenzen und Kultur · Anwendungsfälle und Wertbeitrag · Ethik und Vertrauen.
-
-**Anwendung auf SolidFinanz.** Bewerte je Dimension die aktuelle Stufe (1–5) und die Zielstufe in drei Jahren. Ergebnis: Netzdiagramm oder Balkendiagramm mit Ist- und Zielprofil.
-
-### 7.2 · SWOT-Analyse
-
-**Idee.** Die SWOT-Analyse strukturiert Stärken (**S**trengths) und Schwächen (**W**eaknesses) intern sowie Chancen (**O**pportunities) und Risiken (**T**hreats) extern. Sie ist die Grundlage jeder strategischen Positionierung.
-
-**Anwendung auf die KI-Situation der SolidFinanz AG.** Formuliere je Feld zwischen drei und fünf konkrete Punkte. Beispiele für Anknüpfungspunkte:
-
-- **Stärken:** vertrauensvolle Kundenbeziehungen aus 60 Jahren, konservativer Ruf, saubere Datenhistorie, überschaubare Größe (schnelle Entscheidungswege)
-- **Schwächen:** geringer KI-Reifegrad, keine dedizierten Data-Science-Kapazitäten, veraltete Datenpipelines, Schatten-KI ohne Übersicht
-- **Chancen:** massive Effizienzgewinne im Kredit-Backoffice, Cross-Selling durch bessere Kundenanalyse, KI-Talent aus dem Frankfurter Raum, EU-Förderprogramme
-- **Risiken:** BaFin-Sanktionen bei Compliance-Verstößen, Abhängigkeit von US-Cloud-Anbietern, aggressive Neobanken mit KI-first-Ansatz, Reputationsverlust bei Kredit-Diskriminierung
-
-**Ergebnis:** SWOT-Matrix als 2 × 2-Feld, ergänzt durch abgeleitete **strategische Optionen** (SO, WO, ST, WT — nutze Stärken für Chancen, überwinde Schwächen durch Chancen usw.).
-
-### 7.3 · GAP-Analyse
-
-**Idee.** Die GAP-Analyse macht die Lücke zwischen aktuellem Ist-Zustand und definiertem Zielbild sichtbar und leitet daraus konkrete Handlungsfelder ab. Sie beantwortet die Frage: „Was fehlt uns bis dorthin?"
-
-**Struktur:**
-
-| Ist-Zustand (heute) | Ziel-Zustand (in 3 Jahren) | Lücke | Handlungsfeld / Maßnahme |
-|---|---|---|---|
-| … | … | … | … |
-
-**Anwendung auf die SolidFinanz AG.** Nutze die sechs Bewertungsdimensionen aus der Reifegradanalyse (§ 7.1) als Gliederung. Für jede Dimension: Ist heute (aus Reifegrad), Ziel in 3 Jahren (aus Vision „intelligenteste Bank"), Lücke (was fehlt konkret), Maßnahme (welche Initiative schließt die Lücke).
-
-**Ergebnis:** GAP-Tabelle mit sechs Zeilen (je Dimension), inklusive erster Aufwandsschätzung je Maßnahme (klein / mittel / groß) und einer Priorisierungsempfehlung.
-
----
-
-## 8 · Datenquellen für Deine Recherche
-
-Für die Bearbeitung der Aufgaben stehen Dir öffentlich zugängliche Quellen zur Verfügung. Nutze eine gezielte Web-Suche mit den passenden Schlagworten; verwende nicht ungeprüft Links, die Du nicht selbst geöffnet hast.
-
-- **BaFin** — Prinzipien für den Einsatz von Algorithmen in Entscheidungsprozessen (<https://www.bafin.de/SharedDocs/Downloads/DE/Aufsichtsrecht/dl_Prinzipienpapier_BDAI.pdf?__blob=publicationFile&v=1>)
-- **Bundesbank** — BAIT/DORA-Übersicht (<https://www.bundesbank.de/de/aufgaben/finanzaufsicht/einzelaspekte/risikomanagement/bait-dora-598580>)
-- **EBA** — Leitlinien zur Kreditvergabe (<https://banktracker.de/wissen/compliance-governance/eba-leitlinien/eba-kreditvergabe>
-- **Deutsche Bundesbank / EZB** — Publikationen zu digitalen Finanzdienstleistungen (<https://publikationen.bundesbank.de/publikationen-de>)
-- **DBS Bank, Deutsche Bank, ING, JPMorgan** — Praxisberichte und Case Studies (z.B. <https://www.aibmag.com/ai-business-case-studies-and-real-world-enterprise-use-cases/jpmorgans-18b-ai-blueprint-transforming-banking-workflows-april-2026>)
-
----
-*Letzte Aktualisierung: Juli 2026 — Ulrich Nord*
+*Letzte Aktualisierung: August 2026 — Ulrich Nord*
