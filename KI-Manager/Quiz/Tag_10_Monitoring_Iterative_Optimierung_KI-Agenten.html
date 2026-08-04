@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lernkontrolle &middot; KI-Manager Tag 10 &middot; Monitoring, iterative Optimierung & KI-Agenten</title>
+<style>
+:root {
+  --ink:#1a1a18;--paper:#f5f2ec;--card:#fff;--rule:#d5d0c5;--muted:#888880;
+  --accent:#5a3a7a;--accent-soft:#f0eaf7;
+  --role-a:#1a6a5a;--role-a-soft:#e6f4f1;
+  --role-b:#5a3a7a;--role-b-soft:#f0eaf7;
+  --correct:#2a7a50;--correct-bg:#eaf5ee;--correct-border:#a0d8b8;
+  --wrong:#9a2a2a;--wrong-bg:#faeaea;--wrong-border:#d8a0a0;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;background:var(--paper);color:var(--ink);line-height:1.65;font-size:15px;}
+a{color:var(--accent);}
+.site-header{border-bottom:2px solid var(--ink);padding:1.8rem 2rem 1.4rem;max-width:820px;margin:0 auto;}
+.eyebrow{font-family:"SFMono-Regular", Consolas, "Liberation Mono", monospace;font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:var(--muted);margin-bottom:.5rem;}
+.site-header h1{font-family:Georgia, "Times New Roman", serif;font-size:clamp(1.5rem,4vw,2.1rem);line-height:1.15;margin-bottom:.4rem;}
+.header-meta{font-size:12px;color:var(--muted);display:flex;gap:1rem;flex-wrap:wrap;}
+.header-meta span::before{content:"· ";}
+.header-meta span:first-child::before{content:"";}
+.main{max-width:820px;margin:0 auto;padding:1.8rem 2rem 4rem;}
+.setup-card{background:var(--card);border:1px solid var(--rule);border-radius:12px;padding:2rem;max-width:540px;margin:0 auto;}
+.setup-card h2{font-family:Georgia, "Times New Roman", serif;font-size:1.3rem;margin-bottom:1.2rem;}
+.field-label{font-family:"SFMono-Regular", Consolas, "Liberation Mono", monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:.35rem;}
+.setup-input{width:100%;border:1px solid var(--rule);border-radius:8px;padding:.6rem .9rem;font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;font-size:14px;background:var(--paper);outline:none;color:var(--ink);transition:border-color .15s;}
+.setup-input:focus{border-color:var(--ink);}
+.role-btns{display:flex;gap:.5rem;}
+.sel-btn{flex:1;padding:.55rem .6rem;border:1px solid var(--rule);border-radius:8px;background:none;font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;font-size:13px;cursor:pointer;text-align:center;transition:all .15s;color:var(--ink);}
+.sel-btn.active-a{background:var(--role-a-soft);border-color:var(--role-a);color:var(--role-a);font-weight:500;}
+.sel-btn.active-b{background:var(--role-b-soft);border-color:var(--role-b);color:var(--role-b);font-weight:500;}
+.hint-text{font-size:12px;color:var(--muted);margin-top:.3rem;display:block;}
+.btn-start{width:100%;padding:.75rem;background:var(--ink);color:#fff;border:none;border-radius:8px;font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;font-size:15px;font-weight:500;cursor:pointer;margin-top:1rem;transition:background .15s;}
+.btn-start:hover{background:#333;}
+.btn-start:disabled{background:#aaa;cursor:not-allowed;}
+.quiz-header-strip{display:flex;gap:.6rem;align-items:center;margin-bottom:1.4rem;flex-wrap:wrap;}
+.strip-tag{font-family:"SFMono-Regular", Consolas, "Liberation Mono", monospace;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;padding:4px 12px;border-radius:100px;}
+.strip-role-a{background:var(--role-a-soft);color:var(--role-a);}
+.strip-role-b{background:var(--role-b-soft);color:var(--role-b);}
+.strip-name{font-size:13px;color:var(--muted);margin-left:auto;}
+.progress-bar{height:3px;background:var(--rule);border-radius:2px;margin-bottom:1.2rem;}
+.progress-fill{height:100%;background:var(--ink);border-radius:2px;transition:width .3s;}
+.progress-label{font-family:"SFMono-Regular", Consolas, "Liberation Mono", monospace;font-size:10px;color:var(--muted);margin-bottom:.5rem;}
+.q-sc{font-size:13px;color:#555;font-style:italic;border-left:3px solid var(--accent);padding:.4rem .8rem;margin-bottom:.5rem;background:var(--accent-soft);border-radius:0 6px 6px 0;}
+.q-card{background:var(--card);border:1px solid var(--rule);border-radius:12px;padding:1.5rem;margin-bottom:1rem;}
+.q-num{font-family:"SFMono-Regular", Consolas, "Liberation Mono", monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:.6rem;}
+.q-text{font-size:15px;font-weight:500;line-height:1.55;margin-bottom:.5rem;}
+.opt-list{display:flex;flex-direction:column;gap:.5rem;}
+.opt{display:flex;align-items:flex-start;gap:.7rem;padding:.75rem 1rem;border:1px solid var(--rule);border-radius:8px;cursor:pointer;background:#fdfdfb;transition:all .12s;-webkit-user-select:none;user-select:none;}
+.opt:hover:not(.disabled){border-color:#888;background:#f5f2ec;}
+.opt.selected{background:var(--accent-soft);border-color:#b8a0d8;}
+.opt.disabled{cursor:default;}
+.opt.correct-sel{background:var(--correct-bg);border-color:var(--correct-border);}
+.opt.wrong-sel{background:var(--wrong-bg);border-color:var(--wrong-border);}
+.opt.missed{background:var(--wrong-bg);border-color:var(--wrong-border);}
+.opt-cb{width:18px;height:18px;min-width:18px;border:1.5px solid #bbb;border-radius:4px;flex-shrink:0;margin-top:2px;display:flex;align-items:center;justify-content:center;transition:all .12s;}
+.opt-cb.chk{background:var(--ink);border-color:var(--ink);}
+.opt-cb.chk::after{content:'';display:block;width:8px;height:8px;background:#fff;border-radius:2px;}
+.opt.correct-sel .opt-cb{background:var(--correct);border-color:var(--correct);}
+.opt.correct-sel .opt-cb::after{content:'\2713';color:#fff;font-size:11px;background:none;width:auto;height:auto;}
+.opt.wrong-sel .opt-cb{background:var(--wrong);border-color:var(--wrong);}
+.opt.wrong-sel .opt-cb::after{content:'\2717';color:#fff;font-size:11px;background:none;width:auto;height:auto;}
+.opt.missed .opt-cb{background:var(--wrong);border-color:var(--wrong);}
+.opt.missed .opt-cb::after{content:'\2192';color:#fff;font-size:11px;background:none;width:auto;height:auto;}
+.opt-letter{font-family:"SFMono-Regular", Consolas, "Liberation Mono", monospace;font-size:12px;color:var(--muted);min-width:16px;flex-shrink:0;margin-top:2px;}
+.opt-text{font-size:14px;line-height:1.5;}
+.feedback{border-radius:8px;padding:.9rem 1.1rem;margin-top:.9rem;}
+.feedback.fb-ok{background:var(--correct-bg);border:1px solid var(--correct-border);}
+.feedback.fb-wrong{background:var(--wrong-bg);border:1px solid var(--wrong-border);}
+.fb-title{font-weight:500;font-size:14px;margin-bottom:.4rem;}
+.fb-ok .fb-title{color:var(--correct);}
+.fb-wrong .fb-title{color:var(--wrong);}
+.fb-text{font-size:13px;line-height:1.65;color:#444;margin-bottom:.5rem;}
+.fb-source{font-size:12px;color:var(--muted);border-top:1px solid var(--rule);padding-top:.5rem;}
+.nav-row{display:flex;align-items:center;gap:.6rem;margin-top:1rem;}
+.btn{display:inline-flex;align-items:center;padding:.55rem 1.2rem;border:1px solid var(--rule);border-radius:8px;background:none;font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;font-size:14px;font-weight:500;cursor:pointer;color:var(--ink);transition:all .15s;}
+.btn:hover{background:var(--paper);border-color:#888;}
+.btn:disabled{opacity:.3;cursor:not-allowed;}
+.btn-full{width:100%;justify-content:center;padding:.7rem;font-size:15px;margin-top:1rem;}
+.btn-submit{background:#1a6a5a;color:#fff;border-color:#1a6a5a;}
+.btn-submit:hover{background:#145548;}
+.result-block{max-width:600px;margin:0 auto;text-align:center;}
+.result-grade{font-family:Georgia, "Times New Roman", serif;font-size:4.5rem;line-height:1;margin-bottom:.3rem;}
+.result-label{font-size:1.1rem;font-weight:500;margin-bottom:.3rem;}
+.result-sub{font-size:13px;color:var(--muted);margin-bottom:1.5rem;}
+.stats-row{display:flex;justify-content:center;gap:1rem;flex-wrap:wrap;margin-bottom:1.5rem;}
+.stat{background:var(--card);border:1px solid var(--rule);border-radius:10px;padding:.9rem 1.2rem;text-align:center;min-width:90px;}
+.stat-n{font-size:1.8rem;font-weight:500;}
+.stat-l{font-size:11px;color:var(--muted);margin-top:2px;}
+.comp-title{font-size:13px;font-weight:500;text-align:left;margin-bottom:.8rem;}
+.comp-row{margin-bottom:.7rem;text-align:left;}
+.comp-labels{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-bottom:3px;}
+.comp-track{height:4px;background:var(--rule);border-radius:2px;}
+.comp-fill{height:100%;border-radius:2px;}
+.fill-ok{background:var(--correct);}
+.fill-wrong{background:var(--wrong);}
+.submit-status.sending{background:#fff8e8;color:#7a5a00;border:1px solid #e8d090;}
+.submit-status.success{background:#eaf5ee;color:#2a7a50;border:1px solid #a0d8b8;}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="eyebrow">Alfatraining &middot; KI-Manager:in &middot; Tag 10</div>
+  <h1>Lernkontrolle<br>Monitoring, iterative Optimierung &amp; KI-Agenten</h1>
+  <div class="header-meta">
+    <span>5 Fragen je Rolle</span>
+    <span>Eine oder mehrere Antworten k&ouml;nnen richtig sein</span>
+  </div>
+</header>
+
+<main class="main">
+
+<div id="setup-section">
+  <div class="setup-card">
+    <h2>Bitte w&auml;hle deine Rolle</h2>
+    <div style="margin-bottom:1.2rem;">
+      <span class="field-label">Dein Name (oder Teilnehmer-Nummer)</span>
+      <input type="text" id="participant-name" class="setup-input" placeholder="z. B. Teilnehmer-07 oder Vorname">
+    </div>
+    <div style="margin-bottom:1rem;">
+      <span class="field-label">Rolle</span>
+      <div class="role-btns">
+        <button class="sel-btn" id="btn-role-a" onclick="selectRole('a')">KI-Manager:in</button>
+        <button class="sel-btn" id="btn-role-b" onclick="selectRole('b')">Einkauf/Vendor-Verantwortliche:r</button>
+      </div>
+      <span class="hint-text">W&auml;hle deine Rolle im Unternehmen</span>
+    </div>
+    <button class="btn-start" id="btn-start" onclick="startQuiz()" disabled>Quiz starten &rarr;</button>
+  </div>
+</div>
+
+<div id="quiz-section" style="display:none">
+  <div class="quiz-header-strip" id="quiz-header-strip"></div>
+  <div class="progress-label" id="progress-label"></div>
+  <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+  <div id="questions-container"></div>
+  <div class="nav-row" style="margin-top:1.5rem">
+    <button class="btn btn-submit btn-full" id="btn-submit" onclick="submitQuiz()" disabled>Auswertung anzeigen &rarr;</button>
+  </div>
+</div>
+
+<div id="results-section" style="display:none">
+  <div id="submit-status" class="submit-status" style="display:none;max-width:600px;margin:1rem auto;text-align:center;padding:.6rem 1rem;border-radius:8px;font-family:'SFMono-Regular', Consolas, 'Liberation Mono', monospace;font-size:12px;"></div>
+  <div class="result-block">
+    <div class="result-grade" id="result-grade"></div>
+    <div class="result-label" id="result-label"></div>
+    <div class="result-sub" id="result-sub"></div>
+    <div class="stats-row" id="stats-row"></div>
+    <div class="comp-title">Kompetenzprofil</div>
+    <div id="comp-bars"></div>
+    <div style="margin-top:.8rem;display:flex;justify-content:center;">
+      <button class="btn" onclick="location.reload()">Neu starten</button>
+    </div>
+  </div>
+  <hr style="border:none;border-top:1px solid var(--rule);margin:2rem 0">
+  <h2 style="font-family:Georgia, 'Times New Roman', serif;font-size:1.2rem;margin-bottom:1rem">Detailauswertung</h2>
+  <div id="review-container"></div>
+</div>
+
+</main>
+
+<script>
+/* === FRAGEN ============================================== */
+
+var QBANK = {
+  "a": [
+    {
+      "sc": "SolidFinanz überlegt, ob das bisherige Scoring-Modell zu einem Agenten ausgebaut werden soll, der Kreditanträge eigenständig vorbereitet.",
+      "q": "Welche Aussage(n) zur Abgrenzung eines KI-Agenten von klassischer Automatisierung ist oder sind korrekt?",
+      "opts": [
+        "Ein KI-Agent erhält im Unterschied zu klassischer Automatisierung ein Ziel und entscheidet selbst über Zwischenschritte, Werkzeuge oder Informationsquellen",
+        "Ein KI-Agent unterscheidet sich von RPA in erster Linie durch eine schnellere Ausführungsgeschwindigkeit",
+        "Ein KI-Agent führt ausschließlich vorab festgelegte Einzelschritte aus, ohne den eigenen Plan anzupassen",
+        "Je mehr Handlungsspielraum ein Agent hat, desto weniger Kontrolle braucht er"
+      ],
+      "correct": [
+        0
+      ],
+      "exp": "Ein KI-Agent erhält im Unterschied zu klassischer Automatisierung ein Ziel und entscheidet selbst über Zwischenschritte, Werkzeuge oder Informationsquellen — er plant, handelt und passt seinen Weg bei Bedarf an. Der Unterschied zu RPA liegt gerade nicht in der Ausführungsgeschwindigkeit, sondern im Handlungsspielraum und in der eigenständigen Entscheidungsfindung. Ein System, das ausschließlich vorab festgelegte Einzelschritte abarbeitet, ohne den eigenen Plan anzupassen, ist klassische Automatisierung, kein Agent. Und mehr Handlungsspielraum bedeutet nicht weniger, sondern mehr Kontrollbedarf.",
+      "src": "IMDA Singapur — Model AI Governance Framework for Agentic AI (v1.5, 2026) · imda.gov.sg"
+    },
+    {
+      "sc": "Dr. Hofer möchte wissen, wie riskant der geplante Agent im Vergleich zum bisherigen, rein lesenden Recherche-Assistenten ist.",
+      "q": "Welche Aussage(n) zur Action-Space-×-Autonomy-Matrix ist oder sind korrekt?",
+      "opts": [
+        "Handlungsspielraum (was der Agent darf) und Autonomiegrad (wie eigenständig er entscheidet) sind zwei unabhängige Dimensionen, die getrennt bewertet werden sollten",
+        "Ein Agent mit weitem Handlungsspielraum und hohem Autonomiegrad braucht die höchste Kontrollanforderung",
+        "Ein Agent, der nur lesend auf Systeme zugreift, braucht grundsätzlich dieselbe Kontrolle wie ein Agent, der eigenständig schreibend in Systeme eingreift",
+        "Handlungsspielraum und Autonomiegrad sind in der Praxis identisch und müssen nicht getrennt betrachtet werden"
+      ],
+      "correct": [
+        0,
+        1
+      ],
+      "exp": "Handlungsspielraum (was der Agent darf) und Autonomiegrad (wie eigenständig er entscheidet) sind zwei unabhängige Dimensionen, die getrennt bewertet werden sollten — ein Agent kann in der einen Dimension hoch und in der anderen niedrig liegen. Ein Agent mit weitem Handlungsspielraum und hohem Autonomiegrad liegt in der Matrix im Feld mit der höchsten Kontrollanforderung. Ein rein lesender Agent braucht dagegen gerade nicht dieselbe Kontrolle wie ein Agent, der eigenständig schreibend in Systeme eingreift — genau darin liegt der Sinn der zweidimensionalen Betrachtung. Die beiden Dimensionen sind folglich auch nicht identisch und lassen sich nicht durch eine einzige Kennzahl ersetzen.",
+      "src": "IMDA Singapur — Model AI Governance Framework for Agentic AI · imda.gov.sg"
+    },
+    {
+      "sc": "Das Team ordnet die wiederkehrenden Aufgaben der Kreditabteilung nach Schwere und Reversibilität in Risikoklassen ein.",
+      "q": "Welche Aussage(n) zur Einteilung von Agenten-Aufgaben nach Schwere und Reversibilität (Tiering) ist oder sind korrekt?",
+      "opts": [
+        "Eine Einteilung nach Schwere und Reversibilität kann wiederkehrende Aufgaben in Tiers mit unterschiedlichem Automatisierungsgrad einteilen — von vollautomatisch bis „kein Agenteneinsatz\"",
+        "Aufgaben mit geringer Schwere und leichter Reversibilität eignen sich eher für einen höheren Automatisierungsgrad als Aufgaben mit hoher Schwere und schwerer Reversibilität",
+        "Auch bei niedrigem Risiko-Tier ist ein Stichprobenaudit sinnvoll, statt vollständig auf Kontrolle zu verzichten",
+        "Sobald eine Aufgabe einmal als Tier 1 (vollautomatisch) eingestuft wurde, muss diese Einstufung nie wieder überprüft werden"
+      ],
+      "correct": [
+        0,
+        1,
+        2
+      ],
+      "exp": "Eine Einteilung nach Schwere und Reversibilität kann wiederkehrende Aufgaben in Tiers mit unterschiedlichem Automatisierungsgrad einteilen — von vollautomatisch bis „kein Agenteneinsatz\". Aufgaben mit geringer Schwere und leichter Reversibilität eignen sich dabei eher für einen höheren Automatisierungsgrad als Aufgaben mit hoher Schwere und schwerer Reversibilität. Selbst im niedrigsten Risiko-Tier bleibt ein Stichprobenaudit sinnvoll, statt vollständig auf Kontrolle zu verzichten — das unterscheidet „vollautomatisch mit Audit\" von „unkontrolliert\". Eine einmal vergebene Tier-1-Einstufung ist zudem keine Dauerlösung: Sie muss regelmäßig überprüft werden, etwa wenn sich Aufgabe oder Datenbasis ändern.",
+      "src": "IMDA Singapur — Model AI Governance Framework for Agentic AI (Fallstudie Dayos) · imda.gov.sg"
+    },
+    {
+      "sc": "Kern (CISO) bemerkt, dass Neumanns Team die Vorschläge des Scoring-Agenten inzwischen fast immer ohne Rückfrage übernimmt.",
+      "q": "Welche Aussage(n) zu Automation Bias bei Agenten ist oder sind korrekt?",
+      "opts": [
+        "Eine sehr niedrige Human Override Rate kann darauf hindeuten, dass Vorschläge des Agenten nicht mehr kritisch geprüft, sondern nur noch bestätigt werden",
+        "Eine sehr kurze Human Response Time deutet eher auf reflexhaftes Bestätigen als auf eine gründliche Prüfung hin",
+        "Automation Bias kann bei Agenten mit sehr hoher wahrgenommener Zuverlässigkeit stärker ausgeprägt sein, weil Vorschläge seltener hinterfragt werden",
+        "Automation Bias lässt sich nicht messen, sondern nur subjektiv einschätzen"
+      ],
+      "correct": [
+        0,
+        1,
+        2
+      ],
+      "exp": "Eine sehr niedrige Human Override Rate kann darauf hindeuten, dass Vorschläge des Agenten nicht mehr kritisch geprüft, sondern nur noch bestätigt werden. Eine sehr kurze Human Response Time deutet eher auf reflexhaftes Bestätigen als auf eine gründliche Prüfung hin. Automation Bias kann bei Agenten mit sehr hoher wahrgenommener Zuverlässigkeit sogar stärker ausgeprägt sein, weil deren Vorschläge seltener hinterfragt werden — das Phänomen ist also nicht auf technisch schlecht funktionierende Systeme beschränkt. Und Automation Bias lässt sich, anders als eine rein subjektive Einschätzung, über Kennzahlen wie Override Rate und Response Time tatsächlich messen.",
+      "src": "IMDA Singapur — Model AI Governance Framework for Agentic AI · imda.gov.sg"
+    },
+    {
+      "sc": "Bei der technischen Umsetzung des Agenten wird diskutiert, wie seine Zugriffsrechte auf das Kernbankensystem begrenzt werden sollen.",
+      "q": "Welche Aussage(n) zum Least-Privilege-Prinzip bei Agenten ist oder sind korrekt?",
+      "opts": [
+        "Zugriffsgrenzen für Agenten sollten möglichst auf Systemebene technisch durchgesetzt werden, nicht nur als Anweisung im Prompt formuliert sein",
+        "Eine im Prompt formulierte Einschränkung kann durch geschickte Eingaben umgangen oder vom Modell schlicht nicht befolgt werden",
+        "Prompt-Anweisungen bieten denselben Schutz wie deterministische Zugriffsrechte auf Infrastrukturebene",
+        "Least Privilege bedeutet, einem Agenten grundsätzlich möglichst weitreichende Rechte zu geben, um Verzögerungen zu vermeiden"
+      ],
+      "correct": [
+        0,
+        1
+      ],
+      "exp": "Zugriffsgrenzen für Agenten sollten möglichst auf Systemebene technisch durchgesetzt werden, nicht nur als Anweisung im Prompt formuliert sein. Eine im Prompt formulierte Einschränkung kann durch geschickte Eingaben umgangen oder vom Modell schlicht nicht zuverlässig befolgt werden — deterministische Zugriffsrechte auf Infrastrukturebene sind robuster. Prompt-Anweisungen bieten deshalb gerade nicht denselben Schutz wie technische Zugriffsbeschränkungen. Und Least Privilege bedeutet das Gegenteil von möglichst weitreichenden Rechten: Ein Agent erhält nur die Rechte, die er für seine konkrete Aufgabe tatsächlich braucht.",
+      "src": "IMDA Singapur — Model AI Governance Framework for Agentic AI · imda.gov.sg"
+    }
+  ],
+  "b": [
+    {
+      "sc": "Die Einkaufsabteilung vergleicht drei mögliche Strategien, wie SolidFinanz mit der Abhängigkeit von einem einzelnen KI-Anbieter umgehen könnte.",
+      "q": "Welche Aussage(n) zu den drei Unternehmenshaltungen im Umgang mit KI-Modell-Abhängigkeit ist oder sind korrekt?",
+      "opts": [
+        "Workload-Tiering bedeutet, einfache und wiederkehrende Aufgaben auf günstigere Modelle auszulagern und teure Spitzenmodelle nur für komplexe Aufgaben zu reservieren",
+        "Layer-Eigentum bedeutet, eine eigene Anwendungsschicht zu besitzen, sodass das darunterliegende Modell austauschbar bleibt",
+        "Souveräne Infrastruktur bedeutet, ein Modell vollständig selbst zu hosten, sodass kein externer Anbieter den Zugang abschalten kann",
+        "Diese drei Haltungen schließen sich in der Praxis grundsätzlich gegenseitig aus — ein Unternehmen kann immer nur eine davon verfolgen"
+      ],
+      "correct": [
+        0,
+        1,
+        2
+      ],
+      "exp": "Workload-Tiering bedeutet, einfache und wiederkehrende Aufgaben auf günstigere Modelle auszulagern und das leistungsfähigste, teuerste Modell nur für komplexe Aufgaben zu reservieren. Layer-Eigentum bedeutet, eine eigene Anwendungsschicht zwischen Geschäftslogik und Modell zu besitzen, sodass das darunterliegende Modell austauschbar bleibt. Souveräne Infrastruktur bedeutet, ein Modell vollständig selbst zu hosten, sodass kein externer Anbieter den Zugang abschalten kann. Diese drei Haltungen schließen sich in der Praxis nicht grundsätzlich gegenseitig aus — ein Unternehmen kann sie je nach Arbeitslast parallel und in unterschiedlicher Gewichtung verfolgen.",
+      "src": "Banc, K. — The AI You Rent Can Be Switched Off, Substack, 30.06.2026 (Tier 3, als Diskussionsrahmen verwendet)"
+    },
+    {
+      "sc": "Ein Berater empfiehlt, das Kreditscoring-Modell vollständig selbst zu hosten — die Einkaufsabteilung hinterfragt dieses Argument kritisch.",
+      "q": "Welche Aussage(n) zur Gegenthese im Diskurs um Modell-Eigentümerschaft ist oder sind korrekt?",
+      "opts": [
+        "Auf anspruchsvollen Benchmarks führen weiterhin oft geschlossene Spitzenmodelle — Eigentümerschaft ist deshalb eine Portfolio-Entscheidung je Arbeitslast, kein Grundsatzbekenntnis",
+        "Selbst gehostete Modelle sind automatisch verfügbarkeitssicherer, weil sie keine eigenen Betriebsrisiken wie Infrastrukturausfälle oder fehlende Patch-Zyklen haben",
+        "Auch bei selbst gehosteten Modellen braucht es ein eigenes Betriebsteam — das ist ein oft unterschätzter Kostenfaktor",
+        "Wer ein eigenes Modell hostet, benötigt keinerlei Verträge mehr mit externen Anbietern"
+      ],
+      "correct": [
+        0,
+        2
+      ],
+      "exp": "Auf anspruchsvollen Benchmarks führen weiterhin häufig geschlossene Spitzenmodelle — Eigentümerschaft ist deshalb eine Portfolio-Entscheidung je Arbeitslast, kein pauschales Bekenntnis. Auch bei selbst gehosteten Modellen braucht es ein eigenes Betriebsteam — ein in der Praxis oft unterschätzter Kostenfaktor. Selbst gehostete Modelle sind dagegen nicht automatisch verfügbarkeitssicherer: Infrastrukturausfälle und fehlende Patch-Zyklen sind eigene, reale Betriebsrisiken. Und wer ein eigenes Modell hostet, braucht deshalb keineswegs keine Verträge mehr mit externen Anbietern — Hardware, Cloud-Infrastruktur oder Basismodell-Lizenzen bleiben in aller Regel vertraglich extern angebunden.",
+      "src": "Banc, K. — The AI You Rent Can Be Switched Off, Substack, 30.06.2026 (Tier 3)"
+    },
+    {
+      "sc": "Kern bringt den Fable-5/Mythos-5-Fall aus dem Sommer 2026 als Beispiel in die Diskussion um Anbieterrisiken ein.",
+      "q": "Welche Aussage(n) zum Fable-5/Mythos-5-Fall (Juni 2026) ist oder sind korrekt?",
+      "opts": [
+        "Der Fable-5/Mythos-5-Fall zeigt, dass ein KI-Modell durch eine behördliche Anordnung eines Anbieter-Sitzlandes ohne Vorwarnung für internationale Kund:innen abgeschaltet werden kann",
+        "Der Fall zeigt, dass ausschließlich technische Fehler zu Modellausfällen führen können — regulatorische Eingriffe spielen keine Rolle",
+        "Nach dem Vorfall wurde die Abschaltung dauerhaft aufrechterhalten",
+        "Der Fall betraf ausschließlich Nutzer:innen in den USA"
+      ],
+      "correct": [
+        0
+      ],
+      "exp": "Der Fall zeigt, dass ein KI-Modell durch eine behördliche Anordnung des Anbieter-Sitzlandes ohne Vorwarnung für internationale Kund:innen abgeschaltet werden kann — betroffen waren unter anderem laufende Pilotprojekte in britischen Krankenhäusern. Der Fall zeigt damit gerade, dass nicht nur technische Fehler, sondern auch regulatorische Eingriffe zu Modellausfällen führen können. Die Abschaltung wurde zudem nicht dauerhaft aufrechterhalten, sondern nach 19 Tagen wieder aufgehoben. Und der Fall betraf nicht nur Nutzer:innen in den USA, sondern ausdrücklich auch internationale Kund:innen außerhalb der USA.",
+      "src": "Anthropic — Statement zur Fable-5/Mythos-5-Abschaltung · anthropic.com/news/fable-mythos-access · Fortune, 13.06.2026 · Al Jazeera, 01.07.2026"
+    },
+    {
+      "sc": "Nach der Diskussion um den Fable-5-Fall soll die Einkaufsabteilung konkrete Schritte gegen eine zu enge Anbieterbindung vorschlagen.",
+      "q": "Welche Aussage(n) zu Mitigationsmaßnahmen gegen Vendor-Abhängigkeit ist oder sind korrekt?",
+      "opts": [
+        "Eskalationspfade und Fallback-Optionen auf ein zweites Modell sind realistische Mitigationsmaßnahmen gegen Vendor-Abhängigkeit",
+        "Nicht jede Arbeitslast sollte gleichermaßen von einem einzelnen externen Anbieter abhängen — eine bewusste Priorisierung kritischer Workloads gehört zur Risikobewertung",
+        "Eine Bestandsaufnahme, welche Verträge bereits Regelungen zu plötzlichen Abschaltungen oder Exportkontrollen enthalten, ist ein sinnvoller erster Schritt im Risikomanagement",
+        "Vendor-Abhängigkeit ist ausschließlich ein IT-Thema und gehört nicht in die Risikobewertung von Einkauf oder Beschaffung"
+      ],
+      "correct": [
+        0,
+        1,
+        2
+      ],
+      "exp": "Eskalationspfade und Fallback-Optionen auf ein zweites Modell sind realistische Mitigationsmaßnahmen gegen Vendor-Abhängigkeit. Nicht jede Arbeitslast sollte gleichermaßen von einem einzelnen externen Anbieter abhängen — eine bewusste Priorisierung, welche Workloads kritisch sind, gehört zur Risikobewertung. Eine Bestandsaufnahme, welche bestehenden Verträge bereits Regelungen zu plötzlichen Abschaltungen oder Exportkontrollen enthalten, ist ein sinnvoller erster Schritt im Risikomanagement — denn Verträge regeln diesen Fall keineswegs automatisch. Und Vendor-Abhängigkeit ist gerade kein reines IT-Thema — sie gehört ausdrücklich in die Risikobewertung von Einkauf und Beschaffung.",
+      "src": "Anthropic — Statement zur Fable-5/Mythos-5-Abschaltung · anthropic.com/news/fable-mythos-access"
+    },
+    {
+      "sc": "Ein Anbieter bewirbt gegenüber SolidFinanz die Möglichkeit, ein Basismodell auf den eigenen Arbeitsprozessen weiterzutrainieren.",
+      "q": "Welche Aussage(n) zum Konzept „Frontier Tuning\" ist oder sind korrekt?",
+      "opts": [
+        "Beim Frontier Tuning trainiert ein Unternehmen ein Basismodell auf eigenen, realen Arbeitsprozessen weiter, ohne die eigenen Produktivsysteme zu beeinflussen",
+        "Die vom Hersteller genannten Kosten- und Qualitätsvorteile von Frontier Tuning sind unabhängig geprüfte, belastbare Kennzahlen",
+        "Ziel des Konzepts ist, dass das Institutionswissen eines Unternehmens beim Training im eigenen Haus bleibt",
+        "Frontier Tuning ist identisch mit dem vollständigen Selbst-Hosting eines Modells (souveräne Infrastruktur)"
+      ],
+      "correct": [
+        0,
+        2
+      ],
+      "exp": "Beim Frontier Tuning trainiert ein Unternehmen ein Basismodell auf eigenen, realen Arbeitsprozessen weiter, ohne die eigenen Produktivsysteme zu beeinflussen. Ziel des Konzepts ist, dass das Institutionswissen eines Unternehmens beim Training im eigenen Haus bleibt, statt an einen externen Anbieter zu fließen. Die vom Hersteller genannten Kosten- und Qualitätsvorteile sind dagegen Herstellerangaben aus einer Unternehmensankündigung — keine unabhängig geprüften, belastbaren Kennzahlen. Und Frontier Tuning ist nicht identisch mit vollständigem Selbst-Hosting (souveräne Infrastruktur): Das Basismodell bleibt beim Anbieter, nur das Fine-Tuning erfolgt auf eigenen Daten.",
+      "src": "Suleyman, M. — Building a hill-climbing machine, Microsoft AI, Juni 2026 · microsoft.ai/news/building-a-hillclimbing-machine-launching-seven-new-mai-models/"
+    }
+  ]
+};
+
+var APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyPs358GF_E1xsvTh08PpTpZcBDS1OvsU9XQ0qi0MkZoCCnAk4dyo3Aii0OYxILdvCRYA/exec';
+var selectedRole = null, questions = [], userAnswers = [];
+var participantName = '';
+var ROLE_LABELS = {"a": "KI-Manager:in", "b": "Einkauf/Vendor-Verantwortliche:r"};
+
+function selectRole(r) {
+  selectedRole = r;
+  document.getElementById('btn-role-a').className = 'sel-btn' + (r==='a' ? ' active-a' : '');
+  document.getElementById('btn-role-b').className = 'sel-btn' + (r==='b' ? ' active-b' : '');
+  checkReady();
+}
+function checkReady() {
+  document.getElementById('btn-start').disabled = !selectedRole;
+}
+
+function shuffle(arr) {
+  var a = arr.slice(), i = a.length, j, t;
+  while (i--) { j = Math.floor(Math.random()*(i+1)); t=a[i]; a[i]=a[j]; a[j]=t; }
+  return a;
+}
+
+function startQuiz() {
+  var pool = QBANK[selectedRole] || [];
+  questions = pool.map(function(q) {
+    var indices = q.opts.map(function(_,i){return i;});
+    var shuffled = shuffle(indices);
+    var newOpts = shuffled.map(function(i){return q.opts[i];});
+    var newCorrect = q.correct.map(function(c){return shuffled.indexOf(c);});
+    return {q: q.q, sc: q.sc||'', opts: newOpts, correct: newCorrect, exp: q.exp, src: q.src||''};
+  });
+  userAnswers = questions.map(function(){return [];});
+
+  document.getElementById('setup-section').style.display = 'none';
+  document.getElementById('quiz-section').style.display = 'block';
+
+  var name = document.getElementById('participant-name').value.trim() || 'Anonym';
+  participantName = name;
+  var strip = document.getElementById('quiz-header-strip');
+  strip.innerHTML =
+    '<span class="strip-tag strip-role-' + selectedRole + '">' + ROLE_LABELS[selectedRole] + '</span>' +
+    '<span class="strip-name">' + name + '</span>';
+
+  renderQuestions();
+  updateProgress();
+}
+
+function renderQuestions() {
+  var container = document.getElementById('questions-container');
+  container.innerHTML = '';
+  var letters = ['A','B','C','D','E'];
+  questions.forEach(function(q, qi) {
+    var card = document.createElement('div');
+    card.className = 'q-card';
+    card.id = 'qcard-' + qi;
+    var html = '<div class="q-num">Frage ' + (qi+1) + ' von ' + questions.length + '</div>';
+    if (q.sc) html += '<div class="q-sc">' + q.sc + '</div>';
+    html += '<div class="q-text">' + q.q + '</div>';
+    html += '<div class="opt-list" id="opts-' + qi + '">';
+    q.opts.forEach(function(opt, oi) {
+      html += '<div class="opt" id="opt-' + qi + '-' + oi + '" onclick="toggleOpt(' + qi + ',' + oi + ')">' +
+        '<div class="opt-cb" id="cb-' + qi + '-' + oi + '"></div>' +
+        '<span class="opt-letter">' + letters[oi] + '.</span>' +
+        '<span class="opt-text">' + opt + '</span></div>';
+    });
+    html += '</div>';
+    card.innerHTML = html;
+    container.appendChild(card);
+  });
+}
+
+function toggleOpt(qi, oi) {
+  var idx = userAnswers[qi].indexOf(oi);
+  if (idx >= 0) {
+    userAnswers[qi].splice(idx, 1);
+    document.getElementById('opt-' + qi + '-' + oi).classList.remove('selected');
+    document.getElementById('cb-' + qi + '-' + oi).classList.remove('chk');
+  } else {
+    userAnswers[qi].push(oi);
+    document.getElementById('opt-' + qi + '-' + oi).classList.add('selected');
+    document.getElementById('cb-' + qi + '-' + oi).classList.add('chk');
+  }
+  updateSubmitBtn();
+  updateProgress();
+}
+
+function updateSubmitBtn() {
+  var answered = userAnswers.filter(function(a){return a.length>0;}).length;
+  document.getElementById('btn-submit').disabled = answered < questions.length;
+}
+
+function updateProgress() {
+  var answered = userAnswers.filter(function(a){return a.length>0;}).length;
+  var pct = questions.length ? (answered/questions.length*100) : 0;
+  document.getElementById('progress-fill').style.width = pct + '%';
+  document.getElementById('progress-label').textContent = answered + ' von ' + questions.length + ' Fragen beantwortet';
+}
+
+function submitQuiz() {
+  document.getElementById('quiz-section').style.display = 'none';
+  document.getElementById('results-section').style.display = 'block';
+
+  var score = 0;
+  questions.forEach(function(q, qi) {
+    var ua = userAnswers[qi].slice().sort();
+    var ca = q.correct.slice().sort();
+    if (JSON.stringify(ua) === JSON.stringify(ca)) score++;
+  });
+
+  var pct = Math.round(score/questions.length*100);
+  var grade, label;
+  if (pct >= 90) { grade = 'A'; label = 'Ausgezeichnet'; }
+  else if (pct >= 75) { grade = 'B'; label = 'Sehr gut'; }
+  else if (pct >= 60) { grade = 'C'; label = 'Gut'; }
+  else if (pct >= 45) { grade = 'D'; label = 'Befriedigend'; }
+  else { grade = 'E'; label = 'Wiederholen empfohlen'; }
+
+  document.getElementById('result-grade').textContent = grade;
+  document.getElementById('result-label').textContent = label + ' — ' + pct + ' %';
+  document.getElementById('result-sub').textContent = score + ' von ' + questions.length + ' Fragen vollständig richtig';
+
+  document.getElementById('stats-row').innerHTML =
+    '<div class="stat"><div class="stat-n">' + score + '</div><div class="stat-l">Richtig</div></div>' +
+    '<div class="stat"><div class="stat-n">' + (questions.length-score) + '</div><div class="stat-l">Falsch</div></div>' +
+    '<div class="stat"><div class="stat-n">' + pct + ' %</div><div class="stat-l">Trefferquote</div></div>';
+
+  document.getElementById('comp-bars').innerHTML =
+    '<div class="comp-row"><div class="comp-labels"><span>Richtig</span><span>' + score + '/' + questions.length + '</span></div>' +
+    '<div class="comp-track"><div class="comp-fill fill-ok" style="width:' + pct + '%"></div></div></div>' +
+    '<div class="comp-row"><div class="comp-labels"><span>Verbesserungspotenzial</span><span>' + (questions.length-score) + '/' + questions.length + '</span></div>' +
+    '<div class="comp-track"><div class="comp-fill fill-wrong" style="width:' + (100-pct) + '%"></div></div></div>';
+
+  var letters = ['A','B','C','D','E'];
+  var rev = document.getElementById('review-container');
+  rev.innerHTML = '';
+  questions.forEach(function(q, qi) {
+    var ua = userAnswers[qi].slice().sort();
+    var ca = q.correct.slice().sort();
+    var isOk = JSON.stringify(ua) === JSON.stringify(ca);
+    var card = document.createElement('div');
+    card.className = 'q-card';
+    var html = '<div class="q-num">Frage ' + (qi+1) + '</div>';
+    if (q.sc) html += '<div class="q-sc">' + q.sc + '</div>';
+    html += '<div class="q-text">' + q.q + '</div>';
+    html += '<div class="opt-list" style="margin-top:.7rem">';
+    q.opts.forEach(function(opt, oi) {
+      var sel = ua.indexOf(oi) >= 0;
+      var cor = ca.indexOf(oi) >= 0;
+      var cls = 'opt disabled ';
+      if (sel && cor) cls += 'correct-sel';
+      else if (sel && !cor) cls += 'wrong-sel';
+      else if (!sel && cor) cls += 'missed';
+      var cbCls = 'opt-cb';
+      html += '<div class="' + cls + '"><div class="' + cbCls + '"></div>' +
+        '<span class="opt-letter">' + letters[oi] + '.</span><span class="opt-text">' + opt + '</span></div>';
+    });
+    html += '</div>';
+    if (q.exp) {
+      html += '<div class="feedback ' + (isOk ? 'fb-ok' : 'fb-wrong') + '">';
+      html += '<div class="fb-title">' + (isOk ? '✓ Richtig' : '✗ Nicht vollständig richtig') + '</div>';
+      html += '<div class="fb-text">' + q.exp + '</div>';
+      if (q.src) html += '<div class="fb-source">Quelle: ' + linkify(q.src) + '</div>';
+      html += '</div>';
+    }
+    card.innerHTML = html;
+    rev.appendChild(card);
+  });
+
+  sendToSheets(score, questions.length - score);
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+
+function linkify(src) {
+  return src.split(' · ').map(function(part) {
+    var t = part.trim();
+    if (!/\s/.test(t) && /\.[a-zA-Z]{2,}/.test(t) && t.length > 4) {
+      var href = /^https?:\/\//i.test(t) ? t : 'https://' + t;
+      return '<a href="' + href + '" target="_blank">' + t + '</a>';
+    }
+    return part;
+  }).join(' · ');
+}
+function sendToSheets(correct, wrong) {
+  if (!APPS_SCRIPT_URL) return;
+  var TAG_NR = 10;
+  var THEMA  = "Monitoring, iterative Optimierung & KI-Agenten";
+  var letters = ['A','B','C','D','E'];
+  var stufe = ROLE_LABELS[selectedRole] || selectedRole;
+
+  var status = document.getElementById('submit-status');
+  if (status) {
+    status.className = 'submit-status sending';
+    status.style.display = 'block';
+    status.textContent = 'Ergebnis wird übermittelt...';
+  }
+
+  var toSend = [];
+  questions.forEach(function(q, i) {
+    var selIndices  = userAnswers[i].slice().sort();
+    var corrIndices = q.correct.slice().sort();
+    var isFull      = selIndices.join(',') === corrIndices.join(',');
+    var gewaehlt    = selIndices.map(function(idx) { return letters[idx]; }).join(',') || '-';
+    var korrekt     = corrIndices.map(function(idx) { return letters[idx]; }).join(',');
+    var ergebnis    = isFull ? 'RICHTIG' : 'FALSCH';
+
+    toSend.push(
+      APPS_SCRIPT_URL
+      + '?tab='        + encodeURIComponent('KI-Manager')
+      + '&teilnehmer=' + encodeURIComponent(participantName)
+      + '&tag='        + TAG_NR
+      + '&thema='      + encodeURIComponent(THEMA)
+      + '&stufe='      + encodeURIComponent(stufe)
+      + '&frage_nr='   + (i + 1)
+      + '&frage_text=' + encodeURIComponent(q.q.substring(0, 80))
+      + '&gewaehlt='   + encodeURIComponent(gewaehlt)
+      + '&korrekt='    + encodeURIComponent(korrekt)
+      + '&ergebnis='   + encodeURIComponent(ergebnis)
+    );
+  });
+
+  toSend.forEach(function(url, i) {
+    setTimeout(function() {
+      fetch(url, { mode: 'no-cors' }).catch(function() {});
+    }, i * 300);
+  });
+  if (status) {
+    setTimeout(function() {
+      status.className = 'submit-status success';
+      status.textContent = '✓ ' + toSend.length + ' Antworten übermittelt ('
+        + new Date().toLocaleTimeString('de-DE') + ')';
+    }, toSend.length * 300 + 500);
+  }
+}
+</script>
+
+</body>
+</html>
