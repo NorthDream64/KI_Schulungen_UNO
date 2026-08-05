@@ -1,114 +1,113 @@
 # UC08 · KI-Agenten-Szenarien 
 
-> Fünf vollständig spezifizierte Agenten-Prompts als Übungsmaterial für den Praxisblock „Bau von Agenten". Live durch den Dozenten eingeführt — kein Bestandteil von Hand-Out oder Gamma-Skript.
+> Fünf spezifizierte Agenten-Prompts als Übungsmaterial für den Praxisblock „Bau von Agenten".
+---
+
+## 1 · Agent für Freelance-Aufträge
+
+"Ich möchte, dass du regelmäßig relevante Plattformen, berufliche Netzwerke und ausgewählte Websites nach Freelance-Aufträgen innerhalb der EU durchsuchst, die zu meinem beruflichen Profil, meiner Expertise, meiner Verfügbarkeit und meinem Marktangebot passen.
+
+Bewerte jede Gelegenheit anhand eines vordefinierten Bewertungsmodells, das Faktoren wie Leistungspassung, erforderliche Erfahrung, Standort, Möglichkeiten zur Remote-Arbeit, Vertragsdauer, erwarteten Arbeitsaufwand, Budget, Bewerbungsfrist und Erfolgswahrscheinlichkeit berücksichtigt.
+
+Schließe Gelegenheiten aus, die zwingende Anforderungen nicht erfüllen, identifiziere mögliche Lücken oder Unsicherheiten und ordne die verbleibenden Gelegenheiten nach ihrer Gesamtattraktivität. Vermeide doppelte Einträge und aktualisiere bereits identifizierte Gelegenheiten, wenn sich deren Status oder Anforderungen ändern.
+
+Gib für jede in die engere Auswahl aufgenommene Gelegenheit die Quelle, das Veröffentlichungsdatum, die Frist, die wichtigsten Anforderungen, den Bewertungs-Score und eine kurze Begründung der Empfehlung an.
+
+Wenn eine Gelegenheit den definierten Qualifikationsschwellenwert überschreitet, benachrichtige mich per E-Mail und erstelle ein maßgeschneidertes Bewerbungspaket auf Grundlage der Anforderungen der Gelegenheit sowie meines freigegebenen Profils und Marktangebots. Das Paket soll eine Bewerbungszusammenfassung, ein Anschreiben bzw. Einreichungsdokument sowie eine Checkliste noch fehlender Informationen oder Unterlagen enthalten.
+
+Reiche keine Bewerbung ein und kontaktiere den Auftraggeber nicht, ohne meine ausdrückliche Freigabe."
 
 ---
 
-## 1 · Freelance Opportunity Agent
+## 2 · Agent für Ausschreibungs-Identifikation und Angebotsvorbereitung
 
-"I want you to regularly scan relevant platforms, professional networks and selected websites for freelance opportunities within the EU that match my professional profile, expertise, availability and market offering.
+"Ich möchte, dass du regelmäßig öffentliche und private Ausschreibungen innerhalb der EU identifizierst, die zu den Leistungen, der Erfahrung, der Kapazität und den Lieferfähigkeiten meines Unternehmens passen.
 
-Evaluate each opportunity using a predefined scoring model that considers factors such as service fit, required experience, location, remote-work options, contract duration, expected workload, budget, application deadline and likelihood of success.
+Prüfe die verfügbaren Ausschreibungsunterlagen und bewerte zwingende Anforderungen, Eignungskriterien, geografische Einschränkungen, Einreichungsfristen, Auftragswert, erforderliche Zertifizierungen, Lieferzeiten, kommerzielle Bedingungen, strategische Passung und mögliche Lieferrisiken.
 
-Exclude opportunities that fail mandatory requirements, identify potential gaps or uncertainties, and rank the remaining opportunities by overall attractiveness. Avoid duplicate entries and update previously identified opportunities when their status or requirements change.
+Schließe Ausschreibungen aus, deren zwingende Anforderungen nicht erfüllt werden können. Bewerte und ordne die verbleibenden Gelegenheiten anhand eines vordefinierten Bewertungsmodells und unterscheide dabei klar zwischen bestätigten Informationen und Annahmen bzw. fehlenden Informationen.
 
-For each shortlisted opportunity, provide the source, publication date, deadline, key requirements, evaluation score and a brief explanation of the recommendation.
+Vermeide doppelte Einträge und aktualisiere bereits identifizierte Ausschreibungen, wenn Nachträge, Friständerungen, Klarstellungen oder zusätzliche Unterlagen veröffentlicht werden.
 
-If an opportunity exceeds the defined qualification threshold, alert me by e-mail and prepare a tailored application package based on the opportunity's requirements and my approved profile and market offering. The package should include an application summary, a proposed cover letter or submission document, and a checklist of any information or documents still required.
+Gib für jede relevante Ausschreibung die Quelle, die Vergabestelle, die Frist, den geschätzten Auftragswert, die wichtigsten Anforderungen, den Bewertungs-Score, die wesentlichen Risiken und eine kurze Bid/No-Bid-Empfehlung an.
 
-Do not submit an application or contact the client without my explicit approval."
+Wenn eine Ausschreibung den definierten Qualifikationsschwellenwert überschreitet, benachrichtige mich per E-Mail und erstelle eine Angebotszusammenfassung, eine Anforderungs-Erfüllungsmatrix, eine Liste der benötigten Nachweise und Unterlagen, zentrale Rückfragen sowie einen ersten Angebotsentwurf.
 
----
-
-## 2 · Tender Identification and Bid Preparation Agent
-
-"I want you to regularly identify public and private tenders within the EU that match my company's services, experience, capacity and delivery capabilities.
-
-Review the available tender documentation and assess mandatory requirements, eligibility criteria, geographic restrictions, submission deadlines, contract value, required certifications, delivery timelines, commercial conditions, strategic fit and potential delivery risks.
-
-Exclude tenders for which mandatory requirements cannot be met. Evaluate and rank the remaining opportunities using a predefined scoring model, clearly distinguishing confirmed information from assumptions or missing information.
-
-Avoid duplicate entries and update previously identified tenders when amendments, deadline changes, clarifications or additional documents are published.
-
-For each relevant tender, provide the source, contracting authority, deadline, estimated contract value, key requirements, evaluation score, major risks and a brief bid/no-bid recommendation.
-
-If a tender exceeds the defined qualification threshold, alert me by e-mail and prepare a bid summary, a requirements-compliance matrix, a list of required evidence and documents, key clarification questions, and an initial proposal outline.
-
-Do not submit a bid, make binding commitments or contact the contracting authority without my explicit approval."
+Reiche kein Angebot ein, gehe keine verbindlichen Verpflichtungen ein und kontaktiere die Vergabestelle nicht, ohne meine ausdrückliche Freigabe."
 
 ---
 
-## 3 · Sales Opportunity and Account Intelligence Agent
+## 3 · Agent für Vertriebschancen und Account Intelligence
 
-"I want you to monitor a predefined list of target companies for credible events that may indicate a current or emerging need for my services.
+"Ich möchte, dass du eine vordefinierte Liste von Zielunternehmen auf glaubwürdige Ereignisse hin beobachtest, die auf einen aktuellen oder entstehenden Bedarf an meinen Leistungen hindeuten könnten.
 
-Relevant signals may include management changes, funding rounds, mergers or acquisitions, geographic expansion, new products or projects, strategic announcements, technology investments, job postings, operational problems, regulatory challenges or other significant business developments.
+Relevante Signale können unter anderem Führungswechsel, Finanzierungsrunden, Fusionen oder Übernahmen, geografische Expansion, neue Produkte oder Projekte, strategische Ankündigungen, Technologieinvestitionen, Stellenausschreibungen, operative Probleme, regulatorische Herausforderungen oder andere bedeutende Geschäftsentwicklungen umfassen.
 
-Evaluate each signal according to its source reliability, relevance to my offering, recency, urgency, estimated commercial potential and strength of the inferred customer need. Distinguish verified facts from assumptions and explain the reasoning behind each assessment.
+Bewerte jedes Signal nach Verlässlichkeit der Quelle, Relevanz für mein Angebot, Aktualität, Dringlichkeit, geschätztem kommerziellem Potenzial und Stärke des daraus abgeleiteten Kundenbedarfs. Unterscheide dabei verifizierte Fakten von Annahmen und erläutere die Begründung jeder Einschätzung.
 
-Combine related signals, avoid duplicate alerts and maintain an updated opportunity history for each target company.
+Fasse zusammenhängende Signale zusammen, vermeide doppelte Benachrichtigungen und pflege für jedes Zielunternehmen eine aktuelle Historie der identifizierten Gelegenheiten.
 
-If a signal or combination of signals exceeds the defined qualification threshold, alert me by e-mail and prepare an account briefing containing the relevant developments, likely business needs, potential stakeholders, suggested value proposition, recommended contact strategy and a personalized outreach message.
+Wenn ein Signal oder eine Kombination von Signalen den definierten Qualifikationsschwellenwert überschreitet, benachrichtige mich per E-Mail und erstelle ein Account-Briefing mit den relevanten Entwicklungen, dem wahrscheinlichen Geschäftsbedarf, möglichen Stakeholdern, einem Vorschlag für die Wertargumentation, einer empfohlenen Kontaktstrategie und einer personalisierten Ansprache-Nachricht.
 
-Do not contact the company, send the outreach message or add personal data from unapproved sources without my explicit approval."
-
----
-
-## 4 · EU Regulatory Monitoring and Impact Assessment Agent
-
-"I want you to regularly monitor authoritative EU and national sources for regulatory developments that may affect my organization, products, services, operations or clients.
-
-Relevant developments may include new or amended laws, regulations, standards, guidelines, regulatory consultations, supervisory decisions, enforcement actions and official interpretations.
-
-For each development, verify the source and status, summarize the relevant changes, identify the affected jurisdictions, business areas and stakeholders, and assess the expected impact, urgency, implementation effort, compliance risk and relevant deadlines.
-
-Distinguish between proposals, consultations, adopted legislation, applicable requirements and non-binding guidance. Avoid duplicate entries and update existing records when the legal status, scope, interpretation or implementation timeline changes.
-
-For each relevant development, provide links to the primary sources, publication and applicability dates, a concise summary, the assessment score and an explanation of its relevance.
-
-If a development exceeds the defined risk or relevance threshold, alert me by e-mail and prepare an impact assessment, a list of recommended actions, responsible functions, important deadlines and a short management briefing.
-
-Clearly flag areas that require review by qualified legal or compliance professionals. Do not present the assessment as formal legal advice or initiate implementation actions without human approval."
+Kontaktiere das Unternehmen nicht, versende die Ansprache-Nachricht nicht und füge keine personenbezogenen Daten aus nicht freigegebenen Quellen hinzu, ohne meine ausdrückliche Freigabe."
 
 ---
 
-## 5 · AI Risk Intelligence and Risk Register Agent
+## 4 · Agent für EU-Regulatorik-Monitoring und Auswirkungsanalyse
 
-"I want you to regularly scan a defined set of authoritative and relevant sources for newly identified or materially changed AI-related risks, vulnerabilities, incidents, control weaknesses and regulatory concerns.
+"Ich möchte, dass du regelmäßig maßgebliche EU- und nationale Quellen auf regulatorische Entwicklungen hin beobachtest, die meine Organisation, meine Produkte, Dienstleistungen, Abläufe oder Kunden betreffen könnten.
 
-Sources may include NIST, ENISA, the EU AI Office, national authorities, recognized standards bodies, major AI providers, Hugging Face, research repositories, vulnerability databases, incident databases and selected security publications. Prioritize primary sources and record the source, publication date and access date for every finding.
+Relevante Entwicklungen können neue oder geänderte Gesetze, Verordnungen, Normen, Leitlinien, regulatorische Konsultationen, aufsichtsrechtliche Entscheidungen, Durchsetzungsmaßnahmen und offizielle Auslegungen umfassen.
 
-Assess each finding for relevance to my organization's approved AI systems, use cases, data, vendors, processes and business environment. Classify relevant findings by risk category, affected assets or processes, threat or failure scenario, existing vulnerabilities, likelihood, potential impact, urgency and confidence level.
+Verifiziere für jede Entwicklung Quelle und Status, fasse die relevanten Änderungen zusammen, identifiziere die betroffenen Rechtsräume, Geschäftsbereiche und Stakeholder und bewerte die erwarteten Auswirkungen, die Dringlichkeit, den Umsetzungsaufwand, das Compliance-Risiko und relevante Fristen.
 
-Compare each finding with the existing risk register. Avoid duplicate entries, link related findings and update an existing risk only when new evidence materially changes its description, likelihood, impact, controls or status. Maintain a clear change history.
+Unterscheide zwischen Vorschlägen, Konsultationen, verabschiedeter Gesetzgebung, geltenden Anforderungen und unverbindlichen Leitlinien. Vermeide doppelte Einträge und aktualisiere bestehende Datensätze, wenn sich Rechtsstatus, Anwendungsbereich, Auslegung oder Umsetzungszeitplan ändern.
 
-For each relevant risk, propose proportionate preventive, detective and corrective measures. Identify possible control owners, implementation priorities, dependencies, residual-risk considerations, monitoring indicators and recommended follow-up actions. Clearly distinguish existing controls from proposed controls.
+Gib für jede relevante Entwicklung Links zu den Primärquellen, Veröffentlichungs- und Anwendbarkeitsdatum, eine prägnante Zusammenfassung, den Bewertungs-Score und eine Erläuterung der Relevanz an.
 
-Each proposed risk-register entry should include:
+Wenn eine Entwicklung den definierten Risiko- oder Relevanzschwellenwert überschreitet, benachrichtige mich per E-Mail und erstelle eine Auswirkungsanalyse, eine Liste empfohlener Maßnahmen, verantwortliche Funktionen, wichtige Fristen und ein kurzes Management-Briefing.
 
-- a unique risk identifier;
-- the risk title and description;
-- the source and supporting evidence;
-- affected systems, assets, processes or stakeholders;
-- the risk category;
-- causes, threat events and potential consequences;
-- likelihood, impact and overall risk rating;
-- existing controls;
-- proposed preventive, detective and corrective controls;
-- potential control owners;
-- recommended actions and target dates;
-- the residual-risk estimate;
-- the confidence level and any unresolved questions.
+Kennzeichne Bereiche, die einer Prüfung durch qualifizierte Rechts- oder Compliance-Fachleute bedürfen, deutlich. Stelle die Einschätzung nicht als förmliche Rechtsberatung dar und leite keine Umsetzungsmaßnahmen ein, ohne menschliche Freigabe."
 
-If a finding exceeds the defined risk threshold, alert me by e-mail and prepare a draft risk-register entry, a short management summary and a prioritized action plan for human review.
+---
 
-Do not automatically accept, close, downgrade or assign a risk, change an approved control, or initiate remediation activities without explicit human approval."
+## 5 · Agent für KI-Risikoaufklärung und Risikoregister
+
+"Ich möchte, dass du regelmäßig eine definierte Auswahl maßgeblicher und relevanter Quellen nach neu identifizierten oder wesentlich veränderten KI-bezogenen Risiken, Schwachstellen, Vorfällen, Kontrollschwächen und regulatorischen Bedenken durchsuchst.
+
+Quellen können unter anderem NIST, ENISA, das EU-Büro für Künstliche Intelligenz, nationale Behörden, anerkannte Normungsorganisationen, große KI-Anbieter, Hugging Face, Forschungs-Repositorien, Schwachstellendatenbanken, Vorfalldatenbanken und ausgewählte Fachpublikationen zur Sicherheit umfassen. Priorisiere Primärquellen und erfasse für jeden Befund Quelle, Veröffentlichungsdatum und Abrufdatum.
+
+Bewerte jeden Befund hinsichtlich seiner Relevanz für die genehmigten KI-Systeme, Anwendungsfälle, Daten, Anbieter, Prozesse und das Geschäftsumfeld meiner Organisation. Klassifiziere relevante Befunde nach Risikokategorie, betroffenen Assets oder Prozessen, Bedrohungs- oder Fehlerszenario, bestehenden Schwachstellen, Eintrittswahrscheinlichkeit, potenzieller Auswirkung, Dringlichkeit und Konfidenzniveau.
+
+Vergleiche jeden Befund mit dem bestehenden Risikoregister. Vermeide doppelte Einträge, verknüpfe zusammenhängende Befunde und aktualisiere ein bestehendes Risiko nur dann, wenn neue Belege dessen Beschreibung, Eintrittswahrscheinlichkeit, Auswirkung, Kontrollen oder Status wesentlich verändern. Führe eine klare Änderungshistorie.
+
+Schlage für jedes relevante Risiko verhältnismäßige präventive, detektive und korrektive Maßnahmen vor. Benenne mögliche Kontrollverantwortliche, Umsetzungsprioritäten, Abhängigkeiten, Überlegungen zum Restrisiko, Überwachungsindikatoren und empfohlene Folgemaßnahmen. Unterscheide dabei klar zwischen bestehenden und vorgeschlagenen Kontrollen.
+
+Jeder vorgeschlagene Eintrag im Risikoregister soll enthalten:
+
+- eine eindeutige Risikokennung;
+- den Risikotitel und die Risikobeschreibung;
+- die Quelle und die zugrunde liegenden Belege;
+- betroffene Systeme, Assets, Prozesse oder Stakeholder;
+- die Risikokategorie;
+- Ursachen, Bedrohungsereignisse und mögliche Konsequenzen;
+- Eintrittswahrscheinlichkeit, Auswirkung und Gesamtrisikobewertung;
+- bestehende Kontrollen;
+- vorgeschlagene präventive, detektive und korrektive Kontrollen;
+- mögliche Kontrollverantwortliche;
+- empfohlene Maßnahmen und Zieltermine;
+- die Restrisikoeinschätzung;
+- das Konfidenzniveau und offene Fragen.
+
+Wenn ein Befund den definierten Risikoschwellenwert überschreitet, benachrichtige mich per E-Mail und erstelle einen Entwurf für einen Risikoregister-Eintrag, eine kurze Management-Zusammenfassung und einen priorisierten Maßnahmenplan zur menschlichen Prüfung.
+
+Akzeptiere, schließe oder stufe kein Risiko automatisch herab, weise es nicht automatisch zu, ändere keine genehmigte Kontrolle und leite keine Abhilfemaßnahmen ein, ohne ausdrückliche menschliche Freigabe."
 
 ---
 
 ## Deine Aufgabe
 
-Wählt mindestens eines der fünf Szenarien. Der Prompt-Text beschreibt, *was* der Agent tun soll — für den Bau fehlt noch, *wie* er es tun soll. Konkretisiert für jeden gewählten Agenten mindestens:
+Wähle mindestens eines der fünf Szenarien. Der Prompt-Text beschreibt, *was* der Agent tun soll — für den Bau fehlt noch, *wie* er es tun soll. Konkretisiere für jeden gewählten Agenten mindestens:
 
 - **Quellen** — welche konkreten Plattformen, Register, Websites, APIs?
 - **Prüfintervall** — wie oft läuft der Agent (täglich, wöchentlich, ereignisgesteuert)?
@@ -116,6 +115,8 @@ Wählt mindestens eines der fünf Szenarien. Der Prompt-Text beschreibt, *was* d
 - **Schwellenwert** — ab welchem Score bzw. welcher Bewertung erfolgt die Eskalation an den Menschen?
 - **Ausgabeformat** — wie sieht die Alarmierung bzw. der Bericht konkret aus (Struktur, Felder)?
 - **Zulässige Aktionen** — was darf der Agent eigenständig tun, was braucht explizite Freigabe?
+
+Viele GPAI (OpenAI, Anthropic usw.) bieten an, Agenten entweder aus Vorlagen zu nutzen oder selbst zu erstellen. Die Vorlagen - selbst, wenn Du sie nicht nutzen möchtest - geben Dir häufig einen Eindruck der Quellen, Schnittstellen und Outputformate, die sinnvoll in einen Agenten integriert warden können.
 
 **Drei Prüffragen an euer Ergebnis:**
 
