@@ -9,7 +9,18 @@
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:'DM Sans',system-ui,sans-serif;background:var(--paper);color:var(--ink);font-size:14px;line-height:1.65;}
 a{color:var(--accent);}a:hover{text-decoration:underline;}
-@media print{body{background:white;font-size:11pt;}.no-print{display:none!important;}.uc-card{break-inside:avoid;box-shadow:none!important;}details{open:true;}details summary::after{content:none!important;}a{color:inherit;text-decoration:none;}.mx-b{min-height:auto;padding:.3rem;}.mx-b:not(.on){opacity:.35;}.eink-f textarea{border:1px solid #bbb;background:#fff;}}
+@media print{
+ @page{size:A4;margin:14mm;}
+ body{background:white;font-size:11pt;}
+ .no-print{display:none!important;}
+ .page{max-width:100%!important;width:auto!important;padding:0!important;}
+ .uc-card{break-inside:avoid;box-shadow:none!important;}
+ details.uc-card summary::after{content:none!important;}
+ a{color:inherit;text-decoration:none;}
+ .mx-b{min-height:auto;padding:.3rem;}
+ .mx-b:not(.on){opacity:.35;}
+ .eink-f textarea{border:1px solid #bbb;background:#fff;height:auto!important;min-height:auto!important;overflow:visible!important;resize:none;}
+}
 .page{max-width:860px;margin:0 auto;padding:2.5rem 2rem 5rem;}
 
 .ho-header{border-bottom:3px solid var(--ink);padding-bottom:1.4rem;margin-bottom:1.8rem;display:grid;grid-template-columns:1fr auto;gap:1rem;align-items:end;}
@@ -250,7 +261,7 @@ details.uc-card[open] summary::after{content:'▴ zu';}
 <details class="uc-card">
  <summary><span class="uc-nr">05</span><span class="uc-name">Interner Support-Bot</span></summary>
  <div class="uc-body">
-  <p>Beantwortet Fragen der Mitarbeitenden zu internen Belangen — Urlaubsanträge, Reisekosten, interne Richtlinien, Kantinenplan.</p>
+  <p>Beantwortet Fragen der Mitarbeitenden zu internen Belangen — Urlaubsantragsformulare, Reisekostenregelung, interne Richtlinien (Jubiläen, Geschenke, Firmenfeiern), Kantinenplan.</p>
   <div class="uc-row"><span class="uc-key">Datengrundlage</span><span class="uc-val">Interne Richtlinien, Intranet-Inhalte, bestehende HR-Fragensammlungen</span></div>
   <div class="uc-noref">Kein vergleichbar dokumentierter Referenzfall verfügbar.</div>
   <div class="eink">
@@ -582,6 +593,36 @@ document.addEventListener('DOMContentLoaded', function(){
     NAMEN[d.querySelector('.uc-nr').textContent.trim()] = d.querySelector('.uc-name').textContent.trim();
   });
   load();
+});
+
+/* ── Druck-Fix ──────────────────────────────────────────────────
+   1) <details> lassen sich nicht per CSS öffnen (open ist kein
+      CSS-Property) — daher vor dem Drucken per JS aufklappen und
+      danach den ursprünglichen Zustand wiederherstellen.
+   2) Die Textareas wachsen per grow() nur für die Bildschirmbreite.
+      Beim Drucken kann der Text schmaler umbrechen (mehr Zeilen) —
+      vor dem Druck deshalb Höhe auf 'auto' setzen, damit der Inhalt
+      vollständig sichtbar ist statt abgeschnitten zu werden.
+   Betrifft sowohl den Drucken-Button als auch Strg+P / Cmd+P. ──── */
+var _wasOpen = null;
+window.addEventListener('beforeprint', function(){
+  _wasOpen = [];
+  document.querySelectorAll('details.uc-card').forEach(function(d){
+    _wasOpen.push(d.open);
+    d.open = true;
+  });
+  document.querySelectorAll('.eink-f textarea').forEach(function(t){
+    t.style.height = 'auto';
+    t.style.height = (t.scrollHeight + 2) + 'px';
+  });
+});
+window.addEventListener('afterprint', function(){
+  if (!_wasOpen) return;
+  document.querySelectorAll('details.uc-card').forEach(function(d, i){
+    d.open = _wasOpen[i];
+  });
+  document.querySelectorAll('.eink-f textarea').forEach(function(t){ grow(t); });
+  _wasOpen = null;
 });
 </script>
 </body>
