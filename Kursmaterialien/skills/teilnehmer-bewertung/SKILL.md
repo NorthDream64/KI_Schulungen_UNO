@@ -65,50 +65,19 @@ Selbsteinschätzungs-Werte). Kanonisches Referenzdokument: `Sabine_Feedback.html
 
 ---
 
-## Modus 2 — `bewertung` (summativ, Projektarbeit)
+## Modus 2 — `bewertung` (Projektarbeit für die Urkunde) → ausgelagert
 
-**Zweck:** Auftragsgemäße Bewertung der Projektarbeit für die Abschlussurkunde.
+Die summative Bewertung der Projektarbeit für die Abschlussurkunde übernimmt der
+eigenständige Skill **`bewertung-projektarbeit`**: Er findet die Projektarbeits-Datei,
+bestimmt die Variante (KIB_1 / KIB_2 / KIM), wendet die offizielle Skala
+(100–81 / 80–50 / 49–0) und Gewichtung (34/33/33; KIM 40/40/20) an, hält die
+Begründungstiefe nach Punktzahl ein (81–97 knapp · > 97 und < 81 ausführlich/
+beschwerdesicher) und füllt den offiziellen Bewertungsbogen
+`Kursmaterialien/Vorlage_Projektarbeit.docx` als **docx + PDF** aus.
 
-**Realitätsrahmen (wichtig):** Die Norm des Anbieters ist ein **gutes Ergebnis
-(≥ 85 Punkte)**. Die Bewertung soll wohlwollend und reibungslos diese Norm
-abbilden. Die eigentliche Sorgfalt des Skills liegt **nicht** im feinen Ranking,
-sondern darin, jede **Abweichung nach unten beschwerdesicher zu belegen** — weil
-nur Minderbewertungen zu Beschwerden führen.
-
-**Eingabe:** die Projektarbeits-Datei im Ordner der Person. Erkennung über das
-Namensschema **`[Vorname]_[Nachname]_Projektarbeit_KLR-…`** — der Teil `_Projektarbeit_KLR-`
-ist fix, die Kursnummer danach (z. B. `KLR-295`) wechselt von Kurs zu Kurs und wird
-ignoriert (z. B. `Anca_Hurduc_Projektarbeit_KLR-295.docx`). Findet sich keine
-passende Datei, **den Dozenten fragen** — nicht raten.
-
-**Aufgaben-Maßstab (zwei Varianten):** Die gültigen Aufgabenstellungen stehen auf
-GitHub unter `Use Cases/Projektarbeit_KIB_1.md` (Unternehmen / „Head of AI") und
-`Use Cases/Projektarbeit_KIB_2.md` (Kommune). Jede Variante hat drei Teile (A/B/C).
-**Vor der Bewertung** die passende Variante bestimmen und ihre Datei als Maßstab
-lesen.
-
-**Ausgabe:** eine **ausgefüllte Kopie der offiziellen Vorlage**
-`Kursmaterialien/Vorlage_Projektarbeit.docx` (per docx-Skill befüllt) — Kopffelder,
-Name, je Aufgabe Punkte + Begründung, Gesamtpunktzahl /100, Bewertungsstufe.
-Gespeichert als
-`Arbeitsproben/[Vollname]/[Vorname]_[Nachname]_Projektarbeit_Bewertung_KLR-…docx`
-(Kursnummer wie bei der Einreichung). **Kein Entwurfs-Vermerk im Dokument.** Die
-Freigabe durch den Dozenten bleibt Pflicht — sie erfolgt außerhalb des Dokuments
-(Sichtung vor dem Hochladen), nicht über einen gedruckten Hinweis.
-
-**Offizielle Skala (max. 100 Punkte gesamt):** 100–81 „mit ausgezeichnetem Erfolg" ·
-80–50 „mit sehr gutem Erfolg" · 49–0 „erfolgreich".
-
-**Vorgehen und Rubrik:** siehe `reference/bewertungs-rubrik.md`. Kernpunkte:
-1. Variante bestimmen (KIB_1 oder KIB_2) und die drei Teile A/B/C als die drei
-   zu bewertenden Aufgaben heranziehen.
-2. Maxima: Teil A = **34**, Teil B = **33**, Teil C = **33** (Summe 100).
-3. Je Aufgabe erreichte Punktzahl + **Begründung**.
-4. **Normbereich ≈ 85–100 gesamt** (= „ausgezeichnet"), sofern die Aufgabenstellung
-   erfüllt ist.
-5. Punktabzug nur bei einem konkreten, im Dokument belegbaren Mangel — mit
-   **wörtlichem Beleg** und beschwerdesicherer Formulierung.
-6. **Gesamtpunktzahl** = Summe der Aufgaben; **Bewertungsstufe** aus der Skala oben.
+Bei einem Auftrag „Bewerte die Projektarbeit von [Name]" bzw. „Bewertung für die
+Urkunde" diesen Skill verwenden. Die Detailrubrik `reference/bewertungs-rubrik.md`
+in diesem Ordner bleibt als ergänzende Quelle erhalten.
 
 ---
 
