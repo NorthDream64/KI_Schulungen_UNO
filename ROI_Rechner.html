@@ -429,7 +429,7 @@ canvas{max-width:100%;display:block;margin:0 auto;}
   <div class="kpi-card kpi-main">
     <div class="kpi-label">ROI (3 Jahre)</div>
     <div class="kpi-value green" id="kpi_roi">—</div>
-    <div class="kpi-sub">auf umgelegte Gesamtkosten</div>
+    <div class="kpi-sub">Gewinn ÷ investiertes Kapital</div>
   </div>
   <div class="kpi-card kpi-warn">
     <div class="kpi-label">Amortisation</div>
@@ -487,7 +487,8 @@ canvas{max-width:100%;display:block;margin:0 auto;}
   wird die umgelegte CAPEX linear über die Nutzungsdauer verteilt und mit den umgelegten OPEX zusammengeführt;
   in der Amortisationsrechnung erscheint die CAPEX dagegen als Einmalbetrag in Jahr 0 (keine Doppelzählung).
   Strategische Zusatznutzen (Skalierung, Qualität, Time-to-Decision) sind nicht eingerechnet.
-  Quelle ROI-Formel: <a href="https://welt-der-bwl.de/ROI-Return-on-Investment" target="_blank">Welt der BWL — ROI-Methodik</a>
+  ROI-Formel: <strong>Gewinn &divide; investiertes Kapital &times; 100</strong> (klassische Betriebswirtschaftslehre, DuPont-Kennzahlensystem) — hier: Nettoeinsparung über 3 Jahre &divide; umgelegte CAPEX. Im Nenner steht das eingesetzte Kapital, nicht die Summe aller Kosten. Identisch mit Hand-Out Tag 5 (KI-Manager) und Tag 2 (Manager KI-Transformation).<br>
+  Quellen: <a href="https://welt-der-bwl.de/ROI-Return-on-Investment" target="_blank">Welt der BWL</a> &middot; <a href="https://www.gabler-banklexikon.de/definition/return-investment-roi-60969" target="_blank">Gabler Banklexikon</a> &middot; <a href="https://wiki.hslu.ch/controlling/DuPont-Kennzahlensystem" target="_blank">Hochschule Luzern — DuPont-Kennzahlensystem</a>
 </div>
 
 <div class="footer">
@@ -571,7 +572,11 @@ function compute(p){
   const n = 3;
   const total_benefit = n * saving_gross_yr;
   const total_cost    = capex_alloc + n * opex_alloc_yr;
-  const roi3          = total_cost > 0 ? (total_benefit - total_cost) / total_cost : 0;
+  // ROI nach klassischer BWL-Definition (DuPont): Gewinn ÷ investiertes Kapital.
+  // Gewinn      = Nettoeinsparung über n Jahre (Bruttonutzen abzüglich laufender OPEX)
+  // Investiertes Kapital = umgelegte CAPEX (NICHT die Summe aller Kosten)
+  const total_profit  = n * saving_net_yr;
+  const roi3          = capex_alloc > 0 ? total_profit / capex_alloc : 0;
 
   // ── Zeitreihe ──
   const years        = [0,1,2,3,4,5];
