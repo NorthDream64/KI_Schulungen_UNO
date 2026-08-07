@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Die Datenreise — Woran muss ich denken?</title>
+<style>
+:root{
+ --ink:#1a1a18;--paper:#f8f6f1;--card:#ffffff;--rule:#d5d0c5;--muted:#6b6b60;
+ --accent:#0a4a7a;--teal:#0a6b6b;--green:#2a5c3f;--amber:#7a4a00;--red:#6a1a1a;
+ --blue:#1a3a7a;--purple:#5a3a7a;--phase:#f2f0eb;
+ --rock:#4a5568;--snow:#e8edf2;--sky:#1F3864;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'DM Sans',system-ui,sans-serif;background:var(--paper);color:var(--ink);font-size:14px;line-height:1.6;}
+a{color:var(--accent);}a:hover{text-decoration:underline;}
+.page{max-width:940px;margin:0 auto;padding:2.2rem 1.6rem 4rem;}
+
+/* ── Kopf ─────────────────────────────────────────── */
+.hero{background:linear-gradient(160deg,var(--sky) 0%,#0a4a7a 60%,#0a6b6b 100%);color:#fff;border-radius:14px;padding:1.9rem 2rem;margin-bottom:1.6rem;position:relative;overflow:hidden;}
+.hero-eyebrow{font-family:'DM Mono',monospace;font-size:9.5px;letter-spacing:3px;text-transform:uppercase;opacity:.75;margin-bottom:.5rem;}
+.hero h1{font-family:'Playfair Display',Georgia,serif;font-size:clamp(1.6rem,4.2vw,2.3rem);line-height:1.12;margin-bottom:.5rem;}
+.hero h1 em{font-style:italic;color:#9fe0d8;}
+.hero-lead{font-size:13.5px;line-height:1.7;opacity:.95;max-width:66ch;}
+.hero-ridge{position:absolute;right:-10px;bottom:-14px;opacity:.16;}
+
+/* ── Fortschritt ──────────────────────────────────── */
+.progress-wrap{background:var(--card);border:1px solid var(--rule);border-radius:10px;padding:.9rem 1.2rem;margin-bottom:1.4rem;display:flex;align-items:center;gap:1rem;flex-wrap:wrap;}
+.progress-label{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);white-space:nowrap;}
+.progress-track{flex:1;min-width:180px;height:8px;background:var(--phase);border-radius:100px;overflow:hidden;}
+.progress-fill{height:100%;width:0;background:linear-gradient(90deg,var(--teal),var(--green));border-radius:100px;transition:width .35s ease;}
+.progress-num{font-family:'DM Mono',monospace;font-size:13px;font-weight:700;color:var(--teal);white-space:nowrap;}
+.tb{display:flex;gap:.45rem;flex-wrap:wrap;}
+.tb-btn{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.8px;text-transform:uppercase;padding:5px 12px;border:1px solid var(--rule);border-radius:5px;background:var(--card);color:var(--muted);cursor:pointer;transition:all .14s;}
+.tb-btn:hover{border-color:var(--teal);color:var(--teal);}
+
+/* ── Etappen ──────────────────────────────────────── */
+.etappe{background:var(--card);border:1px solid var(--rule);border-radius:12px;margin-bottom:1rem;overflow:hidden;border-left:5px solid var(--rule);}
+.etappe.e-base{border-left-color:var(--rock);}
+.etappe.e-1{border-left-color:var(--teal);}
+.etappe.e-2{border-left-color:var(--blue);}
+.etappe.e-3{border-left-color:var(--purple);}
+.etappe.e-4{border-left-color:var(--green);}
+.etappe.e-5{border-left-color:var(--accent);}
+.etappe.e-turn{border-left-color:var(--red);}
+.etappe.e-top{border-left-color:var(--amber);}
+
+.et-head{padding:1rem 1.3rem .8rem;border-bottom:1px solid var(--rule);}
+.et-top-row{display:flex;align-items:baseline;gap:.75rem;flex-wrap:wrap;margin-bottom:.35rem;}
+.et-marker{font-family:'DM Mono',monospace;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:3px 9px;border-radius:5px;background:var(--phase);color:var(--muted);white-space:nowrap;}
+.etappe.e-base .et-marker{background:#eceff3;color:var(--rock);}
+.etappe.e-1 .et-marker{background:rgba(10,107,107,.1);color:var(--teal);}
+.etappe.e-2 .et-marker{background:rgba(26,58,122,.1);color:var(--blue);}
+.etappe.e-3 .et-marker{background:rgba(90,58,122,.1);color:var(--purple);}
+.etappe.e-4 .et-marker{background:rgba(42,92,63,.1);color:var(--green);}
+.etappe.e-5 .et-marker{background:rgba(10,74,122,.1);color:var(--accent);}
+.etappe.e-turn .et-marker{background:rgba(106,26,26,.1);color:var(--red);}
+.etappe.e-top .et-marker{background:rgba(122,74,0,.1);color:var(--amber);}
+.et-name{font-family:'Playfair Display',Georgia,serif;font-weight:600;font-size:1.15rem;line-height:1.25;}
+.et-metapher{font-size:12px;color:var(--muted);font-style:italic;}
+.et-frage{font-size:13.5px;font-weight:600;color:var(--ink);margin-top:.45rem;}
+.et-frage::before{content:'» ';color:var(--muted);}
+.et-norm{margin-top:.55rem;display:flex;flex-wrap:wrap;gap:5px;}
+.norm-chip{font-family:'DM Mono',monospace;font-size:9.5px;padding:2px 8px;border-radius:100px;background:var(--phase);border:1px solid var(--rule);color:var(--muted);}
+.norm-chip a{color:inherit;text-decoration:none;}
+.norm-chip a:hover{color:var(--accent);}
+
+/* ── Prüfpunkte ───────────────────────────────────── */
+.checks{padding:.7rem 1.3rem 1.1rem;}
+.check{display:flex;gap:.7rem;align-items:flex-start;padding:.5rem .6rem;border-radius:7px;cursor:pointer;transition:background .12s;}
+.check:hover{background:var(--phase);}
+.check input{margin-top:.22rem;width:15px;height:15px;flex-shrink:0;cursor:pointer;accent-color:#0a6b6b;}
+.check-body{flex:1;}
+.check-q{font-size:13.5px;line-height:1.55;}
+.check-why{font-size:12px;color:var(--muted);line-height:1.5;margin-top:.15rem;}
+.check input:checked + .check-body .check-q{color:var(--muted);text-decoration:line-through;text-decoration-color:rgba(0,0,0,.25);}
+
+/* ── Hinweisboxen ─────────────────────────────────── */
+.merk{background:var(--phase);border-left:3px solid var(--amber);border-radius:0 7px 7px 0;padding:.7rem 1rem;margin:.2rem 1.3rem 1rem;font-size:12.5px;line-height:1.6;}
+.merk strong{color:var(--amber);}
+.iter{background:rgba(10,107,107,.06);border:1px solid rgba(10,107,107,.25);border-radius:10px;padding:1.1rem 1.3rem;margin:1.4rem 0;font-size:13px;line-height:1.65;}
+.iter-label{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--teal);font-weight:700;margin-bottom:.45rem;}
+
+/* ── Quellen / Fuß ────────────────────────────────── */
+.quellen{background:var(--card);border:1px solid var(--rule);border-radius:10px;padding:1.2rem 1.4rem;margin-top:1.6rem;}
+.q-title{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--rule);padding-bottom:.4rem;margin-bottom:.8rem;}
+.q-row{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:.7rem;}
+.q-note{font-size:11.5px;color:var(--muted);line-height:1.6;margin-top:.5rem;}
+.footer{margin-top:2rem;padding-top:1rem;border-top:1px solid var(--rule);font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);display:flex;justify-content:space-between;flex-wrap:wrap;gap:.5rem;}
+
+/* ── Druck ────────────────────────────────────────── */
+@media print{
+ @page{size:A4;margin:12mm;}
+ body{background:#fff;font-size:10.5pt;}
+ .no-print{display:none!important;}
+ .page{max-width:100%;padding:0;}
+ .hero{background:#1F3864!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+ .etappe{break-inside:avoid;page-break-inside:avoid;}
+ .check:hover{background:none;}
+ a{color:inherit;text-decoration:none;}
+ .check input{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+<!-- ── HERO ─────────────────────────────────────────── -->
+<div class="hero">
+ <svg class="hero-ridge" width="260" height="120" viewBox="0 0 260 120" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <path d="M0 120 L55 42 L82 70 L120 14 L158 68 L192 38 L228 78 L260 52 L260 120 Z" fill="#ffffff"/>
+  <path d="M120 14 L134 34 L106 34 Z" fill="#cfe6ff"/>
+ </svg>
+ <div class="hero-eyebrow">Arbeitshilfe · Datenmanagement · Datenqualität · Daten-Governance</div>
+ <h1>Die Datenreise —<br><em>woran muss ich denken?</em></h1>
+ <div class="hero-lead">
+  Eine Bergtour plant man nicht am Gipfel, sondern im Tal. Diese Arbeitshilfe führt in acht Etappen durch alles,
+  was rund um Daten in KI-Vorhaben bedacht werden muss — von der Frage, welche Daten überhaupt vorhanden sind,
+  bis zum Nachweis dessen, was man getan hat. Jede Etappe stellt Prüffragen, keine Vorschriften:
+  <strong>Hast du daran gedacht?</strong>
+ </div>
+</div>
+
+<!-- ── FORTSCHRITT ──────────────────────────────────── -->
+<div class="progress-wrap no-print">
+ <span class="progress-label">Durchgearbeitet</span>
+ <div class="progress-track"><div class="progress-fill" id="pfill"></div></div>
+ <span class="progress-num" id="pnum">0 / 0</span>
+ <div class="tb">
+  <button class="tb-btn" onclick="window.print()">&#128424; Drucken</button>
+  <button class="tb-btn" onclick="setAll(true)">Alle haken</button>
+  <button class="tb-btn" onclick="setAll(false)">Alle leeren</button>
+ </div>
+</div>
+
+<!-- ══ BASISLAGER ═══════════════════════════════════ -->
+<div class="etappe e-base">
+ <div class="et-head">
+  <div class="et-top-row">
+   <span class="et-marker">Aufbruch</span>
+   <span class="et-name">Das Basislager — Bestandsaufnahme</span>
+  </div>
+  <div class="et-metapher">Bevor jemand losgeht, wird gezählt, was da ist und wer mitkommt.</div>
+  <div class="et-frage">Wissen wir überhaupt, welche Daten wir haben — und wem sie gehören?</div>
+  <div class="et-norm">
+   <span class="norm-chip">ISO/IEC 42001 Kl. 6.1</span>
+   <span class="norm-chip">DSGVO Art. 30 (Verzeichnis)</span>
+   <span class="norm-chip">DAMA-DMBOK</span>
+  </div>
+ </div>
+ <div class="checks">
+  <label class="check"><input type="checkbox"><span class="check-body">
+   <span class="check-q">Gibt es ein Verzeichnis der Datenbestände, die für KI genutzt werden sollen?</span>
+   <span class="check-why">Ohne Inventar ist jede weitere Aussage über Qualität oder Schutzbedarf geraten.</span></span></label>
+  <label class="check"><input type="checkbox"><span class="check-body">
+   <span class="check-q">Hat jeder Datenbestand eine benannte verantwortliche Person — keine Abteilung, eine Person?</span>
+   <span class="check-why">Eigentümerschaft ohne Namen ist Eigentümerschaft ohne Ansprechpartner.</span></span></label>
+  <label class="check"><input type="checkbox"><span class="check-body">
+   <span class="check-q">Sind die Bestände nach Schutzbedarf klassifiziert (öffentlich / intern / vertraulich / besondere Kategorien)?</span>
+   <span class="check-why">Die Klassifizierung entscheidet später über Verschlüsselung, Zugriff und Speicherort.</span></span></label>
+  <label class="check"><input type="checkbox"><span class="check-body">
+   <span class="check-q">Wissen wir, welche Daten außerhalb der freigegebenen Systeme bewegt werden?</span>
+   <span class="check-why">Ungesteuerte KI-Nutzung ist laut Verizon DBIR 2026 die dritthäufigste nicht-böswillige Insider-Handlung; am häufigsten übertragen wird Quellcode.</span></span></label>
+  <label class="check"><input type="checkbox"><span class="check-body">
+   <span class="check-q">Ist geklärt, welche Daten wir gar nicht erst verwenden wollen?</span>
+   <span class="check-why">Die bewusste Nicht-Nutzung ist eine Governance-Entscheidung und gehört dokumentiert.</span></span></label>
+ </div>
+ <div class="merk"><strong>Bergsteigerregel:</strong> Wer im Basislager nicht zählt, merkt erst in der Wand, dass etwas fehlt.</div>
+</div>
+
+<!-- ══ ETAPPE 1 — DATEN ═════════════════════════════ -->
+<div class="etappe e-1">
+ <div class="et-head">
+  <div class="et-top-row">
+   <span class="et-marker">Etappe 1</span>
+   <span class="et-name">Daten — die Ausrüstung</span>
+  </div>
+  <div class="et-metapher">Mit schlechtem Material startet niemand eine Tour.</div>
+  <div class="et-frage">Taugt das Material für genau diesen Zweck?</div>
+  <div class="et-norm">
+   <span class="norm-chip"><a href="https://dama.org/learning-resources/dama-data-management-body-of-knowledge-dmbok/" target="_blank">DAMA-DMBOK — Data Quality</a></span>
+   <span class="norm-chip">EU AI Act Art. 10</span>
+   <span class="norm-chip">DSGVO Art. 5</span>
+  </div>
+ </div>
+ <div class="checks">
+  <label class="check"><input type="checkbox"><span class="check-body">
+   <span class="check-q">Sind die sechs Qualitätsdimensionen bewertet — Vollständigkeit, Konsistenz, Genauigkeit, Aktualität, Relevanz, Eindeutigkeit?</span>
+   <span class="check-why">Nicht alle auf 100 %, sondern: welche sind für diesen Anwendungsfall entscheidend?</span></span></label>
+  <label class="check"><input type="checkbox"><span class="check-body">
+   <span class="check-q">Ist die Herkunft jedes Datenbestands nachvollziehbar dokumentiert?</span>
+   <span class="check-why">Ohne Herkunftsnachweis lässt sich weder Lizenz noch Qualität noch Bias zurückverfolgen.</span></span></label>
+  <label class="check"><input type="checkbox"><span class="check-body">
+   <span class="check-q">Ist die Aufbereitung dokumentiert und wiederholbar — oder war es Handarbeit in einer Tabelle?</span>
+   <span class="check-why">Nicht reproduzierbare Aufbereitung heißt: Beim nächsten Training kommt ein anderes Ergebnis heraus.</span></span></label>
+  <label class="check"><input type="checkbox"><span class="check-body">
+   <span class="check-q">Nutzen wir ausschließlich Daten, die zum Entscheidungszeitpunkt tatsächlich vorliegen?</span>
+   <span class="check-why">Sonst droht Datenleckage: Im Test glänzt das Modell, in der Praxis versagt es.</span></span></label>
+  <label class="check"><input type="checkbox"><span class="check-body">
+   <span class="check-q">Sind Lizenzen, Einwilligungen und Zweckbindungen für die geplante Nutzung geprüft?</span>
+   <span class="check-why">Vorhandene Daten sind nicht automatisch nutzbare Daten — vertraglich, urheberrechtlich, datenschutzrechtlich.</span></span></label>
+  <label class="check"><input type="checkbox"><span class="check-body">
+   <span class="check-q">Ist geklärt, auf welcher Reifestufe gearbeitet wird — roh, geprüft oder aufbereitet?</span>
+   <span class="check-why">Wer direkt auf Rohdaten zugreift, spart Aufwand und kauft ein Nachvollziehbarkeitsproblem ein.</span></span></label>
+ </div>
+ <div class="merk"><strong>Merksatz:</strong> Datenqualität ist relativ zum Zweck. „Gut genug für den Jahresabschluss" ist nicht automatisch „gut genug für ein Modell".</div>
+</div>
+
+<!-- ══ ETAPPE 2 — ZUGRIFFE ══════════════════════════ -->
+<div class="etappe e-2">
+ <div class="et-head">
+  <div class="et-top-row">
+   <span class="et-marker">Etappe 2</span>
+   <span class="et-name">Zugriffe — das Seil</span>
+  </div>
+  <div class="et-metapher">Am Seil hängt nur, wer angeseilt ist. Die erste Frage ist nie „was darf jemand", sondern „wer ist das überhaupt".</div>
+  <div class="et-frage">Wer hängt am Seil — und ist das zweifelsfrei feststellbar?</div>
+  <div class="et-norm">
+   <span class="norm-chip">Authentifizierung</span>
+   <span class="norm-chip">ISO/IEC 42001 Kl. 8.3</span>
+   <span class="norm-chip">DSGVO Art. 32</span>
+  </div>
+ </div>
+ <div class="checks">
+  <label class="check"><input type="checkbox"><span class="check-body">
+   <span class="check-q">Hat jede zugreifende Person eine eindeutige, persönliche Identität — keine geteilten Konten?</span>
+   <span class="check-why">Geteilte Konten machen jede spätere Zurechnung unmöglich.</span></span></label>
+  <label class="check"><input type="checkbox"><span class="check-body">
+   <span class="check-q">Haben auch technische Nutzer — Dienste, Schnittstellen, KI-Agenten — eigene Identitäten?</span>
+   <span class="check-why">Ein Agent, der unter dem Konto seiner Entwicklerin läuft, ist im Protokoll nicht von ihr unterscheidbar.</span></span></label>
+  <label class="check"><input type="checkbox"><span class="check-body">
+   <span class="check-q">Ist mehrstufige Authentifizierung für sensible Datenbestände verpflichtend?</span>
+   <span class="check-why">Nach dem Verizon DBIR 2026 ist Schwachstellenausnutzung erstmals der häufigste Einstiegspunkt — gestohlene Zugangsdaten bleiben dicht dahinter.</span></span></label>
+  <label class="check"><input type="checkbox"><span class="check-body">
+   <span class="check-q">Gilt der Grundsatz, dass kein Zugriff allein aufgrund des Netzwerkstandorts vertraut wird?</span>
+   <span class="check-why">Zero Trust: „im internen Netz" ist kein Nachweis von Identität.</span></span></label>
+  <label class="check"><input type="checkbox"><span class="check-body">
+   <span class="check-q">Werden Identitäten beim Rollenwechsel und Austritt zuverlässig entzogen?</span>
+   <span class="check-why">Verwaiste Konten sind der stillste Weg zum Datenabfluss.</span></span></label>
+ </div>
+</div>
+
+<!-- ══ ETAPPE 3 — RECHTE ════════════════════════════ -->
+<div class="etappe e-3">
+ <div class="et-head">
+  <div class="et-top-row">
+   <span class="et-marker">Etappe 3</span>
+   <span class="et-name">Rechte — die Karabiner</span>
+  </div>
+  <div class="et-metapher">Ein Karabiner verbindet genau zwei Dinge — nicht alles mit allem.</div>
+  <div class="et-frage">Wer darf was mit welchen Daten — und wirklich nur das?</div>
+  <div class="et-norm">
+   <span class="norm-chip">Autorisierung</span>
+   <span class="norm-chip">DSGVO Art. 5 (Zweckbindung)</span>
+   <span class="norm-chip"><a href="https://www.imda.gov.sg/-/media/imda/files/about/emerging-tech-and-research/artificial-intelligence/mgf-for-agentic-ai.pdf" target="_blank">IMDA — Least Privilege</a></span>
+  </div>
+ </div>
+ <div class="checks">
+  <label class="check"><input type="checkbox"><span class="check-body">
+   <span class="check-q">Sind Rechte an Rollen geknüpft statt an Personen?</span>
+   <span class="check-why">Personengebundene Rechte wachsen über Jahre und werden nie zurückgenommen.</span></span></label>
+  <label class="check"><input type="checkbox"><span class="check-body">
+   <span class="check-q">Gilt durchgängig das Prinzip der geringsten Rechte — so wenig Zugriff wie zur Aufgabe nötig?</span>
+   <span class="check-why">Die IMDA nennt Least Privilege als zentrale Maßnahme, um die Wirkung eines Agenten auf seine Umgebung zu begrenzen.</span></span></label>
+  <label class="check"><input type="checkbox"><span class="check-body">
+   <span class="check-q">Sind Rechte technisch erzwungen — nicht nur als Anweisung im System-Prompt formuliert?</span>
+   <span class="check-why">Anweisungen im Prompt können umgangen oder schlicht nicht befolgt werden. Sie ersetzen keine Rechte auf Infrastrukturebene.</span></span></label>
+  <label class="check"><input type="checkbox"><span class="check-body">
+   <span class="check-q">Ist für jedes Werkzeug festgelegt, welche Aktionen es auslösen darf — und welche nie?</span>
+   <span class="check-why">Lesen, schreiben, nach außen wirken: Drei sehr verschiedene Rechtestufen.</span></span></label>
+  <label class="check"><input type="checkbox"><span class="check-body">
+   <span class="check-q">Ist der Zweck, für den Daten freigegeben wurden, festgehalten — und wird eine Zweckänderung neu geprüft?</span>
+   <span class="check-why">Zweckbindung ist keine Formalie, sondern die Grenze der Freigabe.</span></span></label>
+  <label class="check"><input type="checkbox"><span class="check-body">
+   <span class="check-q">Werden Rechte regelmäßig überprüft und entzogen, wenn sie nicht mehr gebraucht werden?</span>
+   <span class="check-why">Rechte-Rezertifizierung ist unbeliebt und unverzichtbar.</span></span></label>
+ </div>
+ <div class="merk"><strong>Die Verwechslung, die am meisten kostet:</strong> Authentifizierung beantwortet „wer bist du?", Autorisierung beantwortet „was darfst du?". Wer beides vermischt, hat am Ende korrekt angemeldete Nutzende mit viel zu weitreichenden Rechten.</div>
+</div>
+
+<!-- ══ ETAPPE 4 — MENSCHLICHE KONTROLLEN ════════════ -->
+<div class="etappe e-4">
+ <div class="et-head">
+  <div class="et-top-row">
+   <span class="et-marker">Etappe 4</span>
+   <span class="et-name">Menschliche Kontrollen — die Seilschaft</span>
+  </div>
+  <div class="et-metapher">Sichern heißt nicht danebenstehen. Es heißt: rechtzeitig merken, dass etwas nicht stimmt.</div>
+  <div class="et-frage">Wer sichert — und merkt er es rechtzeitig?</div>
+  <div class="et-norm">
+   <span class="norm-chip">EU AI Act Art. 14</span>
+   <span class="norm-chip">ISO/IEC 42001 Kl. 5.1</span>
+   <span class="norm-chip"><a href="https://www.imda.gov.sg/-/media/imda/files/about/emerging-tech-and-research/artificial-intelligence/mgf-for-agentic-ai.pdf" target="_blank">IMDA — Human Accountability</a></span>
+  </div>
+ </div>
+ <div class="checks">
+  <label class="check"><input type="checkbox"><span class="check-body">
+   <span class="check-q">Gibt es zu jedem Datenbestand einen Datenvertrag — Struktur, Bedeutung, Zusagen, Verantwortung?</span>
+   <span class="check-why">Das häufigste Integrationsproblem ist organisatorisch: Ein Feld ändert sich, und drei Wochen später liefert ein Modell stillschweigend Unsinn.</span></span></label>
+  <label class="check"><input type="checkbox"><span class="check-body">
+   <span class="check-q">Ist festgelegt, an welchen Punkten ein Mensch freigeben muss, bevor es weitergeht?</span>
+   <span class="check-why">Die IMDA empfiehlt menschliche Freigabe an bedeutsamen Kontrollpunkten — und die Prüfung, ob diese Freigaben wirksam sind.</span></span></label>
+  <label class="check"><input type="checkbox"><span class="check-body">
+   <span class="check-q">Ist jede irreversible Aktion an eine ausdrückliche Freigabe gebunden?</span>
+   <span class="check-why">Umkehrbar oder nicht — das ist die Trennlinie, nicht „wichtig oder unwichtig".</span></span></label>
+  <label class="check"><input type="checkbox"><span class="check-body">
+   <span class="check-q">Messen wir, wie oft Menschen die KI-Empfehlung tatsächlich verwerfen?</span>
+   <span class="check-why">Die IMDA nennt Override-Rate und Reaktionszeit ausdrücklich als Mittel gegen Automation Bias. Eine Quote nahe null ist genauso verdächtig wie eine sehr hohe.</span></span></label>
+  <label class="check"><input type="checkbox"><span class="check-body">
+   <span class="check-q">Gibt es einen Eskalationsweg, der auch dann funktioniert, wenn es unbequem wird?</span>
+   <span class="check-why">Ein Eskalationspfad, der über die Person führt, deren Projekt gestoppt würde, ist keiner.</span></span></label>
+  <label class="check"><input type="checkbox"><span class="check-body">
+   <span class="check-q">Können die Beteiligten die Ergebnisse so weit erklären, dass sie sie verantworten können?</span>
+   <span class="check-why">Wer eine Entscheidung freigibt, die er nicht erklären kann, hat nicht entschieden, sondern durchgewinkt.</span></span></label>
+ </div>
+ <div class="merk"><strong>Bergsteigerregel:</strong> Der Sichernde schaut nicht auf die Aussicht. Wer nur formal freigibt, ohne zu prüfen, ist im Protokoll dabei — und in der Sache nicht.</div>
+</div>
+
+<!-- ══ ETAPPE 5 — TECHNISCHE KONTROLLEN ═════════════ -->
+<div class="etappe e-5">
+ <div class="et-head">
+  <div class="et-top-row">
+   <span class="et-marker">Etappe 5</span>
+   <span class="et-name">Technische Kontrollen — die Fixseile</span>
+  </div>
+  <div class="et-metapher">Fixseile halten auch dann, wenn niemand zuschaut. Genau deshalb gibt es sie.</div>
+  <div class="et-frage">Was schützt die Daten, wenn niemand hinsieht?</div>
+  <div class="et-norm">
+   <span class="norm-chip">DSGVO Art. 25 &amp; 32</span>
+   <span class="norm-chip">EU AI Act Art. 15</span>
+   <span class="norm-chip">ISO/IEC 42001 Kl. 8.6</span>
+  </div>
+ </div>
+ <div class="checks">
+  <label class="check"><input type="checkbox"><span class="check-body">
+   <span class="check-q">Sind Daten bei Übertragung und Speicherung verschlüsselt?</span>
+   <span class="check-why">Die Grundlage, auf der alles Weitere aufbaut — und die am häufigsten stillschweigend vorausgesetzt wird.</span></span></label>
+  <label class="check"><input type="checkbox"><span class="check-body">
+   <span class="check-q">Werden personenbezogene Daten anonymisiert oder pseudonymisiert, wo der Zweck es zulässt?</span>
+   <span class="check-why">Was nicht identifizierbar ist, muss nicht geschützt werden. Der beste Schutz ist, die Daten gar nicht zu haben.</span></span></label>
+  <label class="check"><input type="checkbox"><span class="check-body">
+   <span class="check-q">Ist der Speicherort bekannt und mit den rechtlichen Anforderungen vereinbar?</span>
+   <span class="check-why">Datenresidenz entscheidet über anwendbares Recht und mögliche Zugriffe Dritter.</span></span></label>
+  <label class="check"><input type="checkbox"><span class="check-body">
+   <span class="check-q">Laufen automatische Qualitätsprüfungen auf den eingehenden Daten?</span>
+   <span class="check-why">Regelbasiert prüft, was du vorgibst. Musterlernend meldet, was vom Normalzustand abweicht. Beides schlägt „fällt schon jemandem auf".</span></span></label>
+  <label class="check"><input type="checkbox"><span class="check-body">
+   <span class="check-q">Sind Systeme so abgeschottet, dass ein Fehler nicht sofort alles betrifft?</span>
+   <span class="check-why">Testumgebungen, getrennte Mandanten, begrenzte Wirkungsräume — Schadensbegrenzung by Design.</span></span></label>
+  <label class="check"><input type="checkbox"><span class="check-body">
+   <span class="check-q">Ist beim Werkzeugeinsatz auf Portierbarkeit geachtet — offene Formate, zugesicherter Export?</span>
+   <span class="check-why">Seit dem EU Data Act (gilt ab 12.09.2025) ist Portabilität in weiten Teilen Rechtsanspruch; Wechselentgelte sind ab 12.01.2027 verboten.</span></span></label>
+ </div>
+</div>
+
+<!-- ══ UMKEHRPUNKT ══════════════════════════════════ -->
+<div class="etappe e-turn">
+ <div class="et-head">
+  <div class="et-top-row">
+   <span class="et-marker">Umkehrpunkt</span>
+   <span class="et-name">Betrieb &amp; Notausstieg</span>
+  </div>
+  <div class="et-metapher">Den Umkehrpunkt legt man vor dem Aufstieg fest — nicht oben, wenn das Gipfelfieber schon wirkt.</div>
+  <div class="et-frage">Wann brechen wir ab — und wer entscheidet das?</div>
+  <div class="et-norm">
+   <span class="norm-chip">EU AI Act Art. 72/73</span>
+   <span class="norm-chip">ISO/IEC 42001 Kl. 9</span>
+   <span class="norm-chip">DSGVO Art. 33 (Meldepflicht)</span>
+  </div>
+ </div>
+ <div class="checks">
+  <label class="check"><input type="checkbox"><span class="check-body">
+   <span class="check-q">Ist vorab und schriftlich festgelegt, bei welchen Werten das Vorhaben gestoppt wird?</span>
+   <span class="check-why">Der stärkste Punkt dieser ganzen Liste. Wer das Abbruchkriterium erst im Ernstfall definiert, definiert es nie.</span></span></label>
+  <label class="check"><input type="checkbox"><span class="check-body">
+   <span class="check-q">Wird überwacht, ob sich Daten oder Modellverhalten über die Zeit verschieben?</span>
+   <span class="check-why">Drift kündigt sich in den Daten an, bevor sie im Ergebnis sichtbar wird.</span></span></label>
+  <label class="check"><input type="checkbox"><span class="check-body">
+   <span class="check-q">Gibt es einen erprobten Weg zurück auf einen früheren Stand?</span>
+   <span class="check-why">Ein Rückroll-Verfahren, das noch nie geübt wurde, ist eine Hoffnung, kein Verfahren.</span></span></label>
+  <label class="check"><input type="checkbox"><span class="check-body">
+   <span class="check-q">Kann das System im Ernstfall schnell und vollständig abgeschaltet werden — und weiß jemand, wie?</span>
+   <span class="check-why">Der Not-Aus muss auch dann funktionieren, wenn die Person, die ihn gebaut hat, im Urlaub ist.</span></span></label>
+  <label class="check"><input type="checkbox"><span class="check-body">
+   <span class="check-q">Ist geregelt, wer Vorfälle wem in welcher Frist meldet?</span>
+   <span class="check-why">Meldefristen laufen ab Kenntnisnahme, nicht ab dem Moment, in dem man sich einig geworden ist.</span></span></label>
+  <label class="check"><input type="checkbox"><span class="check-body">
+   <span class="check-q">Gibt es ein Löschkonzept — und wird es tatsächlich ausgeführt?</span>
+   <span class="check-why">Aufbewahrungsfristen enden. Daten, die man nicht mehr hat, können nicht mehr abfließen.</span></span></label>
+ </div>
+ <div class="merk"><strong>Warum das die wichtigste Etappe ist:</strong> Am Berg wie im Projekt wirkt dieselbe Psychologie — je näher der Gipfel, desto größer die Bereitschaft, Warnsignale wegzuerklären. Deshalb steht der Umkehrpunkt vorher fest.</div>
+</div>
+
+<!-- ══ GIPFELBUCH ═══════════════════════════════════ -->
+<div class="etappe e-top">
+ <div class="et-head">
+  <div class="et-top-row">
+   <span class="et-marker">Gipfel</span>
+   <span class="et-name">Das Gipfelbuch — Nachweis</span>
+  </div>
+  <div class="et-metapher">Wer sich nicht einträgt, war offiziell nicht oben.</div>
+  <div class="et-frage">Können wir hinterher belegen, was wir getan haben — und warum?</div>
+  <div class="et-norm">
+   <span class="norm-chip">EU AI Act Art. 12 &amp; 17</span>
+   <span class="norm-chip">ISO/IEC 42001 Kl. 9</span>
+   <span class="norm-chip">DSGVO Art. 5 Abs. 2 (Rechenschaft)</span>
+  </div>
+ </div>
+ <div class="checks">
+  <label class="check"><input type="checkbox"><span class="check-body">
+   <span class="check-q">Werden Zugriffe, Änderungen und Entscheidungen unveränderlich protokolliert?</span>
+   <span class="check-why">Ein Protokoll, das sich nachträglich ändern lässt, ist als Nachweis wertlos.</span></span></label>
+  <label class="check"><input type="checkbox"><span class="check-body">
+   <span class="check-q">Lässt sich ein einzelnes Ergebnis nachträglich bis zu seinen Eingangsdaten zurückverfolgen?</span>
+   <span class="check-why">Das ist die eigentliche Prüfung jeder Datenarchitektur — und der Grund für getrennte Reifestufen.</span></span></label>
+  <label class="check"><input type="checkbox"><span class="check-body">
+   <span class="check-q">Sind Datenquellen, Aufbereitung und getroffene Annahmen dokumentiert?</span>
+   <span class="check-why">Annahmen, die nirgends stehen, gelten später als Fakten.</span></span></label>
+  <label class="check"><input type="checkbox"><span class="check-body">
+   <span class="check-q">Ist geprüft, welche rechtlichen Anforderungen konkret gelten — und wer das verantwortet?</span>
+   <span class="check-why">DSGVO, EU AI Act, Data Act, branchenspezifische Aufsicht: Die Kombination entscheidet, nicht die einzelne Norm.</span></span></label>
+  <label class="check"><input type="checkbox"><span class="check-body">
+   <span class="check-q">Wird die Wirksamkeit all dessen regelmäßig überprüft — nicht nur einmal zur Einführung?</span>
+   <span class="check-why">Alle Rahmenwerke verlangen fortlaufende Bewertung. Einmalige Abnahme ist keine Governance.</span></span></label>
+ </div>
+</div>
+
+<!-- ── ITERATION ────────────────────────────────────── -->
+<div class="iter">
+ <div class="iter-label">Der Rückweg — und warum es keine Einbahnstraße ist</div>
+ Die IMDA beschreibt ihre Governance-Dimensionen ausdrücklich als <strong>iterativen Prozess</strong>: Wird bei der Umsetzung oder
+ im laufenden Betrieb eine Auffälligkeit entdeckt, sollen die früheren Dimensionen erneut bewertet und die Risiken neu
+ eingeschätzt werden. Genauso funktioniert eine Tour: Wetterumschwung am Grat heißt Rückkehr ins Lager, nicht Weitergehen.
+ <br><br>
+ Praktisch: Jedes Mal, wenn am <strong>Umkehrpunkt</strong> etwas auffällt — Drift, ein Vorfall, eine auffällige Override-Rate —
+ gehört die Frage gestellt, ob die <strong>Ausrüstung</strong> noch taugt und ob die <strong>Rechte</strong> noch passen.
+ Diese Liste wird nicht einmal abgehakt, sondern wiederholt durchlaufen.
+</div>
+
+<!-- ── QUELLEN ──────────────────────────────────────── -->
+<div class="quellen">
+ <div class="q-title">Quellen &amp; normative Anker</div>
+ <div class="q-row">
+  <span class="norm-chip"><a href="https://dama.org/learning-resources/dama-data-management-body-of-knowledge-dmbok/" target="_blank">DAMA-DMBOK (2. Auflage, Rev. 2024) — herstellerneutraler Datenmanagement-Standard</a></span>
+  <span class="norm-chip"><a href="https://www.imda.gov.sg/-/media/imda/files/about/emerging-tech-and-research/artificial-intelligence/mgf-for-agentic-ai.pdf" target="_blank">IMDA Singapur — Model AI Governance Framework for Agentic AI (v1.5, 2026)</a></span>
+  <span class="norm-chip"><a href="https://eur-lex.europa.eu/eli/reg/2023/2854/oj?locale=de" target="_blank">EU Data Act — Verordnung (EU) 2023/2854</a></span>
+  <span class="norm-chip"><a href="https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=OJ:L_202401689" target="_blank">EU AI Act — Verordnung (EU) 2024/1689</a></span>
+  <span class="norm-chip"><a href="https://www.verizon.com/business/resources/reports/dbir/" target="_blank">Verizon — Data Breach Investigations Report 2026</a></span>
+  <span class="norm-chip"><a href="https://datacontract.com/" target="_blank">Data Contract Specification (offener Standard)</a></span>
+  <span class="norm-chip"><a href="https://dl.acm.org/doi/abs/10.1145/3411764.3445518" target="_blank">Sambasivan et al. (2021) — Data Cascades, ACM CHI</a></span>
+  <span class="norm-chip">ISO/IEC 42001:2023 — KI-Managementsystem</span>
+  <span class="norm-chip">DSGVO — Verordnung (EU) 2016/679</span>
+ </div>
+ <div class="q-note">
+  <strong>Einordnung:</strong> ISO/IEC 42001, DSGVO, EU AI Act und EU Data Act sind verbindliche Normen bzw. Rechtsakte (Tier 1);
+  die Artikelangaben sind Orientierungshilfen, keine Rechtsberatung. Das IMDA-Rahmenwerk ist behördliche Best-Practice-Guidance aus
+  Singapur — nicht in der EU verbindlich, aber international die derzeit ausführlichste Handreichung zu agentischer KI.
+  DAMA-DMBOK ist ein herstellerneutraler Fachstandard. Der Verizon-Bericht ist ein Branchenbericht auf breiter Datenbasis,
+  kein begutachteter Forschungsartikel. Sambasivan et al. ist die einzige begutachtete Forschungsquelle dieser Übersicht.
+  <br><br>
+  Diese Liste ersetzt keine Rechts- oder Datenschutzberatung. Sie soll verhindern, dass etwas <em>vergessen</em> wird —
+  ob es im Einzelfall <em>ausreicht</em>, beurteilen die zuständigen Fachfunktionen.
+ </div>
+</div>
+
+<div class="footer">
+ <span>Die Datenreise · Arbeitshilfe Datenmanagement, Datenqualität &amp; Daten-Governance</span>
+ <span>Ulrich Nord · August 2026</span>
+</div>
+
+</div><!-- /page -->
+
+<script>
+/* ── Fortschritt & Persistenz ───────────────────────────────────
+   Die Haken werden im Browser gespeichert, damit eine begonnene
+   Durchsicht beim erneuten Öffnen erhalten bleibt. Reine Arbeits-
+   hilfe — es werden keine Daten übertragen. ─────────────────── */
+var KEY = 'daten-bergtour-v1';
+
+function allBoxes(){
+  return Array.prototype.slice.call(document.querySelectorAll('.check input[type=checkbox]'));
+}
+
+function updateProgress(){
+  var b = allBoxes();
+  var done = b.filter(function(x){ return x.checked; }).length;
+  var pct  = b.length ? (done / b.length * 100) : 0;
+  document.getElementById('pfill').style.width = pct + '%';
+  document.getElementById('pnum').textContent  = done + ' / ' + b.length;
+}
+
+function store(){
+  try { localStorage.setItem(KEY, JSON.stringify(allBoxes().map(function(x){ return x.checked; }))); } catch(e){}
+  updateProgress();
+}
+
+function load(){
+  try {
+    var raw = localStorage.getItem(KEY);
+    if(raw){
+      var d = JSON.parse(raw), b = allBoxes();
+      if(Array.isArray(d) && d.length === b.length){
+        b.forEach(function(x,i){ x.checked = !!d[i]; });
+      }
+    }
+  } catch(e){}
+  updateProgress();
+}
+
+function setAll(v){
+  allBoxes().forEach(function(x){ x.checked = v; });
+  store();
+}
+
+document.addEventListener('DOMContentLoaded', function(){
+  allBoxes().forEach(function(x){ x.addEventListener('change', store); });
+  load();
+});
+</script>
+</body>
+</html>
