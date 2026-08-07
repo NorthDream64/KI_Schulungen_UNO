@@ -22,8 +22,16 @@ a{color:var(--accent);}
 .calc-header-top{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;}
 .calc-header-text h1{font-size:1.5rem;font-weight:700;letter-spacing:-.3px;margin-bottom:.2rem;}
 .calc-header-text p{font-size:12px;opacity:.8;letter-spacing:.5px;}
-.calc-badge{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);border-radius:8px;padding:.5rem 1rem;font-size:11px;letter-spacing:1px;text-transform:uppercase;white-space:nowrap;}
 .calc-header-lead{margin-top:1.1rem;padding-top:1rem;border-top:1px solid rgba(255,255,255,.22);font-size:13.5px;line-height:1.65;opacity:.95;}
+/* Editierbarer Fall */
+.case-btn{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.32);border-radius:8px;padding:.45rem .95rem;font-size:11px;letter-spacing:.5px;color:#fff;cursor:pointer;white-space:nowrap;font-family:inherit;transition:background .15s;}
+.case-btn:hover{background:rgba(255,255,255,.26);}
+#case_title,#case_lead{outline:none;border-radius:5px;transition:background .15s,box-shadow .15s;}
+#case_title:hover,#case_lead:hover{background:rgba(255,255,255,.07);box-shadow:0 0 0 4px rgba(255,255,255,.07);}
+#case_title:focus,#case_lead:focus{background:rgba(255,255,255,.13);box-shadow:0 0 0 4px rgba(255,255,255,.13);}
+#case_title:empty::before{content:'Titel des Falls';opacity:.45;}
+#case_lead:empty::before{content:'Beschreibe hier deinen eigenen Fall …';opacity:.45;}
+.case-hint{margin-top:.7rem;font-size:10.5px;letter-spacing:.3px;opacity:.6;font-style:italic;}
 
 /* Layout */
 .two-col{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;margin-bottom:1.2rem;}
@@ -139,8 +147,6 @@ a{color:var(--accent);}
 /* Section label */
 .section-label{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:.8rem;padding-bottom:.3rem;border-bottom:1px solid var(--rule);}
 
-/* canvas chart */
-canvas{max-width:100%;display:block;margin:0 auto;}
 
 /* break-even marker */
 .be-row{background:#fff8e1!important;}
@@ -155,14 +161,12 @@ canvas{max-width:100%;display:block;margin:0 auto;}
 <div class="calc-header">
   <div class="calc-header-top">
     <div class="calc-header-text">
-      <h1>ROI-Rechner &middot; KI-Projekt</h1>
+      <h1 id="case_title" contenteditable="true" spellcheck="false">ROI-Rechner &middot; KI-Projekt</h1>
     </div>
-    <div class="calc-badge">Interaktive Berechnung</div>
+    <button class="case-btn no-print" onclick="resetCase()" title="Beispielfall wiederherstellen">&#8634; Beispielfall</button>
   </div>
-  <div class="calc-header-lead">
-    Die Bank plant, Kreditanträge und Investitionsvorhaben einer automatischen Vorprüfung zu unterziehen.
-    Im Moment bindet dieser Prozess relativ teure menschliche Ressourcen.
-  </div>
+  <div class="calc-header-lead" id="case_lead" contenteditable="true" spellcheck="false">Die Bank plant, Kreditanträge und Investitionsvorhaben einer automatischen Vorprüfung zu unterziehen. Im Moment bindet dieser Prozess relativ teure menschliche Ressourcen.</div>
+  <div class="case-hint no-print">Titel und Fallbeschreibung sind direkt überschreibbar — klicke hinein und ersetze den Text durch deinen eigenen Fall. Die Eingaben bleiben in diesem Browser erhalten.</div>
 </div>
 
 <div class="note-box">
@@ -421,16 +425,6 @@ canvas{max-width:100%;display:block;margin:0 auto;}
 <!-- ─── KPI RESULTS ───────────────────────────────────── -->
 <div class="section-label" style="margin-bottom:.8rem;">Kernergebnisse</div>
 <div class="results-grid">
-  <div class="kpi-card kpi-main">
-    <div class="kpi-label">Jährl. Nettoeinsparung</div>
-    <div class="kpi-value green" id="kpi_saving">—</div>
-    <div class="kpi-sub">nach umgelegten OPEX</div>
-  </div>
-  <div class="kpi-card kpi-main">
-    <div class="kpi-label">ROI (3 Jahre)</div>
-    <div class="kpi-value green" id="kpi_roi">—</div>
-    <div class="kpi-sub">Gewinn ÷ investiertes Kapital</div>
-  </div>
   <div class="kpi-card kpi-warn">
     <div class="kpi-label">Amortisation</div>
     <div class="kpi-value amber" id="kpi_payback">—</div>
@@ -471,12 +465,6 @@ canvas{max-width:100%;display:block;margin:0 auto;}
   </div>
 </div>
 
-<!-- ─── CHART ─────────────────────────────────────────── -->
-<div class="section-card">
-  <div class="sec-title">Kumulierter Cashflow (€)</div>
-  <canvas id="chart" height="220"></canvas>
-</div>
-
 <!-- ─── FOOTER ────────────────────────────────────────── -->
 <div class="note-box" style="margin-top:1.2rem;">
   <strong>Methodische Hinweise</strong>
@@ -487,7 +475,8 @@ canvas{max-width:100%;display:block;margin:0 auto;}
   wird die umgelegte CAPEX linear über die Nutzungsdauer verteilt und mit den umgelegten OPEX zusammengeführt;
   in der Amortisationsrechnung erscheint die CAPEX dagegen als Einmalbetrag in Jahr 0 (keine Doppelzählung).
   Strategische Zusatznutzen (Skalierung, Qualität, Time-to-Decision) sind nicht eingerechnet.
-  ROI-Formel: <strong>Gewinn &divide; investiertes Kapital &times; 100</strong> (klassische Betriebswirtschaftslehre, DuPont-Kennzahlensystem) — hier: Nettoeinsparung über 3 Jahre &divide; umgelegte CAPEX. Im Nenner steht das eingesetzte Kapital, nicht die Summe aller Kosten. Identisch mit Hand-Out Tag 5 (KI-Manager) und Tag 2 (Manager KI-Transformation).<br>
+  ROI-Formel: <strong>Gewinn &divide; investiertes Kapital &times; 100</strong> — angewendet je Jahr, nicht kumuliert: Der ROI ist wie eine Verzinsung eine Kennzahl je Periode. Im Nenner steht das eingesetzte Kapital, nicht die Summe aller Kosten.<br>
+  <strong>Annahmen für Jahr 0 (Einführungsjahr):</strong> Die Lösung läuft in diesem Jahr noch nicht durchgängig. Angesetzt werden daher <strong>50 % der umgelegten OPEX</strong> (der laufende Betrieb startet erst im Jahresverlauf) und <strong>25 % der jährlichen Personalersparnis</strong> (Einführung, Schulung und Anlaufkurve verzögern den Nutzen). Ab Jahr 1 werden beide Werte voll angesetzt. Beide Anteile sind gesetzte Planungsannahmen, keine empirischen Werte — für einen realen Business Case sind sie durch eigene Erfahrungswerte zu ersetzen. Die Amortisationsrechnung oben arbeitet unabhängig davon mit dem vollen Netto-Monatsvorteil und fällt daher optimistischer aus als die Jahresreihe.<br>
   Quellen: <a href="https://welt-der-bwl.de/ROI-Return-on-Investment" target="_blank">Welt der BWL</a> &middot; <a href="https://www.gabler-banklexikon.de/definition/return-investment-roi-60969" target="_blank">Gabler Banklexikon</a> &middot; <a href="https://wiki.hslu.ch/controlling/DuPont-Kennzahlensystem" target="_blank">Hochschule Luzern — DuPont-Kennzahlensystem</a>
 </div>
 
@@ -562,30 +551,32 @@ function compute(p){
   const fs_delta_mo      = bl_cost_mo - fs_cost_mo;
 
   // ── Wirtschaftlichkeit ──
-  // Netto-Cashflow: Personalersparnis abzüglich laufender (umgelegter) OPEX.
+  // Gewinn je Jahr: Personalersparnis abzüglich laufender (umgelegter) OPEX.
   // CAPEX erscheint separat als Einmalbetrag in Jahr 0 — keine Doppelzählung.
   const saving_gross_yr = sv_value_mo * 12;
   const saving_net_yr   = saving_gross_yr - opex_alloc_yr;
   const net_mo          = saving_net_yr / 12;
   const payback_mo      = net_mo > 0 ? capex_alloc / net_mo : Infinity;
 
-  const n = 3;
-  const total_benefit = n * saving_gross_yr;
-  const total_cost    = capex_alloc + n * opex_alloc_yr;
-  // ROI nach klassischer BWL-Definition (DuPont): Gewinn ÷ investiertes Kapital.
-  // Gewinn      = Nettoeinsparung über n Jahre (Bruttonutzen abzüglich laufender OPEX)
-  // Investiertes Kapital = umgelegte CAPEX (NICHT die Summe aller Kosten)
-  const total_profit  = n * saving_net_yr;
-  const roi3          = capex_alloc > 0 ? total_profit / capex_alloc : 0;
-
   // ── Zeitreihe ──
+  // Jahr 0 ist das Einführungsjahr: Die Lösung läuft noch nicht das volle Jahr.
+  // Deshalb werden dort nur anteilige Werte angesetzt (Annahmen, siehe Fußnote):
+  const Y0_OPEX_ANTEIL = 0.50;  // 50 % der umgelegten OPEX
+  const Y0_NUTZEN_ANTEIL = 0.25;  // 25 % der jährlichen Personalersparnis
   const years        = [0,1,2,3,4,5];
-  const invest_disp  = years.map(y => y===0 ? capex_alloc   : 0);
-  const running_disp = years.map(y => y===0 ? 0 : opex_alloc_yr);
-  const bens         = years.map(y => y===0 ? 0 : saving_gross_yr);
+  const invest_disp  = years.map(y => y===0 ? capex_alloc : 0);
+  const running_disp = years.map(y => y===0 ? opex_alloc_yr  * Y0_OPEX_ANTEIL   : opex_alloc_yr);
+  const bens         = years.map(y => y===0 ? saving_gross_yr * Y0_NUTZEN_ANTEIL : saving_gross_yr);
   const nets         = years.map((y,i) => bens[i] - invest_disp[i] - running_disp[i]);
   const cumul        = [];
   years.forEach((y,i) => cumul.push((cumul[i-1]||0) + nets[i]));
+
+  // ── ROI je Jahr ──
+  // Klassische BWL-Definition (DuPont): Gewinn ÷ investiertes Kapital × 100.
+  // Bewusst NICHT über mehrere Jahre kumuliert: Der ROI ist — wie eine Verzinsung —
+  // eine Kennzahl je Periode. Jahr 0 ist negativ, weil investiert und erst anteilig
+  // zurückgeflossen ist; ab Jahr 1 zeigt er die jährliche Rendite auf das eingesetzte Kapital.
+  const roi_yr = nets.map(v => capex_alloc > 0 ? v / capex_alloc * 100 : 0);
 
   return {
     bl_h_gross_mo, bl_h_detail_mo, bl_h_mo, bl_cost_mo, bl_cost_case,
@@ -593,8 +584,8 @@ function compute(p){
     capex_total, opex_total_yr, capex_alloc, opex_alloc_yr,
     capex_alloc_mo, opex_alloc_mo, ki_cost_mo,
     fs_h_gross_case, fs_h_detail_case, fs_h_mo, fs_personal_mo, fs_cost_mo, fs_cost_case, fs_delta_mo,
-    saving_gross_yr, saving_net_yr, net_mo, payback_mo, roi3,
-    invest_disp, running_disp, bens, nets, cumul
+    saving_gross_yr, saving_net_yr, net_mo, payback_mo,
+    invest_disp, running_disp, bens, nets, cumul, roi_yr
   };
 }
 
@@ -657,15 +648,8 @@ function calculate(){
   renderVs('vs_case', r.bl_cost_case, r.fs_cost_case, '€/Vorgang');
 
   // ── KPIs ──
-  set('kpi_saving',  fmtEur(r.saving_net_yr));
-  set('kpi_roi',     fmtPct(r.roi3*100));
   set('kpi_payback', fmtMo(r.payback_mo));
   set('kpi_invest',  fmtEur(r.capex_alloc));
-
-  const roiEl = document.getElementById('kpi_roi');
-  roiEl.className = 'kpi-value ' + (r.roi3 >= 0.5 ? 'green' : r.roi3 >= 0 ? 'amber' : 'neg');
-  const savEl = document.getElementById('kpi_saving');
-  savEl.className = 'kpi-value ' + (r.saving_net_yr >= 0 ? 'green' : 'neg');
 
   // ── Vergleichsbalken (je Monat) ──
   const maxVal = Math.max(r.bl_cost_mo, r.fs_cost_mo, 1);
@@ -728,8 +712,9 @@ function calculate(){
     {label:'Umgelegte CAPEX (€)',                 vals:r.invest_disp,  cls:'neg', isCost:true},
     {label:'Umgelegte OPEX (€/Jahr)',             vals:r.running_disp, cls:'neg', isCost:true},
     {label:'Jährl. Personalersparnis (€)',        vals:r.bens,         cls:'pos', isCost:false},
-    {label:'Netto-Cashflow / Jahr (€)',           vals:r.nets,         cls:'',    bold:true, isNet:true},
-    {label:'Kumulierter Cashflow (€)',            vals:r.cumul,        cls:'',    bold:true, isCumul:true},
+    {label:'Gewinn / Jahr (€)',                   vals:r.nets,         cls:'',    bold:true, isNet:true},
+    {label:'Kumulierter Gewinn (€)',              vals:r.cumul,        cls:'',    bold:true, isCumul:true},
+    {label:'ROI / Jahr (%)',                      vals:r.roi_yr,       cls:'',    bold:true, isRoi:true},
   ];
   const tbody = document.getElementById('timeline_body');
   tbody.innerHTML = '';
@@ -737,95 +722,60 @@ function calculate(){
     const tr = document.createElement('tr');
     if(row.isNet) tr.className='tr-result';
     if(row.isCumul) tr.className='tr-good';
+    if(row.isRoi) tr.className='tr-result';
     tr.innerHTML = `<td style="font-weight:${row.bold?'600':'400'}">${row.label}</td>` +
       row.vals.map((val,i) => {
         const isBreak = row.isCumul && i>0 && beMonth && (i-1)*12 < beMonth && i*12 >= beMonth;
         const cls = val < 0 ? 'neg' : val > 0 ? 'pos' : '';
         const mk  = isBreak ? '<span class="be-marker">Break-even ↑</span>' : '';
-        return `<td class="${cls}">${fmtEur(val)}${mk}</td>`;
+        const txt = row.isRoi ? fmtPct(val) : fmtEur(val);
+        return `<td class="${cls}">${txt}${mk}</td>`;
       }).join('');
     tbody.appendChild(tr);
   });
-
-  drawChart(r);
 }
 
-function drawChart(r){
-  const canvas = document.getElementById('chart');
-  const ctx    = canvas.getContext('2d');
-  const W = canvas.parentElement.clientWidth - 40;
-  canvas.width  = W;
-  canvas.height = 220;
-  ctx.clearRect(0,0,W,220);
+/* ── Eigener Fall: Titel und Beschreibung sind überschreibbar ──────────
+   Die Eingaben werden im Browser gespeichert, damit sie beim erneuten
+   Öffnen der Datei erhalten bleiben. resetCase() stellt den Beispielfall
+   wieder her. Die Rechenlogik ist davon unberührt. ─────────────────── */
+const CASE_KEY = 'roi-rechner-fall-v1';
+const CASE_DEFAULT = {
+  title: 'ROI-Rechner &middot; KI-Projekt',
+  lead:  'Die Bank plant, Kreditanträge und Investitionsvorhaben einer automatischen Vorprüfung zu unterziehen. Im Moment bindet dieser Prozess relativ teure menschliche Ressourcen.'
+};
 
-  const labels = ['Jahr 0','Jahr 1','Jahr 2','Jahr 3','Jahr 4','Jahr 5'];
-  const data   = r.cumul;
-  const minVal = Math.min(0, ...data);
-  const maxVal = Math.max(0, ...data);
-  const range  = maxVal - minVal || 1;
-  const PAD    = {t:20,b:30,l:80,r:20};
-  const chartW = W - PAD.l - PAD.r;
-  const chartH = 220 - PAD.t - PAD.b;
+function caseEls(){
+  return {t: document.getElementById('case_title'), l: document.getElementById('case_lead')};
+}
 
-  const toX = i => PAD.l + (i / (labels.length-1)) * chartW;
-  const toY = v => PAD.t + chartH - ((v - minVal) / range) * chartH;
+function storeCase(){
+  const {t,l} = caseEls();
+  if(!t || !l) return;
+  try { localStorage.setItem(CASE_KEY, JSON.stringify({title:t.innerHTML, lead:l.innerHTML})); } catch(e){}
+}
 
-  const zeroY = toY(0);
-  ctx.strokeStyle = '#c0c0b8';
-  ctx.lineWidth   = 1;
-  ctx.setLineDash([4,3]);
-  ctx.beginPath(); ctx.moveTo(PAD.l,zeroY); ctx.lineTo(W-PAD.r,zeroY); ctx.stroke();
-  ctx.setLineDash([]);
+function loadCase(){
+  const {t,l} = caseEls();
+  if(!t || !l) return;
+  try {
+    const raw = localStorage.getItem(CASE_KEY);
+    if(raw){
+      const d = JSON.parse(raw);
+      if(d.title) t.innerHTML = d.title;
+      if(d.lead)  l.innerHTML = d.lead;
+    }
+  } catch(e){}
+  [t,l].forEach(el => el.addEventListener('input', storeCase));
+}
 
-  ctx.beginPath();
-  ctx.moveTo(toX(0), toY(data[0]));
-  data.forEach((v,i) => ctx.lineTo(toX(i), toY(v)));
-  ctx.lineTo(toX(data.length-1), PAD.t+chartH);
-  ctx.lineTo(toX(0), PAD.t+chartH);
-  ctx.closePath();
-  const grad = ctx.createLinearGradient(0,PAD.t,0,PAD.t+chartH);
-  grad.addColorStop(0,'rgba(42,92,63,.3)');
-  grad.addColorStop(1,'rgba(42,92,63,.02)');
-  ctx.fillStyle = grad;
-  ctx.fill();
-
-  ctx.beginPath();
-  ctx.strokeStyle = '#2a5c3f';
-  ctx.lineWidth   = 2.5;
-  data.forEach((v,i) => i===0 ? ctx.moveTo(toX(i),toY(v)) : ctx.lineTo(toX(i),toY(v)));
-  ctx.stroke();
-
-  data.forEach((v,i) => {
-    ctx.beginPath();
-    ctx.arc(toX(i), toY(v), 5, 0, Math.PI*2);
-    ctx.fillStyle = v < 0 ? '#c0392b' : '#2a5c3f';
-    ctx.fill();
-    ctx.strokeStyle = 'white'; ctx.lineWidth = 1.5; ctx.stroke();
-  });
-
-  ctx.fillStyle = '#555';
-  ctx.font      = '11px Arial';
-  ctx.textAlign = 'center';
-  labels.forEach((l,i) => ctx.fillText(l, toX(i), 220-8));
-
-  ctx.textAlign = 'right';
-  const steps = 4;
-  for(let s=0; s<=steps; s++){
-    const val = minVal + (range/steps)*s;
-    const y   = toY(val);
-    ctx.fillStyle = '#888';
-    ctx.fillText(fmtEur(Math.round(val/1000)*1000), PAD.l-6, y+4);
-    ctx.strokeStyle='#eee'; ctx.lineWidth=1;
-    ctx.beginPath(); ctx.moveTo(PAD.l,y); ctx.lineTo(W-PAD.r,y); ctx.stroke();
-  }
-
-  ctx.fillStyle = '#333';
-  ctx.font      = 'bold 11px Arial';
-  data.forEach((v,i) => {
-    ctx.textAlign = 'center';
-    const offset = v >= 0 ? -10 : 16;
-    ctx.fillText(fmtEur(Math.round(v/1000)*1000), toX(i), toY(v)+offset);
-  });
+function resetCase(){
+  const {t,l} = caseEls();
+  if(!t || !l) return;
+  if(!confirm('Titel und Fallbeschreibung auf den Beispielfall zurücksetzen?')) return;
+  t.innerHTML = CASE_DEFAULT.title;
+  l.innerHTML = CASE_DEFAULT.lead;
+  try { localStorage.removeItem(CASE_KEY); } catch(e){}
 }
 
 function resetDefaults(){
@@ -842,6 +792,9 @@ function resetDefaults(){
 // live recalc on any input change
 document.querySelectorAll('input').forEach(el =>
   el.addEventListener('input', calculate));
+
+// gespeicherten eigenen Fall laden (falls vorhanden)
+loadCase();
 
 // initial calculation
 calculate();
