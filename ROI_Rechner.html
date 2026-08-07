@@ -476,7 +476,7 @@ a{color:var(--accent);}
   in der Amortisationsrechnung erscheint die CAPEX dagegen als Einmalbetrag in Jahr 0 (keine Doppelzählung).
   Strategische Zusatznutzen (Skalierung, Qualität, Time-to-Decision) sind nicht eingerechnet.
   ROI-Formel: <strong>Gewinn &divide; investiertes Kapital &times; 100</strong> — angewendet je Jahr, nicht kumuliert: Der ROI ist wie eine Verzinsung eine Kennzahl je Periode. Im Nenner steht das eingesetzte Kapital, nicht die Summe aller Kosten.<br>
-  <strong>Annahmen für Jahr 0 (Einführungsjahr):</strong> Die Lösung läuft in diesem Jahr noch nicht durchgängig. Angesetzt werden daher <strong>50 % der umgelegten OPEX</strong> (der laufende Betrieb startet erst im Jahresverlauf) und <strong>25 % der jährlichen Personalersparnis</strong> (Einführung, Schulung und Anlaufkurve verzögern den Nutzen). Ab Jahr 1 werden beide Werte voll angesetzt. Beide Anteile sind gesetzte Planungsannahmen, keine empirischen Werte — für einen realen Business Case sind sie durch eigene Erfahrungswerte zu ersetzen. Die Amortisationsrechnung oben arbeitet unabhängig davon mit dem vollen Netto-Monatsvorteil und fällt daher optimistischer aus als die Jahresreihe.<br>
+  <strong>Annahmen für Jahr 0 (Einführungsjahr):</strong> Die Lösung läuft in diesem Jahr noch nicht durchgängig. Angesetzt werden daher <strong>50 % der umgelegten OPEX</strong> (der laufende Betrieb startet erst im Jahresverlauf) und <strong>25 % der jährlichen Personalersparnis</strong> (Einführung, Schulung und Anlaufkurve verzögern den Nutzen). Ab Jahr 1 werden beide Werte voll angesetzt. Beide Anteile sind gesetzte Planungsannahmen, keine empirischen Werte — für einen realen Business Case sind sie durch eigene Erfahrungswerte zu ersetzen. Die Amortisationsrechnung oben arbeitet unabhängig davon mit der vollen monatlichen Nettoersparnis (Personalersparnis abzüglich umgelegter OPEX) und fällt daher optimistischer aus als die Jahresreihe.<br>
   Quellen: <a href="https://welt-der-bwl.de/ROI-Return-on-Investment" target="_blank">Welt der BWL</a> &middot; <a href="https://www.gabler-banklexikon.de/definition/return-investment-roi-60969" target="_blank">Gabler Banklexikon</a> &middot; <a href="https://wiki.hslu.ch/controlling/DuPont-Kennzahlensystem" target="_blank">Hochschule Luzern — DuPont-Kennzahlensystem</a>
 </div>
 
@@ -555,6 +555,8 @@ function compute(p){
   // CAPEX erscheint separat als Einmalbetrag in Jahr 0 — keine Doppelzählung.
   const saving_gross_yr = sv_value_mo * 12;
   const saving_net_yr   = saving_gross_yr - opex_alloc_yr;
+  // net_mo wird nicht mehr angezeigt (stiftete im Balkenblock Verwirrung mit
+  // "Differenz je Monat"), dient aber weiterhin als Nenner der Amortisation.
   const net_mo          = saving_net_yr / 12;
   const payback_mo      = net_mo > 0 ? capex_alloc / net_mo : Infinity;
 
@@ -670,9 +672,6 @@ function calculate(){
     <div class="bar-row"><span class="bar-label" style="font-weight:700;color:var(--green)">Differenz je Monat</span>
       <div class="bar-track"><div class="bar-fill save" style="width:${barPct(Math.abs(r.fs_delta_mo))}%">&nbsp;</div></div>
       <span class="bar-val pos">${fmtEur(r.fs_delta_mo)}</span></div>
-    <div class="bar-row"><span class="bar-label" style="font-weight:700;color:var(--blue)">Netto-Monatsvorteil <span style="font-weight:400;color:var(--muted);font-size:11px;">(ohne CAPEX)</span></span>
-      <div style="flex:1"></div>
-      <span class="bar-val pos" style="font-size:14px;font-weight:700">${fmtEur(r.net_mo)}/Mo.</span></div>
   `;
 
   // ── Stunden-Vergleich (Jahr) ──
