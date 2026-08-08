@@ -50,6 +50,34 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--paper);color:va
 .abgr strong{color:var(--ink);}
 .abgr-t{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1.6px;text-transform:uppercase;color:var(--muted);margin-bottom:.45rem;}
 
+/* ── Reiter: Übersicht / Test ─────────────────────── */
+.tabs{display:flex;gap:6px;margin-bottom:1rem;border-bottom:1px solid var(--rule);flex-wrap:wrap;}
+.tab{font-family:'DM Mono',monospace;font-size:10.5px;letter-spacing:1.3px;text-transform:uppercase;padding:9px 16px;border:1px solid var(--rule);border-bottom:none;border-radius:7px 7px 0 0;background:var(--phase);color:var(--muted);cursor:pointer;transition:.14s;margin-bottom:-1px;}
+.tab:hover{color:var(--ink);}
+.tab.aktiv{background:var(--card);color:var(--ink);font-weight:700;box-shadow:inset 0 3px 0 var(--sky);}
+.tab-hint{margin-left:auto;align-self:center;font-size:11.5px;color:var(--muted);padding-bottom:6px;}
+.view{display:none;}
+.view.aktiv{display:block;}
+/* ── Offenes Canvas: alle Lösungen ────────────────── */
+.cv-nav{display:flex;flex-wrap:wrap;gap:6px;flex:1;min-width:200px;}
+.cv-nav a{display:flex;align-items:center;gap:.4rem;font-size:11.5px;text-decoration:none;color:var(--ink);padding:3px 9px;border:1px solid var(--rule);border-radius:99px;background:var(--card);transition:.14s;}
+.cv-nav a:hover{border-color:var(--ink);background:var(--phase);}
+.cv-nav .dot{width:9px;height:9px;border-radius:50%;flex-shrink:0;}
+.cv-fam{background:var(--card);border:1px solid var(--rule);border-top-width:4px;border-top-style:solid;border-radius:10px;padding:.85rem 1.05rem 1rem;margin-bottom:.85rem;scroll-margin-top:14px;}
+.cv-kopf{display:flex;flex-wrap:wrap;align-items:baseline;gap:.55rem;margin-bottom:.2rem;}
+.cv-buchst{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:1.6px;font-weight:700;}
+.cv-name{font-family:'Playfair Display',Georgia,serif;font-size:17px;font-weight:600;line-height:1.2;}
+.cv-frage{font-size:13px;font-weight:600;color:var(--accent);}
+.cv-txt{font-size:11.5px;line-height:1.55;color:var(--muted);max-width:118ch;margin-bottom:.7rem;}
+.cv-karten{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;}
+@media(max-width:1180px){.cv-karten{grid-template-columns:repeat(3,minmax(0,1fr));}}
+@media(max-width:820px){.cv-karten{grid-template-columns:repeat(2,minmax(0,1fr));}}
+@media(max-width:560px){.cv-karten{grid-template-columns:1fr;}}
+.cv-k{border:1px solid var(--rule);border-left-width:3px;border-radius:7px;padding:.55rem .7rem;background:var(--paper);display:flex;flex-direction:column;break-inside:avoid;}
+.cv-nr{font-family:'DM Mono',monospace;font-size:8.5px;letter-spacing:1.3px;color:var(--muted);margin-bottom:.15rem;}
+.cv-t{font-family:'Playfair Display',Georgia,serif;font-size:13px;font-weight:600;line-height:1.25;margin-bottom:.3rem;}
+.cv-q{font-size:11.5px;line-height:1.45;font-weight:500;margin-bottom:.35rem;}
+.cv-a{font-size:11px;line-height:1.5;color:var(--muted);border-top:1px solid var(--rule);padding-top:.3rem;margin-top:auto;}
 /* ── Familienlegende ──────────────────────────────── */
 .legend{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:1.1rem;}
 .leg{display:flex;align-items:center;gap:.4rem;font-size:11.5px;padding:4px 10px;border:1px solid var(--rule);border-radius:99px;background:var(--card);cursor:pointer;transition:.14s;user-select:none;}
@@ -112,6 +140,10 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--paper);color:va
  .vorn{border:1px solid #bbb;margin-bottom:2px;}
  .hint{transform:none;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
  .v-hint{display:none;}
+ /* Übersicht: 2 Karten je Zeile, Familienblock nicht trennen */
+ .cv-karten{grid-template-columns:repeat(2,1fr);gap:5px;}
+ .cv-fam{break-inside:avoid;page-break-inside:avoid;border:1px solid #bbb;border-top-width:3px;border-top-style:solid;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+ .cv-k{background:#fff;border-color:#ccc;}
 }
 </style>
 </head>
@@ -120,13 +152,19 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--paper);color:va
 
 <div class="hero">
  <h1>Das Daten-Quartett</h1>
- <p>45 Karten, 9 Familien, 5 Karten je Familie. Vorne steht eine Frage, hinten die Familie und die Antwort.
- Die Karten liegen zufällig — wie bei Memory.</p>
- <div class="rule"><strong>Ziel:</strong> Finde alle fünf Karten einer Familie. Jede aufgedeckte Karte nennt ihre Geschwister — wer eine hat, weiß, was ihm fehlt.</div>
+ <p>45 Karten, 9 Familien, 5 Karten je Familie. Zwei Ansichten auf dasselbe Material:
+ die <strong>Übersicht</strong> zeigt alle Karten offen und geordnet, der <strong>Test</strong> legt sie verdeckt und gemischt aus.</p>
+ <div class="rule"><strong>Reihenfolge:</strong> Erst die Übersicht lesen — sie ist die Landkarte. Dann im Test prüfen, was hängen geblieben ist: alle fünf Karten einer Familie finden, jede aufgedeckte Karte nennt ihre Geschwister.</div>
 </div>
 
-<details class="erkl" open>
- <summary>Die neun Familien — was gehört wohin?</summary>
+<div class="tabs no-print">
+ <button class="tab aktiv" id="tab-canvas" onclick="modus('canvas')">① Übersicht · alle 45 Karten</button>
+ <button class="tab" id="tab-test" onclick="modus('test')">② Test · das Quartett</button>
+ <span class="tab-hint">Erst lesen, dann spielen.</span>
+</div>
+
+<details class="erkl">
+ <summary>Der Schnitt der Familien — und die drei Abgrenzungen, die Mühe machen</summary>
  <div class="erkl-body">
   <p class="erkl-intro">Die Familien sind nach <strong>zwei Fragen</strong> geschnitten: <em>Wann</em> im Lebenszyklus greift die Maßnahme und <em>wodurch</em> wirkt sie?</p>
 
@@ -187,10 +225,35 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--paper);color:va
  </div>
 </details>
 
+<!-- ══ Ansicht 1: offenes Canvas ══════════════════════ -->
+<div class="view aktiv" id="view-canvas">
+
+ <div class="bar no-print">
+  <span class="bar-label">Springe zu</span>
+  <div class="cv-nav" id="cvnav"></div>
+  <button class="btn" onclick="modus('test')">▶ Zum Test</button>
+  <button class="btn" onclick="window.print()">🖨 Drucken</button>
+ </div>
+
+ <div id="canvas"></div>
+
+ <div class="info">
+  <h3>Wozu diese Übersicht</h3>
+  <p><strong>Die Landkarte vor dem Gelände.</strong> Neun Familien, je fünf Karten — hier offen, geordnet und mit Antwort. Wer das System einmal im Zusammenhang gesehen hat, erkennt im Test die Zugehörigkeit einer Karte, statt zu raten.</p>
+  <p><strong>Als Arbeitsblatt.</strong> Jede Gruppe nimmt eine Familie und bewertet deren fünf Karten für den eigenen Betrieb: erfüllt, teilweise, offen. Am Ende steht sichtbar, welche Familie im Haus die schwächsten Karten hat.</p>
+  <p><strong>Als Nachschlagewerk.</strong> Über „Drucken" entsteht ein A4-Handout mit allen 45 Karten, das die Teilnehmenden mitnehmen können.</p>
+ </div>
+
+</div>
+
+<!-- ══ Ansicht 2: das Quartett als Test ═══════════════ -->
+<div class="view" id="view-test">
+
 <div class="bar no-print">
  <span class="bar-label">Vollständige Familien</span>
  <div class="track"><div class="fill" id="fill"></div></div>
  <span class="num" id="num">0 / 9</span>
+ <button class="btn" onclick="modus('canvas')">◀ Zur Übersicht</button>
  <button class="btn" onclick="mischen()">↻ Neu mischen</button>
  <button class="btn" onclick="alle(true)">Alle aufdecken</button>
  <button class="btn" onclick="alle(false)">Alle zudecken</button>
@@ -205,8 +268,14 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--paper);color:va
  <h3>So wird gespielt</h3>
  <p><strong>Familien sammeln.</strong> Karten anklicken und aufdecken. Sobald alle fünf Karten einer Familie offen liegen, wird die Familie in der Legende grün markiert. Über die Legende lassen sich alle Karten einer Familie hervorheben.</p>
  <p><strong>Die fehlende Karte.</strong> Vier Karten einer Familie offen lassen, die fünfte suchen — jede Rückseite nennt ihre Geschwister.</p>
- <p><strong>Selbsteinschätzung.</strong> Jede Gruppe nimmt eine Familie und bewertet die fünf Karten für den eigenen Betrieb: erfüllt, teilweise, offen. Am Ende steht sichtbar, welche Familie im Haus die schwächsten Karten hat.</p>
- <p style="color:var(--muted);font-size:11.5px;">Quellen: DAMA-DMBOK · IMDA Singapur (Model AI Governance Framework for Agentic AI) · EU Data Act (VO 2023/2854) · EU AI Act (VO 2024/1689) · DSGVO · ISO/IEC 42001 · Verizon DBIR 2026 · Data Contract Specification · Sambasivan et al. (ACM CHI 2021). Artikelangaben sind Orientierung, keine Rechtsberatung.</p>
+ <p><strong>Zurück zur Landkarte.</strong> Wenn eine Familie hakt, über „Zur Übersicht" nachschlagen — der Test ist zum Lernen da, nicht zum Prüfen.</p>
+</div>
+
+</div><!-- /view-test -->
+
+<div class="info">
+ <h3>Quellen</h3>
+ <p style="color:var(--muted);font-size:11.5px;">DAMA-DMBOK · IMDA Singapur (Model AI Governance Framework for Agentic AI) · EU Data Act (VO 2023/2854) · EU AI Act (VO 2024/1689) · DSGVO · ISO/IEC 42001 · Verizon DBIR 2026 · Data Contract Specification · Sambasivan et al. (ACM CHI 2021). Artikelangaben sind Orientierung, keine Rechtsberatung.</p>
 </div>
 
 <div class="footer">
@@ -219,15 +288,33 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--paper);color:va
 <script>
 /* ── Familien ─────────────────────────────────────── */
 var FAMILIEN = {
-  A:{name:'Bestandsaufnahme',      farbe:'#5a6472'},
-  B:{name:'Datenqualität',         farbe:'#0a6b6b'},
-  C:{name:'Datenrecht',            farbe:'#7a4a00'},
-  D:{name:'Zugriffe',              farbe:'#1a3a7a'},
-  E:{name:'Rechte',                farbe:'#5a3a7a'},
-  F:{name:'Menschliche Kontrollen',farbe:'#2a5c3f'},
-  G:{name:'Technische Kontrollen', farbe:'#0a4a7a'},
-  H:{name:'Betrieb & Notausstieg', farbe:'#6a1a1a'},
-  I:{name:'Nachweis',              farbe:'#8a6a10'}
+  A:{name:'Bestandsaufnahme',      farbe:'#5a6472',
+     frage:'Weiß ich überhaupt, was ich habe?',
+     txt:'Alles, was <em>vor</em> jeder inhaltlichen Bewertung kommt: Welche Bestände gibt es, wem gehören sie, wie sensibel sind sie, was läuft unkontrolliert nebenher.'},
+  B:{name:'Datenqualität',         farbe:'#0a6b6b',
+     frage:'Taugt das Material?',
+     txt:'Eigenschaften der Daten selbst — messbar, technisch prüfbar, unabhängig davon, ob man sie verwenden darf.'},
+  C:{name:'Datenrecht',            farbe:'#7a4a00',
+     frage:'Darf ich das überhaupt?',
+     txt:'Rechtliche Zulässigkeit — Lizenz, Zweck, Ort, Frist, Auftragsverhältnis. Vollkommen unabhängig von der Qualität.'},
+  D:{name:'Zugriffe',              farbe:'#1a3a7a',
+     frage:'Wer ist das?',
+     txt:'Authentifizierung: Identität feststellen und aktuell halten — für Menschen wie für Dienste und Agenten.'},
+  E:{name:'Rechte',                farbe:'#5a3a7a',
+     frage:'Was darf diese Identität?',
+     txt:'Autorisierung: Umfang und Grenzen der Berechtigung. Setzt D voraus — ohne Identität keine Berechtigung.'},
+  F:{name:'Menschliche Kontrollen',farbe:'#2a5c3f',
+     frage:'Wo muss jemand hinschauen?',
+     txt:'Maßnahmen, deren Wirkung davon abhängt, dass ein Mensch etwas tut — freigibt, prüft, eskaliert, zusagt.'},
+  G:{name:'Technische Kontrollen', farbe:'#0a4a7a',
+     frage:'Was hält ohne Zutun?',
+     txt:'Maßnahmen, die maschinell erzwungen werden und auch dann wirken, wenn niemand hinsieht.'},
+  H:{name:'Betrieb & Notausstieg', farbe:'#6a1a1a',
+     frage:'Was tun, wenn es schiefgeht?',
+     txt:'Greift erst im laufenden Betrieb und bei Abweichung: erkennen, zurücknehmen, abschalten, melden.'},
+  I:{name:'Nachweis',              farbe:'#8a6a10',
+     frage:'Kann ich es hinterher belegen?',
+     txt:'Dient nicht dem Schutz, sondern der Belegbarkeit gegenüber Dritten — Aufsicht, Audit, Gericht, eigene Revision.'}
 };
 
 /* ── 45 Karten ────────────────────────────────────── */
@@ -404,6 +491,59 @@ function hervorheben(f, an){
   });
 }
 
+/* ── Offenes Canvas: alle Lösungen, nach Familie ──── */
+function canvasZeichnen(){
+  var c   = document.getElementById('canvas');
+  var nav = document.getElementById('cvnav');
+  c.innerHTML = ''; nav.innerHTML = '';
+
+  Object.keys(FAMILIEN).forEach(function(f){
+    var fam = FAMILIEN[f];
+
+    var a = document.createElement('a');
+    a.href = '#fam-' + f;
+    a.innerHTML = '<span class="dot" style="background:' + fam.farbe + '"></span>' +
+                  '<span>' + f + ' · ' + fam.name + '</span>';
+    nav.appendChild(a);
+
+    var box = document.createElement('div');
+    box.className = 'cv-fam';
+    box.id = 'fam-' + f;
+    box.style.borderTopColor = fam.farbe;
+
+    var html = '<div class="cv-kopf">' +
+                 '<span class="cv-buchst" style="color:' + fam.farbe + '">' + f + '</span>' +
+                 '<span class="cv-name">' + fam.name + '</span>' +
+                 '<span class="cv-frage">' + fam.frage + '</span>' +
+               '</div>' +
+               '<div class="cv-txt">' + fam.txt + '</div>' +
+               '<div class="cv-karten">';
+
+    KARTEN.filter(function(k){ return k.f === f; }).forEach(function(k){
+      html += '<div class="cv-k" style="border-left-color:' + fam.farbe + '">' +
+                '<div class="cv-nr">' + f + k.n + '</div>' +
+                '<div class="cv-t">' + k.t + '</div>' +
+                '<div class="cv-q">' + k.q + '</div>' +
+                '<div class="cv-a">' + k.a + '</div>' +
+              '</div>';
+    });
+
+    box.innerHTML = html + '</div>';
+    c.appendChild(box);
+  });
+}
+
+/* ── Ansicht umschalten ───────────────────────────── */
+function modus(m){
+  var istCanvas = (m === 'canvas');
+  document.getElementById('view-canvas').classList.toggle('aktiv',  istCanvas);
+  document.getElementById('view-test'  ).classList.toggle('aktiv', !istCanvas);
+  document.getElementById('tab-canvas' ).classList.toggle('aktiv',  istCanvas);
+  document.getElementById('tab-test'   ).classList.toggle('aktiv', !istCanvas);
+  window.scrollTo(0, 0);
+}
+
+canvasZeichnen();
 mischen();
 </script>
 </body>
