@@ -266,17 +266,17 @@ b: [
     src: 'DAMA International – DMBOK · dama.org/cpages/body-of-knowledge · ISO/IEC 42001:2023, Kl. 8.4 · iso.org/standard/81230.html'
   },
   {
-    sc: 'Du fragst die KI-Managerin, welche KI-Dienste für das dokumentenbasierte Screening-System konkret eingesetzt werden sollen.',
-    q: 'Welche Aussage(n) zu sinnvoll einzusetzenden Azure-Diensten für ein dokumentenbasiertes KI-Screening-System ist oder sind korrekt?',
+    sc: 'Der IT-Leiter legt den Datenarchitekturplan vor — du willst verstehen, auf welcher Qualitätsstufe die Modelldaten vorliegen.',
+    q: 'Welche Aussage(n) zur Medaillon-Architektur (Bronze · Silber · Gold) als Datenintegrationsmuster ist oder sind korrekt?',
     opts: [
-      'Azure Document Intelligence: für das automatische Parsen und Strukturieren von PDF-Dokumenten',
-      'Azure OpenAI Service: für das NLP-basierte Scoring von Texten und die Erstellung von Zusammenfassungen',
-      'Azure AI Search: für semantische Ähnlichkeitssuche zwischen eingehenden Dokumenten und historischen Referenzdaten',
-      'Azure Active Directory: als primäres Modell für das inhaltliche Scoring von Dokumenten'
+      'Die Bronze-Schicht speichert Rohdaten unverändert, wie sie ankommen — das macht jede spätere Bereinigung nachvollziehbar und rückholbar',
+      'Die Silber-Schicht ist die Arbeitsgrundlage für Modelle: Fehler korrigiert, Formate vereinheitlicht, Dubletten entfernt — die sechs DAMA-Qualitätsdimensionen greifen hier',
+      'Die Gold-Schicht enthält zweckoptimierte, verdichtete Daten — Modelle und Berichte greifen hierauf zu, nicht auf Rohdaten',
+      'Modelle sollten direkt auf die Bronze-Schicht zugreifen, um keinen Informationsverlust durch Transformation zu riskieren'
     ],
     correct: [0,1,2],
-    exp: 'Azure Document Intelligence (PDF-Parsing), Azure OpenAI (NLP-Scoring) und Azure AI Search (Ähnlichkeitssuche) sind alle korrekte und komplementäre Dienste für ein Screening-System. Azure Active Directory ist ein Identitäts- und Zugriffsmanagement-Dienst — kein KI-Scoring-Tool.',
-    src: 'Azure Document Intelligence · azure.microsoft.com/de-de/products/ai-services/ai-document-intelligence · Azure OpenAI · azure.microsoft.com/de-de/products/ai-services/openai-service'
+    exp: 'Medaillon-Architektur (Bronze/Silber/Gold) ist das von Microsoft und Databricks empfohlene Standardmuster. Bronze = roh und unveränderlich (Fehler bleiben rückverfolgbar). Silber = geprüft und bereinigt (Modell-Arbeitsgrundlage). Gold = zweckoptimiert (Reports und Modelle greifen hier zu). Direkter Modellzugriff auf Bronze-Rohdaten umgeht Qualitätsprüfungen und schafft ein Nachvollziehbarkeitsproblem.',
+    src: 'Microsoft Learn — Medaillon-Architektur · learn.microsoft.com/en-us/azure/databricks/lakehouse/medallion · Microsoft Learn — Medaillon in Fabric · learn.microsoft.com/en-us/fabric/onelake/onelake-medallion-lakehouse-architecture'
   },
   {
     sc: 'Du erhältst das erste Screening-Ergebnis des KI-Systems. Das Modell hat drei Einreichungen mit einem niedrigen Score bewertet — obwohl du zwei davon als interessant eingestuft hättest.',
@@ -292,17 +292,17 @@ b: [
     src: 'DeepLearning.AI – Machine Learning Specialization · deeplearning.ai · AlgorithmWatch · algorithmwatch.org · DAMA DMBOK · dama.org'
   },
   {
-    sc: 'Im Steuerungskomitee wird gefragt, warum jede KI-Empfehlung manuell geprüft werden muss und nicht automatisiert abgelehnt werden kann.',
-    q: 'Welche Aussage(n) begründet, warum Human-in-the-Loop bei einem KI-Screening-System zwingend erforderlich ist?',
+    sc: 'Die Marktdaten-Abteilung will Daten ohne schriftliche Vereinbarung an das KI-Screening-System liefern — intern soll das formlos geregelt werden.',
+    q: 'Welche Aussage(n) zum Datenvertrag zwischen liefernder und nutzender Stelle ist oder sind korrekt?',
     opts: [
-      'DSGVO Art. 22: Entscheidungen mit erheblichen Auswirkungen auf natürliche Personen dürfen nicht ausschließlich automatisiert getroffen werden',
-      'Dokumentationspflichten: Entscheidungen müssen von einer verantwortlichen Person nachvollziehbar dokumentiert und freigegeben werden',
-      'Qualitätssicherung: KI-Modelle können Bias aus Trainingsdaten reproduzieren — die menschliche Prüfung ist das letzte Sicherheitsnetz vor Fehlentscheidungen',
-      'EU AI Act: Human-in-the-Loop ist für alle KI-Systeme ohne Ausnahme vorgeschrieben, unabhängig von der Risikostufe'
+      'Ein Datenvertrag hält mindestens vier Punkte fest: Struktur (Felder, Typen, Wertebereiche), Bedeutung (fachliche Semantik), Zusagen (Aktualität, Verfügbarkeit) und Verantwortung (Eigentümer, Änderungsinfo)',
+      'Das häufigste Integrationsproblem ist kein technisches: Ein Fachbereich ändert ein Feld, das Modell liefert stillschweigend falsche Ergebnisse — der Datenvertrag ist die organisatorische Antwort',
+      'Datenverträge sind nur bei externen Lieferanten nötig — intern herrscht genug Vertrauen für formlose Absprachen',
+      'Empfohlen wird ein schlanker Einstieg: Struktur, Eigentümer, ein bis zwei Zusagen und zwei bis drei Qualitätsregeln — der Vertrag muss von beiden Seiten haltbar sein'
     ],
-    correct: [0,1,2],
-    exp: 'DSGVO Art. 22, Dokumentationspflichten und Qualitätssicherung gegen Modell-Bias sind alle valide Begründungen. Der EU AI Act schreibt Human-in-the-Loop nicht für alle Systeme vor — nur für Hochrisiko-KI nach Anhang III und bestimmte Systemkategorien. Ein allgemeines „immer" ist falsch.',
-    src: 'DSGVO Art. 22 · gdpr-info.eu/art-22-gdpr/ · KAGB § 67 ff. · gesetze-im-internet.de/kagb/ · EU AI Act Art. 14 · eur-lex.europa.eu/legal-content/EN/TXT/?uri=OJ:L_202401689'
+    correct: [0,1,3],
+    exp: 'Datenverträge regeln die Schnittstelle zwischen Datenproduzenten und -nutzern — unabhängig davon, ob intern oder extern. Interne Fachbereiche ändern Felder oft ohne Rücksprache; ein Datenvertrag verhindert, dass das Modell das stillschweigend falsch auswertet. Empfehlung: klein anfangen — Struktur, Eigentümer, zwei bis drei Regeln. Nicht warten, bis ein vollständiges Governance-Framework steht.',
+    src: 'Data Contract Specification (offener Standard) · datacontract.com'
   }
 ]
 
