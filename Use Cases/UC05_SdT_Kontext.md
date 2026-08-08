@@ -12,9 +12,9 @@ Du hast Dir mit zwei Freunden einen Traum erfüllt und Dein Hobby zum Beruf gema
 
 | | |
 |---|---|
-| Gegründet | 2015, Sitz Köln |
+| Gegründet | 2020, Sitz Berlin |
 | Mitarbeitende | 34 fest, saisonal bis zu 20 Aushilfen (überwiegend Studierende) |
-| Standorte | Büro Köln-Ehrenfeld, Hauptlager Köln-Ossendorf, Kleinlager Bergisch Gladbach |
+| Standorte | Büro Berlin - Chalottenburg, Hauptlager Berlin - Spandau, Kleinlager Falkensee |
 | Lose pro Jahr | ca. 62.000 |
 | Hammerpreisvolumen | ca. 41 Mio. EUR |
 | Durchschnittlicher Zuschlag | 660 EUR (Median 95 EUR — die Verteilung ist extrem schief) |
@@ -67,7 +67,7 @@ Externe Daten habt Ihr bisher nicht systematisch angebunden: Preise von Vergleic
 
 ## 4 · Das Use-Case-Portfolio
 
-Nadine Beckmann hat mit Euch und den Teamleitern folgende Vorschläge zusammengetragen. Sie stehen unterschiedlich reif und unterschiedlich gut belegt nebeneinander.
+Ihr habt zusammen mit einer Beratung folgende Vorschläge zusammengetragen. Sie stehen unterschiedlich reif und unterschiedlich gut belegt nebeneinander.
 
 ### A · Wertermittlung — die Kernanwendung
 
@@ -107,9 +107,9 @@ Sowohl Eure Kunden als auch die Leute, von denen Ihr Collectibles kauft, sind h�
 
 ---
 
-## 5 · Deine Aufgabe
+## 5 · Didaktischer Rahmen
 
-Erarbeite einen Vorschlag, wie Ihr bei SdT mit den folgenden Themen umgehen wollt:
+Didaktisch aufbereitet warden sollen:
 
 Datenmanagement · Tool-Einsatz · Datenaufbereitung · Datenqualität · Datenintegration · MLOps-Konzepte · KI-Automatisierung im Betrieb · Training und Validierung von Modellen · Testverfahren · Monitoring · Integration von KI-Agenten in Projekte
 
@@ -120,12 +120,6 @@ Dabei gilt:
 3. **Begründet priorisiert.** Nicht alles gleichzeitig. Welcher Fall zuerst, und woran messt Ihr, ob er funktioniert hat?
 4. **Mit Betriebsperspektive.** Wer betreut das Modell in zwei Jahren, wenn der Werkstudent weg ist?
 
----
-
-## 6 · Verwendung in der Schulung
-
-Dieser Use Case trägt die zweite Kurswoche (T06–T10, „Daten & Modelle"). Er wird **nicht** im Hand-Out namentlich genannt, sondern live eingeführt.
-
 | Tag | Thema | Anknüpfungspunkte im Fall |
 |---|---|---|
 | **T06** | Datenmanagement & Datenqualität | Abschnitt 3 vollständig — jeder Aufzählungspunkt bildet eine Qualitätsdimension ab (Vollständigkeit: Zustandsangaben vor 2019; Konsistenz: Kategoriebezeichnungen und Währungen; Eindeutigkeit: Dubletten durch Wiedereinlieferung; Zugänglichkeit: Bild-Los-Zuordnung). Einstieg über das Ivy-Zitat. |
@@ -134,4 +128,3 @@ Dieser Use Case trägt die zweite Kurswoche (T06–T10, „Daten & Modelle"). Er
 | **T09** | Training, Validierung & Testverfahren | **Kernstunde.** Drei Fallen stecken bewusst im Material: (a) Die Beschreibungstexte enthalten bereits Schätzpreise — wer sie als Eingabe für A1 nutzt, hat das Ziel in den Eingangsdaten (Data Leakage). (b) Die Foto-Historie korreliert mit dem Aufnahmejahr — ein Modell kann über den Hintergrund auf das Jahr und darüber auf das Preisniveau schließen, ohne das Objekt zu erkennen (Confounder/Shortcut Learning). (c) Bei B1 ist die Referenz eine menschliche Zustandsbewertung, die selbst nicht reproduzierbar ist — Diskussion: Was heißt „richtig", wenn das Label verrauscht ist? B4 liefert das Beispiel für stark unbalancierte Daten ohne gesicherte Beispiele. Karls „Pokémon-Effekt" ist der Aufhänger für Overfitting. |
 | **T10** | Monitoring, Model Drift & KI-Agenten | B2 zeigt Drift, die kein langsamer Verfall ist, sondern ein aktiver Gegner: Fälscher passen sich an das Prüfsystem an. B3 als Beispiel für KI in einer dokumentationspflichtigen Sorgfaltsprüfung inklusive Prüfpfad. Human-in-the-Loop bei allen Fällen der Gruppe B. |
 
-**Hinweis zur Fassung vom 08.08.2026.** Das Portfolio wurde erweitert: Die ursprüngliche Liste enthielt mit der Preisprognose nur einen echten Machine-Learning-Fall; für Validierung, Testverfahren und Monitoring fehlte damit Material. Neu sind A2, B1, B2, B3 und B4. Die früheren Punkte „Onboarding" und „Projektmanagement-Bot" stehen jetzt als D1 und D2 unpriorisiert am Ende — beide sind reine Sprachmodell-Anwendungen ohne Trainings- und Monitoring-Substanz und überschneiden sich inhaltlich mit UC-03b (Onboarding-App) beziehungsweise „IC 03 PM-KI-AIgenten". Sie bleiben im Fall, weil das Aussortieren schwacher Vorschläge selbst Teil der Priorisierungsübung ist.
