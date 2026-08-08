@@ -1,6 +1,6 @@
 # UC-05 · Sammel Deinen Traum (SdT GmbH) — Kontext und Aufgabenpaket
 
-> ⚠️ Fiktives Unternehmen — alle Namen, Kennzahlen und Personen sind für Schulungszwecke erstellt und dienen ausschließlich der Lehre. Vorbild und Inspiration ist das reale Auktionshaus Heritage Auctions, Dallas (<https://www.ha.com/>); die dort öffentlich einsehbaren Auktionsarchive (<https://www.ha.com/c/ref/information-archive.zx>) zeigen, wie eine solche Datenbasis in der Praxis aussieht.
+> ⚠️ Fiktives Unternehmen — alle Namen, Kennzahlen und Personen sind für Schulungszwecke erstellt und dienen ausschließlich der Lehre. Vorbild und Inspiration ist das reale Auktionshaus [Heritage Auctions](https://www.ha.com/), Dallas; die dort öffentlich einsehbaren [Auktionsarchive](https://www.ha.com/c/ref/information-archive.zx) zeigen, wie eine solche Datenbasis in der Praxis aussieht.
 
 ---
 
@@ -20,7 +20,7 @@ Du hast Dir mit zwei Freunden einen Traum erfüllt und Dein Hobby zum Beruf gema
 | Durchschnittlicher Zuschlag | 660 EUR (Median 95 EUR — die Verteilung ist extrem schief) |
 | Nicht verkaufte Lose | 18 % (werden meist wieder eingestellt) |
 
-**Märkte.** In den ersten Jahren wart Ihr nur in Deutschland tätig. Heute reicht Euer Kundenkreis über die gesamte EU (Schwerpunkte Belgien, Frankreich, Spanien), Großbritannien und die USA, vereinzelt bis Japan und Südkorea. In den USA habt Ihr enge Geschäftsverbindungen zur Firma **Heritage Auctions** (<https://www.ha.com/>).
+**Märkte.** In den ersten Jahren wart Ihr nur in Deutschland tätig. Heute reicht Euer Kundenkreis über die gesamte EU (Schwerpunkte Belgien, Frankreich, Spanien), Großbritannien und die USA, vereinzelt bis Japan und Südkorea. In den USA habt Ihr enge Geschäftsverbindungen zur Firma **[Heritage Auctions](https://www.ha.com/)**.
 
 **Bestehende Systeme.** Microsoft 365 (Teams, SharePoint, Outlook — solide genutzt), eine selbst entwickelte Auktionsplattform auf Basis eines PHP-Shopsystems, DATEV für die Buchhaltung, ein Lagerverwaltungsmodul, das ein ehemaliger Werkstudent gebaut hat. Eure KI würde aller Voraussicht nach auf **Azure** betrieben werden.
 
@@ -80,16 +80,16 @@ Bevor man einen Preis schätzen kann, braucht man Vergleichsstücke. Ein Bild ei
 ### B · Ware und Vertrauen
 
 **B1 · Automatische Katalogisierung und Zustandsvorbewertung aus Fotos.**
-Ein Foto aus der Fotobox soll erkennen, um welche Objektart, Serie und welches Erscheinungsjahr es sich handelt, einen Beschreibungsentwurf erzeugen und eine **Zustandsvorbewertung** vorschlagen — Zentrierung, Ecken, Kanten, Oberfläche. Für Sammelkarten ist genau das kommerziell verfügbar (siehe <https://agscard.com/> und <https://www.ximilar.com/services/visual-ai-for-collectibles/>); auch Auktionsplattformen bieten inzwischen automatische Katalogisierung an (<https://www.bidsquarecloud.com/blog/how-ai-is-transforming-auction-house-operations/>). Für Euren gemischten Bestand ist offen, wie weit sich das übertragen lässt.
+Ein Foto aus der Fotobox soll erkennen, um welche Objektart, Serie und welches Erscheinungsjahr es sich handelt, einen Beschreibungsentwurf erzeugen und eine **Zustandsvorbewertung** vorschlagen — Zentrierung, Ecken, Kanten, Oberfläche. Für Sammelkarten ist genau das kommerziell verfügbar (siehe [AGS Robograding](https://agscard.com/) und [Ximilar — Visual AI for Collectibles](https://www.ximilar.com/services/visual-ai-for-collectibles/)); auch Auktionsplattformen bieten inzwischen automatische Katalogisierung an ([Bidsquare](https://www.bidsquarecloud.com/blog/how-ai-is-transforming-auction-house-operations/)). Für Euren gemischten Bestand ist offen, wie weit sich das übertragen lässt.
 
 **B2 · Fälschungs- und Autogrammprüfung.**
-Der Markt für Collectibles ist massiv von Fälschungen betroffen. Der Grading-Dienstleister PSA berichtet für 2025, über 200 Mio. USD an gefälschten oder manipulierten Stücken abgefangen zu haben, bei einem Anstieg der Fälschungseinreichungen um 45,3 % (<https://www.sportscollectorsdaily.com/psa-report-details-increasing-card-counterfeit-attempts/>). Für die Prüfung von Unterschriften auf Memorabilia gibt es einen etablierten Forschungsstand: Zwei Signaturbilder werden von einem sogenannten Siamese Network direkt miteinander verglichen (<https://arxiv.org/pdf/2311.05579>). Die Besonderheit dieses Falls: Die Gegenseite lernt mit — bessere Drucktechnik und generative Bildmodelle verbessern auch die Fälschungen.
+Der Markt für Collectibles ist massiv von Fälschungen betroffen. Der Grading-Dienstleister PSA berichtet für 2025, über 200 Mio. USD an gefälschten oder manipulierten Stücken abgefangen zu haben, bei einem Anstieg der Fälschungseinreichungen um 45,3 % ([Sports Collectors Daily zum PSA-Bericht](https://www.sportscollectorsdaily.com/psa-report-details-increasing-card-counterfeit-attempts/)). Für die Prüfung von Unterschriften auf Memorabilia gibt es einen etablierten Forschungsstand: Zwei Signaturbilder werden von einem sogenannten Siamese Network direkt miteinander verglichen ([SigScatNet, arXiv](https://arxiv.org/pdf/2311.05579)). Die Besonderheit dieses Falls: Die Gegenseite lernt mit — bessere Drucktechnik und generative Bildmodelle verbessern auch die Fälschungen.
 
 **B3 · Provenienz-, Sanktions- und Geldwäscheprüfung.**
-Bei hochpreisigen Einlieferungen müsst Ihr wissen, woher ein Stück kommt und wer es einliefert. Interpol betreibt die einzige globale Datenbank zu gestohlenen Kulturgütern mit über 52.000 Objekten aus 134 Ländern; die zugehörige App ID-Art nutzt Bilderkennung für den Abgleich, und die Zeitstempel gespeicherter Suchen können als Nachweis der Sorgfaltspflicht dienen (<https://www.interpol.int/en/Crimes/Cultural-heritage-crime/ID-Art-mobile-app>). Parallel dazu zieht sich der Regulierungsrahmen an: Die EU-Geldwäscheverordnung (EU) 2024/1624 gilt ab dem **10. Juli 2027** unmittelbar in allen Mitgliedstaaten und zählt unter anderem Händler mit hochwertigen Gütern zu den Verpflichteten (<https://eur-lex.europa.eu/eli/reg/2024/1624/oj/eng>, Zusammenfassung: <https://eur-lex.europa.eu/EN/legal-content/summary/preventing-abuse-of-the-financial-system-for-money-laundering-and-terrorism-purposes-from-2027.html>). Für den Kunst- und Sammlermarkt wird üblicherweise ein Schwellenwert von 10.000 EUR je Transaktion oder Transaktionskette genannt. Ob und ab wann Euer Sortiment darunter fällt, ist eine offene Frage, die Ihr klären müsst — Ihr versteigert vom 8-Euro-Comic bis zur Gitarre für 40.000 EUR.
+Bei hochpreisigen Einlieferungen müsst Ihr wissen, woher ein Stück kommt und wer es einliefert. Interpol betreibt die einzige globale Datenbank zu gestohlenen Kulturgütern mit über 52.000 Objekten aus 134 Ländern; die zugehörige App ID-Art nutzt Bilderkennung für den Abgleich, und die Zeitstempel gespeicherter Suchen können als Nachweis der Sorgfaltspflicht dienen ([Interpol ID-Art](https://www.interpol.int/en/Crimes/Cultural-heritage-crime/ID-Art-mobile-app)). Parallel dazu zieht sich der Regulierungsrahmen an: Die EU-Geldwäscheverordnung (EU) 2024/1624 gilt ab dem **10. Juli 2027** unmittelbar in allen Mitgliedstaaten und zählt unter anderem Händler mit hochwertigen Gütern zu den Verpflichteten ([Verordnung (EU) 2024/1624, EUR-Lex](https://eur-lex.europa.eu/eli/reg/2024/1624/oj/eng); [Zusammenfassung EUR-Lex](https://eur-lex.europa.eu/EN/legal-content/summary/preventing-abuse-of-the-financial-system-for-money-laundering-and-terrorism-purposes-from-2027.html)). Für den Kunst- und Sammlermarkt wird üblicherweise ein Schwellenwert von 10.000 EUR je Transaktion oder Transaktionskette genannt. Ob und ab wann Euer Sortiment darunter fällt, ist eine offene Frage, die Ihr klären müsst — Ihr versteigert vom 8-Euro-Comic bis zur Gitarre für 40.000 EUR.
 
 **B4 · Erkennung manipulativer Bietmuster.**
-Bei zwei Auktionen täglich fallen Bietverläufe in großer Zahl an. „Shill Bidding" — das Hochtreiben des Preises durch Scheinbieter im Umfeld des Einlieferers — ist in der Forschung ein gut untersuchtes Erkennungsproblem, das mit Verfahren wie Random Forests und Support Vector Machines angegangen wird (<https://link.springer.com/chapter/10.1007/978-3-319-92058-0_29>). Der Reiz für Euch: Hier gibt es weder Bilder noch Texte, sondern nur Verhaltensdaten — und keine gesicherten Beispiele, weil niemand weiß, welche Gebote in der Vergangenheit manipuliert waren.
+Bei zwei Auktionen täglich fallen Bietverläufe in großer Zahl an. „Shill Bidding" — das Hochtreiben des Preises durch Scheinbieter im Umfeld des Einlieferers — ist in der Forschung ein gut untersuchtes Erkennungsproblem, das mit Verfahren wie Random Forests und Support Vector Machines angegangen wird ([Springer: Online Detection of Shill Bidding Fraud](https://link.springer.com/chapter/10.1007/978-3-319-92058-0_29)). Der Reiz für Euch: Hier gibt es weder Bilder noch Texte, sondern nur Verhaltensdaten — und keine gesicherten Beispiele, weil niemand weiß, welche Gebote in der Vergangenheit manipuliert waren.
 
 ### C · Back-Office
 
@@ -98,12 +98,6 @@ Texterkennung, Plausibilitäts- und Betrugsprüfung, Kontierung, Berechnung der 
 
 **C2 · Scannen einschlägiger Sammlerforen in sozialen Medien.**
 Sowohl Eure Kunden als auch die Leute, von denen Ihr Collectibles kauft, sind häufig auf Facebook oder Instagram unterwegs, aber auch in exotischen Foren und Chatgruppen. Ihr geht davon aus, dass die Teilnehmenden kein Problem damit haben werden, wenn Ihr als „stille Zuhörer" ihren Austausch mitbekommt — die Foren sind öffentlich, beziehungsweise Ihr seid privat ohnehin schon Mitglied in den wichtigsten. Eine fachliche Meinung dazu habt Ihr Euch noch nicht eingeholt.
-
-### D · Weitere Vorschläge aus dem Team (unpriorisiert)
-
-**D1 · Onboarding neuer Mitarbeitender.** Gerade in den Lagern arbeiten viele Teilzeitkräfte, etwa Studierende, die nur ein paar Ferienwochen für SdT tätig sind und rasch Informationen über Arbeitszeiten, Versicherung, Krankmeldung und Arbeitssicherheit brauchen. Für den Einstellungsprozess habt Ihr Euch <https://aws.amazon.com/de/products/connect/talent/> als Beispiel angesehen.
-
-**D2 · Projektmanagement-Assistent.** Ihr habt viele Projekte, vor allem vermeintlich agile, die immer wieder nach eigenen Regeln und ohne planbaren Erfolg ablaufen. Ein Sprachmodell soll feste Standards für Statusberichte, Phasenpläne und Dokumentation verankern und internen wie externen Projektmitarbeitenden als Bot zur Verfügung stehen.
 
 ---
 
@@ -116,7 +110,7 @@ Datenmanagement · Tool-Einsatz · Datenaufbereitung · Datenqualität · Dateni
 Dabei gilt:
 
 1. **Adressatengerecht.** Karl und Vasili sind keine Techniker. Was sie nicht in einem Bild verstehen, verstehen sie nicht.
-2. **Ehrlich zur Datenlage.** Chris Ivy, Leiter der Sport-Auktionen bei Heritage Auctions, formuliert die Grundregel so: Damit Machine Learning sinnvoll hilft, braucht es Qualitäts-Inputs — sonst gilt „garbage in, garbage out" (<https://www.cllct.com/sports-collectibles/memorabilia/the-year-in-collectibles-how-will-ai-impact-the-hobby>).
+2. **Ehrlich zur Datenlage.** Chris Ivy, Leiter der Sport-Auktionen bei Heritage Auctions, formuliert die Grundregel so: Damit Machine Learning sinnvoll hilft, braucht es Qualitäts-Inputs — sonst gilt „garbage in, garbage out" ([cllct: The year in collectibles — How will AI impact the hobby?](https://www.cllct.com/sports-collectibles/memorabilia/the-year-in-collectibles-how-will-ai-impact-the-hobby)).
 3. **Begründet priorisiert.** Nicht alles gleichzeitig. Welcher Fall zuerst, und woran messt Ihr, ob er funktioniert hat?
 4. **Mit Betriebsperspektive.** Wer betreut das Modell in zwei Jahren, wenn der Werkstudent weg ist?
 
@@ -127,4 +121,43 @@ Dabei gilt:
 | **T08** | MLOps-Konzepte & KI-Automatisierung | C1 als Kontrast klassische Automatisierung (RPA) gegen KI. Betreiberfrage aus Abschnitt 5 Punkt 4. Vasilis 40-Sekunden-Einwand als Prozesskostenrechnung. |
 | **T09** | Training, Validierung & Testverfahren | **Kernstunde.** Drei Fallen stecken bewusst im Material: (a) Die Beschreibungstexte enthalten bereits Schätzpreise — wer sie als Eingabe für A1 nutzt, hat das Ziel in den Eingangsdaten (Data Leakage). (b) Die Foto-Historie korreliert mit dem Aufnahmejahr — ein Modell kann über den Hintergrund auf das Jahr und darüber auf das Preisniveau schließen, ohne das Objekt zu erkennen (Confounder/Shortcut Learning). (c) Bei B1 ist die Referenz eine menschliche Zustandsbewertung, die selbst nicht reproduzierbar ist — Diskussion: Was heißt „richtig", wenn das Label verrauscht ist? B4 liefert das Beispiel für stark unbalancierte Daten ohne gesicherte Beispiele. Karls „Pokémon-Effekt" ist der Aufhänger für Overfitting. |
 | **T10** | Monitoring, Model Drift & KI-Agenten | B2 zeigt Drift, die kein langsamer Verfall ist, sondern ein aktiver Gegner: Fälscher passen sich an das Prüfsystem an. B3 als Beispiel für KI in einer dokumentationspflichtigen Sorgfaltsprüfung inklusive Prüfpfad. Human-in-the-Loop bei allen Fällen der Gruppe B. |
+
+---
+
+## 6 · Quellen
+
+Alle Links wurden am 08.08.2026 geprüft.
+
+**Vorbild und Branchenkontext**
+
+- [Heritage Auctions — Startseite](https://www.ha.com/) — Kategorien, Standorte, Einlieferungs- und Schätzungs-Funnel
+- [Heritage Auctions — Collecting Information Archive](https://www.ha.com/c/ref/information-archive.zx) — Auktionsarchive mit Beschreibungen, Bildern, Pedigrees und erzielten Preisen
+- [cllct — The year in collectibles: How will AI impact the hobby?](https://www.cllct.com/sports-collectibles/memorabilia/the-year-in-collectibles-how-will-ai-impact-the-hobby) — Chris Ivy (Director of Sports Auctions, Heritage Auctions) zur Datenqualität als Voraussetzung für Machine Learning. *Wortlaut des Zitats vor Verwendung auf einer Folie am Original verifizieren.*
+
+**Bilderkennung, Katalogisierung und Zustandsbewertung (B1)**
+
+- [AGS — Robograding / AI Card Grading](https://agscard.com/) — kommerzielle Zustandsbewertung per Bildanalyse und Laserscan
+- [Ximilar — Visual AI for Collectibles](https://www.ximilar.com/services/visual-ai-for-collectibles/) — Objekterkennung und Pre-Grading als zukaufbarer Dienst
+- [Bidsquare — How AI Is Transforming Auction House Operations](https://www.bidsquarecloud.com/blog/how-ai-is-transforming-auction-house-operations/) — automatische Katalogisierung bei Auktionsplattformen
+
+**Fälschungs- und Autogrammprüfung (B2)**
+
+- [Sports Collectors Daily — PSA Report Details Increasing Card Counterfeit Attempts](https://www.sportscollectorsdaily.com/psa-report-details-increasing-card-counterfeit-attempts/) — über 200 Mio. USD abgefangene Fälschungen 2025, Anstieg der Einreichungen um 45,3 %
+- [SigScatNet: A Siamese + Scattering based Deep Learning Approach for Signature Forgery Detection (arXiv)](https://arxiv.org/pdf/2311.05579) — Forschungsstand zur automatisierten Unterschriftenprüfung
+- [Signature forgery detection using deep and machine learning (Sage, 2025)](https://journals.sagepub.com/doi/10.1177/18724981251330068) — Überblicksarbeit, ergänzend
+
+**Provenienz, Sorgfaltspflicht und Geldwäsche (B3)**
+
+- [Interpol — ID-Art mobile app](https://www.interpol.int/en/Crimes/Cultural-heritage-crime/ID-Art-mobile-app) — Bilderkennung gegen die Datenbank gestohlener Kulturgüter; Zeitstempel als Sorgfaltsnachweis
+- [Interpol — Stolen Works of Art Database](https://www.interpol.int/en/Crimes/Cultural-heritage-crime/Stolen-Works-of-Art-Database) — über 52.000 Objekte aus 134 Ländern
+- [Verordnung (EU) 2024/1624 (AMLR), EUR-Lex](https://eur-lex.europa.eu/eli/reg/2024/1624/oj/eng) — Volltext
+- [EUR-Lex — Zusammenfassung: Verhinderung der Nutzung des Finanzsystems zu Geldwäschezwecken (ab 2027)](https://eur-lex.europa.eu/EN/legal-content/summary/preventing-abuse-of-the-financial-system-for-money-laundering-and-terrorism-purposes-from-2027.html) — Geltungsbeginn 10.07.2027, Kreis der Verpflichteten
+
+**Erkennung manipulativer Bietmuster (B4)**
+
+- [Springer — Online Detection of Shill Bidding Fraud Based on Machine Learning Techniques](https://link.springer.com/chapter/10.1007/978-3-319-92058-0_29) — Verfahren, Datenlage und Klassenungleichgewicht
+
+**Sonstiges**
+
+- [Amazon Connect Talent](https://aws.amazon.com/de/products/connect/talent/) — im Szenario als Vorbild für den Einstellungsprozess genannt (D1)
 
