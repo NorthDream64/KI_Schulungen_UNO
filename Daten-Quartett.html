@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Das Daten-Quartett — 9 Familien · 45 Karten</title>
+<style>
+:root{
+ --ink:#1a1a18;--paper:#f8f6f1;--card:#ffffff;--rule:#d5d0c5;--muted:#6b6b60;
+ --accent:#0a4a7a;--phase:#f2f0eb;--sky:#1F3864;
+ --fA:#5a6472; --fB:#0a6b6b; --fC:#7a4a00; --fD:#1a3a7a; --fE:#5a3a7a;
+ --fF:#2a5c3f; --fG:#0a4a7a; --fH:#6a1a1a; --fI:#8a6a10;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'DM Sans',system-ui,sans-serif;background:var(--paper);color:var(--ink);font-size:14px;line-height:1.55;}
+.page{max-width:1480px;margin:0 auto;padding:1.6rem 1.2rem 4rem;}
+
+/* ── Kopf ─────────────────────────────────────────── */
+.hero{background:linear-gradient(150deg,var(--sky),#0a4a7a 65%,#0a6b6b);color:#fff;border-radius:12px;padding:1.4rem 1.6rem;margin-bottom:1.1rem;}
+.hero h1{font-family:'Playfair Display',Georgia,serif;font-size:clamp(1.4rem,3.4vw,2rem);line-height:1.15;margin-bottom:.35rem;}
+.hero p{font-size:13px;opacity:.94;max-width:78ch;}
+.hero .rule{margin-top:.6rem;font-size:12.5px;opacity:.85;}
+
+/* ── Leiste ───────────────────────────────────────── */
+.bar{background:var(--card);border:1px solid var(--rule);border-radius:10px;padding:.75rem 1rem;margin-bottom:1rem;display:flex;align-items:center;gap:.9rem;flex-wrap:wrap;}
+.bar-label{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1.4px;text-transform:uppercase;color:var(--muted);}
+.track{flex:1;min-width:150px;height:7px;background:var(--phase);border-radius:99px;overflow:hidden;}
+.fill{height:100%;width:0;background:linear-gradient(90deg,#0a6b6b,#2a5c3f);transition:width .35s;}
+.num{font-family:'DM Mono',monospace;font-size:13px;font-weight:700;color:#0a6b6b;white-space:nowrap;}
+.btn{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.7px;text-transform:uppercase;padding:6px 12px;border:1px solid var(--rule);border-radius:5px;background:var(--card);color:var(--muted);cursor:pointer;transition:.14s;}
+.btn:hover{border-color:#0a6b6b;color:#0a6b6b;}
+
+/* ── Familienlegende ──────────────────────────────── */
+.legend{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:1.1rem;}
+.leg{display:flex;align-items:center;gap:.4rem;font-size:11.5px;padding:4px 10px;border:1px solid var(--rule);border-radius:99px;background:var(--card);cursor:pointer;transition:.14s;user-select:none;}
+.leg:hover{border-color:var(--ink);}
+.leg .dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+.leg .cnt{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);}
+.leg.done{background:#eaf5ea;border-color:#4a9c4a;font-weight:600;}
+.leg.done .cnt{color:#2a5c3f;}
+.leg.dim{opacity:.35;}
+
+/* ── Raster ───────────────────────────────────────── */
+.grid{display:grid;grid-template-columns:repeat(9,minmax(0,1fr));gap:9px;}
+@media(max-width:1360px){.grid{grid-template-columns:repeat(7,minmax(0,1fr));}}
+@media(max-width:1080px){.grid{grid-template-columns:repeat(5,minmax(0,1fr));}}
+@media(max-width:800px){.grid{grid-template-columns:repeat(3,minmax(0,1fr));}}
+@media(max-width:520px){.grid{grid-template-columns:repeat(2,minmax(0,1fr));}}
+
+.slot{perspective:1100px;aspect-ratio:3/4;}
+.karte{position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform .5s cubic-bezier(.4,.2,.2,1);cursor:pointer;}
+.slot.auf .karte{transform:rotateY(180deg);}
+.face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:9px;padding:.6rem .55rem;display:flex;flex-direction:column;overflow:hidden;}
+
+/* Vorderseite = Frage */
+.vorn{background:var(--card);border:1px solid var(--rule);box-shadow:0 1px 3px rgba(0,0,0,.05);}
+.slot:hover .vorn{border-color:var(--ink);}
+.v-nr{font-family:'DM Mono',monospace;font-size:8.5px;letter-spacing:1.2px;color:var(--muted);margin-bottom:.35rem;}
+.v-q{font-size:11.5px;line-height:1.4;font-weight:500;flex:1;overflow:hidden;}
+.v-hint{font-family:'DM Mono',monospace;font-size:8px;letter-spacing:1px;text-transform:uppercase;color:var(--rule);text-align:center;margin-top:.3rem;}
+
+/* Rückseite = Familie + Antwort */
+.hint{transform:rotateY(180deg);color:#fff;border:none;}
+.h-fam{font-family:'DM Mono',monospace;font-size:8.5px;letter-spacing:1.4px;text-transform:uppercase;opacity:.85;margin-bottom:.2rem;}
+.h-name{font-family:'Playfair Display',Georgia,serif;font-weight:600;font-size:12.5px;line-height:1.2;margin-bottom:.3rem;}
+.h-a{font-size:10px;line-height:1.4;opacity:.95;flex:1;overflow:hidden;}
+.h-geschw{font-family:'DM Mono',monospace;font-size:7.5px;line-height:1.35;opacity:.7;border-top:1px solid rgba(255,255,255,.25);padding-top:.25rem;margin-top:.25rem;}
+
+.slot.komplett .vorn{border-color:#4a9c4a;border-width:2px;}
+.slot.komplett .hint{box-shadow:inset 0 0 0 2px rgba(255,255,255,.55);}
+.slot.hervor .karte{transform:scale(1.06);}
+.slot.hervor.auf .karte{transform:rotateY(180deg) scale(1.06);}
+
+/* ── Fuß ──────────────────────────────────────────── */
+.info{background:var(--card);border:1px solid var(--rule);border-radius:10px;padding:1.1rem 1.3rem;margin-top:1.4rem;font-size:12.5px;line-height:1.65;}
+.info h3{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:.5rem;}
+.info p{margin-bottom:.5rem;}
+.info p:last-child{margin-bottom:0;}
+.footer{margin-top:1.5rem;padding-top:.9rem;border-top:1px solid var(--rule);font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);display:flex;justify-content:space-between;flex-wrap:wrap;gap:.5rem;}
+
+/* ── Druck: alles offen, zum Ausschneiden ─────────── */
+@media print{
+ @page{size:A4;margin:10mm;}
+ body{background:#fff;}
+ .no-print{display:none!important;}
+ .page{max-width:100%;padding:0;}
+ .hero{background:#1F3864!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+ .grid{grid-template-columns:repeat(4,1fr);gap:6px;}
+ .slot{perspective:none;aspect-ratio:auto;break-inside:avoid;}
+ .karte{transform:none!important;}
+ .face{position:static;backface-visibility:visible;-webkit-backface-visibility:visible;}
+ .vorn{border:1px solid #bbb;margin-bottom:2px;}
+ .hint{transform:none;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+ .v-hint{display:none;}
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+<div class="hero">
+ <h1>Das Daten-Quartett</h1>
+ <p>45 Karten, 9 Familien, 5 Karten je Familie. Vorne steht eine Frage, hinten die Familie und die Antwort.
+ Die Karten liegen zufällig — wie bei Memory.</p>
+ <div class="rule"><strong>Ziel:</strong> Finde alle fünf Karten einer Familie. Jede aufgedeckte Karte nennt ihre Geschwister — wer eine hat, weiß, was ihm fehlt.</div>
+</div>
+
+<div class="bar no-print">
+ <span class="bar-label">Vollständige Familien</span>
+ <div class="track"><div class="fill" id="fill"></div></div>
+ <span class="num" id="num">0 / 9</span>
+ <button class="btn" onclick="mischen()">↻ Neu mischen</button>
+ <button class="btn" onclick="alle(true)">Alle aufdecken</button>
+ <button class="btn" onclick="alle(false)">Alle zudecken</button>
+ <button class="btn" onclick="window.print()">🖨 Drucken</button>
+</div>
+
+<div class="legend no-print" id="legend"></div>
+
+<div class="grid" id="grid"></div>
+
+<div class="info">
+ <h3>So wird gespielt</h3>
+ <p><strong>Familien sammeln.</strong> Karten anklicken und aufdecken. Sobald alle fünf Karten einer Familie offen liegen, wird die Familie in der Legende grün markiert. Über die Legende lassen sich alle Karten einer Familie hervorheben.</p>
+ <p><strong>Die fehlende Karte.</strong> Vier Karten einer Familie offen lassen, die fünfte suchen — jede Rückseite nennt ihre Geschwister.</p>
+ <p><strong>Selbsteinschätzung.</strong> Jede Gruppe nimmt eine Familie und bewertet die fünf Karten für den eigenen Betrieb: erfüllt, teilweise, offen. Am Ende steht sichtbar, welche Familie im Haus die schwächsten Karten hat.</p>
+ <p style="color:var(--muted);font-size:11.5px;">Quellen: DAMA-DMBOK · IMDA Singapur (Model AI Governance Framework for Agentic AI) · EU Data Act (VO 2023/2854) · EU AI Act (VO 2024/1689) · DSGVO · ISO/IEC 42001 · Verizon DBIR 2026 · Data Contract Specification · Sambasivan et al. (ACM CHI 2021). Artikelangaben sind Orientierung, keine Rechtsberatung.</p>
+</div>
+
+<div class="footer">
+ <span>Das Daten-Quartett · Datenmanagement, Datenqualität &amp; Daten-Governance</span>
+ <span>Ulrich Nord · August 2026</span>
+</div>
+
+</div><!-- /page -->
+
+<script>
+/* ── Familien ─────────────────────────────────────── */
+var FAMILIEN = {
+  A:{name:'Bestandsaufnahme',      farbe:'#5a6472'},
+  B:{name:'Datenqualität',         farbe:'#0a6b6b'},
+  C:{name:'Datenrecht',            farbe:'#7a4a00'},
+  D:{name:'Zugriffe',              farbe:'#1a3a7a'},
+  E:{name:'Rechte',                farbe:'#5a3a7a'},
+  F:{name:'Menschliche Kontrollen',farbe:'#2a5c3f'},
+  G:{name:'Technische Kontrollen', farbe:'#0a4a7a'},
+  H:{name:'Betrieb & Notausstieg', farbe:'#6a1a1a'},
+  I:{name:'Nachweis',              farbe:'#8a6a10'}
+};
+
+/* ── 45 Karten ────────────────────────────────────── */
+var KARTEN = [
+ /* A · Bestandsaufnahme */
+ {f:'A',n:1,t:'Datenverzeichnis',q:'Gibt es ein Verzeichnis der Datenbestände, die für KI genutzt werden sollen?',a:'Ohne Inventar ist jede Aussage über Qualität oder Schutzbedarf geraten. Voraussetzung für alle anderen Karten.'},
+ {f:'A',n:2,t:'Eigentümerschaft',q:'Hat jeder Datenbestand eine benannte verantwortliche Person?',a:'Keine Abteilung — eine Person. Eigentümerschaft ohne Namen ist Eigentümerschaft ohne Ansprechpartner.'},
+ {f:'A',n:3,t:'Schutzbedarf',q:'Sind die Bestände nach Schutzbedarf klassifiziert?',a:'Öffentlich, intern, vertraulich, besondere Kategorien. Die Einstufung entscheidet später über Verschlüsselung, Rechte und Speicherort.'},
+ {f:'A',n:4,t:'Schattennutzung',q:'Wissen wir, welche Daten außerhalb der freigegebenen Systeme bewegt werden?',a:'Laut Verizon DBIR 2026 die dritthäufigste nicht-böswillige Insider-Handlung; am häufigsten übertragen wird Quellcode. Ein Verbot verlagert sie nur.'},
+ {f:'A',n:5,t:'Bewusste Nicht-Nutzung',q:'Ist geklärt, welche Daten wir gar nicht erst verwenden wollen?',a:'Die begründete Absage ist eine Governance-Entscheidung und gehört dokumentiert — sonst wird sie stillschweigend zurückgenommen.'},
+
+ /* B · Datenqualität */
+ {f:'B',n:1,t:'Die sechs Dimensionen',q:'Sind Vollständigkeit, Konsistenz, Genauigkeit, Aktualität, Relevanz und Eindeutigkeit bewertet?',a:'Nicht alle auf 100 % — das ist unbezahlbar. Die Frage ist, welche für diesen Anwendungsfall entscheidend sind.'},
+ {f:'B',n:2,t:'Herkunftsnachweis',q:'Ist dokumentiert, woher jeder Datenbestand stammt?',a:'Ohne Herkunft lässt sich weder Lizenz noch Qualität noch Verzerrung zurückverfolgen — und kein Fehler eingrenzen.'},
+ {f:'B',n:3,t:'Reproduzierbare Aufbereitung',q:'Ist die Aufbereitung dokumentiert und wiederholbar — oder war es Handarbeit in einer Tabelle?',a:'Sonst kommt beim nächsten Training ein anderes Ergebnis heraus, und niemand kann sagen, warum.'},
+ {f:'B',n:4,t:'Datenleckage',q:'Nutzen wir nur Daten, die zum Entscheidungszeitpunkt tatsächlich vorliegen?',a:'Sonst trainiert das Modell mit Wissen, das es im Betrieb nie hat. Im Test glänzt es, in der Praxis versagt es.'},
+ {f:'B',n:5,t:'Reifestufen',q:'Ist geklärt, auf welcher Stufe gearbeitet wird — roh, geprüft oder aufbereitet?',a:'Bronze, Silber, Gold. Wer direkt auf Rohdaten zugreift, spart Aufwand und kauft ein Nachvollziehbarkeitsproblem ein.'},
+
+ /* C · Datenrecht */
+ {f:'C',n:1,t:'Lizenz & Einwilligung',q:'Ist geprüft, ob wir diese Daten für diesen Zweck überhaupt verwenden dürfen?',a:'Vorhandene Daten sind nicht automatisch nutzbare Daten. Zugriff haben heißt nicht nutzen dürfen.'},
+ {f:'C',n:2,t:'Zweckbindung',q:'Ist festgehalten, wofür die Freigabe gilt — und wird eine Zweckänderung neu geprüft?',a:'Der häufigste Verstoß ist kein Diebstahl, sondern schleichende Zweckerweiterung.'},
+ {f:'C',n:3,t:'Speicherort',q:'Wissen wir, wo die Daten physisch liegen — und ist das zulässig?',a:'Die Datenresidenz entscheidet über anwendbares Recht und über mögliche Zugriffe Dritter.'},
+ {f:'C',n:4,t:'Löschkonzept',q:'Gibt es Aufbewahrungsfristen — und werden sie tatsächlich vollzogen?',a:'Ein Löschkonzept, das niemand ausführt, ist ein Dokument, keine Maßnahme. Daten, die man nicht hat, können nicht abfließen.'},
+ {f:'C',n:5,t:'Auftragsverarbeitung',q:'Ist vertraglich geregelt, wer in wessen Auftrag verarbeitet?',a:'Bei Cloud- und KI-Diensten die Kernfrage: Wer ist verantwortlich, wer weisungsgebunden — und was darf der Anbieter mit den Daten tun?'},
+
+ /* D · Zugriffe */
+ {f:'D',n:1,t:'Eindeutige Identität',q:'Hat jede zugreifende Person eine persönliche Identität — keine geteilten Konten?',a:'Geteilte Konten machen jede spätere Zurechnung unmöglich. Ohne diese Karte ist die Familie Nachweis wertlos.'},
+ {f:'D',n:2,t:'Technische Identitäten',q:'Haben auch Dienste, Schnittstellen und KI-Agenten eigene Identitäten?',a:'Ein Agent unter dem Konto seiner Entwicklerin ist im Protokoll nicht von ihr zu unterscheiden. Bei Agenten die meistübersehene Karte.'},
+ {f:'D',n:3,t:'Mehrfaktor',q:'Ist mehrstufige Authentifizierung für sensible Bestände verpflichtend?',a:'Ein Passwort ist ein Geheimnis, das man verlieren kann. Der zweite Faktor trennt das geleakte Zugangsdatum vom Vorfall.'},
+ {f:'D',n:4,t:'Entzug',q:'Werden Identitäten beim Rollenwechsel und Austritt zuverlässig entzogen?',a:'Verwaiste Konten sind der stillste Weg zum Datenabfluss — sie fallen niemandem auf, weil sie niemandem gehören.'},
+ {f:'D',n:5,t:'Zero Trust',q:'Gilt der Grundsatz, dass kein Zugriff allein wegen des Netzwerkstandorts vertraut wird?',a:'„Im internen Netz" ist kein Nachweis von Identität. Jeder Zugriff wird geprüft, unabhängig davon, woher er kommt.'},
+
+ /* E · Rechte */
+ {f:'E',n:1,t:'Rollenbasierte Vergabe',q:'Sind Rechte an Rollen geknüpft statt an Personen?',a:'Personengebundene Rechte wachsen über Jahre mit und werden nie zurückgenommen.'},
+ {f:'E',n:2,t:'Geringste Rechte',q:'Gilt durchgängig: so wenig Zugriff wie zur Aufgabe nötig?',a:'Die IMDA nennt Least Privilege als zentrale Maßnahme, um die Wirkung eines Agenten auf seine Umgebung zu begrenzen.'},
+ {f:'E',n:3,t:'Technisch erzwungen',q:'Sind Rechte auf Infrastrukturebene gesetzt — nicht nur als Anweisung im System-Prompt?',a:'Anweisungen im Prompt können umgangen oder nicht befolgt werden. Sie ersetzen keine erzwungenen Rechte.'},
+ {f:'E',n:4,t:'Rezertifizierung',q:'Werden Rechte regelmäßig überprüft und entzogen, wenn sie nicht mehr gebraucht werden?',a:'Unbeliebt und unverzichtbar. Ohne diese Karte verfallen die beiden ersten innerhalb weniger Jahre von selbst.'},
+ {f:'E',n:5,t:'Aktionsgrenzen',q:'Ist je Werkzeug festgelegt, welche Aktionen es auslösen darf — und welche nie?',a:'Lesen, schreiben und nach außen wirken sind drei sehr verschiedene Rechtestufen. Die dritte braucht immer eine Freigabe.'},
+
+ /* F · Menschliche Kontrollen */
+ {f:'F',n:1,t:'Datenvertrag',q:'Gibt es je Datenbestand eine Zusage über Struktur, Bedeutung, Aktualität und Verantwortung?',a:'Das häufigste Integrationsproblem ist organisatorisch: Ein Feld ändert sich, drei Wochen später liefert das Modell stillschweigend Unsinn.'},
+ {f:'F',n:2,t:'Freigabe-Gate',q:'Ist festgelegt, an welchen Punkten ein Mensch freigeben muss?',a:'Umkehrbar oder nicht ist die Trennlinie, nicht „wichtig oder unwichtig". Am Gate entstehen zugleich die Daten für die Override-Rate.'},
+ {f:'F',n:3,t:'Override-Rate',q:'Messen wir, wie oft Menschen die KI-Empfehlung tatsächlich verwerfen?',a:'Die IMDA nennt Override-Rate und Reaktionszeit als Mittel gegen Automation Bias. Eine Quote nahe null bedeutet Durchwinken.'},
+ {f:'F',n:4,t:'Eskalationsweg',q:'Gibt es einen Weg nach oben, der auch dann funktioniert, wenn es unbequem wird?',a:'Ein Eskalationspfad, der über die Person führt, deren Projekt gestoppt würde, ist keiner.'},
+ {f:'F',n:5,t:'Erklärbarkeit',q:'Können die Beteiligten die Ergebnisse so weit erklären, dass sie sie verantworten können?',a:'Wer eine Entscheidung freigibt, die er nicht erklären kann, hat nicht entschieden, sondern durchgewinkt.'},
+
+ /* G · Technische Kontrollen */
+ {f:'G',n:1,t:'Verschlüsselung',q:'Sind Daten bei Übertragung und Speicherung verschlüsselt?',a:'Die Grundlage, auf der alles aufbaut — und die am häufigsten stillschweigend vorausgesetzt statt geprüft wird.'},
+ {f:'G',n:2,t:'Anonymisierung',q:'Werden personenbezogene Daten anonymisiert oder pseudonymisiert, wo der Zweck es zulässt?',a:'Was nicht identifizierbar ist, muss nicht geschützt werden. Der beste Schutz ist, die Daten gar nicht erst zu haben.'},
+ {f:'G',n:3,t:'Abschottung',q:'Sind Systeme so getrennt, dass ein Fehler nicht sofort alles betrifft?',a:'Testumgebungen, getrennte Mandanten, begrenzte Wirkungsräume. Schadensbegrenzung wird beim Entwurf entschieden.'},
+ {f:'G',n:4,t:'Automatische Prüfung',q:'Laufen automatische Qualitätsprüfungen auf den eingehenden Daten?',a:'Regelbasiert prüft, was du vorgibst; musterlernend meldet Abweichungen. Beides schlägt „fällt schon jemandem auf".'},
+ {f:'G',n:5,t:'Portabilität',q:'Ist auf offene Formate und zugesicherten Export geachtet?',a:'Seit dem EU Data Act (gilt ab 12.09.2025) weitgehend Rechtsanspruch; Wechselentgelte sind ab 12.01.2027 verboten.'},
+
+ /* H · Betrieb & Notausstieg */
+ {f:'H',n:1,t:'Abbruchkriterium',q:'Ist vorab und schriftlich festgelegt, bei welchen Werten das Vorhaben gestoppt wird?',a:'Die stärkste Karte im Deck. Wer das Abbruchkriterium erst im Ernstfall definiert, definiert es nie.'},
+ {f:'H',n:2,t:'Drift-Überwachung',q:'Wird überwacht, ob sich Daten oder Modellverhalten über die Zeit verschieben?',a:'Drift kündigt sich in den Daten an, bevor sie im Ergebnis sichtbar wird. Sonst merkt man den Verfall an Beschwerden.'},
+ {f:'H',n:3,t:'Rückroll-Verfahren',q:'Gibt es einen erprobten Weg zurück auf einen früheren Stand?',a:'Ein Rückroll-Verfahren, das noch nie geübt wurde, ist eine Hoffnung, kein Verfahren.'},
+ {f:'H',n:4,t:'Not-Aus',q:'Kann das System schnell und vollständig abgeschaltet werden — und weiß jemand, wie?',a:'Der Not-Aus muss auch funktionieren, wenn die Person, die ihn gebaut hat, im Urlaub ist. Und: Wer darf ihn auslösen?'},
+ {f:'H',n:5,t:'Vorfallmeldung',q:'Ist geregelt, wer Vorfälle wem in welcher Frist meldet?',a:'Meldefristen laufen ab Kenntnisnahme — nicht ab dem Moment, in dem man sich intern einig geworden ist.'},
+
+ /* I · Nachweis */
+ {f:'I',n:1,t:'Protokollierung',q:'Werden Zugriffe, Änderungen und Entscheidungen unveränderlich protokolliert?',a:'Ein Protokoll, das sich nachträglich ändern lässt, ist als Nachweis wertlos. Baut zwingend auf eindeutigen Identitäten auf.'},
+ {f:'I',n:2,t:'Rückverfolgbarkeit',q:'Lässt sich ein einzelnes Ergebnis bis zu seinen Eingangsdaten zurückverfolgen?',a:'Die eigentliche Prüfung jeder Datenarchitektur. Wer das nicht kann, kann nicht erklären, wie eine Entscheidung zustande kam.'},
+ {f:'I',n:3,t:'Dokumentation',q:'Sind Datenquellen, Aufbereitung und getroffene Annahmen festgehalten?',a:'Annahmen, die nirgends stehen, gelten später als Fakten. So werden Schätzwerte zu Kennzahlen.'},
+ {f:'I',n:4,t:'Wirksamkeitsprüfung',q:'Wird regelmäßig überprüft, ob all das noch funktioniert?',a:'Einmalige Abnahme ist keine Governance. Hier schließt sich der Kreis: Beim Nachprüfen fällt auf, dass das Verzeichnis veraltet ist.'},
+ {f:'I',n:5,t:'Regulatorischer Abgleich',q:'Ist geprüft, welche rechtlichen Anforderungen konkret gelten — und wer sie verantwortet?',a:'DSGVO, EU AI Act, Data Act, branchenspezifische Aufsicht: Die Kombination entscheidet, nicht die einzelne Norm.'}
+];
+
+/* ── Zustand ──────────────────────────────────────── */
+var reihenfolge = [];
+var offen = {};   // index -> true
+
+function geschwister(k){
+  return KARTEN.filter(function(x){ return x.f===k.f && x.n!==k.n; })
+               .map(function(x){ return x.t; }).join(' · ');
+}
+
+function mischen(){
+  reihenfolge = KARTEN.map(function(_,i){ return i; });
+  for(var i=reihenfolge.length-1;i>0;i--){
+    var j = Math.floor(Math.random()*(i+1));
+    var tmp = reihenfolge[i]; reihenfolge[i] = reihenfolge[j]; reihenfolge[j] = tmp;
+  }
+  offen = {};
+  zeichnen();
+}
+
+function zeichnen(){
+  var g = document.getElementById('grid');
+  g.innerHTML = '';
+  reihenfolge.forEach(function(idx){
+    var k = KARTEN[idx];
+    var fam = FAMILIEN[k.f];
+    var slot = document.createElement('div');
+    slot.className = 'slot' + (offen[idx] ? ' auf' : '');
+    slot.setAttribute('data-idx', idx);
+    slot.setAttribute('data-fam', k.f);
+    slot.innerHTML =
+      '<div class="karte">' +
+        '<div class="face vorn">' +
+          '<div class="v-nr">Karte</div>' +
+          '<div class="v-q">' + k.q + '</div>' +
+          '<div class="v-hint">umdrehen</div>' +
+        '</div>' +
+        '<div class="face hint" style="background:' + fam.farbe + '">' +
+          '<div class="h-fam">' + k.f + ' · ' + fam.name + '</div>' +
+          '<div class="h-name">' + k.t + '</div>' +
+          '<div class="h-a">' + k.a + '</div>' +
+          '<div class="h-geschw">Geschwister: ' + geschwister(k) + '</div>' +
+        '</div>' +
+      '</div>';
+    slot.addEventListener('click', function(){ umdrehen(idx); });
+    g.appendChild(slot);
+  });
+  aktualisieren();
+}
+
+function umdrehen(idx){
+  offen[idx] = !offen[idx];
+  var el = document.querySelector('.slot[data-idx="' + idx + '"]');
+  if(el) el.classList.toggle('auf', !!offen[idx]);
+  aktualisieren();
+}
+
+function alle(v){
+  KARTEN.forEach(function(_,i){ offen[i] = v; });
+  document.querySelectorAll('.slot').forEach(function(el){ el.classList.toggle('auf', v); });
+  aktualisieren();
+}
+
+function vollstaendig(){
+  var fertig = {};
+  Object.keys(FAMILIEN).forEach(function(f){
+    var idxs = KARTEN.map(function(k,i){ return k.f===f ? i : -1; }).filter(function(i){ return i>=0; });
+    fertig[f] = idxs.every(function(i){ return !!offen[i]; });
+  });
+  return fertig;
+}
+
+function aktualisieren(){
+  var fertig = vollstaendig();
+  var anzahl = Object.keys(fertig).filter(function(f){ return fertig[f]; }).length;
+  document.getElementById('fill').style.width = (anzahl/9*100) + '%';
+  document.getElementById('num').textContent = anzahl + ' / 9';
+
+  document.querySelectorAll('.slot').forEach(function(el){
+    el.classList.toggle('komplett', !!fertig[el.getAttribute('data-fam')]);
+  });
+
+  var leg = document.getElementById('legend');
+  leg.innerHTML = '';
+  Object.keys(FAMILIEN).forEach(function(f){
+    var fam = FAMILIEN[f];
+    var idxs = KARTEN.map(function(k,i){ return k.f===f ? i : -1; }).filter(function(i){ return i>=0; });
+    var auf = idxs.filter(function(i){ return !!offen[i]; }).length;
+    var d = document.createElement('div');
+    d.className = 'leg' + (fertig[f] ? ' done' : '');
+    d.innerHTML = '<span class="dot" style="background:' + fam.farbe + '"></span>' +
+                  '<span>' + f + ' · ' + fam.name + '</span>' +
+                  '<span class="cnt">' + auf + '/5</span>';
+    d.addEventListener('mouseenter', function(){ hervorheben(f, true); });
+    d.addEventListener('mouseleave', function(){ hervorheben(f, false); });
+    leg.appendChild(d);
+  });
+}
+
+function hervorheben(f, an){
+  document.querySelectorAll('.slot').forEach(function(el){
+    var treffer = el.getAttribute('data-fam') === f;
+    el.classList.toggle('hervor', an && treffer);
+  });
+  document.querySelectorAll('.leg').forEach(function(el){
+    el.classList.toggle('dim', an && el.textContent.indexOf(f + ' · ') !== 0);
+  });
+}
+
+mischen();
+</script>
+</body>
+</html>
