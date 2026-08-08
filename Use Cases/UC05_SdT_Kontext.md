@@ -103,7 +103,7 @@ Sowohl Eure Kunden als auch die Leute, von denen Ihr Collectibles kauft, sind h�
 
 ## 5 · Didaktischer Rahmen
 
-Didaktisch aufbereitet warden sollen:
+Didaktisch aufbereitet werden sollen:
 
 Datenmanagement · Tool-Einsatz · Datenaufbereitung · Datenqualität · Datenintegration · MLOps-Konzepte · KI-Automatisierung im Betrieb · Training und Validierung von Modellen · Testverfahren · Monitoring · Integration von KI-Agenten in Projekte
 
@@ -114,13 +114,16 @@ Dabei gilt:
 3. **Begründet priorisiert.** Nicht alles gleichzeitig. Welcher Fall zuerst, und woran messt Ihr, ob er funktioniert hat?
 4. **Mit Betriebsperspektive.** Wer betreut das Modell in zwei Jahren, wenn der Werkstudent weg ist?
 
-| Tag | Thema | Anknüpfungspunkte im Fall |
-|---|---|---|
-| **T06** | Datenmanagement & Datenqualität | Abschnitt 3 vollständig — jeder Aufzählungspunkt bildet eine Qualitätsdimension ab (Vollständigkeit: Zustandsangaben vor 2019; Konsistenz: Kategoriebezeichnungen und Währungen; Eindeutigkeit: Dubletten durch Wiedereinlieferung; Zugänglichkeit: Bild-Los-Zuordnung). Einstieg über das Ivy-Zitat. |
-| **T07** | Tool-Einsatz & Datenintegration | A2 als Make-or-Buy-Beispiel: Embeddings und Vektorsuche erfordern kein eigenes Training. B1 als Gegenbeispiel: Zukaufbare Dienste decken Sammelkarten ab, nicht den gemischten Bestand. Anbindung DATEV / Eigenplattform / M365 / Azure. |
-| **T08** | MLOps-Konzepte & KI-Automatisierung | C1 als Kontrast klassische Automatisierung (RPA) gegen KI. Betreiberfrage aus Abschnitt 5 Punkt 4. Vasilis 40-Sekunden-Einwand als Prozesskostenrechnung. |
-| **T09** | Training, Validierung & Testverfahren | **Kernstunde.** Drei Fallen stecken bewusst im Material: (a) Die Beschreibungstexte enthalten bereits Schätzpreise — wer sie als Eingabe für A1 nutzt, hat das Ziel in den Eingangsdaten (Data Leakage). (b) Die Foto-Historie korreliert mit dem Aufnahmejahr — ein Modell kann über den Hintergrund auf das Jahr und darüber auf das Preisniveau schließen, ohne das Objekt zu erkennen (Confounder/Shortcut Learning). (c) Bei B1 ist die Referenz eine menschliche Zustandsbewertung, die selbst nicht reproduzierbar ist — Diskussion: Was heißt „richtig", wenn das Label verrauscht ist? B4 liefert das Beispiel für stark unbalancierte Daten ohne gesicherte Beispiele. Karls „Pokémon-Effekt" ist der Aufhänger für Overfitting. |
-| **T10** | Monitoring, Model Drift & KI-Agenten | B2 zeigt Drift, die kein langsamer Verfall ist, sondern ein aktiver Gegner: Fälscher passen sich an das Prüfsystem an. B3 als Beispiel für KI in einer dokumentationspflichtigen Sorgfaltsprüfung inklusive Prüfpfad. Human-in-the-Loop bei allen Fällen der Gruppe B. |
+Der Fall ist so angelegt, dass er mehrere Themenfelder gleichzeitig trägt. Welche davon in welcher Reihenfolge und Tiefe aufgegriffen werden, entscheidet sich am Kurs — die folgende Tabelle ist eine Landkarte der Anknüpfungspunkte, kein Ablaufplan.
+
+| Themenfeld | Anknüpfungspunkte im Fall |
+|---|---|
+| **Datenmanagement & Datenqualität** | Abschnitt 3 vollständig — jeder Aufzählungspunkt bildet eine Qualitätsdimension ab: Vollständigkeit (Zustandsangaben vor 2019), Konsistenz (Kategoriebezeichnungen und Währungen), Eindeutigkeit (Dubletten durch Wiedereinlieferung), Zugänglichkeit (Bild-Los-Zuordnung). Das Ivy-Zitat aus Abschnitt 5 eignet sich als Einstieg. |
+| **Tool-Einsatz, Datenintegration & Make-or-Buy** | A2 als Kaufargument: Embeddings und Vektorsuche erfordern kein eigenes Training. B1 als Gegenbeispiel: Zukaufbare Dienste decken Sammelkarten ab, nicht den gemischten Bestand. Anbindung DATEV / Eigenplattform / M365 / Azure. |
+| **MLOps & KI-Automatisierung im Betrieb** | C1 als Kontrast zwischen klassischer Automatisierung (RPA) und KI. Die Betreiberfrage „Wer betreut das Modell in zwei Jahren?". Vasilis 40-Sekunden-Einwand als Prozesskostenrechnung. |
+| **Training, Validierung & Testverfahren** | Drei Fallen stecken bewusst im Material: (a) Die Beschreibungstexte enthalten bereits Schätzpreise — wer sie als Eingabe für A1 nutzt, hat das Ziel in den Eingangsdaten (Data Leakage). (b) Die Foto-Historie korreliert mit dem Aufnahmejahr — ein Modell kann über den Hintergrund auf das Jahr und darüber auf das Preisniveau schließen, ohne das Objekt zu erkennen (Confounder bzw. Shortcut Learning). (c) Bei B1 ist die Referenz eine menschliche Zustandsbewertung, die selbst nicht reproduzierbar ist: Was heißt „richtig", wenn das Label verrauscht ist? B4 liefert das Beispiel für stark unbalancierte Daten ohne gesicherte Beispiele. Karls „Pokémon-Effekt" ist der Aufhänger für Overfitting. |
+| **Monitoring, Model Drift & KI-Agenten** | B2 zeigt Drift, die kein langsamer Verfall ist, sondern ein aktiver Gegner: Fälscher passen sich an das Prüfsystem an. B3 als Beispiel für KI in einer dokumentationspflichtigen Sorgfaltsprüfung inklusive Prüfpfad. Human-in-the-Loop bei allen Fällen der Gruppe B. |
+| **Priorisierung & Portfolio-Bewertung** | Gruppe D ist bewusst schwach: Beide Vorschläge sind reine Sprachmodell-Anwendungen ohne Trainings-, Validierungs- oder Monitoring-Substanz. Das Aussortieren gehört zur Übung. |
 
 ---
 
