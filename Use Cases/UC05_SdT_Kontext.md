@@ -12,7 +12,7 @@ Du hast Dir mit zwei Freunden einen Traum erfüllt und Dein Hobby zum Beruf gema
 
 | | |
 |---|---|
-| Gegründet | 2020, Sitz Berlin |
+| Gegründet | 2015, Sitz Berlin |
 | Mitarbeitende | 34 fest, saisonal bis zu 20 Aushilfen (überwiegend Studierende) |
 | Standorte | Büro Berlin - Chalottenburg, Hauptlager Berlin - Spandau, Kleinlager Falkensee |
 | Lose pro Jahr | ca. 62.000 |
