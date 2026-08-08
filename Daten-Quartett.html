@@ -30,6 +30,26 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--paper);color:va
 .btn{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.7px;text-transform:uppercase;padding:6px 12px;border:1px solid var(--rule);border-radius:5px;background:var(--card);color:var(--muted);cursor:pointer;transition:.14s;}
 .btn:hover{border-color:#0a6b6b;color:#0a6b6b;}
 
+/* ── Familienerklärung ────────────────────────────── */
+.erkl{background:var(--card);border:1px solid var(--rule);border-radius:10px;margin-bottom:1rem;overflow:hidden;}
+.erkl summary{padding:.8rem 1.1rem;cursor:pointer;list-style:none;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);display:flex;justify-content:space-between;align-items:center;}
+.erkl summary::-webkit-details-marker{display:none;}
+.erkl summary::after{content:'▾ einklappen';font-size:9px;letter-spacing:1px;text-transform:none;}
+.erkl:not([open]) summary::after{content:'▸ aufklappen';}
+.erkl summary:hover{background:var(--phase);}
+.erkl-body{padding:0 1.1rem 1.1rem;border-top:1px solid var(--rule);padding-top:.9rem;}
+.erkl-intro{font-size:12.5px;line-height:1.65;margin-bottom:.9rem;max-width:88ch;}
+.fam-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.6rem;}
+@media(max-width:1000px){.fam-grid{grid-template-columns:repeat(2,minmax(0,1fr));}}
+@media(max-width:700px){.fam-grid{grid-template-columns:1fr;}}
+.fam-box{border:1px solid var(--rule);border-left-width:4px;border-radius:7px;padding:.6rem .75rem;}
+.fam-b-kopf{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1.4px;text-transform:uppercase;margin-bottom:.2rem;font-weight:700;}
+.fam-b-frage{font-size:12.5px;font-weight:600;line-height:1.4;margin-bottom:.25rem;}
+.fam-b-txt{font-size:11.5px;line-height:1.5;color:var(--muted);}
+.abgr{background:var(--phase);border-radius:7px;padding:.8rem 1rem;margin-top:.9rem;font-size:12px;line-height:1.65;}
+.abgr strong{color:var(--ink);}
+.abgr-t{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1.6px;text-transform:uppercase;color:var(--muted);margin-bottom:.45rem;}
+
 /* ── Familienlegende ──────────────────────────────── */
 .legend{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:1.1rem;}
 .leg{display:flex;align-items:center;gap:.4rem;font-size:11.5px;padding:4px 10px;border:1px solid var(--rule);border-radius:99px;background:var(--card);cursor:pointer;transition:.14s;user-select:none;}
@@ -104,6 +124,68 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--paper);color:va
  Die Karten liegen zufällig — wie bei Memory.</p>
  <div class="rule"><strong>Ziel:</strong> Finde alle fünf Karten einer Familie. Jede aufgedeckte Karte nennt ihre Geschwister — wer eine hat, weiß, was ihm fehlt.</div>
 </div>
+
+<details class="erkl" open>
+ <summary>Die neun Familien — was gehört wohin?</summary>
+ <div class="erkl-body">
+  <p class="erkl-intro">Die Familien sind nach <strong>zwei Fragen</strong> geschnitten: <em>Wann</em> im Lebenszyklus greift die Maßnahme (A vor allem anderen, H im Betrieb, I danach) — und <em>wodurch</em> wirkt sie (F durch einen Menschen, G durch Technik; D über Identität, E über Berechtigung). Wer eine Karte nicht zuordnen kann, stellt sich diese beiden Fragen.</p>
+
+  <div class="fam-grid">
+   <div class="fam-box" style="border-left-color:#5a6472">
+    <div class="fam-b-kopf" style="color:#5a6472">A · Bestandsaufnahme</div>
+    <div class="fam-b-frage">Weiß ich überhaupt, was ich habe?</div>
+    <div class="fam-b-txt">Alles, was <em>vor</em> jeder inhaltlichen Bewertung kommt: Welche Bestände gibt es, wem gehören sie, wie sensibel sind sie, was läuft unkontrolliert nebenher.</div>
+   </div>
+   <div class="fam-box" style="border-left-color:#0a6b6b">
+    <div class="fam-b-kopf" style="color:#0a6b6b">B · Datenqualität</div>
+    <div class="fam-b-frage">Taugt das Material?</div>
+    <div class="fam-b-txt">Eigenschaften der Daten selbst — messbar, technisch prüfbar, unabhängig davon, ob man sie verwenden darf.</div>
+   </div>
+   <div class="fam-box" style="border-left-color:#7a4a00">
+    <div class="fam-b-kopf" style="color:#7a4a00">C · Datenrecht</div>
+    <div class="fam-b-frage">Darf ich das überhaupt?</div>
+    <div class="fam-b-txt">Rechtliche Zulässigkeit — Lizenz, Zweck, Ort, Frist, Auftragsverhältnis. Vollkommen unabhängig von der Qualität.</div>
+   </div>
+   <div class="fam-box" style="border-left-color:#1a3a7a">
+    <div class="fam-b-kopf" style="color:#1a3a7a">D · Zugriffe</div>
+    <div class="fam-b-frage">Wer ist das?</div>
+    <div class="fam-b-txt">Authentifizierung: Identität feststellen und aktuell halten — für Menschen wie für Dienste und Agenten.</div>
+   </div>
+   <div class="fam-box" style="border-left-color:#5a3a7a">
+    <div class="fam-b-kopf" style="color:#5a3a7a">E · Rechte</div>
+    <div class="fam-b-frage">Was darf diese Identität?</div>
+    <div class="fam-b-txt">Autorisierung: Umfang und Grenzen der Berechtigung. Setzt D voraus — ohne Identität keine Berechtigung.</div>
+   </div>
+   <div class="fam-box" style="border-left-color:#2a5c3f">
+    <div class="fam-b-kopf" style="color:#2a5c3f">F · Menschliche Kontrollen</div>
+    <div class="fam-b-frage">Wo muss jemand hinschauen?</div>
+    <div class="fam-b-txt">Maßnahmen, deren Wirkung davon abhängt, dass ein Mensch etwas tut — freigibt, prüft, eskaliert, zusagt.</div>
+   </div>
+   <div class="fam-box" style="border-left-color:#0a4a7a">
+    <div class="fam-b-kopf" style="color:#0a4a7a">G · Technische Kontrollen</div>
+    <div class="fam-b-frage">Was hält ohne Zutun?</div>
+    <div class="fam-b-txt">Maßnahmen, die maschinell erzwungen werden und auch dann wirken, wenn niemand hinsieht.</div>
+   </div>
+   <div class="fam-box" style="border-left-color:#6a1a1a">
+    <div class="fam-b-kopf" style="color:#6a1a1a">H · Betrieb &amp; Notausstieg</div>
+    <div class="fam-b-frage">Was tun, wenn es schiefgeht?</div>
+    <div class="fam-b-txt">Greift erst im laufenden Betrieb und bei Abweichung: erkennen, zurücknehmen, abschalten, melden.</div>
+   </div>
+   <div class="fam-box" style="border-left-color:#8a6a10">
+    <div class="fam-b-kopf" style="color:#8a6a10">I · Nachweis</div>
+    <div class="fam-b-frage">Kann ich es hinterher belegen?</div>
+    <div class="fam-b-txt">Dient nicht dem Schutz, sondern der Belegbarkeit gegenüber Dritten — Aufsicht, Audit, Gericht, eigene Revision.</div>
+   </div>
+  </div>
+
+  <div class="abgr">
+   <div class="abgr-t">Die drei Abgrenzungen, die erfahrungsgemäß Mühe machen</div>
+   <p><strong>A gegen B.</strong> „Bestandsaufnahme" fragt, ob man <em>weiß, dass es existiert</em>. „Datenqualität" fragt, ob es <em>taugt</em>. Beides kommt unabhängig voneinander vor: Man kann hervorragende Daten haben, von denen niemand weiß — und einen lückenlos inventarisierten Datenmüllhaufen.</p>
+   <p style="margin-top:.4rem;"><strong>C gegen I.</strong> „Datenrecht" fragt: <em>Darf ich das?</em> „Nachweis" fragt: <em>Kann ich belegen, dass ich es durfte?</em> Man kann vollständig rechtmäßig handeln und es trotzdem nicht beweisen können — das ist der häufigste Befund in Prüfungen.</p>
+   <p style="margin-top:.4rem;"><strong>F gegen G.</strong> Nicht danach getrennt, ob Technik im Spiel ist, sondern danach, <em>woran die Wirkung hängt</em>. Ein Freigabe-Gate ist technisch gebaut, aber wirkungslos, wenn der Mensch blind durchklickt — also F. Verschlüsselung wirkt auch bei völliger Unaufmerksamkeit — also G.</p>
+  </div>
+ </div>
+</details>
 
 <div class="bar no-print">
  <span class="bar-label">Vollständige Familien</span>
