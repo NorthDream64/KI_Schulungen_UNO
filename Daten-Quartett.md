@@ -13,7 +13,7 @@
 | | Familie | Karte 1 | Karte 2 | Karte 3 | Karte 4 |
 |---|---|---|---|---|---|
 | **A** | Bestandsaufnahme | Datenverzeichnis | Eigentümerschaft | Schutzbedarf | Schattennutzung |
-| **B** | Datenqualität | Die sechs Dimensionen | Herkunftsnachweis | Reproduzierbare Aufbereitung | Datenleckage |
+| **B** | Datenqualität | Die sechs Dimensionen | Herkunftsnachweis | Reproduzierbare Aufbereitung | Zukunftswissen |
 | **C** | Datenrecht | Lizenz & Einwilligung | Zweckbindung | Speicherort | Löschkonzept |
 | **D** | Zugriffe | Eindeutige Identität | Technische Identitäten | Mehrfaktor | Entzug |
 | **E** | Rechte | Rollenbasierte Vergabe | Geringste Rechte | Technisch erzwungen | Rezertifizierung |
@@ -54,27 +54,27 @@ Laut Verizon DBIR 2026 ist ungesteuerte KI-Nutzung die dritthäufigste nicht-bö
 
 # B · Datenqualität
 
-> *Die sechs Dimensionen · Herkunftsnachweis · Reproduzierbare Aufbereitung · Datenleckage*
+> *Die sechs Dimensionen · Herkunftsnachweis · Reproduzierbare Aufbereitung · Zukunftswissen*
 
 ### B1 — Die sechs Dimensionen
 **Sind Vollständigkeit, Konsistenz, Genauigkeit, Aktualität, Relevanz und Eindeutigkeit bewertet?**
 Nicht alle auf 100 % — das ist unbezahlbar. Die Frage ist, welche für *diesen* Anwendungsfall entscheidend sind. Datenqualität ist relativ zum Zweck.
-*Familie B: **Die sechs Dimensionen** · Herkunftsnachweis · Reproduzierbare Aufbereitung · Datenleckage*
+*Familie B: **Die sechs Dimensionen** · Herkunftsnachweis · Reproduzierbare Aufbereitung · Zukunftswissen*
 
 ### B2 — Herkunftsnachweis
 **Ist dokumentiert, woher jeder Datenbestand stammt?**
 Ohne Herkunft lässt sich weder Lizenz noch Qualität noch Verzerrung zurückverfolgen. Der Nachweis ist die Voraussetzung dafür, einen Fehler überhaupt einzugrenzen.
-*Familie B: Die sechs Dimensionen · **Herkunftsnachweis** · Reproduzierbare Aufbereitung · Datenleckage*
+*Familie B: Die sechs Dimensionen · **Herkunftsnachweis** · Reproduzierbare Aufbereitung · Zukunftswissen*
 
 ### B3 — Reproduzierbare Aufbereitung
 **Ist die Aufbereitung dokumentiert und wiederholbar — oder war es Handarbeit in einer Tabelle?**
 Nicht reproduzierbare Aufbereitung heißt: Beim nächsten Training kommt ein anderes Ergebnis heraus, und niemand kann sagen, warum.
-*Familie B: Die sechs Dimensionen · Herkunftsnachweis · **Reproduzierbare Aufbereitung** · Datenleckage*
+*Familie B: Die sechs Dimensionen · Herkunftsnachweis · **Reproduzierbare Aufbereitung** · Zukunftswissen*
 
-### B4 — Datenleckage
+### B4 — Zukunftswissen im Training
 **Nutzen wir ausschließlich Daten, die zum Entscheidungszeitpunkt tatsächlich vorliegen?**
-Sonst trainiert das Modell mit Wissen, das es im Betrieb nie hat. Im Test glänzt es, in der Praxis versagt es — der teuerste stille Fehler in KI-Projekten.
-*Familie B: Die sechs Dimensionen · Herkunftsnachweis · Reproduzierbare Aufbereitung · **Datenleckage***
+Sonst trainiert das Modell mit Wissen, das es im Betrieb nie hat. Im Test glänzt es, in der Praxis versagt es. Englisch: Look-ahead Bias bzw. Data Leakage — nicht zu verwechseln mit Datenabfluss.
+*Familie B: Die sechs Dimensionen · Herkunftsnachweis · Reproduzierbare Aufbereitung · **Zukunftswissen***
 
 ---
 
