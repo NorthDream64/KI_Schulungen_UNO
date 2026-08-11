@@ -176,8 +176,8 @@ a: [
     opts: [
       'Bei ETL werden Daten zuerst bereinigt (Transform) und erst danach in die Zielumgebung geladen (Load) — sinnvoll, wenn Rohdaten im Zielsystem unbrauchbar wären',
       'ETL eignet sich für heterogene Finanzkennzahlen aus Pitch Decks, weil Begriffe und Währungen (EUR/USD, ARR/MRR) vor der Speicherung vereinheitlicht werden müssen',
-      'ELT bedeutet, dass Daten überhaupt nicht mehr transformiert werden müssen — die KI arbeitet ausschließlich mit Rohdaten',
-      'Die Wahl zwischen ETL und ELT hängt nicht von der Datenqualität ab, sondern ausschließlich vom Budget des Unternehmens'
+      'ELT bedeutet, dass Daten überhaupt nicht transformiert werden müssen — die KI arbeitet ausschließlich mit Rohdaten',
+      'Die Wahl zwischen ETL und ELT hängt nicht von der Datenqualität ab, sondern vom Budget des Unternehmens'
     ],
     correct: [0,1],
     exp: 'Bei ETL erfolgt die Bereinigung vor dem Laden — sinnvoll, wenn Rohdaten im Zielsystem unbrauchbar wären, etwa bei uneinheitlichen Finanzkennzahlen aus Pitch Decks. Bei ELT entfällt die Transformation nicht — sie verschiebt sich nur in die Zielumgebung und nutzt deren Rechenleistung. Die Entscheidung zwischen beiden Wegen richtet sich vor allem danach, ob mit den Rohdaten sinnvoll gearbeitet werden kann — nicht primär nach dem Budget.',
@@ -187,10 +187,10 @@ a: [
     sc: 'Die KI-Managerin kartiert die Datensilos im Unternehmen: Proposal-Daten aus dem Screening, CRM-Daten des Investment-Teams und Unterlagen des Steuerungskomitees.',
     q: 'Welche Aussage(n) zum Datensilo-Problem in Unternehmen ist oder sind korrekt?',
     opts: [
-      'Eine KI sieht nur die Daten, auf die sie Zugriff hat — getrennte Silos führen zu unvollständigen oder widersprüchlichen Ergebnissen',
-      'Eine Datenpipeline kann als Integrationslayer wirken, der eine einheitliche Sicht schafft, ohne die Quellsysteme selbst zu verändern',
+      'Eine KI sieht nur die Daten, auf die sie Zugriff hat — getrennte Silos führen möglicherweise zu unvollständigen oder widersprüchlichen Ergebnissen',
+      'Eine Datenpipeline kann als Integrationslayer über bestehende Datensilos wirken, der eine einheitliche Sicht schafft, ohne die Quellsysteme selbst zu verändern',
       'Data Warehouse, Data Lake und Data Mesh sind drei unterschiedliche Architekturansätze, um das Silo-Problem zu adressieren — zentral, roh-zentral bzw. dezentral-domänenverantwortlich',
-      'Datensilos entstehen ausschließlich durch technische Inkompatibilität — organisatorische Ursachen spielen keine Rolle'
+      'Datensilos entstehen durch technische Inkompatibilität — organisatorische Ursachen spielen eine untergeordnete Rolle'
     ],
     correct: [0,1,2],
     exp: 'Eine KI kann nur sehen, wozu sie Zugriff hat — getrennte Silos erzeugen Insel-Ergebnisse ✓. Eine Pipeline als Integrationslayer schafft eine einheitliche Sicht, ohne Quellsysteme anzufassen ✓. Data Warehouse (zentral), Data Lake (roh, zentral) und Data Mesh (dezentral, domänenverantwortlich) sind die drei gängigen Architekturantworten ✓. Silos entstehen jedoch genauso oft aus organisatorischen Gründen — etwa wenn Teams ihre Daten nicht teilen wollen oder Verantwortlichkeiten unklar sind.',
@@ -201,9 +201,9 @@ a: [
     q: 'Welche Aussage(n) zur Batch- und Echtzeitverarbeitung für ein dokumentenbasiertes Scoring-Modell ist oder sind korrekt?',
     opts: [
       'Für das Scoring-Modell reicht eine nächtliche Batch-Aktualisierung der Proposal-Daten — Echtzeitverarbeitung wäre hier unnötig aufwändig und teuer',
-      'Echtzeitverarbeitung ist immer die bessere Wahl, weil sie generell günstiger ist als Batch-Verarbeitung',
+      'Echtzeitverarbeitung ist die bessere Wahl, weil sie günstiger ist als Batch-Verarbeitung',
       'Batch-Verarbeitung bedeutet, dass Daten gar nicht aktualisiert werden, sondern dauerhaft im Ausgangszustand bleiben',
-      'Die Wahl zwischen Batch und Echtzeit hat keinen Einfluss auf die Kosten oder Komplexität eines Systems'
+      'Die Wahl zwischen Batch und Echtzeit hat praktisch keinen Einfluss auf die Kosten oder Komplexität eines Systems'
     ],
     correct: [0],
     exp: 'Für ein Scoring-Modell genügt in der Regel eine nächtliche Batch-Aktualisierung — Echtzeitverarbeitung wäre hier unnötiger Mehraufwand ✓. Echtzeitverarbeitung ist nicht generell günstiger — im Gegenteil, sie erhöht typischerweise Kosten und Komplexität. Batch bedeutet nicht „keine Aktualisierung", sondern Aktualisierung in festen Intervallen. Die Wahl zwischen Batch und Echtzeit beeinflusst Kosten und Komplexität erheblich — das ist gerade der Kern der Entscheidung.',
@@ -215,11 +215,11 @@ a: [
     opts: [
       'Frische — sind die Scoring-Ergebnisse von heute oder bereits mehrere Tage alt?',
       'Vollständigkeit — kommen so viele Datensätze an wie erwartet, oder fehlen plötzlich große Anteile der Uploads?',
-      'Geschmack — wie angenehm empfinden die Nutzer:innen die Datenoberfläche im Alltag?',
-      'Originalität — enthält die Pipeline ausschließlich Daten, die noch nirgendwo sonst verwendet wurden?'
+      'Acceptance — wie angenehm empfinden die Nutzer:innen die Datenoberfläche im Alltag?',
+      'Originalität — enthält die Pipeline Daten, die noch nirgendwo sonst verwendet wurden?'
     ],
     correct: [0,1],
-    exp: 'Frische (sind die Daten aktuell?) und Vollständigkeit (kommen so viele Datensätze wie erwartet an?) bilden das sinnvolle Mindestprogramm für ein tägliches Observability-Dashboard ✓. „Geschmack" und „Originalität" sind keine etablierten Data-Observability-Signale — die tatsächlichen weiteren Signale sind Struktur, Verteilung und Herkunft.',
+    exp: 'Frische (sind die Daten aktuell?) und Vollständigkeit (kommen so viele Datensätze wie erwartet an?) bilden das sinnvolle Mindestprogramm für ein tägliches Observability-Dashboard ✓. „Acceptance" und „Originalität" sind keine etablierten Data-Observability-Signale — die tatsächlichen weiteren Signale sind Struktur, Verteilung und Herkunft.',
     src: 'Monte Carlo Data — What is Data Observability? (2026) · montecarlo.ai/blog-what-is-data-observability/'
   },
   {
@@ -253,16 +253,16 @@ b: [
     src: 'DAMA International – DMBOK · dama.org/cpages/body-of-knowledge'
   },
   {
-    sc: 'Du sollst entscheiden, wie die Finanzkennzahlen aus den Pitch Decks (teils in USD, teils mit ARR/MRR/Revenue als Begriff) in die zentrale Datenbank gelangen.',
+    sc: 'Du sollst entscheiden, wie die Finanzkennzahlen aus den Pitch Decks (teils in USD, teils mit ARR/Revenue als Begriff, teils mit Komma-, teils mit Punkttrennung) in die zentrale Datenbank gelangen.',
     q: 'Welche Aussage(n) zur Datenaufbereitung dieser Finanzkennzahlen ist oder sind korrekt?',
     opts: [
       'Ein ETL-Ansatz ist hier sinnvoll, weil Begriffe und Währungen vor der Speicherung vereinheitlicht werden müssen — sonst sind die Rohdaten im Zielsystem nicht direkt nutzbar',
       'Eine Mapping-Tabelle (z. B. ARR, MRR, Revenue Run-Rate → einheitliche Kennzahl in EUR) reduziert das Risiko von Fehlinterpretationen im Scoring-Modell',
       'Da die KI ohnehin „lernt", ist eine Vereinheitlichung der Begriffe vor der Verarbeitung überflüssig',
-      'Währungsunterschiede sind in der Praxis vernachlässigbar, solange alle Beträge im selben Dokument stehen'
+      'Währungsunterschiede sind in der Praxis vernachlässigbar und können bei Bedarf in der Applikation selbst ausgeglichen werden'
     ],
     correct: [0,1],
-    exp: 'ETL ist hier sinnvoll, weil die Rohdaten (unterschiedliche Begriffe, Währungen) im Zielsystem sonst unbrauchbar wären ✓ — eine Mapping-Tabelle reduziert das Risiko von Fehlinterpretationen im Scoring deutlich ✓. Die KI „lernt" nicht automatisch korrekte Vereinheitlichung — uneinheitliche Eingaben führen zu „Garbage in, garbage out". Währungsunterschiede sind keineswegs vernachlässigbar — ein Vergleich von USD- und EUR-Werten ohne Umrechnung verfälscht jedes Scoring-Ergebnis.',
+    exp: 'ETL ist hier sinnvoll, weil die Rohdaten (unterschiedliche Begriffe, Währungen) im Zielsystem sonst unbrauchbar wären ✓ — eine Mapping-Tabelle reduziert das Risiko von Fehlinterpretationen im Scoring deutlich ✓. Die KI „lernt" nicht automatisch korrekte Vereinheitlichung — uneinheitliche Eingaben führen zu „Garbage in, garbage out". Währungsunterschiede sind keineswegs vernachlässigbar — ein Vergleich von USD- und EUR-Werten ohne Umrechnung verfälscht jedes Scoring-Ergebnis. Sie sind auch nicht leicht in der Applikation, also am Ende der Data Pipeline zu normalisieren.',
     src: 'Google Cloud Dataflow · cloud.google.com/dataflow/docs/overview · DAMA — DMBOK · dama.org/cpages/body-of-knowledge'
   },
   {
@@ -270,17 +270,17 @@ b: [
     q: 'Welche Aussage(n) zur passenden Aktualisierungsstrategie für einen internen Richtlinien-Bot ist oder sind korrekt?',
     opts: [
       'Eine wöchentliche Batch-Aktualisierung reicht in der Regel aus, weil sich interne Richtlinien selten kurzfristig ändern',
-      'Der Bot benötigt zwingend Echtzeitverarbeitung, weil jede Sekunde Verzögerung zu Compliance-Verstößen führen würde',
+      'Der Bot benötigt Echtzeitverarbeitung, weil das Thema hochdynamisch ist und jede Verzögerung zu Compliance-Verstößen führen könnte',
       'Die Aktualisierungsfrequenz eines Bots hat keinen Zusammenhang mit der Änderungsfrequenz der zugrunde liegenden Inhalte',
-      'Batch-Verarbeitung ist für interne Wissens-Bots grundsätzlich ungeeignet'
+      'Batch-Verarbeitung ist für interne Wissens-Bots grundsätzlich geeignet'
     ],
-    correct: [0],
-    exp: 'Eine wöchentliche Batch-Aktualisierung genügt, weil sich interne Richtlinien selten kurzfristig ändern ✓ — Echtzeit wäre hier unnötiger Mehraufwand. Die Aktualisierungsfrequenz sollte sich an der Änderungshäufigkeit der Inhalte orientieren — das ist der Kern der Entscheidung. Batch-Verarbeitung ist für viele interne Wissens-Bots sogar die naheliegende, kosteneffiziente Wahl.',
+    correct: [0, 3],
+    exp: 'Eine wöchentliche Batch-Aktualisierung genügt, weil sich interne Richtlinien selten kurzfristig ändern ✓ — Echtzeit wäre hier unnötiger Mehraufwand. Die Aktualisierungsfrequenz sollte sich an der Änderungshäufigkeit der Inhalte orientieren — das ist der Kern der Entscheidung. Batch-Verarbeitung ist für viele interne Wissens-Bots die naheliegende, kosteneffiziente Wahl.',
     src: 'Google Cloud Dataflow · cloud.google.com/dataflow/docs/overview · AWS — Batch vs. Real-Time Ingestion · docs.aws.amazon.com/whitepapers/latest/building-data-lakes/batch-vs-real-time-ingestion.html'
   },
   {
     sc: 'Du bemerkst, dass das CRM-Importskript seit der letzten Anbieter-Aktualisierung ein Feld umbenannt hat — das bisherige Mapping bricht und Daten kommen nicht mehr korrekt an.',
-    q: 'Welche Aussage(n) zu den Data-Observability-Signalen, die solche Probleme frühzeitig erkennen, ist oder sind korrekt?',
+    q: 'Welche Frage(n) zu den Data-Observability-Signalen, die solche Probleme frühzeitig erkennen, ist oder sind korrekt?',
     opts: [
       'Struktur — hat sich das Datenformat oder die Feldbezeichnung verändert, sodass bestehende Mappings nicht mehr greifen?',
       'Herkunft — woher stammen die Daten, und auf welcher Verarbeitungsstufe wurde der Fehler eingebracht?',
