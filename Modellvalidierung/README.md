@@ -17,6 +17,7 @@ das bloße Weglassen des Merkmals „Geschlecht" das Problem nicht behebt.
 
 | Datei | Zweck | Für wen |
 |---|---|---|
+| **DATA_CARD.md** | Beschreibung des Datenbestands nach dem Muster einer Data Card: Herkunft, Erzeugung, Abdeckung und **die absichtlich eingebauten Verzerrungen**. | Alle — Grundlage für Abschnitt 0b im Werkzeug |
 | **index.html** | Im Browser öffnen. Regler schieben: Konfusionsmatrix, Precision/Recall/F1/F2, Bias je Gruppe, Proxy-Falle, Overfitting-Kurve. **Kein Setup.** | Teilnehmende (Haupt-Werkzeug) |
 | **02_demo_erklaert.py** | Zum Live-Vorführen: lädt den Datensatz und erklärt alles in einfacher Sprache im Terminal. | Dozent / Neugierige |
 | **01_dataset_und_kennzahlen.py** | Erzeugt den Datensatz neu und berechnet alle Kennzahlen. | zum Nachbauen/Anpassen |

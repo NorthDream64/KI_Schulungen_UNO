@@ -16,6 +16,16 @@ h1 em{font-style:italic;color:var(--teal);}
 .lead{margin-top:.6rem;color:var(--muted);font-size:13.5px;}
 .szenario{background:var(--phase);border:1px solid var(--rule);border-left:4px solid var(--teal);border-radius:0 8px 8px 0;padding:.7rem .9rem;font-size:12.5px;margin-bottom:.9rem;}
 .szenario b{color:var(--teal);}
+details.dc{border:1px solid var(--rule,#d5d0c5);border-radius:8px;margin-top:.8rem;overflow:hidden;}
+details.dc>summary{list-style:none;cursor:pointer;padding:.6rem .9rem;font-size:13px;font-weight:600;background:rgba(0,0,0,.02);}
+details.dc>summary::-webkit-details-marker{display:none;}
+details.dc>summary::before{content:"\002B  ";font-weight:700;}
+details.dc[open]>summary::before{content:"\2212  ";}
+details.dc>summary:hover{background:rgba(0,0,0,.05);}
+.dc-body{padding:.2rem .9rem .9rem;font-size:13px;line-height:1.6;}
+.dc-body h4{font-size:13px;margin:.7rem 0 .2rem;}
+.dc-body ul{padding-left:1.15rem;margin:.25rem 0;}
+.dc-body li{margin-bottom:.25rem;}
 .footnote{margin-top:1rem;padding-top:.7rem;border-top:1px solid var(--rule);font-size:11.5px;color:var(--muted);line-height:1.55;}
 .footnote .fn-t{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:.5rem;}
 .footnote dl{margin-top:.5rem;}
@@ -91,6 +101,51 @@ table.gloss td:first-child{font-weight:600;white-space:nowrap;width:150px;}
   <tr><td>Berufserfahrung</td><td>Jahre im Beruf laut Lebenslauf, realistisch an das Lebensalter gekoppelt (mehr Lebensjahre → im Schnitt mehr Erfahrung, mit Streuung) — keine Wertung der Positionen oder Inhalte der Tätigkeit.</td></tr>
   <tr><td>Karrierelücke</td><td>Monate <strong>ohne Erwerbstätigkeit</strong> laut Lebenslauf (z. B. Eltern- oder Pflegezeit) — keine „fehlenden Jahre", sondern eine in Monaten gemessene Unterbrechung. Laut Destatis beziehen Mütter im Schnitt rund 10–12 Monate Elterngeld, Väter dagegen nur rund 3–4 Monate (<a href="https://www.destatis.de/DE/Themen/Gesellschaft-Umwelt/Soziales/Elterngeld/geburten.html" target="_blank" rel="noopener">Destatis 2024/2025</a>); auch OECD-weit nehmen Frauen häufiger und längere familienbedingte Erwerbsunterbrechungen als Männer (<a href="https://www.oecd.org/en/publications/gender-gaps-in-paid-and-unpaid-work-persist_25a6c5dc-en/full-report.html" target="_blank" rel="noopener">OECD 2025</a>).</td></tr>
  </table>
+</div>
+
+<!-- DATA CARD -->
+<div class="sec">
+ <div class="sec-t">0b · Data Card — was wir über diesen Datenbestand wissen</div>
+ <p>Das Datenwörterbuch oben beschreibt die <em>Merkmale</em>. Eine <strong>Data Card</strong> beschreibt den <em>Bestand als Ganzes</em>: Herkunft, Entstehung, Abdeckung, Grenzen. Bei diesem Lab lässt sie sich ausnahmsweise <strong>lückenlos</strong> ausfüllen — weil wir den Bestand selbst erzeugt haben und jede eingebaute Eigenschaft kennen. Genau das ist der Maßstab, an dem sich fremde Datenbestände messen lassen.</p>
+
+ <details class="dc">
+  <summary>Data Card aufklappen</summary>
+  <div class="dc-body">
+
+   <h4>Zweck — und ausdrücklich nicht</h4>
+   <p>Zeigen, wie Schwellenwert, Precision und Recall zusammenhängen und wie ein Modell eine Voreingenommenheit aus historischen Entscheidungen übernimmt. <strong>Nicht</strong> geeignet als Beleg für reale Einstellungspraxis, nicht als Vorlage für ein produktives Auswahlmodell — Personalauswahl ist nach EU AI Act, Anhang III Nr. 4 ein Hochrisiko-Bereich.</p>
+
+   <h4>Herkunft</h4>
+   <p>Erzeugt durch das Skript <code>01_dataset_und_kennzahlen.py</code> in diesem Ordner, mit festem Startwert für den Zufallszahlengenerator. Der Bestand ist damit <strong>exakt reproduzierbar</strong>. Keine personenbezogenen Daten, folglich keine Rechtsgrundlage erforderlich.</p>
+
+   <h4>Umfang</h4>
+   <p>2.000 Bewerbungen, davon 800 im Testteil. Anteil positiver Entscheidungen rund 36 %. Sechs Merkmale plus die Zielgröße <code>eingestellt</code>.</p>
+
+   <h4>Erhebung und Beschriftung</h4>
+   <p>Es gab keine Erhebung. Alle Merkmale sind gezogene Zufallswerte; die Zielgröße folgt einer festgelegten Formel, in der die tatsächliche Eignung mit drei Verzerrungen kombiniert wird. Fachscore und Interview sind <strong>unabhängig</strong> von Geschlecht und Alter gezogen — der Unterschied entsteht ausschließlich in der historischen Entscheidung.</p>
+
+   <h4>Abdeckung und Lücken — die eingebauten Verzerrungen</h4>
+   <ul>
+    <li><strong>Bevorzugung von Männern:</strong> fester Bonus in der historischen Entscheidung, unabhängig von der Eignung.</li>
+    <li><strong>Schleichender Alterseffekt:</strong> kleiner linearer Auf- oder Abschlag je Lebensjahr, kein harter Schnitt bei 40 — so wirkt Altersdiskriminierung in der Praxis.</li>
+    <li><strong>Überzogene Bestrafung der Karrierelücke:</strong> stärker, als es durch tatsächlich fehlende Erfahrung erklärbar wäre.</li>
+    <li><strong>Die Karrierelücke als Stellvertreter:</strong> bei Frauen im Mittel rund zwölf Monate größer angesetzt. Dadurch gelangt das Geschlecht zurück ins Modell, <strong>auch wenn man die Spalte entfernt</strong> — der Kern von Abschnitt 3.</li>
+   </ul>
+   <p><strong>Nicht abgebildet:</strong> Geschlecht jenseits binärer Erfassung · Branche, Region, Position · Bewerbungen, die vor der Erfassung ausgesiebt wurden.</p>
+
+   <h4>Bekannte Einschränkungen</h4>
+   <ul>
+    <li>Die Zusammenhänge sind einfacher als in der Wirklichkeit — gut zum Verstehen von Mechanismen, untauglich zum Abschätzen realer Effektstärken.</li>
+    <li>Keine fehlenden Werte, keine Erfassungsfehler, keine Dubletten. Wer nur damit arbeitet, unterschätzt den Aufbereitungsaufwand realer Bestände.</li>
+    <li>Der Bestand ist statisch — Drift lässt sich daran nicht zeigen. Dafür gibt es <code>tankstelle_umsatz.csv</code>.</li>
+   </ul>
+
+   <h4>Verantwortung und Pflege</h4>
+   <p>Verantwortlich ist der Kursdozent. Änderungen erfolgen über das Erzeugungsskript, nie an der CSV-Datei. Wiedervorlage mit jedem Kursdurchlauf.</p>
+
+   <p style="margin-top:.8rem;font-size:12.5px;">Vollständige Fassung als eigene Datei: <a href="DATA_CARD.md">DATA_CARD.md</a> — Aufbau angelehnt an den <a href="https://sites.research.google/datacardsplaybook/" target="_blank" rel="noopener">Data Cards Playbook</a> von Google PAIR.</p>
+  </div>
+ </details>
 </div>
 
 <!-- METRIKEN -->
@@ -225,6 +280,36 @@ table.gloss td:first-child{font-weight:600;white-space:nowrap;width:150px;}
 
  <div class="callout" style="margin-top:.9rem;">
  <b>Wo werden die Faktoren eigentlich dokumentiert?</b> Bei diesem Lab reicht der Blick nach oben in Abschnitt 0 — das Datenwörterbuch listet bereits alle Merkmale, mit denen das Bewerbungsmodell arbeitet. Reale Modelle laufen aber oft mit Dutzenden Merkmalen (Ferienbeginn und -ende je Land, Wettertrends, Feiertage, Wochentag, Vorjahresumsatz …). Der Fachstandard dafür ist die <strong>Model Card</strong> — ein strukturiertes Dokument je Modell mit Merkmalen, Trainingsdaten, Einsatzgrenzen und Messwerten (<a href="https://arxiv.org/abs/1810.03993" target="_blank" rel="noopener">Mitchell et al. 2019, „Model Cards for Model Reporting", ACM FAT*</a>), ergänzt um ein <strong>Datasheet</strong> je Datensatz, das Herkunft, Erhebung und Zusammensetzung der Trainingsdaten dokumentiert (<a href="https://arxiv.org/abs/1803.09010" target="_blank" rel="noopener">Gebru et al. 2018, „Datasheets for Datasets"</a>). Für Hochrisiko-KI-Systeme ist das keine Kür, sondern Pflicht: Der EU AI Act verlangt genau diese technische Dokumentation (<a href="https://artificialintelligenceact.eu/de/annex/4/" target="_blank" rel="noopener">VO (EU) 2024/1689, Anhang IV</a>).
+ </div>
+</div>
+
+<!-- TRANSFER -->
+<div class="sec">
+ <div class="sec-t">6 · Und jetzt in echt — derselbe Blick auf fremde Daten</div>
+ <p>Alles, was du bis hier gesehen hast, beruhte auf einem Bestand, dessen Entstehung wir vollständig kennen (Abschnitt 0b). <strong>Das ist der Ausnahmefall.</strong> Im Alltag bekommst du Daten, deren Herkunft niemand mehr rekonstruieren kann — und dieselben Kennzahlen lassen sich trotzdem ausrechnen. Sie sehen genauso überzeugend aus.</p>
+
+ <div class="callout" style="margin-top:.8rem;">
+  <b>Selbstversuch.</b> Öffne <a href="https://www.kaggle.com/datasets" target="_blank" rel="noopener">Kaggle Datasets</a>, such dir einen Bestand zu einem Thema, das dich interessiert, und beantworte drei Fragen:
+  <ul style="padding-left:1.2rem;margin-top:.5rem;">
+   <li style="margin-bottom:.3rem;"><strong>Wer hat diese Daten erhoben — und wozu?</strong> Nicht: wer hat sie hochgeladen.</li>
+   <li style="margin-bottom:.3rem;"><strong>Wen bilden sie nicht ab?</strong> Welcher Filter hat beim Entstehen gewirkt, wer ist dadurch gar nicht enthalten?</li>
+   <li><strong>Was passiert, wenn ein Modell daraus lernt?</strong> Welche Entscheidung würde es systematisch falsch treffen — und zu wessen Lasten?</li>
+  </ul>
+  <p style="margin-top:.6rem;">Erfahrungsgemäß bleiben die ersten beiden Fragen unbeantwortbar. Das ist kein Versagen der Recherche, sondern das Ergebnis.</p>
+ </div>
+
+ <div class="callout" style="margin-top:.9rem;">
+  <b>Die Fußangel: die Usability-Bewertung.</b> Kaggle zeigt je Bestand eine Bewertung auf einer Skala bis 10; ab 8,0 gilt ein Bestand als gut dokumentiert. Nützlich — aber sie misst, ob die <em>Felder ausgefüllt</em> sind, nicht ob die <em>Angaben stimmen</em>. Ein Bestand mit 9,4 kann eine falsche Lizenzangabe tragen und eine Weiterveröffentlichung ohne nachvollziehbare Herkunft sein.
+  <p style="margin-top:.6rem;">Das ist derselbe Denkfehler wie bei den Kennzahlen aus Abschnitt 1: <strong>Eine hohe Zahl ist keine Aussage darüber, ob die richtige Sache gemessen wurde.</strong> Eine Genauigkeit von 94 % kann in einer Teilgruppe bei 60 % liegen; eine Dokumentationsbewertung von 9,4 kann auf erfundenen Angaben beruhen.</p>
+ </div>
+
+ <p style="margin-top:.9rem;"><strong>Für die Beschaffung heißt das:</strong> Ein Datenbestand aus einer öffentlichen Quelle ist ein Kandidat, kein Ergebnis. Bevor er in ein Vorhaben geht, braucht er dieselbe Prüfung, die du hier an einem bekannten Bestand geübt hast — Herkunft, Abdeckung, Lücken, Rechtsgrundlage. Wer das überspringt, importiert ein Rechtsrisiko und eine Verzerrung, die erst im Betrieb sichtbar wird.</p>
+
+ <div class="footnote">
+  <div class="fn-t">Hinweis zur Quellenlage</div>
+  <dl>
+   <div class="fn-item"><dt>Herkunft öffentlicher Datenbestände —</dt> <dd>Dass Lizenz- und Herkunftsangaben auf Aggregatorplattformen häufig unvollständig oder falsch sind, ist keine Vermutung: Die <a href="https://arxiv.org/pdf/2310.16787" target="_blank" rel="noopener">Data Provenance Initiative</a> hat Lizenzierung und Zuschreibung großflächig auditiert und erhebliche Abweichungen zwischen angegebener und tatsächlicher Rechtslage dokumentiert.</dd></div>
+  </dl>
  </div>
 </div>
 
