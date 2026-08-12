@@ -222,14 +222,14 @@ var QBANK = {
       "opts": [
         "Man kann Precision und Recall nicht gleichzeitig maximieren — die Wahl ist eine Geschäftsentscheidung, kein rein technisches Problem",
         "Der Klassifikations-Schwellenwert ist eine feste Modell-Eigenschaft, die sich nicht ändern lässt, ohne das Modell neu zu trainieren",
-        "Bei einem Fälschungsradar ist ein übersehener echter Treffer in der Regel teurer als ein Fehlalarm — deshalb wird dort oft auf hohen Recall optimiert",
+        "Bei einem Fälschungsradar ist ein übersehener echter Treffer in der Regel teurer als ein Fehlalarm — deshalb wird dort oft auf hohen Recall (Sensitivität) optimiert",
         "Die Entscheidung über den Schwellenwert liegt ausschließlich beim Data-Science-Team, ohne Einbindung von Fachbereich oder Governance"
       ],
       "correct": [
         0,
         2
       ],
-      "exp": "Precision und Recall lassen sich nicht gleichzeitig maximieren — welcher Fehlertyp teurer ist, entscheidet über die Ausrichtung, und das ist eine Geschäftsentscheidung, keine rein technische Frage. Bei einem Fälschungsradar ist ein übersehener echter Treffer in der Regel deutlich teurer als ein Fehlalarm, weshalb dort meist auf hohen Recall optimiert wird. Der Schwellenwert ist dagegen keine feste Modell-Eigenschaft: Er sitzt in einer separaten Entscheidungsschicht und lässt sich anpassen, ohne das Modell neu zu trainieren. Und die Entscheidung über den Schwellenwert liegt gerade nicht allein beim Data-Science-Team — sie gehört gemeinsam mit Fachbereich und einer Governance-Funktion getroffen.",
+      "exp": "Precision und Recall lassen sich nicht gleichzeitig maximieren — welcher Fehlertyp teurer ist, entscheidet über die Ausrichtung, und das ist eine Geschäftsentscheidung, keine rein technische Frage. Bei einem Fälschungsradar ist ein übersehener echter Treffer in der Regel deutlich teurer als ein Fehlalarm, weshalb dort meist auf hohen Recall optimiert wird — in Prüfungs- und Normtexten begegnet dir dieselbe Kennzahl häufig als „Sensitivität“. Der Schwellenwert ist dagegen keine feste Modell-Eigenschaft: Er sitzt in einer separaten Entscheidungsschicht und lässt sich anpassen, ohne das Modell neu zu trainieren. Und die Entscheidung über den Schwellenwert liegt gerade nicht allein beim Data-Science-Team — sie gehört gemeinsam mit Fachbereich und einer Governance-Funktion getroffen.",
       "src": "Google ML Crash Course — Classification · developers.google.com/machine-learning/crash-course/classification/precision-and-recall · EU AI Act — Art. 14 (Human Oversight) · artificialintelligenceact.eu/article/14/"
     },
     {
@@ -300,20 +300,20 @@ var QBANK = {
       "src": "ISTQB / ASTQB — Foundation Level: Test Techniques Overview · astqb.org/4-1-test-techniques-overview/"
     },
     {
-      "sc": "Die Auditorin vergleicht die im Testbericht ausgewiesene Trainings- und Validierungsgenauigkeit des Kredit-Scoring-Modells.",
-      "q": "Welche Aussage(n) zu Overfitting aus Prüf-Sicht ist oder sind korrekt?",
+      "sc": "Im Testbericht steht, das Modell erreiche eine sehr gute Generalisierungsfähigkeit. Die Auditorin fragt nach, wie das erreicht und wie es geprüft wurde.",
+      "q": "Welche Aussage(n) zu Maßnahmen gegen Überanpassung (Overfitting) ist oder sind korrekt?",
       "opts": [
-        "Eine deutlich höhere Genauigkeit auf Trainingsdaten als auf Validierungsdaten ist ein typisches Warnsignal für Overfitting",
-        "Testdaten sollten während der gesamten Modellentwicklung wiederholt zur Zwischenbewertung genutzt werden, um möglichst viele Iterationen zu ermöglichen",
-        "Overfitting bedeutet, dass ein Modell Trainingsdaten inklusive ihres Rauschens so genau abbildet, dass es auf neuen Daten schlechter abschneidet",
-        "Ein Modell ohne jegliche Validierungsdaten liefert grundsätzlich zuverlässigere Ergebnisse, weil ihm mehr Trainingsdaten zur Verfügung stehen"
+        "Regularisierung, Dropout und Early Stopping sind gängige Techniken, um eine Überanpassung des Modells an die Trainingsdaten zu verhindern",
+        "Kreuzvalidierung prüft, ob ein gutes Ergebnis stabil ist, indem mehrfach auf wechselnden Datenaufteilungen trainiert und bewertet wird",
+        "Early Stopping bedeutet, das Training so lange fortzusetzen, bis sich die Genauigkeit auf den Trainingsdaten nicht mehr verbessert",
+        "Dropout ist ein Verfahren der Datenbereinigung, bei dem auffällige Datensätze vor dem Training aus dem Bestand entfernt werden"
       ],
       "correct": [
         0,
-        2
+        1
       ],
-      "exp": "Eine deutlich höhere Genauigkeit auf Trainingsdaten als auf Validierungsdaten ist ein typisches, aus Prüf-Sicht ernstzunehmendes Warnsignal für Overfitting. Overfitting bedeutet, dass ein Modell die Trainingsdaten inklusive ihres Rauschens so genau abbildet, dass es auf neuen, unbekannten Daten schlechter abschneidet. Testdaten sollten dagegen gerade nicht wiederholt während der Entwicklung zur Zwischenbewertung genutzt werden — sonst verlieren sie ihre Funktion als unabhängiger, unverfälschter Maßstab am Ende. Und ein Modell ganz ohne Validierungsdaten liefert nicht automatisch zuverlässigere Ergebnisse, nur weil mehr Daten ins Training fließen — im Gegenteil, Overfitting bliebe dann unentdeckt.",
-      "src": "Lightly AI — Train/Test/Validation Split: Best Practices · lightly.ai/blog/train-test-validation-split"
+      "exp": "Regularisierung, Dropout und Early Stopping bilden den gängigen Werkzeugkasten gegen Überanpassung: Regularisierung bestraft das Modell im Training für zu hohe Komplexität, Dropout schaltet in neuronalen Netzen zufällig Neuronen ab, damit sich das Netz nicht auf einzelne Verbindungen verlässt, und Early Stopping bricht das Training ab, bevor Lernen in Auswendiglernen umschlägt. Kreuzvalidierung ist streng genommen kein Gegenmittel, sondern das Prüfverfahren dazu — sie liefert statt einer einzelnen Zahl eine Bandbreite und zeigt damit, ob ein gutes Ergebnis stabil oder Zufall war. Early Stopping richtet sich dagegen gerade nicht nach der Trainingsgenauigkeit: Abgebrochen wird, sobald sich die Güte auf den Validierungsdaten nicht mehr verbessert, auch wenn sie auf den Trainingsdaten weiter steigt. Und Dropout hat mit Datenbereinigung nichts zu tun — es betrifft Neuronen während des Trainings, nicht Datensätze davor. Aus Prüf-Sicht zählt weniger, welche Technik gewählt wurde, als ob die Wahl begründet und ihre Wirkung belegt ist.",
+      "src": "Google ML Crash Course — Overfitting: L2 regularization · developers.google.com/machine-learning/crash-course/overfitting/regularization · Srivastava, Hinton, Krizhevsky, Sutskever & Salakhutdinov — Dropout, JMLR 15 (2014) · jmlr.org/papers/v15/srivastava14a.html · scikit-learn — Cross-validation · scikit-learn.org/stable/modules/cross_validation.html"
     },
     {
       "sc": "Zum Abschluss der Prüfung fasst die Auditorin zusammen, welche Testnachweise für das Kredit-Scoring-Modell insgesamt vorliegen müssen.",

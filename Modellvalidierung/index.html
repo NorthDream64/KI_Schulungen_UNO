@@ -177,23 +177,26 @@ table.gloss td:first-child{font-weight:600;white-space:nowrap;width:150px;}
    <div class="metrics">
     <div class="met"><div class="v" id="mPrec">0</div><div class="k">Precision</div><div class="d">Von den <em>Empfohlenen</em> wirklich geeignet</div></div>
     <div class="met"><div class="v" id="mRec">0</div><div class="k">Recall</div><div class="d">Von den <em>Geeigneten</em> gefunden</div></div>
-    <div class="met"><div class="v" id="mF">0</div><div class="k" id="mFk">F1</div><div class="d" id="mFd">Balance aus beidem</div></div>
+    <div class="met"><div class="v" id="mF">0</div><div class="k" id="mFk">F1</div><div class="d" id="mFd">Eine Zahl zum Vergleichen</div></div>
    </div>
    <div class="callout" id="tradeoff"></div>
   </div>
  </div>
- <p class="note"><strong>Merksatz fürs Management:</strong> Es gibt kein „genau" — es gibt eine <em>Abwägung</em>. Hoher <strong>Recall</strong> zählt, wenn ein Übersehen teuer ist (Betrug, Krankheit, verpasste Talente). Hohe <strong>Precision</strong> zählt, wenn ein Fehlalarm teuer ist (wichtige Mail im Spam). <strong>F1</strong> gewichtet beides gleich, <strong>F2</strong> gewichtet Recall doppelt.</p>
+ <p class="note"><strong>Merksatz fürs Management:</strong> Es gibt kein „genau" — es gibt eine <em>Abwägung</em>. Hoher <strong>Recall</strong> zählt, wenn ein Übersehen teuer ist (Betrug, Krankheit, verpasste Talente). Hohe <strong>Precision</strong> zählt, wenn ein Fehlalarm teuer ist (wichtige Mail im Spam). <strong>Der F-Wert</strong> presst beide in <em>eine</em> Zahl — nicht, um die Abwägung zu ersetzen, sondern um Modelle und Einstellungen auf einer einzigen Skala vergleichbar zu machen. F1 gewichtet beides gleich, F2 gewichtet Recall doppelt. <strong>Achtung:</strong> Der F-Wert ist <em>kein</em> Mittelwert im üblichen Sinn — er wird vom schlechteren der beiden Werte nach unten gezogen.³</p>
  <div class="footnote">
   <div class="fn-t">Fußnote — Technik &amp; Fachbegriffe</div>
   <p>¹ Rohwerte lassen sich nicht einfach addieren — 100 Punkte Fachscore plus ein Ja/Nein-Merkmal plus Alter in Monaten wären gar nicht vergleichbar. Jedes Merkmal wird deshalb zunächst <strong>standardisiert</strong>: Es zählt nicht der absolute Wert, sondern die Abweichung vom Durchschnitt aller Bewerbenden. Bei Fachscore ist das ein Spektrum („5 Punkte über dem Mittel"); bei einem Ja/Nein-Merkmal gibt es trotzdem einen Durchschnitt (z. B. „60 % Ja"), aber nur zwei mögliche Abweichungen. Das Modell multipliziert jede Abweichung mit einem <strong>gelernten Gewicht</strong> — woher diese Gewichte kommen und wo dabei Diskriminierung entstehen kann, zeigt Abschnitt 2. Alle gewichteten Abweichungen zusammen ergeben eine Zahl, die über eine mathematische Kurve in eine Wahrscheinlichkeit zwischen 0 % und 100 % übersetzt wird — und genau darauf schneidet die Einladungsschwelle.</p>
   <p style="margin-top:.5rem;">² <strong>Warum endet die Skala bei 0,95?</strong> Die Stufen sind ein bewusst gewähltes Fünf-Prozent-Raster — technisch spricht nichts gegen 0,99. Es lohnt sich trotzdem nicht: Die höchste Eignungswahrscheinlichkeit, die das Modell im Testteil überhaupt vergibt, liegt bei <strong>0,991</strong>. Bei einer Schwelle von 0,995 bliebe <em>niemand</em> übrig — die Precision wäre nicht null, sondern <em>nicht berechenbar</em> (null von null).</p>
   <p style="margin-top:.4rem;">Interessanter ist, was schon davor passiert. Bei 0,90 werden 58 Personen empfohlen, bei 0,95 nur noch 24, bei 0,98 wären es 8 und bei 0,99 genau 2. Und die Precision <em>fällt</em> von 0,914 auf 0,875, obwohl die Schwelle strenger wird — nicht weil das Modell schlechter würde, sondern weil eine einzige Fehlentscheidung bei 24 Fällen stärker durchschlägt als bei 58. <strong>Kennzahlen aus sehr kleinen Gruppen sind nicht belastbar.</strong> Wer im Beschaffungsgespräch eine Precision von 100 % hört, sollte deshalb immer zuerst fragen: <em>aus wie vielen Fällen?</em></p>
+  <p style="margin-top:.5rem;">³ <strong>Warum der F-Wert kein gewöhnlicher Mittelwert ist.</strong> Er ist das <em>harmonische</em> Mittel von Precision und Recall. Das klingt technisch, hat aber eine sehr praktische Folge: Er orientiert sich immer am <strong>schlechteren</strong> der beiden Werte. Schiebst du oben auf 0,95, liegt die Precision bei 0,875 und der Recall bei 0,073 — der gewöhnliche Durchschnitt wäre 0,474 und sähe passabel aus, der F1-Wert beträgt aber nur <strong>0,135</strong>. Genau das ist gewollt: Ein Modell, das fast nichts findet, dafür aber selten irrt, ist kein gutes Modell.</p>
+  <p style="margin-top:.4rem;">Deshalb taugt der F-Wert als <strong>Vergleichsmaß</strong>: Über alle Schwellen hinweg erreicht dieses Modell sein bestes F1 von <strong>0,733 bei Schwelle 0,30</strong> — eine einzige Zahl, mit der sich zwei Modelle oder zwei Einstellungen nebeneinanderlegen lassen. <strong>Kann der F1-Wert 100 % erreichen?</strong> Rechnerisch ja — genau dann, wenn Precision und Recall beide bei 1 liegen, das Modell also keinen einzigen Fehlalarm und keinen einzigen übersehenen Fall produziert. In der Praxis kommt das bei echten Daten nicht vor. Taucht es doch auf, ist es <em>kein</em> Grund zur Freude, sondern ein Prüfauftrag: zu kleiner Testbestand, eine triviale Aufgabe — oder Testdaten, die ins Training gelangt sind.</p>
+  <p style="margin-top:.4rem;">Eine Grenze noch: Der F-Wert kennt die <strong>richtig abgelehnten Fälle (TN) nicht</strong> — er blickt nur auf das, was empfohlen wurde, und auf das, was übersehen wurde. Zwei F-Werte aus <em>verschiedenen</em> Datenbeständen mit unterschiedlichem Anteil geeigneter Bewerbungen sind deshalb nicht vergleichbar. Innerhalb eines Bestands sind sie es.</p>
   <p style="margin-top:.5rem;">Fachbegriffe in diesem Abschnitt:</p>
   <dl>
    <div class="fn-item"><dt>Accuracy —</dt> <dd>Anteil aller korrekt beurteilten Bewerbungen (richtig empfohlen + richtig abgelehnt) an allen Bewerbungen. Wird hier nicht separat angezeigt, ist aber z. B. das, was in Abschnitt 4 als „Training"/„neue Daten" auf der Lernkurve steht.</dd></div>
    <div class="fn-item"><dt>Precision —</dt> <dd>Anteil der tatsächlich Geeigneten unter allen vom Modell Empfohlenen. Hoch = wenige Fehlalarme.</dd></div>
    <div class="fn-item"><dt>Recall —</dt> <dd>Anteil der tatsächlich Geeigneten, die das Modell auch findet statt sie zu übersehen. Hoch = wenige verpasste Talente.</dd></div>
-   <div class="fn-item"><dt>F1 —</dt> <dd>Fasst Precision und Recall in einer Zahl zusammen, beide gleich gewichtet.</dd></div>
+   <div class="fn-item"><dt>F1 —</dt> <dd>Fasst Precision und Recall in einer Zahl zusammen, beide gleich gewichtet — als harmonisches Mittel, das sich am schlechteren der beiden Werte orientiert. Dient dem Vergleich von Modellen und Einstellungen auf einer Skala.</dd></div>
    <div class="fn-item"><dt>F2 —</dt> <dd>Wie F1, aber Recall zählt doppelt so stark wie Precision — sinnvoll, wenn ein übersehener geeigneter Kandidat teurer ist als ein Fehlalarm.</dd></div>
   </dl>
  </div>
@@ -362,7 +365,7 @@ function renderMetrics(){
  $('tp').textContent=s.tp; $('fp').textContent=s.fp; $('fn').textContent=s.fn; $('tn').textContent=s.tn;
  $('mPrec').textContent=pct(s.precision); $('mRec').textContent=pct(s.recall);
  const f=fbeta(s.precision,s.recall,beta);
- $('mF').textContent=pct(f); $('mFk').textContent='F'+beta; $('mFd').textContent = beta===1?'Balance aus beidem':'Recall zählt doppelt';
+ $('mF').textContent=pct(f); $('mFk').textContent='F'+beta; $('mFd').textContent = beta===1?'Eine Zahl zum Vergleichen':'Eine Zahl, Recall zählt doppelt';
  // trade-off text
  let msg;
  if(s.recall>=0.9) msg='<b>Sehr großzügig.</b> Fast alle Geeigneten werden gefunden (hoher Recall) — aber viele Fehlalarme (niedrige Precision).';
