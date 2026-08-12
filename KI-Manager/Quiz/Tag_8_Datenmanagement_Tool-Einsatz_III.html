@@ -176,8 +176,8 @@ a: [
     opts: [
       'Data Drift beschreibt eine Verschiebung in der Verteilung der Eingangsdaten — etwa wenn plötzlich viele Proposals aus einer beim Training kaum vertretenen Branche eintreffen',
       'Concept Drift beschreibt, dass sich die Definition von „förderungswürdig" selbst verändert — etwa wenn das Steuerungskomitee seine Bewertungskriterien anpasst und bisherige Modell-Urteile dadurch überholt sind',
-      'Data Drift und Concept Drift sind zwei Bezeichnungen für denselben Effekt — die Unterscheidung ist rein akademisch und für die Praxis ohne Bedeutung',
-      'Drift tritt nur auf, wenn der zugrunde liegende Programmcode des Modells verändert wird — bei unverändertem Code bleibt die Modellleistung stets konstant'
+      'Data Drift und Concept Drift sind zwei Bezeichnungen für denselben Effekt — die Begriffe können in der Praxis wechselweise verwendet werden',
+      'Drift tritt nur auf, wenn der zugrunde liegende Programmcode des Modells verändert wird — bei unverändertem Code bleibt die Modellleistung konstant'
     ],
     correct: [0,1],
     exp: 'Data Drift bezeichnet eine Verschiebung in der Verteilung der Eingangsdaten — etwa eine neue Branchenzusammensetzung der eingehenden Proposals, die beim Training kaum vertreten war. Concept Drift bezeichnet dagegen, dass sich die Definition von „richtig" selbst ändert — etwa wenn das Steuerungskomitee seine Bewertungsmaßstäbe anpasst. Beide Phänomene sind klar unterscheidbar und erfordern unterschiedliche Reaktionen. Und Drift entsteht gerade unabhängig von Code-Änderungen — das ist der Kernunterschied zu klassischer Software, bei der ohne Code-Änderung nichts „altert".',
@@ -188,8 +188,8 @@ a: [
     q: 'Welche Aussage(n) zum Kerngedanken des ML-Lifecycle ist oder sind korrekt?',
     opts: [
       'Der ML-Lifecycle ist ein fortlaufender Kreislauf aus Datenbeschaffung, Training, Evaluierung, Deployment und Monitoring — Monitoring liefert die Erkenntnisse, die ein erneutes Training auslösen',
-      'Sobald ein Modell erfolgreich trainiert und in Produktion gebracht wurde, ist der Lifecycle formal abgeschlossen — weitere Schritte sind freiwillige Kür',
-      'Der Lifecycle endet mit der Evaluierung gegen Testdaten — Deployment und Monitoring sind rein technische Aufgaben ohne Management-Relevanz',
+      'Sobald ein Modell erfolgreich trainiert und in Produktion gebracht wurde, ist der Lifecycle formal abgeschlossen — weitere Schritte sind freiwillig und müssen einen klaren Kosten-Nutzen-Effekt haben',
+      'Der Lifecycle endet mit der Evaluierung gegen Testdaten — Deployment und Monitoring sind technische Aufgaben, um die sich das KI-Management nur bei Bedarf kümmern sollte',
       'Ein einmal evaluiertes Modell behält seine Performance dauerhaft, solange der zugrunde liegende Code nicht verändert wird'
     ],
     correct: [0],
@@ -202,8 +202,8 @@ a: [
     opts: [
       'Wenn die Aufgabe regelbasiert ist und ein Mensch sie anhand einer festen Schritt-für-Schritt-Anleitung erledigen könnte, ist RPA die naheliegende Wahl — sie arbeitet präzise mit strukturierten, formal konstanten Daten',
       'RPA lernt nicht aus neuen Beispielen und erkennt keine Muster in unstrukturierten Daten — ändert sich das Antragsformat grundlegend, muss das Regelwerk manuell angepasst werden',
-      'RPA ist eine Form von künstlicher Intelligenz, weil sie ebenso wie KI-Systeme adaptiv auf neue Situationen reagiert',
-      'KI-Automatisierung ist grundsätzlich präziser als RPA, weil sie auf neuronalen Netzen basiert, die jede Eingabe korrekt verarbeiten'
+      'RPA ist eine Form von künstlicher Intelligenz, weil sie adaptiv auf neue Situationen reagiert',
+      'KI-Automatisierung ist grundsätzlich präziser als RPA, weil sie auf neuronalen Netzen basiert, die Eingaben korrekt verarbeiten'
     ],
     correct: [0,1],
     exp: 'Wenn eine Aufgabe regelbasiert ist und mit konstantem Format arbeitet, ist RPA die naheliegende, präzise und transparente Wahl. RPA lernt jedoch nicht aus neuen Beispielen und erkennt keine Muster in unstrukturierten Daten — ändert sich das Format grundlegend, muss das Regelwerk manuell nachgepflegt werden, sonst bricht die Automatisierung. RPA ist gerade keine KI: Sie ist regelbasiert und nicht adaptiv. Und „grundsätzlich präziser, weil neuronale Netze jede Eingabe korrekt verarbeiten" beschreibt KI-Systeme unzutreffend — sie arbeiten probabilistisch und liefern keine Korrektheit-Garantie.',
@@ -211,28 +211,28 @@ a: [
   },
   {
     sc: 'Vor dem Go-Live diskutiert das Team, wie der Wechsel vom alten zum neuen Modell ablaufen soll — und wie viel davon schiefgehen darf.',
-    q: 'Welche Aussage(n) zu den drei Deployment-Strategien Shadow Mode, Canary Release und Blue-Green ist oder sind korrekt?',
+    q: 'Welche Aussage(n) zu den Test-Strategien Shadow Mode, Canary Release und Blue-Green ist oder sind korrekt?',
     opts: [
       'Im Shadow Mode läuft das neue Modell parallel mit, seine Ausgaben werden aber nicht verwendet — das Risiko ist null, weil ausschließlich beobachtet wird',
       'Bei einem Canary Release erhält zunächst nur ein kleiner Anteil der Anfragen das neue Modell, der Anteil wird schrittweise erhöht — ein Rollback bedeutet lediglich, den Anteil wieder auf null zu setzen',
       'Bei Blue-Green laufen zwei vollständige Umgebungen parallel, und es wird sofort vollständig auf die neue Umgebung umgeschaltet — das senkt zwar die Übergangszeit, gilt aber als Strategie mit mittlerem Risiko und höheren Infrastrukturkosten',
-      'Die Wahl der Deployment-Strategie ist eine rein technische Entscheidung der IT-Abteilung — das Risikoprofil des jeweiligen Anwendungsfalls spielt dabei keine Rolle'
+      'Die Wahl der Test-Strategie ist vor allem eine technische Entscheidung — das Risikoprofil des jeweiligen Anwendungsfalls leitet sich aus dem technisch Machbaren ab'
     ],
     correct: [0,1,2],
-    exp: 'Shadow Mode beobachtet risikofrei, weil die Ausgaben des neuen Modells nicht verwendet werden. Ein Canary Release startet mit einem kleinen Traffic-Anteil, der schrittweise erhöht wird — ein Rollback bedeutet, diesen Anteil wieder auf null zu setzen, was technisch einfach ist. Blue-Green schaltet zwischen zwei vollständigen Umgebungen sofort und vollständig um — das spart Übergangszeit, bringt aber ein mittleres Risiko und höhere Infrastrukturkosten. Die Wahl der Strategie ist keine rein technische Frage, sondern hängt unmittelbar vom Risikoprofil des Anwendungsfalls ab.',
+    exp: 'Shadow Mode beobachtet risikofrei, weil die Ausgaben des neuen Modells nicht verwendet werden. Ein Canary Release startet mit einem kleinen Traffic-Anteil, der schrittweise erhöht wird — ein Rollback bedeutet, diesen Anteil wieder auf null zu setzen, was technisch einfach ist. Blue-Green schaltet zwischen zwei vollständigen Umgebungen sofort und vollständig um — das spart Übergangszeit, bringt aber ein mittleres Risiko und höhere Infrastrukturkosten. Die Wahl der Strategie ist keine rein technische Frage, sondern hängt im Gegenteil vom Risikoprofil des Anwendungsfalls ab.',
     src: 'Microsoft — MLOps Maturity Model · learn.microsoft.com/en-us/azure/architecture/ai-ml/guide/mlops-maturity-model · Google Cloud — MLOps: Continuous Delivery and Automation · cloud.google.com/architecture/mlops-continuous-delivery-and-automation-pipelines-in-machine-learning'
   },
   {
     sc: 'Vor dem Go-Live legt die KI-Managerin dem Steuerungskomitee eine Checkliste vor, die vor jeder Produktivsetzung durchlaufen werden soll.',
     q: 'Welche Aussage(n) zu den Mindestvoraussetzungen vor einem KI-Go-Live ist oder sind korrekt?',
     opts: [
-      'Eine Modell-Dokumentation im Model Registry — mit Version, Datenbasis und Performance-Kennzahlen',
+      'Eine Modell-Dokumentation im Model Registry oder auf einer Model Card — mit Version, Datenbasis und Performance-Kennzahlen',
       'Eine definierte Performance-Baseline mit der Frage, ab welcher Abweichung automatisch ein Alert ausgelöst wird',
       'Ein Rollback-Plan, der festlegt, wer in welcher Zeit auf welches Vorgängermodell zurückschaltet',
-      'Eine Garantie, dass das Modell ab dem Go-Live keine Fehler mehr produziert — andernfalls darf die Produktivsetzung nicht erfolgen'
+      'Eine Zusage des Anbeiters, dass das Modell ab dem Go-Live keine Model Drift mehr erleben wird'
     ],
     correct: [0,1,2],
-    exp: 'Modell-Dokumentation, Performance-Baseline und Rollback-Plan sind Mindestpunkte, die vor jedem Go-Live geklärt sein sollten — ohne sie fehlt die Grundlage, um Abweichungen zu erkennen und im Ernstfall geordnet zurückzuschalten. Die Vorstellung, ein Modell könne ab dem Go-Live fehlerfrei arbeiten, widerspricht der Grunderkenntnis, dass 100-%-Genauigkeit in der Praxis nicht existiert — die eigentliche Frage ist, ob die verbleibenden Fehler beherrschbar sind und z. B. durch Human-in-the-Loop aufgefangen werden, nicht, ob sie vollständig ausgeschlossen werden können.',
+    exp: 'Modell-Dokumentation, Performance-Baseline und Rollback-Plan sind Mindestpunkte, die vor jedem Go-Live geklärt sein sollten — ohne sie fehlt die Grundlage, um Abweichungen zu erkennen und im Ernstfall geordnet zurückzuschalten. Die Vorstellung, ein Modell könne ab dem Go-Live fehlerfrei arbeiten, widerspricht der Grunderkenntnis, dass 100-%-Genauigkeit in der KI-Praxis nicht existiert — die eigentliche Frage ist, ob die verbleibenden Fehler beherrschbar sind und z. B. durch Human-in-the-Loop aufgefangen werden, nicht, ob sie vollständig ausgeschlossen werden können.',
     src: 'Google Cloud — MLOps: Continuous Delivery and Automation · cloud.google.com/architecture/mlops-continuous-delivery-and-automation-pipelines-in-machine-learning · Huyen, C. (2022): Designing Machine Learning Systems. O\'Reilly Media'
   }
 ],
@@ -246,7 +246,7 @@ b: [
       'Eine Baseline legt fest, welches Leistungsniveau als „normal" gilt — Abweichungen davon können dann als Signal für Drift oder andere Probleme erkannt werden',
       'Ohne dokumentierte Baseline lässt sich kaum objektiv beurteilen, ob ein Alert auf eine reale Verschlechterung hinweist oder ob es sich um normale Schwankungen handelt',
       'Eine Baseline ist ein einmal festgelegter Wert, der für die gesamte Lebensdauer eines Modells unverändert gültig bleibt',
-      'Baselines sind ausschließlich für hochregulierte Branchen wie Banken oder Versicherungen relevant — für alle anderen Branchen sind sie verzichtbar'
+      'Baselines sind für hochregulierte Branchen wie Banken oder Versicherungen relevant — andere Branchen sollten sie nur nach entsprechender Kosten-Nutzen-Abschätzung einsetzen'
     ],
     correct: [0,1],
     exp: 'Eine Baseline beschreibt, welches Leistungsniveau als „normal" gilt — sie macht Abweichungen erst erkennbar und einordnbar. Ohne sie lässt sich kaum unterscheiden, ob ein auffälliger Wert eine reale Verschlechterung anzeigt oder schlicht im Bereich gewöhnlicher Schwankungen liegt. Eine Baseline ist jedoch kein für immer fixierter Wert — sie muss überprüft und bei Bedarf neu gesetzt werden, etwa wenn sich die Datengrundlage oder die Bewertungskriterien selbst ändern. Und Baselines sind keineswegs auf hochregulierte Branchen beschränkt — sie sind ein grundlegendes Werkzeug für jedes produktiv betriebene ML-System.',
@@ -256,13 +256,13 @@ b: [
     sc: 'Die Auditorin bittet vor ihrem ersten Termin um Einsicht in die Dokumentation des Scoring-Modells.',
     q: 'Welche Aussage(n) zu einer prüffähigen Modell-Dokumentation ist oder sind korrekt?',
     opts: [
-      'Angaben zu Modellversion, verwendeter Datenbasis, Trainingsdatum und Performance-Kennzahlen — eingetragen in einem nachvollziehbaren Model Registry',
+      'Angaben zu Modellversion, verwendeter Datenbasis, Trainingsdatum und Performance-Kennzahlen — eingetragen in einem nachvollziehbaren Model Registry oder einer Model Card',
       'Eine allgemeine Beschreibung der Unternehmensvision sowie ein Organigramm der beteiligten Abteilungen — technische Details sind für ein Audit nicht relevant',
       'Eine Liste aller Mitarbeitenden, die jemals Zugriff auf das Modell hatten, unabhängig davon, ob sie es tatsächlich genutzt haben',
       'Es genügt die mündliche Zusicherung der KI-Managerin, dass das Modell „gut funktioniert" — eine schriftliche Dokumentation ist für interne Systeme nicht erforderlich'
     ],
     correct: [0],
-    exp: 'Eine prüffähige Modell-Dokumentation muss konkrete, nachvollziehbare Angaben enthalten — Version, Datenbasis, Trainingsdatum und Performance-Kennzahlen, eingetragen in einem Model Registry, das diese Informationen über die Zeit zugänglich hält. Eine allgemeine Unternehmensbeschreibung oder ein Organigramm liefern Kontext, ersetzen aber nicht die technische Nachvollziehbarkeit. Eine vollständige Liste aller Zugriffsberechtigten ohne Bezug zur tatsächlichen Nutzung liefert keine Aussage über die Qualität des Modells. Und eine mündliche Zusicherung ersetzt keine Dokumentation.',
+    exp: 'Eine prüffähige Modell-Dokumentation muss konkrete, nachvollziehbare Angaben enthalten — Version, Datenbasis, Trainingsdatum und Performance-Kennzahlen, eingetragen in einem Model Registry oder auf einer Model Card, das diese Informationen über die Zeit zugänglich hält. Eine allgemeine Unternehmensbeschreibung oder ein Organigramm liefern Kontext, ersetzen aber nicht die technische Nachvollziehbarkeit. Eine vollständige Liste aller Zugriffsberechtigten ohne Bezug zur tatsächlichen Nutzung liefert keine Aussage über die Qualität des Modells. Und eine mündliche Zusicherung ersetzt keine Dokumentation.',
     src: 'Google Cloud — MLOps: Continuous Delivery and Automation · cloud.google.com/architecture/mlops-continuous-delivery-and-automation-pipelines-in-machine-learning · ISO/IEC 42001:2023 — AI management systems · iso.org/standard/81230.html'
   },
   {
@@ -270,22 +270,22 @@ b: [
     q: 'Welche Aussage(n) zum Human-Review-Prozess aus Prüf-Sicht ist oder sind korrekt?',
     opts: [
       'Ein dokumentierter Human-Review-Prozess legt fest, wer Low-Confidence-Fälle übernimmt — und ist damit ein zentraler Baustein der Produktivsetzungs-Checkliste',
-      'Human-in-the-Loop bedeutet, dass Mitarbeitende die Rolle von Supervisor:innen der KI einnehmen — eine strukturelle Antwort auf die Tatsache, dass auch ein gut funktionierendes Modell nicht zu 100 % korrekt urteilt',
+      'Human-in-the-Loop oder Human-on-the-Loop bedeutet, dass Mitarbeitende die Rolle von Supervisor:innen der KI einnehmen — eine strukturelle Antwort auf die Tatsache, dass auch ein gut funktionierendes Modell nicht zu 100 % korrekt urteilt',
       'Ein Human-Review-Prozess ist überflüssig, sobald ein Modell in der Evaluierung eine Trefferquote von über 90 % erreicht hat',
       'Human-Review-Prozesse dienen in erster Linie dazu, den Mitarbeitenden das Gefühl zu geben, gebraucht zu werden — einen fachlichen Mehrwert haben sie nicht'
     ],
     correct: [0,1],
-    exp: 'Ein dokumentierter Human-Review-Prozess legt fest, wer Fälle mit geringer Modell-Sicherheit übernimmt — und ist damit explizit Teil der Produktivsetzungs-Checkliste. Human-in-the-Loop bedeutet, dass Menschen die Rolle von Supervisor:innen einnehmen — eine strukturelle Antwort darauf, dass auch ein gut funktionierendes Modell keine 100-prozentige Trefferquote erreicht. Eine Trefferquote von über 90 % macht einen solchen Prozess nicht überflüssig — im Gegenteil, gerade bei hochautomatisierten Prozessen ist die Frage wichtig, wer die verbleibenden Grenzfälle auffängt. Human-Review-Prozesse haben einen klaren fachlichen Mehrwert und sind kein Akzeptanz-Placebo.',
+    exp: 'Ein dokumentierter Human-Review-Prozess legt fest, wer Fälle mit geringer Modell-Sicherheit übernimmt — und ist damit explizit Teil der Produktivsetzungs-Checkliste. Human-in-the-Loop oder Human-on-the-Loop (d.h. bei definierten Ausnahmen vom Regelverhalten eingreifend) bedeutet, dass Menschen die Rolle von Supervisor:innen einnehmen — eine strukturelle Antwort darauf, dass auch ein gut funktionierendes Modell keine 100-prozentige Trefferquote erreicht. Eine Trefferquote von über 90 % macht einen solchen Prozess nicht überflüssig — im Gegenteil, gerade bei hochautomatisierten Prozessen ist die Frage wichtig, wer die verbleibenden Grenzfälle auffängt. Human-Review-Prozesse haben einen klaren fachlichen Mehrwert und sind kein Akzeptanz-Placebo.',
     src: 'Google Cloud — MLOps: Continuous Delivery and Automation · cloud.google.com/architecture/mlops-continuous-delivery-and-automation-pipelines-in-machine-learning · UiPath — Intelligent Document Processing · uipath.com/platform/agentic-automation/idp'
   },
   {
     sc: 'Vor ihrem Abschlussgespräch geht die Auditorin die Produktivsetzungs-Checkliste Punkt für Punkt durch und notiert, wo sie noch Nachweise einfordern will.',
-    q: 'Welche Aussage(n) zu den Punkten, die aus Prüf-Sicht zwingend zur Produktivsetzungsreife gehören, ist oder sind korrekt?',
+    q: 'Welche Aussage(n) zu den Punkten, die aus Prüfsicht zwingend zur Produktivsetzungsreife gehören, ist oder sind korrekt?',
     opts: [
       'Compliance-Freigabe — ist die DSGVO-Konformität, die EU-AI-Act-Risikoklasse und ggf. eine aufsichtsrechtliche Prüfung dokumentiert?',
       'Schulung — sind alle Nutzer:innen darin geschult, wie sie auf unerwartete Modell-Ausgaben reagieren sollen?',
       'Incident-Response-Plan — gibt es einen definierten manuellen Rückfallprozess mit klarer Eskalationskette?',
-      'Die Lieblingsfarbe der Projektleitung — relevante Information, um die Akzeptanz im Team einzuschätzen'
+      'Das Feed-Back der Projektleitung zum Projektverlauf — relevante Information, um die Akzeptanz im Team einzuschätzen'
     ],
     correct: [0,1,2],
     exp: 'Eine dokumentierte Compliance-Freigabe (DSGVO, EU-AI-Act-Risikoklasse, ggf. aufsichtsrechtliche Prüfung), ein nachweisbarer Schulungsstand der Nutzer:innen und ein definierter Incident-Response-Plan mit klarer Eskalationskette sind aus Prüf-Sicht zentrale Bausteine — sie zeigen, ob eine Organisation auf den realen Betrieb inklusive Störungen und regulatorischer Anforderungen vorbereitet ist. Persönliche Vorlieben Einzelner sagen dagegen nichts über die Produktivsetzungsreife aus.',
@@ -298,7 +298,7 @@ b: [
       'Ein Rahmenwerk wie ISO 42001 gibt vor, welche Prozesse — etwa Risikobewertung, Dokumentation und Überwachung — ein Unternehmen rund um seine KI-Systeme nachweisbar etabliert haben sollte',
       'Eine Orientierung an anerkannten Normen macht die Bewertung der Auditorin nachvollziehbarer und vergleichbarer, als wenn jede Prüfung nach individuellen, nicht offengelegten Kriterien erfolgen würde',
       'Auch wenn ein Unternehmen nicht gesetzlich zur Zertifizierung verpflichtet ist, kann die Orientierung an einer solchen Norm helfen, sich auf künftige regulatorische Anforderungen vorzubereiten',
-      'Eine Zertifizierung nach einer solchen Norm bedeutet automatisch, dass das geprüfte KI-System fehlerfrei arbeitet und keiner weiteren Kontrolle mehr bedarf'
+      'Eine Zertifizierung nach einer solchen Norm bedeutet, dass das geprüfte KI-System fehlerfrei arbeitet und das KI-Management entsprechend reduziert werden kann'
     ],
     correct: [0,1,2],
     exp: 'Rahmenwerke wie ISO 42001 machen konkret, welche Prozesse — Risikobewertung, Dokumentation, Überwachung — ein Unternehmen rund um seine KI-Systeme nachweisbar etablieren sollte, und geben einer Prüfung damit eine gemeinsame, nachvollziehbare Bezugsgröße. Das macht Bewertungen vergleichbarer als Prüfungen nach individuellen, nicht offengelegten Maßstäben. Auch ohne gesetzliche Zertifizierungspflicht hilft die Orientierung, sich frühzeitig auf kommende regulatorische Anforderungen einzustellen. Eine Zertifizierung ist jedoch kein Freibrief: Sie bestätigt, dass bestimmte Prozesse nachweislich etabliert sind — sie garantiert nicht, dass das System fehlerfrei arbeitet oder keiner weiteren Kontrolle bedarf.',

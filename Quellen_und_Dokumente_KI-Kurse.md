@@ -62,15 +62,6 @@
 | https://owasp.org/www-project-top-10-for-large-language-model-applications/ | OWASP LLM Top 10 | Sicherheit | Prompt Injection, Training Data Poisoning, LLM-Risiken |
 | https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices | Anthropic (Claude) | Promptinmg Guide
 
-### 2.4 Microsoft 365 & Copilot
-| URL | Name | Typ | Schlagwörter |
-|-----|------|-----|--------------|
-| https://adoption.microsoft.com/en-us/ai-readiness-wizard/ | AI Readiness Wizard | Tool | Selbstassessment, Copilot-Rollout, Readiness, Laborübung |
-| https://adoption.microsoft.com/en-us/copilot/essential-guide/ | Essential Guide to M365 Copilot Adoption | Leitfaden | Governance, Change Management, RACI, Rollout-Planung |
-| https://learn.microsoft.com/de-de/purview/purview | Microsoft Purview (Compliance) | Technische Dokumentation | Purview, Compliance, DLP, Sensitivity Labels |
-| https://learn.microsoft.com/de-de/entra/ | Microsoft Entra (Directory) | Technische Dokumentation | Identitätsmanagement, Zero Trust, Zugriffsrechte |
-| https://learn.microsoft.com/de-de/azure/sentinel/sentinel-overview | Microsoft Sentinel (SIEM) | Überwachung von Sicherheitsereignissen |
-
 ### 2.3 KI, Ethik & Governance
 | URL | Name | Typ | Schlagwörter |
 |-----|------|-----|--------------|
@@ -85,6 +76,56 @@
 | https://www.tno.nl/en/digital/artificial-intelligence/ | TNO — Netherlands Organisation for Applied Scientific Research | Forschung | Niederlande, AI Oversight Lab, Responsible Human-Machine Interaction, Zukunft der Arbeit, kognitive Belastung durch KI, NEA-Surveys |
 | https://www.imda.gov.sg/-/media/imda/files/about/emerging-tech-and-research/artificial-intelligence/mgf-for-agentic-ai.pdf | IMDA — Model AI Governance Framework for Agentic AI (v1.5, Mai/Juni 2026) | Regulierung | Singapur, Staatsbehörde, Agentische KI, Governance-Framework, Action-Space-×-Autonomy-Matrix, Human-in-the-Loop, Least Privilege, Automation Bias, Fallstudien (PwC, OCBC, Tencent, GovTech, Workday) |
 | https://www.who.int/publications/i/item/9789240029200 | WHO — Ethics and Governance of Artificial Intelligence for Health (2021) | Regulierung | UN-Sonderorganisation, Tier-1, Gesundheitswesen, 6 Ethikprinzipien (Transparenz, Inklusivität, Rechenschaftspflicht, Nicht-Diskriminierung, Nachhaltigkeit, Datenschutz), Governance-Empfehlungen, Krankenhaus, Diagnostik, Patientensicherheit |
+### 2.4 Data Governance — MLOps — Monitoring
+> Betrieb, Überwachung und Abnahme produktiver KI-Systeme. Grundlage für KIM Tag 6–8.
+
+| URL | Name | Typ | Schlagwörter |
+|-----|------|-----|--------------|
+| https://static.googleusercontent.com/media/research.google.com/en//pubs/archive/45742.pdf | Breck, Cai, Nielsen, Salib & Sculley (Google) — What's your ML Test Score? | Primärquelle (Industrieforschung) | Produktionsreife, 28 Prüfungen, vier Bereiche (Daten, Modell, Infrastruktur, Überwachung), Bewertung als Minimum statt Summe, Rollback-Test, Training-Serving-Skew, Abnahmeprüfung |
+| https://research.google/pubs/the-ml-test-score-a-rubric-for-ml-production-readiness-and-technical-debt-reduction/ | The ML Test Score (IEEE Big Data 2017) — Übersichtsseite | Primärquelle | erweiterte Fassung derselben Arbeit, technische Schulden, ML Test Certified |
+| https://cloud.google.com/architecture/mlops-continuous-delivery-and-automation-pipelines-in-machine-learning | Google Cloud — MLOps: Continuous delivery and automation pipelines | Technische Dokumentation | MLOps-Reifegrad Stufen 0–2, Continuous Training, Pipeline-Automatisierung, Modellvalidierung vor Deployment |
+| https://learn.microsoft.com/en-us/azure/architecture/ai-ml/guide/mlops-maturity-model | Microsoft Azure Architecture Center — MLOps-Reifegradmodell | Technische Dokumentation | fünf Ebenen 0–4, kein MLOps / DevOps ohne MLOps / automatisiertes Training / automatisierte Bereitstellung / vollständiges MLOps (deutsche Fassung maschinell übersetzt) |
+| https://learn.microsoft.com/en-us/azure/well-architected/ai/operations | Microsoft Well-Architected — AI workload operations | Technische Dokumentation | Betrieb von KI-Anwendungen, Beobachtbarkeit, Alarmverfahren kodifizieren, Kosten- und Auslastungsüberwachung, Versionskonsistenz, Dokumentationspflichten |
+| https://learn.microsoft.com/en-us/azure/well-architected/ai/test | Microsoft Well-Architected — Test and evaluate AI workloads | Technische Dokumentation | Unterschied Testen/Überwachen, goldener Datenbestand, Datendrift vs. Konzeptdrift, Trennung Trainings-/Evaluierungs-/Testdaten, Jailbreak-Test, Agentenvalidierung |
+| https://learn.microsoft.com/en-us/azure/well-architected/ai/assessment | Microsoft Well-Architected — AI workload assessment | Tool | Fragenkatalog zur Selbstbewertung, Abnahmegespräch, Reifegrad |
+| https://learn.microsoft.com/en-us/azure/well-architected/operational-excellence/safe-deployments | Microsoft Well-Architected — Safe deployment practices | Technische Dokumentation | Ausrollstrategien, Canary, Blau-Grün, Rückkehrplan, schrittweise Freigabe |
+
+**Plattformen — eingebaute Überwachung („out of the box")**
+
+| URL | Name | Typ | Schlagwörter |
+|-----|------|-----|--------------|
+| https://learn.microsoft.com/en-us/azure/machine-learning/concept-model-monitoring | Microsoft — Model monitoring in production (Azure Machine Learning) | Technische Dokumentation | fünf Signale: Datendrift, Vorhersagedrift, Datenqualität, Merkmalsattributions-Drift, Modellgüte; Referenzbestand, Schwellenwert selbst setzen |
+| https://learn.microsoft.com/en-us/azure/machine-learning/concept-data-collection | Microsoft — Data collector (Azure Machine Learning) | Technische Dokumentation | Erfassung von Ein- und Ausgaben an Online-Endpunkten, Voraussetzung für Drift-Messung |
+| https://docs.aws.amazon.com/sagemaker/latest/dg/model-monitor.html | AWS — SageMaker Model Monitor | Technische Dokumentation | vier Dimensionen: Datenqualität, Modellgüte, Bias-Drift, Feature-Attribution-Drift; Clarify; **Neukundenzugang zum 30.07.2026 geschlossen** — Lehrstück zur Anbieterabhängigkeit |
+| https://docs.cloud.google.com/gemini-enterprise-agent-platform/machine-learning/model-monitoring/using-model-monitoring | Google — Monitor feature skew and drift (Gemini Enterprise Agent Platform) | Technische Dokumentation | Training-Serving-Skew, Inferenz-Drift, Jensen-Shannon-Divergenz (numerisch), L-Unendlich-Distanz (kategorial), Standardintervall 24 Stunden |
+| https://docs.cloud.google.com/gemini-enterprise-agent-platform/vertex-ai-name-changes | Google — Namensänderungen von Vertex AI zur Agent Platform | Technische Dokumentation | Umbenennungstabelle; **Vertex AI wurde in Gemini Enterprise Agent Platform umbenannt** — alte Doku-URLs leiten auf die neuen Pfade weiter; **das Datum der Umstellung ist aus keiner Google-Primärquelle belegt** (Fachpresse nennt April 2026) — im Kursmaterial daher ohne Jahresangabe verwenden |
+| https://cloud.google.com/products/gemini-enterprise-agent-platform | Google Cloud — Gemini Enterprise Agent Platform (Produktseite) | Herstellerangabe | „formerly Vertex AI“; Model Registry, Pipelines, Feature Store, Model Evaluation, Agent Studio, Model Garden |
+| https://www.uipath.com/de/rpa/robotic-process-automation | UiPath — Was ist RPA? (deutsch) | Herstellerangabe | regelbasierte Automatisierung, Abgrenzung zu MLA, Einstiegserklärung |
+| https://www.uipath.com/platform/agentic-automation/idp | UiPath — Intelligent Document Processing | Herstellerangabe | hybride Kette: KI-Extraktion aus variablen Formaten plus regelbasierte Weiterverarbeitung |
+| https://ir.uipath.com/news/detail/400/uipath-recognized-as-a-leader-in-the-2025-gartner-magic-quadrant-for-robotic-process-automation | UiPath Investor Relations — Leader im Gartner Magic Quadrant for RPA 2025 | Pressemitteilung (Eigenangabe) | Marktposition; **Vorsicht: Selbstdarstellung, kein unabhängiger Beleg** |
+
+**Herstellerunabhängige Überwachung**
+> Aufgenommen, weil die eingebauten Werkzeuge an die jeweilige Plattform gebunden sind. Wer über mehrere Plattformen hinweg betreibt — oder Nachweise braucht, die nicht vom Betreiber der Plattform stammen — braucht eine unabhängige Instanz. Für die Kurse ist das der Anschluss an Make-or-Buy (KIM Tag 6) und an die Frage, wem ein Prüfnachweis gehört. Alle drei sind Anbieterangaben, also Tier 3 — als Marktüberblick nutzbar, nicht als Beleg für Wirksamkeit.
+
+| URL | Name | Typ | Schlagwörter |
+|-----|------|-----|--------------|
+| https://www.evidentlyai.com/ | Evidently AI | Herstellerangabe | quelloffen, tabellarische Daten und generative KI, über 100 Kennzahlen, Berichte und Testsuiten, lokal betreibbar |
+| https://github.com/evidentlyai | Evidently AI — Quelltext auf GitHub | Werkzeug (Open Source) | prüfbarer Quelltext, eigenständiger Betrieb ohne Anbieterbindung |
+| https://arize.com/ai-agents/agent-evaluation/ | Arize AI — Evaluation von KI-Agenten | Herstellerangabe | Agentenbewertung, Werkzeugaufrufe, Absichtserkennung, Spurenanalyse |
+| https://github.com/Arize-ai/phoenix | Arize Phoenix — Quelltext auf GitHub | Werkzeug (Open Source) | quelloffene Alternative zur Bezahlplattform, auf OpenTelemetry aufgebaut, eigenständig betreibbar |
+| https://docs.fiddler.ai/observability/monitoring | Fiddler AI — Monitoring (Dokumentation) | Herstellerangabe | Modellgüte, Datendrift, Datenintegrität, Vektorüberwachung, Erklärbarkeit; LLM- und Agentenbeobachtung |
+| https://www.fiddler.ai/ml-model-monitoring | Fiddler AI — ML Model Monitoring (Produktseite) | Herstellerangabe | Überblick für das Beschaffungsgespräch |
+| https://github.com/whylabs/whylabs-oss | WhyLabs — Quelltext auf GitHub | Werkzeug (Open Source) | Unternehmen aufgelöst, Quelltext offen verfügbar; **Beispiel dafür, dass Werkzeugentscheidungen ein Fortbestandsrisiko haben** |
+
+### 2.5 Microsoft 365 & Copilot
+| URL | Name | Typ | Schlagwörter |
+|-----|------|-----|--------------|
+| https://adoption.microsoft.com/en-us/ai-readiness-wizard/ | AI Readiness Wizard | Tool | Selbstassessment, Copilot-Rollout, Readiness, Laborübung |
+| https://adoption.microsoft.com/en-us/copilot/essential-guide/ | Essential Guide to M365 Copilot Adoption | Leitfaden | Governance, Change Management, RACI, Rollout-Planung |
+| https://learn.microsoft.com/de-de/purview/purview | Microsoft Purview (Compliance) | Technische Dokumentation | Purview, Compliance, DLP, Sensitivity Labels |
+| https://learn.microsoft.com/de-de/entra/ | Microsoft Entra (Directory) | Technische Dokumentation | Identitätsmanagement, Zero Trust, Zugriffsrechte |
+| https://learn.microsoft.com/de-de/azure/sentinel/sentinel-overview | Microsoft Sentinel (SIEM) | Überwachung von Sicherheitsereignissen |
+
 
 ---
 
