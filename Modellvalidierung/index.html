@@ -78,7 +78,27 @@ table.gloss td{border-bottom:1px solid var(--rule);padding:.45rem .5rem;vertical
 table.gloss tr:last-child td{border-bottom:none;}
 table.gloss td:first-child{font-weight:600;white-space:nowrap;width:150px;}
 .foot{margin-top:1.5rem;font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);border-top:1px solid var(--rule);padding-top:.8rem;}
-.proxybar{margin-bottom:.7rem;}
+.ausgang{display:grid;grid-template-columns:1fr 1fr;gap:.7rem;margin:.2rem 0 1rem;}
+@media(max-width:700px){.ausgang{grid-template-columns:1fr;}}
+.ag-k{border:1px solid #d5d0c5;border-radius:8px;padding:.6rem .8rem;background:#fff;}
+.ag-t{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1.4px;text-transform:uppercase;color:#6b6b60;font-weight:700;margin-bottom:.4rem;}
+.ag-z{display:flex;height:16px;border-radius:4px;overflow:hidden;margin-bottom:.3rem;}
+.ag-z i{display:block;font-style:normal;font-size:9.5px;line-height:16px;text-align:center;color:#fff;font-family:'DM Mono',monospace;}
+.ag-w{background:#8e6bb0;} .ag-m{background:#3d7ab8;}
+.ag-x{font-size:11.5px;color:#6b6b60;line-height:1.5;}
+.ag-x b{color:#1a1a18;}
+.einl{border:1px solid #d5d0c5;border-left:4px solid #0a6b6b;border-radius:0 8px 8px 0;background:#fff;padding:.75rem .95rem;margin:1rem 0;}
+.einl-t{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1.6px;text-transform:uppercase;color:#0a6b6b;font-weight:700;margin-bottom:.5rem;}
+.einl-g{display:grid;grid-template-columns:repeat(3,1fr);gap:.6rem;margin-bottom:.55rem;}
+@media(max-width:700px){.einl-g{grid-template-columns:1fr;}}
+.einl-z{text-align:center;border-radius:6px;padding:.4rem .3rem;background:#f2f0eb;}
+.einl-n{font-family:'DM Mono',monospace;font-size:22px;font-weight:700;line-height:1.1;}
+.einl-l{font-size:10.5px;color:#6b6b60;text-transform:uppercase;letter-spacing:.8px;font-family:'DM Mono',monospace;}
+.einl-bal{display:flex;height:22px;border-radius:5px;overflow:hidden;margin-bottom:.35rem;}
+.einl-bal i{display:block;font-style:normal;font-size:11px;line-height:22px;text-align:center;color:#fff;font-family:'DM Mono',monospace;transition:width .25s;}
+.einl-ref{font-size:11.5px;color:#6b6b60;}
+.einl-ref b{color:#1a1a18;}
+.proxybar.proxybar{margin-bottom:.7rem;}
 .proxybar .h{display:flex;justify-content:space-between;font-size:12.5px;margin-bottom:.2rem;}
 </style>
 </head>
@@ -212,7 +232,31 @@ table.gloss td:first-child{font-weight:600;white-space:nowrap;width:150px;}
   <input type="range" id="thrBias" min="0" max="18" value="9" step="1">
   <span class="pill" id="thrValBias">0.50</span>
  </div>
- <p class="note" style="margin-top:0;margin-bottom:.9rem;">Schiebe den Regler: Die Lücke bleibt auf jeder Stufe.</p>
+<div class="ausgang">
+  <div class="ag-k">
+   <div class="ag-t">Trainingsdaten · 1.200 Fälle</div>
+   <div class="ag-z"><i class="ag-w" style="width:50%;">600 Frauen</i><i class="ag-m" style="width:50%;">600 Männer</i></div>
+   <div class="ag-x">Genau ausgeglichen. Aber <b>historisch eingestellt: 26,7 % der Frauen, 45,7 % der Männer.</b> Das Ungleichgewicht steckt nicht im Bewerberfeld, sondern in den Entscheidungen.</div>
+  </div>
+  <div class="ag-k">
+   <div class="ag-t">Bewerbungen · 800 Fälle</div>
+   <div class="ag-z"><i class="ag-w" style="width:49.8%;">398 Frauen</i><i class="ag-m" style="width:50.2%;">402 Männer</i></div>
+   <div class="ag-x">Ebenfalls ausgeglichen. <b>Tatsächlich geeignet sind 41,2 % Frauen.</b> Alles, was das Modell darunter ausgibt, hat es nicht in den Daten gefunden, sondern aus den alten Entscheidungen gelernt.</div>
+  </div>
+ </div>
+
+ <p class="note" style="margin-top:0;margin-bottom:.9rem;">Schiebe die Einladungsschwelle: Die Lücke bleibt auf jeder Stufe bestehen — nur ihre Form ändert sich.</p>
+
+ <div class="einl">
+  <div class="einl-t">Wer würde eingeladen?</div>
+  <div class="einl-g">
+   <div class="einl-z"><div class="einl-n" id="eW" style="color:#8e6bb0;">0</div><div class="einl-l">Frauen</div></div>
+   <div class="einl-z"><div class="einl-n" id="eM" style="color:#3d7ab8;">0</div><div class="einl-l">Männer</div></div>
+   <div class="einl-z"><div class="einl-n" id="eG">0</div><div class="einl-l">zusammen</div></div>
+  </div>
+  <div class="einl-bal"><i class="ag-w" id="eBalW" style="width:50%;">0 %</i><i class="ag-m" id="eBalM" style="width:50%;">0 %</i></div>
+  <div class="einl-ref" id="eRef"></div>
+ </div>
  <div class="grid2">
   <div>
    <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:.5rem;">Auswahlrate — wer wird empfohlen?</div>
@@ -325,26 +369,27 @@ table.gloss td:first-child{font-weight:600;white-space:nowrap;width:150px;}
 <script>
 const DATA = {
  base_rate:0.361,
+ pool:{frauen:398, maenner:402},
  sweep:[
-  {t:0.05,tp:283,fp:316,fn:6,tn:195,precision:0.472,recall:0.979,sel_w:0.653,sel_m:0.843,rec_w:0.966,rec_m:0.988},
-  {t:0.10,tp:272,fp:249,fn:17,tn:262,precision:0.522,recall:0.941,sel_w:0.545,sel_m:0.756,rec_w:0.882,rec_m:0.982},
-  {t:0.15,tp:261,fp:204,fn:28,tn:307,precision:0.561,recall:0.903,sel_w:0.472,sel_m:0.689,rec_w:0.840,rec_m:0.947},
-  {t:0.20,tp:255,fp:177,fn:34,tn:334,precision:0.590,recall:0.882,sel_w:0.432,sel_m:0.647,rec_w:0.815,rec_m:0.929},
-  {t:0.25,tp:245,fp:147,fn:44,tn:364,precision:0.625,recall:0.848,sel_w:0.374,sel_m:0.604,rec_w:0.782,rec_m:0.894},
-  {t:0.30,tp:236,fp:119,fn:53,tn:392,precision:0.665,recall:0.817,sel_w:0.334,sel_m:0.552,rec_w:0.739,rec_m:0.871},
-  {t:0.35,tp:223,fp:102,fn:66,tn:409,precision:0.686,recall:0.772,sel_w:0.291,sel_m:0.520,rec_w:0.664,rec_m:0.847},
-  {t:0.40,tp:209,fp:84,fn:80,tn:427,precision:0.713,recall:0.723,sel_w:0.249,sel_m:0.483,rec_w:0.588,rec_m:0.818},
-  {t:0.45,tp:199,fp:70,fn:90,tn:441,precision:0.740,recall:0.689,sel_w:0.214,sel_m:0.458,rec_w:0.529,rec_m:0.800},
-  {t:0.50,tp:188,fp:58,fn:101,tn:453,precision:0.764,recall:0.651,sel_w:0.191,sel_m:0.423,rec_w:0.487,rec_m:0.765},
-  {t:0.55,tp:173,fp:46,fn:116,tn:465,precision:0.790,recall:0.599,sel_w:0.158,sel_m:0.388,rec_w:0.429,rec_m:0.718},
-  {t:0.60,tp:157,fp:33,fn:132,tn:478,precision:0.826,recall:0.543,sel_w:0.131,sel_m:0.343,rec_w:0.370,rec_m:0.665},
-  {t:0.65,tp:145,fp:26,fn:144,tn:485,precision:0.848,recall:0.502,sel_w:0.113,sel_m:0.313,rec_w:0.345,rec_m:0.612},
-  {t:0.70,tp:129,fp:21,fn:160,tn:490,precision:0.860,recall:0.446,sel_w:0.083,sel_m:0.291,rec_w:0.252,rec_m:0.582},
-  {t:0.75,tp:117,fp:16,fn:172,tn:495,precision:0.880,recall:0.405,sel_w:0.073,sel_m:0.259,rec_w:0.227,rec_m:0.529},
-  {t:0.80,tp:95,fp:12,fn:194,tn:499,precision:0.888,recall:0.329,sel_w:0.060,sel_m:0.206,rec_w:0.193,rec_m:0.424},
-  {t:0.85,tp:72,fp:10,fn:217,tn:501,precision:0.878,recall:0.249,sel_w:0.043,sel_m:0.162,rec_w:0.134,rec_m:0.329},
-  {t:0.90,tp:53,fp:5,fn:236,tn:506,precision:0.914,recall:0.183,sel_w:0.030,sel_m:0.114,rec_w:0.092,rec_m:0.247},
-  {t:0.95,tp:21,fp:3,fn:268,tn:508,precision:0.875,recall:0.073,sel_w:0.013,sel_m:0.047,rec_w:0.034,rec_m:0.100}
+  {t:0.05,tp:283,fp:316,fn:6,tn:195,precision:0.472,recall:0.979,sel_w:0.653,sel_m:0.843,rec_w:0.966,rec_m:0.988,nw:260,nm:339},
+  {t:0.10,tp:272,fp:249,fn:17,tn:262,precision:0.522,recall:0.941,sel_w:0.545,sel_m:0.756,rec_w:0.882,rec_m:0.982,nw:217,nm:304},
+  {t:0.15,tp:261,fp:204,fn:28,tn:307,precision:0.561,recall:0.903,sel_w:0.472,sel_m:0.689,rec_w:0.840,rec_m:0.947,nw:188,nm:277},
+  {t:0.20,tp:255,fp:177,fn:34,tn:334,precision:0.590,recall:0.882,sel_w:0.432,sel_m:0.647,rec_w:0.815,rec_m:0.929,nw:172,nm:260},
+  {t:0.25,tp:245,fp:147,fn:44,tn:364,precision:0.625,recall:0.848,sel_w:0.374,sel_m:0.604,rec_w:0.782,rec_m:0.894,nw:149,nm:243},
+  {t:0.30,tp:236,fp:119,fn:53,tn:392,precision:0.665,recall:0.817,sel_w:0.334,sel_m:0.552,rec_w:0.739,rec_m:0.871,nw:133,nm:222},
+  {t:0.35,tp:223,fp:102,fn:66,tn:409,precision:0.686,recall:0.772,sel_w:0.291,sel_m:0.520,rec_w:0.664,rec_m:0.847,nw:116,nm:209},
+  {t:0.40,tp:209,fp:84,fn:80,tn:427,precision:0.713,recall:0.723,sel_w:0.249,sel_m:0.483,rec_w:0.588,rec_m:0.818,nw:99,nm:194},
+  {t:0.45,tp:199,fp:70,fn:90,tn:441,precision:0.740,recall:0.689,sel_w:0.214,sel_m:0.458,rec_w:0.529,rec_m:0.800,nw:85,nm:184},
+  {t:0.50,tp:188,fp:58,fn:101,tn:453,precision:0.764,recall:0.651,sel_w:0.191,sel_m:0.423,rec_w:0.487,rec_m:0.765,nw:76,nm:170},
+  {t:0.55,tp:173,fp:46,fn:116,tn:465,precision:0.790,recall:0.599,sel_w:0.158,sel_m:0.388,rec_w:0.429,rec_m:0.718,nw:63,nm:156},
+  {t:0.60,tp:157,fp:33,fn:132,tn:478,precision:0.826,recall:0.543,sel_w:0.131,sel_m:0.343,rec_w:0.370,rec_m:0.665,nw:52,nm:138},
+  {t:0.65,tp:145,fp:26,fn:144,tn:485,precision:0.848,recall:0.502,sel_w:0.113,sel_m:0.313,rec_w:0.345,rec_m:0.612,nw:45,nm:126},
+  {t:0.70,tp:129,fp:21,fn:160,tn:490,precision:0.860,recall:0.446,sel_w:0.083,sel_m:0.291,rec_w:0.252,rec_m:0.582,nw:33,nm:117},
+  {t:0.75,tp:117,fp:16,fn:172,tn:495,precision:0.880,recall:0.405,sel_w:0.073,sel_m:0.259,rec_w:0.227,rec_m:0.529,nw:29,nm:104},
+  {t:0.80,tp:95,fp:12,fn:194,tn:499,precision:0.888,recall:0.329,sel_w:0.060,sel_m:0.206,rec_w:0.193,rec_m:0.424,nw:24,nm:83},
+  {t:0.85,tp:72,fp:10,fn:217,tn:501,precision:0.878,recall:0.249,sel_w:0.043,sel_m:0.162,rec_w:0.134,rec_m:0.329,nw:17,nm:65},
+  {t:0.90,tp:53,fp:5,fn:236,tn:506,precision:0.914,recall:0.183,sel_w:0.030,sel_m:0.114,rec_w:0.092,rec_m:0.247,nw:12,nm:46},
+  {t:0.95,tp:21,fp:3,fn:268,tn:508,precision:0.875,recall:0.073,sel_w:0.013,sel_m:0.047,rec_w:0.034,rec_m:0.100,nw:5,nm:19}
  ],
  overfit:{depth:[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],
   train:[0.637,0.675,0.690,0.694,0.704,0.711,0.724,0.745,0.759,0.769,0.784,0.795,0.800,0.807,0.820],
@@ -380,6 +425,18 @@ function renderMetrics(){
  const sg=(s.sel_m-s.sel_w), rg=(s.rec_m-s.rec_w);
  $('selGap').textContent='+'+Math.round(sg*100)+' Pp. zugunsten Männer';
  $('recGap').textContent='+'+Math.round(rg*100)+' Pp. zugunsten Männer';
+ // Kopfzahlen: wer würde eingeladen?
+ const nw=s.nw, nm=s.nm, ng=nw+nm;
+ const antW = ng ? nw/ng : 0;
+ $('eW').textContent=nw; $('eM').textContent=nm; $('eG').textContent=ng;
+ $('eBalW').style.width=(antW*100)+'%'; $('eBalM').style.width=((1-antW)*100)+'%';
+ $('eBalW').textContent = antW>0.12 ? Math.round(antW*100)+' %' : '';
+ $('eBalM').textContent = (1-antW)>0.12 ? Math.round((1-antW)*100)+' %' : '';
+ const refW = DATA.pool.frauen/(DATA.pool.frauen+DATA.pool.maenner);
+ const diff = Math.round((refW-antW)*100);
+ $('eRef').innerHTML = 'Frauenanteil unter den Eingeladenen: <b>'+Math.round(antW*100)+' %</b> — '
+   + 'im Bewerberfeld sind es <b>50 %</b>, unter den tatsächlich Geeigneten <b>41 %</b>.'
+   + (diff>0 ? ' Es fehlen also rund <b>'+diff+' Prozentpunkte</b>.' : '');
 }
 
 function renderProxy(){
