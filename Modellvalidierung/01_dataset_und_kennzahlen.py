@@ -121,6 +121,29 @@ proxy["mit_geschlecht"]      = parity_gap(feat_all)
 proxy["ohne_geschlecht"]     = parity_gap([f for f in feat_all if f!="geschlecht"])
 proxy["ohne_gpluslucke"]     = parity_gap([f for f in feat_all if f not in ("geschlecht","karriere_luecke_monate")])
 
+# Variante: synthetische Spiegelprofile (Geschlecht gedreht, alles andere identisch)
+def parity_gap_aug(features, zentrieren=False):
+    d2 = df.copy()
+    ia, ib = train_test_split(np.arange(len(d2)), test_size=0.4, random_state=1, stratify=y)
+    tr_, te_ = d2.iloc[ia].copy(), d2.iloc[ib].copy()
+    if zentrieren:
+        mu = tr_.groupby("geschlecht").karriere_luecke_monate.mean()
+        tr_["karriere_luecke_monate"] = tr_.karriere_luecke_monate - tr_.geschlecht.map(mu)
+        te_["karriere_luecke_monate"] = te_.karriere_luecke_monate - te_.geschlecht.map(mu)
+    else:
+        sp = tr_.copy(); sp["geschlecht"] = 1 - sp["geschlecht"]
+        tr_ = pd.concat([tr_, sp], ignore_index=True)
+    s2 = StandardScaler().fit(tr_[features].values)
+    c2 = LogisticRegression(max_iter=1000).fit(s2.transform(tr_[features].values), tr_["eingestellt"].values)
+    yp2 = (c2.predict_proba(s2.transform(te_[features].values))[:, 1] >= 0.5).astype(int)
+    gb2 = te_["geschlecht"].values
+    sm, sw = yp2[gb2 == 1].mean(), yp2[gb2 == 0].mean()
+    return round(float(sm - sw), 3), round(float(sm), 3), round(float(sw), 3)
+
+feat_og = [f for f in feat_all if f != "geschlecht"]
+proxy["spiegelprofile"] = parity_gap_aug(feat_og)
+proxy["luecke_zentriert"] = parity_gap_aug(feat_og, zentrieren=True)
+
 out={"base_rate":round(float(base_rate),3),"n_test":int(len(yte)),
      "sweep":sweep,"overfit":overfit,"proxy":proxy}
 with open("kennzahlen.json","w") as f:

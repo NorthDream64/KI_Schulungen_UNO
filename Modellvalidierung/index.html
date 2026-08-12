@@ -277,9 +277,28 @@ table.gloss td:first-child{font-weight:600;white-space:nowrap;width:150px;}
 <!-- PROXY -->
 <div class="sec">
  <div class="sec-t">3 · <b>Proxy‑Falle</b> — reicht es, „Geschlecht" wegzulassen?</div>
- <p class="note" style="margin-top:0;margin-bottom:.9rem;">Zwei naheliegende Reflexe: das Merkmal „Geschlecht" einfach entfernen — oder synthetische Daten pro Frauen „nachfüttern", um die Zahlen auszugleichen. Wir haben das Modell dreimal trainiert und die Auswahlraten‑Lücke gemessen:</p>
+ <p class="note" style="margin-top:0;margin-bottom:.9rem;">Drei naheliegende Reflexe: das Merkmal „Geschlecht“ entfernen · für jedes männliche Profil ein gespiegeltes weibliches erzeugen · das verdächtige Merkmal ganz streichen. Wir haben das Modell <strong>fünfmal</strong> trainiert — immer gegen denselben echten Testteil — und die Auswahlraten-Lücke gemessen:</p>
  <div id="proxyBars"></div>
- <div class="callout"><b>Die Lehre:</b> „Geschlecht" wegzulassen halbiert die Lücke nur — die <strong>Karrierelücke verrät das Geschlecht weiter</strong> (ein sogenannter Proxy). Auch synthetisches Nachfüttern pro Frauen würde daran nichts Grundsätzliches ändern: Solange die Karrierelücke unverändert im Datensatz steht, lernt das Modell das Muster weiter über sie — am Zielwert zu drehen behebt nicht die Ursache im Merkmal selbst. Erst wenn man den Proxy adressiert, verschwindet die Diskriminierung. <em>Fairness durch Wegschauen oder Nachjustieren an der falschen Stelle funktioniert nicht — man muss messen und gezielt gegensteuern.</em></div>
+ <div class="callout"><b>Die Auflösung:</b> „Geschlecht“ wegzulassen halbiert die Lücke nur — die <strong>Karrierelücke verrät das Geschlecht weiter</strong>. Das nennt man einen <em>Proxy</em>: ein Merkmal, das die geschützte Eigenschaft mitträgt, ohne sie zu nennen. Im Datensatz sind es <strong>17,7 Monate bei Frauen gegen 6,2 bei Männern</strong>.</div>
+
+ <div class="footnote" style="margin-top:1rem;">
+  <div class="fn-t">Warum synthetische Spiegelprofile nichts ändern</div>
+  <p>Der Gedanke liegt nahe: Für jeden echten 40-jährigen Ingenieur legt man eine synthetische 40-jährige Ingenieurin an — gleiche Qualifikation, gleiches Ergebnis. Damit ist das Geschlecht in den Trainingsdaten rechnerisch bedeutungslos. Genau das zeigt Zeile ③: <strong>die Lücke bleibt bei +18 Prozentpunkten, exakt wie ohne Spiegelprofile.</strong></p>
+  <p style="margin-top:.5rem;"><strong>Der Grund steckt in der Karrierelücke.</strong> Die synthetische Ingenieurin erbt die Karrierelücke <em>des Mannes</em> — also rund sechs Monate. Nach dem Spiegeln steht in den Trainingsdaten bei beiden Geschlechtern derselbe Mittelwert von 11,9 Monaten. Das Modell lernt daraus nicht „Frauen sind geeignet“, sondern „eine kurze Karrierelücke ist unschädlich“. Nur: <strong>Die echten Bewerberinnen, die später ins System kommen, haben weiterhin 17,7 Monate.</strong> Man hat eine Welt trainiert, die es nicht gibt.</p>
+  <p style="margin-top:.5rem;"><strong>Der Unterschied zur Medizin.</strong> In klinischen Studien zu seltenen Erkrankungen lösen synthetische oder simulierte Daten ein <em>Mengenproblem</em>: Es gibt zu wenige Fälle, um einen echten Effekt sauber zu schätzen. Hier ist die Menge kein Problem — der Bestand ist mit 600 zu 600 exakt ausgeglichen. Das Problem sind die <em>Beschriftungen</em>: Sie halten frühere Entscheidungen fest, die verzerrt waren. <strong>Synthetische Daten helfen gegen Lücken. Gegen Verzerrungen helfen sie nicht</strong> — mehr Daten desselben Musters ergeben mehr desselben Musters.</p>
+ </div>
+
+ <div class="footnote" style="margin-top:.7rem;">
+  <div class="fn-t">Was „den Proxy adressieren“ konkret heißt</div>
+  <p><strong>Erstens: ihn finden.</strong> Man prüft, ob sich das geschützte Merkmal aus den übrigen Merkmalen vorhersagen lässt. Gelingt das gut, gibt es einen Proxy — und man weiß, welches Merkmal es ist. Ohne diese Messung rät man.</p>
+  <p style="margin-top:.5rem;"><strong>Zweitens: entscheiden, was mit ihm geschieht.</strong> Zwei Wege, beide oben gemessen:</p>
+  <ul style="margin:.4rem 0 0 1.1rem;padding:0;">
+   <li style="margin-bottom:.35rem;"><strong>Streichen</strong> (Zeile ④): Die Lücke verschwindet — aber die Karrierelücke sagt eben auch etwas Echtes über verfügbare Erfahrung. Man wirft berechtigte Information mit weg.</li>
+   <li><strong>Bereinigen</strong> (Zeile ⑤): Das Merkmal bleibt, aber die Gruppeninformation wird herausgerechnet — jede Karrierelücke wird am Mittelwert <em>ihrer eigenen Gruppe</em> gemessen. Aus „17 Monate“ wird „durchschnittlich für ihre Gruppe“. Die Lücke schließt sich genauso, die Information bleibt nutzbar.</li>
+  </ul>
+  <p style="margin-top:.5rem;"><strong>Drittens: die Ursache prüfen.</strong> Im Erzeugungsmodell dieses Datensatzes wird die Karrierelücke <em>stärker bestraft</em>, als es durch tatsächlich fehlende Erfahrung gerechtfertigt wäre. Das ist keine technische, sondern eine fachliche Frage: Ist die Regel „lange Unterbrechung zählt negativ“ in dieser Schärfe überhaupt begründet? Wenn nicht, gehört sie geändert — und keine Rechenkorrektur ersetzt das.</p>
+  <p style="margin-top:.5rem;"><strong>Und ein unbequemer Nebeneffekt:</strong> Um den Proxy zu bereinigen, muss man das geschützte Merkmal <em>erheben und verwenden</em>. Wer „Geschlecht“ gar nicht erst speichert, kann Diskriminierung weder messen noch beheben. Fairness durch Wegschauen scheitert genau daran.</p>
+ </div>
 </div>
 
 <!-- OVERFITTING -->
@@ -394,7 +413,7 @@ const DATA = {
  overfit:{depth:[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],
   train:[0.637,0.675,0.690,0.694,0.704,0.711,0.724,0.745,0.759,0.769,0.784,0.795,0.800,0.807,0.820],
   test:[0.581,0.690,0.690,0.685,0.685,0.688,0.701,0.674,0.671,0.682,0.671,0.688,0.679,0.668,0.663]},
- proxy:{mit_geschlecht:[0.232,0.423,0.191],ohne_geschlecht:[0.184,0.4,0.216],ohne_gpluslucke:[-0.018,0.306,0.324]}
+ proxy:{mit_geschlecht:[0.232,0.423,0.191],ohne_geschlecht:[0.184,0.4,0.216],spiegelprofile:[0.184,0.4,0.216],ohne_gpluslucke:[-0.018,0.306,0.324],luecke_zentriert:[-0.016,0.303,0.319]}
 };
 
 let beta = 1;
@@ -440,7 +459,12 @@ function renderMetrics(){
 }
 
 function renderProxy(){
- const rows=[['mit „Geschlecht"','mit_geschlecht'],['ohne „Geschlecht"','ohne_geschlecht'],['ohne „Geschlecht" + Karrierelücke','ohne_gpluslucke']];
+ const rows=[
+  ['① mit „Geschlecht"','mit_geschlecht'],
+  ['② ohne „Geschlecht"','ohne_geschlecht'],
+  ['③ + synthetische Spiegelprofile','spiegelprofile'],
+  ['④ ohne „Geschlecht" + ohne Karrierelücke','ohne_gpluslucke'],
+  ['⑤ Karrierelücke je Gruppe zentriert','luecke_zentriert']];
  const maxg=0.25;
  $('proxyBars').innerHTML = rows.map(([label,key])=>{
   const g=DATA.proxy[key][0]; const w=Math.min(Math.abs(g)/maxg,1)*100;
