@@ -3,9 +3,8 @@
 Ein **setup-freier**, praktischer Einblick in Modellvalidierung und algorithmische Fairness —
 für Menschen ohne Technik-Hintergrund. Teil des Kurses *KI-Manager:in* (KIM).
 
-> **Direkt öffnen (empfohlen):** Sobald GitHub Pages aktiviert ist, läuft das interaktive
-> Tool im Browser unter
-> `https://<DEIN-GITHUB-NAME>.github.io/KI_Schulungen_UNO/Modellvalidierung/`
+> **Direkt öffnen (empfohlen):** Das interaktive Tool läuft im Browser unter
+> <https://northdream64.github.io/KI_Schulungen_UNO/Modellvalidierung/>
 > — kein Download, keine Installation.
 
 Grundlage ist ein **synthetischer** Bewerber-Screening-Datensatz (alle Personen und Zahlen
