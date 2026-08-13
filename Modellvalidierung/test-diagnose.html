@@ -770,48 +770,50 @@ renderMetrics(); renderProxy(); renderOverfit();
 
 <style>
 #diag{position:fixed;top:0;left:0;right:0;z-index:99999;background:#111;color:#0f0;
- font:12px/1.5 monospace;padding:8px 12px;max-height:45vh;overflow:auto;white-space:pre-wrap;}
+ font:12px/1.45 monospace;padding:8px 12px;max-height:60vh;overflow:auto;white-space:pre-wrap;}
 #diag b{color:#ff0;} #diag .bad{color:#f66;font-weight:700;} #diag .ok{color:#6f6;}
-body{padding-top:190px;}
+body{padding-top:330px;}
 </style>
 <div id="diag">Messung läuft …</div>
 <script>
 window.addEventListener('load', function(){
-  var L=[];
+  var L=[], cs=getComputedStyle;
   function z(t){L.push(t);}
-  var cs=getComputedStyle;
-  z('<b>UMGEBUNG</b>');
-  z('  Fenster: '+window.innerWidth+' x '+window.innerHeight+' CSS-Pixel   Pixelverhältnis: '+window.devicePixelRatio);
-  z('  Browser: '+navigator.userAgent.slice(0,95));
-  z('');
-  z('<b>STYLESHEET</b>');
-  var ss=document.styleSheets, anz=0, regeln=0;
-  for(var i=0;i<ss.length;i++){ anz++; try{ regeln+=ss[i].cssRules.length; }catch(e){ regeln=-1; } }
-  z('  Style-Blöcke: '+anz+'   eingelesene Regeln: '+regeln+(regeln>100?'  <span class="ok">OK</span>':'  <span class="bad">ZU WENIG</span>'));
-  z('');
-  z('<b>ANGEWENDETE REGELN</b>');
-  function pruef(sel, eig, erwartet){
-    var el=document.querySelector(sel);
-    if(!el){ z('  '+sel+' → <span class="bad">Element fehlt</span>'); return; }
-    var w=cs(el)[eig];
-    var ok = erwartet ? (w.indexOf(erwartet)>=0) : true;
-    z('  '+(sel+'  ').padEnd(34,'.')+' '+eig+' = '+w+(erwartet?(ok?'  <span class="ok">OK</span>':'  <span class="bad">ERWARTET '+erwartet+'</span>'):''));
+  function beschr(el){
+    if(!el || el===document) return 'document';
+    var s=el.tagName.toLowerCase();
+    if(el.id) s+='#'+el.id;
+    if(el.className && typeof el.className==='string' && el.className.trim())
+      s+='.'+el.className.trim().split(/\s+/).join('.');
+    return s;
   }
-  pruef('.page','maxWidth','900');
-  pruef('.page','width');
-  pruef('.sec','backgroundColor','255');
-  pruef('.sec','paddingLeft','20');
-  pruef('.sec','borderTopWidth','1px');
-  pruef('#ofChart','width');
-  pruef('#ofChart','height');
-  pruef('.metrics','display','flex');
-  pruef('.met','borderTopWidth','1px');
-  pruef('#bias','borderTopStyle','none');
+  z('<b>ELTERNKETTE DES DIAGRAMMS  (Breite / Anzeige / Position / Überlauf)</b>');
+  var el=document.getElementById('ofChart'), stufe=0;
+  while(el && el.tagName && el.tagName.toLowerCase()!=='html'){
+    var r=el.getBoundingClientRect(), st=cs(el);
+    z('  '+' '.repeat(stufe*2)+(beschr(el)+' ').padEnd(40-stufe*2,'.')
+      +' b='+Math.round(r.width)+'px  x='+Math.round(r.left)
+      +'  '+st.display+'  '+st.position+'  ovf='+st.overflowX
+      +(st.maxWidth!=='none'?'  max='+st.maxWidth:''));
+    el=el.parentElement; stufe++;
+  }
   z('');
-  var sec=document.querySelector('.sec');
-  if(sec) z('  .sec Breite gemessen: '+Math.round(sec.getBoundingClientRect().width)+' px');
-  var sv=document.querySelector('#ofChart');
-  if(sv) z('  Diagramm gemessen:    '+Math.round(sv.getBoundingClientRect().width)+' x '+Math.round(sv.getBoundingClientRect().height)+' px');
+  z('<b>DOKUMENT</b>');
+  z('  body Breite: '+Math.round(document.body.getBoundingClientRect().width)
+    +'   scrollWidth: '+document.documentElement.scrollWidth
+    +'   clientWidth: '+document.documentElement.clientWidth
+    +(document.documentElement.scrollWidth>document.documentElement.clientWidth
+      ? '   <span class="bad">→ waagerechter Überlauf</span>' : '   <span class="ok">→ kein Überlauf</span>'));
+  z('');
+  z('<b>WAS ÜBERLÄUFT?</b>  (Elemente, die rechts über den Seitenrand ragen)');
+  var grenze=document.documentElement.clientWidth, treffer=0;
+  document.querySelectorAll('body *').forEach(function(e){
+    if(e.closest('#diag')) return;
+    var r=e.getBoundingClientRect();
+    if(r.right > grenze+2 && treffer<12){ treffer++;
+      z('  <span class="bad">'+beschr(e).slice(0,58)+'</span>  rechts bei '+Math.round(r.right)+'px  (Breite '+Math.round(r.width)+')'); }
+  });
+  if(!treffer) z('  <span class="ok">kein Element ragt hinaus</span>');
   document.getElementById('diag').innerHTML=L.join('\n');
 });
 </script>
