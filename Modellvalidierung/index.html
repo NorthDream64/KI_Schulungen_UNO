@@ -53,6 +53,25 @@ details.dc>summary:hover{background:rgba(0,0,0,.05);}
 .merksatz{background:#0a4a7a;color:#fff;border-radius:8px;padding:.8rem 1rem;margin:.9rem 0;font-size:14px;line-height:1.6;}
 .merksatz b{color:#fff;}
 .merksatz .ms-l{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;opacity:.7;display:block;margin-bottom:.35rem;}
+details.klapp{border:1px solid #d5d0c5;border-radius:8px;background:#fbfaf7;margin:.8rem 0;overflow:hidden;}
+details.klapp>summary{list-style:none;cursor:pointer;padding:.5rem .8rem;font-family:'DM Mono',monospace;font-size:9.5px;
+  letter-spacing:1.6px;text-transform:uppercase;color:#6b6b60;font-weight:700;display:flex;align-items:center;gap:.5rem;}
+details.klapp>summary::-webkit-details-marker{display:none;}
+details.klapp>summary::before{content:"+";font-size:14px;line-height:1;color:#0a6b6b;width:12px;text-align:center;}
+details.klapp[open]>summary::before{content:"\2212";}
+details.klapp>summary:hover{color:#0a4a7a;background:#f2f0eb;}
+details.klapp#dwb>summary,
+details.klapp#bias>summary,
+details.klapp#proxy>summary{font-size:10px;letter-spacing:2.2px;color:#1a1a18;}
+details.klapp>.kl-body{padding:.2rem .9rem .9rem;font-size:12.5px;line-height:1.6;color:#4a4a42;}
+details.klapp>.kl-body p{margin-bottom:.5rem;}
+details.klapp>.kl-body p:last-child{margin-bottom:0;}
+details.klapp>.kl-body dl{margin:0;}
+@media print{details.klapp>.kl-body{display:block!important;} details.klapp>summary::before{content:"";}}
+.drei{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.6rem;margin:.6rem 0;}
+@media(max-width:820px){.drei{grid-template-columns:1fr;}}
+.zw-g{background:#f2f7f3;border:1px solid #c8ddcd;}
+.zw-g .zw-t{color:#2a5c3f;}
 .uebung{border:1px solid #d5d0c5;border-radius:10px;background:#fff;overflow:hidden;}
 .uebung>summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:.7rem;padding:.75rem .9rem;background:#f2f0eb;}
 .uebung>summary::-webkit-details-marker{display:none;}
@@ -151,14 +170,18 @@ table.gloss td:first-child{font-weight:600;white-space:nowrap;width:150px;}
 
 <!-- DATENWÖRTERBUCH -->
 <div class="sec">
- <div class="sec-t">0 · Datenwörterbuch — was die Merkmale bedeuten</div>
- <table class="gloss">
+ <details class="klapp" id="dwb">
+  <summary>0 · Datenwörterbuch — was die Merkmale bedeuten</summary>
+  <div class="kl-body">
+   <table class="gloss">
   <tr><td>Fachscore / Interview</td><td>Punktzahl 0–100, im Datensatz <strong>unabhängig</strong> von Geschlecht und Alter simuliert. „Fachscore" bildet ab, was eine KI aus den Bewerbungsunterlagen (Lebenslauf, Zeugnisse, Anschreiben, freigegebenes LinkedIn-Profil) an fachlicher Passung extrahieren könnte. „Interview" steht für „Teamfähigkeit" — hier wird versucht, diesen schwer quantifizierbaren ("Nasen"-)Faktor aus historischen Daten abzuleiten (Kundenfeedback, Jahresgespräche, Beförderungen seit 2009).<br><br>Dieses „Passt ins Team" soll hier als Kontrollgröße für fachliche Eignung usw. wirken. Für bestimmte Positionen ist die fachliche Eignung ein untergeordneter Punkt gegenüber Team- oder Führungsfähigkeit. Der persönliche Auswahlprozess (Stufe 2) ist so ausgelegt, die Führungs- und Teamfähigkeit strukturiert zu erfassen. Die Daten aus diesem Prozessschritt werden (auch für Kandidatinnen oder Kandidaten, die es nicht "geschafft" haben) benutzt, um das Modell weiter zu trainieren und seine Fähigkeit zu verbessern, "weiche Faktoren" zu bewerten.</td></tr>
   <tr><td>Geschlecht</td><td><strong>1 = männlich, 0 = weiblich</strong> — binäre Vereinfachung für dieses Lab, keine Aussage über reale Erfassungspraxis.</td></tr>
   <tr><td>Alter</td><td><strong>Lebensalter in Monaten</strong>, kontinuierlich erfasst (240–780 Monate ≈ 20–65 Jahre).</td></tr>
   <tr><td>Berufserfahrung</td><td>Jahre im Beruf laut Lebenslauf, realistisch an das Lebensalter gekoppelt (mehr Lebensjahre → im Schnitt mehr Erfahrung, mit Streuung) — keine Wertung der Positionen oder Inhalte der Tätigkeit.</td></tr>
   <tr><td>Karrierelücke</td><td>Monate <strong>ohne Erwerbstätigkeit</strong> laut Lebenslauf (z. B. Eltern- oder Pflegezeit) — keine „fehlenden Jahre", sondern eine in Monaten gemessene Unterbrechung. Laut Destatis beziehen Mütter im Schnitt rund 10–12 Monate Elterngeld, Väter dagegen nur rund 3–4 Monate (<a href="https://www.destatis.de/DE/Themen/Gesellschaft-Umwelt/Soziales/Elterngeld/geburten.html" target="_blank" rel="noopener">Destatis 2024/2025</a>); auch OECD-weit nehmen Frauen häufiger und längere familienbedingte Erwerbsunterbrechungen als Männer (<a href="https://www.oecd.org/en/publications/gender-gaps-in-paid-and-unpaid-work-persist_25a6c5dc-en/full-report.html" target="_blank" rel="noopener">OECD 2025</a>).</td></tr>
  </table>
+  </div>
+ </details>
 </div>
 
 <!-- DATA CARD -->
@@ -241,8 +264,9 @@ table.gloss td:first-child{font-weight:600;white-space:nowrap;width:150px;}
   </div>
  </div>
  <p class="note"><strong>Merksatz fürs Management:</strong> Es gibt kein „genau" — es gibt eine <em>Abwägung</em>. Hoher <strong>Recall</strong> zählt, wenn ein Übersehen teuer ist (Betrug, Krankheit, verpasste Talente). Hohe <strong>Precision</strong> zählt, wenn ein Fehlalarm teuer ist (wichtige Mail im Spam). <strong>Der F-Wert</strong> presst beide in <em>eine</em> Zahl — nicht, um die Abwägung zu ersetzen, sondern um Modelle und Einstellungen auf einer einzigen Skala vergleichbar zu machen. F1 gewichtet beides gleich, F2 gewichtet Recall doppelt. <strong>Achtung:</strong> Der F-Wert ist <em>kein</em> Mittelwert im üblichen Sinn — er wird vom schlechteren der beiden Werte nach unten gezogen.³</p>
- <div class="footnote">
-  <div class="fn-t">Fußnote — Technik &amp; Fachbegriffe</div>
+ <details class="klapp">
+  <summary>Fußnote — Technik &amp; Fachbegriffe</summary>
+  <div class="kl-body">
   <p>¹ Rohwerte lassen sich nicht einfach addieren — 100 Punkte Fachscore plus ein Ja/Nein-Merkmal plus Alter in Monaten wären gar nicht vergleichbar. Jedes Merkmal wird deshalb zunächst <strong>standardisiert</strong>: Es zählt nicht der absolute Wert, sondern die Abweichung vom Durchschnitt aller Bewerbenden. Bei Fachscore ist das ein Spektrum („5 Punkte über dem Mittel"); bei einem Ja/Nein-Merkmal gibt es trotzdem einen Durchschnitt (z. B. „60 % Ja"), aber nur zwei mögliche Abweichungen. Das Modell multipliziert jede Abweichung mit einem <strong>gelernten Gewicht</strong> — woher diese Gewichte kommen und wo dabei Diskriminierung entstehen kann, zeigt Abschnitt 2. Alle gewichteten Abweichungen zusammen ergeben eine Zahl, die über eine mathematische Kurve in eine Wahrscheinlichkeit zwischen 0 % und 100 % übersetzt wird — und genau darauf schneidet die Einladungsschwelle.</p>
   <p style="margin-top:.5rem;">² <strong>Warum endet die Skala bei 0,95?</strong> Die Stufen sind ein bewusst gewähltes Fünf-Prozent-Raster — technisch spricht nichts gegen 0,99. Es lohnt sich trotzdem nicht: Die höchste Eignungswahrscheinlichkeit, die das Modell im Testteil überhaupt vergibt, liegt bei <strong>0,991</strong>. Bei einer Schwelle von 0,995 bliebe <em>niemand</em> übrig — die Precision wäre nicht null, sondern <em>nicht berechenbar</em> (null von null).</p>
   <p style="margin-top:.4rem;">Interessanter ist, was schon davor passiert. Bei 0,90 werden 58 Personen empfohlen, bei 0,95 nur noch 24, bei 0,98 wären es 8 und bei 0,99 genau 2. Und die Precision <em>fällt</em> von 0,914 auf 0,875, obwohl die Schwelle strenger wird — nicht weil das Modell schlechter würde, sondern weil eine einzige Fehlentscheidung bei 24 Fällen stärker durchschlägt als bei 58. <strong>Kennzahlen aus sehr kleinen Gruppen sind nicht belastbar.</strong> Wer im Beschaffungsgespräch eine Precision von 100 % hört, sollte deshalb immer zuerst fragen: <em>aus wie vielen Fällen?</em></p>
@@ -252,7 +276,7 @@ table.gloss td:first-child{font-weight:600;white-space:nowrap;width:150px;}
   <p style="margin-top:.5rem;">Fachbegriffe in diesem Abschnitt:</p>
   <dl>
    <div class="fn-item"><dt>Accuracy —</dt> <dd>Anteil aller korrekt beurteilten Bewerbungen (richtig empfohlen + richtig abgelehnt) an allen Bewerbungen. Wird hier nicht separat angezeigt, ist aber z. B. das, was in Abschnitt 4 als „Training"/„neue Daten" auf der Lernkurve steht.</dd></div>
-   <div class="fn-item"><dt>Precision —</dt> <dd>Anteil der tatsächlich Geeigneten unter allen vom Modell Empfohlenen. Hoch = wenige Fehlalarme.</dd></div>
+ </details>   <div class="fn-item"><dt>Precision —</dt> <dd>Anteil der tatsächlich Geeigneten unter allen vom Modell Empfohlenen. Hoch = wenige Fehlalarme.</dd></div>
    <div class="fn-item"><dt>Recall —</dt> <dd>Anteil der tatsächlich Geeigneten, die das Modell auch findet statt sie zu übersehen. Hoch = wenige verpasste Talente.</dd></div>
    <div class="fn-item"><dt>F1 —</dt> <dd>Fasst Precision und Recall in einer Zahl zusammen, beide gleich gewichtet — als harmonisches Mittel, das sich am schlechteren der beiden Werte orientiert. Dient dem Vergleich von Modellen und Einstellungen auf einer Skala.</dd></div>
    <div class="fn-item"><dt>F2 —</dt> <dd>Wie F1, aber Recall zählt doppelt so stark wie Precision — sinnvoll, wenn ein übersehener geeigneter Kandidat teurer ist als ein Fehlalarm.</dd></div>
@@ -262,7 +286,10 @@ table.gloss td:first-child{font-weight:600;white-space:nowrap;width:150px;}
 
 <!-- BIAS -->
 <div class="sec">
- <div class="sec-t">2 · <b>Bias</b> — dasselbe Modell, zwei Gruppen</div>
+ <details class="klapp" id="bias">
+  <summary>2 · Bias — dasselbe Modell, zwei Gruppen</summary>
+  <div class="kl-body">
+
  <div class="szenario"><b>Szenario:</b> Du hörst als KI‑Manager:in zufällig, dass das KI-gestützte Auswahlsystem überproportional viele Frauen aussortiert. Es bewerben sich etwa gleich viele Frauen wie Männer — aber es werden signifikant mehr Männer ausgewählt. Stichwort: historischer Bias.</div>
  <p class="note" style="margin-top:0;margin-bottom:.9rem;">Und tatsächlich: Das Modell „denkt" nicht in Kategorien wie „Männer sind erfolgreicher" — es hat kein Konzept davon. Es sucht rein rechnerisch die Gewichte, die die historischen Einstellungsentscheidungen im Datensatz möglichst gut nachbilden. Und in diesen historischen Daten wurden Männer häufiger eingestellt als Frauen: 44 % vs. 28 % insgesamt — und selbst bei vergleichbarer Qualifikation (mittleres Drittel bei Fachscore/Interview) 44 % vs. nur 16 %. Dieses Muster übernimmt das Modell als eigenes, gelerntes Gewicht auf „Geschlecht" (aktuell +0,641) — unabhängig von Fachscore oder Interview. Die Regel ist für alle gleich, das Ergebnis nicht: <strong>Voreingenommenheit der Vergangenheit, rechnerisch gelernt.</strong></p>
  <div class="ctrl" style="margin-top:0;margin-bottom:1rem;">
@@ -310,24 +337,31 @@ table.gloss td:first-child{font-weight:600;white-space:nowrap;width:150px;}
   </div>
  </div>
  <div class="callout"><b>Lies das so:</b> Eine Auswahlraten‑Lücke heißt: gleich geeignete Frauen werden seltener empfohlen. Eine Recall‑Lücke heißt: das Modell übersieht geeignete Frauen häufiger als geeignete Männer. Beides ist messbar — und genau das ist der Punkt: <em>Fairness ist eine Kennzahl, kein Gefühl.</em></div>
+  </div>
+ </details>
 </div>
 
 <!-- PROXY -->
 <div class="sec">
- <div class="sec-t">3 · <b>Proxy‑Falle</b> — reicht es, „Geschlecht" wegzulassen?</div>
+ <details class="klapp" id="proxy">
+  <summary>3 · Proxy-Falle — reicht es, „Geschlecht“ wegzulassen?</summary>
+  <div class="kl-body">
+
  <p class="note" style="margin-top:0;margin-bottom:.9rem;">Drei naheliegende Reflexe: das Merkmal „Geschlecht“ entfernen · für jedes männliche Profil ein gespiegeltes weibliches erzeugen · das verdächtige Merkmal ganz streichen. Wir haben das Modell <strong>fünfmal</strong> trainiert — immer gegen denselben echten Testteil — und die Auswahlraten-Lücke gemessen:</p>
  <div id="proxyBars"></div>
  <div class="callout"><b>Die Auflösung:</b> „Geschlecht“ wegzulassen halbiert die Lücke nur — die <strong>Karrierelücke verrät das Geschlecht weiter</strong>. Das nennt man einen <em>Proxy</em>: ein Merkmal, das die geschützte Eigenschaft mitträgt, ohne sie zu nennen. Im Datensatz sind es <strong>17,7 Monate bei Frauen gegen 6,2 bei Männern</strong>.</div>
 
- <div class="footnote" style="margin-top:1rem;">
-  <div class="fn-t">Warum synthetische Spiegelprofile nichts ändern</div>
+ <details class="klapp" style="margin-top:1rem;">
+  <summary>Warum synthetische Spiegelprofile nichts ändern</summary>
+  <div class="kl-body">
   <p>Der Gedanke liegt nahe: Für jeden echten 40-jährigen Ingenieur legt man eine synthetische 40-jährige Ingenieurin an — gleiche Qualifikation, gleiches Ergebnis. Damit ist das Geschlecht in den Trainingsdaten rechnerisch bedeutungslos. Genau das zeigt Zeile ③: <strong>die Lücke bleibt bei +18 Prozentpunkten, exakt wie ohne Spiegelprofile.</strong></p>
   <p style="margin-top:.5rem;"><strong>Der Grund steckt in der Karrierelücke.</strong> Die synthetische Ingenieurin erbt die Karrierelücke <em>des Mannes</em> — also rund sechs Monate. Nach dem Spiegeln steht in den Trainingsdaten bei beiden Geschlechtern derselbe Mittelwert von 11,9 Monaten. Das Modell lernt daraus nicht „Frauen sind geeignet“, sondern „eine kurze Karrierelücke ist unschädlich“. Nur: <strong>Die echten Bewerberinnen, die später ins System kommen, haben weiterhin 17,7 Monate.</strong> Man hat eine Welt trainiert, die es nicht gibt.</p>
   <p style="margin-top:.5rem;"><strong>Der Unterschied zur Medizin.</strong> In klinischen Studien zu seltenen Erkrankungen lösen synthetische oder simulierte Daten ein <em>Mengenproblem</em>: Es gibt zu wenige Fälle, um einen echten Effekt sauber zu schätzen. Hier ist die Menge kein Problem — der Bestand ist mit 600 zu 600 exakt ausgeglichen. Das Problem sind die <em>Beschriftungen</em>: Sie halten frühere Entscheidungen fest, die verzerrt waren. <strong>Synthetische Daten helfen gegen Lücken. Gegen Verzerrungen helfen sie nicht</strong> — mehr Daten desselben Musters ergeben mehr desselben Musters.</p>
  </div>
-
- <div class="footnote" style="margin-top:.7rem;">
-  <div class="fn-t">Was „den Proxy adressieren“ konkret heißt</div>
+ </details>
+ <details class="klapp" style="margin-top:.7rem;">
+  <summary>Was „den Proxy adressieren“ konkret heißt</summary>
+  <div class="kl-body">
   <p><strong>Erstens: ihn finden.</strong> Man prüft, ob sich das geschützte Merkmal aus den übrigen Merkmalen vorhersagen lässt. Gelingt das gut, gibt es einen Proxy — und man weiß, welches Merkmal es ist. Ohne diese Messung rät man.</p>
   <p style="margin-top:.5rem;"><strong>Zweitens: entscheiden, was mit ihm geschieht.</strong> Zwei Wege, beide oben gemessen:</p>
   <ul style="margin:.4rem 0 0 1.1rem;padding:0;">
@@ -337,29 +371,46 @@ table.gloss td:first-child{font-weight:600;white-space:nowrap;width:150px;}
   <p style="margin-top:.5rem;"><strong>Drittens: die Ursache prüfen.</strong> Im Erzeugungsmodell dieses Datensatzes wird die Karrierelücke <em>stärker bestraft</em>, als es durch tatsächlich fehlende Erfahrung gerechtfertigt wäre. Das ist keine technische, sondern eine fachliche Frage: Ist die Regel „lange Unterbrechung zählt negativ“ in dieser Schärfe überhaupt begründet? Wenn nicht, gehört sie geändert — und keine Rechenkorrektur ersetzt das.</p>
   <p style="margin-top:.5rem;"><strong>Und ein unbequemer Nebeneffekt:</strong> Um den Proxy zu bereinigen, muss man das geschützte Merkmal <em>erheben und verwenden</em>. Wer „Geschlecht“ gar nicht erst speichert, kann Diskriminierung weder messen noch beheben. Fairness durch Wegschauen scheitert genau daran.</p>
  </div>
+ </details>
+  </div>
+ </details>
 </div>
 
 <!-- OVERFITTING -->
 <div class="sec">
  <div class="sec-t">4 · <b>Overfitting vs. Underfitting</b> — auswendig lernen statt verstehen</div>
  <div class="szenario"><b>Fallbeispiel:</b> Ein Modell soll für eine Tankstellenkette in Luxemburg vorhersagen, ob ein Tag <strong>überdurchschnittlichen Umsatz</strong> bei Sandwiches &amp; Getränken bringt.¹ Haupttreiber: die Nähe zum Ferienbeginn in Frankreich, Belgien, Deutschland und den Niederlanden — grenznaher Pendler- und Reiseverkehr. Diese Termine verschieben sich aber <strong>jedes Jahr</strong>. Die Tankstellenkette möchte die Nachfrage möglichst genau vorhersagen, um entsprechende Bestellungen aufgeben zu können. Bei leicht verderblichen Waren ist es teuer, Zutaten und Produkte zu kaufen, die dann „Ladenhüter" sind und liegen bleiben. Trainiert wird mit den Jahren 1–3, getestet mit dem noch ungesehenen Jahr 4 — nicht zufällig gemischt, sondern bewusst zeitlich getrennt.</div>
- <div class="callout" style="margin-top:0;margin-bottom:.9rem;"><b>Was ist „Tiefe" bzw. „Baumtiefe"?</b> Das Modell dahinter ist ein <strong>Entscheidungsbaum</strong>: Es trifft seine Vorhersage über eine Kette von Ja/Nein-Fragen an die Daten (z. B. „Liegt der Tag in der Ferienzeit?" → „Ist es ein Wochenende?" → „Wie viele Tage bis zum Ferienbeginn?" → …). Die <strong>Baumtiefe</strong> legt fest, wie viele solcher Fragen hintereinander gestellt werden dürfen, bevor eine Vorhersage feststeht. Tiefe 0–1: sehr wenige, grobe Fragen — das Modell unterscheidet kaum zwischen Tagen. Tiefe 10 und mehr: viele, immer speziellere Fragen — bis hinunter zu Fragen, die im Extremfall nur noch auf einzelne Tage im Trainingsdatensatz zutreffen. Der Regler unten steuert genau das.
- </div>
- <div class="callout" style="margin-top:.9rem;margin-bottom:.9rem;"><b>Tiefe ist nicht die Anzahl der Faktoren.</b> Sie zählt, wie viele Fragen auf dem Weg zu <em>einer einzelnen</em> Vorhersage hintereinander gestellt werden. Ein tiefer Baum stellt oft dieselbe Frage mehrfach, nur feiner („Ferienbeginn in unter 7 Tagen?“ → „… unter 3 Tagen?“ → „… unter 1 Tag?“), statt neue Faktoren einzubeziehen.<br><br>
- <b>Was die Tiefe wirklich steuert, ist die Feinheit der Einteilung.</b> Jede zusätzliche Ebene verdoppelt die Zahl der möglichen Schubladen: Tiefe 4 ergibt bis zu 16, Tiefe 10 bis zu 1.024, <strong>Tiefe 15 bis zu 32.768 Schubladen — für rund 1.100 Trainingstage aus drei Jahren</strong>. Ab einem gewissen Punkt bekommt fast jeder Tag seine eigene Schublade. Dann rechnet das Modell nicht mehr, es schlägt nach.</div>
+  <details class="klapp">
+  <summary>Was ist die „Baumtiefe“ — und was steuert sie wirklich?</summary>
+  <div class="kl-body">
+   <b>Was ist „Tiefe" bzw. „Baumtiefe"?</b> Das Modell dahinter ist ein <strong>Entscheidungsbaum</strong>: Es trifft seine Vorhersage über eine Kette von Ja/Nein-Fragen an die Daten (z. B. „Liegt der Tag in der Ferienzeit?" → „Ist es ein Wochenende?" → „Wie viele Tage bis zum Ferienbeginn?" → …). Die <strong>Baumtiefe</strong> legt fest, wie viele solcher Fragen hintereinander gestellt werden dürfen, bevor eine Vorhersage feststeht. Tiefe 0–1: sehr wenige, grobe Fragen — das Modell unterscheidet kaum zwischen Tagen. Tiefe 10 und mehr: viele, immer speziellere Fragen — bis hinunter zu Fragen, die im Extremfall nur noch auf einzelne Tage im Trainingsdatensatz zutreffen. Der Regler unten steuert genau das.
+   <hr style="border:none;border-top:1px solid #e5e1d8;margin:.7rem 0;">
+   <b>Tiefe ist nicht die Anzahl der Faktoren.</b> Sie zählt, wie viele Fragen auf dem Weg zu <em>einer einzelnen</em> Vorhersage hintereinander gestellt werden. Ein tiefer Baum stellt oft dieselbe Frage mehrfach, nur feiner („Ferienbeginn in unter 7 Tagen?“ → „… unter 3 Tagen?“ → „… unter 1 Tag?“), statt neue Faktoren einzubeziehen.<br><br>
+ <b>Was die Tiefe wirklich steuert, ist die Feinheit der Einteilung.</b> Jede zusätzliche Ebene verdoppelt die Zahl der möglichen Schubladen: Tiefe 4 ergibt bis zu 16, Tiefe 10 bis zu 1.024, <strong>Tiefe 15 bis zu 32.768 Schubladen — für rund 1.100 Trainingstage aus drei Jahren</strong>. Ab einem gewissen Punkt bekommt fast jeder Tag seine eigene Schublade. Dann rechnet das Modell nicht mehr, es schlägt nach.
+  </div>
+ </details>
 
- <div class="merksatz">
+<div class="merksatz">
   <span class="ms-l">Der Merksatz</span>
   <b>Underfitting übersieht Muster, die es gibt. Overfitting erfindet Muster, die es nicht gibt.</b><br>
   Beides ist derselbe Fehler in zwei Richtungen: Das Modell ist für die Aufgabe entweder zu grob oder zu fein.
  </div>
 
- <div class="zwei">
+  <details class="klapp" open>
+  <summary>Die drei Zustände: Underfitting · Generalisierung · Overfitting</summary>
+  <div class="kl-body">
+   <div class="drei">
   <div class="zw-k zw-u">
    <span class="zw-t">Underfitting — zu grob</span>
    Das Modell darf zu wenige Fragen stellen, um den echten Zusammenhang abzubilden. Es liegt <b>schon auf den Trainingsdaten daneben</b> — und auf neuen Daten genauso.<br><br>
    <b>Erkennungszeichen:</b> Beide Werte sind niedrig <em>und liegen dicht beieinander</em>.<br>
    <b>Bild:</b> Ein Schüler, der nur eine Faustregel gelernt hat und schon die Übungsaufgaben nicht schafft.
+  </div>
+  <div class="zw-k zw-g">
+   <span class="zw-t">Generalisierung — genau richtig</span>
+   Das Modell hat die <b>Regel</b> gelernt, nicht die Beispiele. Es arbeitet auf Daten, die es nie gesehen hat, fast so gut wie auf den Trainingsdaten.<br><br>
+   <b>Erkennungszeichen:</b> Beide Werte sind hoch <em>und liegen dicht beieinander</em>.<br>
+   <b>Bild:</b> Ein Schüler, der das Prinzip verstanden hat — und deshalb auch die Klausurfrage löst, die er nie geübt hat.
   </div>
   <div class="zw-k zw-o">
    <span class="zw-t">Overfitting — zu fein</span>
@@ -367,7 +418,9 @@ table.gloss td:first-child{font-weight:600;white-space:nowrap;width:150px;}
    <b>Erkennungszeichen:</b> Trainingswert hoch, Testwert schlechter — <em>ein großer Abstand</em>.<br>
    <b>Bild:</b> Ein Schüler, der die Lösungen der Übungsaufgaben auswendig kann und in der Klausur scheitert.
   </div>
- </div>
+   </div>
+  </div>
+ </details>
 
  <p class="note" style="margin-top:0;margin-bottom:.9rem;"><strong>Deshalb braucht man immer zwei Zahlen.</strong> An einem einzelnen Wert lassen sich die beiden Fehler nicht unterscheiden — erst der Abstand zwischen Trainings- und Testergebnis verrät, in welche Richtung das Modell danebenliegt.</p>
 
@@ -381,11 +434,12 @@ table.gloss td:first-child{font-weight:600;white-space:nowrap;width:150px;}
  <div class="legend"><span><i style="background:#8a2a2a"></i>Trainingsjahre 1–3 (auswendig)</span><span><i style="background:#0a6b6b"></i>Testjahr 4 (was zählt)</span></div>
  <div class="callout" id="ofText"></div>
 
- <div class="footnote">
-  <div class="fn-t">Fußnote — Vereinfachung</div>
+ <details class="klapp">
+  <summary>Fußnote — Vereinfachung</summary>
+  <div class="kl-body">
   <p>¹ Der tatsächliche Tagesumsatz ist eine Zahl in Euro (eine sogenannte Regression). Hier vereinfacht als Ja/Nein-Frage dargestellt („überdurchschnittlicher Umsatztag?"), damit dieselbe Trainings-/Test-Grafik wie beim Bewerbungsmodell in Abschnitt 1 genutzt werden kann. In der Praxis würde man eine echte Fehlerkennzahl verwenden (z. B. „im Schnitt X € daneben"), nicht nur richtig/falsch.</p>
  </div>
-</div>
+ </details></div>
 
 <!-- EINKAUFSPERSPEKTIVE -->
  <div class="sec">
@@ -440,8 +494,9 @@ table.gloss td:first-child{font-weight:600;white-space:nowrap;width:150px;}
   <p>Dazu gehören in die Abnahmekriterien: eine <strong>Unsicherheitsangabe statt einer Punktschätzung</strong>, die <strong>Protokollierung</strong> der markierten Fälle — und die Festlegung, <strong>wer entscheidet, wenn markiert wird</strong>. Der letzte Punkt ist derselbe wie „Menschliche Prüfung geregelt“ in der Abnahmeprüfung aus Tag 8.</p>
  </div>
 
- <div class="footnote">
-  <div class="fn-t">Für die Auswertung — nachgerechnet am Datensatz</div>
+ <details class="klapp">
+  <summary>Für die Auswertung — nachgerechnet am Datensatz</summary>
+  <div class="kl-body">
   <p>In allen drei Trainingsjahren war die erste Augustwoche zu <strong>100 %</strong> überdurchschnittlich. Es gibt also kein Gegenbeispiel. Stellt man dem Modell dieselbe Woche mit sämtlichen Ferien-Merkmalen auf null:</p>
   <table class="mtab">
    <thead><tr><th>Baumtiefe</th><th>überdurchschnittliche Tage</th><th>mittlere Wahrscheinlichkeit</th></tr></thead>
@@ -454,12 +509,13 @@ table.gloss td:first-child{font-weight:600;white-space:nowrap;width:150px;}
   <p><strong>Das Modell verhält sich besser als befürchtet:</strong> Es plappert nicht „August ist immer gut“ nach, sondern zieht die Vorhersage deutlich zurück. Es hat den Zusammenhang gelernt, nicht den Kalender.</p>
   <p style="margin-top:.4rem;"><strong>Trotzdem ist die Zahl keine Zusage.</strong> Für diese Konstellation gibt es keinen Prüffall — die 0,43 wurde nie gegen die Wirklichkeit gemessen und kann es auch nicht werden. <em>Der Fehler wäre nicht, dass die Zahl falsch ist. Der Fehler wäre, sie für geprüft zu halten.</em> Und die drei Varianten sind sich uneinig — genau das ist der Hinweis aus ③, hier in Zahlen.</p>
  </div>
-
- <div class="footnote">
-  <div class="fn-t">Fußnote — für Interessierte</div>
+ </details>
+ <details class="klapp">
+  <summary>Fußnote — für Interessierte</summary>
+  <div class="kl-body">
   <dl>
    <div class="fn-item"><dt>² Konfidenzintervall —</dt> <dd>Ein Wertebereich um eine Schätzung, der angibt, wie sicher diese Schätzung ist. Ein enges Intervall (z. B. „450–470 Sandwiches") bedeutet hohe Sicherheit; ein weites Intervall (z. B. „200–800 Sandwiches") bedeutet, dass die Datenlage keine präzise Aussage zulässt — genau das Warnsignal, das bei einer Extrapolation zu erwarten ist. Ausführliche Herleitung: <a href="https://www.itl.nist.gov/div898/handbook/eda/section3/eda352.htm" target="_blank" rel="noopener">NIST/SEMATECH e-Handbook of Statistical Methods — Confidence Limits for the Mean</a>.</dd></div>
-   <div class="fn-item"><dt>³ Wahrscheinlichkeit —</dt> <dd>Die vom Modell ausgegebene Zahl zwischen 0 und 100 % ist zunächst nur ein Rechenergebnis, keine automatisch „richtige" Wahrscheinlichkeit. Ob sie das tatsächlich ist (man spricht von „kalibriert"), hängt vom Lernverfahren ab und muss gesondert geprüft werden. Grundlegend hierzu: <a href="https://www.cs.cornell.edu/~alexn/papers/calibration.icml05.crc.rev3.pdf" target="_blank" rel="noopener">Niculescu-Mizil &amp; Caruana (2005), „Predicting Good Probabilities With Supervised Learning", ICML</a>.</dd></div>
+ </details>   <div class="fn-item"><dt>³ Wahrscheinlichkeit —</dt> <dd>Die vom Modell ausgegebene Zahl zwischen 0 und 100 % ist zunächst nur ein Rechenergebnis, keine automatisch „richtige" Wahrscheinlichkeit. Ob sie das tatsächlich ist (man spricht von „kalibriert"), hängt vom Lernverfahren ab und muss gesondert geprüft werden. Grundlegend hierzu: <a href="https://www.cs.cornell.edu/~alexn/papers/calibration.icml05.crc.rev3.pdf" target="_blank" rel="noopener">Niculescu-Mizil &amp; Caruana (2005), „Predicting Good Probabilities With Supervised Learning", ICML</a>.</dd></div>
   </dl>
  </div>
 
@@ -493,11 +549,12 @@ table.gloss td:first-child{font-weight:600;white-space:nowrap;width:150px;}
 
  <p style="margin-top:.9rem;"><strong>Für die Beschaffung heißt das:</strong> Ein Datenbestand aus einer öffentlichen Quelle ist ein Kandidat, kein Ergebnis. Bevor er in ein Vorhaben geht, braucht er dieselbe Prüfung, die du hier an einem bekannten Bestand geübt hast — Herkunft, Abdeckung, Lücken, Rechtsgrundlage. Wer das überspringt, importiert ein Rechtsrisiko und eine Verzerrung, die erst im Betrieb sichtbar wird.</p>
 
- <div class="footnote">
-  <div class="fn-t">Hinweis zur Quellenlage</div>
+ <details class="klapp">
+  <summary>Hinweis zur Quellenlage</summary>
+  <div class="kl-body">
   <dl>
    <div class="fn-item"><dt>Herkunft öffentlicher Datenbestände —</dt> <dd>Dass Lizenz- und Herkunftsangaben auf Aggregatorplattformen häufig unvollständig oder falsch sind, ist keine Vermutung: Die <a href="https://arxiv.org/pdf/2310.16787" target="_blank" rel="noopener">Data Provenance Initiative</a> hat Lizenzierung und Zuschreibung großflächig auditiert und erhebliche Abweichungen zwischen angegebener und tatsächlicher Rechtslage dokumentiert.</dd></div>
-  </dl>
+ </details>  </dl>
    </div>
   </div>
  </details>
