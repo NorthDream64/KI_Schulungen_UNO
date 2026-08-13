@@ -26,7 +26,29 @@ details.dc>summary:hover{background:rgba(0,0,0,.05);}
 .dc-body h4{font-size:13px;margin:.7rem 0 .2rem;}
 .dc-body ul{padding-left:1.15rem;margin:.25rem 0;}
 .dc-body li{margin-bottom:.25rem;}
-.footnote{margin-top:1rem;padding-top:.7rem;border-top:1px solid var(--rule);font-size:11.5px;color:var(--muted);line-height:1.55;}
+.zwei{display:grid;grid-template-columns:1fr 1fr;gap:.7rem;margin:.9rem 0;}
+@media(max-width:700px){.zwei{grid-template-columns:1fr;}}
+.zw-k{border-radius:8px;padding:.7rem .85rem;font-size:12.8px;line-height:1.55;}
+.zw-u{background:#fbf6ec;border:1px solid #e0d3b8;}
+.zw-o{background:#faf3f3;border:1px solid #e3cfcf;}
+.zw-t{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;font-weight:700;display:block;margin-bottom:.3rem;}
+.zw-u .zw-t{color:#7a4a00;} .zw-o .zw-t{color:#6a1a1a;}
+.zw-k b{color:#1a1a18;}
+.merksatz{background:#0a4a7a;color:#fff;border-radius:8px;padding:.8rem 1rem;margin:.9rem 0;font-size:14px;line-height:1.6;}
+.merksatz b{color:#fff;}
+.merksatz .ms-l{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;opacity:.7;display:block;margin-bottom:.35rem;}
+.uebung{border:1px solid.uebung{border:1px solid #d5d0c5;border-radius:10px;background:#fff;overflow:hidden;}
+.uebung>summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:.7rem;padding:.75rem .9rem;background:#f2f0eb;}
+.uebung>summary::-webkit-details-marker{display:none;}
+.uebung>summary:hover{background:#ece9e2;}
+.ue-nr{font-family:'DM Mono',monospace;font-size:15px;font-weight:700;color:#0a4a7a;width:24px;text-align:center;flex-shrink:0;}
+.ue-t{font-family:'Playfair Display',Georgia,serif;font-size:16px;flex:1;}
+.ue-hint{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1.4px;text-transform:uppercase;color:#6b6b60;border:1px solid #d5d0c5;border-radius:99px;padding:2px 9px;flex-shrink:0;}
+.uebung[open]>summary .ue-hint::after{content:"";}
+.uebung[open]>summary .ue-hint{color:#0a6b6b;border-color:#0a6b6b;}
+.ue-body{padding:.9rem 1.1rem 1.1rem;}
+@media print{.uebung>summary{background:#fff;} .ue-hint{display:none;} .ue-body{display:block!important;}}
+.footnote{.footnote{margin-top:1rem;padding-top:.7rem;border-top:1px solid var(--rule);font-size:11.5px;color:var(--muted);line-height:1.55;}
 .footnote .fn-t{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:.5rem;}
 .footnote dl{margin-top:.5rem;}
 .footnote dt{font-weight:600;color:var(--ink);display:inline;}
@@ -306,8 +328,33 @@ table.gloss td:first-child{font-weight:600;white-space:nowrap;width:150px;}
  <div class="sec-t">4 · <b>Overfitting vs. Underfitting</b> — auswendig lernen statt verstehen</div>
  <div class="szenario"><b>Fallbeispiel:</b> Ein Modell soll für eine Tankstellenkette in Luxemburg vorhersagen, ob ein Tag <strong>überdurchschnittlichen Umsatz</strong> bei Sandwiches &amp; Getränken bringt.¹ Haupttreiber: die Nähe zum Ferienbeginn in Frankreich, Belgien, Deutschland und den Niederlanden — grenznaher Pendler- und Reiseverkehr. Diese Termine verschieben sich aber <strong>jedes Jahr</strong>. Die Tankstellenkette möchte die Nachfrage möglichst genau vorhersagen, um entsprechende Bestellungen aufgeben zu können. Bei leicht verderblichen Waren ist es teuer, Zutaten und Produkte zu kaufen, die dann „Ladenhüter" sind und liegen bleiben. Trainiert wird mit den Jahren 1–3, getestet mit dem noch ungesehenen Jahr 4 — nicht zufällig gemischt, sondern bewusst zeitlich getrennt.</div>
  <div class="callout" style="margin-top:0;margin-bottom:.9rem;"><b>Was ist „Tiefe" bzw. „Baumtiefe"?</b> Das Modell dahinter ist ein <strong>Entscheidungsbaum</strong>: Es trifft seine Vorhersage über eine Kette von Ja/Nein-Fragen an die Daten (z. B. „Liegt der Tag in der Ferienzeit?" → „Ist es ein Wochenende?" → „Wie viele Tage bis zum Ferienbeginn?" → …). Die <strong>Baumtiefe</strong> legt fest, wie viele solcher Fragen hintereinander gestellt werden dürfen, bevor eine Vorhersage feststeht. Tiefe 0–1: sehr wenige, grobe Fragen — das Modell unterscheidet kaum zwischen Tagen. Tiefe 10 und mehr: viele, immer speziellere Fragen — bis hinunter zu Fragen, die im Extremfall nur noch auf einzelne Tage im Trainingsdatensatz zutreffen. Der Regler unten steuert genau das.
- <p style="margin-top:.5rem;font-size:12px;color:var(--muted);"><strong>Wichtig:</strong> Die Baumtiefe zählt nicht die Anzahl der insgesamt verfügbaren Faktoren (hier: Ferienbeginn/-ende je Land, Wochentag, Vorjahresumsatz …) — sondern wie viele Fragen auf dem Weg zu <em>einer einzelnen</em> Vorhersage hintereinander gestellt werden. Ein tiefer Baum kann sogar dieselbe Frage mehrfach in feineren Abstufungen stellen (z. B. „Ferienbeginn in unter 7 Tagen?" → „… unter 3 Tagen?" → „… unter 1 Tag?"), statt automatisch neue Faktoren einzubeziehen.</p>
  </div>
+ <div class="callout" style="margin-top:.9rem;margin-bottom:.9rem;"><b>Tiefe ist nicht die Anzahl der Faktoren.</b> Sie zählt, wie viele Fragen auf dem Weg zu <em>einer einzelnen</em> Vorhersage hintereinander gestellt werden. Ein tiefer Baum stellt oft dieselbe Frage mehrfach, nur feiner („Ferienbeginn in unter 7 Tagen?“ → „… unter 3 Tagen?“ → „… unter 1 Tag?“), statt neue Faktoren einzubeziehen.<br><br>
+ <b>Was die Tiefe wirklich steuert, ist die Feinheit der Einteilung.</b> Jede zusätzliche Ebene verdoppelt die Zahl der möglichen Schubladen: Tiefe 4 ergibt bis zu 16, Tiefe 10 bis zu 1.024, <strong>Tiefe 15 bis zu 32.768 Schubladen — für rund 1.100 Trainingstage aus drei Jahren</strong>. Ab einem gewissen Punkt bekommt fast jeder Tag seine eigene Schublade. Dann rechnet das Modell nicht mehr, es schlägt nach.</div>
+
+ <div class="merksatz">
+  <span class="ms-l">Der Merksatz</span>
+  <b>Underfitting übersieht Muster, die es gibt. Overfitting erfindet Muster, die es nicht gibt.</b><br>
+  Beides ist derselbe Fehler in zwei Richtungen: Das Modell ist für die Aufgabe entweder zu grob oder zu fein.
+ </div>
+
+ <div class="zwei">
+  <div class="zw-k zw-u">
+   <span class="zw-t">Underfitting — zu grob</span>
+   Das Modell darf zu wenige Fragen stellen, um den echten Zusammenhang abzubilden. Es liegt <b>schon auf den Trainingsdaten daneben</b> — und auf neuen Daten genauso.<br><br>
+   <b>Erkennungszeichen:</b> Beide Werte sind niedrig <em>und liegen dicht beieinander</em>.<br>
+   <b>Bild:</b> Ein Schüler, der nur eine Faustregel gelernt hat und schon die Übungsaufgaben nicht schafft.
+  </div>
+  <div class="zw-k zw-o">
+   <span class="zw-t">Overfitting — zu fein</span>
+   Das Modell darf so viele Fragen stellen, dass es die Trainingsdaten samt ihrer Zufälligkeiten nachbilden kann. Es hält <b>Rauschen für Regelmäßigkeit</b>.<br><br>
+   <b>Erkennungszeichen:</b> Trainingswert hoch, Testwert schlechter — <em>ein großer Abstand</em>.<br>
+   <b>Bild:</b> Ein Schüler, der die Lösungen der Übungsaufgaben auswendig kann und in der Klausur scheitert.
+  </div>
+ </div>
+
+ <p class="note" style="margin-top:0;margin-bottom:.9rem;"><strong>Deshalb braucht man immer zwei Zahlen.</strong> An einem einzelnen Wert lassen sich die beiden Fehler nicht unterscheiden — erst der Abstand zwischen Trainings- und Testergebnis verrät, in welche Richtung das Modell danebenliegt.</p>
+
  <div class="ctrl">
   <label>Modell‑Komplexität (Baumtiefe)</label>
   <input type="range" id="dep" min="0" max="14" value="3" step="1">
@@ -325,8 +372,10 @@ table.gloss td:first-child{font-weight:600;white-space:nowrap;width:150px;}
 </div>
 
 <!-- EINKAUFSPERSPEKTIVE -->
-<div class="sec">
- <div class="sec-t">5 · <b>Die Einkaufsperspektive</b> — wie erkennt man das frühzeitig?</div>
+ <div class="sec">
+ <details class="uebung" id="sec5">
+  <summary><span class="ue-nr">5</span><span class="ue-t"><b>Die Einkaufsperspektive</b> — wie erkennt man das frühzeitig?</span><span class="ue-hint">aufklappen</span></summary>
+  <div class="ue-body">
  <div class="callout" style="margin-top:0;">
  Das Modell wurde ausschließlich mit den Umsatzdaten der Jahre 1–3 trainiert. Jetzt will ein Einkäufer wissen: Wie viele Sandwiches, Eis und Limonade soll er für die <strong>erste Augustwoche</strong> bestellen? Anders als in allen drei Trainingsjahren liegt in dieser Woche weder in den Niederlanden noch in Deutschland ein Ferienbeginn oder -ende — der grenznahe Reiseverkehr, auf dem die Vorhersage im Kern beruht, fällt in diesem Jahr schlicht weg. Das Modell selbst „merkt" das nicht: Ein Rechenmodell verweigert nie eine Vorhersage, es liefert trotzdem eine Zahl — indem es über den Bereich hinaus <strong>extrapoliert</strong>, den es je gesehen hat.
  <p style="margin-top:.6rem;">Weder mehr noch weniger Baumtiefe löst das — es ist streng genommen kein klassisches Over- oder Underfitting, sondern eine <strong>Extrapolation</strong>: eine Anfrage, für die es in den Trainingsdaten kein passendes Beispiel gab. Vier Fragen helfen einer KI-Managerin oder einem KI-Manager, das <strong>frühzeitig</strong> zu erkennen, bevor die Modellzahl ungeprüft in eine Bestellung übersetzt wird:</p>
@@ -349,9 +398,10 @@ table.gloss td:first-child{font-weight:600;white-space:nowrap;width:150px;}
  <div class="callout" style="margin-top:.9rem;">
  <b>Wo werden die Faktoren eigentlich dokumentiert?</b> Bei diesem Lab reicht der Blick nach oben in Abschnitt 0 — das Datenwörterbuch listet bereits alle Merkmale, mit denen das Bewerbungsmodell arbeitet. Reale Modelle laufen aber oft mit Dutzenden Merkmalen (Ferienbeginn und -ende je Land, Wettertrends, Feiertage, Wochentag, Vorjahresumsatz …). Der Fachstandard dafür ist die <strong>Model Card</strong> — ein strukturiertes Dokument je Modell mit Merkmalen, Trainingsdaten, Einsatzgrenzen und Messwerten (<a href="https://arxiv.org/abs/1810.03993" target="_blank" rel="noopener">Mitchell et al. 2019, „Model Cards for Model Reporting", ACM FAT*</a>), ergänzt um ein <strong>Datasheet</strong> je Datensatz, das Herkunft, Erhebung und Zusammensetzung der Trainingsdaten dokumentiert (<a href="https://arxiv.org/abs/1803.09010" target="_blank" rel="noopener">Gebru et al. 2018, „Datasheets for Datasets"</a>). Für Hochrisiko-KI-Systeme ist das keine Kür, sondern Pflicht: Der EU AI Act verlangt genau diese technische Dokumentation (<a href="https://artificialintelligenceact.eu/de/annex/4/" target="_blank" rel="noopener">VO (EU) 2024/1689, Anhang IV</a>).
  </div>
-</div>
+  </div>
+ </details>
+ </div>
 
-<!-- TRANSFER -->
 <div class="sec">
  <div class="sec-t">6 · Und jetzt in echt — derselbe Blick auf fremde Daten</div>
  <p>Alles, was du bis hier gesehen hast, beruhte auf einem Bestand, dessen Entstehung wir vollständig kennen (Abschnitt 0b). <strong>Das ist der Ausnahmefall.</strong> Im Alltag bekommst du Daten, deren Herkunft niemand mehr rekonstruieren kann — und dieselben Kennzahlen lassen sich trotzdem ausrechnen. Sie sehen genauso überzeugend aus.</p>
@@ -516,6 +566,15 @@ $('dep').addEventListener('input',renderOverfit);
 $('b1').addEventListener('click',()=>{beta=1;$('b1').classList.add('on');$('b2').classList.remove('on');renderMetrics();});
 $('b2').addEventListener('click',()=>{beta=2;$('b2').classList.add('on');$('b1').classList.remove('on');renderMetrics();});
 renderMetrics(); renderProxy(); renderOverfit();
+
+// Abschnitt 5 wird als Übung genutzt: Beschriftung des Hinweises umschalten
+(function(){
+  var d=document.getElementById('sec5'); if(!d) return;
+  var h=d.querySelector('.ue-hint');
+  var setz=function(){ h.textContent = d.open ? 'zuklappen' : 'aufklappen'; };
+  d.addEventListener('toggle', setz); setz();
+  window.addEventListener('beforeprint', function(){ d.open = true; });
+})();
 </script>
 </body>
 </html>

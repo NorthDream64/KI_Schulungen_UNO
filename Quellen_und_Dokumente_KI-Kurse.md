@@ -24,6 +24,7 @@
 | https://regulations.ai/regulations/china-summary | Overview Chinese AI Regulations | China | Cyber Security, Datenschutz, regulatorische Aufsicht |
 | https://legalclarity.org/ai-regulations-in-the-us-federal-and-state-laws | Overview Federal and State Regulations of AI | USA |
 | https://www.imda.gov.sg/ | Infocomm Media Development Authority | Singapore | Schulkurse, agentische KI (https://www.imda.gov.sg/-/media/imda/files/about/emerging-tech-and-research/artificial-intelligence/mgf-for-agentic-ai.pdf)
+| https://www.bafin.de/SharedDocs/Veroeffentlichungen/DE/Pressemitteilung/2026/pm_2026_07_29_ki_verordnung.html | BaFin — „Überwachung von KI: Bafin erhält neue Kompetenzen" (PM, 29. Juli 2026) | Behörde | Deutschland, Finanzsektor, KI-Marktüberwachung, KI-MIG, Hochrisiko-KI (Kredit-Scoring, Risikobewertung), Transparenzpflichten ab 2. Aug. 2026, Hochrisiko ab 2. Dez. 2027, UC-04 SolidFinanz |
 
 
 ### 1.2 Rolle des KI-Beauftragten
