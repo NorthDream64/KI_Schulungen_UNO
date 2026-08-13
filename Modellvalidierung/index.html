@@ -471,7 +471,9 @@ table.gloss td:first-child{font-weight:600;white-space:nowrap;width:150px;}
  </div>
 
 <div class="sec">
- <div class="sec-t">6 · Und jetzt in echt — derselbe Blick auf fremde Daten</div>
+ <details class="uebung" id="sec6">
+  <summary><span class="ue-nr">6</span><span class="ue-t"><b>Wer es einmal selbst probieren möchte</b></span><span class="ue-hint">aufklappen</span></summary>
+  <div class="ue-body">
  <p>Alles, was du bis hier gesehen hast, beruhte auf einem Bestand, dessen Entstehung wir vollständig kennen (Abschnitt 0b). <strong>Das ist der Ausnahmefall.</strong> Im Alltag bekommst du Daten, deren Herkunft niemand mehr rekonstruieren kann — und dieselben Kennzahlen lassen sich trotzdem ausrechnen. Sie sehen genauso überzeugend aus.</p>
 
  <div class="callout" style="margin-top:.8rem;">
@@ -496,8 +498,10 @@ table.gloss td:first-child{font-weight:600;white-space:nowrap;width:150px;}
   <dl>
    <div class="fn-item"><dt>Herkunft öffentlicher Datenbestände —</dt> <dd>Dass Lizenz- und Herkunftsangaben auf Aggregatorplattformen häufig unvollständig oder falsch sind, ist keine Vermutung: Die <a href="https://arxiv.org/pdf/2310.16787" target="_blank" rel="noopener">Data Provenance Initiative</a> hat Lizenzierung und Zuschreibung großflächig auditiert und erhebliche Abweichungen zwischen angegebener und tatsächlicher Rechtslage dokumentiert.</dd></div>
   </dl>
+   </div>
+  </div>
+ </details>
  </div>
-</div>
 
 <div class="foot">Synthetischer Datensatz (n=2000, Test n=800) · alle Personen und Zahlen erfunden · Kennzahlen mit scikit-learn berechnet · Lab „Modellvalidierung &amp; Bias" · KI-Manager:in</div>
 
@@ -637,11 +641,12 @@ renderMetrics(); renderProxy(); renderOverfit();
 
 // Abschnitt 5 wird als Übung genutzt: Beschriftung des Hinweises umschalten
 (function(){
-  var d=document.getElementById('sec5'); if(!d) return;
-  var h=d.querySelector('.ue-hint');
-  var setz=function(){ h.textContent = d.open ? 'zuklappen' : 'aufklappen'; };
-  d.addEventListener('toggle', setz); setz();
-  window.addEventListener('beforeprint', function(){ d.open = true; });
+  document.querySelectorAll('details.uebung').forEach(function(d){
+    var h=d.querySelector('.ue-hint');
+    var setz=function(){ h.textContent = d.open ? 'zuklappen' : 'aufklappen'; };
+    d.addEventListener('toggle', setz); setz();
+    window.addEventListener('beforeprint', function(){ d.open = true; });
+  });
 })();
 </script>
 </body>
