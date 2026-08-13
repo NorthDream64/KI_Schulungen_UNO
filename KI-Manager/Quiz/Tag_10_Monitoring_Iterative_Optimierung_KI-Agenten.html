@@ -169,168 +169,168 @@ a{color:var(--accent);}
 var QBANK = {
   "a": [
     {
-      "sc": "SolidFinanz überlegt, ob das bisherige Scoring-Modell zu einem Agenten ausgebaut werden soll, der Kreditanträge eigenständig vorbereitet.",
-      "q": "Welche Aussage(n) zur Abgrenzung eines KI-Agenten von klassischer Automatisierung ist oder sind korrekt?",
+      "sc": "Das Kreditscoring-Modell von SolidFinanz läuft seit sechs Monaten produktiv. Dr. Hofer fragt, was jetzt eigentlich noch zu tun sei.",
+      "q": "Welche Aussage(n) zu Monitoring und iterativer Optimierung im Produktivbetrieb ist oder sind korrekt?",
       "opts": [
-        "Ein KI-Agent erhält im Unterschied zu klassischer Automatisierung ein Ziel und entscheidet selbst über Zwischenschritte, Werkzeuge oder Informationsquellen",
-        "Ein KI-Agent unterscheidet sich von RPA in erster Linie durch eine schnellere Ausführungsgeschwindigkeit",
-        "Ein KI-Agent führt ausschließlich vorab festgelegte Einzelschritte aus, ohne den eigenen Plan anzupassen",
-        "Je mehr Handlungsspielraum ein Agent hat, desto weniger Kontrolle braucht er"
+        "Monitoring und iterative Optimierung sind notwendig, um das System an sich ändernde Datenmuster anzupassen und einer Leistungsverschlechterung (Model Drift) vorzubeugen",
+        "Der Einsatz von Modellen in Produktivsystemen erfordert die Etablierung von MLOps-Konzepten zur Standardisierung und Automatisierung des Deployment-Prozesses",
+        "Die fortlaufende Protokollierung aller Systemaktivitäten und Modellentscheidungen ist eine Schlüsselanforderung an Nachvollziehbarkeit und Auditierbarkeit und unterstützt Governance-Anforderungen wie ISO/IEC 42001",
+        "Sobald ein Modell in der Abnahme eine Genauigkeit von über 99 Prozent erreicht hat, kann die laufende Überwachung entfallen"
+      ],
+      "correct": [
+        0,
+        1,
+        2
+      ],
+      "exp": "Monitoring und iterative Optimierung halten das System an sich verändernden Datenmustern nach und beugen so der Leistungsverschlechterung durch Model Drift vor. MLOps liefert dafür den standardisierten und automatisierten Deployment-Prozess — ohne ihn bleibt jede Änderung ein Einzelfall. Die fortlaufende Protokollierung ist die Grundlage von Nachvollziehbarkeit und Auditierbarkeit und wird von Managementsystemen wie ISO/IEC 42001 ausdrücklich verlangt. Eine hohe Anfangsgenauigkeit macht Überwachung dagegen gerade nicht überflüssig: Sie ist eine Momentaufnahme des Abnahmezeitpunkts und sagt nichts darüber, wie sich Daten und Wirklichkeit danach entwickeln — je besser ein Modell startet, desto eher wird sein Nachlassen übersehen.",
+      "src": "EU AI Act — Art. 26 (Betreiberpflichten) · artificialintelligenceact.eu/article/26/ · ISO/IEC 42001"
+    },
+    {
+      "sc": "Das Team richtet die laufende Überwachung ein und diskutiert, welche Größen überhaupt beobachtet werden müssen.",
+      "q": "Welche Aussage(n) zu den überwachten Größen im Produktivbetrieb ist oder sind korrekt?",
+      "opts": [
+        "Die kontinuierliche Überwachung von Metriken wie Precision, Recall oder F1-Score, um eine Verschlechterung der Modellleistung frühzeitig zu erkennen",
+        "Die Analyse von Datenintegrität und Input-Drift im Datenstrom, um sicherzustellen, dass sich die Eigenschaften der Eingabedaten nicht unvorhergesehen verändert haben",
+        "Die Implementierung automatisierter Feedback-Schleifen, die Nutzungsmuster und Ergebnisse systematisch erfassen und für ein automatisches oder manuelles Retraining nutzen",
+        "Die ausschließliche Nutzung der Testdaten aus der Trainingsphase, da diese einmalig eine unvoreingenommene Bewertung liefern und im Betrieb nicht neu erhoben werden müssen"
+      ],
+      "correct": [
+        0,
+        1,
+        2
+      ],
+      "exp": "Precision, Recall und der F-Wert werden nicht nur einmal bei der Abnahme gemessen, sondern laufend — nur so fällt eine schleichende Verschlechterung auf. Die Beobachtung von Datenintegrität und Input-Drift ist der zweite Pfeiler und oft der wichtigere: Sie funktioniert auch dann, wenn im Betrieb gar nicht bekannt wird, was richtig gewesen wäre, und ist dann das einzige Frühwarnsystem. Automatisierte Feedback-Schleifen schließen den Kreis zum Retraining und machen den Unterschied zwischen bloßem Protokollesammeln und tatsächlichem Lernen aus dem Betrieb. Die Testdaten aus der Trainingsphase dagegen sind eine Momentaufnahme; sie bilden die Wirklichkeit nach dem Go-Live nicht ab und können eine laufende Messung nicht ersetzen.",
+      "src": "EU AI Act — Art. 72 (Beobachtung nach dem Inverkehrbringen) · artificialintelligenceact.eu/article/72/"
+    },
+    {
+      "sc": "Nach neun Monaten schlägt die Drift-Überwachung an. Das Data-Science-Team schlägt vor, das Modell nachzutrainieren.",
+      "q": "Welche Aussage(n) zum Nachtrainieren ist oder sind korrekt?",
+      "opts": [
+        "Ein nachtrainiertes Modell hat andere Gewichte und möglicherweise eine andere Fehlerverteilung über Teilgruppen — es ist ein neues Modell und durchläuft die Abnahme erneut",
+        "Nachtrainieren setzt neue Beispiele mit bekanntem Ergebnis voraus; ohne neue Labels werden dieselben alten Muster mit höherem Aufwand reproduziert",
+        "Ein fester Kalenderturnus ist belastbaren Auslösern vorzuziehen, weil er Planbarkeit schafft und subjektive Einschätzungen ausschließt",
+        "Weil beim Nachtrainieren derselbe Algorithmus auf aktuelleren Daten läuft, handelt es sich um einen reinen Wartungsvorgang ohne erneuten Freigabebedarf"
+      ],
+      "correct": [
+        0,
+        1
+      ],
+      "exp": "Ein nachtrainiertes Modell ist technisch ein neues Modell: andere Gewichte, andere Fehler, möglicherweise eine andere Güte für einzelne Teilgruppen. Es gehört deshalb erneut durch die Abnahme — sonst verliert die ursprüngliche Freigabe mit dem ersten Nachtrainieren ihren Wert. Ebenso richtig ist, dass Nachtrainieren neue Beispiele mit bekanntem Ergebnis braucht; fehlen diese Labels, wird lediglich das alte Muster mit mehr Rechenaufwand bestätigt. Ein reiner Kalenderturnus ist dagegen die schwächere Lösung: Er trainiert entweder zu oft oder zu spät, weil er sich an einem Datum orientiert statt an Schwellenwertunterschreitung, anhaltendem Drift-Alarm, gehäuften Rückmeldungen oder einer geänderten äußeren Regel. Und ein Wartungsvorgang ist das Nachtrainieren gerade nicht — es ist eine Freigabeentscheidung.",
+      "src": "Hand-Out Tag 10, Block 1 · Continuous Training"
+    },
+    {
+      "sc": "Das Modell empfiehlt, welche Anträge vertieft geprüft werden. Nur diese Fälle werden anschließend vollständig bearbeitet und dokumentiert.",
+      "q": "Welche Aussage(n) zur Rückkopplung zwischen Modell und Trainingsdaten ist oder sind korrekt?",
+      "opts": [
+        "Wenn das Modell mitbestimmt, welche Fälle weiterverfolgt werden, prägt es die Daten, aus denen es später lernt — die Schleife kann sich selbst bestätigen",
+        "Da die neuen Daten aus dem echten Betrieb stammen, sind sie per Definition repräsentativer als die ursprünglichen Trainingsdaten",
+        "Eine Rückkopplung ist unbedenklich, solange die Datenmenge groß genug ist",
+        "Das Problem lässt sich vollständig lösen, indem man ausschließlich die Fälle auswertet, bei denen das Modell besonders sicher war"
       ],
       "correct": [
         0
       ],
-      "exp": "Ein KI-Agent erhält im Unterschied zu klassischer Automatisierung ein Ziel und entscheidet selbst über Zwischenschritte, Werkzeuge oder Informationsquellen — er plant, handelt und passt seinen Weg bei Bedarf an. Der Unterschied zu RPA liegt gerade nicht in der Ausführungsgeschwindigkeit, sondern im Handlungsspielraum und in der eigenständigen Entscheidungsfindung. Ein System, das ausschließlich vorab festgelegte Einzelschritte abarbeitet, ohne den eigenen Plan anzupassen, ist klassische Automatisierung, kein Agent. Und mehr Handlungsspielraum bedeutet nicht weniger, sondern mehr Kontrollbedarf.",
-      "src": "IMDA Singapur — Model AI Governance Framework for Agentic AI (v1.5, 2026) · imda.gov.sg"
+      "exp": "Sobald das Modell darüber mitentscheidet, welche Fälle überhaupt bearbeitet und dokumentiert werden, entstehen die späteren Trainingsdaten unter seinem eigenen Einfluss. Wer nur die vertieft geprüften Anträge auswertet, erfährt nie etwas über die ausgesteuerten — das Modell bestätigt sein eigenes Muster. Aus dem Betrieb zu stammen macht Daten deshalb nicht automatisch repräsentativ: Entscheidend ist nicht die Herkunft, sondern der Auswahlmechanismus. Auch eine größere Menge hilft nicht, weil sie die Verzerrung nur vervielfacht statt sie auszugleichen. Und sich auf die besonders sicheren Fälle zu beschränken verschärft das Problem, statt es zu lösen. Das einzige wirksame Gegenmittel ist, einen kleinen Anteil der Fälle bewusst entgegen der Modellempfehlung zu behandeln und auszuwerten.",
+      "src": "Hand-Out Tag 10, Block 1 · Auslöser und Rückkopplungsfalle"
     },
     {
-      "sc": "Dr. Hofer möchte wissen, wie riskant der geplante Agent im Vergleich zum bisherigen, rein lesenden Recherche-Assistenten ist.",
-      "q": "Welche Aussage(n) zur Action-Space-×-Autonomy-Matrix ist oder sind korrekt?",
+      "sc": "Die Compliance-Abteilung fragt, welche Behörde für die KI-Systeme von SolidFinanz eigentlich zuständig ist.",
+      "q": "Welche Aussage(n) zur Marktüberwachung von KI-Systemen in Deutschland ist oder sind korrekt?",
       "opts": [
-        "Handlungsspielraum (was der Agent darf) und Autonomiegrad (wie eigenständig er entscheidet) sind zwei unabhängige Dimensionen, die getrennt bewertet werden sollten",
-        "Ein Agent mit weitem Handlungsspielraum und hohem Autonomiegrad braucht die höchste Kontrollanforderung",
-        "Ein Agent, der nur lesend auf Systeme zugreift, braucht grundsätzlich dieselbe Kontrolle wie ein Agent, der eigenständig schreibend in Systeme eingreift",
-        "Handlungsspielraum und Autonomiegrad sind in der Praxis identisch und müssen nicht getrennt betrachtet werden"
+        "Für KI-Systeme, die in direktem Zusammenhang mit einer regulierten Finanztätigkeit stehen, übernimmt die BaFin die Marktüberwachung",
+        "KI-Anwendungen ohne direkten Finanzbezug — etwa im Personalbereich — fallen in die Zuständigkeit der Bundesnetzagentur",
+        "Die Zuständigkeit richtet sich nach dem Sitz des Modellanbieters, nicht nach der Tätigkeit des einsetzenden Unternehmens",
+        "Solange ein Unternehmen KI-Systeme nur einkauft und nicht selbst entwickelt, entstehen für es keine Pflichten aus der KI-Verordnung"
       ],
       "correct": [
         0,
         1
       ],
-      "exp": "Handlungsspielraum (was der Agent darf) und Autonomiegrad (wie eigenständig er entscheidet) sind zwei unabhängige Dimensionen, die getrennt bewertet werden sollten — ein Agent kann in der einen Dimension hoch und in der anderen niedrig liegen. Ein Agent mit weitem Handlungsspielraum und hohem Autonomiegrad liegt in der Matrix im Feld mit der höchsten Kontrollanforderung. Ein rein lesender Agent braucht dagegen gerade nicht dieselbe Kontrolle wie ein Agent, der eigenständig schreibend in Systeme eingreift — genau darin liegt der Sinn der zweidimensionalen Betrachtung. Die beiden Dimensionen sind folglich auch nicht identisch und lassen sich nicht durch eine einzige Kennzahl ersetzen.",
-      "src": "IMDA Singapur — Model AI Governance Framework for Agentic AI · imda.gov.sg"
-    },
-    {
-      "sc": "Das Team ordnet die wiederkehrenden Aufgaben der Kreditabteilung nach Schwere und Reversibilität in Risikoklassen ein.",
-      "q": "Welche Aussage(n) zur Einteilung von Agenten-Aufgaben nach Schwere und Reversibilität (Tiering) ist oder sind korrekt?",
-      "opts": [
-        "Eine Einteilung nach Schwere und Reversibilität kann wiederkehrende Aufgaben in Tiers mit unterschiedlichem Automatisierungsgrad einteilen — von vollautomatisch bis „kein Agenteneinsatz\"",
-        "Aufgaben mit geringer Schwere und leichter Reversibilität eignen sich eher für einen höheren Automatisierungsgrad als Aufgaben mit hoher Schwere und schwerer Reversibilität",
-        "Auch bei niedrigem Risiko-Tier ist ein Stichprobenaudit sinnvoll, statt vollständig auf Kontrolle zu verzichten",
-        "Sobald eine Aufgabe einmal als Tier 1 (vollautomatisch) eingestuft wurde, muss diese Einstufung nie wieder überprüft werden"
-      ],
-      "correct": [
-        0,
-        1,
-        2
-      ],
-      "exp": "Eine Einteilung nach Schwere und Reversibilität kann wiederkehrende Aufgaben in Tiers mit unterschiedlichem Automatisierungsgrad einteilen — von vollautomatisch bis „kein Agenteneinsatz\". Aufgaben mit geringer Schwere und leichter Reversibilität eignen sich dabei eher für einen höheren Automatisierungsgrad als Aufgaben mit hoher Schwere und schwerer Reversibilität. Selbst im niedrigsten Risiko-Tier bleibt ein Stichprobenaudit sinnvoll, statt vollständig auf Kontrolle zu verzichten — das unterscheidet „vollautomatisch mit Audit\" von „unkontrolliert\". Eine einmal vergebene Tier-1-Einstufung ist zudem keine Dauerlösung: Sie muss regelmäßig überprüft werden, etwa wenn sich Aufgabe oder Datenbasis ändern.",
-      "src": "IMDA Singapur — Model AI Governance Framework for Agentic AI (Fallstudie Dayos) · imda.gov.sg"
-    },
-    {
-      "sc": "Kern (CISO) bemerkt, dass Neumanns Team die Vorschläge des Scoring-Agenten inzwischen fast immer ohne Rückfrage übernimmt.",
-      "q": "Welche Aussage(n) zu Automation Bias bei Agenten ist oder sind korrekt?",
-      "opts": [
-        "Eine sehr niedrige Human Override Rate kann darauf hindeuten, dass Vorschläge des Agenten nicht mehr kritisch geprüft, sondern nur noch bestätigt werden",
-        "Eine sehr kurze Human Response Time deutet eher auf reflexhaftes Bestätigen als auf eine gründliche Prüfung hin",
-        "Automation Bias kann bei Agenten mit sehr hoher wahrgenommener Zuverlässigkeit stärker ausgeprägt sein, weil Vorschläge seltener hinterfragt werden",
-        "Automation Bias lässt sich nicht messen, sondern nur subjektiv einschätzen"
-      ],
-      "correct": [
-        0,
-        1,
-        2
-      ],
-      "exp": "Eine sehr niedrige Human Override Rate kann darauf hindeuten, dass Vorschläge des Agenten nicht mehr kritisch geprüft, sondern nur noch bestätigt werden. Eine sehr kurze Human Response Time deutet eher auf reflexhaftes Bestätigen als auf eine gründliche Prüfung hin. Automation Bias kann bei Agenten mit sehr hoher wahrgenommener Zuverlässigkeit sogar stärker ausgeprägt sein, weil deren Vorschläge seltener hinterfragt werden — das Phänomen ist also nicht auf technisch schlecht funktionierende Systeme beschränkt. Und Automation Bias lässt sich, anders als eine rein subjektive Einschätzung, über Kennzahlen wie Override Rate und Response Time tatsächlich messen.",
-      "src": "IMDA Singapur — Model AI Governance Framework for Agentic AI · imda.gov.sg"
-    },
-    {
-      "sc": "Bei der technischen Umsetzung des Agenten wird diskutiert, wie seine Zugriffsrechte auf das Kernbankensystem begrenzt werden sollen.",
-      "q": "Welche Aussage(n) zum Least-Privilege-Prinzip bei Agenten ist oder sind korrekt?",
-      "opts": [
-        "Zugriffsgrenzen für Agenten sollten möglichst auf Systemebene technisch durchgesetzt werden, nicht nur als Anweisung im Prompt formuliert sein",
-        "Eine im Prompt formulierte Einschränkung kann durch geschickte Eingaben umgangen oder vom Modell schlicht nicht befolgt werden",
-        "Prompt-Anweisungen bieten denselben Schutz wie deterministische Zugriffsrechte auf Infrastrukturebene",
-        "Least Privilege bedeutet, einem Agenten grundsätzlich möglichst weitreichende Rechte zu geben, um Verzögerungen zu vermeiden"
-      ],
-      "correct": [
-        0,
-        1
-      ],
-      "exp": "Zugriffsgrenzen für Agenten sollten möglichst auf Systemebene technisch durchgesetzt werden, nicht nur als Anweisung im Prompt formuliert sein. Eine im Prompt formulierte Einschränkung kann durch geschickte Eingaben umgangen oder vom Modell schlicht nicht zuverlässig befolgt werden — deterministische Zugriffsrechte auf Infrastrukturebene sind robuster. Prompt-Anweisungen bieten deshalb gerade nicht denselben Schutz wie technische Zugriffsbeschränkungen. Und Least Privilege bedeutet das Gegenteil von möglichst weitreichenden Rechten: Ein Agent erhält nur die Rechte, die er für seine konkrete Aufgabe tatsächlich braucht.",
-      "src": "IMDA Singapur — Model AI Governance Framework for Agentic AI · imda.gov.sg"
+      "exp": "Mit dem Gesetz zur Marktüberwachung und Innovationsförderung im Bereich Künstlicher Intelligenz ist seit Ende Juli 2026 geregelt, welche Behörde zuständig ist: die BaFin für KI-Systeme mit direktem Bezug zu einer regulierten Finanztätigkeit, die Bundesnetzagentur für alles Übrige, etwa Systeme im Personalbereich. Maßgeblich ist damit die Tätigkeit des einsetzenden Unternehmens und nicht der Sitz des Modellanbieters. Und wer KI lediglich einkauft, ist deshalb nicht pflichtenfrei: Als Betreiber treffen ihn eigene Pflichten, darunter die Überwachung des Betriebs anhand der Betriebsanleitung sowie die Meldung von Risiken und schwerwiegenden Vorfällen an Anbieter und Marktüberwachungsbehörde.",
+      "src": "BaFin — Überwachung von KI: BaFin erhält neue Kompetenzen (29.07.2026) · bafin.de · EU AI Act Art. 26"
     }
   ],
   "b": [
     {
-      "sc": "Die Einkaufsabteilung vergleicht drei mögliche Strategien, wie SolidFinanz mit der Abhängigkeit von einem einzelnen KI-Anbieter umgehen könnte.",
-      "q": "Welche Aussage(n) zu den drei Unternehmenshaltungen im Umgang mit KI-Modell-Abhängigkeit ist oder sind korrekt?",
+      "sc": "Dr. Hofer möchte wissen, wie riskant ein geplanter Agent im Vergleich zum bisherigen, rein lesenden Recherche-Assistenten ist.",
+      "q": "Welche Aussage(n) zum Raster aus Handlungsspielraum und Autonomie ist oder sind korrekt?",
       "opts": [
-        "Workload-Tiering bedeutet, einfache und wiederkehrende Aufgaben auf günstigere Modelle auszulagern und teure Spitzenmodelle nur für komplexe Aufgaben zu reservieren",
-        "Layer-Eigentum bedeutet, eine eigene Anwendungsschicht zu besitzen, sodass das darunterliegende Modell austauschbar bleibt",
-        "Souveräne Infrastruktur bedeutet, ein Modell vollständig selbst zu hosten, sodass kein externer Anbieter den Zugang abschalten kann",
-        "Diese drei Haltungen schließen sich in der Praxis grundsätzlich gegenseitig aus — ein Unternehmen kann immer nur eine davon verfolgen"
+        "Handlungsspielraum und Autonomiegrad sind zwei unabhängige Achsen — ein Agent kann eng begrenzt und trotzdem hochautonom sein",
+        "Je weiter ein Einsatzfall in Richtung weiter Handlungsspielraum und hoher Autonomie liegt, desto mehr Governance verlangt er — unabhängig von der Güte des Modells",
+        "Ein leistungsfähigeres Modell senkt den Governance-Bedarf, weil es seltener Fehler macht",
+        "Ein Agent, der nur liest und zusammenfasst, gehört bereits in die höchste Risikostufe, weil er Zugriff auf interne Daten hat"
+      ],
+      "correct": [
+        0,
+        1
+      ],
+      "exp": "Die beiden Achsen sind bewusst getrennt: Ein Agent kann in einem engen Handlungsrahmen bleiben und trotzdem eigenständig urteilen — oder umgekehrt weitreichend handeln, dabei aber streng an vorgegebene Abläufe gebunden sein. Je weiter ein Einsatzfall in Richtung weiter Spielraum und hohe Autonomie rückt, desto mehr Governance braucht er, und das hängt nicht am Modell: Ein besseres Modell verschiebt die Fehlerhäufigkeit, nicht die Tragweite einer Handlung, und senkt den Governance-Bedarf deshalb nicht. Ein rein lesender Recherche-Assistent liegt dagegen im unkritischsten Feld des Rasters — Zugriff auf interne Daten ist eine Frage der Berechtigungen, nicht des Autonomiegrads.",
+      "src": "IMDA Singapur — Model AI Governance Framework for Agentic AI (v1.5, 2026) · imda.gov.sg"
+    },
+    {
+      "sc": "Das Team ordnet die wiederkehrenden Aufgaben der Kreditabteilung nach Schwere und Reversibilität in Risikoklassen ein.",
+      "q": "Welche Aussage(n) zur Einstufung von Agenten-Vorgängen nach Schwere und Reversibilität ist oder sind korrekt?",
+      "opts": [
+        "Eingestuft werden einzelne Vorgänge, nicht das System als Ganzes — dieselbe Technik kann je nach Vorgang in unterschiedlichen Stufen liegen",
+        "Vorgänge mit geringer Schwere und leichter Umkehrbarkeit können vollautomatisch laufen, abgesichert durch Stichprobenprüfungen",
+        "Bei hoher Schwere und kaum gegebener Umkehrbarkeit ist der Verzicht auf einen Agenteneinsatz eine legitime und vorgesehene Antwort",
+        "Die Einstufung ersetzt die Prüfung der Risikoklasse nach EU AI Act, weil sie dieselben Kriterien verwendet"
       ],
       "correct": [
         0,
         1,
         2
       ],
-      "exp": "Workload-Tiering bedeutet, einfache und wiederkehrende Aufgaben auf günstigere Modelle auszulagern und das leistungsfähigste, teuerste Modell nur für komplexe Aufgaben zu reservieren. Layer-Eigentum bedeutet, eine eigene Anwendungsschicht zwischen Geschäftslogik und Modell zu besitzen, sodass das darunterliegende Modell austauschbar bleibt. Souveräne Infrastruktur bedeutet, ein Modell vollständig selbst zu hosten, sodass kein externer Anbieter den Zugang abschalten kann. Diese drei Haltungen schließen sich in der Praxis nicht grundsätzlich gegenseitig aus — ein Unternehmen kann sie je nach Arbeitslast parallel und in unterschiedlicher Gewichtung verfolgen.",
-      "src": "Banc, K. — The AI You Rent Can Be Switched Off, Substack, 30.06.2026 (Tier 3, als Diskussionsrahmen verwendet)"
+      "exp": "Der Zuschnitt des Rasters auf einzelne Vorgänge ist sein eigentlicher Wert: Dieselbe technische Lösung kann bei einer Routineauskunft unkritisch und bei einer Ablehnungsentscheidung hochkritisch sein. Vorgänge mit geringer Schwere und leichter Umkehrbarkeit dürfen deshalb vollautomatisch laufen, solange Stichprobenprüfungen die Qualität im Blick behalten. Und bei hoher Schwere ohne Umkehrmöglichkeit ist es keine Kapitulation, sondern das vorgesehene Ergebnis, auf einen Agenten zu verzichten. Die Risikoklassifizierung nach EU AI Act ersetzt das Raster aber nicht: Sie folgt eigenen, rechtlich festgelegten Kriterien und ist unabhängig davon vorzunehmen.",
+      "src": "IMDA Singapur — Model AI Governance Framework for Agentic AI (v1.5, 2026) · imda.gov.sg"
     },
     {
-      "sc": "Ein Berater empfiehlt, das Kreditscoring-Modell vollständig selbst zu hosten — die Einkaufsabteilung hinterfragt dieses Argument kritisch.",
-      "q": "Welche Aussage(n) zur Gegenthese im Diskurs um Modell-Eigentümerschaft ist oder sind korrekt?",
+      "sc": "Der Anbieter versichert, der Agent sei sicher: Im Systemprompt stehe ausdrücklich, dass er keine Kundendaten außerhalb des jeweiligen Falls verwenden dürfe.",
+      "q": "Welche Aussage(n) zur Überwachung und Begrenzung von Agenten ist oder sind korrekt?",
       "opts": [
-        "Auf anspruchsvollen Benchmarks führen weiterhin oft geschlossene Spitzenmodelle — Eigentümerschaft ist deshalb eine Portfolio-Entscheidung je Arbeitslast, kein Grundsatzbekenntnis",
-        "Selbst gehostete Modelle sind automatisch verfügbarkeitssicherer, weil sie keine eigenen Betriebsrisiken wie Infrastrukturausfälle oder fehlende Patch-Zyklen haben",
-        "Auch bei selbst gehosteten Modellen braucht es ein eigenes Betriebsteam — das ist ein oft unterschätzter Kostenfaktor",
-        "Wer ein eigenes Modell hostet, benötigt keinerlei Verträge mehr mit externen Anbietern"
+        "Begrenzungen gehören auf die System- und Anwendungsebene; eine Anweisung im Prompt ist eine Bitte und keine technische Grenze",
+        "Beim Agenten muss die Kette der Handlungen nachvollziehbar sein, nicht nur das Endergebnis — Protokollierung und Beobachtbarkeit sind eigene Bausteine des Systems",
+        "Bei Agenten, deren Entscheidungen erhebliche Auswirkungen auf Menschen haben, ist das Prinzip der menschlichen Aufsicht (Human Oversight) mit tatsächlicher Eingriffsmöglichkeit zu sichern",
+        "Teilen sich mehrere Agenten einen technischen Zugang, genügt es im Vorfall festzustellen, dass ein Agent gehandelt hat"
       ],
       "correct": [
         0,
+        1,
         2
       ],
-      "exp": "Auf anspruchsvollen Benchmarks führen weiterhin häufig geschlossene Spitzenmodelle — Eigentümerschaft ist deshalb eine Portfolio-Entscheidung je Arbeitslast, kein pauschales Bekenntnis. Auch bei selbst gehosteten Modellen braucht es ein eigenes Betriebsteam — ein in der Praxis oft unterschätzter Kostenfaktor. Selbst gehostete Modelle sind dagegen nicht automatisch verfügbarkeitssicherer: Infrastrukturausfälle und fehlende Patch-Zyklen sind eigene, reale Betriebsrisiken. Und wer ein eigenes Modell hostet, braucht deshalb keineswegs keine Verträge mehr mit externen Anbietern — Hardware, Cloud-Infrastruktur oder Basismodell-Lizenzen bleiben in aller Regel vertraglich extern angebunden.",
-      "src": "Banc, K. — The AI You Rent Can Be Switched Off, Substack, 30.06.2026 (Tier 3)"
+      "exp": "Eine Formulierung im Prompt kann umgangen werden und ist deshalb keine Kontrolle, sondern eine Bitte — wirksame Grenzen sitzen in den vergebenen Rechten und in der Anwendungsschicht, die jeden Werkzeugaufruf prüft, bevor er ausgeführt wird. Weil ein Agent eine ganze Kette von Handlungen ausführt, bevor ein Ergebnis entsteht, reicht es außerdem nicht, die Ausgabe zu messen: Protokollierung und Beobachtbarkeit sind eigenständige Bestandteile des Systems, nicht Zubehör. Bei erheblichen Auswirkungen auf Menschen ist zusätzlich eine menschliche Aufsicht mit tatsächlicher Eingriffsmöglichkeit zu sichern. Und dass irgendein Agent gehandelt hat, ist im Vorfall keine brauchbare Auskunft — ohne Zuordnung zu einem bestimmten Agenten lässt sich weder die Ursache eingrenzen noch die Wiederholung verhindern.",
+      "src": "Microsoft — Agent Governance Toolkit · github.com/microsoft/agent-governance-toolkit · Sculley — Agent Harness (MongoDB, 2026)"
     },
     {
       "sc": "Kern bringt den Fable-5/Mythos-5-Fall aus dem Sommer 2026 als Beispiel in die Diskussion um Anbieterrisiken ein.",
-      "q": "Welche Aussage(n) zum Fable-5/Mythos-5-Fall (Juni 2026) ist oder sind korrekt?",
+      "q": "Welche Aussage(n) zum Verfügbarkeitsrisiko bei zugekauften Modellen ist oder sind korrekt?",
       "opts": [
-        "Der Fable-5/Mythos-5-Fall zeigt, dass ein KI-Modell durch eine behördliche Anordnung eines Anbieter-Sitzlandes ohne Vorwarnung für internationale Kund:innen abgeschaltet werden kann",
-        "Der Fall zeigt, dass ausschließlich technische Fehler zu Modellausfällen führen können — regulatorische Eingriffe spielen keine Rolle",
-        "Nach dem Vorfall wurde die Abschaltung dauerhaft aufrechterhalten",
-        "Der Fall betraf ausschließlich Nutzer:innen in den USA"
+        "Die Verfügbarkeit eines Modells ist eine eigene Risikoachse neben Datenschutz, Qualität und Kosten",
+        "Ein Modell kann durch Entscheidungen Dritter — etwa behördliche Anordnungen — kurzfristig nicht mehr nutzbar sein, ohne dass der Anbieter etwas versäumt hat",
+        "Solange ein Anbieter vertraglich eine hohe Verfügbarkeit zusichert, ist das Risiko abgedeckt",
+        "Das Risiko betrifft ausschließlich Unternehmen, die ihre Modelle nicht selbst hosten"
+      ],
+      "correct": [
+        0,
+        1
+      ],
+      "exp": "Verfügbarkeit gehört als eigene Achse in die Risikobewertung: Ein Modell kann fachlich einwandfrei, datenschutzkonform und bezahlbar sein — und trotzdem von heute auf morgen ausfallen. Der Fall aus dem Sommer 2026 zeigt den Mechanismus: Zwei Modelle wurden auf behördliche Anordnung hin abgeschaltet, ohne dass der Anbieter einen Fehler gemacht hätte. Eine vertragliche Verfügbarkeitszusage deckt das nicht ab, weil sie gegenüber einer hoheitlichen Anordnung ins Leere läuft. Und selbst wer selbst hostet, ist nicht vollständig frei: Lizenzbedingungen, Modellgewichte und die Weiterentwicklung bleiben an Entscheidungen Dritter gebunden. Die tragfähige Antwort ist eine Portfolio-Betrachtung — welche Arbeitslasten müssen anbieterunabhängig laufen können?",
+      "src": "Anthropic — Primärstatement zur Abschaltung · anthropic.com/news/fable-mythos-access · Fortune (13.06.2026)"
+    },
+    {
+      "sc": "Ein Bereichsleiter schlägt vor, den neuen Agenten als „digitalen Kollegen“ mit eigenem Namen im Organigramm zu führen, um die Akzeptanz zu erhöhen.",
+      "q": "Welche Aussage(n) zu dieser Idee ist oder sind korrekt?",
+      "opts": [
+        "Eine Untersuchung mit rund 800 Führungskräften zeigt: Wird ein Agent als Mitarbeiter statt als Werkzeug eingeführt, fällt die Fehlerprüfung schwächer aus und die Verantwortung verschiebt sich vom Menschen weg",
+        "Die personifizierende Bezeichnung erhöht nachweislich die Akzeptanz und damit die Nutzungsintensität",
+        "Eine solche Benennung ist eine reine Kommunikationsfrage ohne Auswirkung auf die Governance",
+        "Ein Agent im Organigramm klärt die Verantwortlichkeit, weil ihm Aufgaben eindeutig zugeordnet werden können"
       ],
       "correct": [
         0
       ],
-      "exp": "Der Fall zeigt, dass ein KI-Modell durch eine behördliche Anordnung des Anbieter-Sitzlandes ohne Vorwarnung für internationale Kund:innen abgeschaltet werden kann — betroffen waren unter anderem laufende Pilotprojekte in britischen Krankenhäusern. Der Fall zeigt damit gerade, dass nicht nur technische Fehler, sondern auch regulatorische Eingriffe zu Modellausfällen führen können. Die Abschaltung wurde zudem nicht dauerhaft aufrechterhalten, sondern nach 19 Tagen wieder aufgehoben. Und der Fall betraf nicht nur Nutzer:innen in den USA, sondern ausdrücklich auch internationale Kund:innen außerhalb der USA.",
-      "src": "Anthropic — Statement zur Fable-5/Mythos-5-Abschaltung · anthropic.com/news/fable-mythos-access · Fortune, 13.06.2026 · Al Jazeera, 01.07.2026"
-    },
-    {
-      "sc": "Nach der Diskussion um den Fable-5-Fall soll die Einkaufsabteilung konkrete Schritte gegen eine zu enge Anbieterbindung vorschlagen.",
-      "q": "Welche Aussage(n) zu Mitigationsmaßnahmen gegen Vendor-Abhängigkeit ist oder sind korrekt?",
-      "opts": [
-        "Eskalationspfade und Fallback-Optionen auf ein zweites Modell sind realistische Mitigationsmaßnahmen gegen Vendor-Abhängigkeit",
-        "Nicht jede Arbeitslast sollte gleichermaßen von einem einzelnen externen Anbieter abhängen — eine bewusste Priorisierung kritischer Workloads gehört zur Risikobewertung",
-        "Eine Bestandsaufnahme, welche Verträge bereits Regelungen zu plötzlichen Abschaltungen oder Exportkontrollen enthalten, ist ein sinnvoller erster Schritt im Risikomanagement",
-        "Vendor-Abhängigkeit ist ausschließlich ein IT-Thema und gehört nicht in die Risikobewertung von Einkauf oder Beschaffung"
-      ],
-      "correct": [
-        0,
-        1,
-        2
-      ],
-      "exp": "Eskalationspfade und Fallback-Optionen auf ein zweites Modell sind realistische Mitigationsmaßnahmen gegen Vendor-Abhängigkeit. Nicht jede Arbeitslast sollte gleichermaßen von einem einzelnen externen Anbieter abhängen — eine bewusste Priorisierung, welche Workloads kritisch sind, gehört zur Risikobewertung. Eine Bestandsaufnahme, welche bestehenden Verträge bereits Regelungen zu plötzlichen Abschaltungen oder Exportkontrollen enthalten, ist ein sinnvoller erster Schritt im Risikomanagement — denn Verträge regeln diesen Fall keineswegs automatisch. Und Vendor-Abhängigkeit ist gerade kein reines IT-Thema — sie gehört ausdrücklich in die Risikobewertung von Einkauf und Beschaffung.",
-      "src": "Anthropic — Statement zur Fable-5/Mythos-5-Abschaltung · anthropic.com/news/fable-mythos-access"
-    },
-    {
-      "sc": "Ein Anbieter bewirbt gegenüber SolidFinanz die Möglichkeit, ein Basismodell auf den eigenen Arbeitsprozessen weiterzutrainieren.",
-      "q": "Welche Aussage(n) zum Konzept „Frontier Tuning\" ist oder sind korrekt?",
-      "opts": [
-        "Beim Frontier Tuning trainiert ein Unternehmen ein Basismodell auf eigenen, realen Arbeitsprozessen weiter, ohne die eigenen Produktivsysteme zu beeinflussen",
-        "Die vom Hersteller genannten Kosten- und Qualitätsvorteile von Frontier Tuning sind unabhängig geprüfte, belastbare Kennzahlen",
-        "Ziel des Konzepts ist, dass das Institutionswissen eines Unternehmens beim Training im eigenen Haus bleibt",
-        "Frontier Tuning ist identisch mit dem vollständigen Selbst-Hosting eines Modells (souveräne Infrastruktur)"
-      ],
-      "correct": [
-        0,
-        2
-      ],
-      "exp": "Beim Frontier Tuning trainiert ein Unternehmen ein Basismodell auf eigenen, realen Arbeitsprozessen weiter, ohne die eigenen Produktivsysteme zu beeinflussen. Ziel des Konzepts ist, dass das Institutionswissen eines Unternehmens beim Training im eigenen Haus bleibt, statt an einen externen Anbieter zu fließen. Die vom Hersteller genannten Kosten- und Qualitätsvorteile sind dagegen Herstellerangaben aus einer Unternehmensankündigung — keine unabhängig geprüften, belastbaren Kennzahlen. Und Frontier Tuning ist nicht identisch mit vollständigem Selbst-Hosting (souveräne Infrastruktur): Das Basismodell bleibt beim Anbieter, nur das Fine-Tuning erfolgt auf eigenen Daten.",
-      "src": "Suleyman, M. — Building a hill-climbing machine, Microsoft AI, Juni 2026 · microsoft.ai/news/building-a-hillclimbing-machine-launching-seven-new-mai-models/"
+      "exp": "Das vorregistrierte Experiment legte denselben Text vor und veränderte nur die angegebene Urheberschaft. Wurde der Agent als Mitarbeiter eingeführt, prüften die Führungskräfte schwächer, entdeckten weniger Fehler und verlagerten Verantwortung von sich weg. Ein Akzeptanz- oder Adoptionsvorteil stellte sich dabei gerade nicht ein — die erhoffte Wirkung blieb aus, die unerwünschte trat ein. Eine reine Kommunikationsfrage ist die Benennung damit nicht, sondern eine Governance-Entscheidung mit messbarer Folge für die Aufsichtsqualität. Und Verantwortlichkeit klärt ein Eintrag im Organigramm nicht: Ein System kann nicht haften. Verantwortung trägt weiterhin eine benannte Person — die Personifizierung verschleiert das eher, als dass sie es klärt. Einschränkend gilt, dass es sich um eine Vorabveröffentlichung handelt und das befragte Feld KI-affiner sein dürfte als der Durchschnitt.",
+      "src": "Wiles et al. — Putting AI on the Org Chart: Evidence on Delegation and Oversight (2026) · emmawiles.com"
     }
   ]
 };
@@ -338,7 +338,7 @@ var QBANK = {
 var APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyPs358GF_E1xsvTh08PpTpZcBDS1OvsU9XQ0qi0MkZoCCnAk4dyo3Aii0OYxILdvCRYA/exec';
 var selectedRole = null, questions = [], userAnswers = [];
 var participantName = '';
-var ROLE_LABELS = {"a": "KI-Manager:in", "b": "Einkauf/Vendor-Verantwortliche:r"};
+var ROLE_LABELS = {"a": "KI-Manager:in \u00b7 Betrieb", "b": "Einkauf & Vendor-Verantwortung"};
 
 function selectRole(r) {
   selectedRole = r;
