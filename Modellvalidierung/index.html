@@ -53,6 +53,19 @@ details.dc>summary:hover{background:rgba(0,0,0,.05);}
 .merksatz{background:#0a4a7a;color:#fff;border-radius:8px;padding:.8rem 1rem;margin:.9rem 0;font-size:14px;line-height:1.6;}
 .merksatz b{color:#fff;}
 .merksatz .ms-l{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;opacity:.7;display:block;margin-bottom:.35rem;}
+.det-bild{width:100%;height:auto;display:block;border:1px solid #d5d0c5;border-radius:8px;margin:.2rem 0 .8rem;}
+.det-zwei{display:grid;grid-template-columns:1fr 1fr;gap:.7rem;margin:.7rem 0;}
+@media(max-width:760px){.det-zwei{grid-template-columns:1fr;}}
+.det-k{border-radius:8px;padding:.7rem .85rem;font-size:12.8px;line-height:1.6;}
+.det-p{background:#faf3f3;border:1px solid #e3cfcf;}
+.det-s{background:#f2f7f3;border:1px solid #c8ddcd;}
+.det-t{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;font-weight:700;display:block;margin-bottom:.3rem;}
+.det-p .det-t{color:#6a1a1a;} .det-s .det-t{color:#2a5c3f;}
+.det-k b{color:#1a1a18;}
+.det-tab{width:100%;border-collapse:collapse;font-size:12.8px;margin:.6rem 0 .2rem;}
+.det-tab td{padding:.35rem .5rem;border-bottom:1px solid #e5e1d8;vertical-align:top;}
+.det-tab tr:last-child td{border-bottom:none;}
+.det-tab td:first-child{width:32%;font-weight:600;color:#1a1a18;}
 details.klapp{border:1px solid #d5d0c5;border-radius:8px;background:#fbfaf7;margin:.8rem 0;overflow:hidden;}
 details.klapp>summary{list-style:none;cursor:pointer;padding:.5rem .8rem;font-family:'DM Mono',monospace;font-size:9.5px;
   letter-spacing:1.6px;text-transform:uppercase;color:#6b6b60;font-weight:700;display:flex;align-items:center;gap:.5rem;}
@@ -166,6 +179,45 @@ table.gloss td:first-child{font-weight:600;white-space:nowrap;width:150px;}
  <div class="eyebrow">Lab — Modellvalidierung</div>
  <h1>Wie gut ist ein Modell — <em>und für wen?</em></h1>
  <p class="lead">Ein Modell wurde mittels <strong>synthetischer</strong> Daten für einen Personalauswahlprozess trainiert (alle Personen und Zahlen erfunden — n = 2.000 Bewerbungen). Der Leitgedanke dabei: Die Merkmale derjenigen, die in der Vergangenheit im Sinne des Unternehmens „erfolgreich" wurden, stellen sinnvolle Kriterien für ein KI-gestütztes (Vor-)Auswahlmodell dar (Details dazu im Datenwörterbuch unten).</p>
+</div>
+
+<!-- EINSTIEG: DETEKTIV-SCHULE -->
+<div class="sec">
+ <details class="klapp" id="detektiv" open>
+  <summary>Zum Einstieg · Die Detektiv-Schule — Accuracy, Precision und Recall ohne Formeln</summary>
+  <div class="kl-body">
+   <p>Stell dir vor, du bist Detektiv und durchsuchst eine <b>Kiste voller Steine</b> nach echten Goldmünzen. Alles, was danach über Kennzahlen kommt, lässt sich an diesem Bild erklären — ganz ohne Bruchstriche.</p>
+
+   <img class="det-bild" src="detektiv-schule.jpg" alt="Infografik: Die Detektiv-Schule — ein Detektiv sucht in einer Kiste voller Steine nach echten Goldmünzen. Erklärt Accuracy als Gesamt-Ergebnis, Precision als Sicherheit beim Gold-Ruf, Recall als Vollständigkeit der Suche sowie Fehlalarm und Übersehenes.">
+
+   <table class="det-tab">
+    <tr><td>Genauigkeit<br><span style="font-weight:400;color:#6b6b60;">Accuracy</span></td>
+        <td>Wie viele Münzen <em>und</em> Steine hast du insgesamt richtig zugeordnet?</td></tr>
+    <tr><td>Präzision<br><span style="font-weight:400;color:#6b6b60;">Precision</span></td>
+        <td>Wenn du sagst „Das ist Gold“ — wie oft stimmt das? <b>Du schaust in deinen Korb.</b></td></tr>
+    <tr><td>Trefferquote<br><span style="font-weight:400;color:#6b6b60;">Recall</span></td>
+        <td>Hast du wirklich alle Münzen gefunden — oder liegen noch welche in der Kiste? <b>Du schaust in die Kiste.</b></td></tr>
+   </table>
+   <p style="font-size:12px;color:#6b6b60;">Darin steckt der ganze Unterschied: Precision und Recall unterscheiden sich nur dadurch, <em>wo</em> man nachzählt — im eigenen Korb oder in der Kiste.</p>
+
+   <div class="det-zwei">
+    <div class="det-k det-p">
+     <span class="det-t">Der Fehlalarm — False Positive</span>
+     Du freust dich über eine Goldmünze, aber es ist nur ein <b>gelb angemalter Stein</b>.
+    </div>
+    <div class="det-k det-s">
+     <span class="det-t">Das Übersehene — False Negative</span>
+     Du denkst, es ist ein Stein — und lässt eine <b>echte Goldmünze liegen</b>.
+    </div>
+   </div>
+
+   <p><b>Und warum die Genauigkeit trügt.</b> Stell dir vor, in der Kiste liegen <b>500 Steine und 5 Münzen</b>. Ein Detektiv, der einfach sagt „alles Steine“, hat <b>99 Prozent richtig zugeordnet</b> — und keine einzige Münze gefunden. Deshalb ist die Gesamtgenauigkeit bei seltenen Funden die unbrauchbarste der drei Zahlen. Sie zählt die richtig liegen gelassenen Steine mit, und davon gibt es fast nur welche.</p>
+
+   <p><b>Die Frage, die alles steuert.</b> Wie sicher musst du dir sein, bevor du „Gold!“ rufst? Rufst du früh, landet viel im Korb — auch viel angemalter Stein. Rufst du erst bei den ganz eindeutigen Stücken, bleibt echtes Gold in der Kiste liegen. Genau diese Frage stellt weiter unten die <b>Einladungsschwelle</b> in Abschnitt 1 — nur dass dort Bewerbungen statt Münzen im Korb liegen.</p>
+
+   <p style="font-size:12px;color:#6b6b60;margin-top:.6rem;">Die Grafik stammt aus dem Kurs KI-Manager:in und wurde von Teilnehmenden erstellt.</p>
+  </div>
+ </details>
 </div>
 
 <!-- DATENWÖRTERBUCH -->
