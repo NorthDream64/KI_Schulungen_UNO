@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lernkontrolle &middot; KI-Manager Tag 11 &middot; Risikoarten, Einsatzbereiche &amp; Freigabe</title>
+<style>
+:root {
+  --ink:#1a1a18;--paper:#f5f2ec;--card:#fff;--rule:#d5d0c5;--muted:#888880;
+  --accent:#5a3a7a;--accent-soft:#f0eaf7;
+  --role-a:#1a6a5a;--role-a-soft:#e6f4f1;
+  --role-b:#5a3a7a;--role-b-soft:#f0eaf7;
+  --correct:#2a7a50;--correct-bg:#eaf5ee;--correct-border:#a0d8b8;
+  --wrong:#9a2a2a;--wrong-bg:#faeaea;--wrong-border:#d8a0a0;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;background:var(--paper);color:var(--ink);line-height:1.65;font-size:15px;}
+a{color:var(--accent);}
+.site-header{border-bottom:2px solid var(--ink);padding:1.8rem 2rem 1.4rem;max-width:820px;margin:0 auto;}
+.eyebrow{font-family:"SFMono-Regular", Consolas, "Liberation Mono", monospace;font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:var(--muted);margin-bottom:.5rem;}
+.site-header h1{font-family:Georgia, "Times New Roman", serif;font-size:clamp(1.5rem,4vw,2.1rem);line-height:1.15;margin-bottom:.4rem;}
+.header-meta{font-size:12px;color:var(--muted);display:flex;gap:1rem;flex-wrap:wrap;}
+.header-meta span::before{content:"· ";}
+.header-meta span:first-child::before{content:"";}
+.main{max-width:820px;margin:0 auto;padding:1.8rem 2rem 4rem;}
+.setup-card{background:var(--card);border:1px solid var(--rule);border-radius:12px;padding:2rem;max-width:540px;margin:0 auto;}
+.setup-card h2{font-family:Georgia, "Times New Roman", serif;font-size:1.3rem;margin-bottom:1.2rem;}
+.field-label{font-family:"SFMono-Regular", Consolas, "Liberation Mono", monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:.35rem;}
+.setup-input{width:100%;border:1px solid var(--rule);border-radius:8px;padding:.6rem .9rem;font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;font-size:14px;background:var(--paper);outline:none;color:var(--ink);transition:border-color .15s;}
+.setup-input:focus{border-color:var(--ink);}
+.role-btns{display:flex;gap:.5rem;}
+.sel-btn{flex:1;padding:.55rem .6rem;border:1px solid var(--rule);border-radius:8px;background:none;font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;font-size:13px;cursor:pointer;text-align:center;transition:all .15s;color:var(--ink);}
+.sel-btn.active-a{background:var(--role-a-soft);border-color:var(--role-a);color:var(--role-a);font-weight:500;}
+.sel-btn.active-b{background:var(--role-b-soft);border-color:var(--role-b);color:var(--role-b);font-weight:500;}
+.hint-text{font-size:12px;color:var(--muted);margin-top:.3rem;display:block;}
+.btn-start{width:100%;padding:.75rem;background:var(--ink);color:#fff;border:none;border-radius:8px;font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;font-size:15px;font-weight:500;cursor:pointer;margin-top:1rem;transition:background .15s;}
+.btn-start:hover{background:#333;}
+.btn-start:disabled{background:#aaa;cursor:not-allowed;}
+.quiz-header-strip{display:flex;gap:.6rem;align-items:center;margin-bottom:1.4rem;flex-wrap:wrap;}
+.strip-tag{font-family:"SFMono-Regular", Consolas, "Liberation Mono", monospace;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;padding:4px 12px;border-radius:100px;}
+.strip-role-a{background:var(--role-a-soft);color:var(--role-a);}
+.strip-role-b{background:var(--role-b-soft);color:var(--role-b);}
+.strip-name{font-size:13px;color:var(--muted);margin-left:auto;}
+.progress-bar{height:3px;background:var(--rule);border-radius:2px;margin-bottom:1.2rem;}
+.progress-fill{height:100%;background:var(--ink);border-radius:2px;transition:width .3s;}
+.progress-label{font-family:"SFMono-Regular", Consolas, "Liberation Mono", monospace;font-size:10px;color:var(--muted);margin-bottom:.5rem;}
+.q-sc{font-size:13px;color:#555;font-style:italic;border-left:3px solid var(--accent);padding:.4rem .8rem;margin-bottom:.5rem;background:var(--accent-soft);border-radius:0 6px 6px 0;}
+.q-card{background:var(--card);border:1px solid var(--rule);border-radius:12px;padding:1.5rem;margin-bottom:1rem;}
+.q-num{font-family:"SFMono-Regular", Consolas, "Liberation Mono", monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:.6rem;}
+.q-text{font-size:15px;font-weight:500;line-height:1.55;margin-bottom:.5rem;}
+.opt-list{display:flex;flex-direction:column;gap:.5rem;}
+.opt{display:flex;align-items:flex-start;gap:.7rem;padding:.75rem 1rem;border:1px solid var(--rule);border-radius:8px;cursor:pointer;background:#fdfdfb;transition:all .12s;-webkit-user-select:none;user-select:none;}
+.opt:hover:not(.disabled){border-color:#888;background:#f5f2ec;}
+.opt.selected{background:var(--accent-soft);border-color:#b8a0d8;}
+.opt.disabled{cursor:default;}
+.opt.correct-sel{background:var(--correct-bg);border-color:var(--correct-border);}
+.opt.wrong-sel{background:var(--wrong-bg);border-color:var(--wrong-border);}
+.opt.missed{background:var(--wrong-bg);border-color:var(--wrong-border);}
+.opt-cb{width:18px;height:18px;min-width:18px;border:1.5px solid #bbb;border-radius:4px;flex-shrink:0;margin-top:2px;display:flex;align-items:center;justify-content:center;transition:all .12s;}
+.opt-cb.chk{background:var(--ink);border-color:var(--ink);}
+.opt-cb.chk::after{content:'';display:block;width:8px;height:8px;background:#fff;border-radius:2px;}
+.opt.correct-sel .opt-cb{background:var(--correct);border-color:var(--correct);}
+.opt.correct-sel .opt-cb::after{content:'\2713';color:#fff;font-size:11px;background:none;width:auto;height:auto;}
+.opt.wrong-sel .opt-cb{background:var(--wrong);border-color:var(--wrong);}
+.opt.wrong-sel .opt-cb::after{content:'\2717';color:#fff;font-size:11px;background:none;width:auto;height:auto;}
+.opt.missed .opt-cb{background:var(--wrong);border-color:var(--wrong);}
+.opt.missed .opt-cb::after{content:'\2192';color:#fff;font-size:11px;background:none;width:auto;height:auto;}
+.opt-letter{font-family:"SFMono-Regular", Consolas, "Liberation Mono", monospace;font-size:12px;color:var(--muted);min-width:16px;flex-shrink:0;margin-top:2px;}
+.opt-text{font-size:14px;line-height:1.5;}
+.feedback{border-radius:8px;padding:.9rem 1.1rem;margin-top:.9rem;}
+.feedback.fb-ok{background:var(--correct-bg);border:1px solid var(--correct-border);}
+.feedback.fb-wrong{background:var(--wrong-bg);border:1px solid var(--wrong-border);}
+.fb-title{font-weight:500;font-size:14px;margin-bottom:.4rem;}
+.fb-ok .fb-title{color:var(--correct);}
+.fb-wrong .fb-title{color:var(--wrong);}
+.fb-text{font-size:13px;line-height:1.65;color:#444;margin-bottom:.5rem;}
+.fb-source{font-size:12px;color:var(--muted);border-top:1px solid var(--rule);padding-top:.5rem;}
+.nav-row{display:flex;align-items:center;gap:.6rem;margin-top:1rem;}
+.btn{display:inline-flex;align-items:center;padding:.55rem 1.2rem;border:1px solid var(--rule);border-radius:8px;background:none;font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;font-size:14px;font-weight:500;cursor:pointer;color:var(--ink);transition:all .15s;}
+.btn:hover{background:var(--paper);border-color:#888;}
+.btn:disabled{opacity:.3;cursor:not-allowed;}
+.btn-full{width:100%;justify-content:center;padding:.7rem;font-size:15px;margin-top:1rem;}
+.btn-submit{background:#1a6a5a;color:#fff;border-color:#1a6a5a;}
+.btn-submit:hover{background:#145548;}
+.result-block{max-width:600px;margin:0 auto;text-align:center;}
+.result-grade{font-family:Georgia, "Times New Roman", serif;font-size:4.5rem;line-height:1;margin-bottom:.3rem;}
+.result-label{font-size:1.1rem;font-weight:500;margin-bottom:.3rem;}
+.result-sub{font-size:13px;color:var(--muted);margin-bottom:1.5rem;}
+.stats-row{display:flex;justify-content:center;gap:1rem;flex-wrap:wrap;margin-bottom:1.5rem;}
+.stat{background:var(--card);border:1px solid var(--rule);border-radius:10px;padding:.9rem 1.2rem;text-align:center;min-width:90px;}
+.stat-n{font-size:1.8rem;font-weight:500;}
+.stat-l{font-size:11px;color:var(--muted);margin-top:2px;}
+.comp-title{font-size:13px;font-weight:500;text-align:left;margin-bottom:.8rem;}
+.comp-row{margin-bottom:.7rem;text-align:left;}
+.comp-labels{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-bottom:3px;}
+.comp-track{height:4px;background:var(--rule);border-radius:2px;}
+.comp-fill{height:100%;border-radius:2px;}
+.fill-ok{background:var(--correct);}
+.fill-wrong{background:var(--wrong);}
+.submit-status.sending{background:#fff8e8;color:#7a5a00;border:1px solid #e8d090;}
+.submit-status.success{background:#eaf5ee;color:#2a7a50;border:1px solid #a0d8b8;}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="eyebrow">Alfatraining &middot; KI-Manager:in &middot; Tag 11</div>
+  <h1>Lernkontrolle<br>Risikoarten, Einsatzbereiche &amp; Freigabe</h1>
+  <div class="header-meta">
+    <span>5 Fragen je Rolle</span>
+    <span>Eine oder mehrere Antworten k&ouml;nnen richtig sein</span>
+  </div>
+</header>
+
+<main class="main">
+
+<div id="setup-section">
+  <div class="setup-card">
+    <h2>Bitte w&auml;hle deine Rolle</h2>
+    <div style="margin-bottom:1.2rem;">
+      <span class="field-label">Dein Name (oder Teilnehmer-Nummer)</span>
+      <input type="text" id="participant-name" class="setup-input" placeholder="z. B. Teilnehmer-07 oder Vorname">
+    </div>
+    <div style="margin-bottom:1rem;">
+      <span class="field-label">Rolle</span>
+      <div class="role-btns">
+        <button class="sel-btn" id="btn-role-a" onclick="selectRole('a')">KI-Manager:in</button>
+        <button class="sel-btn" id="btn-role-b" onclick="selectRole('b')">Beschaffung/Werkzeugauswahl</button>
+      </div>
+      <span class="hint-text">W&auml;hle deine Rolle im Unternehmen</span>
+    </div>
+    <button class="btn-start" id="btn-start" onclick="startQuiz()" disabled>Quiz starten &rarr;</button>
+  </div>
+</div>
+
+<div id="quiz-section" style="display:none">
+  <div class="quiz-header-strip" id="quiz-header-strip"></div>
+  <div class="progress-label" id="progress-label"></div>
+  <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+  <div id="questions-container"></div>
+  <div class="nav-row" style="margin-top:1.5rem">
+    <button class="btn btn-submit btn-full" id="btn-submit" onclick="submitQuiz()" disabled>Auswertung anzeigen &rarr;</button>
+  </div>
+</div>
+
+<div id="results-section" style="display:none">
+  <div id="submit-status" class="submit-status" style="display:none;max-width:600px;margin:1rem auto;text-align:center;padding:.6rem 1rem;border-radius:8px;font-family:'SFMono-Regular', Consolas, 'Liberation Mono', monospace;font-size:12px;"></div>
+  <div class="result-block">
+    <div class="result-grade" id="result-grade"></div>
+    <div class="result-label" id="result-label"></div>
+    <div class="result-sub" id="result-sub"></div>
+    <div class="stats-row" id="stats-row"></div>
+    <div class="comp-title">Kompetenzprofil</div>
+    <div id="comp-bars"></div>
+    <div style="margin-top:.8rem;display:flex;justify-content:center;">
+      <button class="btn" onclick="location.reload()">Neu starten</button>
+    </div>
+  </div>
+  <hr style="border:none;border-top:1px solid var(--rule);margin:2rem 0">
+  <h2 style="font-family:Georgia, 'Times New Roman', serif;font-size:1.2rem;margin-bottom:1rem">Detailauswertung</h2>
+  <div id="review-container"></div>
+</div>
+
+</main>
+
+<script>
+/* === FRAGEN ============================================== */
+
+var QBANK = {
+  "a": [
+    {
+      "sc": "Bei der SolidFinanz AG steht die Freigabe eines neuen Assistenzsystems an. Der Projektleiter legt einen technischen Prüfbericht vor und hält das Thema Risiko damit für erledigt.",
+      "q": "Welche Aussage(n) zum Risikobegriff bei KI-Systemen ist oder sind korrekt?",
+      "opts": [
+        "Ein belastbarer Risikobegriff umfasst neben Verzerrungen auch technische Fehler, ethische Risiken und Sicherheitsrisiken — die Nennung des Datenschutzes allein greift zu kurz",
+        "Die Art eines Risikos bestimmt, wer dafür zuständig ist und mit welchen Mitteln gegengesteuert wird",
+        "Rechtliche, wirtschaftliche und Verfügbarkeitsrisiken tauchen in einem rein technischen Prüfbericht in der Regel nicht auf und müssen gesondert erhoben werden",
+        "Ein bestandener technischer Prüfbericht deckt sämtliche relevanten Risikoarten ab, weil darin alle Eigenschaften des Systems gemessen werden"
+      ],
+      "correct": [
+        0,
+        1,
+        2
+      ],
+      "exp": "Der breite Risikobegriff ist der Kern der Sache: Verzerrungen, technische Fehler, ethische Risiken und Sicherheitsrisiken bilden zusammen erst ein vollständiges Bild — wer nur den Datenschutz nennt, hat drei Viertel des Feldes ausgelassen. Die Einordnung nach Art ist keine Sortierübung, sondern bestimmt die Zuständigkeit: Ein Verzerrungsproblem löst niemand mit einem Sicherheitswerkzeug, ein Vertragsrisiko niemand durch Nachtrainieren. Und die drei nicht-technischen Arten fehlen in einem Prüfbericht systematisch, weil er das System untersucht und nicht die Lage des Unternehmens. Genau deshalb ist die Annahme falsch, ein technischer Bericht decke alles ab: Er misst, was das System tut — nicht, ob du es haben darfst, bezahlen kannst und morgen noch nutzen wirst.",
+      "src": "Hand-Out Tag 11 · Risikoarten — der breite Blick vor der Freigabe"
+    },
+    {
+      "sc": "In einer Auswertung fällt auf, dass ein Modell für eine bestimmte Gruppe von Antragstellenden deutlich schlechter arbeitet als im Durchschnitt.",
+      "q": "Welche Aussage(n) zur Entstehung und Behandlung von Verzerrungen ist oder sind korrekt?",
+      "opts": [
+        "Verzerrungen entstehen vor allem dann, wenn Trainingsdaten nicht repräsentativ sind oder historische Ungleichheiten fortschreiben",
+        "Maßnahmen zu Datenqualität und Repräsentativität gehören bereits in die Konzeptionsphase und nicht erst in die Abnahme",
+        "Eine Abnahmeprüfung am Projektende ist das wirksamste Mittel gegen Verzerrungen, weil dort das fertige Modell vorliegt",
+        "Das Auffüllen des Bestands mit synthetisch erzeugten Gegenprofilen beseitigt eine vorhandene Verzerrung vollständig"
+      ],
+      "correct": [
+        0,
+        1
+      ],
+      "exp": "Verzerrung ist überwiegend ein Datenproblem, kein Rechenproblem: Wo der Bestand eine Gruppe unterrepräsentiert oder eine frühere Ungleichbehandlung abbildet, lernt das Modell genau das. Deshalb gehört die Arbeit an Herkunft, Qualität und Repräsentativität an den Anfang — in die Konzeption, wo sie noch etwas kostet, aber wenig. Die Abnahme am Projektende kann eine Verzerrung nur noch feststellen, nicht mehr verhindern; zu diesem Zeitpunkt ist die Korrektur teuer und verzögert die Freigabe. Und synthetische Gegenprofile lösen das Problem nicht zuverlässig: Ein gespiegeltes Profil erbt die Merkmale des Originals einschließlich der Lücken, die zur Benachteiligung geführt haben — die eigentliche Ursache bleibt unberührt.",
+      "src": "Hand-Out Tag 11 · Risikoarten, Verzerrung · Modellvalidierung, Proxy-Falle"
+    },
+    {
+      "sc": "Vor der Produktivsetzung fragt die Geschäftsführung, woran sie erkennen soll, dass ein System freigabereif ist.",
+      "q": "Welche Aussage(n) zu Abnahme und Freigabe ist oder sind korrekt?",
+      "opts": [
+        "Das Modell muss gegen einen zuvor unbesehenen Prüfbestand getestet worden sein, damit die Aussage über die Übertragbarkeit auf neue Fälle unvoreingenommen ist",
+        "Die Abnahme muss nachweisen, dass zuvor vereinbarte messbare Zielgrößen erreicht wurden — nicht nur, dass das System technisch läuft",
+        "Zu den Abnahmekriterien gehören auch schwer messbare Aspekte wie Anwenderakzeptanz und langfristige Wartbarkeit",
+        "Maßgeblich für die Freigabe ist, dass die Lernrate des Trainingsverfahrens auf den kleinstmöglichen Wert gesetzt wurde"
+      ],
+      "correct": [
+        0,
+        1,
+        2
+      ],
+      "exp": "Ein unbesehener Prüfbestand ist die einzige Möglichkeit, etwas über die Übertragbarkeit auf neue Fälle zu erfahren — wer gegen bekannte Daten prüft, misst das Gedächtnis des Modells und nicht sein Können. Der zweite Punkt trennt eine technische Inbetriebnahme von einer Freigabe: Ohne vorher vereinbarte Zielgrößen lässt sich hinterher jedes Ergebnis als Erfolg darstellen. Und die schwer messbaren Kriterien gehören ausdrücklich dazu, weil ein System, das niemand benutzt oder das nach einem Jahr niemand mehr pflegen kann, trotz guter Kennzahlen gescheitert ist. Die Lernrate dagegen ist eine Stellschraube im Training: Ein besonders kleiner Wert verlangsamt das Lernen und garantiert weder Güte noch Freigabereife.",
+      "src": "Hand-Out Tag 11 · Freigabeentscheidung · Tag 9, Prüfverfahren"
+    },
+    {
+      "sc": "Eine Prüferin fragt, wie das Unternehmen im Nachhinein belegen will, wie eine einzelne Entscheidung zustande gekommen ist.",
+      "q": "Welche Aussage(n) zur Nachvollziehbarkeit ist oder sind korrekt?",
+      "opts": [
+        "Die lückenlose Protokollierung von Systemaktivitäten und Modellentscheidungen ist die Grundlage dafür, dass sich einzelne Entscheidungen später prüfen lassen",
+        "Nachvollziehbarkeit ist eine laufende Betriebsanforderung und keine einmalige Leistung zum Zeitpunkt der Freigabe",
+        "Eine erteilte Zertifizierung des Systems ersetzt die laufende Protokollierung",
+        "Protokollierung lohnt sich ausschließlich bei Systemen mit hoher Risikoeinstufung; bei allen anderen entstehen nur Datenmengen ohne Nutzen"
+      ],
+      "correct": [
+        0,
+        1
+      ],
+      "exp": "Ohne Protokoll gibt es keine Rekonstruktion — und ohne Rekonstruktion keine belastbare Antwort auf die Frage, warum ein System im Einzelfall so entschieden hat. Deshalb ist Nachvollziehbarkeit an den Betrieb gebunden und nicht an einen Stichtag: Sie muss an dem Tag funktionieren, an dem jemand fragt, und nicht an dem Tag, an dem freigegeben wurde. Eine Zertifizierung bescheinigt, dass Verfahren eingerichtet sind; sie sagt nichts über einen konkreten Vorgang von vergangener Woche aus und kann das Protokoll daher nicht ersetzen. Und die Beschränkung auf hoch eingestufte Systeme greift zu kurz: Auch bei geringerem Risiko brauchst du eine Spur, sobald ein Ergebnis bestritten wird — dort ist der Umfang geringer, die Notwendigkeit bleibt.",
+      "src": "Hand-Out Tag 11 · Freigabe und Nachweis · Tag 10, Protokollierungspflichten"
+    },
+    {
+      "sc": "Ein Kollege legt eine Risikoliste vor. Sie enthält Verzerrungen, technische Fehler, ethische Risiken und Sicherheitsrisiken.",
+      "q": "Welche Aussage zu dieser Liste ist korrekt?",
+      "opts": [
+        "Sie beschreibt, was das System falsch machen kann, lässt aber rechtliche, wirtschaftliche und Verfügbarkeitsrisiken offen — also das, was dem Unternehmen bei einer Freigabe widerfahren kann",
+        "Sie ist vollständig, weil sie alle etablierten Risikoarten enthält",
+        "Sie ist unbrauchbar, weil sich Risiken bei KI-Systemen nicht sinnvoll in Arten unterteilen lassen",
+        "Sie ist zu fein gegliedert; für eine Freigabeentscheidung genügt die Unterscheidung zwischen technischen und nicht-technischen Risiken"
+      ],
+      "correct": [
+        0
+      ],
+      "exp": "Die vier genannten Arten stammen aus der technischen Betrachtung eines Systems und sind dort vollständig. Sie beantworten aber nicht, ob du das System einsetzen darfst, ob du es dir dauerhaft leisten kannst und ob es in einem Jahr noch verfügbar ist. Genau diese drei Fragen liegen in deiner Verantwortung und nicht in der des Entwicklungsteams — deshalb ist die Liste unvollständig, nicht falsch. Die Einteilung in Arten ist im Übrigen der Grund, warum überhaupt jemand zuständig gemacht werden kann; sie aufzugeben würde die Zuordnung von Maßnahmen unmöglich machen. Und eine bloße Zweiteilung in technisch und nicht-technisch wäre zwar einfacher, ließe aber offen, wen man bei einem konkreten Befund ansprechen muss.",
+      "src": "Hand-Out Tag 11 · Drei Arten, die im technischen Raster fehlen"
+    }
+  ],
+  "b": [
+    {
+      "sc": "Ein Fachbereich möchte drei Werkzeuge gleichzeitig beschaffen: eines für Textentwürfe, eines für Programmierung, eines für Bildmaterial.",
+      "q": "Welche Aussage(n) zu den Risikoprofilen dieser Einsatzbereiche ist oder sind korrekt?",
+      "opts": [
+        "Bei der Textgenerierung liegt das kennzeichnende Risiko in sachlich falschen Aussagen, die sprachlich völlig unauffällig sind",
+        "Bei der Programmierung kommen die Herkunft übernommener Bausteine und mitübernommene Sicherheitslücken hinzu",
+        "Bei Bildmaterial stellen sich Fragen des Urheber- und Persönlichkeitsrechts, bevor überhaupt über Qualität gesprochen wird",
+        "Weil allen drei Bereichen dieselbe Modelltechnik zugrunde liegt, genügt eine einheitliche Freigaberegel für alle drei Werkzeuge"
+      ],
+      "correct": [
+        0,
+        1,
+        2
+      ],
+      "exp": "Das Tückische an fehlerhaften Textausgaben ist ihre sprachliche Makellosigkeit — der Fehler sieht nicht nach Fehler aus, deshalb braucht es eine Stichprobenprüfung und eine Freigaberegel für alles mit Außenwirkung. Bei erzeugtem Programmcode verschiebt sich die Frage von der Richtigkeit zur Herkunft: Unter welcher Lizenz stand der übernommene Baustein, und welche bekannten Schwachstellen sind mitgekommen? Bei Bildern steht die Rechtsfrage sogar vor der Qualitätsfrage, weil eine rechtlich unzulässige Abbildung auch dann unbrauchbar ist, wenn sie gut aussieht. Die gemeinsame Modelltechnik verleitet zu der Annahme, eine Regel reiche für alles — genau das ist der Fehler: Gleiche Technik, völlig unterschiedliche Pflichten.",
+      "src": "Hand-Out Tag 11 · Fünf Einsatzbereiche und ihre Risikoprofile"
+    },
+    {
+      "sc": "Die Arventis GmbH prüft ein System, das eingehende Bewerbungen vorsortiert.",
+      "q": "Welche Aussage(n) zu diesem Vorhaben ist oder sind korrekt?",
+      "opts": [
+        "Der Einsatz zur Vorauswahl von Bewerbungen fällt unter die Hochrisiko-Einstufung und verlangt einen anderen Beschaffungsweg als die übrigen Einsatzbereiche",
+        "Vor der Beschaffung sind eine Risikoeinstufung sowie die Einbindung von Datenschutz und Mitbestimmung erforderlich",
+        "Die Anforderungen sind erfüllt, sobald der Anbieter die vollständigen Trainingsdaten öffentlich zugänglich macht",
+        "Eine menschliche Überprüfung ist entbehrlich, solange das System lediglich vorsortiert und nicht endgültig entscheidet"
+      ],
+      "correct": [
+        0,
+        1
+      ],
+      "exp": "Bei der Vorauswahl von Bewerbungen wechselt nicht der Schwierigkeitsgrad, sondern die Rechtslage: Der Einsatz im Beschäftigungskontext ist ausdrücklich als hochriskant eingestuft, und damit ändert sich der gesamte Beschaffungsweg. Einstufung, Datenschutzbewertung und Mitbestimmung gehören deshalb vor die Werkzeugauswahl und nicht hinter sie — nachträglich lässt sich eine bereits eingeführte Lösung kaum noch korrigieren. Die Veröffentlichung von Trainingsdaten ist dagegen nirgends verlangt und wäre datenschutzrechtlich meist selbst unzulässig; verlangt sind Dokumentation und Nachweisbarkeit gegenüber den zuständigen Stellen. Und die Vorstellung, Vorsortieren sei harmlos, verkennt die Wirkung: Wer aussortiert wird, kommt in keiner späteren Entscheidung mehr vor — genau deshalb greift die Pflicht zur menschlichen Aufsicht bereits hier.",
+      "src": "Hand-Out Tag 11 · Personalauswahl · KI-Verordnung, Anhang III Nr. 4"
+    },
+    {
+      "sc": "Der Einkauf legt eine Preisliste vor und hält die Kostenfrage damit für geklärt.",
+      "q": "Welche Aussage(n) zu Lizenz- und Kostenmodellen ist oder sind korrekt?",
+      "opts": [
+        "Ob nach Nutzerplätzen oder nach Nutzungsmenge abgerechnet wird, entscheidet darüber, ob die Kosten planbar sind oder mit der Nutzung mitwachsen",
+        "Schriftlich zu klären ist, ob eingegebene Inhalte zum Training verwendet werden, wie lange sie gespeichert und wo sie verarbeitet werden",
+        "Zur Kostenfrage gehört der Ausstieg: Export der eigenen Inhalte in gängigen Formaten, Löschnachweis und Übergangsfrist",
+        "Eine feste Budgetplanung erübrigt sich, wenn das Vorhaben agil gesteuert wird, weil das Team die Prioritäten laufend anpasst"
+      ],
+      "correct": [
+        0,
+        1,
+        2
+      ],
+      "exp": "Die Abrechnungsart ist die erste Weichenstellung: Ein Platzpreis ist planbar, eine Mengenabrechnung wächst mit dem Erfolg — und ebenso mit unbedachter oder missbräuchlicher Nutzung. Was mit den eingegebenen Inhalten geschieht, ist keine Nebenabrede, sondern entscheidet über Zulässigkeit und Geheimnisschutz; mündliche Zusagen helfen im Streitfall nicht. Der Ausstieg gehört ebenfalls in die Kostenrechnung, weil eine Bindung, aus der man nicht herauskommt, später jeden Preis akzeptabel erscheinen lässt. Dass agile Steuerung die Budgetplanung ersetzt, ist ein verbreiteter Irrtum: Agil betrifft die Reihenfolge der Arbeit, nicht die Frage, wie viel Geld und welche Kapazitäten überhaupt zur Verfügung stehen.",
+      "src": "Hand-Out Tag 11 · Lizenz- und Kostenmodelle"
+    },
+    {
+      "sc": "Ein wichtiger Ablauf im Unternehmen setzt vollständig auf ein einzelnes fremdes Modell.",
+      "q": "Welche Aussage(n) zum Verfügbarkeitsrisiko ist oder sind korrekt?",
+      "opts": [
+        "Es besteht keine Verpflichtung eines Anbieters, ein Modell dauerhaft weiter anzubieten — Abkündigungen sind eine reale Möglichkeit",
+        "Verfügbarkeit ist eine eigene Risikoart und wird von der technischen Prüfung des Modells nicht miterfasst",
+        "Das Risiko ist durch eine vertragliche Zusicherung vollständig ausgeschlossen, weil Verträge einklagbar sind",
+        "Verfügbarkeitsfragen betreffen allein den späteren Betrieb und spielen bei der Werkzeugauswahl noch keine Rolle"
+      ],
+      "correct": [
+        0,
+        1
+      ],
+      "exp": "Modelle werden abgekündigt, Anbieter ändern ihre Bedingungen, und im Extremfall greift eine Behörde ein — nichts davon verhindert eine noch so gute technische Prüfung, weil sie die Eigenschaften des Modells misst und nicht die Absichten des Anbieters. Deshalb ist Verfügbarkeit als eigene Achse zu führen. Eine vertragliche Zusicherung verschiebt allenfalls das wirtschaftliche Risiko, sie stellt den Betrieb aber nicht wieder her: Schadenersatz ersetzt keinen laufenden Prozess. Und die Frage gehört an den Anfang, nicht ans Ende — wer erst im Betrieb über Ausweichmöglichkeiten nachdenkt, hat die Abhängigkeit längst gebaut.",
+      "src": "Hand-Out Tag 11 · Verfügbarkeit als eigene Risikoart"
+    },
+    {
+      "sc": "Für ein Vorhaben wird das Budget aufgestellt. Vorgesehen sind Lizenzkosten und ein Anteil für externe Beratung.",
+      "q": "Welche Aussage zu dieser Planung ist korrekt?",
+      "opts": [
+        "Die Planung ist unvollständig, solange Beschaffung, Qualität und Aufbereitung der benötigten Daten nicht als eigene Ressource ausgewiesen sind",
+        "Die Planung ist vollständig, weil Lizenzen und externe Leistungen die beiden wesentlichen Kostenblöcke abdecken",
+        "Datenaufbereitung ist keine Budgetposition, weil sie von den Fachbereichen im laufenden Betrieb miterledigt wird",
+        "Rechenkapazität und Betriebskosten je Vorgang müssen nicht geplant werden, solange ein fertiges Werkzeug beschafft wird"
+      ],
+      "correct": [
+        0
+      ],
+      "exp": "Daten sind bei KI-Vorhaben die kritische Ressource — ihre Verfügbarkeit, ihre Qualität und vor allem der Aufwand für ihre Aufbereitung. Wer diese Position nicht ausweist, plant den größten und unsichersten Block nicht ein. Lizenzen und Beratung sind sichtbar und werden deshalb zuverlässig budgetiert; gerade das macht sie zur trügerischen Vollständigkeit. Die Annahme, Datenarbeit laufe im Tagesgeschäft mit, führt regelmäßig dazu, dass Fachleute ohne Entlastung zusätzlich belastet werden und das Vorhaben an Kapazität scheitert, nicht an Technik. Und auch bei einem fertig beschafften Werkzeug fallen Betriebskosten je Vorgang an — bei mengenabhängiger Abrechnung sind sie der Posten, der mit der Nutzung steigt.",
+      "src": "Hand-Out Tag 11 · Lizenz- und Kostenmodelle · Tag 5, Business Case"
+    }
+  ]
+}
+
+var APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyPs358GF_E1xsvTh08PpTpZcBDS1OvsU9XQ0qi0MkZoCCnAk4dyo3Aii0OYxILdvCRYA/exec';
+var selectedRole = null, questions = [], userAnswers = [];
+var participantName = '';
+var ROLE_LABELS = {"a": "KI-Manager:in · Freigabeentscheidung", "b": "Beschaffung & Werkzeugauswahl"};
+
+function selectRole(r) {
+  selectedRole = r;
+  document.getElementById('btn-role-a').className = 'sel-btn' + (r==='a' ? ' active-a' : '');
+  document.getElementById('btn-role-b').className = 'sel-btn' + (r==='b' ? ' active-b' : '');
+  checkReady();
+}
+function checkReady() {
+  document.getElementById('btn-start').disabled = !selectedRole;
+}
+
+function shuffle(arr) {
+  var a = arr.slice(), i = a.length, j, t;
+  while (i--) { j = Math.floor(Math.random()*(i+1)); t=a[i]; a[i]=a[j]; a[j]=t; }
+  return a;
+}
+
+function startQuiz() {
+  var pool = QBANK[selectedRole] || [];
+  questions = pool.map(function(q) {
+    var indices = q.opts.map(function(_,i){return i;});
+    var shuffled = shuffle(indices);
+    var newOpts = shuffled.map(function(i){return q.opts[i];});
+    var newCorrect = q.correct.map(function(c){return shuffled.indexOf(c);});
+    return {q: q.q, sc: q.sc||'', opts: newOpts, correct: newCorrect, exp: q.exp, src: q.src||''};
+  });
+  userAnswers = questions.map(function(){return [];});
+
+  document.getElementById('setup-section').style.display = 'none';
+  document.getElementById('quiz-section').style.display = 'block';
+
+  var name = document.getElementById('participant-name').value.trim() || 'Anonym';
+  participantName = name;
+  var strip = document.getElementById('quiz-header-strip');
+  strip.innerHTML =
+    '<span class="strip-tag strip-role-' + selectedRole + '">' + ROLE_LABELS[selectedRole] + '</span>' +
+    '<span class="strip-name">' + name + '</span>';
+
+  renderQuestions();
+  updateProgress();
+}
+
+function renderQuestions() {
+  var container = document.getElementById('questions-container');
+  container.innerHTML = '';
+  var letters = ['A','B','C','D','E'];
+  questions.forEach(function(q, qi) {
+    var card = document.createElement('div');
+    card.className = 'q-card';
+    card.id = 'qcard-' + qi;
+    var html = '<div class="q-num">Frage ' + (qi+1) + ' von ' + questions.length + '</div>';
+    if (q.sc) html += '<div class="q-sc">' + q.sc + '</div>';
+    html += '<div class="q-text">' + q.q + '</div>';
+    html += '<div class="opt-list" id="opts-' + qi + '">';
+    q.opts.forEach(function(opt, oi) {
+      html += '<div class="opt" id="opt-' + qi + '-' + oi + '" onclick="toggleOpt(' + qi + ',' + oi + ')">' +
+        '<div class="opt-cb" id="cb-' + qi + '-' + oi + '"></div>' +
+        '<span class="opt-letter">' + letters[oi] + '.</span>' +
+        '<span class="opt-text">' + opt + '</span></div>';
+    });
+    html += '</div>';
+    card.innerHTML = html;
+    container.appendChild(card);
+  });
+}
+
+function toggleOpt(qi, oi) {
+  var idx = userAnswers[qi].indexOf(oi);
+  if (idx >= 0) {
+    userAnswers[qi].splice(idx, 1);
+    document.getElementById('opt-' + qi + '-' + oi).classList.remove('selected');
+    document.getElementById('cb-' + qi + '-' + oi).classList.remove('chk');
+  } else {
+    userAnswers[qi].push(oi);
+    document.getElementById('opt-' + qi + '-' + oi).classList.add('selected');
+    document.getElementById('cb-' + qi + '-' + oi).classList.add('chk');
+  }
+  updateSubmitBtn();
+  updateProgress();
+}
+
+function updateSubmitBtn() {
+  var answered = userAnswers.filter(function(a){return a.length>0;}).length;
+  document.getElementById('btn-submit').disabled = answered < questions.length;
+}
+
+function updateProgress() {
+  var answered = userAnswers.filter(function(a){return a.length>0;}).length;
+  var pct = questions.length ? (answered/questions.length*100) : 0;
+  document.getElementById('progress-fill').style.width = pct + '%';
+  document.getElementById('progress-label').textContent = answered + ' von ' + questions.length + ' Fragen beantwortet';
+}
+
+function submitQuiz() {
+  document.getElementById('quiz-section').style.display = 'none';
+  document.getElementById('results-section').style.display = 'block';
+
+  var score = 0;
+  questions.forEach(function(q, qi) {
+    var ua = userAnswers[qi].slice().sort();
+    var ca = q.correct.slice().sort();
+    if (JSON.stringify(ua) === JSON.stringify(ca)) score++;
+  });
+
+  var pct = Math.round(score/questions.length*100);
+  var grade, label;
+  if (pct >= 90) { grade = 'A'; label = 'Ausgezeichnet'; }
+  else if (pct >= 75) { grade = 'B'; label = 'Sehr gut'; }
+  else if (pct >= 60) { grade = 'C'; label = 'Gut'; }
+  else if (pct >= 45) { grade = 'D'; label = 'Befriedigend'; }
+  else { grade = 'E'; label = 'Wiederholen empfohlen'; }
+
+  document.getElementById('result-grade').textContent = grade;
+  document.getElementById('result-label').textContent = label + ' — ' + pct + ' %';
+  document.getElementById('result-sub').textContent = score + ' von ' + questions.length + ' Fragen vollständig richtig';
+
+  document.getElementById('stats-row').innerHTML =
+    '<div class="stat"><div class="stat-n">' + score + '</div><div class="stat-l">Richtig</div></div>' +
+    '<div class="stat"><div class="stat-n">' + (questions.length-score) + '</div><div class="stat-l">Falsch</div></div>' +
+    '<div class="stat"><div class="stat-n">' + pct + ' %</div><div class="stat-l">Trefferquote</div></div>';
+
+  document.getElementById('comp-bars').innerHTML =
+    '<div class="comp-row"><div class="comp-labels"><span>Richtig</span><span>' + score + '/' + questions.length + '</span></div>' +
+    '<div class="comp-track"><div class="comp-fill fill-ok" style="width:' + pct + '%"></div></div></div>' +
+    '<div class="comp-row"><div class="comp-labels"><span>Verbesserungspotenzial</span><span>' + (questions.length-score) + '/' + questions.length + '</span></div>' +
+    '<div class="comp-track"><div class="comp-fill fill-wrong" style="width:' + (100-pct) + '%"></div></div></div>';
+
+  var letters = ['A','B','C','D','E'];
+  var rev = document.getElementById('review-container');
+  rev.innerHTML = '';
+  questions.forEach(function(q, qi) {
+    var ua = userAnswers[qi].slice().sort();
+    var ca = q.correct.slice().sort();
+    var isOk = JSON.stringify(ua) === JSON.stringify(ca);
+    var card = document.createElement('div');
+    card.className = 'q-card';
+    var html = '<div class="q-num">Frage ' + (qi+1) + '</div>';
+    if (q.sc) html += '<div class="q-sc">' + q.sc + '</div>';
+    html += '<div class="q-text">' + q.q + '</div>';
+    html += '<div class="opt-list" style="margin-top:.7rem">';
+    q.opts.forEach(function(opt, oi) {
+      var sel = ua.indexOf(oi) >= 0;
+      var cor = ca.indexOf(oi) >= 0;
+      var cls = 'opt disabled ';
+      if (sel && cor) cls += 'correct-sel';
+      else if (sel && !cor) cls += 'wrong-sel';
+      else if (!sel && cor) cls += 'missed';
+      var cbCls = 'opt-cb';
+      html += '<div class="' + cls + '"><div class="' + cbCls + '"></div>' +
+        '<span class="opt-letter">' + letters[oi] + '.</span><span class="opt-text">' + opt + '</span></div>';
+    });
+    html += '</div>';
+    if (q.exp) {
+      html += '<div class="feedback ' + (isOk ? 'fb-ok' : 'fb-wrong') + '">';
+      html += '<div class="fb-title">' + (isOk ? '✓ Richtig' : '✗ Nicht vollständig richtig') + '</div>';
+      html += '<div class="fb-text">' + q.exp + '</div>';
+      if (q.src) html += '<div class="fb-source">Quelle: ' + linkify(q.src) + '</div>';
+      html += '</div>';
+    }
+    card.innerHTML = html;
+    rev.appendChild(card);
+  });
+
+  sendToSheets(score, questions.length - score);
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+
+function linkify(src) {
+  return src.split(' · ').map(function(part) {
+    var t = part.trim();
+    if (!/\s/.test(t) && /\.[a-zA-Z]{2,}/.test(t) && t.length > 4) {
+      var href = /^https?:\/\//i.test(t) ? t : 'https://' + t;
+      return '<a href="' + href + '" target="_blank">' + t + '</a>';
+    }
+    return part;
+  }).join(' · ');
+}
+function sendToSheets(correct, wrong) {
+  if (!APPS_SCRIPT_URL) return;
+  var TAG_NR = 10;
+  var THEMA  = "Monitoring, iterative Optimierung & KI-Agenten";
+  var letters = ['A','B','C','D','E'];
+  var stufe = ROLE_LABELS[selectedRole] || selectedRole;
+
+  var status = document.getElementById('submit-status');
+  if (status) {
+    status.className = 'submit-status sending';
+    status.style.display = 'block';
+    status.textContent = 'Ergebnis wird übermittelt...';
+  }
+
+  var toSend = [];
+  questions.forEach(function(q, i) {
+    var selIndices  = userAnswers[i].slice().sort();
+    var corrIndices = q.correct.slice().sort();
+    var isFull      = selIndices.join(',') === corrIndices.join(',');
+    var gewaehlt    = selIndices.map(function(idx) { return letters[idx]; }).join(',') || '-';
+    var korrekt     = corrIndices.map(function(idx) { return letters[idx]; }).join(',');
+    var ergebnis    = isFull ? 'RICHTIG' : 'FALSCH';
+
+    toSend.push(
+      APPS_SCRIPT_URL
+      + '?tab='        + encodeURIComponent('KI-Manager')
+      + '&teilnehmer=' + encodeURIComponent(participantName)
+      + '&tag='        + TAG_NR
+      + '&thema='      + encodeURIComponent(THEMA)
+      + '&stufe='      + encodeURIComponent(stufe)
+      + '&frage_nr='   + (i + 1)
+      + '&frage_text=' + encodeURIComponent(q.q.substring(0, 80))
+      + '&gewaehlt='   + encodeURIComponent(gewaehlt)
+      + '&korrekt='    + encodeURIComponent(korrekt)
+      + '&ergebnis='   + encodeURIComponent(ergebnis)
+    );
+  });
+
+  toSend.forEach(function(url, i) {
+    setTimeout(function() {
+      fetch(url, { mode: 'no-cors' }).catch(function() {});
+    }, i * 300);
+  });
+  if (status) {
+    setTimeout(function() {
+      status.className = 'submit-status success';
+      status.textContent = '✓ ' + toSend.length + ' Antworten übermittelt ('
+        + new Date().toLocaleTimeString('de-DE') + ')';
+    }, toSend.length * 300 + 500);
+  }
+}
+</script>
+
+</body>
+</html>
