@@ -1,51 +1,60 @@
-# Projektarbeit im Rahmen der Fortbildung zur KI-Beauftragten
+# Projektarbeit im Rahmen der Fortbildung zur KI-Manager:in
 > ⚠️ Disclaimer — bitte verwendet in der Projektarbeit keine echten Namen von Unternehmen oder Personen. Eure eigene Branche und euer eigenes Arbeitsumfeld dürft und sollt ihr aber beschreiben.
 
 ---
 
 ## Ausgangslage
 
-Euer Unternehmen, dessen KI-Manager:in Ihr seid, hat seinen wichtigsten Wettbewerber auf dem europäischen Markt übernommen. Durch die Akquisition soll die Marktpräsenz in einigen interessanten Segmenten gestärkt und die Kapitalbasis für größere Investitionen in Innovationen und Produktentwicklungen gelegt warden.
+Euer Unternehmen — rund **2.400 Mitarbeitende**, Sitz in Deutschland, europaweit tätig — hat seinen wichtigsten Wettbewerber übernommen: rund **1.600 Mitarbeitende** mit Schwerpunkt in Südeuropa. Durch die Übernahme soll die Marktpräsenz in einigen interessanten Segmenten gestärkt und die Kapitalbasis für größere Investitionen in Innovation und Produktentwicklung gelegt werden. Die Branche wählt ihr selbst — beschreibt sie in zwei Sätzen.
 
-Du bist gebeten, aus Sicht des KI-Managements einen Integrationsplan zu entwickeln. Der Vorstand möchte "das Beste aus beiden Welten" in der Integration (Motto. "1 + 1 > 2") erzielen.  
+Ihr seid die KI-Manager:innen des übernehmenden Hauses und sollt einen Integrationsplan aus Sicht des KI-Managements entwickeln. Der Vorstand möchte **„das Beste aus beiden Welten“** — Motto: *1 + 1 > 2* — und erwartet den Plan binnen zwölf Monaten in der Umsetzung.
+
+Die Ausgangslage ist unbequem, weil sie unsymmetrisch ist:
+
+- **Euer Haus** hat eine funktionierende KI-Governance — Inventar, Freigabewege, benannte Verantwortliche —, aber nur wenige Anwendungen im Produktivbetrieb.
+- **Das übernommene Haus** ist beim Einsatz deutlich weiter: mehrere KI-Anwendungen laufen und werden geschätzt. Eine Governance dafür gibt es nicht, ein Inventar ebenso wenig. Die dortigen Fachbereiche haben ihre Werkzeuge selbst beschafft.
+- Beide Häuser haben **laufende Verträge mit unterschiedlichen Anbietern**, teils für dieselbe Aufgabe.
 
 ---
 
 ## Aufgabe
 
-### Teil A*
+### Teil A — Reifegrad, Lücke und Zielbild *(ca. 2 Seiten)*
 
-Recherchiert, wie KI in eurer Branche gerade eingesetzt wird oder in den nächsten zwei bis drei Jahren eingesetzt werden wird.
-
-- Welche **drei bis fünf KI-Anwendungen** sind in eurer Branche besonders relevant — als laufende Praxis oder als absehbarer Trend?
-- Wer sind die **Vorreiter** — Unternehmen oder Institutionen, die ihr (anonymisiert) benennen könnt?
-- Welche **Risiken** sind in eurem Sektor besonders ausgeprägt — regulatorisch, ethisch oder operativ? Und warum gerade dort?
-
-*Hinweis:* Wenn eine KI euch eine allgemeine Liste generiert, ist das ein Anfang — kein Ergebnis. Eure Aufgabe ist es, diese Liste auf das zu reduzieren, was in eurer konkreten Branche wirklich zutrifft, und das zu begründen.
+- Wie ermittelt ihr den **KI-Reifegrad** der beiden Organisationen? Welches Vorgehen wählt ihr, wen bezieht ihr ein, und woran erkennt ihr Reife überhaupt?
+- Führt daraus eine **Lückenanalyse**: Was fehlt jeweils, um den Zielzustand zu erreichen?
+- Was **ist** dieser Zielzustand? Wie habt ihr ihn ermittelt — und womit begründet ihr ihn wirtschaftlich gegenüber dem Vorstand?
+- Ein Hinweis zur Ehrlichkeit der Analyse: Das übernommene Haus ist im Einsatz weiter, in der Steuerung zurück. Ein Reifegradmodell, das nur eine der beiden Achsen misst, führt hier zu einem falschen Ergebnis.
 
 ---
 
-### Teil B — Mein Use Case *(ca. 2 Seiten)*
+### Teil B — Ein Anwendungsfall aus beiden Häusern *(ca. 2 Seiten)*
 
-Beschreibt einen konkreten KI-Anwendungsfall aus eurem eigenen Arbeitsumfeld — einen, der bereits läuft, geplant ist oder eurer Meinung nach sinnvoll wäre.
+Wählt **einen Anwendungsfall, den es in beiden Häusern gibt** — oder geben müsste. Typische Kandidaten: Angebotserstellung, Dokumentenprüfung, Kundenkommunikation, Bedarfsprognose.
 
-Nutzt dafür den **Steckbrief-Rahmen** aus dem Kurs:
+Arbeitet ihn im **Steckbrief-Rahmen** aus dem Kurs für den **Zielzustand nach der Integration** durch:
 
 | Aspekt | Eure Einschätzung |
 |---|---|
 | Was ist der Anwendungsfall? | |
-| Welche Daten werden genutzt? | |
-| Welche Risikoklasse nach EU AI Act? | |
+| Welche Daten werden genutzt — und dürfen sie über Ländergrenzen hinweg zusammengeführt werden? | |
+| Welche Risikoklasse nach EU-KI-Verordnung? | |
 | Welche Stakeholder sind betroffen? | |
 | Was ist die größte technische Hürde? | |
 | Was ist die größte organisatorische Hürde? | |
-| Was würde "Erfolg" in 12 Monaten bedeuten? | |
+| Was würde „Erfolg“ in 12 Monaten bedeuten? | |
 
-*Hinweis:* Ihr müsst nicht für jedes Feld eine vollständige Antwort haben. Ein ehrliches "Das weiß ich noch nicht — und deshalb müsste ich als nächstes ..." ist wertvoller als eine KI-generierte Antwort, die ihr nicht vertreten könnt.
+Beantwortet zusätzlich die drei Fragen, die sich erst durch die Fusion stellen:
+
+- **Doppelte Werkzeuge.** Beide Häuser lösen die Aufgabe bereits, mit unterschiedlichen Werkzeugen. Welches behaltet ihr — und woran entscheidet ihr das? Was kostet die Abschaltung des anderen, auch jenseits der Lizenz?
+- **Laufende Verträge.** Wie geht ihr mit Bindungsfristen, Datenherausgabe und Löschnachweisen um?
+- **Betriebsmodell.** Zentral, dezentral oder föderiert — welches Modell tragt ihr nach der Fusion, und warum?
+
+*Hinweis:* Ihr müsst nicht für jedes Feld eine vollständige Antwort haben. Ein ehrliches „Das weiß ich noch nicht — und deshalb müsste ich als nächstes …“ ist wertvoller als eine KI-generierte Antwort, die ihr nicht vertreten könnt.
 
 ---
 
-### Teil C — Mein größtes Umdenken *(ca. 1 Seite)*
+### Teil C — Was der Kurs verändert hat *(ca. 1 Seite)*
 
 Dieser Teil ist persönlich und kann nicht delegiert werden.
 
@@ -63,10 +72,18 @@ Die Präsentation ist kein Vortrag — sie ist ein Gespräch. Plant Zeit für R�
 
 ### Extrapunkte
 
-- Für eine **Begründung, warum euer Use Case in eurer Branche anders bewertet werden muss** als in einer anderen Branche
+- Für eine **Begründung, warum euer Anwendungsfall in eurer Branche anders bewertet werden muss** als in einer anderen
+- Für einen Vorschlag, wie ihr mit dem **Wissen der übernommenen Kolleginnen und Kollegen** umgeht, ohne dass die Integration als Entwertung ihrer Arbeit ankommt
 - Für den Nachweis, **wo die KI bei der Recherche falsch lag** — und wie ihr das korrigiert habt
-- Für eine **konkrete erste Maßnahme**, die ihr nach dem Kurs in eurem Unternehmen anstößt
 
 ---
 
-*Letzte Aktualisierung: August 2026 — Ulrich Nord / Claudia (Anthropic)*
+## Hinweise
+
+Ihr seid frei in der Art der Darstellung. Euer Dokument sollte allerdings **nicht mehr als 5 Seiten** umfassen. Für die Präsentation habt ihr 10 Minuten Zeit.
+
+Ihr dürft KI für Recherche, Strukturierung und Formulierung nutzen. Das ist ausdrücklich erwünscht — aber achtet bitte darauf, bei Rückfragen zu einzelnen Punkten aussagefähig zu sein, nach dem Motto „Was habe ich mir dabei gedacht?“.
+
+---
+
+*Letzte Aktualisierung: August 2026 — Ulrich Nord / Claudia*

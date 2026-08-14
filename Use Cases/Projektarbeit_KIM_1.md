@@ -1,55 +1,59 @@
-# Projektarbeit im Rahmen der Fortbildung zur KI-Beauftragten
+# Projektarbeit im Rahmen der Fortbildung zur KI-Manager:in
 > ⚠️ Disclaimer — bitte verwendet in der Projektarbeit keine echten Namen von Unternehmen oder Personen. Eure eigene Branche und euer eigenes Arbeitsumfeld dürft und sollt ihr aber beschreiben.
 
 ---
 
 ## Ausgangslage
 
-Ihr seid eine Start-Up-Unternehmerin bzw- -Unternehmer, die ihre/seine Idee in einen Pitch für mögliche Investoren "verpacken" will. Euer Start-Up (Arbeitstitel: "Rundum-Sorglos") soll Reisenden eien Applikation anbieten, die:
+Ihr seid das Gründungsteam eines Start-ups und wollt eure Idee in einen Pitch für mögliche Investoren verpacken. Eure Anwendung (Arbeitstitel: **„Rundum-Sorglos“**) soll Reisenden folgendes bieten:
 
-- vage Reiseideen ("ich hätte Lust, mal Venedig zu sehen…") in eine erste Planung übersetzt. Wann wäre günstige Flüge verfügbar? Wann sind Schulferien oder fereinfrei Zeiten? Welche Unterkünfte (Hotel, Airbnb) sind besonders attraktiv (Preis - Leistung, Bewertung)
-- nach Bestätigung durch die Reisenden direct Buchungen auf den üblichen Reiseportalen vornehmen kann
-- für die Reise selbst eine Planung, angelehnt an die Interessen und Vorlieben der Reisenden vornimmt
-- Restaurants vor Ort vorschlägt und auf Bestätigung hin reserviert (ebenso wie Taxis oder Ubers)
-- als Sprachassistent Konversationen in der Landessprache übersetzen und führen kann  
+- Sie übersetzt vage Reiseideen („ich hätte Lust, mal Venedig zu sehen…“) in eine erste Planung: Wann sind Flüge günstig? Wann liegen Schulferien? Welche Unterkünfte überzeugen bei Preis, Leistung und Bewertung?
+- Nach Bestätigung durch die Reisenden nimmt sie **selbst Buchungen** auf den üblichen Reiseportalen vor.
+- Für die Reise erstellt sie eine Planung entlang der Interessen und Vorlieben der Reisenden.
+- Sie schlägt Restaurants vor Ort vor und **reserviert** auf Bestätigung — ebenso Taxis oder Fahrdienste.
+- Als Sprachassistent übersetzt sie Gespräche in der Landessprache und **führt sie selbst**.
+
+Ihr seid zu dritt, arbeitet seit vierzehn Monaten daran und sucht eine erste Finanzierungsrunde. Ein funktionsfähiger Prototyp der Planungsfunktion existiert; Buchung und Sprachassistent sind konzipiert, aber noch nicht gebaut.
 
 ---
 
 ## Aufgabe
 
-### Teil A - Technische Bewertung *(ca. 2 Seiten)*
+### Teil A — Technische und regulatorische Einordnung *(ca. 2 Seiten)*
 
-Gibt einen Überblick über die in der Applikation verfügbaren Features und welche KI-Technologie dabei zum Einsatz kommt. Erläutere, wie die dem Modell zu Grunde liegenden Daten erhoben, qualitätsgesichert und verarbeitet wurden. Wie soll die Leistung der Modelle überprüft warden? Welche "Trigger" bzw. welche "Service Level" willst Du mit den Kunden vereinbaren? 
+Gebt einen Überblick über die geplanten Funktionen und die KI-Technologie, die dabei jeweils zum Einsatz kommt.
+
+- **Bauen oder einkaufen?** Welche Fähigkeiten baut ihr selbst, welche kauft ihr ein? Was bedeutet die Antwort für eure Abhängigkeit von einzelnen Anbietern — und für die Frage, wem die Daten gehören?
+- **Datengrundlage.** Woher stammen die Daten, auf denen die Anwendung arbeitet? Wie werden sie erhoben, qualitätsgesichert und verarbeitet? Wo endet eure Verantwortung und wo beginnt die des zugekauften Modells?
+- **Leistungsmessung.** Woran messt ihr im Betrieb, ob die Anwendung gut arbeitet? Welche Auslöser führen zu welcher Reaktion? Welche Zusagen (Service Level) gebt ihr euren Kundinnen und Kunden?
+- **Handlungsspielraum und Freigabe.** Eure Anwendung liest nicht nur — sie **handelt**: Sie bucht, reserviert und bestellt. Ordnet die Funktionen nach zwei getrennten Achsen ein: Was darf die Anwendung tun, und wie eigenständig entscheidet sie dabei? Wo zieht ihr die Trennlinie zwischen „selbst ausführen“ und „nur vorbereiten“? Maßstab ist die **Umkehrbarkeit**, nicht die Wichtigkeit.
+- **Transparenz.** Der Sprachassistent führt Gespräche mit Menschen, die nicht eure Kundschaft sind — Hotelpersonal, Restaurants, Fahrdienste. Was folgt daraus für die Kennzeichnung gegenüber diesen Gesprächspartnern?
 
 ---
 
-### Teil B — Business Case *(ca. 2 Seiten)*
+### Teil B — Eine Funktion im Steckbrief *(ca. 2 Seiten)*
 
-Beschreibt einen konkreten KI-Anwendungsfall aus eurem eigenen Arbeitsumfeld — einen, der bereits läuft, geplant ist oder eurer Meinung nach sinnvoll wäre.
-
-Nutzt dafür den **Steckbrief-Rahmen** aus dem Kurs:
+Wählt **eine Funktion mit Außenwirkung** — Buchung, Reservierung oder Sprachassistent — und arbeitet sie im Detail durch:
 
 | Aspekt | Eure Einschätzung |
 |---|---|
-| Was ist der Anwendungsfall? | |
-| Welche Daten werden genutzt? | |
-| Welche Risikoklasse nach EU AI Act? | |
-| Welche Stakeholder sind betroffen? | |
+| Welche Funktion, und was genau tut sie? | |
+| Welche Daten werden dafür genutzt? | |
+| Welche Risikoklasse nach EU-KI-Verordnung? | |
+| Welche Stakeholder sind betroffen — auch außerhalb eurer Kundschaft? | |
 | Was ist die größte technische Hürde? | |
-| Was ist die größte organisatorische Hürde? | |
-| Was würde "Erfolg" in 12 Monaten bedeuten? | |
+| Was ist die größte organisatorische oder rechtliche Hürde? | |
+| Was würde „Erfolg“ in 12 Monaten bedeuten? | |
 
-*Hinweis:* Ihr müsst nicht für jedes Feld eine vollständige Antwort haben. Ein ehrliches "Das weiß ich noch nicht — und deshalb müsste ich als nächstes ..." ist wertvoller als eine KI-generierte Antwort, die ihr nicht vertreten könnt.
+*Alternative:* Wenn ihr lieber einen Anwendungsfall aus **eurem eigenen Arbeitsumfeld** durcharbeiten wollt — laufend, geplant oder aus eurer Sicht sinnvoll —, ist das ausdrücklich zulässig. Begründet dann kurz, warum ihr euch dafür entschieden habt.
 
 ---
 
-### Teil C — Rendite *(ca. 1 Seite)*
+### Teil C — Beteiligung und Rendite *(ca. 1 Seite)*
 
-Welche Beteiligung in welcher Höhe erwartest Du von den Investoren?
-
-- Welche Beteiligung durch die Investoren in welcher Höhe strebst Du an?
-- Was sind Deine Renditeerwartungen (z.B. RoI)? Wie viel davon würdest Du an die Investoren ausschüten, wie viel re-investieren?
-- Wie sieht der "Exit" für die Investoren aus?
+- Welche Beteiligung durch die Investoren strebt ihr an, in welcher Höhe?
+- Was sind eure Renditeerwartungen? Wie viel davon würdet ihr ausschütten, wie viel reinvestieren?
+- Wie sieht der Ausstieg für die Investoren aus?
 
 ---
 
@@ -61,10 +65,18 @@ Die Präsentation ist kein Vortrag — sie ist ein Gespräch. Plant Zeit für R�
 
 ### Extrapunkte
 
-- Für eine **Liste möglicher weiterer Features** um die die Applikation erweitert warden könnte
+- Für eine **Liste möglicher weiterer Funktionen**, um die die Anwendung erweitert werden könnte
+- Für eine begründete Antwort auf die Frage, **was passiert, wenn eine Buchung schiefgeht** — wer haftet, wie erfährt die Kundschaft davon, wie wird zurückgerollt
 - Für den Nachweis, **wo die KI bei der Recherche falsch lag** — und wie ihr das korrigiert habt
-- Für eine **konkrete erste Maßnahme**, die ihr nach dem Kurs in eurem Unternehmen anstößt
 
 ---
 
-*Letzte Aktualisierung: August 2026 — Ulrich Nord / Claudia (Anthropic)*
+## Hinweise
+
+Ihr seid frei in der Art der Darstellung. Euer Dokument sollte allerdings **nicht mehr als 5 Seiten** umfassen. Für die Präsentation habt ihr 10 Minuten Zeit.
+
+Ihr dürft KI für Recherche, Strukturierung und Formulierung nutzen. Das ist ausdrücklich erwünscht — aber achtet bitte darauf, bei Rückfragen zu einzelnen Punkten aussagefähig zu sein, nach dem Motto „Was habe ich mir dabei gedacht?“.
+
+---
+
+*Letzte Aktualisierung: August 2026 — Ulrich Nord / Claudia*
