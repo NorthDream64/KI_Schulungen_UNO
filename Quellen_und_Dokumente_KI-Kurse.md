@@ -118,6 +118,30 @@
 | https://www.fiddler.ai/ml-model-monitoring | Fiddler AI — ML Model Monitoring (Produktseite) | Herstellerangabe | Überblick für das Beschaffungsgespräch |
 | https://github.com/whylabs/whylabs-oss | WhyLabs — Quelltext auf GitHub | Werkzeug (Open Source) | Unternehmen aufgelöst, Quelltext offen verfügbar; **Beispiel dafür, dass Werkzeugentscheidungen ein Fortbestandsrisiko haben** |
 
+**Iterative Optimierung — Continuous Training — KVP**
+> Warum der kontinuierliche Verbesserungsprozess bei KI-Systemen anders läuft als in der klassischen IT, und was jenseits von „muss man machen“ belegt ist. Grundlage für KIM Tag 10 (Betriebsperspektive); Abgrenzung zu KIM Tag 12 (Normperspektive, ISO/IEC 42001 Kapitel 10).
+
+| URL | Name | Typ | Schlagwörter |
+|-----|------|-----|--------------|
+| https://papers.neurips.cc/paper/5656-hidden-technical-debt-in-machine-learning-systems.pdf | Sculley, D. et al. — Hidden Technical Debt in Machine Learning Systems (NeurIPS 2015) | Primärquelle (peer-reviewed) | **CACE-Prinzip „Changing Anything Changes Everything“**; Entanglement; verdeckte Rückkopplungsschleifen; unangemeldete Abnehmer; Datenabhängigkeiten; Anti-Muster; theoretische Begründung, warum es beim Nachtrainieren keine kleine Änderung gibt |
+| https://www.microsoft.com/en-us/research/publication/software-engineering-for-machine-learning-a-case-study/ | Amershi, S. et al. — Software Engineering for Machine Learning: A Case Study (ICSE 2019, Best Paper) | Primärquelle (peer-reviewed) | Feldstudie in Microsoft-Entwicklungsteams; neunstufiger Arbeitsablauf, eingehängt in vorhandene agile Prozesse; drei Unterschiede zur klassischen Entwicklung: Datenverwaltung komplexer, zwei Kompetenzsätze nötig, „models can be more entangled than software modules“; empirische Stütze für CACE |
+| https://www.pnas.org/doi/10.1073/pnas.1611835114 | Kirkpatrick, J. et al. — Overcoming catastrophic forgetting in neural networks (PNAS 114/13, 2017) | Primärquelle (peer-reviewed) | katastrophales Vergessen; **Stabilitäts-Plastizitäts-Dilemma** (Anpassungsfähigkeit gegen Gedächtnis); Elastic Weight Consolidation; Gegenmaßnahmen: Regularisierung, Wiedervorlage alter Beispiele, Architekturtrennung; Laienbild „ein Modell hat kein Notizbuch“ |
+| https://arxiv.org/abs/2510.27051 | Shukla, A. et al. — Adaptive Data Flywheel: Applying MAPE Control Loops to AI Agent Improvement (arXiv:2510.27051, Okt. 2025) | Vorabveröffentlichung (Herstellerautoren) | **MAPE-Regelkreis** (Monitor/Analyze/Plan/Execute) auf KI-Agenten angewendet; Fallzahlen NVInfo AI, >30.000 Nutzende, 3 Monate, 495 negative Rückmeldungen; zwei Fehlerarten (Routing 5,25 %, Rephrasal 3,2 %); 70-Mrd.- durch feinjustiertes 8-Mrd.-Modell ersetzt → 96 % Trefferquote, 10× kleiner, 70 % weniger Latenz; **Kernargument: Optimierung senkt Betriebskosten, nicht nur Fehlerquoten**; Rückmeldung ist knapp; ⚠️ kein Peer-Review, NVIDIA-Autoren, Selbstauskunft |
+| https://developers.google.com/machine-learning/rules-of-ml/ | Zinkevich, M. — Rules of Machine Learning: Best Practices for ML Engineering (Google) | Technische Dokumentation | 43 Regeln; **Regel 16 „Plan to launch and iterate“** (Dauerbetrieb als Budget- und Personalaussage); Regel 1 (erst ohne ML starten), Regel 2 (Metrikdesign zuerst), Regel 4 (erstes Modell einfach, Infrastruktur richtig) |
+| https://www.evidentlyai.com/blog/retrain-or-not-retrain | Evidently AI — To retrain, or not to retrain? | Herstellerangabe | **Gegenposition zum Automatismus Drift → Retraining**: erst Datenqualität prüfen, Messmenge ≠ Trainingsmenge, saisonale Effekte laufen aus, Alternativen (Regelwerk, anderes Modell, manuell); ⚠️ Anbieterangabe — wiegt hier schwerer, weil gegen das eigene Geschäftsinteresse argumentiert |
+| https://learn.evidentlyai.com/ml-observability-course/module-4-designing-effective-ml-monitoring/when-to-retrain-ml-models | Evidently AI — ML Observability Course, Modul 4.3: When to retrain ML models | Lehrmaterial (Anbieter) | optimale statt maximale Retraining-Frequenz; Auslöserlogik; frei zugänglicher Kurs, didaktisch aufbereitet |
+| https://build.nvidia.com/nvidia/build-an-enterprise-data-flywheel/blueprintcard | NVIDIA — Blueprint „Enterprise Data Flywheel“ | Herstellerangabe | Referenzarchitektur des Datenkreislaufs; Protokollerfassung, Kuratierung, Experimentierläufe, Destillation auf kleinere Modelle; ⚠️ Werbematerial, als Architekturbild nutzbar |
+
+**Beratungsperspektive — Aufwandsverteilung und Skalierung**
+> Tier 3 durchgängig: Beratungshäuser mit Geschäftsinteresse, Erfahrungsregeln ohne offengelegte Methodik, Befragungsdaten als Selbstauskunft. Im Kurs als Merkzahl und Diskussionsanstoß verwendbar, **nicht als Beleg**. Der Wert liegt darin, dass zwei unabhängige Häuser in dieselbe Richtung zeigen.
+
+| URL | Name | Typ | Schlagwörter |
+|-----|------|-----|--------------|
+| https://www.bcg.com/publications/2025/closing-the-ai-impact-gap | BCG — From Potential to Profit: Closing the AI Impact Gap | Beratungsveröffentlichung | **10-20-70-Regel**: 10 % Algorithmen, 20 % Daten und Technik, 70 % Menschen, Prozesse, Kultur; Skalierung von GenAI; Prozessumbau vor Werkzeugeinführung |
+| https://www.bcg.com/publications/2026/five-barriers-ceos-must-overcome-for-ai-impact | BCG — Five Barriers CEOs Must Overcome for AI Impact (2026) | Beratungsveröffentlichung | Bestätigung der 10-20-70-Aufteilung in neuerer Veröffentlichung; Hindernisse auf Vorstandsebene |
+| https://www.mckinsey.com/capabilities/quantumblack/our-insights/the-state-of-ai | McKinsey — The state of AI | Beratungsbefragung | Spitzenreiter rund **3× häufiger mit grundlegend neu zugeschnittenen Arbeitsabläufen**; **<10 % der agentischen Vorhaben** erreichen nennenswerte Skalierung (Silobildung, keine Wiederverwendung); Zielsetzung an Geschäftskennzahlen statt an Werkzeugeinführung |
+| https://microsoft.ai/news/building-a-hillclimbing-machine-launching-seven-new-mai-models/ | Suleyman, M. — Building a hill-climbing machine (Microsoft AI, Juni 2026) | Herstellerangabe | Continuous Training als **organisatorische** Fähigkeit statt als Pipeline: saubere Daten, gemeinsame Evaluationen, Post-Training, kundenspezifisches Tuning; Frontier Tuning / Reinforcement-Learning-Umgebungen innerhalb der eigenen Compliance-Grenze; ⚠️ genannte Leistungssprünge sind unbelegte Herstellerangaben — als Diskussionsimpuls, nicht als Nachweis |
+
 ### 2.5 Microsoft 365 & Copilot
 | URL | Name | Typ | Schlagwörter |
 |-----|------|-----|--------------|
@@ -161,7 +185,7 @@
 | URL | Name | Typ | Schlagwörter |
 |-----|------|-----|--------------|
 | https://hbr.org/topic/subject/change-management | Harvard Business Review (HBR) | Fachmedium | Change Management, Kotter, Widerstände, Transformation |
-| https://www.mckinsey.com/capabilities/quantumblack/our-insights/the-state-of-ai | McKinsey — State of AI | Studie | Adoption, Change, ROI, Implementierung |
+| https://www.mckinsey.com/capabilities/quantumblack/our-insights/the-state-of-ai | McKinsey — The state of AI | Beratungsbefragung | Adoption, Change, ROI, Implementierung; **ausführliche Einordnung mit Kennzahlen und Tier-Vorbehalt in Abschnitt 2.4** (Beratungsperspektive) |
 
 ### 4.2 KI-Strategie & Roadmaps
 | URL | Name | Typ | Schlagwörter |
