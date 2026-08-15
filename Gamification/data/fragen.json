@@ -2705,6 +2705,74 @@
           }
         ]
       }
+    },
+    {
+      "id": "L7-07",
+      "schwierigkeit": 3,
+      "paket": 7,
+      "absender": "CTO",
+      "kanal": "E-Mail",
+      "szenario": "Der CTO schreibt Dir: „Ich lese in Fachpresse und LinkedIn ständig zwei Kürzel — „RLHF“ und „RLVR“. Angeblich ist RLHF der Grund, warum ChatGPT so „nett“ antwortet, und RLVR der Grund, warum die neue Generation (OpenAI o1, DeepSeek-R1) plötzlich so gut in Mathematik und Code ist. Was ist da dran?“",
+      "frage": "Welche Aussagen sind zutreffend? (Mehrfachauswahl)",
+      "optionen": [
+        {
+          "id": "a",
+          "text": "RLHF (Reinforcement Learning from Human Feedback) trainiert ein Modell an menschlichen Präferenzen: Menschen bewerten paarweise, welche von zwei Antworten besser ist; daraus wird ein Belohnungs-Modell gelernt, das dann per Reinforcement Learning die Modell-Ausgaben steuert. Kern-Anwendung: Ausrichtung auf höfliches, hilfreiches, sicheres Verhalten. Prominent durch InstructGPT/ChatGPT (OpenAI, 2022)."
+        },
+        {
+          "id": "b",
+          "text": "RLVR (Reinforcement Learning from Verifiable Rewards) ersetzt die menschliche Präferenz durch automatisch prüfbare Belohnungen: mathematischer Beweis stimmt (ja/nein), Code kompiliert und läuft (ja/nein), Testfall geht durch (ja/nein). Das erlaubt Training in gigantischem Maßstab ohne menschliche Bewerter. Kernanwendung: Reasoning-Modelle wie OpenAI o1, DeepSeek-R1, Kimi k1.5."
+        },
+        {
+          "id": "c",
+          "text": "RLHF und RLVR schließen sich aus — ein Modell kann nur mit einer der beiden Methoden trainiert werden."
+        },
+        {
+          "id": "d",
+          "text": "Für Executive-Entscheidungen wichtig: RLHF-getriebene Modelle sind meist sicherer im Umgang mit Nutzer:innen (Höflichkeit, Vermeidung problematischer Inhalte), RLVR-getriebene Modelle sind meist stärker in objektiv prüfbaren Aufgaben (Mathematik, Code, Logik). In der Praxis kombinieren Anbieter beide Verfahren in mehrstufigen Trainings-Pipelines."
+        }
+      ],
+      "korrekt": [
+        "a",
+        "b",
+        "d"
+      ],
+      "feedback_richtig": "Genau. Die beiden Techniken beantworten zwei unterschiedliche Fragen: Wie bringen wir dem Modell Umgangsformen bei (RLHF)? Und wie bringen wir ihm bei, in prüfbaren Domänen wirklich zu denken (RLVR)? DeepSeek-R1 wurde 2025 in Nature publiziert und hat den Durchbruch dokumentiert: reines RLVR reicht aus, um beeindruckende Reasoning-Fähigkeiten zu erzeugen — ganz ohne menschliche Präferenz-Daten. In produktiven Systemen werden fast immer beide Verfahren nacheinander eingesetzt.",
+      "feedback_falsch": "RLHF und RLVR schließen sich nicht aus — im Gegenteil, moderne Trainings-Pipelines kombinieren sie routiniert: erst RLHF für Ausrichtung, dann RLVR für Reasoning, oder umgekehrt, mit mehreren Zyklen. Der große Durchbruch von DeepSeek-R1 (Nature 2025) war, dass reines RLVR ohne vorheriges RLHF bereits emergente Reasoning-Verhalten produziert — ein „Aha-Moment“ der Selbst-Reflexion entsteht ganz ohne menschliche Anleitung.",
+      "glossar": {
+        "begriff": "RLHF (Reinforcement Learning from Human Feedback) und RLVR (from Verifiable Rewards)",
+        "erklaerung": "Zwei Reinforcement-Learning-Verfahren zur Nachtrainierung großer Sprachmodelle. RLHF: Menschen bewerten paarweise Antworten, daraus wird ein Belohnungs-Modell gelernt — Fokus Ausrichtung/Höflichkeit (InstructGPT, ChatGPT). RLVR: automatisch prüfbare Belohnungen (Mathe stimmt / Code kompiliert) — Fokus Reasoning (OpenAI o1, DeepSeek-R1, Kimi k1.5). In der Praxis kombiniert. DeepSeek-R1 (Nature 2025) hat gezeigt, dass reines RLVR ohne menschliche Präferenz-Daten emergentes Reasoning-Verhalten erzeugt."
+      },
+      "vertiefung": {
+        "begriff": "RLHF und RLVR — die zwei Ausrichtungs-Verfahren moderner Sprachmodelle",
+        "laien_erklaerung": "RLHF und RLVR sind die zwei wichtigsten Reinforcement-Learning-Verfahren, mit denen große Sprachmodelle nach dem Pre-Training verfeinert werden. Sie beantworten zwei unterschiedliche Fragen — und die Unterscheidung erklärt, warum manche Modelle „höflich“ sind und andere „stark in Mathematik“.\n\nRLHF — Reinforcement Learning from Human Feedback:\nMenschliche Annotator:innen bekommen Paare von Modell-Antworten auf denselben Prompt und wählen die bessere aus. Aus vielen tausend solcher Präferenz-Urteile wird ein „Reward Model“ trainiert, das automatisch vorhersagt, welche Antworten Menschen bevorzugen würden. Dieses Reward Model steuert dann per Reinforcement Learning (typischerweise mit dem PPO-Algorithmus) den Trainings-Prozess des eigentlichen Sprachmodells. Ergebnis: Ein Modell, das gelernt hat, wie ein Mensch es bewerten würde — höflich, hilfreich, sicher.\n\nHistorisch: Christiano et al. (2017) legten die Grundlagen. OpenAI setzte RLHF 2022 in InstructGPT und ChatGPT ein — der bekannteste Grund, warum sich GPT-3 (roh) und ChatGPT so unterschiedlich anfühlen: identisches Basis-Modell, aber RLHF-Nachtrainierung machte den Unterschied.\n\nGrenze von RLHF: Menschliche Bewerter sind teuer, langsam und schwer zu skalieren. Und bei sehr komplexen Aufgaben (mehrschrittige Mathematik, Kompressions-Beweise, komplexe Code-Refactorings) sind Menschen oft nicht in der Lage, verlässlich zu bewerten, welche von zwei Ansätzen besser ist.\n\nRLVR — Reinforcement Learning from Verifiable Rewards:\nDie Antwort auf die RLHF-Grenzen: Statt menschlicher Präferenzen dienen automatisch prüfbare Ergebnisse als Belohnung. Mathematischer Beweis stimmt oder nicht — binäres Signal. Code kompiliert und alle Tests laufen grün oder nicht — binäres Signal. SQL-Abfrage gibt das erwartete Ergebnis oder nicht — binäres Signal. Diese Belohnungen sind unbestechlich, unendlich skalierbar und frei von menschlicher Beurteilungs-Rausch.\n\nDer große Durchbruch: DeepSeek-R1, publiziert in Nature (2025), zeigte, dass reines RLVR — ohne vorherige RLHF-Ausrichtung — bereits erstaunliche Reasoning-Fähigkeiten in einem Basis-Modell hervorbringt. Während des Trainings entstehen emergente Verhalten: Selbst-Verifikation, Reflexion, dynamische Strategie-Exploration. Der berühmte „Aha-Moment“, in dem das Modell spontan anhält und seine bisherige Argumentation neu bewertet, taucht organisch auf.\n\nVerwandte Modelle: OpenAI o1 (2024), Kimi k1.5, Anthropics Extended Thinking — alle basieren im Kern auf RLVR-Trainings-Signalen. Die charakteristischen langen „Denk-Ketten“ (Chain-of-Thought) dieser Reasoning-Modelle sind das direkte Ergebnis der RLVR-Trainings-Anreize.\n\nIn der Praxis werden beide Verfahren kombiniert. Typische Pipeline: Pre-Training auf großen Textmengen → Supervised Fine-Tuning auf hochwertigen Beispielen → RLHF für Ausrichtung → RLVR für Reasoning. Manche Anbieter drehen die Reihenfolge oder wiederholen Zyklen mehrfach.\n\nWarum das für Dich als KI-Managerin wichtig ist: Die Wahl zwischen einem RLHF-schwerpunktigen Modell (z. B. Claude Sonnet, GPT-4 im Standard-Modus) und einem RLVR-schwerpunktigen Modell (o1, DeepSeek-R1, Anthropic Extended Thinking) hat konkrete Auswirkungen auf Kosten, Latenz und Qualität. RLVR-Modelle sind bei komplexen prüfbaren Aufgaben (Mathematik, Code, Logik-Rätsel) meist überlegen — aber langsamer und deutlich teurer, weil die langen Denk-Ketten viele Token verbrauchen. Für allgemeine Konversation, Zusammenfassungen, Kreativ-Aufgaben sind RLHF-optimierte Standard-Modelle in der Regel besser geeignet und wirtschaftlicher.",
+        "quellen": [
+          {
+            "titel": "Reinforcement learning from human feedback — Wikipedia (englisch)",
+            "art": "Enzyklopädie-Artikel",
+            "institution": "Wikipedia",
+            "url": "https://en.wikipedia.org/wiki/Reinforcement_learning_from_human_feedback"
+          },
+          {
+            "titel": "DeepSeek-R1 incentivizes reasoning in LLMs through reinforcement learning — DeepSeek-AI et al., Nature (2025, peer-reviewed)",
+            "art": "Wissenschaftliches Paper (Nature)",
+            "institution": "Nature Publishing / DeepSeek-AI",
+            "url": "https://www.nature.com/articles/s41586-025-09422-z"
+          },
+          {
+            "titel": "DeepSeek-R1: Incentivizing Reasoning Capability in LLMs via Reinforcement Learning — arXiv-Preprint (Januar 2025)",
+            "art": "Wissenschaftliches Preprint",
+            "institution": "DeepSeek-AI",
+            "url": "https://arxiv.org/pdf/2501.12948"
+          },
+          {
+            "titel": "Reinforcement Learning with Verifiable Rewards Implicitly Incentivizes Correct Reasoning in Base LLMs — arXiv 2506.14245",
+            "art": "Wissenschaftliches Preprint",
+            "institution": "arXiv",
+            "url": "https://arxiv.org/abs/2506.14245"
+          }
+        ]
+      }
     }
   ]
 }
