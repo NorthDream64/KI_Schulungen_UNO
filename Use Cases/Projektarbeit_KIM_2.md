@@ -5,52 +5,66 @@
 
 ## Ausgangslage
 
-Euer Unternehmen — rund **2.400 Mitarbeitende**, Sitz in Deutschland, europaweit tätig — hat seinen wichtigsten Wettbewerber übernommen: rund **1.600 Mitarbeitende** mit Schwerpunkt in Südeuropa. Durch die Übernahme soll die Marktpräsenz in einigen interessanten Segmenten gestärkt und die Kapitalbasis für größere Investitionen in Innovation und Produktentwicklung gelegt werden. Die Branche wählt ihr selbst — beschreibt sie in zwei Sätzen.
+Die **Arventis GmbH** in Bremen ist ein mittelständischer B2B-Dienstleister: Personalberatung, HR-Outsourcing, betriebliche Weiterbildung. Gegründet 1997, rund **920 Mitarbeitende**, etwa **115 Mio. € Jahresumsatz**, Standorte in Bremen, Frankfurt, München und Wien. Inhabergeführt, kein Börsengang geplant. Das Geschäft lebt von Beziehungstiefe — Kundenbetreuende bleiben ihren Kunden über Jahre erhalten.
 
-Ihr seid die KI-Manager:innen des übernehmenden Hauses und sollt einen Integrationsplan aus Sicht des KI-Managements entwickeln. Der Vorstand möchte **„das Beste aus beiden Welten“** — Motto: *1 + 1 > 2* — und erwartet den Plan binnen zwölf Monaten in der Umsetzung.
+Die Kernprozesse laufen auf drei Cloud-Plattformen: eine für Vertrieb und Kundenservice, eine für die IT-Servicesteuerung, eine für Personal und Finanzen. Zusammen mit Bürosoftware und einem Bewerbermanagement summieren sich die Lizenzen auf gut **900.000 € im Jahr**. KI wird bisher punktuell genutzt, ohne verbindliche Regeln.
 
-Die Ausgangslage ist unbequem, weil sie unsymmetrisch ist:
+**Der Auslöser.** Innerhalb von drei Wochen erhält der Finanzgeschäftsführer drei Angebote — jeder der drei Plattformanbieter bietet KI-Funktionen als kostenpflichtige Erweiterung an. Zwei nennen einen Preis, einer noch nicht. Zusammengenommen läge der Aufschlag im mittleren sechsstelligen Bereich pro Jahr. Der Vertrag mit dem größten Anbieter läuft im **Januar 2027** aus.
 
-- **Euer Haus** hat eine funktionierende KI-Governance — Inventar, Freigabewege, benannte Verantwortliche —, aber nur wenige Anwendungen im Produktivbetrieb.
-- **Das übernommene Haus** ist beim Einsatz deutlich weiter: mehrere KI-Anwendungen laufen und werden geschätzt. Eine Governance dafür gibt es nicht, ein Inventar ebenso wenig. Die dortigen Fachbereiche haben ihre Werkzeuge selbst beschafft.
-- Beide Häuser haben **laufende Verträge mit unterschiedlichen Anbietern**, teils für dieselbe Aufgabe.
+Zugleich liest er von Unternehmen, die den umgekehrten Weg gehen und Standardsoftware durch eigene, KI-gestützte Lösungen ersetzen. Er bittet euch als KI-Manager:innen um eine **Empfehlung bis zum Quartalsgespräch im September**.
+
+Drei Wege stehen zur Wahl:
+
+| Option | Beschreibung |
+|---|---|
+| **A — Bestand erweitern** | Bei den bisherigen Anbietern bleiben und deren KI-Erweiterungen zukaufen |
+| **B — Anbieter wechseln** | Eine oder mehrere Plattformen durch KI-native Spezialanbieter ersetzen |
+| **C — Selbst bauen** | Eigene Lösungen auf Basis zugekaufter Sprachmodelle entwickeln, die Plattformen auf Datenhaltung zurückstufen |
+
+*Hinweis zu den Zahlen:* Sämtliche Beträge und Angebote sind Annahmen des Szenarios, keine geprüften Marktpreise.
 
 ---
 
 ## Aufgabe
 
-### Teil A — Reifegrad, Lücke und Zielbild *(ca. 2 Seiten)*
+### Teil A — Die drei Wege bewerten *(ca. 2 Seiten)*
 
-- Wie ermittelt ihr den **KI-Reifegrad** der beiden Organisationen? Welches Vorgehen wählt ihr, wen bezieht ihr ein, und woran erkennt ihr Reife überhaupt?
-- Führt daraus eine **Lückenanalyse**: Was fehlt jeweils, um den Zielzustand zu erreichen?
-- Was **ist** dieser Zielzustand? Wie habt ihr ihn ermittelt — und womit begründet ihr ihn wirtschaftlich gegenüber dem Vorstand?
-- Ein Hinweis zur Ehrlichkeit der Analyse: Das übernommene Haus ist im Einsatz weiter, in der Steuerung zurück. Ein Reifegradmodell, das nur eine der beiden Achsen misst, führt hier zu einem falschen Ergebnis.
+Erstellt einen Entscheidungsrahmen, den der Finanzgeschäftsführer im Quartalsgespräch verwenden kann. Vergleicht die drei Optionen entlang von Kriterien, die ihr selbst festlegt und begründet. Mindestens diese sollten dabei sein:
+
+- **Kosten über drei Jahre** — nicht nur Lizenzen, sondern auch Migration, Schulung und der Produktivitätsverlust während der Umstellung
+- **Abhängigkeit** — wo wird sie größer, wo kleiner? Was kostet der Ausstieg jeweils, und wie lange dauert er?
+- **Datenschutz und Mitbestimmung** — die Personalplattform verarbeitet Beschäftigtendaten. Was folgt daraus für jede der drei Optionen?
+- **Umsetzbarkeit im Haus** — welche Kapazität setzt jede Option voraus, und ist sie vorhanden?
+
+Schließt mit einer **begründeten Empfehlung**. Eine Empfehlung, die alle drei Optionen offenlässt, ist keine.
+
+> **Der ehrliche Teil der Aufgabe:** Nennt ausdrücklich, welche Information euch fehlt, um sicher zu entscheiden — und wie ihr sie beschaffen würdet.
 
 ---
 
-### Teil B — Ein Anwendungsfall aus beiden Häusern *(ca. 2 Seiten)*
+### Teil B — Die erste Anwendung im Steckbrief *(ca. 2 Seiten)*
 
-Wählt **einen Anwendungsfall, den es in beiden Häusern gibt** — oder geben müsste. Typische Kandidaten: Angebotserstellung, Dokumentenprüfung, Kundenkommunikation, Bedarfsprognose.
-
-Arbeitet ihn im **Steckbrief-Rahmen** aus dem Kurs für den **Zielzustand nach der Integration** durch:
+Unabhängig davon, welchen Weg ihr empfehlt: Irgendwo wird angefangen. Wählt **eine konkrete Anwendung**, mit der Arventis beginnen sollte, und arbeitet sie durch. Nutzt dafür den **Steckbrief-Rahmen** aus dem Kurs:
 
 | Aspekt | Eure Einschätzung |
 |---|---|
 | Was ist der Anwendungsfall? | |
-| Welche Daten werden genutzt — und dürfen sie über Ländergrenzen hinweg zusammengeführt werden? | |
+| Welche Daten werden genutzt? | |
 | Welche Risikoklasse nach EU-KI-Verordnung? | |
 | Welche Stakeholder sind betroffen? | |
 | Was ist die größte technische Hürde? | |
 | Was ist die größte organisatorische Hürde? | |
 | Was würde „Erfolg“ in 12 Monaten bedeuten? | |
 
-Beantwortet zusätzlich die drei Fragen, die sich erst durch die Fusion stellen:
+Beantwortet zusätzlich die drei Beschaffungsfragen:
 
-- **Doppelte Werkzeuge.** Beide Häuser lösen die Aufgabe bereits, mit unterschiedlichen Werkzeugen. Welches behaltet ihr — und woran entscheidet ihr das? Was kostet die Abschaltung des anderen, auch jenseits der Lizenz?
-- **Laufende Verträge.** Wie geht ihr mit Bindungsfristen, Datenherausgabe und Löschnachweisen um?
-- **Betriebsmodell.** Zentral, dezentral oder föderiert — welches Modell tragt ihr nach der Fusion, und warum?
+- **Wonach wird abgerechnet** — Nutzerplatz, Nutzungsmenge oder Mischform? Was bedeutet die Antwort, wenn die Anwendung dreimal so gut angenommen wird wie geplant?
+- **Was geschieht mit den eingegebenen Inhalten** — Training, Speicherdauer, Verarbeitungsort?
+- **Wie kommt ihr wieder heraus** — Export, Löschnachweis, Übergangsfrist?
 
 *Hinweis:* Ihr müsst nicht für jedes Feld eine vollständige Antwort haben. Ein ehrliches „Das weiß ich noch nicht — und deshalb müsste ich als nächstes …“ ist wertvoller als eine KI-generierte Antwort, die ihr nicht vertreten könnt.
+
+*Alternative:* Wenn ihr lieber einen Anwendungsfall aus **eurem eigenen Arbeitsumfeld** durcharbeiten wollt, ist das ausdrücklich zulässig. Begründet dann kurz, warum ihr euch dafür entschieden habt.
 
 ---
 
@@ -72,8 +86,8 @@ Die Präsentation ist kein Vortrag — sie ist ein Gespräch. Plant Zeit für R�
 
 ### Extrapunkte
 
-- Für eine **Begründung, warum euer Anwendungsfall in eurer Branche anders bewertet werden muss** als in einer anderen
-- Für einen Vorschlag, wie ihr mit dem **Wissen der übernommenen Kolleginnen und Kollegen** umgeht, ohne dass die Integration als Entwertung ihrer Arbeit ankommt
+- Für eine **Rechnung statt einer Einschätzung**: ab welcher jährlichen Einsparung sich der Eigenbau bei dieser Unternehmensgröße lohnt — und wie wahrscheinlich diese Einsparung ist
+- Für die Frage, **was passiert, wenn ihr euch falsch entscheidet**: Woran würdet ihr das nach zwölf Monaten erkennen, und was wäre dann noch korrigierbar?
 - Für den Nachweis, **wo die KI bei der Recherche falsch lag** — und wie ihr das korrigiert habt
 
 ---
