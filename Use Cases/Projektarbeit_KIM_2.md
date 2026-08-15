@@ -5,11 +5,11 @@
 
 ## Ausgangslage
 
-Die **Arventis GmbH** in Bremen ist ein mittelständischer B2B-Dienstleister: Personalberatung, HR-Outsourcing, betriebliche Weiterbildung. Gegründet 1997, rund **920 Mitarbeitende**, etwa **115 Mio. € Jahresumsatz**, Standorte in Bremen, Frankfurt, München und Wien. Inhabergeführt, kein Börsengang geplant. Das Geschäft lebt von Beziehungstiefe — Kundenbetreuende bleiben ihren Kunden über Jahre erhalten.
+Die **Arventis GmbH** in Stuttgart ist ein mittelständischer B2B-Dienstleister: Personalberatung, HR-Outsourcing, betriebliche Weiterbildung. Gegründet 1997, rund **150 Mitarbeitende**, etwa ** Mio. € 32 Jahresumsatz**, Standorte in Stuttgart, Frankfurt, München und Wien. Inhabergeführt, kaum Fremdfinanzierung. Das Geschäft lebt von Beziehungstiefe — Kundenbetreuende bleiben ihren Kunden über Jahre erhalten.
 
-Die Kernprozesse laufen auf drei Cloud-Plattformen: eine für Vertrieb und Kundenservice, eine für die IT-Servicesteuerung, eine für Personal und Finanzen. Zusammen mit Bürosoftware und einem Bewerbermanagement summieren sich die Lizenzen auf gut **900.000 € im Jahr**. KI wird bisher punktuell genutzt, ohne verbindliche Regeln.
+Die Kernprozesse laufen auf drei Cloud-Plattformen: eine für Vertrieb und Kundenservice, eine für die IT-Servicesteuerung, eine für Personal und Finanzen. Zusammen mit Bürosoftware und einem Bewerbermanagement summieren sich die Lizenzen auf gut **400.000 € im Jahr**. KI wird bisher punktuell genutzt, ohne verbindliche Regeln.
 
-**Der Auslöser.** Innerhalb von drei Wochen erhält der Finanzgeschäftsführer drei Angebote — jeder der drei Plattformanbieter bietet KI-Funktionen als kostenpflichtige Erweiterung an. Zwei nennen einen Preis, einer noch nicht. Zusammengenommen läge der Aufschlag im mittleren sechsstelligen Bereich pro Jahr. Der Vertrag mit dem größten Anbieter läuft im **Januar 2027** aus.
+**Der Auslöser.** Innerhalb von drei Wochen erhält der Geschäftsführer drei Angebote — jeder der drei Plattformanbieter bietet KI-Funktionen als kostenpflichtige Erweiterung an. Zwei nennen einen Preis, einer noch nicht. Zusammengenommen läge der Aufschlag im mittleren sechsstelligen Bereich pro Jahr. Der Vertrag mit dem größten Anbieter läuft im **Januar 2027** aus.
 
 Zugleich liest er von Unternehmen, die den umgekehrten Weg gehen und Standardsoftware durch eigene, KI-gestützte Lösungen ersetzen. Er bittet euch als KI-Manager:innen um eine **Empfehlung bis zum Quartalsgespräch im September**.
 
