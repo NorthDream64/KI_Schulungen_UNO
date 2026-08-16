@@ -40,7 +40,7 @@ Du bist **KI-Manager:in der MS AG** und sollst den Integrationsplan aus Sicht de
 Seit zwei Jahren im Haus. Du hast die KI-Governance der MS AG aufgebaut — und weißt, dass sie bisher wenig zu steuern hatte. Seit dem Kauf berichtest du an die Leiterin des Integrationsprogramms.
 
 ### Joanna „Joe“ Guantilez — Leiterin des Integrationsprogramms
-41 Jahre, US-Amerikanerin mit venezolanischen Wurzeln. Kam über Tancido ins Unternehmen, wo sie die Servicedisposition geleitet hat — ihre Disponentinnen arbeiten seit zwei Jahren mit der Ersatzteilprognose und vertrauen ihr. Gilt als kommende Vorstandsvorsitzende des vereinigten Unternehmens. Hält die deutsche Terminplanung für rückständig und sagt das freundlich, aber oft. **Deine Chefin kommt aus dem übernommenen Haus** — das prägt jede Vorlage, die du ihr schreibst.
+41 Jahre, US-Amerikanerin mit venezolanischen Wurzeln. Kam über Tancido ins Unternehmen, wo sie die Servicedisposition geleitet hat — ihre Disponentinnen arbeiten seit zwei Jahren mit der Einsatzplanung PT und vertrauen ihr. Gilt als kommende Vorstandsvorsitzende des vereinigten Unternehmens. Hält die deutsche Terminplanung für rückständig und sagt das freundlich, aber oft. **Deine Chefin kommt aus dem übernommenen Haus** — das prägt jede Vorlage, die du ihr schreibst.
 
 ### Dr. Andrea Wolters — Vorstandsvorsitzende Material Storage AG
 57 Jahre. Hat den Kauf durchgesetzt und verteidigt ihn öffentlich. Möchte im Geschäftsbericht sichtbare Fortschritte zeigen, bevor die Synergien tatsächlich anfallen.
@@ -49,10 +49,10 @@ Seit zwei Jahren im Haus. Du hast die KI-Governance der MS AG aufgebaut — und 
 51 Jahre. Kennt jeden Vertrag. Hat die 18 Mio. € in die Investorenkommunikation geschrieben und wird daran gemessen. Fragt bei jedem Vorschlag zuerst nach der Laufzeit bestehender Verträge.
 
 ### Enrique Pasquale de la Ballena — Gründer und bisheriger Geschäftsführer Tancido
-62 Jahre. Bleibt für **18 Monate als Berater** an Bord. Stolz auf das, was sein Haus technisch aufgebaut hat, und misstrauisch gegenüber deutschen Freigabeprozessen. Sein Satz in der ersten gemeinsamen Sitzung: *„Wir haben sieben Anwendungen im Einsatz. Ihr habt elf in einer Tabelle.“*
+62 Jahre. Bleibt für **18 Monate als Berater** an Bord. Stolz auf das, was sein Haus technisch aufgebaut hat, und misstrauisch gegenüber deutschen Freigabeprozessen. Sein Satz in der ersten gemeinsamen Sitzung: *„Wir haben drei Anwendungen im Einsatz. Ihr habt elf in einer Tabelle.“*
 
 ### Dolores Ajudaval — IT-Leiterin Tancido
-39 Jahre. Hat die sieben Anwendungen möglich gemacht, meist indem sie Fachbereiche selbst beschaffen ließ und hinterher integrierte. Weiß genau, wo die Leichen liegen, und sagt es auch — wenn man sie fragt.
+39 Jahre. Hat die drei Anwendungen möglich gemacht, meist indem sie Fachbereiche selbst beschaffen ließ und hinterher integrierte. Weiß genau, wo die Leichen liegen, und sagt es auch — wenn man sie fragt.
 
 ### Karsten Oel — Betriebsratsvorsitzender Material Storage AG
 Hat der KI-Governance 2024 zugestimmt, weil sie Mitbestimmung vorsah. Beobachtet die Übernahme aufmerksam und hat bereits angekündigt, jede Ausweitung spanischer Werkzeuge auf deutsche Standorte zu prüfen.
@@ -72,31 +72,28 @@ Das eigentliche Problem der Fusion ist nicht, dass die beiden Häuser unterschie
 
 ### Tancido — Einsatz ohne Steuerung
 
-Sieben Anwendungen laufen produktiv. Ein Inventar gibt es nicht; die Liste unten hat Dolores Ajudaval auf Nachfrage in zwei Tagen zusammengestellt.
+**Drei Anwendungen laufen produktiv.** Ein Inventar existiert nicht; die Liste unten hat Dolores Ajudaval auf Nachfrage zusammengestellt.
 
 | Anwendung | Was sie tut | Beschafft von | Bemerkung |
 |---|---|---|---|
-| **Serviceberichte per Sprache** | Technikerinnen diktieren unterwegs, das System schreibt und strukturiert | Servicebereich, 2024 | Aufnahmen enthalten Gespräche mit Kundenpersonal |
-| **Ersatzteilprognose** | Sagt Bedarf je Anlagentyp und Region voraus | Disposition, 2023 | Eigenentwicklung, gepflegt von **einer** Person |
-| **Angebotsgenerator** | Erzeugt aus dem Bericht einen Angebotsentwurf | Vertrieb, 2024 | Deutlich schneller als der Weg bei MS |
-| **Einsatzplanung** | Verteilt Aufträge auf Technikerinnen und Routen | Disposition, 2025 | Bewertet indirekt die Auslastung Einzelner |
-| **Übersetzung** | Berichte und Angebote zwischen drei Sprachen | IT, 2023 | Frei zugänglicher Dienst, kein Vertrag |
-| **Kundenportal-Chat** | Beantwortet Statusfragen zu laufenden Aufträgen | Vertrieb, 2025 | Keine Kennzeichnung als maschinelles System |
-| **Anlagenfotos** | Erkennt Bauteile und Schäden auf Fotos der Technikerinnen | Servicebereich, 2025 | Trainiert auch auf Kundenanlagen; Rechtelage ungeklärt |
+| **SAS** · *Servicio de Asistencia in Situ* | Vor einem Besuch im Tanklager erhält die Technikerin eine Übersicht bisheriger Instandhaltungen und Abnahmeprotokolle. Aus technischen und wirtschaftlichen Daten werden die Arbeitsaufgaben priorisiert. Vor Ort übermittelte Fotos von Ventilen, Steuerungselementen und Leitungen werden gegen eine Bilddatenbank abgeglichen, die maschinell erzeugte Zustandsprognosen liefert | Servicebereich, 2024 | Bilder von Kundenanlagen und eigenen Standorten; Rechtelage an den Trainingsdaten ungeklärt |
+| **OES** · *Ofertas en Seguida* | Erzeugt bei Bedarf Anfragen an Lieferanten, verschickt sie nach Freigabe und konsolidiert die Rückläufe mit einer Erfahrungsschätzung aus vergleichbaren Projekten zu einem unverbindlichen Angebot | Vertrieb, 2024 | Handelt nach außen — die Anfragen gehen an Dritte |
+| **PT** · *Planificación de Turnos* | Gleicht ab einer Auftragswahrscheinlichkeit von 75 % die Einträge einer Qualifikationsdatenbank, die Kalender der Technikerinnen und Techniker sowie die Liefertermine der Ersatzteile ab und erstellt daraus eine unverbindliche Personaleinsatzplanung | Disposition, 2025 | Verarbeitet Beschäftigtendaten und bewertet mittelbar Verfügbarkeit und Qualifikation Einzelner |
 
-**Keine dieser sieben Anwendungen hat eine dokumentierte Risikoeinstufung.** Vier davon wären nach dem Freigabeprozess der MS AG zustimmungspflichtig gewesen.
+**Keine dieser drei Anwendungen hat eine dokumentierte Risikoeinstufung.** Alle drei wären nach dem Freigabeprozess der MS AG zustimmungspflichtig gewesen — SAS wegen der Bilddaten von Kundenanlagen, OES wegen der Außenwirkung, PT wegen der Beschäftigtendaten.
 
 ---
 
 ## 5 · Überschneidungen bei Werkzeugen und Verträgen
 
-Für zwei Aufgaben haben beide Häuser bereits eine Lösung — mit sehr unterschiedlichen Verträgen.
+Für eine Aufgabe haben beide Häuser eine Lösung — mit sehr unterschiedlichen Verträgen. Bei zwei weiteren hat nur Tancido eine.
 
 | Aufgabe | MS AG | Tancido |
 |---|---|---|
-| **Angebotserstellung** | Anbieter A · 340 Plätze · **212.000 € pro Jahr** · Laufzeit bis 31.12.2028 · vorzeitiger Ausstieg nur gegen 60 % der Restlaufzeit | Anbieter B · mengenbasiert · 2025: **96.000 €** · jährlich kündbar · Verbrauch 2026 bereits +40 % |
+| **Angebotserstellung** | Anbieter A · 340 Plätze · **212.000 € pro Jahr** · Laufzeit bis 31.12.2028 · vorzeitiger Ausstieg nur gegen 60 % der Restlaufzeit | **OES** · Anbieter B · mengenbasiert · 2025: **96.000 €** · jährlich kündbar · Verbrauch 2026 bereits +40 % |
 | **Rechnungsprüfung** | Anbieter C · im Kernsystem enthalten | keine |
-| **Ersatzteilprognose** | keine | Eigenentwicklung, keine Lizenzkosten, **kein zweiter Kenner** |
+| **Einsatzplanung** | keine | **PT** · Eigenentwicklung, keine Lizenzkosten, **kein zweiter Kenner** |
+| **Zustandsprüfung vor Ort** | keine | **SAS** · Eigenentwicklung mit eigener Bilddatenbank |
 
 Dazu kommt der Datenschnitt: Die Servicedaten liegen in zwei getrennten Kernsystemen, in fünf Sprachen und mit unterschiedlichen Anlagenschlüsseln. Eine gemeinsame Auswertung gibt es nicht.
 
@@ -107,10 +104,10 @@ Dazu kommt der Datenschnitt: Die Servicedaten liegen in zwei getrennten Kernsyst
 Sechs Richtungsentscheidungen liegen auf deinem Tisch. Keine davon ist rein technisch, und keine lässt sich vertagen, ohne dass sie an anderer Stelle entschieden wird.
 
 1. **Welches Portfolio bleibt?** Zusammenlegen, nebeneinander weiterlaufen lassen oder eine Seite abschalten — und nach welchem Maßstab entscheidest du das?
-2. **Welches Betriebsmodell trägt nach der Fusion?** Zentral, dezentral oder föderiert. Die bisherige MS-Governance ist zentral gebaut und hatte zwei Anwendungen zu steuern. Jetzt sind es neun.
-3. **Was passiert mit den sieben ungeprüften Anwendungen?** Sofort stilllegen, weiterlaufen lassen und nachträglich einstufen, oder einzeln entscheiden? Jede Antwort hat einen Preis: Stillstand, Rechtsrisiko oder Glaubwürdigkeitsverlust der eigenen Regeln.
+2. **Welches Betriebsmodell trägt nach der Fusion?** Zentral, dezentral oder föderiert. Die bisherige MS-Governance ist zentral gebaut und hatte zwei Anwendungen zu steuern. Jetzt sind es fünf — in zwei Ländern.
+3. **Was passiert mit den drei ungeprüften Anwendungen?** Sofort stilllegen, weiterlaufen lassen und nachträglich einstufen, oder einzeln entscheiden? Jede Antwort hat einen Preis: Stillstand, Rechtsrisiko oder Glaubwürdigkeitsverlust der eigenen Regeln.
 4. **Welcher Anbieter bei der Angebotserstellung?** Der teurere mit Bindung bis 2028 oder der billigere mit stark steigendem Verbrauch — und was kostet der Ausstieg jeweils wirklich?
-5. **Wie behandelst du die Sprachaufnahmen?** In den Aufnahmen sind Gespräche mit Kundenpersonal. Die Einsatzplanung bewertet mittelbar die Leistung Einzelner. Beides berührt Mitbestimmung, und die Rechtslage ist in Deutschland und Spanien nicht dieselbe.
+5. **Wie behandelst du PT?** Die Einsatzplanung verarbeitet Qualifikations- und Kalenderdaten und bewertet damit mittelbar die Verfügbarkeit Einzelner. Das berührt Mitbestimmung — und die Rechtslage ist in Deutschland und Spanien nicht dieselbe. Dazu kommt SAS mit Bildern von Anlagen, an denen nicht jeder Mensch zu jeder Zeit sein darf.
 6. **In welcher Reihenfolge?** Erst die Governance ausrollen und damit den schnelleren Partner ausbremsen — oder erst die Anwendungen absichern und die Regeln nachziehen?
 
 ---
@@ -143,12 +140,12 @@ Zwei belastbare Bezugspunkte für die Diskussion, beide mit dem Vorbehalt, dass 
 
 > *Dieser Abschnitt lässt sich weglassen, ohne dass der Fall an Stimmigkeit verliert. Er hebt den Schwierigkeitsgrad deutlich an.*
 
-Beide Häuser lagern **strategische Reserven zweier Regierungen**. Damit ist das vereinigte Unternehmen nicht irgendein Industriedienstleister, sondern Teil einer Versorgungsstruktur, deren Ausfall staatliche Aufmerksamkeit erzeugt. Für die KI-Landschaft ändert das die Vorzeichen an vier Stellen:
+Beide Häuser lagern **strategische Reserven zweier Regierungen**. Damit ist das vereinigte Unternehmen nicht irgendein Industriedienstleister, sondern Teil einer Versorgungsstruktur, deren Ausfall staatliche Aufmerksamkeit erzeugt. Für die drei Tancido-Anwendungen ändert das die Vorzeichen:
 
-- **Der Kundenportal-Chat** beantwortet Statusfragen zu laufenden Aufträgen. An welchem Punkt wird aus einer Statusauskunft eine Aussage über Füllstände, Lieferzeitpunkte oder Wartungsfenster — also über Informationen, die niemand außerhalb des Hauses zusammenführen können sollte?
-- **Die Anlagenfotos** zeigen Sicherheitstechnik, Zugänge und bauliche Details. Sie wurden zum Trainieren eines Modells verwendet. Wo liegen die Bilder, wer hat sie verarbeitet, und lässt sich das rückgängig machen?
-- **Die Sprachaufnahmen** entstehen an Orten, an denen nicht jeder Mensch zu jeder Zeit sein darf. Ein frei zugänglicher Übersetzungsdienst ohne Vertrag — Tancidos Werkzeug aus dem Jahr 2023 — verarbeitet dieselben Inhalte.
-- **Die Anbieterfrage** bekommt eine zweite Dimension: Nicht nur, was ein Werkzeug kostet und wie man wieder herauskommt, sondern wo verarbeitet wird und wer im Ernstfall Zugriff hat.
+- **SAS sammelt Bilder von Sicherheitstechnik.** Ventile, Steuerungselemente, Leitungen — fotografiert an Kundenanlagen und an eigenen Standorten, abgelegt in einer Bilddatenbank, die ein Modell trainiert hat. Wo liegen diese Bilder, wer hat sie verarbeitet, und lässt sich das rückgängig machen?
+- **SAS erzeugt Zustandsprognosen und priorisiert daraufhin Arbeitsaufgaben.** Damit rückt es in die Nähe einer Schutzfunktion. Genau hier stellt sich die Frage nach Anhang I: Ist das eine Empfehlung vor der Prüfung — oder ersetzt es sie schrittweise?
+- **OES verschickt Anfragen nach außen.** In einer Lieferantenanfrage steht, welches Bauteil an welchem Standort wann gebraucht wird. Wer diese Anfragen über Monate sammelt, kennt den Zustand der Anlagen.
+- **PT verarbeitet Kalender und Qualifikationen** und verknüpft sie mit Lieferterminen. Aus dem Einsatzplan lässt sich ablesen, wann welche Anlage stillsteht.
 
 **Die Leitfrage für die Teilnehmenden:** Ändert die Einstufung als kritische Infrastruktur eure Antworten aus Abschnitt 6 — oder nur die Begründung? Bei mindestens zwei der sechs Entscheidungen ändert sie das Ergebnis.
 
@@ -160,9 +157,9 @@ Beide Häuser lagern **strategische Reserven zweier Regierungen**. Damit ist das
 
 Innerhalb von zwölf Monaten wird jede Doppelspitze aufgelöst. Jede Führungskraft weiß das, und jede weiß auch, dass sichtbare Erfolge die Auswahl beeinflussen. Für dich als KI-Manager:in verschiebt das die Portfolio-Entscheidung von einer Sachfrage zu einer Machtfrage:
 
-- **Wessen Werkzeug bleibt, dessen Arbeitsweise bleibt.** Die Entscheidung für ein Angebotswerkzeug entscheidet mit darüber, welcher Vertrieb sich umstellen muss — und wer damit im Nachteil ist.
-- **Die Ersatzteilprognose hängt an einer Person.** Diese Person arbeitet bei Tancido. Wird die Anwendung abgeschaltet, verliert eine Führungskraft ihr sichtbarstes Argument. Wird sie behalten, ist das Wissen weiterhin an einen Menschen gebunden, der das Haus verlassen könnte.
-- **Deine Chefin kommt aus dem übernommenen Haus.** Eine Empfehlung zugunsten der Tancido-Werkzeuge wird als Gefälligkeit gelesen, eine dagegen als Illoyalität. Beides ist unangenehm, und beides musst du einkalkulieren.
+- **Wessen Werkzeug bleibt, dessen Arbeitsweise bleibt.** Bei der Angebotserstellung stehen der Assistent der MS AG und OES nebeneinander. Die Entscheidung bestimmt mit, welcher Vertrieb sich umstellen muss — und wer damit im Nachteil ist.
+- **PT hängt an einer Person.** Diese Person arbeitet bei Tancido. Wird die Anwendung abgeschaltet, verliert eine Führungskraft ihr sichtbarstes Argument. Wird sie behalten, bleibt das Wissen an einen Menschen gebunden, der das Haus verlassen könnte.
+- **PT ist zugleich das Werkzeug deiner Chefin.** Joanna Guantilez hat die Servicedisposition bei Tancido geleitet, bevor sie das Integrationsprogramm übernahm. Eine Empfehlung gegen PT ist eine Empfehlung gegen ihre eigene Aufbauleistung — eine dafür wird als Gefälligkeit gelesen. Beides ist unangenehm, und beides musst du einkalkulieren.
 
 **Die Leitfrage für die Teilnehmenden:** Wie triffst du eine Entscheidung, die sachlich richtig ist, und wie machst du sie so nachvollziehbar, dass sie nicht als Parteinahme gelesen wird? Welche Rolle spielt dabei, *wer* die Kriterien festlegt — und *wann*?
 
