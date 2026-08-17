@@ -163,6 +163,12 @@ Falls Quiz existiert: Aktualität der Antworten prüfen (Fristen, Zahlen, regula
 - **Keine Optionsbuchstaben in Erklärungen:** Erklärungsfelder (`explanation`/`exp`) dürfen niemals auf „A", „B", „C" oder „D" verweisen. Der Shuffle-Mechanismus macht Buchstaben bedeutungslos. Stattdessen inhaltlich erklären, warum die richtige Antwort korrekt ist.
 - **Keine Zertifizierungsaussagen:** Nie formulieren „für die Prüfung wichtig", „für die Zertifizierung zählt" o.ä. — das erzeugt unnötigen Druck. Stattdessen inhaltliche Bedeutung betonen.
 - **Abkürzungen ausschreiben:** Fachbegriffe wie Schutzbedarfsfeststellung (SBF), Datenschutz-Folgenabschätzung (DSFA), Risikoprioritätszahl (RPZ) beim ersten Auftreten ausschreiben.
+- **Erklärungen gehören an eine shuffle-sichere Position.** Antwortoptionen werden bei jedem Durchlauf neu gemischt — eine Option darf deshalb nie voraussetzen, dass eine andere Option vorher gelesen wurde. Konkret: Die Auflösung einer Abkürzung, eine Legende oder eine Definition steht **im Szenario (`sc`) oder im Fragestamm (`q`)**, nicht in einer Antwortoption. Beide Felder werden nicht gemischt und erscheinen immer oberhalb der Optionen.
+  - Zulässig: Abkürzung und Auflösung stehen **innerhalb derselben Option** („Der Population Stability Index (PSI) misst …").
+  - Zulässig: Auflösung steht im Erklärungsfeld (`exp`) — dieses erscheint erst nach der Auswertung und ist daher unkritisch.
+  - Unzulässig: Auflösung in Option A, Abkürzung in Option C.
+  - Bei mehreren Kürzeln aus einem System (z. B. Mendelow-Matrix) gehört eine **Legende in den Fragestamm**: „… korrekt? (HI = hohes Interesse, GI = geringes Interesse, HM = hohe Macht, GM = geringe Macht)".
+- **Jede Frage steht für sich.** Weil auch die Fragenreihenfolge gemischt wird, greift „beim ersten Auftreten erklären" nicht auf Quiz-Ebene, sondern **je Frage**. Was in Frage 3 erklärt wurde, ist in Frage 71 nicht vorausgesetzt.
 
 ### 5.3 Aktualitätsprüfung bei bestehenden Quizzen
 
@@ -190,7 +196,7 @@ Diese Regeln gelten für Hand-Outs, Gamma-Präsentationen, Quizze, Übungsblätt
 | Regel | Beschreibung |
 |-------|-------------|
 | **Du-Form** | Alle Materialien verwenden die Du-Form (nicht Sie) |
-| **Abkürzungen** | Beim ersten Auftreten ausschreiben, danach Kurzform. Level 1/2/3 (nie L1/L2/L3) |
+| **Abkürzungen** | Beim ersten Auftreten ausschreiben, danach Kurzform. Level 1/2/3 (nie L1/L2/L3). In Quizzen gilt „erstes Auftreten" **je Frage**, nicht je Quiz — und die Auflösung gehört ins Szenario oder den Fragestamm, nie in eine einzelne Antwortoption (siehe 5.2) |
 | **Keine Zertifizierungsdruck-Aussagen** | Nie „für die Prüfung wichtig" o.ä. — inhaltliche Bedeutung betonen |
 | **Optionsbuchstaben** | In Quiz-Erklärungen nie A/B/C/D referenzieren |
 | **Quellenbelege** | Jede inhaltliche Aussage muss belegbar sein; keine konstruierten URLs |
