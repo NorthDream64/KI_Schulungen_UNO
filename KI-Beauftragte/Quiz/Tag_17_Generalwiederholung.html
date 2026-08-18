@@ -1446,12 +1446,14 @@ function renderCard(qi) {
     + '<div class="opt-list" id="opts-' + qi + '"></div>';
   container.appendChild(card);
   var optList = document.getElementById('opts-' + qi);
+  var sel = state.selections[qi] || [];
   shuffledIdx.forEach(function(origIdx) {
+    var isSel = sel.indexOf(origIdx) !== -1;
     var opt = document.createElement('div');
-    opt.className = 'opt';
+    opt.className = 'opt' + (isSel ? ' selected' : '');
     opt.dataset.qi = qi;
     opt.dataset.oi = origIdx;
-    opt.innerHTML = '<div class="opt-cb" id="cb-' + qi + '-' + origIdx + '"></div>'
+    opt.innerHTML = '<div class="opt-cb' + (isSel ? ' chk' : '') + '" id="cb-' + qi + '-' + origIdx + '"></div>'
       + '<div class="opt-text">' + escHtml(q.opts[origIdx]) + '</div>';
     opt.addEventListener('click', function() { toggleOpt(qi, origIdx); });
     optList.appendChild(opt);
