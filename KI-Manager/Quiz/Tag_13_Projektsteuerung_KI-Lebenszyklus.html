@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lernkontrolle &middot; KI-Manager Tag 13 &middot; Projektsteuerung &amp; KI-Lebenszyklus</title>
+<style>
+:root {
+  --ink:#1a1a18;--paper:#f5f2ec;--card:#fff;--rule:#d5d0c5;--muted:#888880;
+  --accent:#5a3a7a;--accent-soft:#f0eaf7;
+  --role-a:#1a6a5a;--role-a-soft:#e6f4f1;
+  --role-b:#5a3a7a;--role-b-soft:#f0eaf7;
+  --correct:#2a7a50;--correct-bg:#eaf5ee;--correct-border:#a0d8b8;
+  --wrong:#9a2a2a;--wrong-bg:#faeaea;--wrong-border:#d8a0a0;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;background:var(--paper);color:var(--ink);line-height:1.65;font-size:15px;}
+a{color:var(--accent);}
+.site-header{border-bottom:2px solid var(--ink);padding:1.8rem 2rem 1.4rem;max-width:820px;margin:0 auto;}
+.eyebrow{font-family:"SFMono-Regular", Consolas, "Liberation Mono", monospace;font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:var(--muted);margin-bottom:.5rem;}
+.site-header h1{font-family:Georgia, "Times New Roman", serif;font-size:clamp(1.5rem,4vw,2.1rem);line-height:1.15;margin-bottom:.4rem;}
+.header-meta{font-size:12px;color:var(--muted);display:flex;gap:1rem;flex-wrap:wrap;}
+.header-meta span::before{content:"· ";}
+.header-meta span:first-child::before{content:"";}
+.main{max-width:820px;margin:0 auto;padding:1.8rem 2rem 4rem;}
+.setup-card{background:var(--card);border:1px solid var(--rule);border-radius:12px;padding:2rem;max-width:540px;margin:0 auto;}
+.setup-card h2{font-family:Georgia, "Times New Roman", serif;font-size:1.3rem;margin-bottom:1.2rem;}
+.field-label{font-family:"SFMono-Regular", Consolas, "Liberation Mono", monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:.35rem;}
+.setup-input{width:100%;border:1px solid var(--rule);border-radius:8px;padding:.6rem .9rem;font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;font-size:14px;background:var(--paper);outline:none;color:var(--ink);transition:border-color .15s;}
+.setup-input:focus{border-color:var(--ink);}
+.role-btns{display:flex;gap:.5rem;}
+.sel-btn{flex:1;padding:.55rem .6rem;border:1px solid var(--rule);border-radius:8px;background:none;font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;font-size:13px;cursor:pointer;text-align:center;transition:all .15s;color:var(--ink);}
+.sel-btn.active-a{background:var(--role-a-soft);border-color:var(--role-a);color:var(--role-a);font-weight:500;}
+.sel-btn.active-b{background:var(--role-b-soft);border-color:var(--role-b);color:var(--role-b);font-weight:500;}
+.hint-text{font-size:12px;color:var(--muted);margin-top:.3rem;display:block;}
+.btn-start{width:100%;padding:.75rem;background:var(--ink);color:#fff;border:none;border-radius:8px;font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;font-size:15px;font-weight:500;cursor:pointer;margin-top:1rem;transition:background .15s;}
+.btn-start:hover{background:#333;}
+.btn-start:disabled{background:#aaa;cursor:not-allowed;}
+.quiz-header-strip{display:flex;gap:.6rem;align-items:center;margin-bottom:1.4rem;flex-wrap:wrap;}
+.strip-tag{font-family:"SFMono-Regular", Consolas, "Liberation Mono", monospace;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;padding:4px 12px;border-radius:100px;}
+.strip-role-a{background:var(--role-a-soft);color:var(--role-a);}
+.strip-role-b{background:var(--role-b-soft);color:var(--role-b);}
+.strip-name{font-size:13px;color:var(--muted);margin-left:auto;}
+.progress-bar{height:3px;background:var(--rule);border-radius:2px;margin-bottom:1.2rem;}
+.progress-fill{height:100%;background:var(--ink);border-radius:2px;transition:width .3s;}
+.progress-label{font-family:"SFMono-Regular", Consolas, "Liberation Mono", monospace;font-size:10px;color:var(--muted);margin-bottom:.5rem;}
+.q-sc{font-size:13px;color:#555;font-style:italic;border-left:3px solid var(--accent);padding:.4rem .8rem;margin-bottom:.5rem;background:var(--accent-soft);border-radius:0 6px 6px 0;}
+.q-card{background:var(--card);border:1px solid var(--rule);border-radius:12px;padding:1.5rem;margin-bottom:1rem;}
+.q-num{font-family:"SFMono-Regular", Consolas, "Liberation Mono", monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:.6rem;}
+.q-text{font-size:15px;font-weight:500;line-height:1.55;margin-bottom:.5rem;}
+.opt-list{display:flex;flex-direction:column;gap:.5rem;}
+.opt{display:flex;align-items:flex-start;gap:.7rem;padding:.75rem 1rem;border:1px solid var(--rule);border-radius:8px;cursor:pointer;background:#fdfdfb;transition:all .12s;-webkit-user-select:none;user-select:none;}
+.opt:hover:not(.disabled){border-color:#888;background:#f5f2ec;}
+.opt.selected{background:var(--accent-soft);border-color:#b8a0d8;}
+.opt.disabled{cursor:default;}
+.opt.correct-sel{background:var(--correct-bg);border-color:var(--correct-border);}
+.opt.wrong-sel{background:var(--wrong-bg);border-color:var(--wrong-border);}
+.opt.missed{background:var(--wrong-bg);border-color:var(--wrong-border);}
+.opt-cb{width:18px;height:18px;min-width:18px;border:1.5px solid #bbb;border-radius:4px;flex-shrink:0;margin-top:2px;display:flex;align-items:center;justify-content:center;transition:all .12s;}
+.opt-cb.chk{background:var(--ink);border-color:var(--ink);}
+.opt-cb.chk::after{content:'';display:block;width:8px;height:8px;background:#fff;border-radius:2px;}
+.opt.correct-sel .opt-cb{background:var(--correct);border-color:var(--correct);}
+.opt.correct-sel .opt-cb::after{content:'\2713';color:#fff;font-size:11px;background:none;width:auto;height:auto;}
+.opt.wrong-sel .opt-cb{background:var(--wrong);border-color:var(--wrong);}
+.opt.wrong-sel .opt-cb::after{content:'\2717';color:#fff;font-size:11px;background:none;width:auto;height:auto;}
+.opt.missed .opt-cb{background:var(--wrong);border-color:var(--wrong);}
+.opt.missed .opt-cb::after{content:'\2192';color:#fff;font-size:11px;background:none;width:auto;height:auto;}
+.opt-letter{font-family:"SFMono-Regular", Consolas, "Liberation Mono", monospace;font-size:12px;color:var(--muted);min-width:16px;flex-shrink:0;margin-top:2px;}
+.opt-text{font-size:14px;line-height:1.5;}
+.feedback{border-radius:8px;padding:.9rem 1.1rem;margin-top:.9rem;}
+.feedback.fb-ok{background:var(--correct-bg);border:1px solid var(--correct-border);}
+.feedback.fb-wrong{background:var(--wrong-bg);border:1px solid var(--wrong-border);}
+.fb-title{font-weight:500;font-size:14px;margin-bottom:.4rem;}
+.fb-ok .fb-title{color:var(--correct);}
+.fb-wrong .fb-title{color:var(--wrong);}
+.fb-text{font-size:13px;line-height:1.65;color:#444;margin-bottom:.5rem;}
+.fb-source{font-size:12px;color:var(--muted);border-top:1px solid var(--rule);padding-top:.5rem;}
+.nav-row{display:flex;align-items:center;gap:.6rem;margin-top:1rem;}
+.btn{display:inline-flex;align-items:center;padding:.55rem 1.2rem;border:1px solid var(--rule);border-radius:8px;background:none;font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;font-size:14px;font-weight:500;cursor:pointer;color:var(--ink);transition:all .15s;}
+.btn:hover{background:var(--paper);border-color:#888;}
+.btn:disabled{opacity:.3;cursor:not-allowed;}
+.btn-full{width:100%;justify-content:center;padding:.7rem;font-size:15px;margin-top:1rem;}
+.btn-submit{background:#1a6a5a;color:#fff;border-color:#1a6a5a;}
+.btn-submit:hover{background:#145548;}
+.result-block{max-width:600px;margin:0 auto;text-align:center;}
+.result-grade{font-family:Georgia, "Times New Roman", serif;font-size:4.5rem;line-height:1;margin-bottom:.3rem;}
+.result-label{font-size:1.1rem;font-weight:500;margin-bottom:.3rem;}
+.result-sub{font-size:13px;color:var(--muted);margin-bottom:1.5rem;}
+.stats-row{display:flex;justify-content:center;gap:1rem;flex-wrap:wrap;margin-bottom:1.5rem;}
+.stat{background:var(--card);border:1px solid var(--rule);border-radius:10px;padding:.9rem 1.2rem;text-align:center;min-width:90px;}
+.stat-n{font-size:1.8rem;font-weight:500;}
+.stat-l{font-size:11px;color:var(--muted);margin-top:2px;}
+.comp-title{font-size:13px;font-weight:500;text-align:left;margin-bottom:.8rem;}
+.comp-row{margin-bottom:.7rem;text-align:left;}
+.comp-labels{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-bottom:3px;}
+.comp-track{height:4px;background:var(--rule);border-radius:2px;}
+.comp-fill{height:100%;border-radius:2px;}
+.fill-ok{background:var(--correct);}
+.fill-wrong{background:var(--wrong);}
+.submit-status.sending{background:#fff8e8;color:#7a5a00;border:1px solid #e8d090;}
+.submit-status.success{background:#eaf5ee;color:#2a7a50;border:1px solid #a0d8b8;}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="eyebrow">Alfatraining &middot; KI-Manager:in &middot; Tag 13</div>
+  <h1>Lernkontrolle<br>Projektsteuerung &amp; KI-Lebenszyklus</h1>
+  <div class="header-meta">
+    <span>5 Fragen je Rolle</span>
+    <span>Eine oder mehrere Antworten k&ouml;nnen richtig sein</span>
+  </div>
+</header>
+
+<main class="main">
+
+<div id="setup-section">
+  <div class="setup-card">
+    <h2>Bitte w&auml;hle deine Rolle</h2>
+    <div style="margin-bottom:1.2rem;">
+      <span class="field-label">Dein Name (oder Teilnehmer-Nummer)</span>
+      <input type="text" id="participant-name" class="setup-input" placeholder="z. B. Teilnehmer-07 oder Vorname">
+    </div>
+    <div style="margin-bottom:1rem;">
+      <span class="field-label">Rolle</span>
+      <div class="role-btns">
+        <button class="sel-btn" id="btn-role-a" onclick="selectRole('a')">KI-Manager:in</button>
+        <button class="sel-btn" id="btn-role-b" onclick="selectRole('b')">Projektleitung/PMO</button>
+      </div>
+      <span class="hint-text">W&auml;hle deine Rolle im Unternehmen</span>
+    </div>
+    <button class="btn-start" id="btn-start" onclick="startQuiz()" disabled>Quiz starten &rarr;</button>
+  </div>
+</div>
+
+<div id="quiz-section" style="display:none">
+  <div class="quiz-header-strip" id="quiz-header-strip"></div>
+  <div class="progress-label" id="progress-label"></div>
+  <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+  <div id="questions-container"></div>
+  <div class="nav-row" style="margin-top:1.5rem">
+    <button class="btn btn-submit btn-full" id="btn-submit" onclick="submitQuiz()" disabled>Auswertung anzeigen &rarr;</button>
+  </div>
+</div>
+
+<div id="results-section" style="display:none">
+  <div id="submit-status" class="submit-status" style="display:none;max-width:600px;margin:1rem auto;text-align:center;padding:.6rem 1rem;border-radius:8px;font-family:'SFMono-Regular', Consolas, 'Liberation Mono', monospace;font-size:12px;"></div>
+  <div class="result-block">
+    <div class="result-grade" id="result-grade"></div>
+    <div class="result-label" id="result-label"></div>
+    <div class="result-sub" id="result-sub"></div>
+    <div class="stats-row" id="stats-row"></div>
+    <div class="comp-title">Kompetenzprofil</div>
+    <div id="comp-bars"></div>
+    <div style="margin-top:.8rem;display:flex;justify-content:center;">
+      <button class="btn" onclick="location.reload()">Neu starten</button>
+    </div>
+  </div>
+  <hr style="border:none;border-top:1px solid var(--rule);margin:2rem 0">
+  <h2 style="font-family:Georgia, 'Times New Roman', serif;font-size:1.2rem;margin-bottom:1rem">Detailauswertung</h2>
+  <div id="review-container"></div>
+</div>
+
+</main>
+
+<script>
+/* === FRAGEN ============================================== */
+
+var QBANK = {
+  "a": [
+    {
+      "sc": "Im Lenkungskreis wird gefragt, warum ein KI-Vorhaben nicht durchgängig nach einer einzigen Projektmethode gesteuert wird.",
+      "q": "Welche Aussage(n) zur hybriden Steuerung von KI-Vorhaben ist oder sind korrekt?",
+      "opts": [
+        "Der äußere Rahmen — Budget, Meilensteine, Verträge mit Dienstleistern, Freigaben und Berichtspflichten gegenüber Gremien — braucht feste Bezugspunkte und wird deshalb klassisch gesteuert.",
+        "Entwicklung und Test brauchen kurze Rückkopplung und laufende Anpassung, weil sich Ergebnisse dort vorab nicht kennen lassen — dafür eignen sich agile Verfahren.",
+        "Agiles Arbeiten macht die Budget- und Ressourcenplanung entbehrlich, weil das Team die Aufgaben ohnehin laufend neu priorisiert.",
+        "Im Betrieb kommt Arbeit unvorhersehbar herein — Auffälligkeiten, Rückmeldungen, Änderungswünsche —, weshalb sich dort eine kanbanartige Steuerung anbietet."
+      ],
+      "correct": [
+        0,
+        1,
+        3
+      ],
+      "exp": "Der hybride Zuschnitt ist kein Kompromiss, sondern folgt der Natur der Ebenen: Der äußere Rahmen braucht feste Bezugspunkte für Verträge, Freigaben und Berichte. Entwicklung und Test brauchen kurze Rückkopplung, weil das Ergebnis vorab unbekannt ist. Der Betrieb bekommt Arbeit ungeplant herein und wird gezogen statt getaktet. Agilität betrifft die Reihenfolge der Arbeit — nicht die Frage, wie viel Geld und Kapazität zur Verfügung stehen; die Planung entfällt dadurch nicht.",
+      "src": "Agile vs. Waterfall Decision Model · sciencedirect.com/science/article/pii/S1877050921002702 · KIM Tag 13 · Block 1"
+    },
+    {
+      "sc": "Du stellst dem Team vor, wie die Norm ISO/IEC 5338:2023 den Lebenszyklus eines KI-Systems gliedert.",
+      "q": "Welche Aussage(n) zu den drei Prozessarten nach ISO/IEC 5338 ist oder sind korrekt?",
+      "opts": [
+        "Unveränderte Prozesse sind identisch zum klassischen Softwarelebenszyklus — ein erheblicher Teil eines KI-Projekts bleibt damit gewöhnliches Projektgeschäft.",
+        "Angepasste Prozesse sind bekannte Prozesse mit veränderten oder ergänzten Elementen; hier liegt die Gefahr, den Prozess zu kennen zu glauben und die Abweichung zu übersehen.",
+        "KI-spezifische Prozesse kommen im klassischen Lebenszyklus nicht vor und sind deshalb zusätzlich zu planen und zu budgetieren.",
+        "Die Norm ist auf selbst entwickelte KI-Systeme zugeschnitten; für beschaffte Systeme greift sie ausdrücklich nicht."
+      ],
+      "correct": [
+        0,
+        1,
+        2
+      ],
+      "exp": "Die Norm setzt auf den etablierten Lebenszyklusstandards ISO/IEC/IEEE 15288 und 12207 auf und teilt die Prozesse in drei Gruppen. Unveränderte Prozesse bestätigen, dass vorhandenes Vorgehen weiter gilt. Angepasste Prozesse sind die kritischsten, weil die Abweichung leicht übersehen wird. KI-spezifische Prozesse tauchen in keiner Standard-Projektvorlage auf und brauchen eigene Planung. Der Anwendungsbereich umfasst ausdrücklich auch Systeme, die beschafft und nicht selbst entwickelt werden.",
+      "src": "ISO/IEC 5338:2023 · iso.org/standard/81118.html · ISO/IEC/IEEE 15288 & 12207 · KIM Tag 13 · Block 2"
+    },
+    {
+      "sc": "Bei der Budgetplanung eines KI-Vorhabens fällt auf, dass die Standard-Projektvorlage des Hauses mehrere Positionen nicht vorsieht.",
+      "q": "Welche Aussage(n) zu Budgetposten, die in klassischen Projektplänen typischerweise fehlen, ist oder sind korrekt?",
+      "opts": [
+        "Datenbeschaffung und -aufbereitung gehören als eigene Phase in den Plan und nicht als Teilaufgabe der Entwicklung — in der Praxis ist das der aufwendigste Posten überhaupt.",
+        "Für die Experimentierphase ist Budget vorzusehen, dessen Ergebnis auch lauten kann, dass sich das Vorhaben technisch nicht tragen lässt.",
+        "Laufende Überwachung und Nachtraining sind über die Gewährleistung des Lieferanten abgedeckt und belasten das Betriebsbudget daher nicht.",
+        "Die geordnete Außerbetriebnahme — was mit Modell, Daten und Protokollen bei einer Ablösung geschieht — steht in den Lebenszyklusstandards, fehlt aber in den meisten Projektplänen."
+      ],
+      "correct": [
+        0,
+        1,
+        3
+      ],
+      "exp": "Vier Posten fallen regelmäßig durch das Raster und erscheinen später als Budgetüberschreitung: die Datenaufbereitung als eigene Phase, die Experimentierphase mit offenem Ausgang, die laufende Überwachung samt Nachtraining und die geordnete Außerbetriebnahme. Überwachung und Nachtraining sind Dauerposten im Betriebsbudget, keine Gewährleistungsfälle — ein KI-System ist nicht fertig, wenn es funktioniert; dann beginnt es.",
+      "src": "ISO/IEC 5338:2023 · iso.org/standard/81118.html · KIM Tag 13 · Block 2"
+    },
+    {
+      "sc": "Der Lenkungskreis verlangt schon in der Explorationsphase wöchentlich einen Fertigstellungsgrad in Prozent.",
+      "q": "Welche Aussage(n) zum Controlling von KI-Vorhaben unter Unsicherheit ist oder sind korrekt?",
+      "opts": [
+        "Beantwortete Fragen sind in der Explorationsphase die aussagekräftigere Fortschrittsgröße — die belastbare Erkenntnis, ob die Datenqualität ausreicht, ist ein Fortschritt, auch wenn noch nichts läuft.",
+        "Budget wird sinnvollerweise stufenweise gegen die jeweils nächste Entscheidung freigegeben statt pauschal gegen das Gesamtbudget.",
+        "Ein wöchentlicher Fertigstellungsgrad in Prozent schafft gerade in der Explorationsphase Transparenz, weil er den bisherigen Aufwand ins Verhältnis zum Gesamtumfang setzt.",
+        "Klassisches Projektcontrolling misst die Abweichung vom Plan und ist deshalb auch in der Explorationsphase eines KI-Vorhabens das geeignete Mittel."
+      ],
+      "correct": [
+        0,
+        1
+      ],
+      "exp": "Klassisches Controlling misst die Abweichung vom Plan und setzt damit voraus, dass der Plan stimmen konnte. In der Explorationsphase stimmt er nicht — und das ist kein Fehler. Drei Umstellungen genügen: beantwortete Fragen statt Fertigstellungsgrad, erreichte Entscheidungspunkte statt Termintreue je Sprint, Budgetfreigabe gegen die nächste Entscheidung statt gegen das Gesamtbudget. Ein Prozentwert für explorative Arbeit erzeugt eine Zahl, die niemand ernst nimmt und die dennoch berichtet wird.",
+      "src": "V-Modell XT Bund — Entscheidungspunkte · itzbund.de · PMI — Project Charter · pmi.org · KIM Tag 13 · Controlling"
+    },
+    {
+      "sc": "Im Team wird diskutiert, welches agile Verfahren zu welcher Art von Arbeit passt.",
+      "q": "Welche Aussage(n) zur Unterscheidung von Scrum und Kanban ist oder sind korrekt?",
+      "opts": [
+        "Scrum schneidet die Arbeit in feste Zeitabschnitte und hält den Umfang eines Sprints nach dessen Beginn stabil; Kanban kennt keinen Takt und begrenzt stattdessen die Zahl gleichzeitig laufender Aufgaben.",
+        "Kanban schreibt drei feste Rollen vor — fachliche Priorisierung, Verfahrensverantwortung und umsetzendes Team —, während Scrum ohne vorgegebene Rollen auskommt.",
+        "Scrum eignet sich besonders für Arbeit, die unvorhersehbar von außen hereinkommt, etwa im Betrieb und beim Beheben von Auffälligkeiten.",
+        "Kanban erzeugt über feste Termine einen wiederkehrenden Anlass, Ergebnisse zu zeigen, und schafft dadurch Verbindlichkeit gegenüber Gremien."
+      ],
+      "correct": [
+        0
+      ],
+      "exp": "Scrum arbeitet im festen Takt und hält den Sprintumfang stabil; Kanban arbeitet ohne Takt und begrenzt die parallel laufenden Aufgaben. Die drei festen Rollen gehören zu Scrum, nicht zu Kanban. Für unvorhersehbar hereinkommende Arbeit eignet sich Kanban, nicht Scrum. Und die festen Termine mit wiederkehrender Ergebnisschau sind ein Merkmal von Scrum — Kanban legt Termine nur fest, soweit das Team sie selbst vereinbart.",
+      "src": "KIM Tag 13 · Block 1 · Grundlagen Scrum und Kanban"
+    }
+  ],
+  "b": [
+    {
+      "sc": "Als Projektleitung berichtest du an ein Gremium, das wöchentlich einen Fortschrittsbalken erwartet, während das Team in Erkenntnissen arbeitet.",
+      "q": "Welche Aussage(n) zur Abgrenzung von agiler und klassischer Steuerungsebene ist oder sind korrekt?",
+      "opts": [
+        "Das häufigste Scheitern liegt weniger in der Wahl des Steuerungsmodells als in einer unklaren Grenze zwischen den beiden Ebenen.",
+        "Wird agile Arbeit in klassische Fortschrittsbalken gepresst, entsteht eine Kennzahl, der niemand traut und die dennoch berichtet wird.",
+        "Rein agile Steuerung lässt sich nach außen gut berichten, weil die kurzen Rückkopplungszyklen laufend belastbare Termin- und Kostenaussagen erzeugen.",
+        "Rein klassische Steuerung trägt bei KI-Vorhaben, sobald der Projektplan zu Beginn ausreichend detailliert erstellt wurde."
+      ],
+      "correct": [
+        0,
+        1
+      ],
+      "exp": "Beide Modelle haben ihre Berechtigung; entscheidend ist die saubere Grenze zwischen ihnen. Fehlt sie, entstehen Scheinberichte. Rein agile Steuerung ist nach außen schwer zu berichten — ohne festen Rahmen fehlt die Grundlage für Verträge, Freigaben und Nachweise. Rein klassische Steuerung setzt voraus, dass man das Ergebnis vorab kennt; bei KI-Vorhaben stimmen solche Pläne nach dem ersten Datenbefund nicht mehr, unabhängig vom Detaillierungsgrad.",
+      "src": "Agile vs. Waterfall Decision Model · sciencedirect.com/science/article/pii/S1877050921002702 · KIM Tag 13 · Block 1"
+    },
+    {
+      "sc": "Für ein KI-Vorhaben soll externe Unterstützung eingekauft werden. Du bereitest die Entscheidungsvorlage vor.",
+      "q": "Welche Aussage(n) zu den Typen externer Partner und ihren charakteristischen Risiken ist oder sind korrekt?",
+      "opts": [
+        "Beim Anbieter einer Standardlösung sind Start und Kosten planbar; das charakteristische Risiko ist die Anbieterabhängigkeit, weil die Anpassbarkeit dort endet, wo das Produkt endet.",
+        "Bei Beratungs- und Umsetzungspartnern besteht das charakteristische Risiko darin, dass das aufgebaute Wissen mit dem Projektende das Haus verlässt, wenn es niemand übernimmt.",
+        "Forschungseinrichtungen und junge Unternehmen passen zu Fragestellungen, für die es noch keine Lösung gibt; einzuplanen sind unsicherer Ausgang, unklare Fortführung und das Bestandsrisiko.",
+        "Referenzen aus dem allgemeinen KI-Umfeld sind bei der Auswahl aussagekräftiger als Referenzen aus dem eigenen Anwendungsfeld, weil sie die Breite der Erfahrung belegen."
+      ],
+      "correct": [
+        0,
+        1,
+        2
+      ],
+      "exp": "Die drei Partnertypen bringen jeweils ein eigenes Risikoprofil mit: Anbieterabhängigkeit bei Standardlösungen, Wissensabfluss bei Beratungspartnern, Ergebnis- und Bestandsrisiko bei Forschung und Start-ups. Bei der Auswahl schlägt fachliche Passung im eigenen Anwendungsfeld die allgemeine KI-Erfahrung — aufschlussreicher als jede Referenzliste ist die Frage nach einem Projekt, das nicht funktioniert hat.",
+      "src": "KIM Tag 13 · Block 3 · Partnertypen und Auswahlkriterien"
+    },
+    {
+      "sc": "Die Rechtsabteilung bittet dich um die fachlichen Punkte, die in einem KI-Dienstleistungsvertrag geprüft werden sollen.",
+      "q": "Welche Aussage(n) zu Vertragspunkten bei KI-Dienstleistungen ist oder sind korrekt?",
+      "opts": [
+        "Der Leistungsumfang gehört messbar beschrieben — bei KI besonders wichtig, weil „funktioniert“ kein Zustand ist, sondern ein Wertebereich.",
+        "Die Verwendung eigener Eingaben für das Training fremder Modelle sollte ausdrücklich ausgeschlossen werden, sofern sie nicht gewollt ist.",
+        "Rechte an trainierten Modellen und aufgebauten Wissensbasen ergeben sich aus dem Urheberrecht und bedürfen daher keiner gesonderten vertraglichen Regelung.",
+        "Eine Übergangsfrist für den Ausstieg ist entbehrlich, solange der Anbieter einen Export in gängigen Formaten zusagt."
+      ],
+      "correct": [
+        0,
+        1
+      ],
+      "exp": "Sieben Punkte gehören in einen KI-Dienstleistungsvertrag: Leistungsumfang, Auftragsverarbeitung nach Art. 28 DSGVO, Datenresidenz, Nutzung der Eingaben, Rechte an Ergebnissen, Ausstieg samt Datenrückgabe sowie Haftung. Die Rechte an trainierten Modellen und Wissensbasen sind gerade nicht selbstverständlich geklärt und müssen ausdrücklich geregelt werden. Ohne Übergangsfrist endet der Zugang am Kündigungstag — eine Exportzusage allein genügt dafür nicht.",
+      "src": "DSGVO Art. 28 · KIM Tag 13 · Block 3 · Vertragspunkte"
+    },
+    {
+      "sc": "Bei der Vertragsverhandlung mit einem Cloud-Anbieter geht es um die Frage, wie aufwendig und teuer ein späterer Wechsel wird.",
+      "q": "Welche Aussage(n) zu den Wechselregelungen des EU Data Act ist oder sind korrekt?",
+      "opts": [
+        "Die Wechselregelungen für Datenverarbeitungsdienste gelten seit dem 12. September 2025 und machen die Wechselfähigkeit weitgehend zum Rechtsanspruch.",
+        "Ab dem 12. Januar 2027 dürfen Anbieter für den Wechselvorgang keine Wechselentgelte mehr erheben.",
+        "Bis zum Stichtag im Januar 2027 dürfen Wechselentgelte in beliebiger Höhe erhoben werden, solange sie im Vertrag ausgewiesen sind.",
+        "Die Wechselregelungen erfassen Infrastrukturdienste, nicht jedoch Plattform- und Softwaredienste."
+      ],
+      "correct": [
+        0,
+        1
+      ],
+      "exp": "Der EU Data Act gilt für Datenverarbeitungsdienste seit dem 12. September 2025; ab dem 12. Januar 2027 sind Wechselentgelte für den Wechselvorgang untersagt. In der Übergangszeit sind sie nicht frei kalkulierbar, sondern auf die unmittelbar mit dem Wechsel verbundenen Kosten begrenzt. Erfasst sind Infrastruktur-, Plattform- und Softwaredienste gleichermaßen. Der Ausstiegspunkt ist damit keine reine Verhandlungsposition mehr, sondern eine Frage der konkreten Umsetzung.",
+      "src": "EU Data Act Art. 29 · eu-data-act.com/Data_Act_Article_29.html · Europäische Kommission — Data Act explained · digital-strategy.ec.europa.eu/en/factpages/data-act-explained"
+    },
+    {
+      "sc": "Vor der Auswahl eines KI-Werkzeugs sollst du klären, welche Kosten und welche Bindung tatsächlich entstehen.",
+      "q": "Welche Aussage(n) zu Lizenz- und Kostenmodellen ist oder sind korrekt?",
+      "opts": [
+        "Ein Preis je Nutzerplatz ist gut planbar, eine Mengenabrechnung skaliert dagegen mit der Nutzung — und damit auch mit Fehlnutzung; beides geht als laufende Modellkosten in die Wirtschaftlichkeitsrechnung ein.",
+        "Anbieter sind verpflichtet, ein einmal angebotenes Modell dauerhaft weiter bereitzustellen; Abkündigungen sind bei der Planung daher nicht zu berücksichtigen.",
+        "Bei Geschäftstarifen ist der Umgang mit Eingaben genauso geregelt wie bei Privatzugängen, sodass eine gesonderte schriftliche Bestätigung entbehrlich ist.",
+        "Die veröffentlichte Preisliste bildet das Kostenmodell vollständig ab, sofern sie Nutzerplätze und Nutzungsmengen ausweist."
+      ],
+      "correct": [
+        0
+      ],
+      "exp": "Die Preisliste ist nicht das Kostenmodell. Vier Fragen klären das Bild: Wonach wird abgerechnet, was geschieht mit den Eingaben, welche Zusagen gelten zur Verfügbarkeit, und wie kommt man wieder heraus. Es besteht keine Pflicht, ein Modell dauerhaft weiter anzubieten — Abkündigungen gehören eingeplant. Geschäftstarife regeln den Umgang mit Eingaben üblicherweise anders als Privatzugänge; das gehört schriftlich bestätigt.",
+      "src": "EU Data Act Art. 29 · eu-data-act.com/Data_Act_Article_29.html · KIM Tag 13 · Block 4"
+    }
+  ]
+}
+
+var APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyPs358GF_E1xsvTh08PpTpZcBDS1OvsU9XQ0qi0MkZoCCnAk4dyo3Aii0OYxILdvCRYA/exec';
+var selectedRole = null, questions = [], userAnswers = [];
+var participantName = '';
+var ROLE_LABELS = {"a": "KI-Manager:in · Steuerung & Lebenszyklus", "b": "Projektleitung / PMO"};
+
+function selectRole(r) {
+  selectedRole = r;
+  document.getElementById('btn-role-a').className = 'sel-btn' + (r==='a' ? ' active-a' : '');
+  document.getElementById('btn-role-b').className = 'sel-btn' + (r==='b' ? ' active-b' : '');
+  checkReady();
+}
+function checkReady() {
+  document.getElementById('btn-start').disabled = !selectedRole;
+}
+
+function shuffle(arr) {
+  var a = arr.slice(), i = a.length, j, t;
+  while (i--) { j = Math.floor(Math.random()*(i+1)); t=a[i]; a[i]=a[j]; a[j]=t; }
+  return a;
+}
+
+function startQuiz() {
+  var pool = QBANK[selectedRole] || [];
+  questions = pool.map(function(q) {
+    var indices = q.opts.map(function(_,i){return i;});
+    var shuffled = shuffle(indices);
+    var newOpts = shuffled.map(function(i){return q.opts[i];});
+    var newCorrect = q.correct.map(function(c){return shuffled.indexOf(c);});
+    return {q: q.q, sc: q.sc||'', opts: newOpts, correct: newCorrect, exp: q.exp, src: q.src||''};
+  });
+  userAnswers = questions.map(function(){return [];});
+
+  document.getElementById('setup-section').style.display = 'none';
+  document.getElementById('quiz-section').style.display = 'block';
+
+  var name = document.getElementById('participant-name').value.trim() || 'Anonym';
+  participantName = name;
+  var strip = document.getElementById('quiz-header-strip');
+  strip.innerHTML =
+    '<span class="strip-tag strip-role-' + selectedRole + '">' + ROLE_LABELS[selectedRole] + '</span>' +
+    '<span class="strip-name">' + name + '</span>';
+
+  renderQuestions();
+  updateProgress();
+}
+
+function renderQuestions() {
+  var container = document.getElementById('questions-container');
+  container.innerHTML = '';
+  var letters = ['A','B','C','D','E'];
+  questions.forEach(function(q, qi) {
+    var card = document.createElement('div');
+    card.className = 'q-card';
+    card.id = 'qcard-' + qi;
+    var html = '<div class="q-num">Frage ' + (qi+1) + ' von ' + questions.length + '</div>';
+    if (q.sc) html += '<div class="q-sc">' + q.sc + '</div>';
+    html += '<div class="q-text">' + q.q + '</div>';
+    html += '<div class="opt-list" id="opts-' + qi + '">';
+    q.opts.forEach(function(opt, oi) {
+      html += '<div class="opt" id="opt-' + qi + '-' + oi + '" onclick="toggleOpt(' + qi + ',' + oi + ')">' +
+        '<div class="opt-cb" id="cb-' + qi + '-' + oi + '"></div>' +
+        '<span class="opt-letter">' + letters[oi] + '.</span>' +
+        '<span class="opt-text">' + opt + '</span></div>';
+    });
+    html += '</div>';
+    card.innerHTML = html;
+    container.appendChild(card);
+  });
+}
+
+function toggleOpt(qi, oi) {
+  var idx = userAnswers[qi].indexOf(oi);
+  if (idx >= 0) {
+    userAnswers[qi].splice(idx, 1);
+    document.getElementById('opt-' + qi + '-' + oi).classList.remove('selected');
+    document.getElementById('cb-' + qi + '-' + oi).classList.remove('chk');
+  } else {
+    userAnswers[qi].push(oi);
+    document.getElementById('opt-' + qi + '-' + oi).classList.add('selected');
+    document.getElementById('cb-' + qi + '-' + oi).classList.add('chk');
+  }
+  updateSubmitBtn();
+  updateProgress();
+}
+
+function updateSubmitBtn() {
+  var answered = userAnswers.filter(function(a){return a.length>0;}).length;
+  document.getElementById('btn-submit').disabled = answered < questions.length;
+}
+
+function updateProgress() {
+  var answered = userAnswers.filter(function(a){return a.length>0;}).length;
+  var pct = questions.length ? (answered/questions.length*100) : 0;
+  document.getElementById('progress-fill').style.width = pct + '%';
+  document.getElementById('progress-label').textContent = answered + ' von ' + questions.length + ' Fragen beantwortet';
+}
+
+function submitQuiz() {
+  document.getElementById('quiz-section').style.display = 'none';
+  document.getElementById('results-section').style.display = 'block';
+
+  var score = 0;
+  questions.forEach(function(q, qi) {
+    var ua = userAnswers[qi].slice().sort();
+    var ca = q.correct.slice().sort();
+    if (JSON.stringify(ua) === JSON.stringify(ca)) score++;
+  });
+
+  var pct = Math.round(score/questions.length*100);
+  var grade, label;
+  if (pct >= 90) { grade = 'A'; label = 'Ausgezeichnet'; }
+  else if (pct >= 75) { grade = 'B'; label = 'Sehr gut'; }
+  else if (pct >= 60) { grade = 'C'; label = 'Gut'; }
+  else if (pct >= 45) { grade = 'D'; label = 'Befriedigend'; }
+  else { grade = 'E'; label = 'Wiederholen empfohlen'; }
+
+  document.getElementById('result-grade').textContent = grade;
+  document.getElementById('result-label').textContent = label + ' — ' + pct + ' %';
+  document.getElementById('result-sub').textContent = score + ' von ' + questions.length + ' Fragen vollständig richtig';
+
+  document.getElementById('stats-row').innerHTML =
+    '<div class="stat"><div class="stat-n">' + score + '</div><div class="stat-l">Richtig</div></div>' +
+    '<div class="stat"><div class="stat-n">' + (questions.length-score) + '</div><div class="stat-l">Falsch</div></div>' +
+    '<div class="stat"><div class="stat-n">' + pct + ' %</div><div class="stat-l">Trefferquote</div></div>';
+
+  document.getElementById('comp-bars').innerHTML =
+    '<div class="comp-row"><div class="comp-labels"><span>Richtig</span><span>' + score + '/' + questions.length + '</span></div>' +
+    '<div class="comp-track"><div class="comp-fill fill-ok" style="width:' + pct + '%"></div></div></div>' +
+    '<div class="comp-row"><div class="comp-labels"><span>Verbesserungspotenzial</span><span>' + (questions.length-score) + '/' + questions.length + '</span></div>' +
+    '<div class="comp-track"><div class="comp-fill fill-wrong" style="width:' + (100-pct) + '%"></div></div></div>';
+
+  var letters = ['A','B','C','D','E'];
+  var rev = document.getElementById('review-container');
+  rev.innerHTML = '';
+  questions.forEach(function(q, qi) {
+    var ua = userAnswers[qi].slice().sort();
+    var ca = q.correct.slice().sort();
+    var isOk = JSON.stringify(ua) === JSON.stringify(ca);
+    var card = document.createElement('div');
+    card.className = 'q-card';
+    var html = '<div class="q-num">Frage ' + (qi+1) + '</div>';
+    if (q.sc) html += '<div class="q-sc">' + q.sc + '</div>';
+    html += '<div class="q-text">' + q.q + '</div>';
+    html += '<div class="opt-list" style="margin-top:.7rem">';
+    q.opts.forEach(function(opt, oi) {
+      var sel = ua.indexOf(oi) >= 0;
+      var cor = ca.indexOf(oi) >= 0;
+      var cls = 'opt disabled ';
+      if (sel && cor) cls += 'correct-sel';
+      else if (sel && !cor) cls += 'wrong-sel';
+      else if (!sel && cor) cls += 'missed';
+      var cbCls = 'opt-cb';
+      html += '<div class="' + cls + '"><div class="' + cbCls + '"></div>' +
+        '<span class="opt-letter">' + letters[oi] + '.</span><span class="opt-text">' + opt + '</span></div>';
+    });
+    html += '</div>';
+    if (q.exp) {
+      html += '<div class="feedback ' + (isOk ? 'fb-ok' : 'fb-wrong') + '">';
+      html += '<div class="fb-title">' + (isOk ? '✓ Richtig' : '✗ Nicht vollständig richtig') + '</div>';
+      html += '<div class="fb-text">' + q.exp + '</div>';
+      if (q.src) html += '<div class="fb-source">Quelle: ' + linkify(q.src) + '</div>';
+      html += '</div>';
+    }
+    card.innerHTML = html;
+    rev.appendChild(card);
+  });
+
+  sendToSheets(score, questions.length - score);
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+
+function linkify(src) {
+  return src.split(' · ').map(function(part) {
+    var t = part.trim();
+    if (!/\s/.test(t) && /\.[a-zA-Z]{2,}/.test(t) && t.length > 4) {
+      var href = /^https?:\/\//i.test(t) ? t : 'https://' + t;
+      return '<a href="' + href + '" target="_blank">' + t + '</a>';
+    }
+    return part;
+  }).join(' · ');
+}
+function sendToSheets(correct, wrong) {
+  if (!APPS_SCRIPT_URL) return;
+  var TAG_NR = 13;
+  var THEMA  = "Projektsteuerung & KI-Lebenszyklus";
+  var letters = ['A','B','C','D','E'];
+  var stufe = ROLE_LABELS[selectedRole] || selectedRole;
+
+  var status = document.getElementById('submit-status');
+  if (status) {
+    status.className = 'submit-status sending';
+    status.style.display = 'block';
+    status.textContent = 'Ergebnis wird übermittelt...';
+  }
+
+  var toSend = [];
+  questions.forEach(function(q, i) {
+    var selIndices  = userAnswers[i].slice().sort();
+    var corrIndices = q.correct.slice().sort();
+    var isFull      = selIndices.join(',') === corrIndices.join(',');
+    var gewaehlt    = selIndices.map(function(idx) { return letters[idx]; }).join(',') || '-';
+    var korrekt     = corrIndices.map(function(idx) { return letters[idx]; }).join(',');
+    var ergebnis    = isFull ? 'RICHTIG' : 'FALSCH';
+
+    toSend.push(
+      APPS_SCRIPT_URL
+      + '?tab='        + encodeURIComponent('KI-Manager')
+      + '&teilnehmer=' + encodeURIComponent(participantName)
+      + '&tag='        + TAG_NR
+      + '&thema='      + encodeURIComponent(THEMA)
+      + '&stufe='      + encodeURIComponent(stufe)
+      + '&frage_nr='   + (i + 1)
+      + '&frage_text=' + encodeURIComponent(q.q.substring(0, 80))
+      + '&gewaehlt='   + encodeURIComponent(gewaehlt)
+      + '&korrekt='    + encodeURIComponent(korrekt)
+      + '&ergebnis='   + encodeURIComponent(ergebnis)
+    );
+  });
+
+  toSend.forEach(function(url, i) {
+    setTimeout(function() {
+      fetch(url, { mode: 'no-cors' }).catch(function() {});
+    }, i * 300);
+  });
+  if (status) {
+    setTimeout(function() {
+      status.className = 'submit-status success';
+      status.textContent = '✓ ' + toSend.length + ' Antworten übermittelt ('
+        + new Date().toLocaleTimeString('de-DE') + ')';
+    }, toSend.length * 300 + 500);
+  }
+}
+</script>
+
+</body>
+</html>
