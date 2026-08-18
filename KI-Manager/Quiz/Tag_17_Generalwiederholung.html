@@ -112,13 +112,30 @@ a{color:var(--accent);}
   <div class="setup-card">
     <h2>Tag 17 · Generalwiederholung starten</h2>
     <div class="setup-info">
-      100 Fragen in 10 Blöcken à 10 · nach jedem Block Zwischenauswertung und Zwischenspeicherung
+      100 Fragen in 4 Blöcken à 25 · nach jedem Block Zwischenauswertung und Zwischenspeicherung
+    </div>
+    <div id="resume-panel" style="display:none;margin-bottom:1.2rem;padding:1rem 1.1rem;background:var(--card);border:1px solid var(--rule);border-left:3px solid var(--accent, #4a7);border-radius:10px;">
+      <div style="font-family:Georgia,serif;font-size:1.02rem;margin-bottom:.35rem;">Angefangener Durchlauf gefunden</div>
+      <div id="resume-detail" style="font-size:13px;color:var(--muted);margin-bottom:.9rem;"></div>
+      <div style="display:flex;gap:.6rem;flex-wrap:wrap;">
+        <button class="btn btn-submit" style="flex:1;min-width:180px;" onclick="resumeQuiz()">Fortsetzen &rarr;</button>
+        <button class="btn" style="flex:1;min-width:180px;" onclick="discardSaved()">Neu beginnen</button>
+      </div>
     </div>
     <div style="margin-bottom:1rem;">
       <span class="field-label">Dein Name (oder Teilnehmer-Nummer)</span>
       <input type="text" id="participant-name" class="setup-input" placeholder="z. B. Teilnehmer-07 oder Vorname">
     </div>
     <button class="btn-start" onclick="startQuiz()">Quiz starten &rarr;</button>
+    <div class="setup-info" style="margin-top:.9rem;font-size:12.5px;line-height:1.55;">
+      <strong>Zwischenstand wird gespeichert.</strong> Damit du die Generalwiederholung nicht in einem Zug bearbeiten musst,
+      merkt sich dieser Browser deinen Fortschritt: die Reihenfolge der Fragen, deine bisherigen Antworten und den zuletzt
+      abgeschlossenen Block. Schließt du die Seite, kannst du beim nächsten Öffnen dort weitermachen, wo du aufgehört hast —
+      bereits bearbeitete Blöcke werden dir nicht noch einmal vorgelegt.<br><br>
+      Die Speicherung erfolgt <strong>ausschließlich lokal auf diesem Gerät</strong> und in diesem Browser. Ein Wechsel des
+      Geräts, ein anderer Browser oder ein privates Fenster starten einen neuen Durchlauf. Wenn du den Browserverlauf oder
+      die Websitedaten löschst, geht der Zwischenstand verloren. Über „Neu beginnen“ kannst du ihn jederzeit selbst verwerfen.
+    </div>
   </div>
 </div>
 
@@ -1629,20 +1646,106 @@ var QBANK = [
 /* Ende QBANK */ // end QBANK
 
 /* ─── State ─────────────────────────────────────────────────────── */
-var BLOCK_SIZE = 10;
-var state = { name: '', questions: [], selections: [], currentBlock: 0, sentBlocks: {}, blockScores: [] };
+var BLOCK_SIZE = 25;
+var state = { name: '', questions: [], order: [], selections: [], currentBlock: 0, sentBlocks: {}, blockScores: [] };
 
-function startQuiz() {
-  state.name = document.getElementById('participant-name').value.trim() || 'Anonym';
-  state.questions = shuffle(QBANK.slice());
-  state.selections = state.questions.map(function(){ return []; });
-  state.currentBlock = 0;
-  state.sentBlocks = {};
-  state.blockScores = [];
+/* ─── Lokale Speicherung des Zwischenstands ─────────────────────────── */
+var STORAGE_KEY = 'gw_kim_tag17_v1';
+
+function saveState() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({
+      v: 1,
+      qcount: QBANK.length,
+      name: state.name,
+      order: state.order,
+      selections: state.selections,
+      currentBlock: state.currentBlock,
+      sentBlocks: state.sentBlocks,
+      blockScores: state.blockScores,
+      ts: Date.now()
+    }));
+  } catch (e) { /* Speicher nicht verfügbar - Quiz läuft trotzdem */ }
+}
+
+function readSaved() {
+  try {
+    var raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return null;
+    var s = JSON.parse(raw);
+    // Fragenbestand geändert -> alter Stand ist nicht mehr zuzuordnen
+    if (!s || s.v !== 1 || s.qcount !== QBANK.length) return null;
+    if (!s.order || s.order.length !== QBANK.length) return null;
+    return s;
+  } catch (e) { return null; }
+}
+
+function clearSaved() {
+  try { localStorage.removeItem(STORAGE_KEY); } catch (e) {}
+}
+
+function discardSaved() {
+  clearSaved();
+  var p = document.getElementById('resume-panel');
+  if (p) p.style.display = 'none';
+}
+
+function offerResume() {
+  var s = readSaved();
+  if (!s) return;
+  var done = 0;
+  for (var i = 0; i < s.blockScores.length; i++) { if (s.blockScores[i]) done++; }
+  var tb = Math.ceil(QBANK.length / BLOCK_SIZE);
+  if (done >= tb) { clearSaved(); return; }
+  var beantwortet = 0;
+  for (var j = 0; j < s.selections.length; j++) { if (s.selections[j] && s.selections[j].length) beantwortet++; }
+  var d = new Date(s.ts);
+  var datum = ('0'+d.getDate()).slice(-2) + '.' + ('0'+(d.getMonth()+1)).slice(-2) + '.' + d.getFullYear();
+  var uhr = ('0'+d.getHours()).slice(-2) + ':' + ('0'+d.getMinutes()).slice(-2);
+  document.getElementById('resume-detail').innerHTML =
+      escHtml(s.name) + ' &middot; ' + done + ' von ' + tb + ' Bl&ouml;cken abgeschlossen &middot; '
+    + beantwortet + ' von ' + QBANK.length + ' Fragen beantwortet<br>Zuletzt bearbeitet am ' + datum + ' um ' + uhr + ' Uhr.';
+  document.getElementById('resume-panel').style.display = '';
+  var nameInput = document.getElementById('participant-name');
+  if (nameInput && !nameInput.value) nameInput.value = s.name;
+}
+
+function resumeQuiz() {
+  var s = readSaved();
+  if (!s) { discardSaved(); return; }
+  state.name = s.name;
+  state.order = s.order;
+  state.questions = s.order.map(function(i){ return QBANK[i]; });
+  state.selections = s.selections;
+  state.sentBlocks = s.sentBlocks || {};
+  state.blockScores = s.blockScores || [];
+  // erster Block, der noch keine Auswertung hat
+  var tb = Math.ceil(state.questions.length / BLOCK_SIZE);
+  var target = tb - 1;
+  for (var i = 0; i < tb; i++) { if (!state.blockScores[i]) { target = i; break; } }
+  state.currentBlock = target;
+  enterQuizView();
+  renderBlock(target);
+}
+
+function enterQuizView() {
   document.getElementById('setup-section').style.display = 'none';
   document.getElementById('quiz-section').style.display = 'block';
   var strip = document.getElementById('quiz-header-strip');
   strip.innerHTML = '<span class="strip-tag">KI-Manager:in</span><span class="strip-tag">Tag 17 · Generalwiederholung</span><span class="strip-name">' + escHtml(state.name) + '</span>';
+}
+
+function startQuiz() {
+  clearSaved();
+  state.name = document.getElementById('participant-name').value.trim() || 'Anonym';
+  state.order = shuffleIndexes(QBANK.length);
+  state.questions = state.order.map(function(i){ return QBANK[i]; });
+  state.selections = state.questions.map(function(){ return []; });
+  state.currentBlock = 0;
+  state.sentBlocks = {};
+  state.blockScores = [];
+  enterQuizView();
+  saveState();
   renderBlock(0);
 }
 
@@ -1666,6 +1769,7 @@ function shuffleIndexes(n) {
 
 function renderBlock(bi) {
   state.currentBlock = bi;
+  saveState();
   var container = document.getElementById('questions-container');
   container.innerHTML = '';
   var total = state.questions.length;
@@ -1741,6 +1845,7 @@ function toggleOpt(qi, oi) {
   });
   checkSubmitReady();
   updateProgress();
+  saveState();
 }
 
 function checkSubmitReady() {
@@ -1801,6 +1906,7 @@ function submitQuiz() {
   var bi = state.currentBlock;
   var res = evaluateBlock(bi);
   state.blockScores[bi] = res;
+  saveState();
 
   // Hide the submit button
   var btn = document.getElementById('btn-submit');
@@ -1862,6 +1968,7 @@ function submitQuiz() {
 function sendBlock(bi, onDone) {
   if (state.sentBlocks[bi]) { if (onDone) onDone(); return; }
   state.sentBlocks[bi] = true;
+  saveState();
 
   var TAG_NR = 17;
   var THEMA  = 'Prüfungssimulation';
@@ -1922,6 +2029,7 @@ function sendBlock(bi, onDone) {
 }
 
 function showFinalResults() {
+  clearSaved();
   var score = 0, total = state.questions.length;
   var catMap = {};
   state.questions.forEach(function(q, qi) {
@@ -1976,5 +2084,7 @@ function escHtml(s) {
 }
 </script>
 </body>
+<script>
+try { offerResume(); } catch (e) {}
+</script>
 </html>
-                                                                                     
