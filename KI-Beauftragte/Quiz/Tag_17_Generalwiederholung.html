@@ -113,7 +113,7 @@ a{color:var(--accent);}
   <div class="setup-card">
     <h2>Generalwiederholung starten</h2>
     <div class="setup-info">
-      Fragen aus allen vier Wochen &mdash; EU AI Act, ISO 42001, DSGVO, Datenqualit&auml;t und Change Management. In Bl&ouml;cken zu je 25 Fragen; nach jedem Block Zwischenauswertung und Zwischenspeicherung.
+      75 Fragen aus allen vier Wochen &mdash; EU AI Act, ISO 42001, DSGVO, Datenqualit&auml;t und Change Management. In 3 Bl&ouml;cken zu je 25 Fragen; nach jedem Block Zwischenauswertung und Zwischenspeicherung.
     </div>
     <div id="resume-panel" style="display:none;margin-bottom:1.2rem;padding:1rem 1.1rem;background:var(--card);border:1px solid var(--rule);border-left:3px solid var(--accent, #4a7);border-radius:10px;">
       <div style="font-family:Georgia,serif;font-size:1.02rem;margin-bottom:.35rem;">Angefangener Durchlauf gefunden</div>
@@ -957,6 +957,321 @@ var QBANK = [
     src: 'Brade et al. 2023 · Taxonomy of Prompt Modifiers · doi:10.1080/0144929X.2023.2286532'
   }
 
+,
+
+  /* ─── Ergänzung 18.08.2026 · 24 Fragen zur Angleichung an die Pool-Verteilung ─── */
+  {
+    week: 4, cat: "Datenmanagement – Qualität",
+    q: "Vor dem Aufbau eines KI-Systems bewertet das Team die Datenbasis anhand der sechs Datenqualitätsdimensionen nach DAMA International (Data Management Association). Welche Aussage(n) zu diesen Dimensionen ist oder sind korrekt?",
+    opts: [
+      "Vollständigkeit beschreibt, ob alle erwarteten Datensätze und Felder vorliegen — fehlende Werte senken sie unmittelbar und können einzelne Merkmale unbrauchbar machen.",
+      "Aktualität bewertet, ob die Daten den gegenwärtigen Stand abbilden; veraltete Bestände erzeugen Ergebnisse, die formal plausibel und fachlich überholt sind.",
+      "Eindeutigkeit ist erfüllt, sobald jeder Datensatz eine technische Kennung trägt; Dubletten erhöhen die Vollständigkeit und verbessern damit die Datenbasis.",
+      "Die sechs Dimensionen sind stets gleich zu gewichten; eine Priorisierung nach Anwendungsfall widerspricht der Methodik und ist zu vermeiden.",
+    ],
+    correct: [0, 1],
+    exp: "Vollständigkeit und Aktualität sind zwei der sechs Dimensionen und wirken unmittelbar auf die Modellgüte. Eindeutigkeit meint, dass ein Sachverhalt genau einmal erfasst ist — Dubletten verletzen sie und verbessern nichts; eine technische Kennung allein stellt sie nicht her. Die Gewichtung der Dimensionen richtet sich sehr wohl nach dem Anwendungsfall: Bei einem Diagnosesystem wiegt Aktualität schwerer als bei einem Archivbestand.",
+    src: "DAMA International — DMBOK®2 · KIB Tag 15 Hand-Out"
+  },
+  {
+    week: 4, cat: "Datenmanagement – EU AI Act Art. 10",
+    q: "Du prüfst als KI-Beauftragte:r, ob die Trainings-, Validierungs- und Testdatensätze eines Hochrisiko-KI-Systems den Anforderungen aus Artikel 10 des EU AI Act genügen. Welche Aussage(n) zu diesen Datenanforderungen ist oder sind korrekt?",
+    opts: [
+      "Die Datensätze müssen im Hinblick auf die Zweckbestimmung relevant, hinreichend repräsentativ und so weit wie möglich fehlerfrei und vollständig sein.",
+      "Mögliche Verzerrungen, die zu Diskriminierung führen können, sind zu untersuchen; gegen erkannte Verzerrungen sind geeignete Maßnahmen vorzusehen.",
+      "Die Anforderungen greifen mit der Produktivsetzung; für Entwicklung und Erprobung des Systems sind sie noch nicht maßgeblich.",
+      "Besondere geografische oder kontextuelle Gegebenheiten des vorgesehenen Einsatzbereichs bleiben bei der Datenprüfung außer Betracht.",
+    ],
+    correct: [0, 1],
+    exp: "Artikel 10 verlangt für Hochrisiko-Systeme Datensätze, die relevant, repräsentativ und so weit wie möglich fehlerfrei und vollständig sind, sowie eine Untersuchung auf mögliche Verzerrungen samt Gegenmaßnahmen. Die Anforderungen betreffen ausdrücklich die Entwicklungsphase — dort entstehen die Datensätze. Die geografischen und kontextuellen Gegebenheiten des Einsatzbereichs sind ebenfalls zu berücksichtigen, weil ein anderswo trainiertes Modell im eigenen Kontext systematisch danebenliegen kann.",
+    src: "EU AI Act Art. 10 · ISO/IEC 42001 Anhang A.4 · KIB Tag 15"
+  },
+  {
+    week: 4, cat: "Datenmanagement – FAIR-Prinzipien",
+    q: "Die Geschäftsführung fragt, was die FAIR-Prinzipien — auffindbar, zugänglich, interoperabel und wiederverwendbar — für die Datenbasis eines geplanten KI-Vorhabens bedeuten. Die Daten liegen derzeit in einem proprietären Format, das nur eine einzige Fachanwendung lesen kann. Welche Aussage(n) ist oder sind korrekt?",
+    opts: [
+      "Auffindbarkeit setzt voraus, dass Daten über beschreibende Metadaten und eine dauerhafte Kennung gefunden werden können — ohne Katalog bleibt der Bestand praktisch unsichtbar.",
+      "Interoperabilität ist bei einem ausschließlich proprietär lesbaren Format nicht gegeben; offene oder zumindest dokumentierte Formate sind die Voraussetzung für die Weiterverwendung.",
+      "Zugänglichkeit im Sinne der Prinzipien bedeutet, dass die Daten für jedermann frei verfügbar sein müssen; Zugriffsbeschränkungen widersprechen dem Ansatz.",
+      "Die Prinzipien richten sich an Forschungseinrichtungen; für die Datenhaltung in Unternehmen sind sie fachlich nicht anwendbar.",
+    ],
+    correct: [0, 1],
+    exp: "Auffindbarkeit verlangt Metadaten und dauerhafte Kennungen, Interoperabilität offene oder dokumentierte Formate — ein rein proprietäres Format verletzt sie. Zugänglichkeit bedeutet nicht Offenheit für alle, sondern klar geregelte und technisch beschriebene Zugriffswege; Beschränkungen sind ausdrücklich zulässig. Die Prinzipien stammen aus dem Forschungsumfeld, sind aber auf betriebliche Datenhaltung übertragbar und dort ebenso tragfähig.",
+    src: "GO FAIR — FAIR Principles · KIB Tag 15 Hand-Out"
+  },
+  {
+    week: 4, cat: "Datenmanagement – Data Governance",
+    q: "In einem Audit wird gefragt, wer im Unternehmen für die Qualität der KI-Trainingsdaten einsteht. Die Antwort lautet, dafür sei der KI-Beauftragte zuständig. Welche Aussage(n) zur Verantwortungsverteilung im Datenmanagement ist oder sind korrekt?",
+    opts: [
+      "Die fachliche Verantwortung für einen Datenbestand liegt bei der Fachabteilung, die ihn erzeugt und inhaltlich beurteilen kann — dort sitzt das Wissen über Bedeutung und Grenzen der Daten.",
+      "Der KI-Beauftragte wirkt koordinierend und prüfend: Er stellt sicher, dass Verantwortlichkeiten benannt, dokumentiert und regelmäßig überprüft werden.",
+      "Da der KI-Beauftragte die Einhaltung des EU AI Act verantwortet, geht die inhaltliche Datenverantwortung mit seiner Bestellung auf ihn über.",
+      "Eine schriftliche Zuordnung von Datenverantwortlichkeiten ist entbehrlich, solange die Fachabteilungen im Tagesgeschäft eingespielt zusammenarbeiten.",
+    ],
+    correct: [0, 1],
+    exp: "Datenverantwortung gehört dorthin, wo die fachliche Beurteilungsfähigkeit liegt — in die erzeugende Fachabteilung. Der KI-Beauftragte koordiniert, prüft und sorgt für dokumentierte Zuständigkeiten, übernimmt die inhaltliche Verantwortung aber nicht. Eine Bestellung verschiebt keine Fachverantwortung. Und eingespielte Zusammenarbeit ersetzt keine schriftliche Zuordnung: Im Audit zählt, was nachweisbar geregelt ist.",
+    src: "DAMA International — DMBOK®2 · EU AI Act Art. 10 · KIB Tag 15"
+  },
+  {
+    week: 4, cat: "Datenmanagement – Integrität und Protokollierung",
+    q: "Beim Überführen älterer Fachdokumente in ein KI-System sollen Maßnahmen zur Datenintegrität und zur Nachvollziehbarkeit vorgesehen werden. Welche Aussage(n) zu geeigneten Mechanismen ist oder sind korrekt?",
+    opts: [
+      "Eine Versionierung der Datenstände macht nachvollziehbar, welcher Bestand zu welchem Zeitpunkt in das System eingeflossen ist, und erlaubt die Rekonstruktion früherer Ergebnisse.",
+      "Für Hochrisiko-KI-Systeme verlangt der EU AI Act eine Protokollierung über die Lebensdauer, mit der sich der Betrieb im Nachhinein nachvollziehen lässt.",
+      "Prüfsummen über die eingelesenen Dateien sind ein rein technisches Hilfsmittel ohne Bezug zur Nachweisführung gegenüber einer Aufsichtsbehörde.",
+      "Sobald die Daten einmal geprüft in das System übernommen wurden, ist eine weitere Integritätsprüfung im laufenden Betrieb fachlich entbehrlich.",
+    ],
+    correct: [0, 1],
+    exp: "Versionierung der Datenstände ist die Grundlage jeder Rekonstruktion und damit auch der Fehlersuche. Für Hochrisiko-Systeme fordert der EU AI Act eine Protokollierung über die Lebensdauer des Systems. Prüfsummen sind sehr wohl Teil der Nachweisführung — sie belegen, dass ein Bestand unverändert ist. Und Integrität ist kein einmaliger Zustand: Bestände verändern sich im Betrieb durch Nachlieferungen, Korrekturen und Migrationen.",
+    src: "EU AI Act Art. 12 · KIB Tag 15 Hand-Out"
+  },
+  {
+    week: 4, cat: "Change Management – Widerstände",
+    q: "Bei der Einführung eines KI-Systems äußern Mitarbeitende deutliche Vorbehalte. Die Geschäftsführung möchte die Einführung beschleunigen und erwägt, die Bedenken zunächst zurückzustellen. Welche Aussage(n) zum Umgang mit Widerstand ist oder sind korrekt?",
+    opts: [
+      "Widerstand enthält regelmäßig sachliche Hinweise auf Schwachstellen im Vorhaben und ist als Informationsquelle zu behandeln, nicht allein als Hindernis.",
+      "Frühe und ehrliche Information über Ziel, Umfang und Grenzen des Systems senkt die Wahrscheinlichkeit späterer Blockaden erheblich.",
+      "Zurückgestellte Bedenken lösen sich mit den ersten sichtbaren Erfolgen des Systems in der Regel von selbst auf.",
+      "Ein knapper Zeitplan spricht dafür, die Beteiligung der Belegschaft auf die Phase nach der Produktivsetzung zu verschieben.",
+    ],
+    correct: [0, 1],
+    exp: "Widerstand ist häufig fachlich begründet und deckt Lücken auf, die im Projekt übersehen wurden. Frühe, ehrliche Kommunikation über Ziel, Umfang und ausdrücklich auch über die Grenzen des Systems reduziert spätere Blockaden. Zurückgestellte Bedenken verschwinden nicht, sie kehren zu einem ungünstigeren Zeitpunkt zurück. Und eine Beteiligung erst nach der Produktivsetzung kommt zu spät, um den Zuschnitt noch zu beeinflussen.",
+    src: "KIB Tag 16 · Change Management"
+  },
+  {
+    week: 4, cat: "Skalierung – Vom Pilotbetrieb in den Regelbetrieb",
+    q: "Ein KI-Pilotprojekt in einer Fachabteilung verlief erfolgreich. Die Geschäftsführung möchte das System nun unternehmensweit ausrollen. Welche Aussage(n) zur Skalierung eines erfolgreichen Piloten ist oder sind korrekt?",
+    opts: [
+      "Ein Pilot bestätigt die Tragfähigkeit unter den Bedingungen einer Abteilung; andere Bereiche bringen abweichende Daten, Abläufe und Erwartungen mit, die eine erneute Prüfung erfordern.",
+      "Mit der Ausweitung steigen Betriebsaufwand und Betreuungsbedarf — Schulung, Ansprechpartner und Überwachung sind für den Regelbetrieb eigens einzuplanen.",
+      "Da die technische Machbarkeit im Piloten nachgewiesen wurde, ist der Rollout im Wesentlichen eine Frage der Lizenzbeschaffung.",
+      "Ein im Piloten erreichtes Qualitätsniveau überträgt sich auf andere Fachbereiche, sofern dort dieselbe Softwareversion eingesetzt wird.",
+    ],
+    correct: [0, 1],
+    exp: "Ein Pilot ist ein Beleg unter bestimmten Bedingungen, keine Allgemeingültigkeit: Andere Bereiche haben andere Daten, Abläufe und Erwartungen. Mit der Ausweitung wachsen Betreuungs- und Überwachungsaufwand, die eigens zu planen sind. Der Rollout ist deshalb weit mehr als eine Beschaffungsfrage. Und das Qualitätsniveau hängt an den Daten des jeweiligen Bereichs, nicht an der Softwareversion.",
+    src: "KIB Tag 16 · Change Management · ISO/IEC 42001:2023"
+  },
+  {
+    week: 4, cat: "Change Management – Schatten-KI",
+    q: "Im Unternehmen zeigt sich, dass Beschäftigte eigenständig frei zugängliche KI-Werkzeuge für dienstliche Aufgaben nutzen, ohne dass dies abgestimmt wäre. Welche Aussage(n) zum Umgang mit dieser nicht abgestimmten Nutzung ist oder sind korrekt?",
+    opts: [
+      "Ein zentraler Freigabeprozess für neu genutzte Werkzeuge schafft Übersicht und verhindert, dass Unternehmensdaten unkontrolliert in fremde Dienste gelangen.",
+      "Eine verständliche Nutzungsrichtlinie mit ausdrücklich erlaubten Anwendungsfällen wirkt besser als ein pauschales Verbot, das in der Praxis umgangen wird.",
+      "Ein vollständiges Verbot aller nicht freigegebenen Werkzeuge löst das Problem, weil damit die rechtliche Verantwortung auf die Beschäftigten übergeht.",
+      "Solange keine personenbezogenen Daten eingegeben werden, ist die Nutzung beliebiger Werkzeuge aus Unternehmenssicht unbedenklich.",
+    ],
+    correct: [0, 1],
+    exp: "Ein Freigabeprozess schafft Übersicht über die tatsächlich genutzten Werkzeuge und schützt vor unkontrolliertem Datenabfluss. Eine verständliche Richtlinie mit erlaubten Anwendungsfällen wirkt nachhaltiger als ein Verbot, das umgangen wird. Ein Verbot verschiebt die Verantwortung des Unternehmens nicht auf die Beschäftigten. Und auch ohne Personenbezug können Geschäftsgeheimnisse, Kalkulationen oder Vertragsinhalte abfließen.",
+    src: "KIB Tag 16 · Change Management · DSGVO Art. 28"
+  },
+  {
+    week: 1, cat: "Rechtliche Grundlagen – Anwendungsbereich",
+    q: "Du wirst gefragt, weshalb die Datenschutz-Grundverordnung auch dann gilt, wenn das eingesetzte KI-Werkzeug von einem Anbieter außerhalb der Europäischen Union betrieben wird. Welche Aussage(n) zum räumlichen Anwendungsbereich ist oder sind korrekt?",
+    opts: [
+      "Maßgeblich ist unter anderem, ob die Verarbeitung im Rahmen der Tätigkeiten einer Niederlassung in der Union stattfindet — unabhängig davon, wo die Verarbeitung technisch erfolgt.",
+      "Die Verordnung greift auch, wenn betroffene Personen in der Union Waren oder Dienstleistungen angeboten bekommen oder ihr Verhalten in der Union beobachtet wird.",
+      "Für Anbieter mit Sitz außerhalb der Union gilt sie erst nach Abschluss eines Angemessenheitsbeschlusses für das jeweilige Drittland.",
+      "Wählt das Unternehmen einen Serverstandort innerhalb der Union, ist der Anwendungsbereich damit abschließend geklärt.",
+    ],
+    correct: [0, 1],
+    exp: "Der räumliche Anwendungsbereich knüpft an die Niederlassung des Verantwortlichen sowie am Marktortprinzip an: Angebot an Personen in der Union oder Beobachtung ihres Verhaltens. Ein Angemessenheitsbeschluss ist keine Voraussetzung für die Anwendbarkeit, sondern erleichtert die Übermittlung in ein Drittland. Und der Serverstandort ist nur einer von mehreren Faktoren — er entscheidet nicht allein über die Anwendbarkeit.",
+    src: "DSGVO Art. 3 · dsgvo-gesetz.de/art-3-dsgvo · KIB Tag 3"
+  },
+  {
+    week: 1, cat: "Rechtliche Grundlagen – Rechtsgrundlage",
+    q: "Es soll ein KI-System zur Personalplanung eingeführt werden, das Qualifikationen, Verfügbarkeiten und Weiterbildungshistorie der Beschäftigten verarbeitet. Du prüfst die datenschutzrechtliche Grundlage. Welche Aussage(n) ist oder sind korrekt?",
+    opts: [
+      "Für die Verarbeitung im Beschäftigungsverhältnis kommt eine Rechtsgrundlage aus dem Bundesdatenschutzgesetz in Betracht, die an die Erforderlichkeit für das Arbeitsverhältnis anknüpft.",
+      "Eine Einwilligung ist im Beschäftigungsverhältnis nur eingeschränkt tragfähig, weil an ihrer Freiwilligkeit wegen des Abhängigkeitsverhältnisses Zweifel bestehen können.",
+      "Da die Daten dem Unternehmen ohnehin vorliegen, bedarf die Auswertung durch ein KI-System keiner eigenen Rechtsgrundlage.",
+      "Ein berechtigtes Interesse des Arbeitgebers ersetzt im Beschäftigungskontext die Prüfung der Erforderlichkeit.",
+    ],
+    correct: [0, 1],
+    exp: "Im Beschäftigungsverhältnis ist die spezielle Norm des Bundesdatenschutzgesetzes einschlägig, die an die Erforderlichkeit anknüpft. Eine Einwilligung ist wegen des Abhängigkeitsverhältnisses nur eingeschränkt belastbar. Dass Daten bereits vorliegen, begründet keine neue Verarbeitung zu einem neuen Zweck — die Zweckbindung gilt fort. Und ein berechtigtes Interesse ersetzt die Erforderlichkeitsprüfung nicht, sondern setzt eine Abwägung voraus.",
+    src: "DSGVO Art. 6 · § 26 BDSG · dsgvo-gesetz.de/art-6-dsgvo · KIB Tag 3"
+  },
+  {
+    week: 1, cat: "Rechtliche Grundlagen – Automatisierte Entscheidungen",
+    q: "Ein KI-System schlägt Entscheidungen vor, die von der zuständigen Führungskraft nahezu unverändert übernommen werden. Du sollst einschätzen, ob damit eine automatisierte Entscheidung im datenschutzrechtlichen Sinne vorliegt. Welche Aussage(n) ist oder sind korrekt?",
+    opts: [
+      "Eine formal vorgesehene menschliche Beteiligung genügt nicht, wenn die Empfehlung faktisch ohne eigene inhaltliche Prüfung übernommen wird.",
+      "Damit eine Beteiligung tragfähig ist, braucht die entscheidende Person Zeit, Sachkenntnis und die tatsächliche Befugnis, von der Empfehlung abzuweichen.",
+      "Sobald ein Mensch die Entscheidung formal freigibt, liegt unabhängig von der Prüftiefe keine automatisierte Entscheidung mehr vor.",
+      "Die Regelungen zu automatisierten Entscheidungen greifen nur bei Systemen, die vollständig ohne Beteiligung von Personen betrieben werden.",
+    ],
+    correct: [0, 1],
+    exp: "Entscheidend ist die tatsächliche, nicht die formale Beteiligung. Eine bloße Bestätigung ohne inhaltliche Prüfung lässt die Entscheidung automatisiert bleiben — der Europäische Gerichtshof hat den Anwendungsbereich in diese Richtung ausgelegt. Tragfähig wird die Beteiligung erst durch Zeit, Sachkenntnis und die reale Befugnis zur Abweichung. Ein reiner Freigabeklick genügt dafür nicht.",
+    src: "DSGVO Art. 22 · EuGH C-634/21 (SCHUFA) · curia.europa.eu/juris/liste.jsf?num=C-634/21 · KIB Tag 3"
+  },
+  {
+    week: 1, cat: "Rechtliche Grundlagen – Auftragsverarbeitung und Mitbestimmung",
+    q: "Ein KI-System läuft auf der Infrastruktur eines externen Anbieters und verarbeitet dabei Beschäftigtendaten. Im Unternehmen besteht ein Betriebsrat. Welche Aussage(n) zu den daraus folgenden Pflichten ist oder sind korrekt?",
+    opts: [
+      "Mit dem Anbieter ist ein Vertrag zur Auftragsverarbeitung zu schließen, der unter anderem die eingesetzten Unterauftragnehmer erfasst.",
+      "Systeme, die zur Überwachung von Verhalten oder Leistung der Beschäftigten geeignet sind, unterliegen der Mitbestimmung des Betriebsrats.",
+      "Die Mitbestimmung greift erst, wenn das Unternehmen eine Überwachung tatsächlich beabsichtigt; die bloße Eignung des Systems genügt nicht.",
+      "Ein Vertrag zur Auftragsverarbeitung erübrigt sich, wenn der Anbieter seinen Sitz innerhalb der Europäischen Union hat.",
+    ],
+    correct: [0, 1],
+    exp: "Beim Einsatz externer Infrastruktur ist ein Auftragsverarbeitungsvertrag samt Regelung zu Unterauftragnehmern erforderlich — unabhängig vom Sitz des Anbieters. Das Mitbestimmungsrecht knüpft nach ständiger Rechtsprechung an die Eignung zur Überwachung an, nicht an die Absicht. Damit sind die meisten KI-Systeme mit Beschäftigtenbezug mitbestimmungspflichtig, auch wenn niemand eine Überwachung plant.",
+    src: "DSGVO Art. 28 · § 87 BetrVG · dsgvo-gesetz.de/art-28-dsgvo · KIB Tag 3"
+  },
+  {
+    week: 2, cat: "EU AI Act – Akteursrollen",
+    q: "In einer Diskussion über die Rollen des EU AI Act geht es um ein Unternehmen, das ein zugekauftes KI-System wesentlich verändert und anschließend unter eigenem Namen an Dritte weitergibt. Welche Aussage(n) zur Rollenzuordnung ist oder sind korrekt?",
+    opts: [
+      "Wer ein KI-System unter eigenem Namen oder eigener Marke in Verkehr bringt oder es wesentlich verändert, kann dadurch selbst die Pflichten eines Anbieters übernehmen.",
+      "Die Rolle des Betreibers bleibt unabhängig von Art und Umfang der Veränderung dauerhaft bestehen, solange das System ursprünglich zugekauft wurde.",
+      "Ein Rollenwechsel tritt erst ein, wenn das veränderte System außerhalb der Europäischen Union vertrieben wird.",
+      "Die Rollenzuordnung richtet sich nach der Unternehmensgröße; kleine und mittlere Unternehmen gelten stets als Betreiber.",
+    ],
+    correct: [0],
+    exp: "Der EU AI Act knüpft die Anbieterrolle unter anderem daran, dass ein System unter eigenem Namen oder eigener Marke in Verkehr gebracht oder wesentlich verändert wird. Genau dann wechselt die Rolle — und mit ihr der volle Pflichtenkatalog. Weder der ursprüngliche Zukauf noch ein Vertrieb außerhalb der Union noch die Unternehmensgröße ändern daran etwas.",
+    src: "EU AI Act Art. 3 und Art. 25 · artificialintelligenceact.eu/article/25 · KIB Tag 4"
+  },
+  {
+    week: 2, cat: "Urheberrecht und KI",
+    q: "In einer internen Diskussion geht es um die urheberrechtliche Zulässigkeit, frei zugängliche Inhalte aus dem Internet für das Training eines KI-Modells zu nutzen. Welche Aussage(n) zur Rechtslage in Deutschland ist oder sind korrekt?",
+    opts: [
+      "Das Urheberrechtsgesetz enthält eine Schranke für Text- und Data-Mining, die Vervielfältigungen zu Analysezwecken unter bestimmten Voraussetzungen erlaubt.",
+      "Rechteinhaber können sich die Nutzung für Text- und Data-Mining vorbehalten; bei online zugänglichen Werken ist ein solcher Vorbehalt maschinenlesbar zu erklären.",
+      "Weil die Inhalte öffentlich abrufbar sind, ist ihre Verwendung zu Trainingszwecken urheberrechtlich ohne Weiteres zulässig.",
+      "Die Schranke für Text- und Data-Mining gilt allein für Einrichtungen der öffentlichen Forschung; gewerbliche Nutzung ist davon vollständig ausgenommen.",
+    ],
+    correct: [0, 1],
+    exp: "Das Urheberrechtsgesetz kennt eine Schranke für Text- und Data-Mining, die Vervielfältigungen zu Analysezwecken zulässt. Rechteinhaber können sich die Nutzung vorbehalten — bei online zugänglichen Werken maschinenlesbar. Öffentliche Abrufbarkeit allein begründet also keine Nutzungsfreiheit. Und die Schranke ist nicht auf die öffentliche Forschung beschränkt; für diese gelten allerdings weitergehende Regelungen.",
+    src: "§ 44b UrhG · gesetze-im-internet.de/urhg/__44b.html · KIB Tag 4"
+  },
+  {
+    week: 2, cat: "Datenschutz – Meldepflicht",
+    q: "An einem Freitagabend wird bekannt, dass Beschäftigtendaten über drei Tage hinweg für Unbefugte zugänglich waren. Ob tatsächlich jemand darauf zugegriffen hat, lässt sich zunächst nicht klären. Welche Aussage(n) zum weiteren Vorgehen ist oder sind korrekt?",
+    opts: [
+      "Eine meldepflichtige Verletzung des Schutzes personenbezogener Daten ist der Aufsichtsbehörde unverzüglich, möglichst binnen 72 Stunden nach Bekanntwerden, zu melden.",
+      "Lässt sich der Sachverhalt in dieser Frist nicht vollständig aufklären, kann zunächst mit vorläufigen Angaben gemeldet und später nachgereicht werden.",
+      "Die Frist beginnt erst, wenn zweifelsfrei feststeht, dass Unbefugte tatsächlich auf die Daten zugegriffen haben.",
+      "Da der Vorfall an einem Wochenende bekannt wird, verlängert sich die Frist bis zum nächsten Werktag.",
+    ],
+    correct: [0, 1],
+    exp: "Die Meldung hat unverzüglich und möglichst binnen 72 Stunden nach Bekanntwerden zu erfolgen. Ist der Sachverhalt noch unklar, ist eine Meldung mit vorläufigen Angaben und späterer Ergänzung ausdrücklich vorgesehen — Abwarten bis zur vollständigen Aufklärung ist der häufigste Fehler. Maßgeblich ist das Bekanntwerden der Verletzung, nicht der Nachweis eines tatsächlichen Zugriffs. Wochenenden hemmen die Frist nicht.",
+    src: "DSGVO Art. 33 · dsgvo-gesetz.de/art-33-dsgvo · KIB Tag 3"
+  },
+  {
+    week: 1, cat: "Prompting – Komponenten",
+    q: "Beim Aufbau einer Prompt-Bibliothek fragt eine Kollegin, warum knappe Anweisungen wie „Schreib eine Stellenanzeige“ regelmäßig unbrauchbare Ergebnisse liefern. Welche Aussage(n) zum Aufbau wirksamer Prompts ist oder sind korrekt?",
+    opts: [
+      "Angaben zu Rolle, Aufgabe, Kontext und gewünschtem Ausgabeformat grenzen den Antwortraum ein und führen zu deutlich verwertbareren Ergebnissen.",
+      "Beispiele für gewünschte und unerwünschte Ergebnisse helfen dem Modell, den Zielzustand einzuordnen, und sind besonders bei wiederkehrenden Aufgaben wirksam.",
+      "Je kürzer die Anweisung, desto besser das Ergebnis — zusätzliche Angaben schränken das Modell unnötig ein und mindern die Qualität.",
+      "Die Angabe der Zielgruppe ist verzichtbar, weil das Modell den passenden Ton eigenständig aus der Aufgabenstellung ableitet.",
+    ],
+    correct: [0, 1],
+    exp: "Wirksame Prompts benennen Rolle, Aufgabe, Kontext und Ausgabeformat; jede dieser Angaben grenzt den Antwortraum ein. Beispiele für Erwünschtes und Unerwünschtes wirken zusätzlich, gerade bei wiederkehrenden Aufgaben. Kürze ist kein Qualitätsmerkmal — sie überlässt dem Modell die Annahmen. Und die Zielgruppe bestimmt Ton und Begriffswahl; ohne Angabe trifft das Modell eine beliebige Wahl.",
+    src: "Dyck/Spann — KI in der Führung (Haufe 2025) · Prompting Guide (DAIR.AI) · promptingguide.ai · KIB Tag 2"
+  },
+  {
+    week: 1, cat: "Prompting – Falschauskünfte",
+    q: "Ein KI-erzeugter Bericht enthielt eine erfundene Rechtsauskunft, die beinahe an einen Kunden weitergegeben worden wäre. Du sollst erklären, wie solche Fehlausgaben entstehen und wie ihnen zu begegnen ist. Welche Aussage(n) ist oder sind korrekt?",
+    opts: [
+      "Sprachmodelle erzeugen Text nach Wahrscheinlichkeit und geben dabei auch dann eine flüssige Antwort aus, wenn ihnen die tragfähige Grundlage fehlt.",
+      "Eine verbindliche Prüfpflicht durch fachkundige Personen vor Weitergabe nach außen ist die wirksamste organisatorische Gegenmaßnahme.",
+      "Die Aufforderung im Prompt, keine falschen Angaben zu machen, schließt Fehlausgaben technisch zuverlässig aus.",
+      "Bei Rechts- und Zahlenangaben sind Fehlausgaben seltener, weil das Modell solche Inhalte aus geprüften Quellen bezieht.",
+    ],
+    correct: [0, 1],
+    exp: "Sprachmodelle setzen Text nach Wahrscheinlichkeit fort — fehlt die Grundlage, entsteht eine flüssige, aber unbelegte Antwort. Wirksam dagegen ist die organisatorische Prüfpflicht vor Weitergabe. Eine Anweisung im Prompt kann die Neigung dämpfen, sie beseitigt sie technisch nicht. Und gerade bei Rechtsangaben, Zahlen und Zitaten treten Fehlausgaben besonders häufig auf, weil das Modell keine geprüfte Quelle abruft.",
+    src: "Kalai et al. 2025 · arxiv.org/abs/2509.04664 · KIB Tag 2"
+  },
+  {
+    week: 1, cat: "Prompting – Reproduzierbarkeit",
+    q: "Zwei Beschäftigte nutzen dasselbe KI-Werkzeug für dieselbe Aufgabe und erhalten unterschiedlich brauchbare Ergebnisse. Du sollst erklären, worauf diese Unterschiede zurückgehen. Welche Aussage(n) ist oder sind korrekt?",
+    opts: [
+      "Unterschiedlich formulierte Prompts erzeugen unterschiedliche Ergebnisse; eine gemeinsame Vorlagensammlung vereinheitlicht die Qualität spürbar.",
+      "Sprachmodelle liefern bei identischer Eingabe stets identische Ausgaben; Abweichungen gehen daher auf unterschiedliche Werkzeugversionen zurück.",
+      "Die Qualität hängt allein von der Länge des Prompts ab; ein längerer Prompt führt zu einem besseren Ergebnis.",
+      "Abweichungen im Ergebnis sind ein Anzeichen für eine technische Fehlfunktion und sollten der Systembetreuung gemeldet werden.",
+    ],
+    correct: [0],
+    exp: "Der wesentliche Unterschied liegt in der Formulierung — dieselbe Aufgabe, anders beschrieben, ergibt ein anderes Resultat. Eine geteilte Prompt-Bibliothek gleicht das aus. Identische Eingaben führen bei Sprachmodellen nicht zwingend zu identischen Ausgaben, weil die Textauswahl eine Zufallskomponente enthält. Die Länge allein sagt nichts über die Qualität. Und Abweichungen sind erwartbares Verhalten, keine Fehlfunktion.",
+    src: "Prompting Guide (DAIR.AI) · promptingguide.ai · KIB Tag 2"
+  },
+  {
+    week: 1, cat: "Prompting – Personenbezogene Daten",
+    q: "Eine Führungskraft bittet darum, einen Bewerbungsunterlagen-Satz in einem frei zugänglichen KI-Werkzeug auswerten und eine Empfehlung erstellen zu lassen. Welche Aussage(n) zum Umgang mit personenbezogenen Daten in Prompts ist oder sind korrekt?",
+    opts: [
+      "Bewerbungsunterlagen enthalten personenbezogene Daten; ihre Eingabe in ein Werkzeug ohne vertragliche Grundlage ist datenschutzrechtlich nicht tragfähig.",
+      "Für den dienstlichen Einsatz sind Zugänge erforderlich, bei denen sich der Anbieter vertraglich zur Auftragsverarbeitung verpflichtet und die Eingaben nicht zum Training verwendet.",
+      "Eine Schwärzung des Namens genügt, um den Personenbezug aufzuheben und die Unterlagen unbedenklich verarbeiten zu lassen.",
+      "Da die Bewerbung freiwillig eingereicht wurde, liegt für jede weitere Verarbeitung eine Einwilligung vor.",
+    ],
+    correct: [0, 1],
+    exp: "Bewerbungsunterlagen sind personenbezogene Daten; ihre Eingabe in ein Werkzeug ohne vertragliche Grundlage ist unzulässig. Für den dienstlichen Einsatz braucht es Zugänge mit Auftragsverarbeitungsvertrag und ausgeschlossener Trainingsnutzung. Das Schwärzen des Namens hebt den Personenbezug nicht auf, solange sich die Person aus Werdegang und Angaben erschließen lässt. Und die Einreichung einer Bewerbung ist keine Einwilligung in beliebige Weiterverarbeitung.",
+    src: "DSGVO Art. 28 · dsgvo-gesetz.de/art-28-dsgvo · KIB Tag 2"
+  },
+  {
+    week: 3, cat: "Qualitätssicherung – Qualitätsmodell",
+    q: "Bei der Erarbeitung von Abnahmekriterien für ein KI-System wird gefragt, welchen Beitrag die Norm ISO/IEC 25059:2023 leistet. Welche Aussage(n) zu dieser Norm ist oder sind korrekt?",
+    opts: [
+      "Die Norm erweitert das etablierte Qualitätsmodell für Softwareprodukte um Eigenschaften, die für KI-Systeme kennzeichnend sind.",
+      "Die Norm liefert eine gemeinsame Begrifflichkeit, mit der sich Qualitätsanforderungen an ein KI-System strukturiert und prüfbar beschreiben lassen.",
+      "Die Norm legt verbindliche Mindestwerte für Kennzahlen wie Trefferquote fest, ab denen ein KI-System als abnahmefähig gilt.",
+      "Die Norm ersetzt das Managementsystem nach ISO/IEC 42001, da beide denselben Regelungsgegenstand abdecken.",
+    ],
+    correct: [0, 1],
+    exp: "Die Norm erweitert das bestehende Qualitätsmodell für Softwareprodukte um KI-spezifische Eigenschaften und liefert damit ein gemeinsames Vokabular für prüfbare Qualitätsanforderungen. Verbindliche Zahlenwerte gibt sie nicht vor — welche Trefferquote genügt, hängt vom Anwendungsfall und seinem Schadenspotenzial ab. Und sie steht neben dem Managementsystem nach ISO/IEC 42001, das die organisatorische Steuerung regelt.",
+    src: "ISO/IEC 25059:2023 · iso.org/standard/80655.html · ISO/IEC 42001:2023 · iso.org/standard/81230.html · KIB Tag 12"
+  },
+  {
+    week: 3, cat: "Qualitätssicherung – Erprobungsverfahren",
+    q: "Vor der Abnahme eines KI-Systems schlägt das Entwicklungsteam vor, unmittelbar mit einem Vergleichstest an zwei Nutzergruppen zu beginnen. Du erläuterst die Unterschiede zu einem Parallelbetrieb ohne Wirkung nach außen. Welche Aussage(n) ist oder sind korrekt?",
+    opts: [
+      "Beim Parallelbetrieb läuft das System mit echten Eingangsdaten mit, ohne dass seine Ausgaben Wirkung entfalten — Fehler bleiben dadurch folgenlos.",
+      "Ein Vergleichstest an zwei Nutzergruppen setzt voraus, dass die Ausgaben tatsächlich wirken, und ist deshalb erst nach belegter Grundqualität vertretbar.",
+      "Der Parallelbetrieb liefert keine belastbaren Erkenntnisse, weil das System dabei nicht mit echten Daten arbeitet.",
+      "Beide Verfahren sind gleichwertig; die Auswahl ist eine reine Frage des verfügbaren Zeitbudgets.",
+    ],
+    correct: [0, 1],
+    exp: "Beim Parallelbetrieb verarbeitet das System echte Eingangsdaten, seine Ausgaben werden aber nicht wirksam — Abweichungen lassen sich gefahrlos beobachten. Ein Vergleichstest an zwei Nutzergruppen wirkt dagegen unmittelbar und setzt eine belegte Grundqualität voraus. Der Parallelbetrieb arbeitet sehr wohl mit echten Daten, das ist gerade sein Zweck. Die Reihenfolge ist damit keine Frage des Zeitbudgets, sondern des Risikos.",
+    src: "ISO/IEC 42001:2023 · iso.org/standard/81230.html · EU AI Act Art. 9 · KIB Tag 12"
+  },
+  {
+    week: 3, cat: "Qualitätssicherung – Abnahmekriterien",
+    q: "Du formulierst Abnahmekriterien für ein KI-System, das eingehende Dokumente einer Kategorie zuordnet. Ein Entwurf lautet: „Das System soll zuverlässig arbeiten.“ Welche Aussage(n) zu abnahmefähigen Kriterien ist oder sind korrekt?",
+    opts: [
+      "Ein abnahmefähiges Kriterium benennt eine messbare Größe, ein Zielniveau und die Bedingungen, unter denen gemessen wird.",
+      "Neben der Trefferquote gehören Kriterien zur Behandlung unsicherer Fälle dazu — etwa ab welcher Sicherheit das System zur manuellen Prüfung übergibt.",
+      "Der Entwurf ist tragfähig, weil sich Zuverlässigkeit im Betrieb erfahrungsgemäß von selbst konkretisiert.",
+      "Eine Trefferquote von 100 Prozent ist als Abnahmekriterium anzustreben, da geringere Werte einen fehlerhaften Systementwurf belegen.",
+    ],
+    correct: [0, 1],
+    exp: "Abnahmefähig ist ein Kriterium erst mit messbarer Größe, Zielniveau und Messbedingungen — „zuverlässig“ erfüllt davon nichts. Ebenso wichtig ist die geregelte Behandlung unsicherer Fälle samt Übergabe an eine Person. Unbestimmte Kriterien konkretisieren sich nicht von selbst, sie führen zu Streit bei der Abnahme. Und eine Trefferquote von 100 Prozent ist bei lernenden Systemen kein sinnvolles Ziel; entscheidend ist, welche Fehler mit welchen Folgen auftreten.",
+    src: "ISO/IEC 25059:2023 · iso.org/standard/80655.html · ISO/IEC 42001:2023 · KIB Tag 12"
+  },
+  {
+    week: 2, cat: "Datenschutz – Folgenabschätzung",
+    q: "Für ein geplantes KI-System zur Leistungsbeurteilung von Beschäftigten soll geklärt werden, ob eine Datenschutz-Folgenabschätzung durchzuführen ist. Welche Aussage(n) ist oder sind korrekt?",
+    opts: [
+      "Eine Datenschutz-Folgenabschätzung ist erforderlich, wenn eine Verarbeitung voraussichtlich ein hohes Risiko für die Rechte und Freiheiten der Betroffenen mit sich bringt.",
+      "Die systematische und umfassende Bewertung persönlicher Aspekte von Beschäftigten mittels automatisierter Verarbeitung ist ein typischer Auslöser dieser Pflicht.",
+      "Die Folgenabschätzung ist nach Produktivsetzung des Systems zu erstellen, weil erst dann belastbare Erfahrungswerte vorliegen.",
+      "Wird ein Datenschutzbeauftragter beteiligt, entfällt die Pflicht zur Folgenabschätzung.",
+    ],
+    correct: [0, 1],
+    exp: "Auslöser ist das voraussichtlich hohe Risiko für Rechte und Freiheiten der Betroffenen; die systematische Bewertung persönlicher Aspekte von Beschäftigten gehört zu den typischen Fällen. Die Folgenabschätzung ist vor Beginn der Verarbeitung zu erstellen — sie soll die Gestaltung beeinflussen, nicht sie im Nachhinein bewerten. Der Datenschutzbeauftragte ist zu beteiligen und einzubeziehen, ersetzt die Folgenabschätzung aber nicht.",
+    src: "DSGVO Art. 35 · dsgvo-gesetz.de/art-35-dsgvo · KIB Tag 3"
+  },
+  {
+    week: 3, cat: "Risikomanagement – Bewertung",
+    q: "Im Risikoworkshop zu einem KI-Vorhaben werden Risiken nach Eintrittswahrscheinlichkeit und Auswirkung bewertet. Ein Teilnehmer schlägt vor, ausschließlich die Risiken mit der höchsten Wahrscheinlichkeit zu behandeln. Welche Aussage(n) ist oder sind korrekt?",
+    opts: [
+      "Die Einstufung ergibt sich aus dem Zusammenspiel von Eintrittswahrscheinlichkeit und Schwere der Auswirkung; ein seltenes Ereignis mit gravierender Folge kann Vorrang haben.",
+      "Zu jedem bewerteten Risiko gehören eine benannte verantwortliche Person und eine Maßnahme mit Termin, sonst bleibt die Bewertung folgenlos.",
+      "Risiken mit geringer Eintrittswahrscheinlichkeit sind aus der weiteren Betrachtung zu entfernen, um den Aufwand zu begrenzen.",
+      "Eine einmalige Bewertung zu Projektbeginn genügt, solange das System technisch unverändert bleibt.",
+    ],
+    correct: [0, 1],
+    exp: "Maßgeblich ist das Zusammenspiel beider Größen — ein seltenes Ereignis mit schwerer Folge kann dringlicher sein als ein häufiges mit geringer Wirkung. Ohne benannte Verantwortliche und terminierte Maßnahmen bleibt jede Bewertung folgenlos. Seltene Risiken werden nicht entfernt, sondern beobachtet. Und die Bewertung ist fortzuschreiben: Bei lernenden Systemen ändert sich das Risikobild auch ohne technische Änderung, etwa durch veränderte Eingangsdaten.",
+    src: "ISO/IEC 42001:2023 · iso.org/standard/81230.html · EU AI Act Art. 9 · KIB Tag 9 und Tag 10"
+  }
 ]; /* Ende QBANK */ // end QBANK
 
 /* ─── State ─────────────────────────────────────────────────────── */
