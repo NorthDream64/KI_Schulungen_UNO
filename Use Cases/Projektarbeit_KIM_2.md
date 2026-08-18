@@ -23,6 +23,8 @@ Drei Wege stehen zur Wahl:
 
 *Hinweis zu den Zahlen:* Sämtliche Beträge und Angebote sind Annahmen des Szenarios, keine geprüften Marktpreise.
 
+*Alternative:* Wenn ihr lieber einen Anwendungsfall aus **eurem eigenen Arbeitsumfeld** durcharbeiten wollt, ist das ausdrücklich zulässig. Begründet dann kurz, warum ihr euch dafür entschieden habt.
+
 ---
 
 ## Aufgabe
@@ -64,8 +66,6 @@ Beantwortet zusätzlich die drei Beschaffungsfragen:
 
 *Hinweis:* Ihr müsst nicht für jedes Feld eine vollständige Antwort haben. Ein ehrliches „Das weiß ich noch nicht — und deshalb müsste ich als nächstes …“ ist wertvoller als eine KI-generierte Antwort, die ihr nicht vertreten könnt.
 
-*Alternative:* Wenn ihr lieber einen Anwendungsfall aus **eurem eigenen Arbeitsumfeld** durcharbeiten wollt, ist das ausdrücklich zulässig. Begründet dann kurz, warum ihr euch dafür entschieden habt.
-
 ---
 
 ### Teil C — Was der Kurs verändert hat *(ca. 1 Seite)*
@@ -88,7 +88,7 @@ Die Präsentation ist kein Vortrag — sie ist ein Gespräch. Plant Zeit für R�
 
 - Für eine **Rechnung statt einer Einschätzung**: ab welcher jährlichen Einsparung sich der Eigenbau bei dieser Unternehmensgröße lohnt — und wie wahrscheinlich diese Einsparung ist
 - Für die Frage, **was passiert, wenn ihr euch falsch entscheidet**: Woran würdet ihr das nach zwölf Monaten erkennen, und was wäre dann noch korrigierbar?
-- Für den Nachweis, **wo die KI bei der Recherche falsch lag** — und wie ihr das korrigiert habt
+- Für den Nachweis, **wo die KI bei meiner Recherche falsch lag** — und wie ihr das korrigiert habt
 
 ---
 

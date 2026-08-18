@@ -13,7 +13,9 @@ Ihr seid das Gründungsteam eines Start-ups und wollt eure Idee in einen Pitch f
 - Sie schlägt Restaurants vor Ort vor und **reserviert** auf Bestätigung — ebenso Taxis oder Fahrdienste.
 - Als Sprachassistent übersetzt sie Gespräche in der Landessprache und **führt sie selbst**.
 
-Ihr seid zu dritt, arbeitet seit vierzehn Monaten daran und sucht eine erste Finanzierungsrunde. Ein funktionsfähiger Prototyp der Planungsfunktion existiert; Buchung und Sprachassistent sind konzipiert, aber noch nicht gebaut.
+Ihr arbeitet seit vierzehn Monaten daran und sucht eine erste Finanzierungsrunde. Ein funktionsfähiger Prototyp der Planungsfunktion existiert; Buchung und Sprachassistent sind konzipiert, aber noch nicht gebaut.
+
+*Alternative:* Wenn ihr lieber einen Anwendungsfall aus **eurem eigenen Arbeitsumfeld** durcharbeiten wollt — laufend, geplant oder aus eurer Sicht sinnvoll —, ist das ausdrücklich zulässig. Begründet dann kurz, warum ihr euch dafür entschieden habt.
 
 ---
 
@@ -45,8 +47,6 @@ Wählt **eine Funktion mit Außenwirkung** — Buchung, Reservierung oder Sprach
 | Was ist die größte organisatorische oder rechtliche Hürde? | |
 | Was würde „Erfolg“ in 12 Monaten bedeuten? | |
 
-*Alternative:* Wenn ihr lieber einen Anwendungsfall aus **eurem eigenen Arbeitsumfeld** durcharbeiten wollt — laufend, geplant oder aus eurer Sicht sinnvoll —, ist das ausdrücklich zulässig. Begründet dann kurz, warum ihr euch dafür entschieden habt.
-
 ---
 
 ### Teil C — Beteiligung und Rendite *(ca. 1 Seite)*
@@ -67,7 +67,7 @@ Die Präsentation ist kein Vortrag — sie ist ein Gespräch. Plant Zeit für R�
 
 - Für eine **Liste möglicher weiterer Funktionen**, um die die Anwendung erweitert werden könnte
 - Für eine begründete Antwort auf die Frage, **was passiert, wenn eine Buchung schiefgeht** — wer haftet, wie erfährt die Kundschaft davon, wie wird zurückgerollt
-- Für den Nachweis, **wo die KI bei der Recherche falsch lag** — und wie ihr das korrigiert habt
+- Für den Nachweis, **wo die KI bei meiner Recherche falsch lag** — und wie ihr das korrigiert habt
 
 ---
 
