@@ -114,6 +114,10 @@ a{color:var(--accent);}
     <div class="setup-info">
       100 Fragen in 4 Blöcken à 25 · nach jedem Block Zwischenauswertung und Zwischenspeicherung
     </div>
+    <div id="storage-warn" style="display:none;margin-bottom:1.2rem;padding:1rem 1.1rem;background:#fff6e5;border:1px solid #e8c88a;border-left:3px solid #d89b2c;border-radius:10px;color:#5a4318;">
+      <div style="font-family:Georgia,serif;font-size:1.02rem;margin-bottom:.35rem;">Zwischenstand kann nicht gespeichert werden</div>
+      <div style="font-size:13px;line-height:1.5;">Dieser Browser erlaubt keine lokale Speicherung — das ist typisch für private Fenster oder eine eingeschränkte Browsereinstellung. Du kannst das Quiz normal bearbeiten, musst es aber in einem Zug abschließen. Für einen unterbrechbaren Durchlauf öffne die Seite in einem normalen Fenster.</div>
+    </div>
     <div id="resume-panel" style="display:none;margin-bottom:1.2rem;padding:1rem 1.1rem;background:var(--card);border:1px solid var(--rule);border-left:3px solid var(--accent, #4a7);border-radius:10px;">
       <div style="font-family:Georgia,serif;font-size:1.02rem;margin-bottom:.35rem;">Angefangener Durchlauf gefunden</div>
       <div id="resume-detail" style="font-size:13px;color:var(--muted);margin-bottom:.9rem;"></div>
@@ -1690,6 +1694,25 @@ function discardSaved() {
   if (p) p.style.display = 'none';
 }
 
+
+function storageOk() {
+  try {
+    var k = '__gw_test__';
+    localStorage.setItem(k, '1');
+    localStorage.removeItem(k);
+    return true;
+  } catch (e) { return false; }
+}
+
+function initGW() {
+  if (!storageOk()) {
+    var w = document.getElementById('storage-warn');
+    if (w) w.style.display = '';
+    return;
+  }
+  offerResume();
+}
+
 function offerResume() {
   var s = readSaved();
   if (!s) return;
@@ -1736,6 +1759,7 @@ function enterQuizView() {
 }
 
 function startQuiz() {
+  if (readSaved() && !window.confirm('Es ist ein angefangener Durchlauf gespeichert.\n\nWenn du neu beginnst, geht dieser Zwischenstand verloren und du bearbeitest alle Fragen noch einmal.\n\nWirklich neu beginnen?')) { return; }
   clearSaved();
   state.name = document.getElementById('participant-name').value.trim() || 'Anonym';
   state.order = shuffleIndexes(QBANK.length);
@@ -2085,8 +2109,15 @@ function escHtml(s) {
   return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 </script>
-</body>
 <script>
-try { offerResume(); } catch (e) {}
+(function () {
+  function boot() {
+    try { initGW(); }
+    catch (e) { if (window.console && console.error) console.error('Generalwiederholung: Wiedereinstieg nicht moeglich', e); }
+  }
+  if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', boot); }
+  else { boot(); }
+})();
 </script>
+</body>
 </html>
