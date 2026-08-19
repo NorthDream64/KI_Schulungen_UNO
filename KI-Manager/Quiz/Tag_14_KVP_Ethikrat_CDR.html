@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lernkontrolle &middot; KI-Manager Tag 14 &middot; KVP, Ethikrat &amp; CDR</title>
+<style>
+:root {
+  --ink:#1a1a18;--paper:#f5f2ec;--card:#fff;--rule:#d5d0c5;--muted:#888880;
+  --accent:#5a3a7a;--accent-soft:#f0eaf7;
+  --role-a:#1a6a5a;--role-a-soft:#e6f4f1;
+  --role-b:#5a3a7a;--role-b-soft:#f0eaf7;
+  --correct:#2a7a50;--correct-bg:#eaf5ee;--correct-border:#a0d8b8;
+  --wrong:#9a2a2a;--wrong-bg:#faeaea;--wrong-border:#d8a0a0;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;background:var(--paper);color:var(--ink);line-height:1.65;font-size:15px;}
+a{color:var(--accent);}
+.site-header{border-bottom:2px solid var(--ink);padding:1.8rem 2rem 1.4rem;max-width:820px;margin:0 auto;}
+.eyebrow{font-family:"SFMono-Regular", Consolas, "Liberation Mono", monospace;font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:var(--muted);margin-bottom:.5rem;}
+.site-header h1{font-family:Georgia, "Times New Roman", serif;font-size:clamp(1.5rem,4vw,2.1rem);line-height:1.15;margin-bottom:.4rem;}
+.header-meta{font-size:12px;color:var(--muted);display:flex;gap:1rem;flex-wrap:wrap;}
+.header-meta span::before{content:"· ";}
+.header-meta span:first-child::before{content:"";}
+.main{max-width:820px;margin:0 auto;padding:1.8rem 2rem 4rem;}
+.setup-card{background:var(--card);border:1px solid var(--rule);border-radius:12px;padding:2rem;max-width:540px;margin:0 auto;}
+.setup-card h2{font-family:Georgia, "Times New Roman", serif;font-size:1.3rem;margin-bottom:1.2rem;}
+.field-label{font-family:"SFMono-Regular", Consolas, "Liberation Mono", monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:.35rem;}
+.setup-input{width:100%;border:1px solid var(--rule);border-radius:8px;padding:.6rem .9rem;font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;font-size:14px;background:var(--paper);outline:none;color:var(--ink);transition:border-color .15s;}
+.setup-input:focus{border-color:var(--ink);}
+.role-btns{display:flex;gap:.5rem;}
+.sel-btn{flex:1;padding:.55rem .6rem;border:1px solid var(--rule);border-radius:8px;background:none;font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;font-size:13px;cursor:pointer;text-align:center;transition:all .15s;color:var(--ink);}
+.sel-btn.active-a{background:var(--role-a-soft);border-color:var(--role-a);color:var(--role-a);font-weight:500;}
+.sel-btn.active-b{background:var(--role-b-soft);border-color:var(--role-b);color:var(--role-b);font-weight:500;}
+.hint-text{font-size:12px;color:var(--muted);margin-top:.3rem;display:block;}
+.btn-start{width:100%;padding:.75rem;background:var(--ink);color:#fff;border:none;border-radius:8px;font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;font-size:15px;font-weight:500;cursor:pointer;margin-top:1rem;transition:background .15s;}
+.btn-start:hover{background:#333;}
+.btn-start:disabled{background:#aaa;cursor:not-allowed;}
+.quiz-header-strip{display:flex;gap:.6rem;align-items:center;margin-bottom:1.4rem;flex-wrap:wrap;}
+.strip-tag{font-family:"SFMono-Regular", Consolas, "Liberation Mono", monospace;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;padding:4px 12px;border-radius:100px;}
+.strip-role-a{background:var(--role-a-soft);color:var(--role-a);}
+.strip-role-b{background:var(--role-b-soft);color:var(--role-b);}
+.strip-name{font-size:13px;color:var(--muted);margin-left:auto;}
+.progress-bar{height:3px;background:var(--rule);border-radius:2px;margin-bottom:1.2rem;}
+.progress-fill{height:100%;background:var(--ink);border-radius:2px;transition:width .3s;}
+.progress-label{font-family:"SFMono-Regular", Consolas, "Liberation Mono", monospace;font-size:10px;color:var(--muted);margin-bottom:.5rem;}
+.q-sc{font-size:13px;color:#555;font-style:italic;border-left:3px solid var(--accent);padding:.4rem .8rem;margin-bottom:.5rem;background:var(--accent-soft);border-radius:0 6px 6px 0;}
+.q-card{background:var(--card);border:1px solid var(--rule);border-radius:12px;padding:1.5rem;margin-bottom:1rem;}
+.q-num{font-family:"SFMono-Regular", Consolas, "Liberation Mono", monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:.6rem;}
+.q-text{font-size:15px;font-weight:500;line-height:1.55;margin-bottom:.5rem;}
+.opt-list{display:flex;flex-direction:column;gap:.5rem;}
+.opt{display:flex;align-items:flex-start;gap:.7rem;padding:.75rem 1rem;border:1px solid var(--rule);border-radius:8px;cursor:pointer;background:#fdfdfb;transition:all .12s;-webkit-user-select:none;user-select:none;}
+.opt:hover:not(.disabled){border-color:#888;background:#f5f2ec;}
+.opt.selected{background:var(--accent-soft);border-color:#b8a0d8;}
+.opt.disabled{cursor:default;}
+.opt.correct-sel{background:var(--correct-bg);border-color:var(--correct-border);}
+.opt.wrong-sel{background:var(--wrong-bg);border-color:var(--wrong-border);}
+.opt.missed{background:var(--wrong-bg);border-color:var(--wrong-border);}
+.opt-cb{width:18px;height:18px;min-width:18px;border:1.5px solid #bbb;border-radius:4px;flex-shrink:0;margin-top:2px;display:flex;align-items:center;justify-content:center;transition:all .12s;}
+.opt-cb.chk{background:var(--ink);border-color:var(--ink);}
+.opt-cb.chk::after{content:'';display:block;width:8px;height:8px;background:#fff;border-radius:2px;}
+.opt.correct-sel .opt-cb{background:var(--correct);border-color:var(--correct);}
+.opt.correct-sel .opt-cb::after{content:'\2713';color:#fff;font-size:11px;background:none;width:auto;height:auto;}
+.opt.wrong-sel .opt-cb{background:var(--wrong);border-color:var(--wrong);}
+.opt.wrong-sel .opt-cb::after{content:'\2717';color:#fff;font-size:11px;background:none;width:auto;height:auto;}
+.opt.missed .opt-cb{background:var(--wrong);border-color:var(--wrong);}
+.opt.missed .opt-cb::after{content:'\2192';color:#fff;font-size:11px;background:none;width:auto;height:auto;}
+.opt-letter{font-family:"SFMono-Regular", Consolas, "Liberation Mono", monospace;font-size:12px;color:var(--muted);min-width:16px;flex-shrink:0;margin-top:2px;}
+.opt-text{font-size:14px;line-height:1.5;}
+.feedback{border-radius:8px;padding:.9rem 1.1rem;margin-top:.9rem;}
+.feedback.fb-ok{background:var(--correct-bg);border:1px solid var(--correct-border);}
+.feedback.fb-wrong{background:var(--wrong-bg);border:1px solid var(--wrong-border);}
+.fb-title{font-weight:500;font-size:14px;margin-bottom:.4rem;}
+.fb-ok .fb-title{color:var(--correct);}
+.fb-wrong .fb-title{color:var(--wrong);}
+.fb-text{font-size:13px;line-height:1.65;color:#444;margin-bottom:.5rem;}
+.fb-source{font-size:12px;color:var(--muted);border-top:1px solid var(--rule);padding-top:.5rem;}
+.nav-row{display:flex;align-items:center;gap:.6rem;margin-top:1rem;}
+.btn{display:inline-flex;align-items:center;padding:.55rem 1.2rem;border:1px solid var(--rule);border-radius:8px;background:none;font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;font-size:14px;font-weight:500;cursor:pointer;color:var(--ink);transition:all .15s;}
+.btn:hover{background:var(--paper);border-color:#888;}
+.btn:disabled{opacity:.3;cursor:not-allowed;}
+.btn-full{width:100%;justify-content:center;padding:.7rem;font-size:15px;margin-top:1rem;}
+.btn-submit{background:#1a6a5a;color:#fff;border-color:#1a6a5a;}
+.btn-submit:hover{background:#145548;}
+.result-block{max-width:600px;margin:0 auto;text-align:center;}
+.result-grade{font-family:Georgia, "Times New Roman", serif;font-size:4.5rem;line-height:1;margin-bottom:.3rem;}
+.result-label{font-size:1.1rem;font-weight:500;margin-bottom:.3rem;}
+.result-sub{font-size:13px;color:var(--muted);margin-bottom:1.5rem;}
+.stats-row{display:flex;justify-content:center;gap:1rem;flex-wrap:wrap;margin-bottom:1.5rem;}
+.stat{background:var(--card);border:1px solid var(--rule);border-radius:10px;padding:.9rem 1.2rem;text-align:center;min-width:90px;}
+.stat-n{font-size:1.8rem;font-weight:500;}
+.stat-l{font-size:11px;color:var(--muted);margin-top:2px;}
+.comp-title{font-size:13px;font-weight:500;text-align:left;margin-bottom:.8rem;}
+.comp-row{margin-bottom:.7rem;text-align:left;}
+.comp-labels{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-bottom:3px;}
+.comp-track{height:4px;background:var(--rule);border-radius:2px;}
+.comp-fill{height:100%;border-radius:2px;}
+.fill-ok{background:var(--correct);}
+.fill-wrong{background:var(--wrong);}
+.submit-status.sending{background:#fff8e8;color:#7a5a00;border:1px solid #e8d090;}
+.submit-status.success{background:#eaf5ee;color:#2a7a50;border:1px solid #a0d8b8;}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="eyebrow">Alfatraining &middot; KI-Manager:in &middot; Tag 14</div>
+  <h1>Lernkontrolle<br>KVP, Ethikrat &amp; CDR</h1>
+  <div class="header-meta">
+    <span>5 Fragen je Rolle</span>
+    <span>Eine oder mehrere Antworten k&ouml;nnen richtig sein</span>
+  </div>
+</header>
+
+<main class="main">
+
+<div id="setup-section">
+  <div class="setup-card">
+    <h2>Bitte w&auml;hle deine Rolle</h2>
+    <div style="margin-bottom:1.2rem;">
+      <span class="field-label">Dein Name (oder Teilnehmer-Nummer)</span>
+      <input type="text" id="participant-name" class="setup-input" placeholder="z. B. Teilnehmer-07 oder Vorname">
+    </div>
+    <div style="margin-bottom:1rem;">
+      <span class="field-label">Rolle</span>
+      <div class="role-btns">
+        <button class="sel-btn" id="btn-role-a" onclick="selectRole('a')">KI-Manager:in</button>
+        <button class="sel-btn" id="btn-role-b" onclick="selectRole('b')">Interne Revision/Audit</button>
+      </div>
+      <span class="hint-text">W&auml;hle deine Rolle im Unternehmen</span>
+    </div>
+    <button class="btn-start" id="btn-start" onclick="startQuiz()" disabled>Quiz starten &rarr;</button>
+  </div>
+</div>
+
+<div id="quiz-section" style="display:none">
+  <div class="quiz-header-strip" id="quiz-header-strip"></div>
+  <div class="progress-label" id="progress-label"></div>
+  <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+  <div id="questions-container"></div>
+  <div class="nav-row" style="margin-top:1.5rem">
+    <button class="btn btn-submit btn-full" id="btn-submit" onclick="submitQuiz()" disabled>Auswertung anzeigen &rarr;</button>
+  </div>
+</div>
+
+<div id="results-section" style="display:none">
+  <div id="submit-status" class="submit-status" style="display:none;max-width:600px;margin:1rem auto;text-align:center;padding:.6rem 1rem;border-radius:8px;font-family:'SFMono-Regular', Consolas, 'Liberation Mono', monospace;font-size:12px;"></div>
+  <div class="result-block">
+    <div class="result-grade" id="result-grade"></div>
+    <div class="result-label" id="result-label"></div>
+    <div class="result-sub" id="result-sub"></div>
+    <div class="stats-row" id="stats-row"></div>
+    <div class="comp-title">Kompetenzprofil</div>
+    <div id="comp-bars"></div>
+    <div style="margin-top:.8rem;display:flex;justify-content:center;">
+      <button class="btn" onclick="location.reload()">Neu starten</button>
+    </div>
+  </div>
+  <hr style="border:none;border-top:1px solid var(--rule);margin:2rem 0">
+  <h2 style="font-family:Georgia, 'Times New Roman', serif;font-size:1.2rem;margin-bottom:1rem">Detailauswertung</h2>
+  <div id="review-container"></div>
+</div>
+
+</main>
+
+<script>
+/* === FRAGEN ============================================== */
+
+var QBANK = {
+  "a": [
+    {
+      "sc": "Im Steuerungskomitee wird gefragt, worin sich Corporate Digital Responsibility (CDR) von Compliance und Governance unterscheidet — und ob es sich dabei nicht ohnehin um dieselbe Sache handele.",
+      "q": "Welche Aussage(n) zur Einordnung von Corporate Digital Responsibility ist oder sind korrekt?",
+      "opts": [
+        "Corporate Digital Responsibility bezeichnet freiwillige unternehmerische Aktivitäten in der digitalen Welt, die über die gesetzlichen Anforderungen hinausgehen.",
+        "Compliance beantwortet die Frage nach der Zulässigkeit, Governance stellt die Struktur zu ihrer Erfüllung bereit — Corporate Digital Responsibility fragt darüber hinaus nach der Verantwortbarkeit.",
+        "Ein Vorhaben kann vollständig rechtskonform sein und den Ansprüchen von Corporate Digital Responsibility dennoch widersprechen.",
+        "Corporate Digital Responsibility ist eine Aufgabe, die sinnvollerweise an den Ethikrat übertragen wird, damit die Fachbereiche entlastet werden."
+      ],
+      "correct": [
+        0,
+        1,
+        2
+      ],
+      "exp": "Corporate Digital Responsibility umfasst freiwillige Aktivitäten oberhalb der Pflicht. Die Abgrenzung lässt sich in einem Satz fassen: Compliance ist die Pflicht, Governance die Struktur zu ihrer Erfüllung, Corporate Digital Responsibility das, was darüber hinaus aus eigener Überzeugung getan wird. Rechtskonformität und Verantwortbarkeit fallen deshalb auseinander. Eine Übertragung an ein Gremium findet nicht statt: Die Verantwortung bleibt bei denen, die das System einführen und betreiben — der Rat berät, er übernimmt nicht.",
+      "src": "CDR-Initiative — Selbstverständnis · cdr-initiative.de/initiative · KIM Tag 14 Hand-Out"
+    },
+    {
+      "sc": "Für die Vorbereitung einer Vorstandsvorlage sollst du erläutern, wie der Kodex der deutschen CDR-Initiative aufgebaut ist.",
+      "q": "Welche Aussage(n) zum Aufbau des CDR-Kodex ist oder sind korrekt?",
+      "opts": [
+        "Der Kodex ist zweistufig aufgebaut: Über neun Prinzipien liegt die Wertebene, darunter operationalisieren fünf Handlungsfelder den Anspruch.",
+        "Zu den fünf Handlungsfeldern zählen der Umgang mit Daten, Bildung, Klima- und Ressourcenschutz, die Einbindung der Mitarbeitenden sowie Inklusion.",
+        "Mitglieder berichten zu jedem Ziel über konkrete Maßnahmen und fortlaufend über neue — die Zeichnung des Kodex ist Voraussetzung der Mitgliedschaft.",
+        "Der Kodex beschränkt sich bewusst auf die Prinzipienebene, da eine Konkretisierung in Handlungsfelder der Freiwilligkeit des Ansatzes widerspräche."
+      ],
+      "correct": [
+        0,
+        1,
+        2
+      ],
+      "exp": "Der Kodex führt neun Prinzipien — von gesellschaftlichen Grundwerten über Fairness und Transparenz bis Nachhaltigkeit — mit fünf Handlungsfeldern zusammen. Diese Handlungsfelder sind Umgang mit Daten, Bildung, Klima- und Ressourcenschutz, Mitarbeitenden-Einbindung und Inklusion. Hinzu kommt eine Berichtspflicht über konkrete Maßnahmen. Gerade die Konkretisierung ist der Kern des Ansatzes: Die Initiative hat den Grundsatzkatalog um Handlungsfelder und Nachweise ergänzt, weil Prinzipien allein nichts entscheiden.",
+      "src": "CDR-Kodex — neun Prinzipien und fünf Handlungsfelder · cdr-initiative.de/kodex · KIM Tag 14 Hand-Out"
+    },
+    {
+      "sc": "In der Investitionsvorlage für ein KI-Vorhaben soll erstmals der Energiebedarf betrachtet werden. Die Projektleitung hält das für einen Nebenschauplatz.",
+      "q": "Welche Aussage(n) zur Nachhaltigkeitsbetrachtung bei KI-Vorhaben ist oder sind korrekt?",
+      "opts": [
+        "Energieeffizienz und Betriebskosten weisen bei KI meist in dieselbe Richtung — anders als bei vielen anderen Nachhaltigkeitsthemen, wo Verantwortung und Wirtschaftlichkeit auseinanderlaufen.",
+        "Die Modellgröße ist für den Energiebedarf nachrangig, weil der Verbrauch nahezu vollständig durch die Anzahl der Anfragen bestimmt wird.",
+        "Eine Betrachtung des Energiebedarfs ist erst sinnvoll, sobald ein System unternehmensweit ausgerollt ist; in der Pilotphase fehlt die belastbare Grundlage.",
+        "Der Standort des Rechenzentrums und der Energiebezug des Anbieters sind für die Bewertung ohne Belang, solange die Verfügbarkeit vertraglich zugesichert ist."
+      ],
+      "correct": [
+        0
+      ],
+      "exp": "Der praktische Hebel liegt darin, dass Energieeffizienz und Betriebskosten bei KI in dieselbe Richtung zeigen — wer den Verbrauch senkt, senkt die Rechnung. Vier Stellschrauben gehören in jede Vorlage: Modellgröße, Aufrufhäufigkeit, Frequenz des Nachtrainings sowie Standort und Strommix. Die Modellgröße ist dabei ein erheblicher Faktor, nicht ein nachrangiger. Und die Betrachtung gehört an den Anfang: Nach dem Rollout sind Modellwahl und Architektur nur noch teuer zu ändern.",
+      "src": "Internationale Energieagentur — Energy and AI · iea.org/reports/energy-and-ai/energy-demand-from-ai · KIM Tag 14 Hand-Out"
+    },
+    {
+      "sc": "Die Geschäftsführung möchte einen Ethikrat einrichten und fragt, worauf es bei der Gestaltung ankommt.",
+      "q": "Welche Aussage(n) zur Einrichtung und Wirksamkeit eines Ethikrats ist oder sind korrekt?",
+      "opts": [
+        "Vorab zu klären ist, was geschieht, wenn das Gremium abrät und die Projektleitung dennoch weitermacht — fehlt darauf eine Antwort, bleibt der Rat eine Dokumentationsübung.",
+        "Eine Zugangsregel ist nötig: Ohne festgelegten Weg wird ein Gremium, das man anrufen könnte, kaum angerufen, weil niemand als derjenige gelten will, der ein Vorhaben aufhält.",
+        "Die Zusammenlegung von Ethikrat und Steuerungsgremium ist zu empfehlen, da dieselbe Runde Prioritäten und ethische Fragen aus einer Hand beurteilen kann.",
+        "Zur Wirksamkeit von Ethikräten liegen bislang kaum empirische Untersuchungen vor — es gibt Fallberichte und Gestaltungsvorschläge, aber keine belastbare Wirkungsforschung."
+      ],
+      "correct": [
+        0,
+        1,
+        3
+      ],
+      "exp": "Zwei Fragen entscheiden über die Wirksamkeit: der Umgang mit einem Veto und die Zugangsregel. Fehlt Letztere, bleibt die Fallzahl bei null — was nicht bedeutet, dass es keine Grenzfälle gab. Die Vermischung mit dem Steuerungsgremium ist gerade der klassische Fehler: Wo dieselbe Runde priorisiert und ethisch bewertet, gewinnt im Zweifel der Termin. Und die Redlichkeit gebietet den Hinweis, dass ein solches Gremium auf Plausibilität eingerichtet wird, nicht auf Evidenz.",
+      "src": "Schuett, Reuel & Carlier — How to design an AI ethics board, AI and Ethics (2024) · link.springer.com/article/10.1007/s43681-023-00409-y · KIM Tag 14 Hand-Out"
+    },
+    {
+      "sc": "Bei der Portfolioarbeit wird diskutiert, welche Tätigkeiten an KI übergeben werden können. Ein Kollege schlägt vor, dafür ganze Stellenprofile zu bewerten.",
+      "q": "Welche Aussage(n) zur Arbeitsteilung zwischen Mensch und KI ist oder sind korrekt?",
+      "opts": [
+        "Zu bewerten sind Aufgaben, nicht Stellen — und zu jeder Aufgabe, die verlagert werden soll, gehört die Systemfrage: Wer entscheidet, wer haftet, wer erwartet was?",
+        "Delegierbar ist, was sich beurteilen lässt; fehlt die Fachkenntnis zur Prüfung des Ergebnisses, handelt es sich nicht um Delegation, sondern um Vertrauen ohne Grundlage.",
+        "Eine technisch automatisierbare Aufgabe ist damit auch organisatorisch verlagerbar, sofern die Ergebnisqualität nachgewiesen wurde.",
+        "Die verzahnte Arbeitsweise mit ständigem Wechsel innerhalb derselben Aufgabe ist leichter zu kontrollieren als die Arbeitsteilung mit klarer Trennlinie."
+      ],
+      "correct": [
+        0,
+        1
+      ],
+      "exp": "Ein Beruf ist ein Bündel von Aufgaben in einem System aus Zuständigkeiten, Erwartungen und Regeln. Bewertet werden deshalb Aufgaben, und zu jeder gehört die Systemfrage — sonst scheitert die Einführung nicht an der Technik, sondern an einer Zuständigkeit, an die niemand gedacht hat. Auch eine technisch automatisierbare Aufgabe kann das System beim Menschen halten. Und die verzahnte Form ist schwerer zu kontrollieren als die getrennte, weil es keinen Punkt gibt, an dem ein Zwischenergebnis zur Prüfung vorgelegt wird.",
+      "src": "Ethan Mollick — Co-Intelligence (2024) · KIM Tag 14 Hand-Out"
+    }
+  ],
+  "b": [
+    {
+      "sc": "Du prüfst als interne Revision, ob der kontinuierliche Verbesserungsprozess (KVP) für die eingesetzten KI-Systeme den Anforderungen aus Kapitel 10 der ISO/IEC 42001 genügt.",
+      "q": "Welche Aussage(n) zum kontinuierlichen Verbesserungsprozess bei KI-Systemen ist oder sind korrekt?",
+      "opts": [
+        "Der Kreislauf aus Planen, Umsetzen, Messen und Entscheiden verlangt in der Messphase Betriebskennzahlen wie Adoptionsrate, Override-Rate und Drift — nicht die Einschätzung der Beteiligten.",
+        "Zu den Entscheidungsmöglichkeiten am Ende eines Durchlaufs gehört ausdrücklich auch die Beendigung des Systems, nicht nur Ausweitung oder Nachbesserung.",
+        "Anders als ein stabiler Fertigungsprozess verliert ein KI-System auch dann an Güte, wenn niemand etwas verändert — der Kreislauf ist deshalb Mindestbedingung, nicht Kür.",
+        "Die Umsetzungsphase sollte möglichst flächendeckend angelegt sein, da ein begrenzter Pilot keine belastbaren Aussagen über den Regelbetrieb erlaubt."
+      ],
+      "correct": [
+        0,
+        1,
+        2
+      ],
+      "exp": "Gemessen wird mit Betriebskennzahlen statt mit Einschätzungen. Die Beendigung ist die am häufigsten vergessene und zugleich wichtigste Entscheidungsoption. Der entscheidende Unterschied zu anderen Managementsystemen: Die Ausgangslage verändert sich von selbst, ein KI-System verliert ohne Zutun an Güte. Die Umsetzung erfolgt deshalb bewusst begrenzt — mit definiertem Umfang und Rückfallplan, nicht flächendeckend.",
+      "src": "ISO/IEC 42001:2023, Kapitel 10 · iso.org/standard/81230.html · KIM Tag 14 Hand-Out"
+    },
+    {
+      "sc": "Im Audit legt die Fachabteilung eine vollständige Verfahrensbeschreibung des Verbesserungsprozesses vor und hält den Nachweis damit für erbracht.",
+      "q": "Welche Aussage(n) zur Nachweisführung im Audit ist oder sind korrekt?",
+      "opts": [
+        "Aussagekräftig ist nicht die Frage nach dem Vorhandensein eines Verbesserungsprozesses, sondern die Bitte, eine Entscheidung zu zeigen, die aus dem letzten Durchlauf hervorgegangen ist.",
+        "Wer keine solche Entscheidung benennen kann, hat den Kreislauf dokumentiert, aber nicht durchlaufen.",
+        "Eine vollständige und aktuelle Verfahrensbeschreibung belegt die Wirksamkeit des Prozesses hinreichend.",
+        "Der Nachweis der Verbesserung obliegt der Zertifizierungsstelle, die interne Revision prüft allein die Vollständigkeit der Dokumentation."
+      ],
+      "correct": [
+        0,
+        1
+      ],
+      "exp": "Die wirksame Prüffrage zielt auf ein Ergebnis, nicht auf ein Dokument: Welche Entscheidung ist aus dem letzten Durchlauf entstanden? Bleibt die Antwort aus, wurde der Kreislauf beschrieben, aber nicht gelebt — genau dieser Unterschied zeigt sich im Audit. Eine Verfahrensbeschreibung belegt die Absicht, nicht die Wirkung. Und die Prüfung der Wirksamkeit gehört zum Auftrag der internen Revision, sie lässt sich nicht an die Zertifizierungsstelle abschieben.",
+      "src": "ISO/IEC 42001:2023, Kapitel 10 · iso.org/standard/81230.html · KIM Tag 14 Hand-Out"
+    },
+    {
+      "sc": "Bei der Prüfung eines Freigabeprozesses fällt auf, dass die Fachkräfte den Empfehlungen des KI-Systems in nahezu allen Fällen folgen. Die Projektleitung wertet das als Qualitätsnachweis.",
+      "q": "Welche Aussage(n) zur Bewertung einer sehr niedrigen Widerspruchsquote ist oder sind korrekt?",
+      "opts": [
+        "Eine gegen null gehende Widerspruchsquote ist mehrdeutig: Sie kann für ein gutes System sprechen oder dafür, dass niemand mehr genau hinsieht — auseinanderhalten lässt sich das nur über bewusst nachgerechnete Stichproben.",
+        "Ein Feldversuch mit Personalfachleuten zeigte, dass die Gruppe mit der besten KI-Unterstützung schlechter abschnitt als die mit der schwächeren, weil sie weniger Zeit aufwandte und den Empfehlungen weitgehend ungeprüft folgte.",
+        "Je zuverlässiger ein System arbeitet, desto verlässlicher fällt auch die menschliche Kontrolle aus, da die Beteiligten dem System berechtigt vertrauen.",
+        "Ein Freigabeschritt, der aus einer Bestätigung ohne inhaltliche Prüfung besteht, erfüllt die Anforderung an eine wirksame menschliche Aufsicht."
+      ],
+      "correct": [
+        0,
+        1
+      ],
+      "exp": "Eine sehr niedrige Widerspruchsquote ist kein Qualitätsnachweis, sondern ein Signal, dem nachzugehen ist — belegen lässt sich der Unterschied nur über Stichproben, die tatsächlich nachgerechnet werden. Der Feldversuch mit Personalfachleuten zeigt den Mechanismus: Je zuverlässiger das System wirkt, desto geringer der Anreiz, Aufmerksamkeit aufzuwenden. Die Kontrolle wird also schwächer, nicht stärker. Und ein Freigabeschritt, der nur aus einem Häkchen besteht, misst nichts.",
+      "src": "Harvard Business School — Is AI Making Your Team Lazy? · aiinstitute.hbs.edu/is-ai-making-your-team-lazy · KIM Tag 14 Hand-Out"
+    },
+    {
+      "sc": "Die interne Revision soll erstmals den eingerichteten Ethikrat in den Prüfplan aufnehmen und geeignete Prüfkriterien festlegen.",
+      "q": "Welche Aussage(n) zu wirksamkeitsorientierten Prüfkriterien für ein Ethikgremium ist oder sind korrekt?",
+      "opts": [
+        "Aufschlussreich ist die Zahl der im letzten Jahr behandelten Fälle zusammen mit der Frage, wer sie eingebracht hat — eine Fallzahl von null deutet meist auf eine fehlende Zugangsregel hin.",
+        "Zu prüfen ist, ob eine verbindliche Regelung besteht, wie mit einer abratenden Stellungnahme des Gremiums umzugehen ist.",
+        "Die personelle Übereinstimmung von Ethikrat und Steuerungsgremium ist ein Beleg für die enge Verzahnung von Ethik und Projektsteuerung und daher positiv zu bewerten.",
+        "Da die Einrichtung freiwillig erfolgt, entzieht sich die Arbeit des Gremiums einer Prüfung durch die interne Revision."
+      ],
+      "correct": [
+        0,
+        1
+      ],
+      "exp": "Die Fallzahl samt Herkunft der Fälle und der geregelte Umgang mit einem Veto sind die beiden aussagekräftigen Kriterien. Personelle Übereinstimmung mit dem Steuerungsgremium ist dagegen ein Befund, kein Gütezeichen: Wo dieselbe Runde priorisiert und ethisch bewertet, setzt sich im Zweifel der Termin durch. Und Freiwilligkeit der Einrichtung schließt eine Prüfung nicht aus — sobald ein Gremium besteht und Wirkung entfalten soll, ist seine Wirksamkeit prüfbar.",
+      "src": "Erklärung der zurückgetretenen Mitglieder des Axon-Ethikbeirats · policingproject.org/statement-of-resigning-axon-ai-ethics-board-members · KIM Tag 14 Hand-Out"
+    },
+    {
+      "sc": "Bei der Prüfung eines geplanten KI-Systems stellt sich die Frage, ob eine Grundrechte-Folgenabschätzung nach Artikel 27 des EU AI Act durchzuführen ist.",
+      "q": "Welche Aussage(n) zum Anwendungsbereich dieser Pflicht ist oder sind korrekt?",
+      "opts": [
+        "Die Pflicht trifft öffentliche Stellen und Erbringer öffentlicher Dienste sowie bestimmte Systeme in der Kreditwürdigkeitsprüfung und der Versicherungsbepreisung.",
+        "Die Pflicht gilt einheitlich für sämtliche Betreiber von KI-Systemen, unabhängig von Einsatzbereich und Risikoeinstufung.",
+        "Eine Grundrechte-Folgenabschätzung ersetzt die Datenschutz-Folgenabschätzung vollständig, da beide denselben Prüfgegenstand haben.",
+        "Die Durchführung ist dem eingerichteten Ethikrat übertragen, der die Bewertung anstelle des Betreibers vornimmt."
+      ],
+      "correct": [
+        0
+      ],
+      "exp": "Artikel 27 richtet sich an öffentliche Stellen und Erbringer öffentlicher Dienste sowie an Betreiber bestimmter Hochrisikosysteme bei Kreditwürdigkeit und Versicherungsbepreisung — nicht an alle Betreiber. Die Grundrechte-Folgenabschätzung tritt neben die datenschutzrechtliche Prüfung und ersetzt sie nicht; beide verfolgen unterschiedliche Schutzrichtungen. Und die Verantwortung liegt beim Betreiber: Ein Ethikgremium kann beraten, die Pflicht geht dadurch nicht auf es über.",
+      "src": "Verordnung (EU) 2024/1689, Artikel 27 · eur-lex.europa.eu/eli/reg/2024/1689/oj/eng · KIM Tag 14 Hand-Out"
+    }
+  ]
+}
+
+var APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyPs358GF_E1xsvTh08PpTpZcBDS1OvsU9XQ0qi0MkZoCCnAk4dyo3Aii0OYxILdvCRYA/exec';
+var selectedRole = null, questions = [], userAnswers = [];
+var participantName = '';
+var ROLE_LABELS = {"a": "KI-Manager:in · Ethik & Verantwortung", "b": "Interne Revision / Audit"};
+
+function selectRole(r) {
+  selectedRole = r;
+  document.getElementById('btn-role-a').className = 'sel-btn' + (r==='a' ? ' active-a' : '');
+  document.getElementById('btn-role-b').className = 'sel-btn' + (r==='b' ? ' active-b' : '');
+  checkReady();
+}
+function checkReady() {
+  document.getElementById('btn-start').disabled = !selectedRole;
+}
+
+function shuffle(arr) {
+  var a = arr.slice(), i = a.length, j, t;
+  while (i--) { j = Math.floor(Math.random()*(i+1)); t=a[i]; a[i]=a[j]; a[j]=t; }
+  return a;
+}
+
+function startQuiz() {
+  var pool = QBANK[selectedRole] || [];
+  questions = pool.map(function(q) {
+    var indices = q.opts.map(function(_,i){return i;});
+    var shuffled = shuffle(indices);
+    var newOpts = shuffled.map(function(i){return q.opts[i];});
+    var newCorrect = q.correct.map(function(c){return shuffled.indexOf(c);});
+    return {q: q.q, sc: q.sc||'', opts: newOpts, correct: newCorrect, exp: q.exp, src: q.src||''};
+  });
+  userAnswers = questions.map(function(){return [];});
+
+  document.getElementById('setup-section').style.display = 'none';
+  document.getElementById('quiz-section').style.display = 'block';
+
+  var name = document.getElementById('participant-name').value.trim() || 'Anonym';
+  participantName = name;
+  var strip = document.getElementById('quiz-header-strip');
+  strip.innerHTML =
+    '<span class="strip-tag strip-role-' + selectedRole + '">' + ROLE_LABELS[selectedRole] + '</span>' +
+    '<span class="strip-name">' + name + '</span>';
+
+  renderQuestions();
+  updateProgress();
+}
+
+function renderQuestions() {
+  var container = document.getElementById('questions-container');
+  container.innerHTML = '';
+  var letters = ['A','B','C','D','E'];
+  questions.forEach(function(q, qi) {
+    var card = document.createElement('div');
+    card.className = 'q-card';
+    card.id = 'qcard-' + qi;
+    var html = '<div class="q-num">Frage ' + (qi+1) + ' von ' + questions.length + '</div>';
+    if (q.sc) html += '<div class="q-sc">' + q.sc + '</div>';
+    html += '<div class="q-text">' + q.q + '</div>';
+    html += '<div class="opt-list" id="opts-' + qi + '">';
+    q.opts.forEach(function(opt, oi) {
+      html += '<div class="opt" id="opt-' + qi + '-' + oi + '" onclick="toggleOpt(' + qi + ',' + oi + ')">' +
+        '<div class="opt-cb" id="cb-' + qi + '-' + oi + '"></div>' +
+        '<span class="opt-letter">' + letters[oi] + '.</span>' +
+        '<span class="opt-text">' + opt + '</span></div>';
+    });
+    html += '</div>';
+    card.innerHTML = html;
+    container.appendChild(card);
+  });
+}
+
+function toggleOpt(qi, oi) {
+  var idx = userAnswers[qi].indexOf(oi);
+  if (idx >= 0) {
+    userAnswers[qi].splice(idx, 1);
+    document.getElementById('opt-' + qi + '-' + oi).classList.remove('selected');
+    document.getElementById('cb-' + qi + '-' + oi).classList.remove('chk');
+  } else {
+    userAnswers[qi].push(oi);
+    document.getElementById('opt-' + qi + '-' + oi).classList.add('selected');
+    document.getElementById('cb-' + qi + '-' + oi).classList.add('chk');
+  }
+  updateSubmitBtn();
+  updateProgress();
+}
+
+function updateSubmitBtn() {
+  var answered = userAnswers.filter(function(a){return a.length>0;}).length;
+  document.getElementById('btn-submit').disabled = answered < questions.length;
+}
+
+function updateProgress() {
+  var answered = userAnswers.filter(function(a){return a.length>0;}).length;
+  var pct = questions.length ? (answered/questions.length*100) : 0;
+  document.getElementById('progress-fill').style.width = pct + '%';
+  document.getElementById('progress-label').textContent = answered + ' von ' + questions.length + ' Fragen beantwortet';
+}
+
+function submitQuiz() {
+  document.getElementById('quiz-section').style.display = 'none';
+  document.getElementById('results-section').style.display = 'block';
+
+  var score = 0;
+  questions.forEach(function(q, qi) {
+    var ua = userAnswers[qi].slice().sort();
+    var ca = q.correct.slice().sort();
+    if (JSON.stringify(ua) === JSON.stringify(ca)) score++;
+  });
+
+  var pct = Math.round(score/questions.length*100);
+  var grade, label;
+  if (pct >= 90) { grade = 'A'; label = 'Ausgezeichnet'; }
+  else if (pct >= 75) { grade = 'B'; label = 'Sehr gut'; }
+  else if (pct >= 60) { grade = 'C'; label = 'Gut'; }
+  else if (pct >= 45) { grade = 'D'; label = 'Befriedigend'; }
+  else { grade = 'E'; label = 'Wiederholen empfohlen'; }
+
+  document.getElementById('result-grade').textContent = grade;
+  document.getElementById('result-label').textContent = label + ' — ' + pct + ' %';
+  document.getElementById('result-sub').textContent = score + ' von ' + questions.length + ' Fragen vollständig richtig';
+
+  document.getElementById('stats-row').innerHTML =
+    '<div class="stat"><div class="stat-n">' + score + '</div><div class="stat-l">Richtig</div></div>' +
+    '<div class="stat"><div class="stat-n">' + (questions.length-score) + '</div><div class="stat-l">Falsch</div></div>' +
+    '<div class="stat"><div class="stat-n">' + pct + ' %</div><div class="stat-l">Trefferquote</div></div>';
+
+  document.getElementById('comp-bars').innerHTML =
+    '<div class="comp-row"><div class="comp-labels"><span>Richtig</span><span>' + score + '/' + questions.length + '</span></div>' +
+    '<div class="comp-track"><div class="comp-fill fill-ok" style="width:' + pct + '%"></div></div></div>' +
+    '<div class="comp-row"><div class="comp-labels"><span>Verbesserungspotenzial</span><span>' + (questions.length-score) + '/' + questions.length + '</span></div>' +
+    '<div class="comp-track"><div class="comp-fill fill-wrong" style="width:' + (100-pct) + '%"></div></div></div>';
+
+  var letters = ['A','B','C','D','E'];
+  var rev = document.getElementById('review-container');
+  rev.innerHTML = '';
+  questions.forEach(function(q, qi) {
+    var ua = userAnswers[qi].slice().sort();
+    var ca = q.correct.slice().sort();
+    var isOk = JSON.stringify(ua) === JSON.stringify(ca);
+    var card = document.createElement('div');
+    card.className = 'q-card';
+    var html = '<div class="q-num">Frage ' + (qi+1) + '</div>';
+    if (q.sc) html += '<div class="q-sc">' + q.sc + '</div>';
+    html += '<div class="q-text">' + q.q + '</div>';
+    html += '<div class="opt-list" style="margin-top:.7rem">';
+    q.opts.forEach(function(opt, oi) {
+      var sel = ua.indexOf(oi) >= 0;
+      var cor = ca.indexOf(oi) >= 0;
+      var cls = 'opt disabled ';
+      if (sel && cor) cls += 'correct-sel';
+      else if (sel && !cor) cls += 'wrong-sel';
+      else if (!sel && cor) cls += 'missed';
+      var cbCls = 'opt-cb';
+      html += '<div class="' + cls + '"><div class="' + cbCls + '"></div>' +
+        '<span class="opt-letter">' + letters[oi] + '.</span><span class="opt-text">' + opt + '</span></div>';
+    });
+    html += '</div>';
+    if (q.exp) {
+      html += '<div class="feedback ' + (isOk ? 'fb-ok' : 'fb-wrong') + '">';
+      html += '<div class="fb-title">' + (isOk ? '✓ Richtig' : '✗ Nicht vollständig richtig') + '</div>';
+      html += '<div class="fb-text">' + q.exp + '</div>';
+      if (q.src) html += '<div class="fb-source">Quelle: ' + linkify(q.src) + '</div>';
+      html += '</div>';
+    }
+    card.innerHTML = html;
+    rev.appendChild(card);
+  });
+
+  sendToSheets(score, questions.length - score);
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+
+function linkify(src) {
+  return src.split(' · ').map(function(part) {
+    var t = part.trim();
+    if (!/\s/.test(t) && /\.[a-zA-Z]{2,}/.test(t) && t.length > 4) {
+      var href = /^https?:\/\//i.test(t) ? t : 'https://' + t;
+      return '<a href="' + href + '" target="_blank">' + t + '</a>';
+    }
+    return part;
+  }).join(' · ');
+}
+function sendToSheets(correct, wrong) {
+  if (!APPS_SCRIPT_URL) return;
+  var TAG_NR = 14;
+  var THEMA  = "KVP, Ethikrat & CDR";
+  var letters = ['A','B','C','D','E'];
+  var stufe = ROLE_LABELS[selectedRole] || selectedRole;
+
+  var status = document.getElementById('submit-status');
+  if (status) {
+    status.className = 'submit-status sending';
+    status.style.display = 'block';
+    status.textContent = 'Ergebnis wird übermittelt...';
+  }
+
+  var toSend = [];
+  questions.forEach(function(q, i) {
+    var selIndices  = userAnswers[i].slice().sort();
+    var corrIndices = q.correct.slice().sort();
+    var isFull      = selIndices.join(',') === corrIndices.join(',');
+    var gewaehlt    = selIndices.map(function(idx) { return letters[idx]; }).join(',') || '-';
+    var korrekt     = corrIndices.map(function(idx) { return letters[idx]; }).join(',');
+    var ergebnis    = isFull ? 'RICHTIG' : 'FALSCH';
+
+    toSend.push(
+      APPS_SCRIPT_URL
+      + '?tab='        + encodeURIComponent('KI-Manager')
+      + '&teilnehmer=' + encodeURIComponent(participantName)
+      + '&tag='        + TAG_NR
+      + '&thema='      + encodeURIComponent(THEMA)
+      + '&stufe='      + encodeURIComponent(stufe)
+      + '&frage_nr='   + (i + 1)
+      + '&frage_text=' + encodeURIComponent(q.q.substring(0, 80))
+      + '&gewaehlt='   + encodeURIComponent(gewaehlt)
+      + '&korrekt='    + encodeURIComponent(korrekt)
+      + '&ergebnis='   + encodeURIComponent(ergebnis)
+    );
+  });
+
+  toSend.forEach(function(url, i) {
+    setTimeout(function() {
+      fetch(url, { mode: 'no-cors' }).catch(function() {});
+    }, i * 300);
+  });
+  if (status) {
+    setTimeout(function() {
+      status.className = 'submit-status success';
+      status.textContent = '✓ ' + toSend.length + ' Antworten übermittelt ('
+        + new Date().toLocaleTimeString('de-DE') + ')';
+    }, toSend.length * 300 + 500);
+  }
+}
+</script>
+
+</body>
+</html>
