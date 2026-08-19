@@ -77,6 +77,10 @@
 | https://www.tno.nl/en/digital/artificial-intelligence/ | TNO — Netherlands Organisation for Applied Scientific Research | Forschung | Niederlande, AI Oversight Lab, Responsible Human-Machine Interaction, Zukunft der Arbeit, kognitive Belastung durch KI, NEA-Surveys |
 | https://www.imda.gov.sg/-/media/imda/files/about/emerging-tech-and-research/artificial-intelligence/mgf-for-agentic-ai.pdf | IMDA — Model AI Governance Framework for Agentic AI (v1.5, Mai/Juni 2026) | Regulierung | Singapur, Staatsbehörde, Agentische KI, Governance-Framework, Action-Space-×-Autonomy-Matrix, Human-in-the-Loop, Least Privilege, Automation Bias, Fallstudien (PwC, OCBC, Tencent, GovTech, Workday) |
 | https://www.who.int/publications/i/item/9789240029200 | WHO — Ethics and Governance of Artificial Intelligence for Health (2021) | Regulierung | UN-Sonderorganisation, Tier-1, Gesundheitswesen, 6 Ethikprinzipien (Transparenz, Inklusivität, Rechenschaftspflicht, Nicht-Diskriminierung, Nachhaltigkeit, Datenschutz), Governance-Empfehlungen, Krankenhaus, Diagnostik, Patientensicherheit |
+| https://link.springer.com/article/10.1007/s43681-023-00409-y | Schuett, Reuel & Carlier — How to design an AI ethics board (AI and Ethics, Springer 2024) | Forschung | Ethikrat, fünf Gestaltungsentscheidungen (Zuständigkeit, Rechtsform, Besetzung, Entscheidungsmodus, Ressourcen), Governance of AI / Stanford, peer-reviewed; KIM Tag 14 |
+| https://www.policingproject.org/statement-of-resigning-axon-ai-ethics-board-members | Erklärung der zurückgetretenen Mitglieder des Axon-Ethikbeirats (Juni 2022) | Primärdokument | Ethikrat-Scheitern, Votum 8:4 gegen Drohnenversuch, neun Rücktritte, beratendes Gremium ohne Entscheidungsrecht; KIM Tag 14 |
+| https://www.technologyreview.com/2019/04/05/136188/google-has-now-cancelled-its-ai-ethics-board-after-a-backlash-from-staff/ | MIT Technology Review — Auflösung des Google-KI-Beirats (April 2019) | Fachmedium | ATEAC, Auflösung nach gut einer Woche, 2.500 Beschäftigte im Protest; KIM Tag 14 |
+| https://standards.ieee.org/news/ieee-7000/ | IEEE 7000-2021 — Model Process for Addressing Ethical Concerns during System Design | Norm | Value-based Engineering, ethische Werte als Entwurfsanforderung, Rückverfolgbarkeit; Verfahren statt Gremium; KIM Tag 14 |
 ### 2.4 Data Governance — MLOps — Monitoring
 > Betrieb, Überwachung und Abnahme produktiver KI-Systeme. Grundlage für KIM Tag 6–8.
 
@@ -186,6 +190,8 @@
 |-----|------|-----|--------------|
 | https://hbr.org/topic/subject/change-management | Harvard Business Review (HBR) | Fachmedium | Change Management, Kotter, Widerstände, Transformation |
 | https://www.mckinsey.com/capabilities/quantumblack/our-insights/the-state-of-ai | McKinsey — The state of AI | Beratungsbefragung | Adoption, Change, ROI, Implementierung; **ausführliche Einordnung mit Kennzahlen und Tier-Vorbehalt in Abschnitt 2.4** (Beratungsperspektive) |
+| https://www.nber.org/papers/w31161 | Brynjolfsson, Li & Raymond — Generative AI at Work (NBER WP 31161) | Feldstudie | Nivellierungseffekt, 5.179 Servicekräfte, +14% im Schnitt / +35% im schwächsten Fünftel / erfahrene Kräfte kaum, Weitergabe von Vorgehensweisen; KIM Tag 14 |
+| https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4539836 | Choi & Schwarcz — AI Assistance in Legal Analysis: An Empirical Study | RCT | Nivellierungseffekt, Jura-Studierende, schwächste +45–50 Perzentilpunkte, stärkste verschlechtern sich, Geschwindigkeit vs. Qualität; KIM Tag 14 |
 
 ### 4.2 KI-Strategie & Roadmaps
 | URL | Name | Typ | Schlagwörter |
