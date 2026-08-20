@@ -209,6 +209,8 @@
 | https://digital-strategy.ec.europa.eu/en/library/coordinated-plan-artificial-intelligence-2021-review | EU Kommission | EU Coordinated AI Plan 2021 | Mitgliedsstaaten, Investitionen, Strategie |
 | https://openai.com/de-DE/research/index/ | OpenAI | Forschung | KI-Strategie, KI-Modelle, Intelligence Age, OpenAI-Perspektive |
 | https://www.ki-strategie-deutschland.de/ | KI-Strategie Deutschland | Behörde | Handlungsfelder, Roadmap, Förderprogramme |
+| https://sms.onlinelibrary.wiley.com/doi/abs/10.1002/smj.371 | King, Dalton, Daily & Covin — Meta-analyses of post-acquisition performance (Strategic Management Journal 25(2), 2004) | Metaanalyse | Tier 1, peer-reviewed; Leistung übernehmender Firmen verbessert sich im Mittel nicht, leicht negativ; übliche Erfolgsfaktoren erklären die Varianz nicht („unidentified moderators"); Grundlage für Roadmaps mit Entscheidungspunkten statt Endzuständen; KIM Tag 15 |
+| https://www.mckinsey.com/capabilities/tech-and-ai/our-insights/rewired-to-outcompete | McKinsey — Rewired: sechs Fähigkeiten für digitale und KI-Transformation | Beratungsstudie | Tier 2 (Eigeninteresse); Auswertung von über 200 Transformationen; sechs Fähigkeiten: Transformations-Roadmap, Talent, Betriebsmodell, Technologieumgebung, Daten, Adoption und Skalierung; KIM Tag 15 |
 | https://www.nber.org/papers?page=1&perPage=50&sortBy=public_date&q=artifical+intelligence | NBER (National Bureau of Economic Research | Behörde | Forschungsaufsätze |
 | https://www.iaps.ai/ | IAPS (Institute for AI Policy and Strategy | Forschung | USA KI Strategie |
 | https://ai-2027.com/ | AI 2027 | Artikel | künftige KI-Szenarien |
