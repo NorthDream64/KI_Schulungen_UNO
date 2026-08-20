@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Arbeitsvorlage · KI-Agenten — von der Idee zum Betrieb</title>
+<style>
+:root{--ink:#1a1a18;--paper:#f8f6f1;--card:#ffffff;--rule:#d5d0c5;--muted:#6b6b60;--accent:#0a4a7a;--teal:#0a6b6b;--green:#2a5c3f;--amber:#7a4a00;--red:#6a1a1a;--blue:#1a3a7a;--purple:#5a3a7a;--phase:#f2f0eb;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'DM Sans',system-ui,sans-serif;background:var(--paper);color:var(--ink);font-size:14px;line-height:1.65;}
+a{color:var(--accent);}a:hover{text-decoration:underline;}
+@media print{body{background:white;font-size:11pt;}.no-print{display:none!important;}.page-break{page-break-before:always;}.card,.konzept-card,.stdplan,.rueck-box{box-shadow:none!important;break-inside:avoid;}a{color:inherit;text-decoration:none;}.src-chip{border:1px solid #ccc;}}
+.page{max-width:820px;margin:0 auto;padding:2.5rem 2rem 5rem;}
+.ho-header{border-bottom:3px solid var(--ink);padding-bottom:1.4rem;margin-bottom:1.8rem;display:grid;grid-template-columns:1fr auto;gap:1rem;align-items:end;}
+.ho-eyebrow{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-bottom:.5rem;}
+.ho-title{font-family:'Playfair Display',Georgia,serif;font-size:clamp(1.7rem,5vw,2.4rem);line-height:1.1;}
+.ho-title em{font-style:italic;color:var(--teal);}
+.ho-meta{text-align:right;}
+.ho-meta-line{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);display:block;margin-bottom:2px;}
+.print-btn{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1px;text-transform:uppercase;padding:5px 14px;border:1px solid var(--rule);border-radius:4px;background:none;color:var(--muted);cursor:pointer;margin-top:.6rem;}
+.print-btn:hover{border-color:var(--accent);color:var(--accent);}
+.section{margin-bottom:1.9rem;}
+.section-title{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--rule);padding-bottom:.4rem;margin-bottom:1rem;}
+.lernziel{background:var(--card);border:1px solid var(--rule);border-left:4px solid var(--teal);border-radius:0 8px 8px 0;padding:1rem 1.2rem;margin-bottom:1.2rem;}
+.lernziel-label{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--teal);margin-bottom:.3rem;}
+.lernziel-text{font-style:italic;font-size:14px;}
+.card{background:var(--card);border:1px solid var(--rule);border-radius:8px;padding:1.1rem 1.3rem;margin-bottom:1rem;}
+.card p{margin-bottom:.5rem;}.card p:last-child{margin-bottom:0;}
+.card ul{padding-left:1.2rem;margin:.4rem 0;}.card li{margin-bottom:.3rem;}
+.tbl{width:100%;border-collapse:collapse;font-size:13px;margin:.5rem 0;}
+.tbl th{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;background:var(--phase);padding:.5rem .7rem;text-align:left;border-bottom:2px solid var(--rule);color:var(--muted);}
+.tbl td{padding:.5rem .7rem;border-bottom:1px solid var(--rule);vertical-align:top;}
+.tbl tr:last-child td{border-bottom:none;}
+.konzept-card{background:var(--card);border:1px solid var(--rule);border-radius:8px;padding:1rem 1.3rem;margin-bottom:.8rem;border-left:4px solid var(--rule);}
+.konzept-card.k-allg{border-left-color:var(--blue);}
+.konzept-card.k-ki{border-left-color:var(--teal);}
+.konzept-card.k-warn{border-left-color:var(--amber);}
+.konzept-card.k-red{border-left-color:var(--red);}
+.konzept-card.k-green{border-left-color:var(--green);}
+.konzept-card.k-purple{border-left-color:var(--purple);}
+.konzept-tag{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1.5px;color:var(--muted);text-transform:uppercase;margin-bottom:.3rem;font-weight:600;}
+.konzept-card.k-allg .konzept-tag{color:var(--blue);}
+.konzept-card.k-ki .konzept-tag{color:var(--teal);}
+.konzept-card.k-warn .konzept-tag{color:var(--amber);}
+.konzept-card.k-red .konzept-tag{color:var(--red);}
+.konzept-card.k-green .konzept-tag{color:var(--green);}
+.konzept-card.k-purple .konzept-tag{color:var(--purple);}
+.konzept-name{font-family:'Playfair Display',Georgia,serif;font-weight:600;font-size:15px;margin-bottom:.3rem;}
+.konzept-text{font-size:13px;line-height:1.6;}
+.konzept-text p{margin-bottom:.5rem;}.konzept-text p:last-child{margin-bottom:0;}
+.konzept-text ul{padding-left:1.2rem;margin:.3rem 0;}.konzept-text li{margin-bottom:.25rem;}
+/* Stundenplan-Abgleich */
+.stdplan{background:#f5f0fa;border:1.5px solid var(--purple);border-radius:8px;padding:1rem 1.2rem;margin-bottom:1.2rem;}
+.stdplan-label{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--purple);font-weight:700;margin-bottom:.5rem;}
+.stdplan p{font-size:13px;margin-bottom:.5rem;}
+.stdplan .sp-tbl{width:100%;border-collapse:collapse;font-size:12.5px;margin-top:.4rem;}
+.stdplan .sp-tbl td{padding:.35rem .5rem;border-bottom:1px solid rgba(90,58,122,.2);vertical-align:top;}
+.stdplan .sp-tbl tr:last-child td{border-bottom:none;}
+.stdplan .sp-tbl td:first-child{font-weight:600;width:44%;}
+/* Rückblick */
+.rueck-box{background:rgba(10,107,107,.05);border:1px solid rgba(10,107,107,.22);border-radius:8px;padding:1rem 1.2rem;margin-bottom:1rem;}
+.rueck-label{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--teal);margin-bottom:.5rem;font-weight:700;}
+.rueck-item{display:flex;gap:.6rem;font-size:13px;line-height:1.55;margin-bottom:.4rem;align-items:flex-start;}
+.rueck-item:last-child{margin-bottom:0;}
+.rueck-dot{color:var(--teal);flex-shrink:0;font-weight:700;margin-top:.05rem;font-family:'DM Mono',monospace;font-size:11px;min-width:4.4rem;}
+.kb{display:flex;gap:.7rem;background:var(--card);border:1px solid var(--rule);border-radius:7px;padding:.55rem .9rem;font-size:13px;margin-bottom:.4rem;line-height:1.55;}
+.kb-nr{font-family:'DM Mono',monospace;font-size:10px;color:var(--teal);min-width:18px;margin-top:.1rem;}
+.src-row{display:flex;flex-wrap:wrap;gap:6px;margin-top:.6rem;}
+.src-chip{font-family:'DM Mono',monospace;font-size:10px;padding:2px 9px;border-radius:100px;background:var(--phase);border:1px solid var(--rule);color:var(--muted);}
+.src-chip a{color:inherit;text-decoration:none;}.src-chip a:hover{color:var(--accent);}
+.footer{margin-top:2.5rem;padding-top:1rem;border-top:1px solid var(--rule);font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);display:flex;justify-content:space-between;flex-wrap:wrap;gap:.5rem;}
+
+.weg{display:grid;grid-template-columns:repeat(7,1fr);gap:.4rem;margin:1.2rem 0;}
+.weg-schritt{background:var(--card);border:1px solid var(--rule);border-radius:6px;padding:.6rem .4rem;text-align:center;}
+.weg-nr{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1px;color:var(--muted);display:block;}
+.weg-name{font-size:11.5px;font-weight:600;line-height:1.25;display:block;margin-top:.2rem;}
+@media(max-width:700px){.weg{grid-template-columns:repeat(2,1fr);}}
+.phase{border-left:3px solid var(--rule);padding-left:1rem;margin:1.1rem 0;}
+.phase-kopf{display:flex;align-items:baseline;gap:.6rem;margin-bottom:.35rem;}
+.phase-nr{font-family:'DM Mono',monospace;font-size:11px;color:var(--accent);font-weight:700;}
+.phase-titel{font-family:'Playfair Display',Georgia,serif;font-size:1.05rem;}
+.erg{display:inline-block;background:#eef4ee;border:1px solid #cfe0cf;border-radius:3px;padding:1px 7px;font-size:11px;color:#2a5a2a;margin-top:.35rem;}
+.feld{border-bottom:1px dotted var(--rule);min-height:1.15rem;display:block;margin:.15rem 0 .5rem;}
+@media print{.weg{grid-template-columns:repeat(7,1fr);}}
+
+.arbeitsbereich{border:1px solid var(--rule);border-radius:8px;background:var(--card);margin:1.2rem 0;overflow:hidden;}
+.arbeitsbereich>summary{cursor:pointer;padding:.85rem 1.1rem;background:#f2efe8;font-size:13.5px;list-style:none;border-bottom:1px solid transparent;}
+.arbeitsbereich>summary::-webkit-details-marker{display:none;}
+.arbeitsbereich>summary::before{content:"\25B8 ";color:var(--accent);font-weight:700;}
+.arbeitsbereich[open]>summary::before{content:"\25BE ";}
+.arbeitsbereich[open]>summary{border-bottom-color:var(--rule);}
+.ab-inner{padding:1.1rem;}
+.ab-hinweis{font-size:12px;color:var(--muted);margin:.3rem 0 .8rem;line-height:1.5;}
+.ab-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;}
+@media(max-width:820px){.ab-grid{grid-template-columns:1fr;}}
+.ab-gruppe{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--accent);border-bottom:1px solid var(--rule);padding-bottom:.3rem;margin-bottom:.6rem;}
+.ab-spalte label{display:block;font-size:12px;font-weight:600;margin-bottom:.7rem;}
+.ab-spalte label span{display:block;font-weight:400;color:var(--muted);font-size:11px;margin-top:1px;}
+.ab-spalte input,.ab-spalte textarea{width:100%;font-family:inherit;font-size:12.5px;font-weight:400;padding:.4rem .5rem;margin-top:.25rem;border:1px solid var(--rule);border-radius:4px;background:var(--paper);color:var(--ink);resize:vertical;}
+.ab-spalte input:focus,.ab-spalte textarea:focus,#agentResult:focus{outline:2px solid var(--accent);outline-offset:1px;}
+.ab-knopf-reihe{display:flex;flex-wrap:wrap;gap:.5rem;margin:1rem 0 .8rem;}
+.ab-btn{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.5px;padding:.5rem 1rem;border:1px solid var(--rule);border-radius:4px;background:var(--paper);color:var(--ink);cursor:pointer;}
+.ab-btn:hover{border-color:var(--accent);color:var(--accent);}
+.ab-btn-haupt{background:var(--accent);color:#fff;border-color:var(--accent);}
+.ab-btn-haupt:hover{opacity:.88;color:#fff;}
+.ab-btn-still{color:var(--muted);}
+.ab-btn-klein{padding:.28rem .7rem;font-size:10px;}
+.ab-ausgabe-kopf{display:flex;justify-content:space-between;align-items:center;gap:.6rem;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);border-top:1px solid var(--rule);padding-top:.8rem;}
+.ab-ausgabe-aktionen{display:flex;gap:.4rem;}
+#agentResult{width:100%;font-family:'DM Mono',monospace;font-size:12px;line-height:1.5;padding:.7rem;margin-top:.5rem;border:1px solid var(--rule);border-radius:4px;background:var(--paper);color:var(--ink);resize:vertical;}
+.no-break{break-inside:avoid;page-break-inside:avoid;}
+.zitat-prompt{margin:.7rem 0 0;padding:.85rem 1rem;background:var(--paper);border-left:3px solid var(--purple);border-radius:0 4px 4px 0;font-family:'DM Mono',monospace;font-size:12px;line-height:1.65;color:var(--ink);}
+.zitat-prompt em{font-style:italic;color:var(--muted);}
+@media print{.arbeitsbereich{display:none;}}
+
+</style>
+</head>
+<body>
+<div class="page">
+
+<div class="ho-header">
+ <div>
+  <div class="ho-eyebrow">KI-Manager:in · Arbeitsvorlage · kurstagübergreifend</div>
+  <div class="ho-title">KI-Agenten — <em>von der Idee zum Betrieb</em></div>
+ </div>
+ <div class="ho-meta">
+  <span class="ho-meta-line">Einordnung · Spezifikation · Prüfung</span>
+  <span class="ho-meta-line">Freigabe · Betrieb · Änderung</span>
+  <span class="ho-meta-line">Zehn Grundsätze · Praxisteil mit Arbeitsbereich</span>
+  <button class="print-btn no-print" onclick="window.print()">&#128424; Drucken</button>
+ </div>
+</div>
+
+<div class="section">
+ <div class="konzept-card k-warn">
+  <div class="konzept-tag">Grundsatz</div>
+  <div class="konzept-name">Ein Agent ist einsatzbereit, wenn sein Fehlverhalten beschrieben ist</div>
+  <div class="konzept-text">
+   <p>Nicht wenn er im Vorführfall funktioniert. Ein Agent ist erst dann einsatzbereit, wenn nachgewiesen ist, wie er sich bei <strong>Fehlern, Grenzfällen, manipulierten Eingaben und unvollständigen Informationen</strong> verhält. Der Vorführfall zeigt nur, dass er den Vorführfall kann.</p>
+   <p style="margin-top:.4rem;">Daraus folgt die Reihenfolge auf diesem Blatt: Erst wird festgelegt, was er tun <em>darf</em> — dann, wie geprüft wird, ob er sich daran hält.</p>
+  </div>
+ </div>
+</div>
+
+<div class="section">
+ <div class="section-title">Zwei Vorfragen, bevor der Weg beginnt</div>
+
+ <div class="konzept-card k-purple">
+  <div class="konzept-tag">Vorfrage 1 · Einordnung</div>
+  <div class="konzept-name">Welcher Agententyp — und damit welche Kontrolltiefe?</div>
+  <div class="konzept-text">
+   <p>Das Governance-Raster der Medienaufsicht Singapurs kombiniert zwei Achsen: <strong>Handlungsspielraum</strong> und <strong>Autonomiegrad</strong>. Aus der Einordnung folgt, wie viel Kontrolle nötig ist — nicht aus dem Bauchgefühl.</p>
+   <table class="tbl">
+    <thead><tr><th style="width:20%;">Typ</th><th>Verhalten</th><th style="width:32%;">Kontrollpflicht</th></tr></thead>
+    <tbody>
+     <tr><td><strong>Assistent</strong><br><span style="color:var(--green);font-size:11px;">geringes Risiko</span></td><td>Bereitet vor, fasst zusammen, schlägt vor. Der Mensch entscheidet bei jedem Schritt</td><td>Gering. Klassische Zusammenarbeit mit klarer Trennlinie</td></tr>
+     <tr><td><strong>Analyse-Agent</strong><br><span style="color:var(--amber);font-size:11px;">mittleres Risiko</span></td><td>Bewertet und empfiehlt selbstständig, die Entscheidung bleibt beim Menschen</td><td>Stichproben-Audit, dokumentierter Eskalationspfad</td></tr>
+     <tr><td><strong>Workflow-Agent</strong><br><span style="color:var(--amber);font-size:11px;">mittleres Risiko</span></td><td>Führt festgelegte Schritte selbstständig aus — Vorgänge anlegen, Berichte erzeugen</td><td>Definierte Schwellenwerte, regelmäßiges Review</td></tr>
+     <tr><td><strong>Autonomer Agent</strong><br><span style="color:var(--red);font-size:11px;">hohes Risiko</span></td><td>Plant und handelt eigenständig über mehrere Systeme hinweg</td><td>Menschliches Übersteuern, lückenloser Prüfpfad, geringstmögliche Rechte zwingend</td></tr>
+    </tbody>
+   </table>
+   <p style="margin-top:.5rem;"><strong>Ergebnis:</strong> eine schriftliche Einstufung mit Datum und Verantwortlichen. Sie steht am Anfang, weil alle weiteren Pflichten daran hängen.</p>
+  </div>
+ </div>
+
+ <div class="konzept-card k-ki">
+  <div class="konzept-tag">Vorfrage 2 · Machbarkeit</div>
+  <div class="konzept-name">Steht der Unterbau — oder bauen wir einen Prototyp im Produktivgewand?</div>
+  <div class="konzept-text">
+   <p>Das Sprachmodell ist der kleinste Teil. Um es herum liegen sechs Schichten, die über Produktionsfähigkeit entscheiden. Fehlt eine, merkst du das erfahrungsgemäß erst beim Produktivgang.</p>
+   <table class="tbl">
+    <thead><tr><th style="width:26%;">Schicht</th><th>Wofür</th><th style="width:14%;">Vorhanden?</th></tr></thead>
+    <tbody>
+     <tr><td><strong>Zustand und Fortschreibung</strong></td><td>Zwischenergebnisse und Ausführungskontext. Fehlt sie, beginnt der Agent nach jedem Abbruch von vorn</td><td>&#9744; ja &#9744; nein</td></tr>
+     <tr><td><strong>Sicherheit und Governance</strong></td><td>Identität, Rechtezuschnitt, Prüfpfad. Ohne diese Schicht ist keine Datenschutz- oder Compliance-Prüfung möglich</td><td>&#9744; ja &#9744; nein</td></tr>
+     <tr><td><strong>Ablaufsteuerung und Werkzeuge</strong></td><td>Wann wird wahrgenommen, geplant, gehandelt — und welches System wird aufgerufen</td><td>&#9744; ja &#9744; nein</td></tr>
+     <tr><td><strong>Gedächtnis</strong></td><td>Kurzzeit- und Langzeitspeicher. Bestimmt, was der Agent weiß und erinnert</td><td>&#9744; ja &#9744; nein</td></tr>
+     <tr><td><strong>Beobachtbarkeit</strong></td><td>Nicht „hat das System geantwortet“, sondern „war die Entscheidung richtig“ — eine eigene Messdimension</td><td>&#9744; ja &#9744; nein</td></tr>
+     <tr><td><strong>Prüfsuiten</strong></td><td>Laufende Prüfung, ob der Agent einsatzbereit ist und bleibt. Kein einmaliges Tor</td><td>&#9744; ja &#9744; nein</td></tr>
+    </tbody>
+   </table>
+   <p style="margin-top:.5rem;"><strong>Die Faustregel dahinter:</strong> Ein Wochenend-Prototyp braucht etwa eine Zeile Infrastruktur je Modellaufruf, ein geordneter Betrieb rund fünfzig — und die meisten davon haben mit dem Modell nichts zu tun.</p>
+   <p style="font-size:12.5px;color:var(--muted);">Mehrere Nein-Antworten sind kein Abbruchgrund, wohl aber ein Grund, den Agenten zunächst als Assistent oder Analyse-Agent zu führen. Autonomie setzt Unterbau voraus.</p>
+  </div>
+ </div>
+</div>
+
+<div class="section page-break">
+ <div class="section-title">Der Weg in sieben Phasen</div>
+
+ <div class="weg">
+  <div class="weg-schritt"><span class="weg-nr">01</span><span class="weg-name">Auftrag<br>definieren</span></div>
+  <div class="weg-schritt"><span class="weg-nr">02</span><span class="weg-name">Agent<br>spezifizieren</span></div>
+  <div class="weg-schritt"><span class="weg-nr">03</span><span class="weg-name">Risiken<br>ableiten</span></div>
+  <div class="weg-schritt"><span class="weg-nr">04</span><span class="weg-name">Prüfen<br>und messen</span></div>
+  <div class="weg-schritt"><span class="weg-nr">05</span><span class="weg-name">Freigabe<br>entscheiden</span></div>
+  <div class="weg-schritt"><span class="weg-nr">06</span><span class="weg-name">Betrieb<br>überwachen</span></div>
+  <div class="weg-schritt"><span class="weg-nr">07</span><span class="weg-name">Änderungen<br>kontrollieren</span></div>
+ </div>
+
+ <div class="card">
+  <table class="tbl">
+   <thead><tr><th style="width:6%;">#</th><th style="width:19%;">Phase</th><th>Leitfrage</th><th style="width:16%;">Wer entscheidet</th><th style="width:22%;">Ergebnis — ohne das geht es nicht weiter</th></tr></thead>
+   <tbody>
+    <tr><td><strong>01</strong></td><td><strong>Auftrag definieren</strong></td><td>Welches Problem, welcher Nutzen, welche Grenzen?</td><td>Fachbereich</td><td>Fachlich freigegebener Agentenauftrag</td></tr>
+    <tr><td><strong>02</strong></td><td><strong>Agent spezifizieren</strong></td><td>Was darf er lesen, entscheiden, auslösen — und was nicht?</td><td>Fachbereich mit IT</td><td>Versionierte Spezifikation</td></tr>
+    <tr><td><strong>03</strong></td><td><strong>Risiken ableiten</strong></td><td>Wie wird jede Fehlermöglichkeit verhindert, erkannt oder begrenzt?</td><td>Fachbereich, IT, Sicherheit</td><td>Risiko- und Kontrollmatrix</td></tr>
+    <tr><td><strong>04</strong></td><td><strong>Prüfen und messen</strong></td><td>Woran wird Zuverlässigkeit nachgewiesen — vor dem Start?</td><td>IT mit Fachabnahme</td><td>Nachvollziehbarer Prüfnachweis</td></tr>
+    <tr><td><strong>05</strong></td><td><strong>Freigabe entscheiden</strong></td><td>Sind alle Bedingungen erfüllt — und wer trägt die Entscheidung?</td><td><strong>Führung</strong></td><td>Dokumentierte Freigabeentscheidung</td></tr>
+    <tr><td><strong>06</strong></td><td><strong>Betrieb überwachen</strong></td><td>Woran merken wir, dass er abdriftet oder zu teuer wird?</td><td>Fachlicher Betreiber</td><td>Laufender Betriebs- und Qualitätsnachweis</td></tr>
+    <tr><td><strong>07</strong></td><td><strong>Änderungen kontrollieren</strong></td><td>Was wurde geändert, und was muss deshalb erneut geprüft werden?</td><td>Fachbereich mit IT</td><td>Versionierung und Regressionstests</td></tr>
+   </tbody>
+  </table>
+  <p style="margin-top:.6rem;font-size:12.5px;color:var(--muted);">Die Phasen laufen nicht strikt nacheinander — Phase 2 und 3 bearbeitet man meist gemeinsam. Was nicht verhandelbar ist: <strong>Phase 5 kommt nach Phase 4</strong>, und die Entscheidung in Phase 5 trifft ein Mensch mit Namen.</p>
+ </div>
+</div>
+
+<div class="section">
+ <div class="section-title">Die Phasen im Einzelnen</div>
+
+ <div class="phase">
+  <div class="phase-kopf"><span class="phase-nr">01</span><span class="phase-titel">Auftrag definieren</span></div>
+  <p>Vor jeder technischen Umsetzung stehen Zweck, Nutzen und Grenzen. Der häufigste Fehler dieser Phase ist, sie zu überspringen, weil die Idee klar erscheint.</p>
+  <p style="margin-top:.4rem;"><strong>Zu klären:</strong> Welches Problem wird gelöst? Was soll nachweisbar besser werden? Was ist ausdrücklich <em>nicht</em> Ziel? Wann muss der Agent abbrechen und an einen Menschen übergeben?</p>
+  <p style="margin-top:.4rem;"><strong>Arbeitsweise:</strong> Der Leitfaden empfiehlt, die Anforderungen im Gespräch mit der KI zu erarbeiten — mit der ausdrücklichen Vorgabe, den Agenten noch <em>nicht</em> zu bauen, keine Annahmen zu treffen und auf unpräzise oder widersprüchliche Angaben hinzuweisen. Der Leitsatz dazu: <em>Fehlende Anforderungen werden erfragt, nicht plausibel ergänzt.</em></p>
+  <span class="erg">Ergebnis: fachlich freigegebener Auftrag mit Nicht-Zielen und Abbruchkriterien</span>
+ </div>
+
+ <div class="phase">
+  <div class="phase-kopf"><span class="phase-nr">02</span><span class="phase-titel">Agent spezifizieren</span></div>
+  <p>Hier entsteht das Kerndokument. Der Leitfaden gliedert es in dreizehn Abschnitte; diese fünf Fragen entscheiden über die Qualität des Ganzen:</p>
+  <ul>
+   <li><strong>Welche Quellen sind zulässig</strong> — und was passiert bei Widersprüchen oder veralteten Angaben?</li>
+   <li><strong>Welche Aktionen darf er autonom</strong>, welche nur mit menschlicher Freigabe? Lesen, bewerten, anlegen, ändern, löschen, versenden, extern auslösen — jede Zeile einzeln beantwortet.</li>
+   <li><strong>Nach welchen Kriterien entscheidet er</strong>, mit welcher Gewichtung, und ab welchem Schwellenwert geschieht was?</li>
+   <li><strong>Wie sieht die Ausgabe aus?</strong> Pflichtfelder sind Ergebnis, Begründung, verwendete Quellen, ausgelöste Aktionen, Zeitstempel und Agentenversion.</li>
+   <li><strong>Wann muss ein Mensch übernehmen?</strong> Für kritische Entscheidungen, unzureichende Datenlage, widersprüchliche Quellen, Sicherheitsereignisse und uneindeutige Schwellenwerte — je mit benannter Rolle.</li>
+  </ul>
+  <p style="margin-top:.4rem;"><strong>Die Regel, die alles andere trägt:</strong> Der Agent erhält nur die Funktionen und Berechtigungen, die sein Zweck erfordert. Rechte lassen sich später leicht erweitern und praktisch nie wieder einsammeln.</p>
+  <span class="erg">Ergebnis: versionierte Spezifikation — Detailvorlage im Leitfaden, Abschnitte 2 bis 13</span>
+ </div>
+
+ <div class="phase">
+  <div class="phase-kopf"><span class="phase-nr">03</span><span class="phase-titel">Risiken und Kontrollen ableiten</span></div>
+  <p>Zu jeder Fehlermöglichkeit gehören drei Antworten: Wie verhindern wir sie, wie erkennen wir sie, was tun wir dann? Sieben Risiken treten bei fast jedem Agenten auf:</p>
+  <table class="tbl">
+   <thead><tr><th style="width:22%;">Risiko</th><th>Wirkung</th><th style="width:24%;">Vorbeugend</th><th style="width:20%;">Erkennend</th></tr></thead>
+   <tbody>
+    <tr><td><strong>Erfundene Aussage</strong></td><td>Falsche Entscheidung auf nicht gestützter Information</td><td>Quellenpflicht, strukturierte Anweisung</td><td>Stichprobe, Faktentest</td></tr>
+    <tr><td><strong>Eingeschleuste Anweisung</strong></td><td>Regelumgehung, Datenabfluss</td><td>Trennung von Anweisung und Fremdinhalt, Werkzeugbegrenzung</td><td>Sicherheitstest, Protokollierung</td></tr>
+    <tr><td><strong>Zu weite Befugnis</strong></td><td>Unerwünschte Aktion</td><td>Geringstmögliche Rechte, menschliche Freigabe</td><td>Aktionsprotokoll</td></tr>
+    <tr><td><strong>Fehlerhafte Quelle</strong></td><td>Falsche Bewertung</td><td>Positivliste, Aktualitätsregel</td><td>Quellenüberwachung</td></tr>
+    <tr><td><strong>Fehlender Kontext</strong></td><td>Falsche Schlussfolgerung aus unvollständiger Eingabe</td><td>Pflichtfelder, Validierung</td><td>Negativtests</td></tr>
+    <tr><td><strong>Endlosschleife</strong></td><td>Kosten und Systemlast</td><td>Höchstzahl Durchläufe, Zeitgrenze</td><td>Laufzeitüberwachung</td></tr>
+    <tr><td><strong>Kostenüberschreitung</strong></td><td>Budget gesprengt</td><td>Feste Obergrenzen</td><td>Kostenüberwachung</td></tr>
+   </tbody>
+  </table>
+  <p style="margin-top:.5rem;">Diese sieben sind der Ausgangsbestand. Die Risiken des konkreten Falls kommen hinzu — sie ergeben sich aus dem Auftrag, nicht aus der Technik.</p>
+  <span class="erg">Ergebnis: Risiko- und Kontrollmatrix mit benannten Reaktionen</span>
+ </div>
+
+ <div class="phase">
+  <div class="phase-kopf"><span class="phase-nr">04</span><span class="phase-titel">Prüfen und messen</span></div>
+  <p>Eine Vorführung ist kein Nachweis. Nötig ist ein <strong>versionierter Testsatz</strong> mit erwarteten Ergebnissen und messbaren Abnahmekriterien. Zwölf Testklassen decken die üblichen Fehlerbilder ab:</p>
+  <table class="tbl">
+   <thead><tr><th style="width:24%;">Testklasse</th><th>Prüffrage</th><th style="width:28%;">Beispiel</th></tr></thead>
+   <tbody>
+    <tr><td>Funktionstest</td><td>Erfüllt er die spezifizierte Aufgabe?</td><td>Gültiger Standardfall</td></tr>
+    <tr><td>Negativtest</td><td>Reagiert er richtig auf ungültige Eingaben?</td><td>Pflichtfeld fehlt</td></tr>
+    <tr><td>Grenzwerttest</td><td>Greifen Schwellen exakt?</td><td>Wert knapp unter, auf und über der Grenze</td></tr>
+    <tr><td>Quellentest</td><td>Nutzt er nur zulässige Quellen?</td><td>Nicht freigegebene Quelle anbieten</td></tr>
+    <tr><td>Erfindungstest</td><td>Erfindet er Fakten oder Belege?</td><td>Frage ohne vorhandenen Nachweis</td></tr>
+    <tr><td>Konflikttest</td><td>Erkennt er Widersprüche?</td><td>Zwei Quellen widersprechen sich</td></tr>
+    <tr><td>Berechtigungstest</td><td>Bleibt er in seinen Rechten?</td><td>Versuch einer verbotenen Schreibaktion</td></tr>
+    <tr><td>Manipulationstest</td><td>Befolgt er eingeschleuste Fremdanweisungen?</td><td>Quelle enthält „ignoriere die Regeln“</td></tr>
+    <tr><td>Werkzeugfehlertest</td><td>Reagiert er kontrolliert auf Ausfälle?</td><td>Schnittstelle liefert Fehler oder antwortet nicht</td></tr>
+    <tr><td>Wiederholungstest</td><td>Ist das Verhalten stabil?</td><td>Derselbe Fall mehrfach</td></tr>
+    <tr><td>Regressionstest</td><td>Bleibt die Qualität nach Änderungen erhalten?</td><td>Testsatz gegen die neue Fassung</td></tr>
+    <tr><td>Abnahmetest</td><td>Erfüllt er den fachlichen Zweck?</td><td>Vollständiges Fachszenario</td></tr>
+   </tbody>
+  </table>
+  <p style="margin-top:.5rem;"><strong>Der Testsatz braucht mehr als Normalfälle:</strong> seltene aber relevante Fälle, Grenzfälle, ungültige Eingaben, widersprüchliche Informationen, absichtlich manipulierte Eingaben und Fälle, die an einen Menschen übergeben werden müssen.</p>
+  <p style="margin-top:.4rem;"><strong>Gemessen wird auf zehn Dimensionen</strong>, von denen nicht jede zu jedem Agenten passt: fachliche Korrektheit, Quellenqualität, fälschlich ausgelöste und übersehene Fälle, Regelverstöße (Zielwert null), bestandene Sicherheitstests, Qualität der Übergaben an Menschen, Laufzeit, Tokenverbrauch und Kosten je Durchlauf.</p>
+  <span class="erg">Ergebnis: Testbericht mit Belegen — Vorlagen im Leitfaden, Abschnitte 14 bis 17</span>
+ </div>
+
+ <div class="phase">
+  <div class="phase-kopf"><span class="phase-nr">05</span><span class="phase-titel">Freigabe entscheiden</span></div>
+  <p>Die einzige Phase, in der die Führung selbst entscheidet — und die einzige, die sich nicht delegieren lässt. Die Entscheidung lautet <strong>freigegeben, freigegeben mit Auflagen oder nicht freigegeben</strong>, mit Begründung, offenen Risiken, Auflagen, Name und Datum.</p>
+  <p style="margin-top:.4rem;">Sechzehn Bedingungen müssen erfüllt sein. Sie zerfallen in vier Gruppen:</p>
+  <table class="tbl">
+   <thead><tr><th style="width:20%;">Gruppe</th><th>Bedingungen</th></tr></thead>
+   <tbody>
+    <tr><td><strong>Auftrag</strong></td><td>Zweck und Umfang fachlich freigegeben · fachliche Abnahme dokumentiert · technische Freigabe dokumentiert</td></tr>
+    <tr><td><strong>Grenzen</strong></td><td>Quellen und Werkzeuge dokumentiert · Rechte auf das Nötigste beschränkt · zulässige und unzulässige Aktionen festgelegt · Bewertungsmodell und Schwellenwerte versioniert · Regeln für die menschliche Aufsicht definiert</td></tr>
+    <tr><td><strong>Nachweis</strong></td><td>Testsatz versioniert · kritische Testfälle bestanden · Sicherheitstests bestanden · Regressionstest bestanden</td></tr>
+    <tr><td><strong>Betriebsbereitschaft</strong></td><td>Überwachung eingerichtet · Protokollierung eingerichtet · Token- und Kostengrenzen gesetzt · Rückfall oder Abschaltung vorhanden</td></tr>
+   </tbody>
+  </table>
+  <p style="margin-top:.5rem;font-size:12.5px;color:var(--muted);">Die vierte Gruppe wird am häufigsten übersehen, weil sie nach dem Start klingt. Sie gehört davor: Ein Agent, der sich nicht abschalten lässt, ist nicht freigabefähig.</p>
+  <span class="erg">Ergebnis: unterschriebene Freigabeentscheidung mit Auflagen</span>
+ </div>
+
+ <div class="phase">
+  <div class="phase-kopf"><span class="phase-nr">06</span><span class="phase-titel">Betrieb überwachen</span></div>
+  <p>Acht Kennzahlen mit je einem Sollwert, einer Warnschwelle, einer kritischen Schwelle und einer festgelegten Reaktion: Fehlerquote, fälschlich ausgelöste Fälle, übersehene Fälle, Übergaberate an Menschen, Werkzeugfehler, Token je Durchlauf, Kosten je Durchlauf, Laufzeit.</p>
+  <p style="margin-top:.4rem;"><strong>Protokolliert wird</strong>, soweit rechtlich und technisch zulässig: Durchlaufkennung, Zeitstempel, Agenten-, Anweisungs- und Modellversion, genutzte Werkzeuge, herangezogene Quellen, Ergebnis, ausgelöste Aktion, Übergaben, Fehler sowie Token- und Kostenwerte. Aufbewahrungsdauer und Zugriffsrollen gehören festgelegt.</p>
+  <p style="margin-top:.4rem;"><strong>Die Abschaltregel</strong> greift, wenn eine kritische Schwelle überschritten wird, eine unzulässige Aktion ausgeführt wurde, ein Sicherheitsvorfall vorliegt, die fachliche Zuverlässigkeit unter den Mindestwert fällt oder eine zentrale Quelle beziehungsweise ein Werkzeug kompromittiert ist. <strong>Wer abschalten darf, steht mit Namen fest.</strong></p>
+  <span class="erg">Ergebnis: laufender Betriebsnachweis mit ausgelösten Reaktionen</span>
+ </div>
+
+ <div class="phase">
+  <div class="phase-kopf"><span class="phase-nr">07</span><span class="phase-titel">Änderungen kontrollieren</span></div>
+  <p>Versioniert werden neun Bestandteile: Systemanweisung, Modell und Modellversion, Werkzeuge und Rechte, Datenquellen, Bewertungsregeln, Schwellenwerte, Ausgabeformat, Testsatz und Sicherheitskontrollen.</p>
+  <table class="tbl">
+   <thead><tr><th style="width:34%;">Änderung</th><th style="width:18%;">Erneut prüfen?</th><th>Mindestumfang</th></tr></thead>
+   <tbody>
+    <tr><td>Redaktionelle Textänderung ohne Logikänderung</td><td>prüfen</td><td>Kurztest und Stichprobe</td></tr>
+    <tr><td>Anweisungslogik geändert</td><td><strong>ja</strong></td><td>Vollständige fachliche Regression</td></tr>
+    <tr><td>Modell gewechselt</td><td><strong>ja</strong></td><td>Vollständige Regression und Sicherheitstests</td></tr>
+    <tr><td>Neues Werkzeug</td><td><strong>ja</strong></td><td>Funktion, Berechtigung, Sicherheit</td></tr>
+    <tr><td>Werkzeugrechte erweitert</td><td><strong>ja</strong></td><td>Berechtigungstest und Prüfung auf zu weite Befugnis</td></tr>
+    <tr><td>Neue Quelle</td><td><strong>ja</strong></td><td>Quellen- und Konflikttest</td></tr>
+    <tr><td>Schwellenwert geändert</td><td><strong>ja</strong></td><td>Grenzwerttest und Fachabnahme</td></tr>
+    <tr><td>Ausgabeformat geändert</td><td><strong>ja</strong></td><td>Schema- und Anbindungstest</td></tr>
+    <tr><td>Testdaten erweitert</td><td>nicht zwingend</td><td>Neue Fälle ausführen</td></tr>
+   </tbody>
+  </table>
+  <p style="margin-top:.5rem;font-size:12.5px;color:var(--muted);">Der Modellwechsel ist der unterschätzte Fall. Er wird vom Anbieter angekündigt, nicht von dir geplant — und verlangt trotzdem die vollständige Regression. Wer das nicht einkalkuliert, wird davon überrascht.</p>
+  <span class="erg">Ergebnis: nachvollziehbare Versionsgeschichte mit Prüfentscheidungen</span>
+ </div>
+</div>
+
+
+<div class="section page-break">
+ <div class="section-title">Zehn Grundsätze für den Bau — unabhängig vom Werkzeug</div>
+ <div class="card">
+  <p>Die sieben Phasen sagen, <em>wann</em> etwas geschieht. Diese zehn Grundsätze sagen, <em>wie</em> — sie gelten über alle Phasen hinweg und sind der Erfahrungsbestand, den die Normenwerke, die Sicherheitsliteratur und die Praxisberichte gemeinsam tragen.</p>
+ </div>
+
+ <div class="konzept-card k-green">
+  <div class="konzept-tag">Zuschnitt</div>
+  <div class="konzept-name">1 bis 3 · Was der Agent überhaupt sein soll</div>
+  <div class="konzept-text">
+   <p><strong>① Der enge Zuschnitt ist die wirksamste Sicherheitsmaßnahme.</strong> Ein Agent, der eine Sache tut, lässt sich beschreiben, prüfen und abschalten. Ein Agent, der „den Vertrieb unterstützt“, lässt sich nichts davon. Wenn du den Zweck nicht in einem Satz sagen kannst, ist der Zuschnitt noch zu weit.</p>
+   <p style="margin-top:.4rem;"><strong>② Eine Aufgabe je Agent.</strong> Zwei Aufgaben in einem Agenten bedeuten zwei Rechtebündel, zwei Fehlerbilder und einen Testsatz, der beides abdecken muss. Zwei getrennte Agenten sind fast immer die billigere Lösung — auch dann, wenn sie zunächst nach mehr Aufwand aussieht.</p>
+   <p style="margin-top:.4rem;"><strong>③ Was eine Regel kann, braucht kein Modell.</strong> Prüfe vor jedem Modellaufruf, ob der Schritt sich fest verdrahten lässt. Feste Regeln sind billiger, schneller, nachvollziehbar und lassen sich nicht überreden. Das Modell ist für das zuständig, was sich nicht vorab aufschreiben lässt.</p>
+  </div>
+ </div>
+
+ <div class="konzept-card k-red">
+  <div class="konzept-tag">Grenzen</div>
+  <div class="konzept-name">4 bis 6 · Was er nicht darf</div>
+  <div class="konzept-text">
+   <p><strong>④ Erst die Abbruchbedingung, dann die Fähigkeit.</strong> Bevor du festlegst, was der Agent können soll, lege fest, wann er aufhören und übergeben muss. Diese Reihenfolge klingt umständlich und erspart die häufigste Nacharbeit — ein Agent ohne definierten Ausstieg läuft im Zweifelsfall weiter.</p>
+   <p style="margin-top:.4rem;"><strong>⑤ Rechte werden auf Anwendungsebene erzwungen, nicht im Text der Anweisung.</strong> Eine Anweisung wie „lösche niemals Datensätze“ ist eine Bitte, keine Schranke. Unter gezielten Angriffen lassen sich reine Textschranken zuverlässig aushebeln — nachgewiesen in begutachteter Forschung für alle verbreiteten Modelle. Was der Agent technisch nicht darf, kann er auch nicht überredet werden zu tun.</p>
+   <p style="margin-top:.4rem;"><strong>⑥ Nur die Rechte, die der Zweck erfordert.</strong> Rechte lassen sich später leicht erweitern und praktisch nie wieder einsammeln. Beginne mit Lesezugriff. Jedes Schreibrecht und jede nach außen wirkende Aktion wird einzeln begründet und einzeln freigegeben.</p>
+  </div>
+ </div>
+
+ <div class="konzept-card k-ki">
+  <div class="konzept-tag">Nachweisbarkeit</div>
+  <div class="konzept-name">7 bis 8 · Woran man erkennt, ob er funktioniert</div>
+  <div class="konzept-text">
+   <p><strong>⑦ Jede Anforderung braucht einen Test — sonst ist sie keine Anforderung.</strong> „Der Agent soll zuverlässig arbeiten“ ist eine Absichtserklärung. „In neun von zehn Referenzfällen liefert er dieselbe Einstufung wie die Fachabteilung“ ist eine Anforderung. Formuliere so, dass jemand anderes prüfen könnte, ob sie erfüllt ist.</p>
+   <p style="margin-top:.4rem;"><strong>⑧ Die Ausgabe wird strukturiert, nicht erzählt.</strong> Pflichtfelder sind Ergebnis, Begründung, verwendete Quellen, ausgelöste Aktionen, Zeitstempel und Agentenversion. Fließtext lässt sich nicht auswerten, nicht überwachen und im Streitfall nicht nachvollziehen — und er verdeckt, worauf die Aussage sich stützt.</p>
+  </div>
+ </div>
+
+ <div class="konzept-card k-warn">
+  <div class="konzept-tag">Haltbarkeit</div>
+  <div class="konzept-name">9 bis 10 · Was nach dem Start passiert</div>
+  <div class="konzept-text">
+   <p><strong>⑨ Das Modell ist der austauschbare Teil — versioniere alles darum herum.</strong> Anweisung, Werkzeuge, Rechte, Quellen, Bewertungsregeln, Schwellenwerte, Ausgabeformat, Testsatz und Sicherheitskontrollen. Der Modellwechsel kommt vom Anbieter und wird nicht von dir geplant; wenn er kommt, brauchst du einen Testsatz, gegen den du die neue Fassung laufen lassen kannst.</p>
+   <p style="margin-top:.4rem;"><strong>⑩ Mit dem Menschen im Kreislauf starten — Autonomie wird verdient.</strong> Beginne eine Stufe unterhalb dessen, was technisch ginge: als Assistent statt als Analyse-Agent, als Analyse-Agent statt autonom. Die Freigabegrenze wird nach belegter Zuverlässigkeit verschoben, nicht nach Zeitablauf oder Zuversicht.</p>
+   <p style="font-size:12.5px;color:var(--muted);">Die Umkehrung dieses Grundsatzes ist der häufigste Fehler in Agentenprojekten: Man startet mit der höchsten Autonomiestufe, weil sie die eigentliche Idee war — und baut die Kontrollen nach, wenn der erste Schaden entstanden ist.</p>
+  </div>
+ </div>
+</div>
+
+<div class="section page-break">
+ <div class="section-title">Die acht Fragen vor dem Produktivgang</div>
+ <div class="card">
+  <p>Aus der Handreichung von Tag 4 — hier den Phasen zugeordnet, in denen die Antwort entsteht. <strong>Kein Agent geht live, bevor alle acht schriftlich beantwortet sind.</strong> Die ersten vier sind Chefsache, die letzten drei liegen bei der IT.</p>
+  <table class="tbl">
+   <thead><tr><th style="width:5%;">#</th><th style="width:26%;">Frage</th><th>Worauf es ankommt</th><th style="width:9%;">Phase</th></tr></thead>
+   <tbody>
+    <tr><td><strong>1</strong></td><td><strong>Welcher Agententyp?</strong></td><td>Assistent, Analyse-, Workflow- oder autonomer Agent. Schriftlich fixiert — davon hängen alle weiteren Pflichten ab</td><td>vorab</td></tr>
+    <tr><td><strong>2</strong></td><td><strong>Steht der Unterbau?</strong></td><td>Zustandsverwaltung, Prüfpfad, Identität, Kostenzuordnung — oder zahlen wir für Prototypenarchitektur im Produktivgewand?</td><td>vorab</td></tr>
+    <tr><td><strong>3</strong></td><td><strong>Wo liegt die Freigabegrenze?</strong></td><td>Was entscheidet er allein, was löst eine menschliche Genehmigung aus? Schriftlich und regelmäßig überprüft</td><td>02</td></tr>
+    <tr><td><strong>4</strong></td><td><strong>Wie messen wir die Widerspruchsquote?</strong></td><td>Wie oft weicht ein Mensch vom Vorschlag ab? <strong>Ein sehr niedriger Wert ist kein Qualitätszeichen</strong>, sondern ein Warnsignal für gedankenloses Abnicken</td><td>04 · 06</td></tr>
+    <tr><td><strong>5</strong></td><td><strong>Was passiert bei Abweichung oder Fehler?</strong></td><td>Eskalationspfad definiert, Notbremse benannt, Schwellenwerte vor dem Start dokumentiert</td><td>03 · 06</td></tr>
+    <tr><td><strong>6</strong></td><td><strong>Ist jede Aktion ausdrücklich erlaubt?</strong></td><td>Rechte werden auf Anwendungsebene erzwungen, <strong>nicht in der Anweisung</strong>. Reine Textschranken sind unter gezielten Angriffen wirkungslos</td><td>02 · 03</td></tr>
+    <tr><td><strong>7</strong></td><td><strong>Welcher Agent hat gehandelt?</strong></td><td>Teilen sich mehrere Agenten einen Zugang, ist im Ernstfall nicht feststellbar, wer handelte. Jeder braucht eine eigene, nachverfolgbare Identität</td><td>02 · 06</td></tr>
+    <tr><td><strong>8</strong></td><td><strong>Können wir es beweisen?</strong></td><td>Manipulationssichere Aufzeichnungen: welche Regel galt, was wurde angefragt, warum wurde es erlaubt oder abgelehnt</td><td>06</td></tr>
+   </tbody>
+  </table>
+ </div>
+
+ <div class="konzept-card k-green">
+  <div class="konzept-tag">Rollen</div>
+  <div class="konzept-name">Wer was tut — in einem Satz je Seite</div>
+  <div class="konzept-text">
+   <p><strong>Der Agent</strong> sucht, analysiert, empfiehlt, protokolliert, übergibt bei Unsicherheit an einen Menschen und handelt innerhalb festgelegter Grenzen.</p>
+   <p style="margin-top:.4rem;"><strong>Die Führungskraft</strong> legt Typ und Grenzen fest, genehmigt den Produktivgang, überprüft die Widerspruchsquote — und trägt die rechtliche Verantwortung.</p>
+   <p style="margin-top:.4rem;font-size:12.5px;color:var(--muted);">Die vierte Frage verdient besondere Aufmerksamkeit. Sinkt die Widerspruchsquote gegen null, gibt es zwei mögliche Erklärungen: Das System ist gut geworden, oder niemand prüft mehr. Auseinanderhalten lässt sich das nur über Stichproben, die bewusst nachgerechnet werden.</p>
+  </div>
+ </div>
+</div>
+
+
+<div class="section page-break">
+ <div class="section-title">Praxisteil · Was du konkret tust, wenn du nicht aus der Technik kommst</div>
+
+ <div class="card">
+  <p>Für die Spezifikation eines Agenten brauchst du kein technisches Wissen. Du brauchst Kenntnis des Vorgangs — und die hat niemand besser als die Person, die ihn täglich ausführt. Die folgenden acht Schritte führen von der Idee zu einem Dokument, mit dem du in die Besprechung mit der IT gehen kannst.</p>
+ </div>
+
+ <div class="konzept-card k-allg">
+  <div class="konzept-tag">Vorbereitung · allein, etwa eine Stunde</div>
+  <div class="konzept-name">Schritt 1 bis 4 — bevor du eine KI öffnest</div>
+  <div class="konzept-text">
+   <p><strong>① Beschreibe den Vorgang, nicht die Lösung.</strong> Nicht „wir brauchen einen Agenten, der Angebote schreibt“, sondern: Was passiert heute, von wem angestoßen, mit welchen Unterlagen, bis wann, mit welchem Ergebnis? Die Lösung ergibt sich daraus — umgekehrt fast nie.</p>
+   <p style="margin-top:.5rem;"><strong>② Sammle drei echte Fälle aus den letzten Wochen.</strong> Einen ganz gewöhnlichen, einen Grenzfall, bei dem du zögern musstest, und einen, der schiefgegangen ist. Nimm die tatsächlichen Unterlagen, nicht erfundene. <strong>Diese drei Fälle sind später deine ersten Testfälle</strong> — sie sind der wertvollste Beitrag, den du zum Vorhaben leisten kannst, und niemand aus der IT kann sie beisteuern.</p>
+   <p style="margin-top:.5rem;"><strong>③ Schreibe auf, was der Agent ausdrücklich nicht tun soll.</strong> Diese Liste fällt anfangs leichter als die Liste dessen, was er tun soll — und sie ist wichtiger. Was hier fehlt, gilt später als erlaubt.</p>
+   <p style="margin-top:.5rem;"><strong>④ Benenne die Stelle, an der du gefragt werden willst.</strong> Bei welchem Betrag, welcher Kundengruppe, welcher Unsicherheit soll der Vorgang auf deinem Tisch landen? Ein Satz genügt: <em>Wenn [Bedingung], dann legt der Agent vor und wartet.</em></p>
+  </div>
+ </div>
+
+ <div class="konzept-card k-ki">
+  <div class="konzept-tag">Erarbeitung · im Gespräch mit der KI</div>
+  <div class="konzept-name">Schritt 5 bis 8 — das Dokument entsteht</div>
+  <div class="konzept-text">
+   <p><strong>⑤ Lass dich befragen, statt zu beschreiben.</strong> Das ist der eigentliche Kniff. Statt eine möglichst vollständige Anweisung zu formulieren, gibst du der KI den Auftrag, dich systematisch zu befragen — und ausdrücklich, den Agenten <em>noch nicht</em> zu bauen. Den fertigen Auftragstext erzeugt dir der Arbeitsbereich unten.</p>
+   <p style="margin-top:.5rem;"><strong>⑥ Antworte ruhig „weiß ich nicht“.</strong> Leere Felder sind vorgesehen. Der Leitsatz der Vorlage lautet: <em>Fehlende Anforderungen werden erfragt, nicht plausibel ergänzt.</em> Eine KI, die deine Lücken selbstständig füllt, erzeugt einen Agenten, der auf ihren Annahmen beruht statt auf deinem Vorgang — und das merkt niemand, bis es schiefgeht.</p>
+   <p style="margin-top:.5rem;"><strong>⑦ Prüfe das Ergebnis an deinen drei Fällen.</strong> Nicht an einem ausgedachten Beispiel. Frage zu jedem: Was hätte der Agent hier getan? Bei dem Fall, der schiefging, lautet die entscheidende Frage: Hätte er es bemerkt?</p>
+   <p style="margin-top:.5rem;"><strong>⑧ Nimm die Markdown-Datei mit in die Besprechung.</strong> Damit verschiebt sich das Gespräch mit der IT von „was wollt ihr ungefähr“ zu „was davon ist umsetzbar, und was kostet es“. Das ist der ganze Unterschied.</p>
+   <p style="font-size:12.5px;color:var(--muted);">Was du dabei nicht können musst: Programmieren, Modelle auswählen, Schnittstellen kennen. Was du können musst: deinen Vorgang beschreiben und sagen, wann du gefragt werden willst.</p>
+  </div>
+ </div>
+
+ <div class="konzept-card k-purple">
+  <div class="konzept-tag">Aus dem Kurs · Beispielprompt</div>
+  <div class="konzept-name">Der Startprompt im Wortlaut</div>
+  <div class="konzept-text">
+   <p>Diese Fassung stammt aus dem Kurs selbst. Sie ist die Vorlage für den Auftragstext, den der Arbeitsbereich unten erzeugt — und sie funktioniert auch ohne ihn, wenn du sie direkt kopierst und die eckige Klammer ersetzt.</p>
+   <blockquote class="zitat-prompt">Ich möchte einen KI-Agenten entwickeln. Die Idee ist: <em>[Idee beschreiben]</em>.<br><br>
+   Entwickle den Agenten noch nicht. Unterstütze mich zuerst dabei, die Anforderungen systematisch zu erarbeiten.<br><br>
+   Gehe schrittweise durch: Zweck, Scope, Eingaben, Quellen, Entscheidungslogik, Aktionen, Human Oversight, Risiken, Ausgabe, Tests und Monitoring.<br><br>
+   Stelle pro Schritt nur die notwendigen Fragen. Triff keine Annahmen. Weise mich auf unpräzise, nicht prüfbare oder widersprüchliche Angaben hin.<br><br>
+   Fasse jeden Schritt kurz zusammen, markiere offene Punkte und fahre erst dann fort. Erstelle am Ende nur aus bestätigten Ergebnissen die Agent Specification.</blockquote>
+   <p style="margin-top:.6rem;"><strong>Warum er funktioniert</strong> — vier Vorkehrungen, die man einzeln übersehen würde:</p>
+   <ul>
+    <li><strong>„Entwickle den Agenten noch nicht.“</strong> Ohne diesen Satz liefert jedes Modell sofort eine Lösung. Danach diskutierst du über deren Annahmen statt über deine Anforderungen.</li>
+    <li><strong>„Triff keine Annahmen.“</strong> Die stillschweigende Ergänzung von Lücken ist der Weg, auf dem fremde Annahmen zu deiner Spezifikation werden — unbemerkt, weil sie plausibel klingen.</li>
+    <li><strong>„Stelle pro Schritt nur die notwendigen Fragen.“</strong> Verhindert den Fragenkatalog, bei dem man nach dem dritten Punkt aufgibt.</li>
+    <li><strong>„Nur aus bestätigten Ergebnissen.“</strong> Trennt das Erarbeiten vom Festschreiben. Was du nicht bestätigt hast, steht am Ende nicht drin.</li>
+   </ul>
+   <p style="font-size:12.5px;color:var(--muted);">Der Prompt kehrt die übliche Richtung um: Nicht du beschreibst möglichst vollständig, sondern die KI befragt dich. Das ist genau die Arbeitsteilung, die zu den Stärken beider Seiten passt — sie kennt die Gliederung einer Spezifikation, du kennst den Vorgang.</p>
+  </div>
+ </div>
+
+ <details class="arbeitsbereich no-break">
+  <summary><strong>Arbeitsbereich öffnen</strong> — Angaben eintragen, Startprompt und Spezifikation erzeugen</summary>
+  <div class="ab-inner">
+   <p class="ab-hinweis">Trage ein, was du bereits weißt. <strong>Leere Felder sind ausdrücklich erlaubt</strong> — sie erscheinen im Startprompt als offene Punkte und werden im Gespräch mit der KI geklärt. Es werden keine Daten gespeichert oder übertragen; alles bleibt in diesem Browserfenster.</p>
+
+   <div class="ab-grid">
+    <div class="ab-spalte">
+     <div class="ab-gruppe">A · Auftrag</div>
+     <label>Arbeitstitel<input type="text" id="ag_name" placeholder="z. B. Angebotsprüfer"></label>
+     <label>Version<input type="text" id="ag_version" value="0.1"></label>
+     <label>Idee und Problem <span>Welcher Vorgang, welches Problem?</span><textarea id="ag_idea" rows="3"></textarea></label>
+     <label>Zweck und Nutzen <span>Was soll nachweisbar besser werden?</span><textarea id="ag_purpose" rows="2"></textarea></label>
+     <label>Ausdrücklich nicht <span>Eine Zeile je Punkt</span><textarea id="ag_outscope" rows="3"></textarea></label>
+     <label>Drei echte Fälle <span>Normalfall · Grenzfall · Fall, der schiefging</span><textarea id="ag_faelle" rows="3"></textarea></label>
+    </div>
+
+    <div class="ab-spalte">
+     <div class="ab-gruppe">B · Arbeitsweise</div>
+     <label>Quellen und Daten <span>Was darf oder muss er verwenden?</span><textarea id="ag_sources" rows="3"></textarea></label>
+     <label>Werkzeuge und Aktionen <span>Was lesen, erzeugen, ändern, auslösen?</span><textarea id="ag_actions" rows="3"></textarea></label>
+     <label>Auslöser und Prüfintervall<input type="text" id="ag_interval" placeholder="z. B. täglich 7 Uhr"></label>
+     <label>Schwellenwert <span>Ab wann wird etwas relevant?</span><input type="text" id="ag_threshold"></label>
+     <label>Grenze für Aufwand und Kosten<input type="text" id="ag_tokens"></label>
+     <label>Bewertungsmodell <span>Nach welchen Kriterien entscheidet er?</span><textarea id="ag_model" rows="2"></textarea></label>
+    </div>
+
+    <div class="ab-spalte">
+     <div class="ab-gruppe">C · Kontrolle</div>
+     <label>Wann muss ein Mensch ran? <span>Wenn … dann vorlegen</span><textarea id="ag_oversight" rows="3"></textarea></label>
+     <label>Ausgabeformat<input type="text" id="ag_outputformat" placeholder="z. B. Tabelle, Entwurf, Vorgang"></label>
+     <label>Risiken <span>Was wäre bei einer Fehlentscheidung kritisch?</span><textarea id="ag_risks" rows="3"></textarea></label>
+     <label>Tests und Abnahme <span>Woran erkennst du, dass es reicht?</span><textarea id="ag_tests" rows="2"></textarea></label>
+     <label>Überwachung im Betrieb<textarea id="ag_monitoring" rows="2"></textarea></label>
+    </div>
+   </div>
+
+   <div class="ab-knopf-reihe">
+    <button type="button" class="ab-btn ab-btn-haupt" id="btnPrompt">Startprompt für die KI erzeugen</button>
+    <button type="button" class="ab-btn" id="btnMd">Spezifikation als Markdown erzeugen</button>
+    <button type="button" class="ab-btn ab-btn-still" id="btnClear">Felder leeren</button>
+   </div>
+
+   <div class="ab-ausgabe-kopf"><span id="resultTitle">Arbeitsausgabe</span>
+    <span class="ab-ausgabe-aktionen">
+     <button type="button" class="ab-btn ab-btn-klein" id="btnCopy">Kopieren</button>
+     <button type="button" class="ab-btn ab-btn-klein" id="btnDl">Als .md speichern</button>
+    </span>
+   </div>
+   <textarea id="agentResult" rows="16" spellcheck="false"></textarea>
+   <p class="ab-hinweis" id="ab_status" aria-live="polite"></p>
+  </div>
+ </details>
+</div>
+
+<div class="section page-break">
+ <div class="section-title">Die Agentenkarte — eine Seite für Inventar und Review</div>
+ <div class="card">
+  <p>Die Kurzfassung für das KI-Inventar, das Steuerungsgremium oder die Aufsicht. Sie entsteht aus der Spezifikation, ersetzt sie aber nicht.</p>
+  <table class="tbl">
+   <thead><tr><th style="width:30%;">Feld</th><th>Eintrag</th></tr></thead>
+   <tbody>
+    <tr><td><strong>Name und Kennung</strong></td><td><span class="feld"></span></td></tr>
+    <tr><td><strong>Version · Freigabestatus</strong></td><td>Entwurf &#9744; · Test &#9744; · Freigegeben &#9744; · Gesperrt &#9744; · Außer Betrieb &#9744;</td></tr>
+    <tr><td><strong>Fachlicher Owner · technischer Owner</strong></td><td><span class="feld"></span></td></tr>
+    <tr><td><strong>Agententyp</strong></td><td>Assistent &#9744; · Analyse &#9744; · Workflow &#9744; · autonom &#9744;</td></tr>
+    <tr><td><strong>Zweck</strong></td><td><span class="feld"></span></td></tr>
+    <tr><td><strong>Umfang und Nicht-Ziele</strong></td><td><span class="feld"></span></td></tr>
+    <tr><td><strong>Zulässige Quellen</strong></td><td><span class="feld"></span></td></tr>
+    <tr><td><strong>Auslöser und Prüfintervall</strong></td><td><span class="feld"></span></td></tr>
+    <tr><td><strong>Bewertungsmodell und Schwellenwerte</strong></td><td><span class="feld"></span></td></tr>
+    <tr><td><strong>Ausgabeformat</strong></td><td><span class="feld"></span></td></tr>
+    <tr><td><strong>Zulässige Aktionen</strong> <span style="color:var(--muted);font-weight:400;">autonom / mit Freigabe</span></td><td><span class="feld"></span></td></tr>
+    <tr><td><strong>Menschliche Aufsicht</strong> <span style="color:var(--muted);font-weight:400;">wann, durch wen</span></td><td><span class="feld"></span></td></tr>
+    <tr><td><strong>Teststatus</strong> <span style="color:var(--muted);font-weight:400;">Testsatzversion, Datum</span></td><td><span class="feld"></span></td></tr>
+    <tr><td><strong>Überwachung</strong> <span style="color:var(--muted);font-weight:400;">Kennzahlen, Schwellen</span></td><td><span class="feld"></span></td></tr>
+    <tr><td><strong>Token- und Kostengrenze</strong></td><td><span class="feld"></span></td></tr>
+    <tr><td><strong>Abschaltung</strong> <span style="color:var(--muted);font-weight:400;">Kriterium und verantwortliche Person</span></td><td><span class="feld"></span></td></tr>
+   </tbody>
+  </table>
+ </div>
+
+ <div class="konzept-card k-allg">
+  <div class="konzept-tag">Ablage</div>
+  <div class="konzept-name">Was aufbewahrt wird — und wofür</div>
+  <div class="konzept-text">
+   <table class="tbl">
+    <thead><tr><th style="width:34%;">Nachweis</th><th>Wofür er gebraucht wird</th></tr></thead>
+    <tbody>
+     <tr><td>Spezifikation</td><td>Soll-Verhalten und Grenzen — die Bezugsgröße für jede spätere Prüfung</td></tr>
+     <tr><td>Risiko- und Kontrollmatrix</td><td>Bekannte Fehlermöglichkeiten und die dagegen getroffenen Maßnahmen</td></tr>
+     <tr><td>Testplan und Testsatz</td><td>Geplante Abdeckung und reproduzierbare Referenzfälle</td></tr>
+     <tr><td>Testbericht</td><td>Tatsächliche Ergebnisse mit Belegen</td></tr>
+     <tr><td>Freigabeprotokoll</td><td>Die Entscheidung, ihre Begründung und die Auflagen</td></tr>
+     <tr><td>Betriebsprotokolle</td><td>Laufender Nachweis und Grundlage jeder Untersuchung im Schadensfall</td></tr>
+    </tbody>
+   </table>
+   <p style="margin-top:.5rem;font-size:12.5px;color:var(--muted);">Diese sechs Artefakte sind zugleich das, was eine Aufsicht anfordern würde. Wer sie ohnehin führt, muss für eine Prüfung nichts zusätzlich herstellen.</p>
+  </div>
+ </div>
+</div>
+
+<div class="section">
+ <div class="section-title">Quellenverzeichnis</div>
+ <div class="card">
+  <p style="font-size:13px;font-weight:600;margin-bottom:.4rem;">Staatliche und gemeinnützige Institutionen (Tier 1)</p>
+  <div class="src-row" style="margin-bottom:.9rem;">
+   <span class="src-chip"><a href="https://www.imda.gov.sg/-/media/imda/files/about/emerging-tech-and-research/artificial-intelligence/mgf-for-agentic-ai.pdf" target="_blank">IMDA Singapur — Model AI Governance Framework for Agentic AI (Grundlage der Typeneinordnung)</a></span>
+   <span class="src-chip">NIST AI Risk Management Framework — Grundsätze zu Test, Evaluation, Verification und Validation</span>
+   <span class="src-chip">ISO/IEC 42001 — Managementsystemgedanke, Versionierung und Nachweisführung</span>
+   <span class="src-chip">OWASP — Top 10 for Agentic Applications (agentenspezifische Angriffsmuster)</span>
+  </div>
+  <p style="font-size:13px;font-weight:600;margin-bottom:.4rem;">Begutachtete Forschung</p>
+  <div class="src-row" style="margin-bottom:.9rem;">
+   <span class="src-chip">Sculley et al. — Hidden Technical Debt in Machine Learning Systems, NeurIPS 2015 (Ursprung des Bildes vom Modell als kleinstem Teil)</span>
+   <span class="src-chip"><a href="https://arxiv.org/abs/2404.02151" target="_blank">Andriushchenko et al. — Jailbreaking Safety-Aligned LLMs with Simple Adaptive Attacks, ICLR 2024 (Grundlage für Frage 6)</a></span>
+  </div>
+  <p style="font-size:13px;font-weight:600;margin-bottom:.4rem;">Anbieter- und Praxisberichte</p>
+  <div class="src-row" style="margin-bottom:.9rem;">
+   <span class="src-chip">MongoDB — The Agent Harness (Schichtenmodell und Größenordnung des Unterbaus)</span>
+   <span class="src-chip">Anthropic mit Millennium Management — Digital Risk Analyst (Fallbeispiel aus der Handreichung Tag 4)</span>
+   <span class="src-chip">Microsoft — Agent Governance Toolkit, quelloffen (Umsetzungsreferenz zu den Fragen 6 bis 8)</span>
+  </div>
+  <p style="font-size:11.5px;color:var(--muted);">Zur Quellenqualität: Die Typeneinordnung stammt von einer staatlichen Aufsichtsbehörde, die Prüf- und Managementlogik aus zwei Normenwerken, die beiden empirischen Aussagen aus begutachteter Forschung. Die Anbieterberichte sind mit Herstellerinteresse zu lesen — ihre akademischen Belegstellen sind jedoch eigenständig nachprüfbar, und die drei Governance-Fragen gelten unabhängig vom jeweiligen Werkzeug. Die Zuordnung der acht Führungsfragen zu den sieben Phasen sowie die Gliederung dieses Blattes sind didaktische Aufbereitung dieses Kurses, kein Normtext.</p>
+ </div>
+</div>
+
+<div class="footer">
+ <span>KI-Manager:in · Arbeitsvorlage KI-Agenten</span>
+ <span>Ulrich Nord · August 2026</span>
+</div>
+
+</div>
+<script>
+
+(function () {
+  var G = function (id) {
+    var el = document.getElementById(id);
+    return el ? String(el.value || '').trim() : '';
+  };
+
+  var OFFEN = [
+    ['ag_purpose', 'Zweck und Nutzen'],
+    ['ag_outscope', 'Was er ausdrücklich nicht tun soll'],
+    ['ag_faelle', 'Drei echte Fälle'],
+    ['ag_sources', 'Quellen und Daten'],
+    ['ag_actions', 'Werkzeuge und Aktionen'],
+    ['ag_interval', 'Auslöser und Prüfintervall'],
+    ['ag_threshold', 'Schwellenwert'],
+    ['ag_model', 'Bewertungsmodell'],
+    ['ag_oversight', 'Wann ein Mensch ran muss'],
+    ['ag_outputformat', 'Ausgabeformat'],
+    ['ag_risks', 'Risiken'],
+    ['ag_tests', 'Tests und Abnahme'],
+    ['ag_monitoring', 'Überwachung im Betrieb']
+  ];
+
+  var BEKANNT = [
+    ['ag_name', 'Arbeitstitel'],
+    ['ag_purpose', 'Zweck'],
+    ['ag_outscope', 'Nicht-Ziele'],
+    ['ag_faelle', 'Referenzfälle'],
+    ['ag_sources', 'Quellen'],
+    ['ag_actions', 'Werkzeuge und Aktionen'],
+    ['ag_interval', 'Auslöser'],
+    ['ag_threshold', 'Schwellenwert'],
+    ['ag_tokens', 'Aufwandsgrenze'],
+    ['ag_model', 'Bewertungsmodell'],
+    ['ag_oversight', 'Menschliche Aufsicht'],
+    ['ag_outputformat', 'Ausgabeformat'],
+    ['ag_risks', 'Risiken'],
+    ['ag_tests', 'Tests'],
+    ['ag_monitoring', 'Überwachung']
+  ];
+
+  function punkte(v) {
+    if (!v) { return '- [OFFEN - im Gespräch mit der KI klären]'; }
+    return v.split(/\n|;/).map(function (x) { return x.trim(); })
+      .filter(function (x) { return x.length > 0; })
+      .map(function (x) { return '- ' + x; }).join('\n');
+  }
+
+  function offeneListe() {
+    var o = OFFEN.filter(function (f) { return !G(f[0]); })
+      .map(function (f) { return '- ' + f[1]; });
+    return o.length ? o.join('\n')
+      : '- Kein Feld leer. Inhalte trotzdem fachlich prüfen.';
+  }
+
+  function bekannteListe() {
+    var b = BEKANNT.filter(function (f) { return G(f[0]); })
+      .map(function (f) { return '- **' + f[1] + ':** ' + G(f[0]).replace(/\n/g, ' / '); });
+    return b.length ? b.join('\n') : '- Noch nichts festgelegt.';
+  }
+
+  function setzen(titel, text) {
+    var r = document.getElementById('agentResult');
+    var t = document.getElementById('resultTitle');
+    if (!r) { return; }
+    r.value = text;
+    if (t) { t.textContent = titel; }
+    melden('');
+    r.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+
+  function melden(txt) {
+    var s = document.getElementById('ab_status');
+    if (s) { s.textContent = txt; }
+  }
+
+  function startprompt() {
+    var text = '# Auftrag an die KI: Anforderungen an einen Agenten gemeinsam erarbeiten\n\n'
+      + 'Ich möchte einen KI-Agenten entwickeln. Entwickle ihn noch nicht.\n'
+      + 'Unterstütze mich zuerst dabei, die Anforderungen systematisch zu vervollständigen.\n\n'
+      + '## Ausgangsidee\n' + (G('ag_idea') || '[noch offen]') + '\n\n'
+      + '## Bereits bekannt\n' + bekannteListe() + '\n\n'
+      + '## Noch offen\n' + offeneListe() + '\n\n'
+      + '## Gehe nacheinander durch\n'
+      + '1. Zweck und messbarer Nutzen\n'
+      + '2. Umfang und Nicht-Ziele, dazu die Abbruchbedingungen\n'
+      + '3. Eingaben, Daten und zulässige Quellen\n'
+      + '4. Entscheidungslogik, Bewertung und Schwellenwerte\n'
+      + '5. Werkzeuge, Berechtigungen und zulässige Aktionen\n'
+      + '6. Menschliche Aufsicht und Eskalationsregeln\n'
+      + '7. Ausgabeformat mit Pflichtfeldern\n'
+      + '8. Risiken und Fehlerszenarien\n'
+      + '9. Tests und Abnahmekriterien\n'
+      + '10. Überwachung, Protokollierung und Änderungsregeln\n\n'
+      + '## Regeln für das Gespräch\n'
+      + '- Triff keine fachlichen Annahmen für fehlende Angaben.\n'
+      + '- Stelle je Schritt nur die notwendigen Fragen.\n'
+      + '- Hinterfrage unklare, widersprüchliche oder nicht prüfbare Angaben.\n'
+      + '- Weise mich darauf hin, wenn eine Anforderung nicht testbar formuliert ist.\n'
+      + '- Fasse jeden bestätigten Schritt kurz zusammen und markiere offene Punkte.\n'
+      + '- Erstelle erst am Ende eine konsolidierte Spezifikation in Markdown.\n'
+      + '- Leite danach konkrete Testfälle und Go-/No-Go-Kriterien ab.\n\n'
+      + 'Beginne mit Schritt 1.';
+    setzen('Startprompt für die KI', text);
+  }
+
+  function markdown() {
+    var name = G('ag_name') || '[Arbeitstitel]';
+    var text = '# Agentenspezifikation - ' + name + '\n\n> Status: Arbeitsentwurf\n\n'
+      + '## 1. Identifikation\n- **Arbeitstitel:** ' + name
+      + '\n- **Version:** ' + (G('ag_version') || '0.1') + '\n\n'
+      + '## 2. Idee und Problem\n' + (G('ag_idea') || '[OFFEN]') + '\n\n'
+      + '## 3. Zweck und erwarteter Nutzen\n' + (G('ag_purpose') || '[OFFEN]') + '\n\n'
+      + '## 4. Ausdrücklich nicht\n' + punkte(G('ag_outscope')) + '\n\n'
+      + '## 5. Referenzfälle für die späteren Tests\n' + punkte(G('ag_faelle')) + '\n\n'
+      + '## 6. Quellen und Daten\n' + punkte(G('ag_sources')) + '\n\n'
+      + '## 7. Werkzeuge und zulässige Aktionen\n' + punkte(G('ag_actions')) + '\n\n'
+      + '## 8. Ausführung\n- **Auslöser und Prüfintervall:** ' + (G('ag_interval') || '[OFFEN]')
+      + '\n- **Schwellenwert:** ' + (G('ag_threshold') || '[OFFEN]')
+      + '\n- **Aufwands- und Kostengrenze:** ' + (G('ag_tokens') || '[OFFEN]') + '\n\n'
+      + '## 9. Bewertungs- und Entscheidungsmodell\n' + (G('ag_model') || '[OFFEN]') + '\n\n'
+      + '## 10. Menschliche Aufsicht und Eskalation\n' + (G('ag_oversight') || '[OFFEN]') + '\n\n'
+      + '## 11. Ausgabeformat\n' + (G('ag_outputformat') || '[OFFEN]')
+      + '\n\nPflichtfelder: Ergebnis, Begründung, verwendete Quellen, ausgelöste Aktionen, Zeitstempel, Agentenversion.\n\n'
+      + '## 12. Risiken und Fehlerszenarien\n' + punkte(G('ag_risks')) + '\n\n'
+      + '## 13. Tests und Abnahmekriterien\n' + punkte(G('ag_tests')) + '\n\n'
+      + '## 14. Überwachung im Betrieb\n' + punkte(G('ag_monitoring')) + '\n\n'
+      + '## 15. Noch zu klären\n' + offeneListe() + '\n\n'
+      + '## 16. Nächster Schritt\n'
+      + 'Diese Arbeitsfassung im geführten Gespräch mit der KI vervollständigen. '
+      + 'Danach Risiko- und Kontrollmatrix, Prüfung, Freigabe und Betrieb bearbeiten '
+      + '(Leitfaden KI-Agenten, Abschnitte 4 bis 8).';
+    setzen('Spezifikation als Markdown', text);
+  }
+
+  function leeren() {
+    var f = document.querySelectorAll('.ab-inner input, .ab-inner textarea');
+    for (var i = 0; i < f.length; i++) {
+      if (f[i].id === 'agentResult') { continue; }
+      f[i].value = (f[i].id === 'ag_version') ? '0.1' : '';
+    }
+    setzen('Arbeitsausgabe', HINWEIS);
+  }
+
+  var HINWEIS = '1. Bekannte Angaben oben eintragen.\n'
+    + '2. Startprompt erzeugen und in die KI kopieren.\n'
+    + '3. Offene Anforderungen im Gespräch klären.\n'
+    + '4. Danach die Markdown-Vorlage erzeugen und vervollständigen.';
+
+  function kopieren() {
+    var r = document.getElementById('agentResult');
+    if (!r) { return; }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(r.value).then(function () {
+        melden('In die Zwischenablage kopiert.');
+      }, function () {
+        r.select();
+        melden('Bitte mit Strg+C kopieren.');
+      });
+    } else {
+      r.select();
+      melden('Bitte mit Strg+C kopieren.');
+    }
+  }
+
+  function speichern() {
+    var r = document.getElementById('agentResult');
+    if (!r) { return; }
+    var basis = (G('ag_name') || 'agentenspezifikation').toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+    if (!basis) { basis = 'agentenspezifikation'; }
+    var blob = new Blob([r.value], { type: 'text/markdown;charset=utf-8' });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = basis + '.md';
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+    melden('Datei ' + basis + '.md gespeichert.');
+  }
+
+  function binden(id, fn) {
+    var b = document.getElementById(id);
+    if (b) { b.addEventListener('click', fn); }
+  }
+
+  document.addEventListener('DOMContentLoaded', function () {
+    binden('btnPrompt', startprompt);
+    binden('btnMd', markdown);
+    binden('btnClear', leeren);
+    binden('btnCopy', kopieren);
+    binden('btnDl', speichern);
+    var r = document.getElementById('agentResult');
+    if (r && !r.value) { r.value = HINWEIS; }
+  });
+})();
+
+</script>
+</body>
+</html>
