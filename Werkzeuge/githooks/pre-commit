@@ -1,0 +1,18 @@
+#!/bin/sh
+# Prüft die Quizdateien vor jedem Commit.
+# Bricht der Test fehl, wird der Commit abgebrochen.
+# Notfalls umgehen mit:  git commit --no-verify
+
+if ! command -v node >/dev/null 2>&1; then
+  echo "Hinweis: Node.js nicht gefunden — Quiz-Prüfung übersprungen."
+  exit 0
+fi
+
+node "$(git rev-parse --show-toplevel)/Werkzeuge/pruefe_quizze.js"
+ergebnis=$?
+
+if [ $ergebnis -ne 0 ]; then
+  echo "Commit abgebrochen. Bitte die Fehler beheben."
+  echo "Falls du trotzdem übertragen willst:  git commit --no-verify"
+fi
+exit $ergebnis
