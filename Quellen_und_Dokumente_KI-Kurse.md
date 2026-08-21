@@ -5,12 +5,129 @@
 
 ---
 
+## 🟣 Kanon — verbindliche Adressen und Bezeichnungen für Hand-Out-Quellenverzeichnisse
+
+> Festgelegt am 21.08.2026 nach der Dubletten-Analyse über alle 33 Hand-Outs (KIB Tag 1–17, KIM Tag 1–15).
+> Vollständige Analyse und Umsetzungsplan: `Schulungsmaterial\Kursmaterialien\Quellenverzeichnis_Analyse.html` und `…\Quellen_Kanon_und_Umsetzung.html`.
+> **Regel:** Kommt eine Quelle in mehr als einem Hand-Out vor, wird sie ausschließlich mit der hier festgelegten Adresse und Bezeichnung zitiert. Neue Varianten nicht anlegen — Eintrag hier ergänzen oder ändern.
+
+### K.1 Aufbau der Quellenverzeichnisse
+
+Jedes Hand-Out hat zwei Teile: **„Für diesen Tag"** (tagesspezifische Quellen, mit erläuternder Notiz) und **„Dauerreferenzen des Kurses"** (kursweit identischer Block, unten stehend). Die Überschrift des Abschnitts lautet einheitlich **„Quellenverzeichnis"**.
+
+### K.2 Dauerreferenzen — KI-Beauftragte:r
+
+| URL | Verbindliche Bezeichnung |
+|-----|--------------------------|
+| https://eur-lex.europa.eu/legal-content/DE/TXT/?uri=OJ:L_202401689 | EU AI Act — Verordnung (EU) 2024/1689, Volltext (EUR-Lex, deutsch) |
+| https://artificialintelligenceact.eu/ | EU AI Act Explorer — Artikelnavigation (Aufbereitung, nicht amtlich) |
+| https://eur-lex.europa.eu/legal-content/DE/TXT/?uri=CELEX:32016R0679 | DSGVO — Verordnung (EU) 2016/679, Volltext (EUR-Lex, deutsch) |
+| https://gdpr-info.eu/ | DSGVO — Artikelbrowser |
+| https://airc.nist.gov/airmf-resources/airmf/ | NIST — AI Risk Management Framework 1.0 |
+| https://www.bsi.bund.de/DE/Themen/Unternehmen-und-Organisationen/Informationen-und-Empfehlungen/Kuenstliche-Intelligenz/kuenstliche-intelligenz_node.html | BSI — Künstliche Intelligenz |
+| https://owasp.org/www-project-top-10-for-large-language-model-applications/ | OWASP — Top 10 for LLM Applications |
+| https://www.iso.org/home/insights-news/resources/iso-42001-explained-what-it-is.html | ISO/IEC 42001:2023 — freie Erklärseite von ISO (Normtext kostenpflichtig) |
+
+### K.3 Dauerreferenzen — KI-Manager:in
+
+| URL | Verbindliche Bezeichnung |
+|-----|--------------------------|
+| https://eur-lex.europa.eu/legal-content/DE/TXT/?uri=OJ:L_202401689 | EU AI Act — Verordnung (EU) 2024/1689, Volltext (EUR-Lex, deutsch) — Hintergrundreferenz |
+| https://www.iso.org/home/insights-news/resources/iso-42001-explained-what-it-is.html | ISO/IEC 42001:2023 — freie Erklärseite von ISO (Normtext kostenpflichtig) |
+| https://www.mckinsey.com/capabilities/quantumblack/our-insights/the-state-of-ai | McKinsey — The State of AI (Befragung, Selbstauskünfte) |
+| https://www.bcg.com/publications/2025/are-you-generating-value-from-ai-the-widening-gap | BCG — The Widening AI Value Gap |
+| https://hai.stanford.edu/ai-index/2026-ai-index-report | Stanford HAI — AI Index Report 2026 |
+| https://www.pmi.org/learning/library/success-stakeholder-management-techniques-9301 | PMI — Stakeholder Management Techniques |
+| https://www.orghandbuch.de/Webs/OHB/DE/OrganisationshandbuchNEU/4_MethodenUndTechniken/Methoden_A_bis_Z/Stakeholderanalyse/Stakeholderanalyse_node.html | Bundesverwaltungsamt — Organisationshandbuch, Stakeholderanalyse |
+
+### K.4 ISO/IEC-Normen — Zitierregel
+
+Normtexte sind kostenpflichtig. Verlinkt wird nur, was frei lesbar ist; sonst Literaturhinweis mit Nummer, Ausgabejahr und Kapitel **ohne URL**.
+
+| Norm | Behandlung |
+|------|------------|
+| ISO/IEC 42001:2023 | Literaturhinweis + freie ISO-Erklärseite (`iso.org/home/insights-news/resources/iso-42001-explained-what-it-is.html`); OBP-Vorschau mit Anwendungsbereich und Begriffen: `iso.org/obp/ui/en/#!iso:std:81230:en` |
+| ISO/IEC 23894:2023 | Literaturhinweis ohne URL. ANSI-Blog nur als gekennzeichnete Sekundärquelle |
+| ISO/IEC 42005:2025 | Literaturhinweis ohne URL |
+| ISO/IEC 5338:2023 | Literaturhinweis + NIST-Crosswalk (`airc.nist.gov/docs/Crosswalk_NIST_AI_RMF_and_ISO_5338_5339.pdf`) und IEC-Blog |
+| ISO/IEC 25059:2023 | Literaturhinweis + IEC-Blog |
+| ISO/IEC 25010 · ISO/IEC/IEEE 12207 · ISO 9001 · ISO/IEC 27001 · ISO 13485 | Literaturhinweis ohne URL |
+| EN ISO/IEC 42001:2026 (CEN) | Drittanbieter-Katalog iteh.ai nicht verlinken |
+
+⚠️ **`https://www.iso.org/standard/42001.html` nicht verwenden** — die Adresse führt auf ISO 12164-4:2008 „Hollow taper interface" (zurückgezogen), nicht auf ISO/IEC 42001. Korrekt wäre `iso.org/standard/81230.html`.
+
+### K.5 Kanon-Liste — alle mehrfach genutzten Quellen
+
+| Vorkommen | Verbindliche Bezeichnung | Kanonische Adresse | Block |
+|-----------|--------------------------|--------------------|-------|
+| KIB 4, 5, 15 · KIM 9, 11, 12 | EU AI Act Anhang III — Hochrisiko-Anwendungsbereiche | https://artificialintelligenceact.eu/annex/3/ | Tag |
+| KIB 1, 5, 7, 8, 13, 14 | EU AI Act Art. 4 — KI-Kompetenz | https://artificialintelligenceact.eu/article/4/ | Tag |
+| KIB 4, 5, 6, 8, 14 | EU AI Act Art. 26 — Pflichten der Betreiber | https://artificialintelligenceact.eu/article/26/ | Tag |
+| KIB 1, 4, 5, 7, 8 | EU AI Act — Verordnung (EU) 2024/1689, Volltext (EUR-Lex, deutsch) | https://eur-lex.europa.eu/legal-content/DE/TXT/?uri=OJ:L_202401689 | Dauer |
+| KIB 16, 17 · KIM 5, 10, 15 | McKinsey — The State of AI (Befragung, Selbstauskünfte) | https://www.mckinsey.com/capabilities/quantumblack/our-insights/the-state-of-ai | Dauer (KIM) · Tag (KIB) |
+| KIB 7, 8, 9, 10 | NIST — AI Risk Management Framework 1.0 | https://airc.nist.gov/airmf-resources/airmf/ | Dauer |
+| KIB 8, 11 · KIM 2, 11 | nicht verwenden — deutsche Fassung nehmen | https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=OJ:L_202401689 | Tag |
+| KIB 1, 7, 8, 15 | ISO/IEC 42001:2023 — Literaturhinweis; im Dauerblock über die freie ISO-Erklärseite | https://www.iso.org/standard/81230.html | Dauer (als Erklärseite) |
+| KIB 6, 9 · KIM 10 | Anthropic — Statement zur Fable-5/Mythos-5-Abschaltung (Juni 2026) | https://www.anthropic.com/news/fable-mythos-access | Tag |
+| KIB 3, 4, 5 | EU AI Act Explorer — Artikelnavigation (Aufbereitung, nicht amtlich) | https://artificialintelligenceact.eu/ | Dauer |
+| KIB 7, 9, 15 | EU AI Act Art. 10 — Daten und Daten-Governance | https://artificialintelligenceact.eu/article/10/ | Tag |
+| KIB 7, 9, 10 | EU AI Act Art. 9 — Risikomanagementsystem | https://artificialintelligenceact.eu/article/9/ | Tag |
+| KIM 3, 5, 15 | BCG — The Widening AI Value Gap | https://www.bcg.com/publications/2025/are-you-generating-value-from-ai-the-widening-gap | Dauer |
+| KIB 4, 6, 7 | BSI — Künstliche Intelligenz | https://www.bsi.bund.de/DE/Themen/Unternehmen-und-Organisationen/Informationen-und-Empfehlungen/Kuenstliche-Intelligenz/kuenstliche-intelligenz_node.html | Dauer |
+| KIB 9, 10 · KIM 12 | OWASP — Top 10 for Agentic Applications (2026) | https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications-for-2026/ | Tag |
+| KIB 10 · KIM 10, 12 | IMDA — Model AI Governance Framework for Agentic AI (PDF) | https://www.imda.gov.sg/-/media/imda/files/about/emerging-tech-and-research/artificial-intelligence/mgf-for-agentic-ai.pdf | Tag |
+| KIB 13 · KIM 4, 14 | Bundesverwaltungsamt — Organisationshandbuch, Stakeholderanalyse | https://www.orghandbuch.de/Webs/OHB/DE/OrganisationshandbuchNEU/4_MethodenUndTechniken/Methoden_A_bis_Z/Stakeholderanalyse/Stakeholderanalyse_node.html | Dauer (KIM) · Tag (KIB) |
+| KIB 2, 8, 9 | OWASP — Top 10 for LLM Applications | https://owasp.org/www-project-top-10-for-large-language-model-applications/ | Dauer |
+| KIB 13 · KIM 4, 14 | PMI — Stakeholder Management Techniques | https://www.pmi.org/learning/library/success-stakeholder-management-techniques-9301 | Dauer (KIM) · Tag (KIB) |
+| KIB 2, 10 | AISI — Security challenges in AI agent deployment | https://www.aisi.gov.uk/research/security-challenges-in-ai-agent-deployment-insights-from-a-large-scale-public-competition | Tag |
+| KIM 4, 12 | Anthropic — Building Effective Agents | https://www.anthropic.com/engineering/building-effective-agents | Tag |
+| KIB 5, 6 | EU AI Act Anhang IV — Technische Dokumentation | https://artificialintelligenceact.eu/annex/4/ | Tag |
+| KIB 6, 15 | EU AI Act Art. 12 — Protokollierung | https://artificialintelligenceact.eu/article/12/ | Tag |
+| KIB 6 · KIM 9 | EU AI Act Art. 13 — Transparenz und Betriebsanleitung | https://artificialintelligenceact.eu/article/13/ | Tag |
+| KIB 10 · KIM 9 | EU AI Act Art. 14 — Menschliche Aufsicht | https://artificialintelligenceact.eu/article/14/ | Tag |
+| KIB 4, 5 | EU AI Act Art. 25 — Rollenwechsel in der Wertschöpfungskette | https://artificialintelligenceact.eu/article/25/ | Tag |
+| KIB 6, 10 | EU AI Act Art. 43 — Konformitätsbewertung | https://artificialintelligenceact.eu/article/43/ | Tag |
+| KIB 4, 5 | EU AI Act Art. 5 — Verbotene Praktiken | https://artificialintelligenceact.eu/article/5/ | Tag |
+| KIB 5, 6 | EU AI Act Art. 50 — Transparenzpflichten | https://artificialintelligenceact.eu/article/50/ | Tag |
+| KIB 4, 6 | EU AI Act Art. 53 — Pflichten der GPAI-Anbieter | https://artificialintelligenceact.eu/article/53/ | Tag |
+| KIB 5 · KIM 12 | EU AI Act Art. 6 — Einstufung als Hochrisiko-KI | https://artificialintelligenceact.eu/article/6/ | Tag |
+| KIB 6, 10 | EU AI Act Art. 72 — Beobachtung nach dem Inverkehrbringen | https://artificialintelligenceact.eu/article/72/ | Tag |
+| KIB 6 · KIM 9 | EU AI Act Art. 86 — Recht auf Erläuterung | https://artificialintelligenceact.eu/article/86/ | Tag |
+| KIB 6, 7 | Nannini et al. — AI Agents under EU Law (April 2026) | https://arxiv.org/abs/2604.04604 | Tag |
+| KIB 9, 11 | MITRE ATLAS — Angriffstechniken gegen KI-Systeme | https://atlas.mitre.org/ | Tag |
+| KIB 4, 6 | TÜV Rheinland — EU AI Act 2026, Zwischenstand | https://consulting.tuv.com/aktuelles/ki-im-fokus/eu-ai-act-2026-zwischenstand | Tag |
+| KIB 15 · KIM 6 | DAMA International — DAMA-DMBOK, 2. Auflage | https://dama.org/learning-resources/dama-data-management-body-of-knowledge-dmbok/ | Tag |
+| KIM 6, 11 | EU Data Act — Verordnung (EU) 2023/2854 (EUR-Lex, deutsch) | https://eur-lex.europa.eu/eli/reg/2023/2854/oj?locale=de | Tag |
+| KIM 3, 5 | MIT NANDA — The GenAI Divide 2025 (Bericht über Fortune) | https://fortune.com/2025/08/18/mit-report-95-percent-generative-ai-pilots-at-companies-failing-cfo/ | Tag |
+| KIB 3, 15 | DSGVO Art. 28 — Auftragsverarbeiter | https://gdpr-info.eu/art-28-gdpr/ | Tag |
+| KIB 3, 4 | § 44b UrhG — Text und Data Mining | https://www.gesetze-im-internet.de/urhg/__44b.html | Tag |
+| KIM 1, 5 | Stanford HAI — AI Index Report 2026 | https://hai.stanford.edu/ai-index/2026-ai-index-report | Dauer |
+| KIB 7, 12 | ISO 9001:2015 — Literaturhinweis ohne URL | https://www.iso.org/iso-9001-quality-management.html | Tag |
+| KIM 6, 7 | FALSCHES ZIEL (ISO 12164-4) — nicht verwenden | https://www.iso.org/standard/42001.html | Tag |
+| KIB 7, 8 | ISO/IEC 42005:2025 — Literaturhinweis ohne URL | https://www.iso.org/standard/44545.html | Tag |
+| KIB 7, 9 | ISO/IEC 23894:2023 — Literaturhinweis ohne URL | https://www.iso.org/standard/77304.html | Tag |
+| KIB 12 · KIM 13 | ISO/IEC 5338:2023 — Literaturhinweis; frei: NIST-Crosswalk, IEC-Blog | https://www.iso.org/standard/81118.html | Tag |
+| KIM 4, 13 | V-Modell XT Bund 2.3 — Entscheidungspunkte und Meilensteine (PDF) | https://www.itzbund.de/static/download/Produkte/VMXT/V-Modell-XT-Bund-2.3.pdf | Tag |
+| KIM 6, 8 | Microsoft Learn — Model monitoring in production (Azure ML) | https://learn.microsoft.com/en-us/azure/machine-learning/concept-model-monitoring?view=azureml-api-2 | Tag |
+| KIB 13, 16 | McKinsey — Reconfiguring work: Change management in the age of Gen AI | https://www.mckinsey.com/capabilities/quantumblack/our-insights/reconfiguring-work-change-management-in-the-age-of-gen-ai | Tag |
+| KIM 3, 15 | StatPearls (NIH) — SWOT Analysis | https://www.ncbi.nlm.nih.gov/books/NBK537302/ | Tag |
+| KIM 4, 12 | OpenAI — A Practical Guide to Building Agents | https://openai.com/business/guides-and-resources/a-practical-guide-to-building-ai-agents/ | Tag |
+| KIB 2 · KIM 7 | OpenAI — Prompt Engineering Guide | https://platform.openai.com/docs/guides/prompt-engineering | Tag |
+| KIM 4, 15 | PMI — Capacity and Demand Planning | https://www.pmi.org/learning/library/next-level-capacity-demand-planning-10183 | Tag |
+| KIM 4, 13 | PMI — Work Breakdown Structure & Project Charter | https://www.pmi.org/learning/library/work-breakdown-structure-project-charter-8912 | Tag |
+| KIB 2 · KIM 7 | Prompting Guide (DAIR.AI) | https://www.promptingguide.ai/ | Tag |
+| KIM 4, 13 | Agile vs. Waterfall — Decision Model (Procedia Computer Science) | https://www.sciencedirect.com/science/article/pii/S1877050921002702 | Tag |
+| KIM 6, 11 | Verizon — Data Breach Investigations Report | https://www.verizon.com/business/resources/reports/dbir/ | Tag |
+
+---
+
 ## 🔵 Grundlagen: Rolle, Kommunikation, Recht
 
 ### 1.1 EU AI Act & internationale Regulierung
 | URL | Name | Typ | Schlagwörter |
 |-----|------|-----|--------------|
-| https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=OJ:L_202401689 | EU AI Act Volltext | Primärquelle | Regulation (EU) 2024/1689, Risikoklassen, KI-Beauftragter, Hochrisiko-KI |
+| https://eur-lex.europa.eu/legal-content/DE/TXT/?uri=OJ:L_202401689 | EU AI Act Volltext (deutsch) — **kanonische Adresse für Kursmaterialien** | Primärquelle | Verordnung (EU) 2024/1689, Risikoklassen, KI-Beauftragter, Hochrisiko-KI |
+| https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=OJ:L_202401689 | EU AI Act Volltext (englisch) — nur für Zitate der englischen Fassung | Primärquelle | Regulation (EU) 2024/1689 |
 | https://digital-strategy.ec.europa.eu/de | EU AI Strategy (Kommission) | Sekundärquelle | EU-Digitalstrategie, AI Act Kontext, Vertrauenswürdige KI |
 | https://artificialintelligenceact.eu/ | EU AI Act Explorer (interaktiv) | Tool | Artikel-Browser, Paragraphensuche, Compliance-Prüfung |
 | https://www.bmi.bund.de/DE/themen/sicherheit/it-und-cybersicherheit/it-und-cybersicherheit-node.html | Bundesministerium des Ineren (BMI) | Behörde | Deutschland, Cybersicherheit |
