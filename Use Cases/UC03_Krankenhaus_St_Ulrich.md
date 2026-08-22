@@ -77,7 +77,7 @@ Die folgenden Fälle sind öffentlich dokumentierte Entsprechungen zu den Initia
 
 | Initiative St. Ulrich | Entsprechung bei Memorial | Was dokumentiert ist | Belegstärke |
 |---|---|---|---|
-| **UC-03c** Verwaltungsautomatisierung (Entlassbriefe) | **Nuance DAX Copilot** — Dokumentation nebenher während der Visite | Reduzierte abendliche Nachdokumentation laut Aussage des Digitalchefs; **kein veröffentlichter Basiswert**, keine unabhängig geprüfte Produktivitätszahl | Führungsinterview, unquantifiziert |
+| **UC-03c** Verwaltungsautomatisierung (Entlassbriefe) | **Nuance DAX Copilot** — Dokumentation nebenher während der Visite *(deutsches Vergleichsangebot: myScribe, siehe unten)* | Reduzierte abendliche Nachdokumentation laut Aussage des Digitalchefs; **kein veröffentlichter Basiswert**, keine unabhängig geprüfte Produktivitätszahl | Führungsinterview, unquantifiziert |
 | **UC-03d** Diagnoseunterstützung (Bildauswertung) | **Aidoc** (Zufallsbefunde) und **RapidAI** (Schlaganfall-Alarme auf Diensthandy und Smartwatch) | RapidAI-Pilot ab 2017, später vier Häuser; Mitteilung vom Mai 2022: über 8.400 Schlaganfälle identifiziert | Organisationsmitteilung, zeitlich veraltet |
 | **UC-03b** Patienten-Onboarding-App | **Talkdesk** — Patientenkontakt; zuvor **12 getrennte Callcenter zu einem Patient Access Center konsolidiert**, dann automatisiert | Anbieter nennt niedrigere Abbruchquote und kürzere Bearbeitungszeit; **kein öffentlicher Basiswert, keine unabhängige Prüfung** | Anbieter-Kundenstory |
 | *(bisher keine Entsprechung)* | **Artsight** — kamerabasierte virtuelle Pflege und Sturzrisiko-Beobachtung, ergänzend zum Klinikinformationssystem | Zentrale Leitstelle mit 31 Arbeitsplätzen, eröffnet Oktober 2024; Baukosten 1,7 Mio. USD, **projizierte** Einsparung im ersten Jahr 1,6 Mio. USD | Fachpresse, Projektion — nicht als realisiert bestätigt |
@@ -127,6 +127,70 @@ Eine vierte Kategorie ist ausdrücklich **unbrauchbar**: Zu Memorial kursiert im
 
 ---
 
+## Ein deutsches Vergleichsangebot — myScribe
+
+Der Memorial-Fall endet an einer Grenze: US-Gesundheitssystem, kein Betriebsrat, keine DSGVO, kein EU AI Act. Für UC-03c gibt es ein deutsches Gegenstück, das denselben Arbeitsablauf adressiert — und dabei im europäischen Rechtsrahmen operiert.
+
+**myScribe** (Berlin) bietet nach eigener Darstellung den ersten KI-generierten Arztbrief in Deutschland. Gegründet von **Dr. med. Ira Stoll**, praktizierende Ärztin, die dafür ihre klinische Tätigkeit aufgab.
+
+| Merkmal | Ausprägung |
+|---|---|
+| **Kernfunktion** | Arztbrief wird automatisch mit patientenrelevanten Informationen befüllt; die **Epikrise** — die zusammenfassende ärztliche Beurteilung — wird von der KI erzeugt |
+| **Integration** | Patientendaten über **HL7-FHIR** aus den Umsystemen, Rückspeisung ins KIS zur Vermeidung von Doppeldokumentation |
+| **Weitere Bausteine** | Digitale Aufnahmebögen nach Vorgaben der jeweiligen Abteilung; Patientenübersicht für die Visite |
+| **Betriebsmodell** | **wahlweise On-Premise oder Cloud** |
+| **Endgeräte** | Tablet am Krankenbett oder Desktop |
+| **Genannte Referenzkliniken** | UKSH, Universitätsmedizin Mannheim, Harzklinikum Dorothea Erxleben |
+| **Auszeichnungen** | AKG-Innovationspreis 2025; Gewinn des Founder's Summit (500.000 €) |
+
+### Warum das für St. Ulrich die interessantere Vorlage ist
+
+**Die Betriebsmodell-Wahl ist Peter Mieses Entscheidung.** On-Premise oder Cloud — das ist kein abstraktes Governance-Gespräch mehr, sondern eine reale Produktoption. Der IT-Leiter ist überlastet, hat Bedenken zur Cybersicherheit, und der Datenschutzbeauftragte sitzt außerhalb des Hauses. On-Premise entlastet ihn bei Datenschutz und Angriffsfläche und belastet ihn bei Betrieb, Wartung und Aktualisierung. Cloud dreht das um. Beide Seiten haben seine Argumente — das macht die Übung ehrlich.
+
+**Die FHIR-Rückspeisung trifft sein zweites Problem.** Er verantwortet SAP, KIS und die neue EPA-Anbindung. Bei ihm ist die Integration der Engpass, nicht das Modell. Ein Anbieter, der Rückspeisung ins KIS zusagt, verspricht damit genau die Arbeit, die sonst bei ihm hängen bleibt — und genau das gehört vertraglich geprüft.
+
+### Übung 1 · Der Anbieter-Rechner
+
+Die Website stellt einen **Einsparungspotentialrechner** bereit: Eingabe von Bettenzahl, Fällen pro Jahr und Ärztezahl, Ausgabe eines Euro-Betrags mit dem Zusatz „Kosten von myScribe einberechnet".
+
+St. Ulrich hat 800 Betten und 2.200 Mitarbeitende. Die Teilnehmenden füttern den Rechner mit den eigenen Eckdaten und beantworten anschließend die Fragen aus dem Memorial-Abschnitt oben:
+
+- Welchen **Basiswert** unterstellt der Rechner — und woher stammt er?
+- Welche Kosten sind **nicht** enthalten? (Integration, Schulung, Datenschutzprüfung, Betrieb, Vertragsausstieg)
+- Welche Annahme über die **Arbeitszeitverwendung** steckt darin? Wird eingesparte Zeit zu Geld — oder zu anderer Arbeit?
+- Was müsste St. Ulrich **vor** einer Anschaffung selbst messen, um das Ergebnis zu prüfen?
+
+### Übung 2 · Die Überschlagsrechnung
+
+Zwei Angaben derselben Website:
+
+- **„ca. 2 Stunden Zeitersparnis pro Ärzt*in pro Tag"**
+- Ein namentlich genannter Facharzt für Orthopädie am Universitätsklinikum Mannheim: **„Für einen langen Arztbrief benötige ich ca. 45 Minuten — mit myScribe brauche ich höchstens 15 Minuten für den gleichen Brief."**
+
+Aus der zweiten Aussage folgt eine Ersparnis von rund 30 Minuten je langem Arztbrief. Für zwei Stunden täglich wären demnach etwa **vier lange Arztbriefe pro Arzt und Tag** nötig.
+
+Das muss nicht falsch sein — in manchen Abteilungen ist das plausibel, in anderen nicht. Aber es ist genau die Rechnung, die vor einer Unterschrift zu führen ist. Leitfrage an die Teilnehmenden: *Wie viele lange Arztbriefe schreibt eine Ärztin in Deiner Vergleichsabteilung tatsächlich pro Tag — und wie kämst Du an diese Zahl?*
+
+### Prüffragen zur Einordnung nach EU AI Act
+
+Diese Fragen sind bewusst offen gestellt — sie gehören von den Teilnehmenden beantwortet, nicht vom Use Case vorgegeben.
+
+**Erstens:** Die KI erzeugt die **Epikrise**, also keine neutrale Mitschrift, sondern eine zusammenfassende medizinische Beurteilung, die in die Patientenakte eingeht und den Patienten weiterbegleitet. Wie ist ein solches System nach EU AI Act einzustufen — und wovon hängt die Einstufung ab?
+
+**Zweitens:** Wie wird die **ärztliche Freigabe** ausgestaltet, damit sie tatsächlich menschliche Aufsicht im Sinne von Art. 14 ist und nicht zum Durchwinken wird? Erinnerung an die Human-Override-Rate: Eine sehr niedrige Korrekturquote ist kein Qualitätsnachweis, sondern ein Warnsignal.
+
+**Drittens:** Welches Risiko entsteht, wenn ein Sprachmodell eine Beurteilung **flüssig und selbstsicher** formuliert, die inhaltlich nicht gedeckt ist — in einem Dokument mit Rechtswirkung? Wo im Ablauf wird das erkannt?
+
+### Quellenkritischer Hinweis
+
+**Sämtliche Angaben stammen von der Anbieterwebsite** und sind Selbstauskunft ohne offengelegte Methode, Basiswert oder Stichprobe. Die Zeitersparnis von zwei Stunden ist eine Marketingaussage; das Testimonial ist die Einzelaussage eines namentlich genannten Arztes. Nachprüfbar sind die genannten Referenzkliniken und die Auszeichnungen — nicht die Wirkungsangaben.
+
+Für den Kursraum ist das kein Nachteil, sondern der Zweck: Das Material eignet sich als **Anschauungsobjekt für Anbieterkommunikation**, nicht als Beleg. Die Frage lautet nicht, ob myScribe gut ist — sondern was St. Ulrich selbst erheben müsste, um das zu beurteilen.
+
+**Quelle:** myScribe, Anbieterwebsite — <https://www.myscribe.de/> (abgerufen August 2026). Tier 3, Herstellerangaben.
+
+---
+
 ## Verwendung in der Schulung
 
 | Kontext | Verwendung |
@@ -136,6 +200,8 @@ Eine vierte Kategorie ist ausdrücklich **unbrauchbar**: Zu Memorial kursiert im
 | Abschluss-Steckbrief | UC-03c + UC-03d kombiniert |
 | Woche 4 (Change Management) | Ärzteteam-Widerstand als Übungsfall; Kamerabeobachtung als Konfliktfall mit der Pflegedienstleitung |
 | Business Case / Belegbewertung | Reale Vorbilder oben — Übung: Welche der Memorial-Zahlen dürfen in eine Investitionsvorlage, welche nicht? |
+| Anbieterbewertung (UC-03c) | myScribe-Abschnitt — Übung 1 (Anbieter-Rechner) und Übung 2 (Überschlagsrechnung 2 h gegen 30 min) |
+| Governance-Entscheidung | myScribe On-Premise gegen Cloud — Rollenspiel mit Peter Miese (IT-Leitung) |
 
 ---
 *Letzte Aktualisierung: August 2026 — Ulrich Nord / Claude (Anthropic)*
