@@ -76,8 +76,12 @@ beschwerdesicher) und füllt den offiziellen Bewertungsbogen
 `Kursmaterialien/Vorlage_Projektarbeit.docx` als **docx + PDF** aus.
 
 Bei einem Auftrag „Bewerte die Projektarbeit von [Name]" bzw. „Bewertung für die
-Urkunde" diesen Skill verwenden. Die Detailrubrik `reference/bewertungs-rubrik.md`
-in diesem Ordner bleibt als ergänzende Quelle erhalten.
+Urkunde" diesen Skill verwenden.
+
+**Die Detailrubrik `reference/bewertungs-rubrik.md` ist seit 25.08.2026 abgelöst** und
+enthält nur noch einen Wegweiser. Skala, Gewichtung, Leitprinzip und Begründungstiefe
+stehen ausschließlich in `bewertung-projektarbeit`, Abschnitt 3 — eine Quelle, kein
+Abgleich.
 
 ---
 
