@@ -24,8 +24,13 @@ Auftrag des Dozenten** — im Zweifel nachfragen, nicht raten.
 Ordnername; Sonderfälle siehe Memory (z. B. „Abdelrahman Mekki", Richard Leyser =
 nur Woche 2).
 
+> **Achtung, zwei Ordner gleichen Namens.** `Schulungsmaterial/Kursmaterialien/` (lokal,
+> OneDrive) enthält Quiz_Daten.xlsx und die Anbieter-Vorlage Vorlage_Projektarbeit.docx;
+> `KI_Schulungen_UNO/Skills_und_Workflows/` (GitHub-Repo) enthält die Zentrale_Vorgehensweise.md
+> und die Skill-Kopien. Pfade nie ohne Wurzelordner nennen.
+
 **Vor jeder Auswertung lesen:**
-- `Kursmaterialien/Zentrale_Vorgehensweise.md` — verbindliche Stil- und
+- `KI_Schulungen_UNO/Skills_und_Workflows/Zentrale_Vorgehensweise.md` — verbindliche Stil- und
   Governance-Regeln.
 - Die einschlägige Referenzdatei in diesem Skill (`reference/…`).
 
@@ -54,7 +59,7 @@ nach außen gehen. Kein Output wird als „endgültig" deklariert.
 **Zweck:** Entwicklungsorientierte Rückmeldung während des Kurses.
 
 **Eingabe:** alle Dateien im Arbeitsproben-Ordner der Person + ihre Quiz-Ergebnisse
-(`Kursmaterialien/Quiz_Daten.xlsx` bzw. `Quiz_Daten.csv`).
+(`Schulungsmaterial/Kursmaterialien/Quiz_Daten.xlsx`).
 
 **Ausgabe:** `Schulungsmaterial/KI-Beauftragte/Feedback/[Vorname]_Feedback.html`
 (bestehende Datei gleichen Namens wird überschrieben).
@@ -73,7 +78,7 @@ bestimmt die Variante (KIB_1 / KIB_2 / KIM), wendet die offizielle Skala
 (100–81 / 80–50 / 49–0) und Gewichtung (34/33/33; KIM 40/40/20) an, hält die
 Begründungstiefe nach Punktzahl ein (81–97 knapp · > 97 und < 81 ausführlich/
 beschwerdesicher) und füllt den offiziellen Bewertungsbogen
-`Kursmaterialien/Vorlage_Projektarbeit.docx` als **docx + PDF** aus.
+`Schulungsmaterial/Kursmaterialien/Vorlage_Projektarbeit.docx` als **docx + PDF** aus.
 
 Bei einem Auftrag „Bewerte die Projektarbeit von [Name]" bzw. „Bewertung für die
 Urkunde" diesen Skill verwenden.

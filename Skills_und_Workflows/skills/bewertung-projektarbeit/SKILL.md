@@ -221,11 +221,21 @@ Datum 31.07.2026, Zeitraum „Juli 2026“.
 
 ## 5 · Ausgabe: den offiziellen Bogen befüllen
 
-**Vorlage:** `Kursmaterialien/Vorlage_Projektarbeit.docx` — eine **Kopie** wird per
+**Vorlage:** `Schulungsmaterial/Kursmaterialien/Vorlage_Projektarbeit.docx` — das offizielle
+Referenzdokument des Anbieters. Eine **Kopie** wird per
 `python-docx` befüllt. Aufbau der Vorlage: Kopf-Absätze (Fach/Datum/Zeitdauer/Dozent/Ort/
 Hilfsmittel), Bewertungsschlüssel-Tabelle, je Aufgabe „Aufgabe N:“ + „Erreichte Punktzahl: __
 Punkte von maximal __ Punkten“ + „Begründung:“, sowie eine Namens-/Gesamtpunkt-Tabelle
 („Name, Vorname“ und „Erreichte Punktzahl … von maximal 100 Punkten“).
+
+> **Achtung, zwei Ordner gleichen Namens.** Es gibt `Schulungsmaterial/Kursmaterialien/`
+> (lokal, OneDrive) **und** `KI_Schulungen_UNO/Skills_und_Workflows/` (GitHub-Repo). Die Vorlage
+> des Anbieters — und ebenso die Bewertungsübersicht aus Abschnitt 7 — liegen in der
+> **Schulungsmaterial**-Variante. Pfade in diesem Skill nie abkürzen, sondern immer mit dem
+> Wurzelordner nennen.
+
+**Die Vorlage bleibt unverändert.** Nie in die Originaldatei schreiben, immer eine Kopie
+befüllen — sie ist das Referenzdokument des Anbieters und Grundlage jedes künftigen Durchlaufs.
 
 **Zu füllen:**
 - Kopf-Werte (Abschnitt 4).
@@ -245,7 +255,7 @@ from docx import Document
 from docx.shared import RGBColor
 import shutil, subprocess, os
 
-TPL  = "<Pfad>/Kursmaterialien/Vorlage_Projektarbeit.docx"
+TPL  = "<Pfad>/Schulungsmaterial/Kursmaterialien/Vorlage_Projektarbeit.docx"
 OUT  = "<Zielordner>/[Vorname]_[Nachname]_Projektarbeit_Bewertung_KLR-<nr>.docx"
 
 # --- Eingaben ---
