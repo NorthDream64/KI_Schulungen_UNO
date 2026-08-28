@@ -3,11 +3,11 @@
 > Dieses Dokument ist die **einzige verbindliche Referenz** für Quellenrecherche, Content-Pflege und Quiz-Erstellung in den drei Kursen.  
 > Es ersetzt `Quellen_Workflow.md` (archiviert).  
 > Gilt für: KI-Beauftragter (KIB · Modul 764), KI-Manager (KIM · Modul 763), Manager KI-Transformation (MAT).  
-> Letzte Aktualisierung: 2026-06-29
+> Letzte Aktualisierung: 2026-08-27
 
 ---
 
-## 1 · Vier Informationsquellen — Funktionen und Pfade
+## 1 · Fünf Informationsquellen — Funktionen und Pfade
 
 ### 1a · Quellen_und_Dokumente_KI-Kurse.md (GitHub — Pflichtlektüre vor jedem Kurstag-Review)
 
@@ -66,6 +66,26 @@
 
 ---
 
+### 1e · DIN EN ISO/IEC 42001:2026-08 (lokal — Normtext im Volltext)
+
+**Pfad:** `Schulungsmaterial/Interessante Dokumente/Norm DIN ISO-IEC 42001 Künstliche Intelligenz_08-2026.pdf`  
+**Vollständiger Titel:** DIN EN ISO/IEC 42001:2026-08 — *Informationstechnik – Künstliche Intelligenz – Managementsystem*  
+**Ausgabe:** E-Book-Sonderausgabe 2026 (alfatraining), 72 Seiten
+
+**Funktion:** Der **Normtext selbst** — die maßgebliche Quelle für alle Aussagen zu ISO/IEC 42001 in den Kursmaterialien. Bisher wurde die Norm über Sekundärquellen zitiert (Beratungs-Websites, ISO-Einführungsseiten). Ab sofort gilt: **Aussagen über Normanforderungen werden am Normtext geprüft, nicht an Sekundärliteratur.**
+
+**Wann zu prüfen:**
+- Immer, wenn eine Kursaussage eine **Anforderung, ein Kapitel oder eine Anhang-A-Kontrolle** der ISO 42001 benennt
+- Bei Aktualisierung der Kurstage mit ISO-Bezug — u. a. KIB Tag 1, 8, 10–17; KIM Tag 2, 11, 12
+- Vor jeder Aussage zur **Zertifizierungsreife** oder zum Anwendungsbereich
+- Bei Änderungen an der ISO-42001-Checkliste und am Anwendbarkeitsnachweis (SoA)
+
+**Wichtige Änderung gegenüber dem bisherigen Stand:** Die Kursmaterialien zitieren überwiegend **ISO/IEC 42001:2023**. Die hier vorliegende Fassung ist die **europäisch übernommene deutsche Ausgabe DIN EN ISO/IEC 42001:2026-08**. Bezeichnung und Ausgabestand sind bei jeder Aktualisierung anzugleichen — die Zitierregel steht in `Quellen_und_Dokumente_KI-Kurse.md`, Abschnitt K.4.
+
+> ⚠️ **Urheberrecht — zwingend beachten.** Normtexte sind urheberrechtlich geschützt; dies ist eine lizenzierte Ausgabe. **Kein Wortlaut aus dem Normtext in Teilnehmermaterialien.** Zulässig sind: sinngemäße Wiedergabe mit Kapitelverweis, Nennung von Kapitel- und Kontrollnummern, eigene Formulierungen. Nicht zulässig: Abdruck von Anforderungstexten, Tabellen oder Anhang-A-Formulierungen im Wortlaut.
+
+---
+
 ## 2 · Entscheidungslogik: Was kommt wohin?
 
 ```
@@ -115,7 +135,8 @@ Wird ein Kurstag (z.B. „KIB Tag 7") reviewed oder aktualisiert, gelten folgend
 2. `Neue_Quellen_Intake.md` lesen → neue didaktische Ideen mit Relevanz für diesen Tag prüfen
 3. `Wochenberichte/` lesen → aktuelle Markt- und Branchenupdates mit Relevanz prüfen
 4. `KI_News_Update.html` prüfen → regulatorischen Stand für diesen Tag verifizieren
-5. Web-Suche für Fakten, die älter als 6 Monate sein könnten (Fristen, Zahlen, Regulierungsstand)
+5. **Bei jedem ISO-42001-Bezug:** Normtext `DIN EN ISO/IEC 42001:2026-08` prüfen (Pfad siehe 1e) → Kapitel- und Kontrollnummern sowie Bezeichnung und Ausgabestand am Original verifizieren, nicht an Sekundärquellen
+6. Web-Suche für Fakten, die älter als 6 Monate sein könnten (Fristen, Zahlen, Regulierungsstand)
 
 > Alle inhaltlichen Aussagen in Kursmaterialien müssen mit einer nachvollziehbaren Quelle belegt sein. URLs nur verwenden, wenn sie als direktes Ergebnis einer Recherche vorlagen — keine konstruierten oder erinnerten URLs.
 

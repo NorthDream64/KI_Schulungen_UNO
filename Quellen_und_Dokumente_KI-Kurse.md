@@ -53,6 +53,7 @@ Normtexte sind kostenpflichtig. Verlinkt wird nur, was frei lesbar ist; sonst Li
 | ISO/IEC 25059:2023 | Literaturhinweis + IEC-Blog |
 | ISO/IEC 25010 · ISO/IEC/IEEE 12207 · ISO 9001 · ISO/IEC 27001 · ISO 13485 | Literaturhinweis ohne URL |
 | EN ISO/IEC 42001:2026 (CEN) | Drittanbieter-Katalog iteh.ai nicht verlinken |
+| **DIN EN ISO/IEC 42001:2026-08** | **Normtext liegt lokal im Volltext vor** — `Schulungsmaterial/Interessante Dokumente/Norm DIN ISO-IEC 42001 Künstliche Intelligenz_08-2026.pdf` (E-Book-Sonderausgabe 2026, alfatraining, 72 S.). Deutscher Titel: *Informationstechnik – Künstliche Intelligenz – Managementsystem*. **Maßgeblich für alle Aussagen zu Normanforderungen** — vor Sekundärquellen prüfen. Bei Neuerstellung und Aktualisierung: Bezeichnung und Ausgabestand angleichen (bisher überwiegend „ISO/IEC 42001:2023" zitiert). **Kein Wortlaut in Teilnehmermaterialien** — nur sinngemäße Wiedergabe mit Kapitelverweis; Normtexte sind urheberrechtlich geschützt, dies ist eine lizenzierte Ausgabe. Pflichtprüfschritt siehe `Skills_und_Workflows/Zentrale_Vorgehensweise.md`, Abschnitt 1e und Schritt 1.5 |
 
 ⚠️ **`https://www.iso.org/standard/42001.html` nicht verwenden** — die Adresse führt auf ISO 12164-4:2008 „Hollow taper interface" (zurückgezogen), nicht auf ISO/IEC 42001. Korrekt wäre `iso.org/standard/81230.html`.
 
