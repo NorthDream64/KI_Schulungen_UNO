@@ -91,7 +91,7 @@ Sizing logic: *AI-in-PM software TAM × enterprise-segment share × captured pen
 
 Adding the outcome-based add-on (~15 % attach rate at avg. EUR 45 k / customer / year) lifts the base case by another **EUR 3–5 m**.
 
-> ⚠️ **Key assumptions to validate before committee:** (1) willingness-to-pay in the EUR 49–120 range against a market anchored at USD 7–29 — needs enterprise reference customers proving PMO-cost displacement; (2) speed of Microsoft Copilot and Google Duet closing the agentic gap in native PM domains (this is the biggest strategic risk); (3) EU-market readiness by 2027 for high-risk AI-Act obligations if resource-allocation features touch worker evaluation.
+> ⚠️ **Key assumptions to validate before committee:** (1) willingness-to-pay in the EUR 49–120 range against a market anchored at USD 7–29 — needs enterprise reference customers proving PMO-cost displacement; (2) speed of Microsoft Copilot and Google Duet closing the agentic gap in native PM domains (this is the biggest strategic risk); (3) EU-market readiness by December 2027 for high-risk AI-Act obligations if resource-allocation features touch worker evaluation.
 
 ### Competitive landscape
 
@@ -123,7 +123,7 @@ Adding the outcome-based add-on (~15 % attach rate at avg. EUR 45 k / customer /
 
 **Regulatory & compliance**
 
-- **EU AI Act.** Any PM-AIgent function that allocates work to specific individuals based on behaviour or personal characteristics falls under **Annex III Nr. 4 (employment / worker management) — high-risk AI**. Compliance obligations: risk-management system, data-governance, transparency, human oversight, logging, post-market monitoring. Deadline for existing high-risk systems: **2 August 2027** (obligations for Annex III systems). AI-literacy obligations (Art. 4) apply from 2 February 2025. Design decision: keep resource-allocation "recommend-only" (Limited Risk) or accept high-risk classification and compliance overhead in exchange for autonomous scope.
+- **EU AI Act.** Any PM-AIgent function that allocates work to specific individuals based on behaviour or personal characteristics falls under **Annex III Nr. 4 (employment / worker management) — high-risk AI**. Compliance obligations: risk-management system, data-governance, transparency, human oversight, logging, post-market monitoring. Obligations for Annex III high-risk systems apply from **2 December 2027** — confirmed by BaFin in its press release of 29 July 2026 on the German implementing act (KI-MIG), which names that date for high-risk requirements such as credit scoring and insurance risk assessment. Transparency obligations already apply from 2 August 2026. AI-literacy obligations (Art. 4) apply from 2 February 2025. Design decision: keep resource-allocation "recommend-only" (Limited Risk) or accept high-risk classification and compliance overhead in exchange for autonomous scope.
 - **GDPR.** Meeting recordings, email/chat parsing and personnel-skill profiles are all personal data. Art. 6 legal basis, Art. 9 for special-category data, Art. 22 for automated individual decisions with legal or similarly significant effect (assignment/promotion recommendations often qualify), Art. 35 DPIA mandatory in most deployments. Design decision: on-device summarisation vs. cloud inference, and where the training-data pipeline lives.
 - **Works-council mitbestimmung.** In DACH markets, § 87 BetrVG (technische Überwachung) forces active co-determination for tools that monitor worker performance. Sales cycle and rollout must plan for co-determination negotiations — often a 3–9-month delay if not scoped early.
 - **Confidentiality & IP.** Project data is typically the most sensitive commercial data a company holds (M&A, R&D, restructuring). Enterprise contract must ring-fence customer data from model retraining and cross-tenant leakage.
@@ -197,6 +197,7 @@ xxxx *(to be developed)*
 **Tier-1 (industry associations, regulator, standards)**
 
 - PMI *Pulse of the Profession 2025* — AI adoption & skills gap in project management — [PMI (PDF)](https://www.pmi.org/-/media/pmi/documents/public/pdf/learning/thought-leadership/pulse/pulse_of_the_profession_2025-1.pdf)
+- BaFin — *Überwachung von KI: BaFin erhält neue Kompetenzen* (press release, 29 July 2026) — German implementing act (KI-MIG) in force; transparency obligations from 2 August 2026, high-risk requirements from 2 December 2027 — [BaFin](https://www.bafin.de/SharedDocs/Veroeffentlichungen/DE/Pressemitteilung/2026/pm_2026_07_29_ki_verordnung.html)
 - EU AI Act — high-risk classification Annex III Nr. 4 (employment, worker management, task allocation) and Article 4 (AI literacy) — [European Commission AI Act text](https://artificialintelligenceact.eu/)
 - MDCG guidance on AI-enabled systems (relevant analogously for enterprise-AI governance) — [European Commission Health (PDF)](https://health.ec.europa.eu/document/download/b78a17d7-e3cd-4943-851d-e02a2f22bbb4_en?filename=mdcg_2025-6_en.pdf)
 
