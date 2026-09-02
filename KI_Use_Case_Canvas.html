@@ -339,6 +339,8 @@ hr.divider{border:none;border-top:1px solid var(--rule);margin:1rem 0;}
   <div class="step" id="step-17" onclick="goTo(17)"><div class="step-num">☑</div><div class="step-label">Vollständigkeit</div></div>
   <div class="step-sep">›</div>
   <div class="step" id="step-18" onclick="goTo(18)"><div class="step-num">A</div><div class="step-label">Anhang: ISO 42001</div></div>
+  <div class="step-sep">›</div>
+  <div class="step" id="step-19" onclick="goTo(19)"><div class="step-num">B</div><div class="step-label">Anhang: Hochrisiko</div></div>
 </div>
 
 <div id="app">
@@ -2813,8 +2815,11 @@ hr.divider{border:none;border-top:1px solid var(--rule);margin:1rem 0;}
 
   <div class="section-nav">
     <button class="btn btn-outline" onclick="goTo(17)">← Vollständigkeit</button>
-    <div class="section-counter">Anhang</div>
-    <button class="btn btn-primary" onclick="window.print()">🖨 Drucken / PDF</button>
+    <div class="section-counter">Anhang A</div>
+    <div style="display:flex;gap:0.5rem">
+      <button class="btn btn-primary" onclick="window.print()">🖨 Drucken / PDF</button>
+      <button class="btn btn-outline" onclick="goTo(19)">Anhang B: Hochrisiko →</button>
+    </div>
   </div>
 
   <script>
@@ -2839,6 +2844,327 @@ hr.divider{border:none;border-top:1px solid var(--rule);margin:1rem 0;}
       vEl.innerHTML = '<span class="tuev-verdict high">Zertifizierungsreif (17–22)</span>';
     }
   }
+  </script>
+</div>
+
+
+<!-- ════════════════════════════════════════════════════════════════
+     ABSCHNITT B — ANHANG — HOCHRISIKO-CHECKLISTE (Art. 6 KI-VO)
+════════════════════════════════════════════════════════════════ -->
+<div class="form-section" id="section-19">
+  <div class="section-header" style="border-left-color:var(--amber)">
+    <div class="section-tag">Anhang B · Einordnungshilfe</div>
+    <h2>Checkliste Hochrisiko-KI — Scoring nach Art. 6 KI-VO</h2>
+    <p>Beantworte die Prüffaktoren mit Ja, Nein oder Unklar. Hochrisiko-Indikatoren zahlen negativ, Filter-Bedingungen positiv auf den Score ein. Das Ergebnis ist eine Orientierungshilfe — es ersetzt nicht die abschließende rechtliche Bewertung.</p>
+    <div class="kursreferenz">Grundlage: <a href="https://digital-strategy.ec.europa.eu/en/library/draft-commission-guidelines-classification-high-risk-ai-systems" target="_blank" rel="noopener">Draft Guidelines on the Classification of High-Risk AI Systems</a> (EU-Kommission, 19.05.2026) · Einsatz: KI-Beauftragte:r Tag 4</div>
+  </div>
+
+  <style>
+    .hr-factor{background:var(--white);border:1px solid var(--rule);border-radius:var(--radius);margin-bottom:.7rem;padding:1rem 1.3rem;display:grid;grid-template-columns:1fr auto;gap:.8rem;align-items:start;transition:all .25s;}
+    .hr-factor.hr-ans-ja-risk{border-left:4px solid var(--danger);}
+    .hr-factor.hr-ans-ja-filter{border-left:4px solid var(--ok);}
+    .hr-factor.hr-ans-nein{border-left:4px solid #999;}
+    .hr-factor.hr-ans-unklar{border-left:4px solid var(--warn);}
+    .hr-factor.hr-disabled{opacity:.4;pointer-events:none;}
+    .hr-fid{font-family:var(--font-mono);font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:#999;margin-bottom:.15rem;}
+    .hr-flabel{font-size:.88rem;font-weight:600;line-height:1.45;margin-bottom:.15rem;}
+    .hr-fhint{font-size:.8rem;color:#888;line-height:1.5;font-style:italic;}
+    .hr-fref{font-size:.72rem;color:var(--teal);margin-top:.25rem;}
+    .hr-fref a{color:var(--teal);}
+    .hr-radio{display:flex;gap:5px;flex-shrink:0;align-self:center;}
+    .hr-radio label{font-family:var(--font-mono);font-size:.7rem;font-weight:600;letter-spacing:.04em;padding:6px 12px;border:2px solid var(--rule);border-radius:4px;cursor:pointer;transition:all .2s;text-align:center;min-width:50px;user-select:none;}
+    .hr-radio label:hover{transform:translateY(-1px);box-shadow:0 2px 6px rgba(0,0,0,.1);}
+    .hr-radio input{display:none;}
+    .hr-radio label.hr-sel-ja-risk{background:var(--danger);color:#fff;border-color:var(--danger);box-shadow:0 2px 8px rgba(139,26,26,.3);}
+    .hr-radio label.hr-sel-ja-filter{background:var(--ok);color:#fff;border-color:var(--ok);box-shadow:0 2px 8px rgba(26,122,26,.3);}
+    .hr-radio label.hr-sel-nein{background:#4a4a40;color:#fff;border-color:#4a4a40;box-shadow:0 2px 6px rgba(0,0,0,.15);}
+    .hr-radio label.hr-sel-unklar{background:var(--warn);color:#fff;border-color:var(--warn);box-shadow:0 2px 8px rgba(176,104,0,.3);}
+    .hr-section-tag{font-family:var(--font-mono);font-size:.6rem;letter-spacing:.15em;text-transform:uppercase;color:#999;margin-bottom:.6rem;padding-bottom:.35rem;border-bottom:1px solid var(--rule);}
+    .hr-badge{display:inline-block;padding:1px 7px;border-radius:3px;font-size:.55rem;margin-left:5px;vertical-align:middle;}
+    .hr-badge-gate{background:var(--soft);color:#888;}
+    .hr-badge-risk{background:#fce8e8;color:var(--danger);}
+    .hr-badge-filter{background:#e8f5e9;color:var(--ok);}
+    .hr-result{background:var(--white);border:2px solid var(--rule);border-radius:var(--radius);padding:1.5rem;margin-top:1.2rem;text-align:center;transition:border-color .3s;}
+    .hr-result.hr-lv-hr{border-color:var(--danger);}
+    .hr-result.hr-lv-phr{border-color:#e67e22;}
+    .hr-result.hr-lv-gz{border-color:var(--warn);}
+    .hr-result.hr-lv-pnhr{border-color:#27ae60;}
+    .hr-result.hr-lv-nhr{border-color:var(--ok);}
+    .hr-dots{display:flex;align-items:center;justify-content:center;gap:5px;margin-bottom:.8rem;}
+    .hr-dot{width:16px;height:16px;border-radius:50%;border:2px solid var(--rule);transition:all .3s;}
+    .hr-dot.hr-act{transform:scale(1.3);border-color:transparent;}
+    .hr-dot.hr-d-hr{background:var(--danger);}
+    .hr-dot.hr-d-phr{background:#e67e22;}
+    .hr-dot.hr-d-gz{background:var(--warn);}
+    .hr-dot.hr-d-pnhr{background:#27ae60;}
+    .hr-dot.hr-d-nhr{background:var(--ok);}
+    .hr-rlabel{font-family:var(--font-head);font-size:1.2rem;font-weight:700;margin-bottom:.4rem;}
+    .hr-rdetail{font-size:.82rem;color:#888;line-height:1.55;max-width:560px;margin:0 auto;}
+    .hr-rscore{font-family:var(--font-mono);font-size:.68rem;color:#999;margin-top:.6rem;}
+    .hr-reset{font-family:var(--font-mono);font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;padding:5px 14px;border:1px solid var(--rule);border-radius:4px;background:none;color:#999;cursor:pointer;margin-top:.8rem;}
+    .hr-reset:hover{border-color:var(--teal);color:var(--teal);}
+  </style>
+
+  <!-- VORPRÜFUNG -->
+  <div class="form-card">
+    <h4>Vorprüfung <span class="hr-badge hr-badge-gate">Gateway</span></h4>
+
+    <div class="hr-factor" id="hrf-v1">
+      <div>
+        <div class="hr-fid">V1</div>
+        <div class="hr-flabel">Handelt es sich um ein KI-System i.S.d. Art. 3 Abs. 1 KI-VO?</div>
+        <div class="hr-fhint">Maschinenbasiertes System mit variierender Autonomie, das aus Eingaben Vorhersagen, Inhalte, Empfehlungen oder Entscheidungen ableitet.</div>
+        <div class="hr-fref"><a href="https://ec.europa.eu/newsroom/dae/redirection/document/128559" target="_blank">Leitlinie General Principles, Abs. 8–9</a></div>
+      </div>
+      <div class="hr-radio">
+        <label><input type="radio" name="hrv1" value="ja" onchange="hrScore()"><span>Ja</span></label>
+        <label><input type="radio" name="hrv1" value="nein" onchange="hrScore()"><span>Nein</span></label>
+        <label><input type="radio" name="hrv1" value="unklar" onchange="hrScore()"><span>Unklar</span></label>
+      </div>
+    </div>
+
+    <div class="hr-factor" id="hrf-v2">
+      <div>
+        <div class="hr-fid">V2</div>
+        <div class="hr-flabel">Fällt der Einsatzzweck in einen der acht Bereiche nach Anhang III?</div>
+        <div class="hr-fhint">Biometrie · Kritische Infrastruktur · Bildung · Beschäftigung · Öffentliche/private Grundversorgung · Strafverfolgung · Migration/Asyl · Justiz/Demokratie.</div>
+        <div class="hr-fref"><a href="https://ec.europa.eu/newsroom/dae/redirection/document/128561" target="_blank">Leitlinie Annex III, Abs. 63–68</a> · Art. 6 Abs. 2 KI-VO</div>
+      </div>
+      <div class="hr-radio">
+        <label><input type="radio" name="hrv2" value="ja" onchange="hrScore()"><span>Ja</span></label>
+        <label><input type="radio" name="hrv2" value="nein" onchange="hrScore()"><span>Nein</span></label>
+        <label><input type="radio" name="hrv2" value="unklar" onchange="hrScore()"><span>Unklar</span></label>
+      </div>
+    </div>
+
+    <div class="hr-factor" id="hrf-v3">
+      <div>
+        <div class="hr-fid">V3</div>
+        <div class="hr-flabel">Ist das System Produkt oder Sicherheitskomponente eines Produkts nach Anhang I — mit Drittkonformitätsbewertung?</div>
+        <div class="hr-fhint">Maschinen, Spielzeug, Aufzüge, Medizinprodukte, Fahrzeuge, Luftfahrt u.a. Beide Bedingungen müssen kumulativ erfüllt sein.</div>
+        <div class="hr-fref"><a href="https://ec.europa.eu/newsroom/dae/redirection/document/128560" target="_blank">Leitlinie Annex I, Abs. 15–27</a> · Art. 6 Abs. 1 KI-VO</div>
+      </div>
+      <div class="hr-radio">
+        <label><input type="radio" name="hrv3" value="ja" onchange="hrScore()"><span>Ja</span></label>
+        <label><input type="radio" name="hrv3" value="nein" onchange="hrScore()"><span>Nein</span></label>
+        <label><input type="radio" name="hrv3" value="unklar" onchange="hrScore()"><span>Unklar</span></label>
+      </div>
+    </div>
+  </div>
+
+  <!-- HOCHRISIKO-INDIKATOREN -->
+  <div class="form-card">
+    <h4>Hochrisiko-Indikatoren <span class="hr-badge hr-badge-risk">Negativ-Score</span></h4>
+
+    <div class="hr-factor" id="hrf-h1">
+      <div>
+        <div class="hr-fid">H1 · −2 Punkte</div>
+        <div class="hr-flabel">Beeinflusst das System den Ausgang von Entscheidungen über natürliche Personen wesentlich?</div>
+        <div class="hr-fhint">„Wesentlich" = das System prägt die Substanz der Entscheidung, nicht nur unterstützende oder organisatorische Aspekte.</div>
+        <div class="hr-fref"><a href="https://ec.europa.eu/newsroom/dae/redirection/document/128561" target="_blank">Leitlinie Annex III, Abs. 85</a> · Erwägungsgrund 53 KI-VO</div>
+      </div>
+      <div class="hr-radio">
+        <label><input type="radio" name="hrh1" value="ja" onchange="hrScore()"><span>Ja</span></label>
+        <label><input type="radio" name="hrh1" value="nein" onchange="hrScore()"><span>Nein</span></label>
+        <label><input type="radio" name="hrh1" value="unklar" onchange="hrScore()"><span>Unklar</span></label>
+      </div>
+    </div>
+
+    <div class="hr-factor" id="hrf-h2">
+      <div>
+        <div class="hr-fid">H2 · −4 Punkte · Filter blockiert!</div>
+        <div class="hr-flabel">Führt das System ein Profiling natürlicher Personen durch?</div>
+        <div class="hr-fhint">Automatisierte Bewertung persönlicher Aspekte (Arbeitsleistung, wirtschaftliche Lage, Gesundheit, Interessen, Verhalten, Aufenthaltsort). Einfache Klassifizierung nach Alter/Geschlecht ist nicht automatisch Profiling.</div>
+        <div class="hr-fref"><a href="https://ec.europa.eu/newsroom/dae/redirection/document/128561" target="_blank">Leitlinie Annex III, Abs. 109–112</a> · Art. 6 Abs. 3 UAbs. 3 KI-VO · Art. 4 Nr. 4 DSGVO</div>
+      </div>
+      <div class="hr-radio">
+        <label><input type="radio" name="hrh2" value="ja" onchange="hrScore()"><span>Ja</span></label>
+        <label><input type="radio" name="hrh2" value="nein" onchange="hrScore()"><span>Nein</span></label>
+        <label><input type="radio" name="hrh2" value="unklar" onchange="hrScore()"><span>Unklar</span></label>
+      </div>
+    </div>
+
+    <div class="hr-factor" id="hrf-h3">
+      <div>
+        <div class="hr-fid">H3 · −2 Punkte</div>
+        <div class="hr-flabel">Ist das System Teil eines Gesamtsystems, das zusammen einen Hochrisiko-Zweck verfolgt (Anti-Splitting)?</div>
+        <div class="hr-fhint">Mehrere KI-Komponenten, deren kombinierter Zweck oder gemeinsame Outputs eine Einzelfallentscheidung wesentlich beeinflussen — auch agentic AI.</div>
+        <div class="hr-fref"><a href="https://ec.europa.eu/newsroom/dae/redirection/document/128561" target="_blank">Leitlinie Annex III, Abs. 75 + 90</a></div>
+      </div>
+      <div class="hr-radio">
+        <label><input type="radio" name="hrh3" value="ja" onchange="hrScore()"><span>Ja</span></label>
+        <label><input type="radio" name="hrh3" value="nein" onchange="hrScore()"><span>Nein</span></label>
+        <label><input type="radio" name="hrh3" value="unklar" onchange="hrScore()"><span>Unklar</span></label>
+      </div>
+    </div>
+
+    <div class="hr-factor" id="hrf-h4">
+      <div>
+        <div class="hr-fid">H4 · −2 Punkte</div>
+        <div class="hr-flabel">Wird das System als Multi-Purpose-KI breit vermarktet, ohne Hochrisiko-Nutzungen kohärent auszuschließen?</div>
+        <div class="hr-fhint">Ein bloßer Disclaimer in den AGB reicht nicht — der Ausschluss muss klar, konkret und konsistent über alle Materialien erfolgen.</div>
+        <div class="hr-fref"><a href="https://ec.europa.eu/newsroom/dae/redirection/document/128559" target="_blank">Leitlinie General Principles, Abs. 12</a></div>
+      </div>
+      <div class="hr-radio">
+        <label><input type="radio" name="hrh4" value="ja" onchange="hrScore()"><span>Ja</span></label>
+        <label><input type="radio" name="hrh4" value="nein" onchange="hrScore()"><span>Nein</span></label>
+        <label><input type="radio" name="hrh4" value="unklar" onchange="hrScore()"><span>Unklar</span></label>
+      </div>
+    </div>
+  </div>
+
+  <!-- FILTER ART. 6 ABS. 3 -->
+  <div class="form-card" id="hr-filter-card">
+    <h4>Filter Art. 6 Abs. 3 — Ausnahmen <span class="hr-badge hr-badge-filter">Positiv-Score</span></h4>
+
+    <div class="hr-factor" id="hrf-f1">
+      <div>
+        <div class="hr-fid">F1 · +3 Punkte</div>
+        <div class="hr-flabel">Führt das System lediglich eine begrenzte Verfahrensaufgabe aus?</div>
+        <div class="hr-fhint">Sortieren, Formatieren, Duplikaterkennung, Kategorisierung in vordefinierte Klassen. Nicht: Scoring, Ranking, Werturteile.</div>
+        <div class="hr-fref"><a href="https://ec.europa.eu/newsroom/dae/redirection/document/128561" target="_blank">Leitlinie Annex III, Abs. 91–93</a> · Art. 6 Abs. 3 lit. a KI-VO</div>
+      </div>
+      <div class="hr-radio">
+        <label><input type="radio" name="hrf1" value="ja" onchange="hrScore()"><span>Ja</span></label>
+        <label><input type="radio" name="hrf1" value="nein" onchange="hrScore()"><span>Nein</span></label>
+        <label><input type="radio" name="hrf1" value="unklar" onchange="hrScore()"><span>Unklar</span></label>
+      </div>
+    </div>
+
+    <div class="hr-factor" id="hrf-f2">
+      <div>
+        <div class="hr-fid">F2 · +3 Punkte</div>
+        <div class="hr-flabel">Verbessert das System das Ergebnis einer zuvor abgeschlossenen menschlichen Tätigkeit?</div>
+        <div class="hr-fhint">Verfeinerung, Qualitätssicherung, Fehlererkennung — nicht: Ersetzung, wesentliche Änderung oder ein materiell anderes Ergebnis.</div>
+        <div class="hr-fref"><a href="https://ec.europa.eu/newsroom/dae/redirection/document/128561" target="_blank">Leitlinie Annex III, Abs. 94–96</a> · Art. 6 Abs. 3 lit. b KI-VO</div>
+      </div>
+      <div class="hr-radio">
+        <label><input type="radio" name="hrf2" value="ja" onchange="hrScore()"><span>Ja</span></label>
+        <label><input type="radio" name="hrf2" value="nein" onchange="hrScore()"><span>Nein</span></label>
+        <label><input type="radio" name="hrf2" value="unklar" onchange="hrScore()"><span>Unklar</span></label>
+      </div>
+    </div>
+
+    <div class="hr-factor" id="hrf-f3">
+      <div>
+        <div class="hr-fid">F3 · +3 Punkte</div>
+        <div class="hr-flabel">Erkennt das System nur Entscheidungsmuster oder Abweichungen — ex post, ohne die menschliche Bewertung zu ersetzen?</div>
+        <div class="hr-fhint">Vergleich einer abgeschlossenen Entscheidung mit früheren Mustern. Ergebnis muss angemessener menschlicher Überprüfung unterliegen.</div>
+        <div class="hr-fref"><a href="https://ec.europa.eu/newsroom/dae/redirection/document/128561" target="_blank">Leitlinie Annex III, Abs. 97–102</a> · Art. 6 Abs. 3 lit. c KI-VO</div>
+      </div>
+      <div class="hr-radio">
+        <label><input type="radio" name="hrf3" value="ja" onchange="hrScore()"><span>Ja</span></label>
+        <label><input type="radio" name="hrf3" value="nein" onchange="hrScore()"><span>Nein</span></label>
+        <label><input type="radio" name="hrf3" value="unklar" onchange="hrScore()"><span>Unklar</span></label>
+      </div>
+    </div>
+
+    <div class="hr-factor" id="hrf-f4">
+      <div>
+        <div class="hr-fid">F4 · +3 Punkte</div>
+        <div class="hr-flabel">Führt das System nur eine vorbereitende Aufgabe aus?</div>
+        <div class="hr-fhint">Indexierung, Suche, Verknüpfung von Informationen — keine eigene Empfehlung, Einzelfallbewertung oder Handlungsanweisung.</div>
+        <div class="hr-fref"><a href="https://ec.europa.eu/newsroom/dae/redirection/document/128561" target="_blank">Leitlinie Annex III, Abs. 103–108</a> · Art. 6 Abs. 3 lit. d KI-VO</div>
+      </div>
+      <div class="hr-radio">
+        <label><input type="radio" name="hrf4" value="ja" onchange="hrScore()"><span>Ja</span></label>
+        <label><input type="radio" name="hrf4" value="nein" onchange="hrScore()"><span>Nein</span></label>
+        <label><input type="radio" name="hrf4" value="unklar" onchange="hrScore()"><span>Unklar</span></label>
+      </div>
+    </div>
+  </div>
+
+  <!-- ERGEBNIS -->
+  <div class="hr-result" id="hr-result">
+    <div class="hr-dots">
+      <div class="hr-dot" id="hrdot-hr"></div>
+      <div class="hr-dot" id="hrdot-phr"></div>
+      <div class="hr-dot" id="hrdot-gz"></div>
+      <div class="hr-dot" id="hrdot-pnhr"></div>
+      <div class="hr-dot" id="hrdot-nhr"></div>
+    </div>
+    <div class="hr-rlabel" id="hr-rlabel">Bitte Faktoren bewerten</div>
+    <div class="hr-rdetail" id="hr-rdetail">Wähle bei jedem Faktor Ja, Nein oder Unklar. Die Auswertung aktualisiert sich automatisch.</div>
+    <div class="hr-rscore" id="hr-rscore"></div>
+    <button class="hr-reset" onclick="hrReset()">Zurücksetzen</button>
+  </div>
+
+  <div class="section-nav">
+    <button class="btn btn-outline" onclick="goTo(18)">← Anhang A: ISO 42001</button>
+    <div class="section-counter">Anhang B</div>
+    <button class="btn btn-primary" onclick="window.print()">🖨 Drucken / PDF</button>
+  </div>
+
+  <script>
+  (function(){
+    const W = {h1:-2, h2:-4, h3:-2, h4:-2, f1:3, f2:3, f3:3, f4:3};
+    function hrVal(n){ const e=document.querySelector('input[name="hr'+n+'"]:checked'); return e?e.value:null; }
+
+    window.hrScore = function(){
+      const v1=hrVal('v1'),v2=hrVal('v2'),v3=hrVal('v3'),h2=hrVal('h2');
+      const rBox=document.getElementById('hr-result'),rL=document.getElementById('hr-rlabel'),rD=document.getElementById('hr-rdetail'),rS=document.getElementById('hr-rscore');
+
+      ['v1','v2','v3','h1','h2','h3','h4','f1','f2','f3','f4'].forEach(n=>{
+        const v=hrVal(n),c=document.getElementById('hrf-'+n);
+        if(!c)return;
+        c.classList.remove('hr-ans-ja-risk','hr-ans-ja-filter','hr-ans-nein','hr-ans-unklar');
+        if(v==='ja'&&n.startsWith('f'))c.classList.add('hr-ans-ja-filter');
+        else if(v==='ja')c.classList.add('hr-ans-ja-risk');
+        else if(v==='nein')c.classList.add('hr-ans-nein');
+        else if(v==='unklar')c.classList.add('hr-ans-unklar');
+        c.querySelectorAll('.hr-radio label').forEach(l=>l.classList.remove('hr-sel-ja-risk','hr-sel-ja-filter','hr-sel-nein','hr-sel-unklar'));
+        const ck=c.querySelector('input:checked');
+        if(ck){const l=ck.closest('label'),isF=n.startsWith('f');
+          if(v==='ja')l.classList.add(isF?'hr-sel-ja-filter':'hr-sel-ja-risk');
+          else if(v==='nein')l.classList.add('hr-sel-nein');
+          else if(v==='unklar')l.classList.add('hr-sel-unklar');
+        }
+      });
+
+      const pb=(h2==='ja');
+      ['hrf-f1','hrf-f2','hrf-f3','hrf-f4'].forEach(id=>{
+        const e=document.getElementById(id);
+        if(pb)e.classList.add('hr-disabled');else e.classList.remove('hr-disabled');
+      });
+
+      ['hrdot-hr','hrdot-phr','hrdot-gz','hrdot-pnhr','hrdot-nhr'].forEach(id=>{
+        const d=document.getElementById(id);d.classList.remove('hr-act','hr-d-hr','hr-d-phr','hr-d-gz','hr-d-pnhr','hr-d-nhr');
+      });
+
+      if(v1==='nein'){setHR(rBox,rL,rD,rS,'','Kein KI-System','Das System erfüllt nicht die Definition eines KI-Systems nach Art. 3 Abs. 1 KI-VO. Die Verordnung ist nicht anwendbar.','—');return;}
+      if(v2==='nein'&&v3==='nein'){setHR(rBox,rL,rD,rS,'hr-lv-nhr','Kein Hochrisiko-System','Weder Anhang III noch Anhang I mit Drittkonformitätsbewertung. Art. 6 greift nicht.','');actDot('hrdot-nhr','hr-d-nhr');return;}
+      if(v3==='ja'&&v2!=='ja'){setHR(rBox,rL,rD,rS,'hr-lv-hr','Hochrisiko nach Art. 6 Abs. 1 (Anhang I)','Produkt oder Sicherheitskomponente mit Drittkonformitätsbewertung. Filter nach Art. 6 Abs. 3 gilt hier nicht.','Anhang-I-Route');actDot('hrdot-hr','hr-d-hr');return;}
+      if(pb&&v2==='ja'){setHR(rBox,rL,rD,rS,'hr-lv-hr','Eindeutig Hochrisiko — Profiling','Profiling natürlicher Personen: Art. 6 Abs. 3 Filter greift nie (Art. 6 Abs. 3 UAbs. 3).','Profiling blockiert alle Filter');actDot('hrdot-hr','hr-d-hr');return;}
+
+      let pts=0,unk=0,ans=0;
+      ['h1','h2','h3','h4'].forEach(n=>{const v=hrVal(n);if(v==='ja'){pts+=W[n];ans++;}else if(v==='nein')ans++;else if(v==='unklar'){unk++;ans++;}});
+      if(!pb)['f1','f2','f3','f4'].forEach(n=>{const v=hrVal(n);if(v==='ja'){pts+=W[n];ans++;}else if(v==='nein')ans++;else if(v==='unklar'){unk++;ans++;}});
+
+      if(ans===0&&v2!=='ja'){setHR(rBox,rL,rD,rS,'','Bitte Faktoren bewerten','Wähle bei jedem Faktor Ja, Nein oder Unklar.','');return;}
+
+      let lv,lb,dt;
+      if(pts<=-5){lv='hr-lv-hr';lb='Eindeutig Hochrisiko';dt='Mehrere Hochrisiko-Indikatoren treffen zu, keine Filterbedingung greift. Anforderungen aus Kapitel III KI-VO vollständig erfüllen.';actDot('hrdot-hr','hr-d-hr');}
+      else if(pts<=-2){lv='hr-lv-phr';lb='Wahrscheinlich Hochrisiko';dt='Die Hochrisiko-Indikatoren überwiegen. Vertiefte Prüfung empfohlen, Dokumentation vorbereiten.';actDot('hrdot-phr','hr-d-phr');}
+      else if(pts<=2){lv='hr-lv-gz';lb='Grauzone — vertiefte Prüfung nötig';dt='Hochrisiko-Indikatoren und Filter-Bedingungen halten sich die Waage'+(unk>0?' — '+unk+' Faktor(en) unklar':'')+'. Einzelfallbewertung mit juristischer Unterstützung erforderlich.';actDot('hrdot-gz','hr-d-gz');}
+      else if(pts<=5){lv='hr-lv-pnhr';lb='Filter greift wahrscheinlich';dt='Mindestens eine Filterbedingung greift. Einordnung vor Inverkehrbringen dokumentieren und in EU-Datenbank registrieren (Art. 6 Abs. 4).';actDot('hrdot-pnhr','hr-d-pnhr');}
+      else{lv='hr-lv-nhr';lb='Kein Hochrisiko — Filter greift klar';dt='Filterbedingungen greifen deutlich. Dokumentation + Registrierung in EU-Datenbank dennoch Pflicht (Art. 6 Abs. 4).';actDot('hrdot-nhr','hr-d-nhr');}
+      setHR(rBox,rL,rD,rS,lv,lb,dt,'Score: '+(pts>0?'+':'')+pts+' · Unklar: '+unk+' · Beantwortet: '+ans+'/8');
+    };
+
+    function setHR(b,l,d,s,cls,label,detail,sc){b.className='hr-result '+(cls||'');l.textContent=label;d.innerHTML=detail;s.textContent=sc;}
+    function actDot(id,cls){const d=document.getElementById(id);d.classList.add('hr-act',cls);}
+
+    window.hrReset = function(){
+      document.querySelectorAll('#section-19 input[type=radio]').forEach(r=>r.checked=false);
+      document.querySelectorAll('#section-19 .hr-factor').forEach(f=>f.classList.remove('hr-ans-ja-risk','hr-ans-ja-filter','hr-ans-nein','hr-ans-unklar','hr-disabled'));
+      document.querySelectorAll('#section-19 .hr-radio label').forEach(l=>l.classList.remove('hr-sel-ja-risk','hr-sel-ja-filter','hr-sel-nein','hr-sel-unklar'));
+      ['hrdot-hr','hrdot-phr','hrdot-gz','hrdot-pnhr','hrdot-nhr'].forEach(id=>{document.getElementById(id).classList.remove('hr-act','hr-d-hr','hr-d-phr','hr-d-gz','hr-d-pnhr','hr-d-nhr');});
+      const b=document.getElementById('hr-result');b.className='hr-result';
+      document.getElementById('hr-rlabel').textContent='Bitte Faktoren bewerten';
+      document.getElementById('hr-rdetail').innerHTML='Wähle bei jedem Faktor Ja, Nein oder Unklar.';
+      document.getElementById('hr-rscore').textContent='';
+    };
+  })();
   </script>
 </div>
 
