@@ -13,7 +13,7 @@ Träger: Gemeinnützige GmbH (Gesellschafter: Stadt + Wohlfahrtsverband)
 - Wartezeiten in der Notaufnahme haben sich seit 2020 verdoppelt
 - Bettenauslastung dauerhaft über 90%
 - Drei von vier Stationen melden Personalengpässe
-- Verlust 2024: ca. 8 Mio. EUR — trotz gestiegener Fallzahlen
+- Verlust 2025: ca. 8 Mio. EUR — trotz gestiegener Fallzahlen
 
 Der Ansatz des Krankenhauses ist:
 
@@ -47,6 +47,8 @@ Zuständig für SAP, Krankenhausinformationssystem (KIS) und die neue EPA-Anbind
 
 **Sie — KI-Beauftragter:in (neue Stelle)**  
 Direkt der Geschäftsführerin zugeordnet. Kein eigenes Budget. Beratende Funktion. Der Betriebsrat hat die Stelle mit gemischten Gefühlen zur Kenntnis genommen.
+
+> **Hinweis Digital Omnibus (VO 2026/1744, in Kraft 27.7.2026):** Art. 4 KI-VO wurde von „sicherstellen" auf „unterstützen" geändert. Die Pflicht zur KI-Kompetenz ist jetzt eine **Bemühenspflicht** (Best Effort), keine Ergebnispflicht. Für die Rolle im St. Ulrich heißt das: Ein 100-Tage-Plan muss keinen lückenlosen Kompetenznachweis zusagen, sondern einen nachvollziehbaren Lernpfad belegen. Das verändert auch die Argumentation gegenüber Geschäftsführung und Betriebsrat.
 
 ---
 
@@ -88,6 +90,14 @@ Die folgenden Fälle sind öffentlich dokumentierte Entsprechungen zu den Initia
 | **A 2** Patienten-Onboarding-App | **Talkdesk** — Patientenkontakt; zuvor **12 getrennte Callcenter zu einem Patient Access Center konsolidiert**, dann automatisiert | Anbieter nennt niedrigere Abbruchquote und kürzere Bearbeitungszeit; **kein öffentlicher Basiswert, keine unabhängige Prüfung** | Anbieter-Kundenstory |
 | *(bisher keine Entsprechung)* | **Artsight** — kamerabasierte virtuelle Pflege und Sturzrisiko-Beobachtung, ergänzend zum Klinikinformationssystem | Zentrale Leitstelle mit 31 Arbeitsplätzen, eröffnet Oktober 2024; Baukosten 1,7 Mio. USD, **projizierte** Einsparung im ersten Jahr 1,6 Mio. USD | Fachpresse, Projektion — nicht als realisiert bestätigt |
 | *(bisher keine Entsprechung)* | **Atlas MAP** — Erkennung von Medikamenten-Hilfsprogrammen, Antragsautomatisierung | Anbieter nennt Fördersummen für eine begrenzte Patientenzahl in acht Monaten | Anbieter-Kundenstory |
+
+### Exkurs: Artsight und die Frage der Emotionserkennung
+
+Birgit Klassen ist misstrauisch gegenüber „Technik, die uns überwachen soll." Die Artsight-Kameras erkennen Sturzrisiken und Bewegungsmuster — erfassen sie damit Emotionen im Sinne des EU AI Act?
+
+**Nein.** Erwägungsgrund 18 und Art. 3 Nr. 39 KI-VO stellen klar: Ein Emotionserkennungssystem schließt auf emotionale Zustände aus **biometrischen Daten** (Mimik, Stimme, Gangart). Physische Zustände wie Müdigkeit, Schmerz oder Sturzgefahr sind **ausdrücklich keine Emotionen** im Sinne der Verordnung. Artsight erfasst Bewegungsmuster zur Sturzerkennung — das fällt nicht unter die Definition der Emotionserkennung und ist daher weder nach Art. 5 verboten noch nach Art. 50 Abs. 3 als Emotionserkennungssystem transparenzpflichtig.
+
+Das ändert nichts an Birgit Klassens Bedenken — Kameraüberwachung am Arbeitsplatz berührt Betriebsverfassungsrecht (§ 87 Abs. 1 Nr. 6 BetrVG) und DSGVO unabhängig von der KI-VO-Einstufung. Aber die Argumente sind andere als bei Emotionserkennung.
 
 ### Die Vorgehenslogik — das eigentlich Übertragbare
 
@@ -173,17 +183,36 @@ Für den Kursraum ist das kein Nachteil, sondern der Zweck: Das Material eignet 
 
 ---
 
+## Regulatorische Einordnung der Initiativen — Praxisübung
+
+Die Kommission hat am 19. Mai 2026 Leitlinien-Entwürfe zu Art. 6 Abs. 3 KI-VO veröffentlicht. Danach können KI-Systeme, die zwar in Anhang III aufgeführt sind, aber **kein erhebliches Risiko** für Gesundheit, Sicherheit oder Grundrechte darstellen, von der Hochrisiko-Einstufung ausgenommen werden — sofern das System keine eigenständige Entscheidung trifft, die nicht durch menschliche Tätigkeit ersetzt wird, und keine Profilerstellung natürlicher Personen vornimmt.
+
+**Übung:** Ordne jede der vier Initiativen ein:
+
+| Initiative | Anhang-III-Kategorie? | Art. 6 Abs. 3 Filter anwendbar? | Begründung |
+|---|---|---|---|
+| A 1 — Verbrauchsmaterial | ? | ? | Keine personenbezogene Entscheidung — aber woher kommen die Verbrauchsdaten? |
+| A 2 — Onboarding-App | ? | ? | Chatfunktion mit FAQ — aber was passiert, wenn Patienten Symptome schildern? |
+| A 3 — Entlassbriefe (Epikrise) | ? | ? | Medizinisches Dokument mit Rechtswirkung — trifft das „ersetzt menschliche Tätigkeit"? |
+| A 4 — Diagnoseunterstützung | ? | ? | Bilddaten, Hosting in Indien, Gesundheitsentscheidung |
+
+Die Tabelle soll **nicht** vorab ausgefüllt werden — sie ist eine offene Praxisübung. Die Kommissions-Leitlinien geben kein Ja/Nein-Raster vor, sondern verlangen eine dokumentierte Einzelfallbewertung.
+
+---
+
 ## Verwendung in der Schulung
 
-| Kontext | Verwendung |
+| Themenfeld | Verwendung |
 |---|---|
 | UC-03a bis e (Teilnehmer-Dateien) | Szenario-Grundlage für alle fünf Stufen |
-| Tag 9 (SWOT + Risikomanagement) | Diagnosesystem als Hauptszenario |
+| SWOT-Analyse + Risikomanagement | Diagnosesystem als Hauptszenario |
 | Abschluss-Steckbrief | UC-03c + UC-03d kombiniert |
-| Woche 4 (Change Management) | Ärzteteam-Widerstand als Übungsfall; Kamerabeobachtung als Konfliktfall mit der Pflegedienstleitung |
+| Change Management + Stakeholder-Analyse | Ärzteteam-Widerstand als Übungsfall; Kamerabeobachtung als Konfliktfall mit der Pflegedienstleitung |
 | Business Case / Belegbewertung | Reale Vorbilder oben — Übung: Welche der Memorial-Zahlen dürfen in eine Investitionsvorlage, welche nicht? |
 | Anbieterbewertung (UC-03c) | myScribe-Abschnitt — Übung 1 (Anbieter-Rechner) und Übung 2 (Überschlagsrechnung 2 h gegen 30 min) |
 | Governance-Entscheidung | myScribe On-Premise gegen Cloud — Rollenspiel mit Peter Miese (IT-Leitung) |
+| Risikoklassifizierung EU AI Act | Art. 6 Abs. 3 Filter-Mechanismus — welche der vier Initiativen ist Hochrisiko? |
+| Art. 5 / Emotionserkennung | Artsight-Kameras als Gegenbeispiel: Sturzrisiko ≠ Emotion (Erwägungsgrund 18) |
 
 ---
-*Letzte Aktualisierung: August 2026 — Ulrich Nord / Claude (Anthropic)*
+*Letzte Aktualisierung: September 2026 — Ulrich Nord / Claude (Anthropic)*
