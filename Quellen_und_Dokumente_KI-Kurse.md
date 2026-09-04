@@ -365,6 +365,76 @@ Normtexte sind kostenpflichtig. Verlinkt wird nur, was frei lesbar ist; sonst Li
 
 ---
 
+## 🏛️ Regulierungsbehörden
+
+> **Stand: 04.09.2026 · nächste Prüfung: März 2027.** Dieses Kapitel altert schneller als jedes andere im Register — Zuständigkeiten werden derzeit in mehreren Staaten erst geschaffen. Vor jeder Verwendung im Unterricht das Stand-Datum prüfen.
+>
+> **Zitierregel:** Behörden sind Primärquellen für ihre *eigene* Zuständigkeit und ihre *eigenen* Veröffentlichungen. Sie sind **keine** neutrale Quelle für die Bewertung fremder Rechtsordnungen. Aggregierte Länderübersichten von Kanzleien und Verbänden (IAPP, Kanzlei-Tracker) sind für Orientierung brauchbar, aber nicht zitierfähig — jede Aussage über ein Land ist gegen die dortige amtliche Quelle zu prüfen.
+>
+> **Abrufregel wie im übrigen Register:** URLs nicht direkt aufrufen, stattdessen `web_search` mit den Schlagwörtern der jeweiligen Zeile.
+
+### 6.1 Der Befund in einem Satz
+
+Es gibt weltweit **kein einheitliches Modell** für KI-Aufsicht. Selbst innerhalb der EU, wo derselbe Verordnungstext gilt, hat Artikel 70 KI-VO die Ausgestaltung den Mitgliedstaaten überlassen — mit dem Ergebnis von vier unvereinbaren Bauformen. Für Unternehmen mit Standorten in mehreren Staaten ist das der praktisch teuerste Befund des ganzen Kapitels.
+
+### 6.2 Vier Bauformen — didaktische Typologie
+
+| Bauform | Kennzeichen | Beispiele |
+|---|---|---|
+| **Eigens gegründete Fachagentur** | Neue Behörde ausschließlich für KI | 🇪🇸 Spanien (AESIA) |
+| **Bestehender Regulierer übernimmt** | Vorhandene Behörde erhält KI-Zuständigkeit zusätzlich | 🇩🇪 Deutschland (Bundesnetzagentur), 🇪🇪 Estland (TTJA) |
+| **Sektorale Verteilung mit Koordinator** | Mehrere Fachbehörden, eine zentrale Anlaufstelle | 🇮🇹 Italien (AgID + ACN), 🇬🇧 Großbritannien (ICO, Ofcom, FCA unter DSIT-Rahmen) |
+| **Neues Kollegialorgan** | Gremium aus Vertretern mehrerer bestehender Aufsichten | 🇵🇱 Polen (KRiBSI) |
+
+Außerhalb der EU tritt eine fünfte Form hinzu, die keine Aufsicht im Rechtssinne ist: das **technische Prüfinstitut ohne Sanktionsbefugnis** (🇺🇸 CAISI, 🇬🇧 AISI, 🇯🇵 J-AISI, 🇮🇳 AISI Indien). Diese Institute bewerten Modelle, sie regulieren nicht. Die Unterscheidung ist im Unterricht wichtig, weil sie in der Presse regelmäßig verwischt wird.
+
+### 6.3 Europäische Union — Ebene der Union
+
+| URL | Stelle | Rolle | Schlagwörter |
+|-----|--------|-------|--------------|
+| https://digital-strategy.ec.europa.eu/en/policies/ai-office | Europäisches KI-Büro (AI Office) | Bei der Kommission angesiedelt; zuständig für KI-Modelle mit allgemeinem Verwendungszweck, koordiniert die Durchsetzung EU-weit | European AI Office GPAI enforcement Commission |
+| https://digital-strategy.ec.europa.eu/en/policies/ai-scientific-panel | Wissenschaftliches Gremium unabhängiger Sachverständiger | Bis zu 60 Fachleute, berufen zum 01.06.2026, zweijährige verlängerbare Amtszeit; warnt das KI-Büro vor systemischen Risiken, berät zu Einstufung und Bewertungsmethodik | AI Act scientific panel independent experts systemic risk |
+| https://ai-act-service-desk.ec.europa.eu/en/ai-act/article-70 | AI Act Service Desk der Kommission — Art. 70 | Amtliche Fassung der Pflicht zur Benennung nationaler Behörden und einer zentralen Anlaufstelle | AI Act Article 70 national competent authorities single point of contact |
+| — | Europäischer KI-Ausschuss (AI Board) | Vertretung aller Mitgliedstaaten; koordiniert die nationalen Behörden, berät zu Politik und internationalen Partnerschaften | European Artificial Intelligence Board AI Act coordination member states |
+
+### 6.4 EU-Mitgliedstaaten
+
+| URL | Land / Stelle | Rolle und Stand | Schlagwörter |
+|-----|---------------|-----------------|--------------|
+| https://www.bundesnetzagentur.de/1112336 | 🇩🇪 **Bundesnetzagentur** | Marktüberwachungsbehörde, Anlaufstelle und Beschwerdestelle; zentrale Koordinierungs- und Kompetenzstelle. Betreibt den **KI-Servicedesk** (kostenlose Auskunft, ausdrücklich für KMU) und KI-Reallabore | Bundesnetzagentur KI-Verordnung Marktüberwachung KI-Servicedesk |
+| https://www.gesetze-im-internet.de/ki-mig/BJNR0DF0B0026.html | 🇩🇪 **KI-MIG** | Gesetz zur Marktüberwachung und Innovationsförderung von künstlicher Intelligenz; in Kraft seit Juli 2026. Amtlicher Gesetzestext | KI-MIG Gesetz Marktüberwachung Innovationsförderung künstliche Intelligenz |
+| https://bmds.bund.de/aktuelles/pressemitteilungen/detail/neues-ki-gesetz-tritt-in-kraft | 🇩🇪 BMDS | Ministerielle Einordnung des KI-MIG | BMDS neues KI-Gesetz tritt in Kraft |
+| https://aesia.digital.gob.es/en/es | 🇪🇸 **AESIA** | Agencia Española de Supervisión de la Inteligencia Artificial. Eigens gegründete Agentur, Sitz A Coruña; Aufsicht, Beratung, Sensibilisierung, Inspektion und Sanktion. Veröffentlicht eigene Leitfäden zur Umsetzung der KI-VO | AESIA agencia española supervisión inteligencia artificial guías |
+| https://www.autoriteitpersoonsgegevens.nl/en/themes/algorithms-ai/ai-algorithmic-risks-developments-in-the-netherlands | 🇳🇱 **Autoriteit Persoonsgegevens** | Koordinierende Aufsicht für Algorithmen und KI. **Ergiebigste Publikationsquelle Europas:** halbjährliche *Rapportage AI & Algoritmes Nederland* (RAN), 6. Ausgabe März 2026, englische Fassung verfügbar; KI-Impactbarometer mit neun Indikatoren, davon im März vier auf Rot (zuvor zwei) | Autoriteit Persoonsgegevens AI algorithms report Netherlands impactbarometer |
+| https://www.agid.gov.it/en/intervention-areas/artificial-intelligence | 🇮🇹 **AgID** | Agenzia per l'Italia Digitale. Nach Legge 132/2025 (in Kraft seit 10.10.2025) zuständig für Notifizierung, Bewertung, Akkreditierung und Aufsicht der Konformitätsbewertungsstellen; fördert Innovation | AgID intelligenza artificiale legge 132/2025 autorità nazionale |
+| — | 🇮🇹 **ACN** | Agenzia per la Cybersicurezza Nazionale. Marktüberwachung einschließlich Inspektion und Sanktion; zentrale Anlaufstelle gegenüber den EU-Institutionen | ACN Agenzia Cybersicurezza Nazionale vigilanza mercato intelligenza artificiale |
+| https://www.gov.pl/web/cyfryzacja/ustawa-o-systemach-ai--bezpieczny-rozwoj-sztucznej-inteligencji-w-polsce | 🇵🇱 **KRiBSI** (im Aufbau) | Komisja Rozwoju i Bezpieczeństwa Sztucznej Inteligencji. Gesetz unterzeichnet 24.07.2026, in Kraft 11.08.2026. Unabhängiges Kollegialorgan mit Vertretern der Wettbewerbs-, Finanz-, Rundfunk- und Telekommunikationsaufsicht; Kontrolle, Beschwerden, Sanktionen, Reallabore. **Vorsitz bis 11.10.2026 zu besetzen, erste Vollsitzung bis November, Sanktionsvorschriften ab 28.10.2026 — derzeit noch keine eigenen Veröffentlichungen** | ustawa o systemach sztucznej inteligencji KRiBSI Ministerstwo Cyfryzacji |
+| https://ttja.ee/ariklient/ohutus/tooted-teenused/tehisintellektisusteemid | 🇪🇪 **TTJA** | Tarbijakaitse ja Tehnilise Järelevalve Amet (Verbraucherschutz- und Technische Aufsichtsbehörde). Führende Marktüberwachungsbehörde für KI-Systeme; koordinierendes Ministerium ist das MKM. **Umsetzung war Mitte 2026 noch nicht abgeschlossen — Zuordnung vor Verwendung erneut prüfen** | TTJA tehisintellektisüsteemid turujärelevalve Eesti |
+
+### 6.5 Drittstaaten
+
+| URL | Land / Stelle | Rolle und Einordnung | Schlagwörter |
+|-----|---------------|----------------------|--------------|
+| https://www.nist.gov/caisi | 🇺🇸 **CAISI** | Center for AI Standards and Innovation, angesiedelt beim NIST (Information Technology Laboratory). **Kein Regulierer:** entwickelt Standards, führt Bewertungen von Spitzenmodellen durch, schließt freiwillige Vereinbarungen mit Entwicklern. Hervorgegangen aus dem früheren US AI Safety Institute. Startete am 17.02.2026 die AI Agent Standards Initiative | NIST CAISI Center for AI Standards and Innovation evaluations |
+| — | 🇺🇸 sektorale Bundesbehörden | Es gibt **keine** allgemeine US-KI-Aufsicht. Durchsetzung erfolgt über bestehendes Recht durch Fachbehörden (u. a. FTC für Verbraucherschutz und Wettbewerb) sowie über einzelstaatliches Recht | US AI regulation FTC state law enforcement no federal AI act |
+| — | 🇨🇳 **CAC** | Cyberspace Administration of China. Federführende Behörde; Registrierungspflicht für generative KI-Dienste mit Meinungsbildungs- oder Mobilisierungswirkung. Regelt gemeinsam mit sechs weiteren Stellen (NDRC, MOST, MIIT, Bildungs- und Sicherheitsministerium, Rundfunkverwaltung). Kennzeichnungspflicht für KI-erzeugte Inhalte seit 01.09.2025 | Cyberspace Administration China generative AI interim measures filing labelling |
+| https://www.pib.gov.in/PressReleasePage.aspx?PRID=2186639 | 🇮🇳 **MeitY** | Ministry of Electronics and Information Technology. Veröffentlichte am 05.11.2025 die *India AI Governance Guidelines*. **Bewusst kein eigenes KI-Gesetz** — leichtgewichtiger Ansatz auf Grundlage bestehender Gesetze. Vorgesehene Gremien: AI Governance Group (AIGG), Technology & Policy Expert Committee (TPEC), AI Safety Institute (AISI) | MeitY India AI Governance Guidelines IndiaAI Mission AIGG |
+| https://static.pib.gov.in/WriteReadData/specificdocs/documents/2025/nov/doc2025115685601.pdf | 🇮🇳 Leitlinientext | *India AI Governance Guidelines — Enabling Safe and Trusted AI Innovation*, amtliches PDF | India AI Governance Guidelines PDF sutras pillars |
+| https://aisi.go.jp/ | 🇯🇵 **J-AISI** | Japan AI Safety Institute, angesiedelt bei der IPA (Information-technology Promotion Agency), gegründet 14.02.2024. Technische Bewertung, Sicherheitsleitfäden, Abgleich mit dem NIST AI RMF. **Kein Regulierer** | Japan AI Safety Institute evaluation perspectives guide IPA |
+| https://www.gov-online.go.jp/hlj/en/november_2025/november_2025-08.html | 🇯🇵 AI Promotion Act | *Act on Promotion of Research and Development, and Utilization of AI-related Technology*, seit 04.06.2025 überwiegend in Kraft. **Fördergesetz ohne Bußgelder.** Kapitel zum KI-Strategiehauptquartier ab 01.09.2025; erster KI-Basisplan am 23.12.2025 beschlossen | Japan AI Promotion Act AI Strategy Headquarters Basic Plan |
+| https://www.meti.go.jp/shingikai/mono_info_service/ai_shakai_jisso/pdf/20260331_12.pdf | 🇯🇵 METI | *AI Guidelines for Business*, Fassung 1.2 (März 2026). Zentrale Handreichung für Unternehmen | METI AI Guidelines for Business version 1.2 |
+| https://www.aisi.gov.uk/about | 🇬🇧 **AISI** | AI Security Institute, Forschungseinrichtung im Geschäftsbereich des DSIT. Umbenannt im Februar 2025 vom *AI Safety Institute* — die Verschiebung von „safety" zu „security" ist selbst ein didaktischer Befund. Bewertet Spitzenmodelle; **keine Durchsetzungsbefugnis** | AI Security Institute UK frontier AI evaluations DSIT |
+| https://www.gov.uk/government/organisations/ai-safety-institute | 🇬🇧 GOV.UK-Eintrag | Amtlicher Organisationseintrag (führt teils noch die alte Bezeichnung) | UK AI Safety Institute gov.uk organisation |
+| — | 🇬🇧 sektorale Regulierer | Großbritannien hat **kein KI-Gesetz**. Aufsicht liegt bei bestehenden Fachbehörden — ICO (Daten), Ofcom (Kommunikation und Online-Sicherheit), FCA (Finanzdienstleistungen) — auf Grundlage bereichsübergreifender Grundsätze. DSIT koordiniert und setzt nicht durch | UK AI regulation ICO Ofcom FCA cross-sectoral principles DSIT |
+
+### 6.6 Was dieses Kapitel nicht leistet
+
+- **Keine Vollständigkeit für die EU.** Erfasst sind die im Kurs benötigten Staaten, nicht alle 27. Frankreich (DGCCRF als Anlaufstelle, CNIL für verbotene Praktiken und bestimmte Hochrisiko-Bereiche, ACPR für Finanzdienstleistungen), Irland (dezentral auf 15 Stellen mit einem National AI Office) und Dänemark (Digitaliseringsstyrelsen koordinierend, daneben Datatilsynet) sind geprüft, aber nicht aufgenommen — bei Bedarf nachtragen.
+- **Keine Aussage zum Reifegrad der Durchsetzung.** Eine benannte Behörde ist nicht dasselbe wie eine arbeitsfähige Behörde. Polen ist dafür das klarste Beispiel.
+- **Keine Rechtsberatung.** Für verbindliche Aussagen gilt der jeweilige Gesetzes- beziehungsweise Verordnungstext, nicht die Darstellung einer Behörde über sich selbst.
+
+---
+
 ## 📚 Literaturhinweise
 
 | Publikation | Autor(en) | Jahr |
