@@ -523,9 +523,11 @@ function renderStatus(kurstag) {
     freischalten(t);
   }
 
-  // Sonderfälle: Generalwiederholung ab Tag 13 freischalten
+  // Vorzeitige Freischaltung: Quiz-Tag : ab Kurstag
+  // Nur die Prüfungssimulation (Tag 17) wird vorgezogen — alle anderen Tage
+  // schalten regulär an ihrem eigenen Kurstag frei.
   var SAMMELKARTEN = {
-    17: 12  // Generalwiederholung bereits ab Tag 13 verfügbar
+    17: 12  // Prüfungssimulation ab Kurstag 12 verfügbar
   };
   for (var sammel in SAMMELKARTEN) {
     if (kurstag >= SAMMELKARTEN[sammel]) {

@@ -360,6 +360,8 @@ Normtexte sind kostenpflichtig. Verlinkt wird nur, was frei lesbar ist; sonst Li
 | https://github.com/neurawork-git/n8n-autopilot | Neuraworks | Beispiel für n8n-Autoamtion (GitHub) |
 | https://atlas.mitre.org/studies | MITRE Atlas (Adversarial Threat Landscape for Artificial-Intelligence Systems) | Beispiel für KI-Angriffsvektoren |
 | https://www.iao.fraunhofer.de/ | Fraunhofer Institut für Arbeitsforschung | praktische Anwendungen von KI in der Arbeitswelt |
+| https://devblogs.microsoft.com/cosmosdb/toyota-motor-corporation-innovates-design-development-with-multi-agent-ai-system-and-cosmos-db/ | Toyota / Microsoft — O-Beya, technische Offenlegung (19.11.2024) | **Primärquelle** zum Toyota-Wissensassistenten in der Powertrain-Entwicklung. Rund 800 Ingenieure mit Zugang seit Januar 2024; Grounding auf internen Konstruktionsberichten, Regularien und handschriftlichen Unterlagen erfahrener Ingenieure. **Enthält ausdrücklich den Hinweis, dass die eingesparte Recherchezeit nicht gemessen wurde** — das macht die Quelle als Lehrbeispiel wertvoll, nicht als Wirkungsnachweis. KIM Tag 5 · Toyota O-Beya multi-agent Azure Cosmos DB powertrain |
+| https://news.microsoft.com/source/asia/features/toyota-is-deploying-ai-agents-to-harness-the-collective-wisdom-of-engineers-and-innovate-faster/ | Microsoft Source Asia — Reportage zu Toyota O-Beya (19.11.2024) | Reportage mit benannten Toyota-Interviews, am selben Tag erschienen wie die technische Offenlegung. Anbietereigene Redaktion. Quelle der Nutzungsangabe „hunderte Male" im Monat. **Zugangszahl ≠ Nutzerzahl** | Toyota AI agents collective wisdom engineers |
 
 ### 5.2 KI Newsletter & Podcasts
 | URL | Name | Typ | Schlagwörter |
