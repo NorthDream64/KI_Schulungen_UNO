@@ -177,6 +177,15 @@ Normtexte sind kostenpflichtig. Verlinkt wird nur, was frei lesbar ist; sonst Li
 | https://ocw.mit.edu/search/?t=Artificial+Intelligence | MIT (Open Course Ware) | Gratis-Videos des MIT zu KI- Themen, z.B. https://ocw.mit.edu/courses/6-s087-foundation-models-and-generative-ai-january-iap-2024/ zu Foundation Models & Generative AI
 | https://watchdogsecurity.io/frameworks/iso-42001 | Wtachdog Security | Übersicht eines Beratungsunternehmens zu ISO 42001
 
+**Begriffsherkunft — Primärarbeiten.** Die folgenden vier Arbeiten sind **Dozentenhintergrund, keine Teilnehmerlektüre.** Sie stehen hier, damit die zentralen Begriffe des Feldes eine nachweisbare Herkunft haben und im Unterricht korrekt benannt werden können. In Teilnehmer-Quellenverzeichnisse gehören sie nicht — wer sie dort aufführt, zitiert, was niemand liest.
+
+| URL | Arbeit | Was daraus stammt | Schlagwörter |
+|-----|--------|-------------------|--------------|
+| https://arxiv.org/abs/1706.03762 | Vaswani u. a. (2017) — *Attention Is All You Need* | **Die Transformer-Architektur**, auf der praktisch jedes heutige Sprachmodell beruht. Begutachtet (NeurIPS 2017). Der Titelbegriff „Attention" ist rein technisch und hat mit Aufmerksamkeit im psychologischen Sinn nichts zu tun — eine im Unterricht nützliche Klarstellung | attention is all you need transformer Vaswani 2017 |
+| https://arxiv.org/abs/1508.07909 | Sennrich, Haddow & Birch (2015) — *Neural Machine Translation of Rare Words with Subword Units* | **Herkunft der Tokenisierung** (Byte-Pair Encoding). Erklärt, warum Modelle in Wortteilen statt Wörtern rechnen — und damit die Abrechnungseinheit, die Zählschwäche bei Buchstaben und die höheren Kosten deutscher Komposita. Grundlage des Glossareintrags „Token" und des Erklärblocks in KIB Tag 2 | subword units byte pair encoding BPE Sennrich |
+| https://arxiv.org/abs/2005.14165 | Brown u. a. (2020) — *Language Models are Few-Shot Learners* | **Herkunft der Begriffe „Zero-Shot" und „Few-Shot"** sowie des Skalierungsarguments (GPT-3, 175 Mrd. Parameter). Referenz für den Prompting-Teil | GPT-3 few-shot zero-shot language models Brown 2020 |
+| https://cdn.openai.com/better-language-models/language_models_are_unsupervised_multitask_learners.pdf | Radford u. a. (2019) — *Language Models are Unsupervised Multitask Learners* | GPT-2. Der Schritt zu „ein Modell, viele Aufgaben, ohne Nachtrainieren". Unternehmensveröffentlichung ohne externe Begutachtung — bei Verwendung mitnennen | GPT-2 unsupervised multitask learners Radford 2019 |
+
 ### 2.2 Large Language Models & Prompting
 | URL | Name | Typ | Schlagwörter |
 |-----|------|-----|--------------|
