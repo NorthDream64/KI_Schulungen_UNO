@@ -3,22 +3,36 @@
 > Dieses Dokument ist die **einzige verbindliche Referenz** für Quellenrecherche, Content-Pflege und Quiz-Erstellung in den drei Kursen.  
 > Es ersetzt `Quellen_Workflow.md` (archiviert).  
 > Gilt für: KI-Beauftragter (KIB · Modul 764), KI-Manager (KIM · Modul 763), Manager KI-Transformation (MAT).  
-> Letzte Aktualisierung: 2026-08-27
+> Letzte Aktualisierung: 2026-09-17
+
+---
+
+> ## ⚠️ Ablageänderung vom 17.09.2026 — bitte zuerst lesen
+>
+> **Das Quellenregister und das News-Update liegen nicht mehr im GitHub-Repositorium.** Beide wurden in einen neuen lokalen Ordner **verschoben** (nicht kopiert — es gibt jeweils nur eine Fassung):
+>
+> `OneDrive\Schulungsmaterial\Zentrale Referenzdokumente\`
+>
+> In demselben Ordner liegen seither auch die Referenz-PDFs, die zuvor unter „Interessante Dokumente" geführt wurden — KI-Verordnung, DSGVO/BDSG, DIN EN ISO/IEC 42001:2026-08, NIST-Rahmenwerk, ICB 4 und weitere.
+>
+> **Zwei Folgen, die zu beachten sind:**
+> 1. **Im öffentlichen Repositorium fehlen beide Dateien nach dem nächsten Commit.** Wer sie über GitHub Pages verlinkt hatte, muss den Verweis anpassen oder entfernen.
+> 2. **Der Intake bleibt, wo er ist** (`Schulungsmaterial\Kursmaterialien\`). Die Trennung ist gewollt: Das Register ist Ergebnis, der Intake ist Werkstatt.
 
 ---
 
 ## 1 · Fünf Informationsquellen — Funktionen und Pfade
 
-### 1a · Quellen_und_Dokumente_KI-Kurse.md (GitHub — Pflichtlektüre vor jedem Kurstag-Review)
+### 1a · Quellen_und_Dokumente_KI-Kurse.md (lokal — Zentrale Referenzdokumente · Pflichtlektüre vor jedem Kurstag-Review)
 
-**Pfad:** `KI_Schulungen_UNO/Quellen_und_Dokumente_KI-Kurse.md`  
+**Pfad:** `OneDrive\Schulungsmaterial\Zentrale Referenzdokumente\Quellen_und_Dokumente_KI-Kurse.md`  
 **Funktion:** Verbindliches Quellenregister. Alle für die Kurse freigegebenen Quellen sind hier gelistet, mit Kurszuordnung und Verwendungskontext. Dieses Dokument wird **zuerst** gelesen, bevor Kursmaterialien erstellt oder aktualisiert werden.
 
 **Qualitätsanspruch:** Hoch — ausschließlich Tier-1-Quellen (siehe Abschnitt 1c).
 
 ---
 
-### 1b · Neue_Quellen_Intake.md (lokal — Schulungsmaterial-Ordner)
+### 1b · Neue_Quellen_Intake.md (lokal — `Schulungsmaterial\Kursmaterialien\`)
 
 **Funktion:** Ideensammlung. Neue Informationen mit didaktischem Potenzial werden hier gesammelt und bewertet, bevor sie in Kursmaterialien eingebaut werden.
 
@@ -35,9 +49,9 @@
 
 ---
 
-### 1c · KI_News_Update.html (GitHub — regulatorischer Stand)
+### 1c · KI_News_Update.html (lokal — Zentrale Referenzdokumente · regulatorischer Stand)
 
-**Pfad:** `KI_Schulungen_UNO/KI_News_Update.html`  
+**Pfad:** `OneDrive\Schulungsmaterial\Zentrale Referenzdokumente\KI_News_Update.html`  
 **Funktion:** Verbindliche Referenz für den aktuellen regulatorischen und technologischen Stand. Wird bei Kurstag-Reviews geprüft.
 
 **Wann hierhin:**
@@ -68,7 +82,7 @@
 
 ### 1e · DIN EN ISO/IEC 42001:2026-08 (lokal — Normtext im Volltext)
 
-**Pfad:** `Schulungsmaterial/Interessante Dokumente/Norm DIN ISO-IEC 42001 Künstliche Intelligenz_08-2026.pdf`  
+**Pfad:** `Schulungsmaterial/Zentrale Referenzdokumente/Norm DIN ISO-IEC 42001 Künstliche Intelligenz_08-2026.pdf` *(seit 17.09.2026; zuvor „Interessante Dokumente")*  
 **Vollständiger Titel:** DIN EN ISO/IEC 42001:2026-08 — *Informationstechnik – Künstliche Intelligenz – Managementsystem*  
 **Ausgabe:** E-Book-Sonderausgabe 2026 (alfatraining), 72 Seiten
 
@@ -83,6 +97,40 @@
 **Wichtige Änderung gegenüber dem bisherigen Stand:** Die Kursmaterialien zitieren überwiegend **ISO/IEC 42001:2023**. Die hier vorliegende Fassung ist die **europäisch übernommene deutsche Ausgabe DIN EN ISO/IEC 42001:2026-08**. Bezeichnung und Ausgabestand sind bei jeder Aktualisierung anzugleichen — die Zitierregel steht in `Quellen_und_Dokumente_KI-Kurse.md`, Abschnitt K.4.
 
 > ⚠️ **Urheberrecht — zwingend beachten.** Normtexte sind urheberrechtlich geschützt; dies ist eine lizenzierte Ausgabe. **Kein Wortlaut aus dem Normtext in Teilnehmermaterialien.** Zulässig sind: sinngemäße Wiedergabe mit Kapitelverweis, Nennung von Kapitel- und Kontrollnummern, eigene Formulierungen. Nicht zulässig: Abdruck von Anforderungstexten, Tabellen oder Anhang-A-Formulierungen im Wortlaut.
+
+---
+
+### 1f · Die Hand-Outs selbst (lokal — in den Tagesordnern, **dort bleiben sie**)
+
+**Pfade:** `Schulungsmaterial/KI-Beauftragte/Tag NN/TagNN_HandOut.html` · `Schulungsmaterial/KI-Manager/Tag NN/TagNN_HandOut.html`
+
+**Hier wird nichts verschoben.** Dieser Abschnitt legt keinen neuen Ablageort fest, sondern eine **Prüfpflicht**: Die Hand-Outs sind bei jeder Quellenfrage **mit zu durchsuchen**.
+
+> ### ⚠️ Die Regel, die aus einem Fehler vom 17.09.2026 stammt
+>
+> An diesem Tag wurde gemeldet, zwei Quellen zur Datendokumentation (Gebru „Datasheets for Datasets"; „Data Statements") seien **nicht** in unseren Beständen. Geprüft worden waren Register und Intake. **Beide standen längst im Quellenverzeichnis von KIB Tag 15**, eine dritte (Data Cards) war seit Monaten in einer Praxisaufgabe in KIM Tag 7 im Einsatz — **ohne je im Register zu stehen**.
+>
+> **Daraus folgt:**
+> 1. **Das Register ist gegenüber den Hand-Outs unvollständig.** Es ist damit **keine hinreichende** Prüfinstanz für die Frage „haben wir das schon?".
+> 2. **Der Prüfumfang bei jeder Quellenfrage lautet: Register + Intake + Hand-Outs.** Nicht zwei von dreien.
+> 3. Ein **Negativbefund** („diese Quelle ist neu") darf erst ausgesprochen werden, wenn alle drei geprüft sind — sonst wird er als „geprüft" gelesen, obwohl er es nicht ist.
+
+**Nachgelagerte Aufgabe, noch offen:** Ein systematischer Abgleich **Hand-Outs → Register**. Alle Quellen, die in einem Hand-Out-Quellenverzeichnis stehen, aber nicht im Register, sind nachzutragen. Der Umfang ist unbekannt; die drei oben waren ein Zufallsfund.
+
+---
+
+### 1g · Werkzeug: `Werkzeuge/Quellencheck.html` (GitHub-Repositorium)
+
+**Funktion:** Beantwortet in Sekunden, ob eine Quelle bereits bewertet wurde — einzeln oder für eine ganze Liste aus einem Newsletter.
+
+**Arbeitsweise:** Die Seite hält **keine Kopie** der Bestände vor, sondern liest die Dateien, die man hineinzieht. Damit ist sie nie veraltet. Alles bleibt im Browser, es wird nichts gesendet.
+
+**Was hineingehört — entsprechend der Regel in 1f alle drei:**
+`Quellen_und_Dokumente_KI-Kurse.md` · `Neue_Quellen_Intake.md` · die betroffenen `TagNN_HandOut.html`
+
+**Erkennt als dieselbe Quelle:** arXiv-Adressen über die Nummer (`abs/` = `html/` = `pdf/`, auch bloßes `arXiv:1910.07467` ohne Adresse), SSRN über `abstract_id`, DOI über die DOI, alles Übrige über Adresse und Pfad ohne `www.` und **ohne Anhängsel wie `?utm_source=…`**.
+
+> **Grenze:** Ein Nicht-Treffer beweist nicht, dass eine Quelle neu ist — manches steht ohne Adresse im Bestand (Bezahlschranke, PDF-Download, Buch). Dafür hat das Werkzeug die Volltextsuche nach Autorenname oder Titelwort. **Bei einem Treffer kann man sich verlassen; bei einem Nicht-Treffer ist zusätzlich im Volltext zu suchen.**
 
 ---
 
@@ -133,6 +181,7 @@ Wird ein Kurstag (z.B. „KIB Tag 7") reviewed oder aktualisiert, gelten folgend
 
 1. `Quellen_und_Dokumente_KI-Kurse.md` lesen → alle für diesen Tag freigegebenen Quellen identifizieren
 2. `Neue_Quellen_Intake.md` lesen → neue didaktische Ideen mit Relevanz für diesen Tag prüfen
+2a. **Das Quellenverzeichnis des betroffenen Hand-Outs selbst lesen** → siehe Abschnitt 1f. Quellen können dort stehen, ohne im Register zu stehen. Wer diesen Schritt überspringt, hält Vorhandenes für neu und trägt womöglich doppelt ein.
 3. `Wochenberichte/` lesen → aktuelle Markt- und Branchenupdates mit Relevanz prüfen
 4. `KI_News_Update.html` prüfen → regulatorischen Stand für diesen Tag verifizieren
 5. **Bei jedem ISO-42001-Bezug:** Normtext `DIN EN ISO/IEC 42001:2026-08` prüfen (Pfad siehe 1e) → Kapitel- und Kontrollnummern sowie Bezeichnung und Ausgabestand am Original verifizieren, nicht an Sekundärquellen
