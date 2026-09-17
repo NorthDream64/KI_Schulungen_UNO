@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Quellencheck — haben wir das schon bewertet?</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400;500&family=Playfair+Display:ital,wght@0,600;1,600&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#1a1a18;--paper:#f8f6f1;--card:#ffffff;--rule:#d5d0c5;--muted:#6b6b60;--accent:#0a4a7a;--teal:#0a6b6b;--green:#2a5c3f;--amber:#7a4a00;--red:#6a1a1a;--phase:#f2f0eb;}
+*{box-sizing:border-box;}
+body{font-family:'DM Sans',sans-serif;background:var(--paper);color:var(--ink);font-size:14px;line-height:1.6;margin:0;}
+.page{max-width:1080px;margin:0 auto;padding:2rem 1.5rem 4rem;}
+a{color:var(--accent);}
+.ho-header{border-bottom:3px solid var(--ink);padding-bottom:1.3rem;margin-bottom:1.5rem;}
+.ho-eyebrow{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-bottom:.5rem;}
+.ho-title{font-family:'Playfair Display',serif;font-size:clamp(1.6rem,4.4vw,2.3rem);line-height:1.1;margin:0;}
+.ho-title em{font-style:italic;color:var(--teal);}
+.lead{background:var(--card);border:1px solid var(--rule);border-left:4px solid var(--teal);border-radius:0 8px 8px 0;padding:.9rem 1.15rem;margin-bottom:1.4rem;}
+h2{font-family:'Playfair Display',serif;font-size:1.15rem;margin:1.7rem 0 .6rem;padding-bottom:.3rem;border-bottom:2px solid var(--ink);}
+.step{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--teal);display:block;margin-bottom:.15rem;}
+.card{background:var(--card);border:1px solid var(--rule);border-radius:8px;padding:1rem 1.15rem;margin:.6rem 0;}
+.drop{border:2px dashed var(--rule);border-radius:10px;padding:1.5rem 1.2rem;text-align:center;background:var(--card);transition:border-color .15s,background .15s;cursor:pointer;}
+.drop.over{border-color:var(--teal);background:#f0f7f7;}
+.drop p{margin:.3rem 0;}
+.drop .big{font-size:15px;font-weight:700;}
+.drop .sub{font-size:12.5px;color:var(--muted);}
+input[type=file]{display:none;}
+.btn{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:1.4px;text-transform:uppercase;padding:9px 20px;border:1px solid var(--ink);border-radius:5px;background:var(--ink);color:#fff;cursor:pointer;}
+.btn:hover{background:var(--teal);border-color:var(--teal);}
+.btn.ghost{background:none;color:var(--muted);border-color:var(--rule);}
+.btn.ghost:hover{background:none;color:var(--accent);border-color:var(--accent);}
+.btn:disabled{opacity:.4;cursor:not-allowed;}
+textarea,input[type=text]{width:100%;font-family:'DM Mono',monospace;font-size:12.5px;padding:.6rem .7rem;border:1px solid var(--rule);border-radius:6px;background:var(--card);color:var(--ink);line-height:1.5;}
+textarea{min-height:120px;resize:vertical;}
+textarea:focus,input[type=text]:focus{outline:none;border-color:var(--teal);}
+.row{display:flex;gap:.6rem;align-items:center;flex-wrap:wrap;margin-top:.6rem;}
+.status{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.5px;color:var(--muted);}
+.status.ok{color:var(--green);}
+.status.warn{color:var(--amber);}
+table{width:100%;border-collapse:collapse;font-size:12.5px;margin-top:.8rem;}
+th{background:var(--ink);color:#fff;text-align:left;padding:.45rem .6rem;font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1.3px;text-transform:uppercase;font-weight:500;}
+td{border-bottom:1px solid var(--rule);padding:.5rem .6rem;vertical-align:top;}
+tr:nth-child(even) td{background:rgba(0,0,0,.015);}
+.badge{display:inline-block;font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1px;padding:2px 8px;border-radius:3px;white-space:nowrap;}
+.b-hit{background:#dff0e4;color:var(--green);}
+.b-new{background:#fdf0da;color:var(--amber);}
+.b-maybe{background:#e4ecf5;color:var(--accent);}
+.mono{font-family:'DM Mono',monospace;font-size:11.5px;word-break:break-all;}
+.ctx{font-size:11.5px;color:var(--muted);line-height:1.5;margin-top:.25rem;}
+.ctx mark{background:#fdf0da;color:var(--ink);padding:0 2px;}
+.note{background:var(--phase);border-left:3px solid var(--rule);padding:.6rem .85rem;margin:.7rem 0;font-size:12.8px;border-radius:0 6px 6px 0;}
+.note.amber{border-left-color:var(--amber);background:#fdf8ef;}
+.note.red{border-left-color:var(--red);background:#fdf2f2;}
+.note.teal{border-left-color:var(--teal);background:#f0f7f7;}
+.filelist{font-family:'DM Mono',monospace;font-size:11.5px;margin-top:.7rem;}
+.filelist div{padding:.2rem 0;border-bottom:1px solid var(--rule);}
+.hidden{display:none;}
+.footer{margin-top:2.5rem;padding-top:1rem;border-top:1px solid var(--rule);font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);display:flex;justify-content:space-between;flex-wrap:wrap;gap:.5rem;}
+@media print{.no-print{display:none;}}
+</style>
+</head>
+<body>
+<div class="page">
+
+<div class="ho-header">
+  <div class="ho-eyebrow">Werkzeug · nur für den Dozenten</div>
+  <h1 class="ho-title">Quellencheck — <em>haben wir das schon bewertet?</em></h1>
+</div>
+
+<div class="lead">
+  <strong>Wofür das gut ist.</strong> Bevor Du eine Quelle zur Bewertung gibst, prüfst Du hier in fünf Sekunden, ob sie schon im Register oder im Intake steht — einzeln oder als ganze Liste aus einem Newsletter.<br><br>
+  <strong>Wie es arbeitet.</strong> Die Seite <em>liest Deine eigenen Dateien</em>, statt eine Kopie vorzuhalten. Damit ist sie nie veraltet: Was heute ins Register kommt, findet sie morgen. Es werden keine Daten irgendwohin gesendet — alles bleibt im Browser.
+</div>
+
+<h2><span class="step">Schritt 1</span>Register und Intake laden</h2>
+
+<div class="drop" id="drop">
+  <p class="big">Dateien hierher ziehen — oder klicken zum Auswählen</p>
+  <p class="sub">Erwartet werden die beiden Verzeichnisse (Mehrfachauswahl möglich):</p>
+  <p class="sub"><strong>Quellen_und_Dokumente_KI-Kurse.md</strong> &nbsp;·&nbsp; <strong>Neue_Quellen_Intake.md</strong></p>
+  <p class="sub" style="margin-top:.6rem;">Weitere Textdateien (.md, .txt, .html) kannst Du zusätzlich laden — etwa Hand-Outs, wenn Du wissen willst, wo eine Quelle bereits eingebaut ist.</p>
+  <input type="file" id="fileInput" multiple accept=".md,.txt,.html,.htm,.csv">
+</div>
+
+<div id="loaded" class="hidden">
+  <div class="filelist" id="filelist"></div>
+  <div class="row">
+    <span class="status ok" id="loadStatus"></span>
+    <button class="btn ghost" id="clearBtn">Zurücksetzen</button>
+  </div>
+</div>
+
+<h2><span class="step">Schritt 2</span>Quellen prüfen</h2>
+
+<div class="card">
+  <p style="margin:0 0 .4rem;"><strong>Adressen einfügen.</strong> Eine pro Zeile — oder einfach den ganzen Newsletter-Text hineinkopieren, die Adressen werden herausgesucht.</p>
+  <textarea id="urlInput" placeholder="https://arxiv.org/abs/1910.07467&#10;https://www.mckinsey.com/capabilities/...&#10;&#10;…oder beliebiger Text, aus dem die Adressen gezogen werden."></textarea>
+  <div class="row">
+    <button class="btn" id="checkBtn" disabled>Prüfen</button>
+    <span class="status" id="checkStatus">Zuerst die Dateien laden.</span>
+  </div>
+</div>
+
+<div id="urlResults"></div>
+
+<h2><span class="step">Schritt 3 · wenn nötig</span>Volltextsuche</h2>
+
+<div class="card">
+  <p style="margin:0 0 .4rem;"><strong>Für Quellen ohne Adresse.</strong> Manches steht ohne Link im Register — hinter Bezahlschranken, als PDF-Download oder als Buch. Suche dann nach <em>Autorenname, Titelwort oder Schlagwort</em>.</p>
+  <input type="text" id="textInput" placeholder="z. B. Mollick · Bainbridge · zeremonielle Freigabe · Code of Conduct">
+  <div class="row">
+    <button class="btn" id="searchBtn" disabled>Suchen</button>
+    <span class="status" id="searchStatus"></span>
+  </div>
+</div>
+
+<div id="textResults"></div>
+
+<div class="note amber" style="margin-top:1.8rem;">
+  <strong>Zwei Dinge, die dieses Werkzeug nicht kann — und die Du wissen solltest.</strong><br><br>
+  <strong>Erstens: „Nicht gefunden" heißt nicht sicher „neu".</strong> Einige Einträge stehen ohne Adresse im Register — der Microsoft-Verhaltenskodex etwa als PDF-Download, der Economist-Beitrag hinter einer Bezahlschranke. Bei einem Treffer kannst Du Dich verlassen; bei einem Nicht-Treffer lohnt zusätzlich die Volltextsuche nach dem Autorennamen.<br><br>
+  <strong>Zweitens: Es bewertet nicht.</strong> Es zeigt Dir die Fundstelle mit der Zeile drumherum. Was dort inhaltlich entschieden wurde — verwertbar, nicht verwertbar, mit welchen Grenzen —, steht im Intake-Eintrag selbst.
+</div>
+
+<div class="note teal">
+  <strong>Wie erkannt wird, dass zwei Adressen dieselbe Quelle meinen.</strong> Verglichen wird nicht Zeichen für Zeichen, sondern nach Kennung:<br>
+  · <strong>arXiv</strong> — über die Nummer. <span class="mono">abs/2412.06464</span>, <span class="mono">html/2412.06464</span> und <span class="mono">pdf/2412.06464v3</span> gelten als dieselbe Arbeit.<br>
+  · <strong>SSRN</strong> — über <span class="mono">abstract_id</span>. · <strong>DOI</strong> — über die DOI selbst.<br>
+  · <strong>Alles andere</strong> — über Adresse und Pfad, ohne <span class="mono">www.</span>, ohne Schrägstrich am Ende und <strong>ohne Anhängsel wie <span class="mono">?utm_source=…</span></strong>. Ein Link aus einem Newsletter wird also auch dann gefunden, wenn im Register die saubere Fassung steht.
+</div>
+
+<div class="footer">
+  <span>KI-Schulungen · Werkzeuge</span>
+  <span>Arbeitet ausschließlich lokal im Browser</span>
+</div>
+
+</div>
+
+<script>
+(function(){
+  var files = [];
+
+  var drop = document.getElementById('drop');
+  var fileInput = document.getElementById('fileInput');
+  var loaded = document.getElementById('loaded');
+  var filelist = document.getElementById('filelist');
+  var loadStatus = document.getElementById('loadStatus');
+  var clearBtn = document.getElementById('clearBtn');
+  var checkBtn = document.getElementById('checkBtn');
+  var searchBtn = document.getElementById('searchBtn');
+  var checkStatus = document.getElementById('checkStatus');
+  var searchStatus = document.getElementById('searchStatus');
+  var urlResults = document.getElementById('urlResults');
+  var textResults = document.getElementById('textResults');
+
+  var URL_RE = /https?:\/\/[^\s<>"'\)\|\]]+/g;
+
+  function esc(s){
+    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+
+  function trimPunct(u){
+    return u.replace(/[.,;:!?)\]}>"'»]+$/,'');
+  }
+
+  // Reduce a URL to a comparable key.
+  function keyOf(raw){
+    var u = trimPunct(String(raw).trim());
+    var low = u.toLowerCase();
+
+    var ax = low.match(/arxiv\.org\/(?:abs|pdf|html|format)\/([0-9]{4}\.[0-9]{4,5})/);
+    if(ax) return 'arxiv:' + ax[1];
+    var ax2 = low.match(/arxiv[:\/]([0-9]{4}\.[0-9]{4,5})/);
+    if(ax2) return 'arxiv:' + ax2[1];
+
+    var ssrn = low.match(/abstract_id=([0-9]+)/);
+    if(ssrn) return 'ssrn:' + ssrn[1];
+    var ssrn2 = low.match(/ssrn\.com\/abstract=([0-9]+)/);
+    if(ssrn2) return 'ssrn:' + ssrn2[1];
+
+    var doi = low.match(/(?:doi\.org\/|dx\.doi\.org\/|doi[:\s]+)(10\.[0-9]{4,9}\/[^\s]+)/);
+    if(doi) return 'doi:' + trimPunct(doi[1]);
+
+    // generic: host + path, no protocol, no www, no query, no fragment, no trailing slash
+    var g = low.replace(/^https?:\/\//,'').replace(/^www\./,'');
+    g = g.split('#')[0].split('?')[0];
+    g = g.replace(/\/+$/,'');
+    return 'u:' + g;
+  }
+
+  function shortName(n){
+    return n.replace(/\.(md|txt|html?|csv)$/i,'');
+  }
+
+  function renderFiles(){
+    if(!files.length){ loaded.classList.add('hidden'); return; }
+    loaded.classList.remove('hidden');
+    var totalUrls = 0, html = '';
+    files.forEach(function(f){
+      totalUrls += f.keys.size;
+      html += '<div>' + esc(f.name) + ' — ' + f.lines.length.toLocaleString('de-DE') +
+              ' Zeilen, <strong>' + f.keys.size.toLocaleString('de-DE') + '</strong> unterscheidbare Adressen</div>';
+    });
+    filelist.innerHTML = html;
+    loadStatus.textContent = files.length + ' Datei(en) geladen · ' + totalUrls.toLocaleString('de-DE') + ' Adressen insgesamt';
+    var ready = files.length > 0;
+    checkBtn.disabled = !ready;
+    searchBtn.disabled = !ready;
+    checkStatus.textContent = ready ? 'Bereit.' : 'Zuerst die Dateien laden.';
+  }
+
+  // Identifiers that appear in our notes WITHOUT a full address,
+  // e.g. "arXiv:1910.07467" or "SSRN 7378338". These must be indexed too —
+  // otherwise a paper cited only by its number would look unknown.
+  var BARE_ARXIV_RE = /arxiv[:\s]*([0-9]{4}\.[0-9]{4,5})/ig;
+  var BARE_SSRN_RE  = /ssrn[^0-9\n]{0,18}([0-9]{6,9})/ig;
+
+  function ingest(name, text){
+    var lines = text.split(/\r?\n/);
+    var keys = new Map(); // key -> [{line, raw}]
+
+    function add(k, lineNo, raw){
+      if(!keys.has(k)) keys.set(k, []);
+      var bucket = keys.get(k);
+      for(var i = 0; i < bucket.length; i++){ if(bucket[i].line === lineNo) return; }
+      bucket.push({ line: lineNo, raw: raw });
+    }
+
+    lines.forEach(function(line, i){
+      var m = line.match(URL_RE);
+      if(m) m.forEach(function(raw){ add(keyOf(raw), i + 1, trimPunct(raw)); });
+
+      var b;
+      BARE_ARXIV_RE.lastIndex = 0;
+      while((b = BARE_ARXIV_RE.exec(line)) !== null) add('arxiv:' + b[1], i + 1, 'arXiv:' + b[1]);
+      BARE_SSRN_RE.lastIndex = 0;
+      while((b = BARE_SSRN_RE.exec(line)) !== null) add('ssrn:' + b[1], i + 1, 'SSRN ' + b[1]);
+    });
+    files = files.filter(function(f){ return f.name !== name; });
+    files.push({ name: name, lines: lines, keys: keys, lower: text.toLowerCase() });
+  }
+
+  function readFiles(list){
+    var pending = list.length;
+    if(!pending) return;
+    Array.prototype.forEach.call(list, function(file){
+      var r = new FileReader();
+      r.onload = function(e){
+        ingest(file.name, e.target.result);
+        pending--;
+        if(pending === 0) renderFiles();
+      };
+      r.onerror = function(){
+        pending--;
+        if(pending === 0) renderFiles();
+      };
+      r.readAsText(file, 'utf-8');
+    });
+  }
+
+  drop.addEventListener('click', function(){ fileInput.click(); });
+  fileInput.addEventListener('change', function(e){ readFiles(e.target.files); });
+  ['dragenter','dragover'].forEach(function(ev){
+    drop.addEventListener(ev, function(e){ e.preventDefault(); e.stopPropagation(); drop.classList.add('over'); });
+  });
+  ['dragleave','drop'].forEach(function(ev){
+    drop.addEventListener(ev, function(e){ e.preventDefault(); e.stopPropagation(); drop.classList.remove('over'); });
+  });
+  drop.addEventListener('drop', function(e){
+    if(e.dataTransfer && e.dataTransfer.files) readFiles(e.dataTransfer.files);
+  });
+
+  clearBtn.addEventListener('click', function(){
+    files = [];
+    fileInput.value = '';
+    filelist.innerHTML = '';
+    urlResults.innerHTML = '';
+    textResults.innerHTML = '';
+    loaded.classList.add('hidden');
+    checkBtn.disabled = true;
+    searchBtn.disabled = true;
+    checkStatus.textContent = 'Zuerst die Dateien laden.';
+    searchStatus.textContent = '';
+  });
+
+  function contextLine(f, lineNo){
+    var s = f.lines[lineNo - 1] || '';
+    s = s.replace(/^[\s|>*#-]+/,'');
+    if(s.length > 260) s = s.slice(0, 260) + ' …';
+    return s;
+  }
+
+  checkBtn.addEventListener('click', function(){
+    var raw = document.getElementById('urlInput').value || '';
+    var found = raw.match(URL_RE) || [];
+    // de-duplicate by key, keep first spelling
+    var seen = new Map();
+    found.forEach(function(u){
+      var k = keyOf(u);
+      if(!seen.has(k)) seen.set(k, trimPunct(u));
+    });
+
+    if(seen.size === 0){
+      urlResults.innerHTML = '<div class="note red"><strong>Keine Adresse erkannt.</strong> Füge mindestens eine vollständige Adresse ein — sie muss mit <span class="mono">http://</span> oder <span class="mono">https://</span> beginnen. Für Quellen ohne Adresse nimm die Volltextsuche darunter.</div>';
+      return;
+    }
+
+    var hits = 0, misses = 0, rows = '';
+    seen.forEach(function(orig, k){
+      var where = [];
+      files.forEach(function(f){
+        if(f.keys.has(k)){
+          f.keys.get(k).forEach(function(loc){
+            where.push({ file: f.name, line: loc.line, ctx: contextLine(f, loc.line) });
+          });
+        }
+      });
+
+      var badge, cell;
+      if(where.length){
+        hits++;
+        badge = '<span class="badge b-hit">bereits bewertet</span>';
+        var byFile = {};
+        where.forEach(function(w){ (byFile[w.file] = byFile[w.file] || []).push(w); });
+        cell = '';
+        Object.keys(byFile).forEach(function(fn){
+          var ws = byFile[fn];
+          cell += '<div style="margin-bottom:.35rem;"><strong>' + esc(shortName(fn)) + '</strong> · Zeile ' +
+                  ws.map(function(w){ return w.line; }).join(', ') +
+                  '<div class="ctx">' + esc(ws[0].ctx) + '</div></div>';
+        });
+      } else {
+        misses++;
+        badge = '<span class="badge b-new">nicht gefunden</span>';
+        cell = '<span class="ctx">Keine Fundstelle. Vor der Bewertung zusätzlich unten nach Autorenname oder Titelwort suchen — nicht jede Quelle im Register hat eine Adresse.</span>';
+      }
+
+      rows += '<tr><td>' + badge + '</td><td class="mono"><a href="' + esc(orig) + '" target="_blank" rel="noopener">' +
+              esc(orig.length > 88 ? orig.slice(0,88) + '…' : orig) + '</a></td><td>' + cell + '</td></tr>';
+    });
+
+    urlResults.innerHTML =
+      '<div class="note ' + (misses ? 'amber' : 'teal') + '"><strong>' + seen.size + ' Adresse(n) geprüft:</strong> ' +
+      hits + ' bereits bewertet, ' + misses + ' nicht gefunden.' +
+      (misses ? ' Die nicht gefundenen sind die Kandidaten für eine neue Bewertung.' : ' Es ist nichts Neues dabei.') +
+      '</div>' +
+      '<table><thead><tr><th style="width:15%">Befund</th><th style="width:33%">Adresse</th><th>Fundstelle</th></tr></thead><tbody>' +
+      rows + '</tbody></table>';
+  });
+
+  searchBtn.addEventListener('click', function(){
+    var q = (document.getElementById('textInput').value || '').trim();
+    if(q.length < 3){
+      textResults.innerHTML = '<div class="note red"><strong>Bitte mindestens drei Zeichen eingeben.</strong></div>';
+      return;
+    }
+    var ql = q.toLowerCase();
+    var rows = '', total = 0;
+    files.forEach(function(f){
+      var local = 0;
+      f.lines.forEach(function(line, i){
+        if(local >= 25) return;
+        if(line.toLowerCase().indexOf(ql) === -1) return;
+        local++; total++;
+        var shown = line.replace(/^[\s|>*#-]+/,'');
+        if(shown.length > 300) {
+          var pos = shown.toLowerCase().indexOf(ql);
+          var from = Math.max(0, pos - 110);
+          shown = (from > 0 ? '… ' : '') + shown.slice(from, from + 300) + ' …';
+        }
+        var safe = esc(shown);
+        var re = new RegExp('(' + q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&') + ')','ig');
+        safe = safe.replace(re, '<mark>$1</mark>');
+        rows += '<tr><td class="mono" style="white-space:nowrap;">' + esc(shortName(f.name)) +
+                '<br><span style="color:var(--muted);">Z. ' + (i+1) + '</span></td><td>' + safe + '</td></tr>';
+      });
+      if(local >= 25){
+        rows += '<tr><td class="mono">' + esc(shortName(f.name)) + '</td><td class="ctx">… weitere Treffer in dieser Datei unterdrückt. Suchbegriff verengen.</td></tr>';
+      }
+    });
+
+    if(!total){
+      textResults.innerHTML = '<div class="note amber"><strong>Kein Treffer für „' + esc(q) + '".</strong> Das spricht dafür, dass die Quelle neu ist — sofern Du sie unter diesem Namen erwartet hättest. Probiere den Nachnamen der Autorin oder des Autors, ein markantes Titelwort oder den Anbieternamen.</div>';
+      searchStatus.textContent = '0 Treffer';
+      return;
+    }
+    searchStatus.textContent = total + ' Treffer';
+    textResults.innerHTML =
+      '<div class="note teal"><strong>' + total + ' Treffer für „' + esc(q) + '".</strong> Bereits vorhandene Einträge stehen unten mit Fundstelle.</div>' +
+      '<table><thead><tr><th style="width:18%">Datei</th><th>Zeile</th></tr></thead><tbody>' + rows + '</tbody></table>';
+  });
+
+  document.getElementById('textInput').addEventListener('keydown', function(e){
+    if(e.key === 'Enter' && !searchBtn.disabled) searchBtn.click();
+  });
+})();
+</script>
+</body>
+</html>
