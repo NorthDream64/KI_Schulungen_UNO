@@ -9,6 +9,8 @@
 
 > ## ⚠️ Ablageänderung vom 17.09.2026 — bitte zuerst lesen
 >
+> *(Ergänzt 18.09.2026: **Auch der Intake liegt jetzt dort.** Register und Intake sind damit im selben Ordner `Schulungsmaterial\Zentrale Referenzdokumente\` — zusammen mit den Referenz-PDFs. Die Einträge unten sind angepasst. Die inhaltliche Trennung bleibt: Register = Ergebnis und öffentlich zitierfähig, Intake = Werkstatt mit Verwerfungsgründen.)*
+>
 > **Das Quellenregister und das News-Update liegen nicht mehr im GitHub-Repositorium.** Beide wurden in einen neuen lokalen Ordner **verschoben** (nicht kopiert — es gibt jeweils nur eine Fassung):
 >
 > `OneDrive\Schulungsmaterial\Zentrale Referenzdokumente\`
@@ -32,7 +34,7 @@
 
 ---
 
-### 1b · Neue_Quellen_Intake.md (lokal — `Schulungsmaterial\Kursmaterialien\`)
+### 1b · Neue_Quellen_Intake.md (lokal — `Schulungsmaterial\Zentrale Referenzdokumente\`)
 
 **Funktion:** Ideensammlung. Neue Informationen mit didaktischem Potenzial werden hier gesammelt und bewertet, bevor sie in Kursmaterialien eingebaut werden.
 
