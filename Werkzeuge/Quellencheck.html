@@ -69,8 +69,11 @@ tr:nth-child(even) td{background:rgba(0,0,0,.015);}
 
 <div class="lead">
   <strong>Wofür das gut ist.</strong> Bevor Du eine Quelle zur Bewertung gibst, prüfst Du hier in fünf Sekunden, ob sie schon im Register oder im Intake steht — einzeln oder als ganze Liste aus einem Newsletter.<br><br>
-  <strong>Wie es arbeitet.</strong> Die Seite <em>liest Deine eigenen Dateien</em>, statt eine Kopie vorzuhalten. Damit ist sie nie veraltet: Was heute ins Register kommt, findet sie morgen. Es werden keine Daten irgendwohin gesendet — alles bleibt im Browser.
+  <strong>Wie es arbeitet.</strong> Die Seite <em>liest Deine eigenen Dateien</em>, statt eine Kopie vorzuhalten. Damit ist sie nie veraltet: Was heute ins Register kommt, findet sie morgen. Es werden keine Daten irgendwohin gesendet — alles bleibt im Browser.<br><br>
+  <strong>Einmal laden genügt.</strong> Der Browser merkt sich den Verzeichnisstand. Beim nächsten Öffnen kannst Du sofort eine Adresse prüfen, ohne wieder Dateien hineinzuziehen — oben steht dann, von wann der gemerkte Stand ist.
 </div>
+
+<div id="cacheBar" class="hidden"></div>
 
 <h2><span class="step">Schritt 1</span>Register und Intake laden</h2>
 
@@ -93,7 +96,7 @@ tr:nth-child(even) td{background:rgba(0,0,0,.015);}
 <h2><span class="step">Schritt 2</span>Quellen prüfen</h2>
 
 <div class="card">
-  <p style="margin:0 0 .4rem;"><strong>Adressen einfügen.</strong> Eine pro Zeile — oder einfach den ganzen Newsletter-Text hineinkopieren, die Adressen werden herausgesucht.</p>
+  <p style="margin:0 0 .4rem;"><strong>Adressen einfügen.</strong> Eine pro Zeile — oder einfach den ganzen Newsletter-Text hineinkopieren, die Adressen werden herausgesucht. Ist ein Stand gemerkt, geht das sofort, ohne Schritt 1.</p>
   <textarea id="urlInput" placeholder="https://arxiv.org/abs/1910.07467&#10;https://www.mckinsey.com/capabilities/...&#10;&#10;…oder beliebiger Text, aus dem die Adressen gezogen werden."></textarea>
   <div class="row">
     <button class="btn" id="checkBtn" disabled>Prüfen</button>
@@ -119,7 +122,8 @@ tr:nth-child(even) td{background:rgba(0,0,0,.015);}
 <div class="note amber" style="margin-top:1.8rem;">
   <strong>Zwei Dinge, die dieses Werkzeug nicht kann — und die Du wissen solltest.</strong><br><br>
   <strong>Erstens: „Nicht gefunden" heißt nicht sicher „neu".</strong> Einige Einträge stehen ohne Adresse im Register — der Microsoft-Verhaltenskodex etwa als PDF-Download, der Economist-Beitrag hinter einer Bezahlschranke. Bei einem Treffer kannst Du Dich verlassen; bei einem Nicht-Treffer lohnt zusätzlich die Volltextsuche nach dem Autorennamen.<br><br>
-  <strong>Zweitens: Es bewertet nicht.</strong> Es zeigt Dir die Fundstelle mit der Zeile drumherum. Was dort inhaltlich entschieden wurde — verwertbar, nicht verwertbar, mit welchen Grenzen —, steht im Intake-Eintrag selbst.
+  <strong>Zweitens: Es bewertet nicht.</strong> Es zeigt Dir die Fundstelle mit der Zeile drumherum. Was dort inhaltlich entschieden wurde — verwertbar, nicht verwertbar, mit welchen Grenzen —, steht im Intake-Eintrag selbst.<br><br>
+  <strong>Und drittens, zum gemerkten Stand:</strong> Er ist eine Momentaufnahme Deiner Dateien, kein Spiegel. Was Du seit dem Merken eingetragen hast, ist hier nicht enthalten. Bei einem <em>Treffer</em> macht das nichts — die Quelle war schon da. Bei einem <em>Nicht-Treffer</em> kann es täuschen. Vor einer verbindlichen Auskunft deshalb die Dateien neu laden; nach sieben Tagen weist die Seite von sich aus darauf hin.
 </div>
 
 <div class="note teal">
@@ -139,8 +143,12 @@ tr:nth-child(even) td{background:rgba(0,0,0,.015);}
 <script>
 (function(){
   var files = [];
+  var CACHE_KEY = 'quellencheck.v1';
+  var CACHE_LIMIT = 4000000; // ~4 MB — darunter wird auch der Volltext gemerkt
+  var cacheInfo = null;      // {savedAt, fullText:boolean}
 
   var drop = document.getElementById('drop');
+  var cacheBar = document.getElementById('cacheBar');
   var fileInput = document.getElementById('fileInput');
   var loaded = document.getElementById('loaded');
   var filelist = document.getElementById('filelist');
@@ -192,6 +200,107 @@ tr:nth-child(even) td{background:rgba(0,0,0,.015);}
     return n.replace(/\.(md|txt|html?|csv)$/i,'');
   }
 
+  // ---- Gemerkter Stand -------------------------------------------------
+  // Gespeichert wird nur das, was für die Prüfung gebraucht wird: der Index
+  // der Adressen je Datei, und — wenn der Platz reicht — der Volltext für die
+  // Suche. Es wird nichts gesendet; alles bleibt in diesem Browser.
+
+  function storeAvailable(){
+    try {
+      var t = '__qc_test__';
+      window.localStorage.setItem(t, '1');
+      window.localStorage.removeItem(t);
+      return true;
+    } catch(e){ return false; }
+  }
+
+  function saveCache(){
+    if(!storeAvailable() || !files.length) return;
+    try {
+      var payload = { savedAt: new Date().toISOString(), fullText: true, files: [] };
+      files.forEach(function(f){
+        payload.files.push({
+          name: f.name,
+          lines: f.lines,
+          keys: Array.from(f.keys.entries())
+        });
+      });
+      var s = JSON.stringify(payload);
+      if(s.length > CACHE_LIMIT){
+        // Zu groß: Zeilen nur gekürzt merken, Volltextsuche dann nicht verfügbar
+        payload.fullText = false;
+        payload.files.forEach(function(pf){
+          pf.lines = pf.lines.map(function(l){ return l.length > 300 ? l.slice(0,300) + ' …' : l; });
+        });
+        s = JSON.stringify(payload);
+      }
+      window.localStorage.setItem(CACHE_KEY, s);
+      cacheInfo = { savedAt: payload.savedAt, fullText: payload.fullText };
+      renderCacheBar();
+    } catch(e){
+      // Platz erschöpft oder Speicher gesperrt — kein Fehlerfall, nur kein Merken
+      cacheInfo = null;
+      renderCacheBar();
+    }
+  }
+
+  function loadCache(){
+    if(!storeAvailable()) return false;
+    try {
+      var s = window.localStorage.getItem(CACHE_KEY);
+      if(!s) return false;
+      var payload = JSON.parse(s);
+      if(!payload || !payload.files || !payload.files.length) return false;
+      files = payload.files.map(function(pf){
+        return {
+          name: pf.name,
+          lines: pf.lines,
+          keys: new Map(pf.keys),
+          lower: pf.lines.join('\n').toLowerCase(),
+          fromCache: true
+        };
+      });
+      cacheInfo = { savedAt: payload.savedAt, fullText: payload.fullText !== false };
+      return true;
+    } catch(e){ return false; }
+  }
+
+  function clearCache(){
+    try { window.localStorage.removeItem(CACHE_KEY); } catch(e){}
+    cacheInfo = null;
+  }
+
+  function ageText(iso){
+    var d = new Date(iso);
+    if(isNaN(d)) return 'unbekannt';
+    var days = Math.floor((Date.now() - d.getTime()) / 86400000);
+    var stamp = d.toLocaleDateString('de-DE', { day:'2-digit', month:'2-digit', year:'numeric' }) +
+                ', ' + d.toLocaleTimeString('de-DE', { hour:'2-digit', minute:'2-digit' });
+    if(days <= 0) return stamp + ' (heute)';
+    if(days === 1) return stamp + ' (gestern)';
+    return stamp + ' (vor ' + days + ' Tagen)';
+  }
+
+  function renderCacheBar(){
+    if(!cacheInfo){ cacheBar.classList.add('hidden'); cacheBar.innerHTML = ''; return; }
+    var d = new Date(cacheInfo.savedAt);
+    var days = isNaN(d) ? 99 : Math.floor((Date.now() - d.getTime()) / 86400000);
+    var stale = days >= 7;
+    cacheBar.className = 'note ' + (stale ? 'amber' : 'teal');
+    cacheBar.innerHTML =
+      '<strong>Gemerkter Stand vom ' + ageText(cacheInfo.savedAt) + '.</strong> ' +
+      'Du kannst sofort unten eine Adresse prüfen.' +
+      (cacheInfo.fullText ? '' : ' <em>Volltextsuche eingeschränkt — die Dateien waren zu groß, es wurden gekürzte Zeilen gemerkt.</em>') +
+      (stale ? '<br><strong>Der Stand ist über eine Woche alt.</strong> Seither eingetragene Quellen fehlen hier. Für eine verbindliche Auskunft lade die Dateien in Schritt 1 neu.'
+             : '<br><span style="color:var(--muted);">Hast Du seither etwas ins Register oder in den Intake eingetragen, lade die Dateien in Schritt 1 neu.</span>') +
+      ' <button class="btn ghost" id="forgetBtn" style="margin-left:.4rem;">Stand vergessen</button>';
+    var fb = document.getElementById('forgetBtn');
+    if(fb) fb.addEventListener('click', function(){
+      clearCache(); files = []; renderFiles(); renderCacheBar();
+      urlResults.innerHTML = ''; textResults.innerHTML = '';
+    });
+  }
+
   function renderFiles(){
     if(!files.length){ loaded.classList.add('hidden'); return; }
     loaded.classList.remove('hidden');
@@ -202,7 +311,9 @@ tr:nth-child(even) td{background:rgba(0,0,0,.015);}
               ' Zeilen, <strong>' + f.keys.size.toLocaleString('de-DE') + '</strong> unterscheidbare Adressen</div>';
     });
     filelist.innerHTML = html;
-    loadStatus.textContent = files.length + ' Datei(en) geladen · ' + totalUrls.toLocaleString('de-DE') + ' Adressen insgesamt';
+    loadStatus.textContent = files.length + ' Datei(en) ' +
+      (files[0] && files[0].fromCache ? 'aus gemerktem Stand' : 'geladen') +
+      ' · ' + totalUrls.toLocaleString('de-DE') + ' Adressen insgesamt';
     var ready = files.length > 0;
     checkBtn.disabled = !ready;
     searchBtn.disabled = !ready;
@@ -248,11 +359,11 @@ tr:nth-child(even) td{background:rgba(0,0,0,.015);}
       r.onload = function(e){
         ingest(file.name, e.target.result);
         pending--;
-        if(pending === 0) renderFiles();
+        if(pending === 0){ renderFiles(); saveCache(); }
       };
       r.onerror = function(){
         pending--;
-        if(pending === 0) renderFiles();
+        if(pending === 0){ renderFiles(); saveCache(); }
       };
       r.readAsText(file, 'utf-8');
     });
@@ -272,6 +383,8 @@ tr:nth-child(even) td{background:rgba(0,0,0,.015);}
 
   clearBtn.addEventListener('click', function(){
     files = [];
+    clearCache();
+    renderCacheBar();
     fileInput.value = '';
     filelist.innerHTML = '';
     urlResults.innerHTML = '';
@@ -379,6 +492,10 @@ tr:nth-child(even) td{background:rgba(0,0,0,.015);}
       }
     });
 
+    if(cacheInfo && cacheInfo.fullText === false){
+      rows = '<tr><td colspan="2" class="ctx"><strong>Hinweis:</strong> Es wird auf einem gemerkten Stand mit gekürzten Zeilen gesucht. Treffer weit hinten in einer langen Zeile können fehlen — für eine vollständige Suche die Dateien in Schritt 1 neu laden.</td></tr>' + rows;
+    }
+
     if(!total){
       textResults.innerHTML = '<div class="note amber"><strong>Kein Treffer für „' + esc(q) + '".</strong> Das spricht dafür, dass die Quelle neu ist — sofern Du sie unter diesem Namen erwartet hättest. Probiere den Nachnamen der Autorin oder des Autors, ein markantes Titelwort oder den Anbieternamen.</div>';
       searchStatus.textContent = '0 Treffer';
@@ -393,6 +510,22 @@ tr:nth-child(even) td{background:rgba(0,0,0,.015);}
   document.getElementById('textInput').addEventListener('keydown', function(e){
     if(e.key === 'Enter' && !searchBtn.disabled) searchBtn.click();
   });
+
+  // Mit Strg+Enter aus dem Adressfeld heraus prüfen
+  document.getElementById('urlInput').addEventListener('keydown', function(e){
+    if(e.key === 'Enter' && (e.ctrlKey || e.metaKey) && !checkBtn.disabled) checkBtn.click();
+  });
+
+  // ---- Start: gemerkten Stand wiederherstellen -------------------------
+  if(loadCache()){
+    renderFiles();
+    renderCacheBar();
+  } else if(!storeAvailable()){
+    cacheBar.className = 'note';
+    cacheBar.classList.remove('hidden');
+    cacheBar.innerHTML = '<strong>Dieser Browser erlaubt kein Merken des Verzeichnisstands.</strong> ' +
+      'Das Werkzeug arbeitet trotzdem — Du musst die Dateien nur bei jedem Öffnen einmal hineinziehen.';
+  }
 })();
 </script>
 </body>
