@@ -276,7 +276,7 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--paper);color:va
 
 <div class="footer">
  <span>Das Daten-Quartett · Datenmanagement, Datenqualität &amp; Daten-Governance</span>
- <span>Ulrich Nord · August 2026</span>
+ <span>Ulrich Nord · Stand September 2026</span>
 </div>
 
 </div><!-- /page -->
@@ -301,7 +301,7 @@ var FAMILIEN = {
      txt:'Autorisierung: Umfang und Grenzen der Berechtigung. Setzt D voraus — ohne Identität keine Berechtigung.'},
   F:{name:'Menschliche Kontrollen',farbe:'#2a5c3f',
      frage:'Wo muss jemand hinschauen?',
-     txt:'Maßnahmen, deren Wirkung davon abhängt, dass ein Mensch etwas tut — freigibt, prüft, eskaliert, zusagt.'},
+     txt:'Maßnahmen, deren Wirkung davon abhängt, dass ein Mensch etwas tut — freigibt, prüft, eskaliert, zusagt. <strong>Die anfälligste Familie:</strong> Sie lässt sich nicht erzwingen, und sie fällt lautlos aus. Eine Freigabe wird auch dann geleistet, wenn niemand mehr hinsieht.'},
   G:{name:'Technische Kontrollen', farbe:'#0a4a7a',
      frage:'Was hält ohne Zutun?',
      txt:'Maßnahmen, die maschinell erzwungen werden und auch dann wirken, wenn niemand hinsieht.'},
@@ -324,7 +324,7 @@ var KARTEN = [
 
  /* B · Datenqualität */
  {f:'B',n:1,t:'Die sechs Dimensionen',q:'Sind Vollständigkeit, Konsistenz, Genauigkeit, Aktualität, Relevanz und Eindeutigkeit bewertet?',a:'Nicht alle auf 100 % — das ist unbezahlbar. Die Frage ist, welche für diesen Anwendungsfall entscheidend sind.'},
- {f:'B',n:2,t:'Herkunftsnachweis',q:'Ist dokumentiert, woher jeder Datenbestand stammt?',a:'Ohne Herkunft lässt sich weder Lizenz noch Qualität noch Verzerrung zurückverfolgen — und kein Fehler eingrenzen.'},
+ {f:'B',n:2,t:'Herkunftsnachweis',q:'Ist dokumentiert, woher jeder Datenbestand stammt — und gilt diese Herkunft noch?',a:'Ohne Herkunft lässt sich weder Lizenz noch Qualität noch Verzerrung zurückverfolgen. Die zweite Hälfte wird übersehen: Bestände werden zurückgezogen, nachdem darauf trainiert wurde. Das Modell trägt sie dann in seinen Gewichten weiter. Prüffrage: Ist unser Modell auf Beständen trainiert, die es heute nicht mehr gibt?'},
  {f:'B',n:3,t:'Reproduzierbare Aufbereitung',q:'Ist die Aufbereitung dokumentiert und wiederholbar — oder war es Handarbeit in einer Tabelle?',a:'Sonst kommt beim nächsten Training ein anderes Ergebnis heraus, und niemand kann sagen, warum.'},
  {f:'B',n:4,t:'Zukunftswissen im Training',q:'Nutzen wir nur Daten, die zum Entscheidungszeitpunkt tatsächlich vorliegen?',a:'Sonst trainiert das Modell mit Wissen, das es im Betrieb nie hat. Englisch: Look-ahead Bias. Nicht zu verwechseln mit Datenabfluss.'},
  {f:'B',n:5,t:'Reifestufen',q:'Ist geklärt, auf welcher Stufe gearbeitet wird — roh, geprüft oder aufbereitet?',a:'Bronze, Silber, Gold. Wer direkt auf Rohdaten zugreift, spart Aufwand und kauft ein Nachvollziehbarkeitsproblem ein.'},
@@ -374,8 +374,8 @@ var KARTEN = [
  /* I · Nachweis */
  {f:'I',n:1,t:'Protokollierung',q:'Werden Zugriffe, Änderungen und Entscheidungen unveränderlich protokolliert?',a:'Ein Protokoll, das sich nachträglich ändern lässt, ist als Nachweis wertlos. Baut zwingend auf eindeutigen Identitäten auf.'},
  {f:'I',n:2,t:'Rückverfolgbarkeit',q:'Lässt sich ein einzelnes Ergebnis bis zu seinen Eingangsdaten zurückverfolgen?',a:'Die eigentliche Prüfung jeder Datenarchitektur. Wer das nicht kann, kann nicht erklären, wie eine Entscheidung zustande kam.'},
- {f:'I',n:3,t:'Dokumentation',q:'Sind Datenquellen, Aufbereitung und getroffene Annahmen festgehalten?',a:'Annahmen, die nirgends stehen, gelten später als Fakten. So werden Schätzwerte zu Kennzahlen.'},
- {f:'I',n:4,t:'Wirksamkeitsprüfung',q:'Wird regelmäßig überprüft, ob all das noch funktioniert?',a:'Einmalige Abnahme ist keine Governance. Hier schließt sich der Kreis: Beim Nachprüfen fällt auf, dass das Verzeichnis veraltet ist.'},
+ {f:'I',n:3,t:'Datenblatt',q:'Sind Quellen, Aufbereitung und Annahmen je Datenbestand in einem Datenblatt festgehalten?',a:'Annahmen, die nirgends stehen, gelten später als Fakten. Bei Hochrisiko-KI ist das keine gute Praxis, sondern Pflicht: Anhang IV Nr. 2 Buchst. d verlangt die Dokumentation ausdrücklich „in Form von Datenblättern" — Herkunft, Umfang, Auswahl, Kennzeichnung, Bereinigung. Vorlagen gibt es seit 2018; das Format ist frei wählbar, aber eines muss durchgehalten und die Wahl dokumentiert werden.'},
+ {f:'I',n:4,t:'Wirksamkeitsprüfung',q:'Wird regelmäßig überprüft, ob all das noch funktioniert — und wem gehört das Prüfwerkzeug?',a:'Einmalige Abnahme ist keine Governance. Hier schließt sich der Kreis: Beim Nachprüfen fällt auf, dass das Verzeichnis veraltet ist. Wird maschinell geprüft, gelten drei Unabhängigkeitsebenen: anderes Modell, Prüffälle nicht aus dem Training des Prüfers, und — meist fehlend — wer prüft, verdient nicht am Ergebnis. Liefert ein Anbieter System und Prüfwerkzeug, prüft er sich selbst.'},
  {f:'I',n:5,t:'Regulatorischer Abgleich',q:'Ist geprüft, welche rechtlichen Anforderungen konkret gelten — und wer sie verantwortet?',a:'DSGVO, EU AI Act, Data Act, branchenspezifische Aufsicht: Die Kombination entscheidet, nicht die einzelne Norm.'}
 ];
 
