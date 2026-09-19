@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kennzahlen — und was sie wirklich beantworten</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400;500&family=Playfair+Display:ital,wght@0,600;1,600&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#1a1a18;--paper:#f8f6f1;--card:#ffffff;--rule:#d5d0c5;--muted:#6b6b60;--accent:#0a4a7a;--teal:#0a6b6b;--green:#2a5c3f;--amber:#7a4a00;--red:#6a1a1a;--phase:#f2f0eb;}
+*{box-sizing:border-box;}
+body{font-family:'DM Sans',sans-serif;background:var(--paper);color:var(--ink);font-size:14px;line-height:1.65;margin:0;}
+.page{max-width:960px;margin:0 auto;padding:2rem 1.5rem 3.5rem;}
+a{color:var(--accent);}
+.ho-header{border-bottom:3px solid var(--ink);padding-bottom:1.4rem;margin-bottom:1.6rem;display:grid;grid-template-columns:1fr auto;gap:1rem;align-items:end;}
+.ho-eyebrow{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-bottom:.5rem;}
+.ho-title{font-family:'Playfair Display',serif;font-size:clamp(1.7rem,4.6vw,2.5rem);line-height:1.1;margin:0;}
+.ho-title em{font-style:italic;color:var(--teal);}
+.print-btn{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1px;text-transform:uppercase;padding:5px 14px;border:1px solid var(--rule);border-radius:4px;background:none;color:var(--muted);cursor:pointer;}
+.print-btn:hover{border-color:var(--accent);color:var(--accent);}
+.lead{background:var(--card);border:1px solid var(--rule);border-left:4px solid var(--teal);border-radius:0 8px 8px 0;padding:1rem 1.2rem;margin-bottom:1.8rem;font-size:14.5px;}
+.lead strong{color:var(--teal);}
+h2{font-family:'Playfair Display',serif;font-size:1.35rem;margin:2.2rem 0 .7rem;padding-bottom:.35rem;border-bottom:2px solid var(--ink);}
+h3{font-family:'DM Sans',sans-serif;font-size:14.5px;font-weight:700;margin:1.2rem 0 .35rem;color:var(--accent);}
+p{margin:.55rem 0;}
+.card{background:var(--card);border:1px solid var(--rule);border-radius:8px;padding:1rem 1.2rem;margin:.8rem 0;}
+.tbl{width:100%;border-collapse:collapse;font-size:12.8px;margin:.7rem 0;}
+.tbl th{background:var(--ink);color:#fff;text-align:left;padding:.45rem .65rem;font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1.4px;text-transform:uppercase;font-weight:500;}
+.tbl td{border-bottom:1px solid var(--rule);padding:.5rem .65rem;vertical-align:top;}
+.tbl tr:nth-child(even) td{background:rgba(0,0,0,.015);}
+.note{background:var(--phase);border-left:3px solid var(--rule);padding:.7rem .95rem;margin:.8rem 0;font-size:13px;border-radius:0 6px 6px 0;}
+.note.amber{border-left-color:var(--amber);background:#fdf8ef;}
+.note.teal{border-left-color:var(--teal);background:#f0f7f7;}
+.note.green{border-left-color:var(--green);background:#f2f8f4;}
+.note.red{border-left-color:var(--red);background:#fdf2f2;}
+.merksatz{font-family:'Playfair Display',serif;font-size:1.15rem;line-height:1.4;font-style:italic;color:var(--teal);border-left:4px solid var(--teal);padding:.5rem 0 .5rem 1rem;margin:1rem 0;}
+.fehler{background:var(--card);border:1px solid var(--rule);border-radius:9px;margin:1rem 0;overflow:hidden;}
+.fehler-kopf{padding:.8rem 1.2rem;color:#fff;}
+.f1 .fehler-kopf{background:#0a4a7a;}
+.f2 .fehler-kopf{background:#7a4a00;}
+.f3 .fehler-kopf{background:#5a3a7a;}
+.fehler-nr{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;opacity:.8;}
+.fehler-name{font-family:'Playfair Display',serif;font-size:1.25rem;font-weight:600;line-height:1.2;margin-top:.1rem;}
+.fehler-kurz{font-size:12.8px;opacity:.94;margin-top:.3rem;}
+.fehler-body{padding:1rem 1.2rem 1.1rem;}
+.fall{border-left:3px solid var(--rule);padding:.15rem 0 .15rem .9rem;margin:.8rem 0;}
+.fall-t{font-weight:700;font-size:13.2px;margin-bottom:.15rem;}
+.fall p{font-size:13px;margin:.25rem 0;}
+.gegenfrage{background:#f0f7f7;border:1px solid #0a6b6b33;border-radius:7px;padding:.7rem .95rem;margin-top:.9rem;font-size:13px;}
+.gegenfrage-l{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1.6px;text-transform:uppercase;color:var(--teal);margin-bottom:.25rem;}
+.pruef{counter-reset:pf;}
+.pf{display:flex;gap:.9rem;background:var(--card);border:1px solid var(--rule);border-radius:8px;padding:.75rem 1rem;margin:.55rem 0;}
+.pf-nr{font-family:'DM Mono',monospace;font-size:1.3rem;font-weight:500;color:var(--teal);line-height:1;min-width:1.6rem;}
+.pf-t{font-weight:700;font-size:13.5px;margin-bottom:.1rem;}
+.pf-b{font-size:12.8px;color:var(--muted);line-height:1.55;}
+.reveal{display:none;}
+.reveal.open{display:block;}
+.rv-btn{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1.3px;text-transform:uppercase;padding:7px 16px;border:1px solid var(--ink);border-radius:5px;background:var(--ink);color:#fff;cursor:pointer;margin-top:.6rem;}
+.rv-btn:hover{background:var(--teal);border-color:var(--teal);}
+.pagebreak{page-break-before:always;border-top:3px double var(--rule);margin-top:2.4rem;padding-top:1.6rem;}
+.stufe{display:inline-block;font-family:'DM Mono',monospace;font-size:8.5px;letter-spacing:1px;padding:1px 6px;border-radius:3px;margin-left:.3rem;vertical-align:middle;}
+.s-a{background:#dff0e4;color:var(--green);}
+.s-b{background:#fdf0da;color:var(--amber);}
+.s-c{background:#f6dcdc;color:var(--red);}
+.footer{margin-top:2.4rem;padding-top:1rem;border-top:1px solid var(--rule);display:flex;justify-content:space-between;flex-wrap:wrap;gap:.5rem;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);}
+@media print{.print-btn,.rv-btn{display:none;}body{background:#fff;}.page{padding:0;max-width:100%;}.reveal{display:block!important;}}
+</style>
+</head>
+<body>
+<div class="page">
+
+<div class="ho-header">
+ <div>
+  <div class="ho-eyebrow">Handreichung · Entwurf · KI-Manager</div>
+  <h1 class="ho-title">Kennzahlen — und was sie <em>wirklich</em> beantworten</h1>
+ </div>
+ <button class="print-btn" onclick="window.print()">Drucken</button>
+</div>
+
+<div class="lead">
+<strong>Wofür diese Handreichung da ist.</strong> Die Belegstufen A bis D prüfen <em>fremde</em> Zahlen — wer sie erhoben hat und wie belastbar das ist. Für die Zahlen aus dem <em>eigenen Haus</em> genügt das nicht. Dort ist das Problem ein anderes, und es ist das teurere:<br><br>
+<strong>Die Zahlen sind nicht falsch. Sie beantworten nur eine andere Frage als die, für die sie vorgelegt werden.</strong> Niemand lügt. Die Kennzahl steht einfach eine Stufe unter der Behauptung.<br><br>
+Diese Handreichung beschreibt <strong>drei Verwechslungen</strong>, die in KI-Berichten regelmäßig vorkommen, und gibt Dir vier Fragen an die Hand, mit denen Du sie im Gespräch auseinandernimmst.
+</div>
+
+<h2>Die Leiter — vier Stufen, die gern übersprungen werden</h2>
+
+<p>Jede Kennzahl zu einem KI-Vorhaben steht auf einer dieser vier Stufen. Das Problem entsteht nicht dadurch, dass jemand eine Stufe misst — sondern dadurch, dass er eine höhere behauptet.</p>
+
+<table class="tbl">
+ <thead><tr><th style="width:7%">Stufe</th><th style="width:26%">Die Kennzahl</th><th style="width:33%">Was sie beantwortet</th><th>Was sie <em>nicht</em> beantwortet</th></tr></thead>
+ <tbody>
+  <tr><td><strong>①</strong></td><td><strong>Berechtigte Zugänge</strong><br><span style="font-size:11px;color:var(--muted);">Lizenzen, Freischaltungen</span></td><td>Wer <em>könnte</em> das System nutzen?</td><td>Wer hat es tatsächlich genutzt?</td></tr>
+  <tr><td><strong>②</strong></td><td><strong>Anfragen oder Sitzungen</strong><br><span style="font-size:11px;color:var(--muted);">Nutzungsquoten, Interaktionszahlen</span></td><td>Wie viel Interaktion hat stattgefunden?</td><td>Wie viele Aufgaben wurden erfolgreich erledigt?</td></tr>
+  <tr><td><strong>③</strong></td><td><strong>Aufgabenbewertung</strong><br><span style="font-size:11px;color:var(--muted);">Qualität, Durchlaufzeit, Fehlerquote</span></td><td>Ist die Arbeit unter definierten Bedingungen besser geworden?</td><td>Hält der Effekt über die Organisation hinweg?</td></tr>
+  <tr><td><strong>④</strong></td><td><strong>Nettogeschäftsergebnis</strong><br><span style="font-size:11px;color:var(--muted);">Ertrag nach allen Kosten</span></td><td>Überstiegen die Vorteile die Betriebs- und Änderungskosten?</td><td>Ob die KI <em>allein</em> die Ursache war</td></tr>
+ </tbody>
+</table>
+
+<div class="merksatz">Zugang ist nicht Nutzung.<br>Nutzung ist nicht Erfolg.<br>Erfolg ist nicht Ertrag.</div>
+
+<p>Drei stille Sprünge — und keiner davon ist eine Lüge. Jeder ist nur eine Stufe zu hoch.</p>
+
+<div class="pagebreak"></div>
+
+<h2>Die drei Verwechslungen</h2>
+
+<!-- ────────────────────────────── 1 -->
+<div class="fehler f1">
+ <div class="fehler-kopf">
+  <div class="fehler-nr">Verwechslung 1 — die häufigste</div>
+  <div class="fehler-name">Der Stufenfehler</div>
+  <div class="fehler-kurz">Eine Vorstufe wird gemessen und als Ergebnis ausgegeben.</div>
+ </div>
+ <div class="fehler-body">
+  <p><strong>Woran Du ihn erkennst:</strong> Die Zahl ist leicht zu erheben. Genau das ist der Grund, warum sie berichtet wird — nicht ihre Aussagekraft.</p>
+
+  <div class="fall">
+   <div class="fall-t">Aus 800 Zugängen wird ein Erfolg</div>
+   <p>Ein Automobilhersteller gab in der Antriebsentwicklung rund 800 Ingenieuren Zugang zu einem quellengestützten Assistenzsystem; berichtet wird eine Nutzung „hunderte Male" im Monat. Beides sind Stufe ① und ②.</p>
+   <p><strong>In derselben technischen Veröffentlichung steht, dass die tatsächlich eingesparte Recherchezeit noch nicht gemessen wurde.</strong> In Präsentationen entsteht daraus: 800 Zugänge → 800 Nutzer → ein Erfolg → eine Prozentzahl.</p>
+  </div>
+
+  <div class="fall">
+   <div class="fall-t">Die Nutzungsquote als Einführungsziel</div>
+   <p>Gewöhnliche Software bekommt gewöhnliche Einführungspläne — etwa die Vorgabe, dass 90 Prozent der Belegschaft ein Programm wöchentlich nutzen sollen. Setzt man dieses Ziel für KI, entsteht ein Strom zusätzlicher Vermerke, Mitschriften und Präsentationen: Arbeit, die niemand angefordert hat.</p>
+   <p><strong>Die Quote wird erfüllt. Gemessen wurde Stufe ②, behauptet wird Stufe ③.</strong></p>
+  </div>
+
+  <div class="fall">
+   <div class="fall-t">Die Teilnahmeliste als Kompetenznachweis</div>
+   <p>Die übliche Umsetzung der Kompetenzpflicht nach Artikel 4 der KI-Verordnung ist eine Anwesenheitsliste. Sie belegt <em>Anwesenheit</em> — nicht Kompetenz.</p>
+   <p><strong>Derselbe Fehler, nur im Personalbereich.</strong> Brauchbar wird der Nachweis erst über beobachtbare Handlungen: nicht „kennt die Risiken", sondern „kann bei einem konkreten Ergebnis benennen, woran sie oder er Zweifel festmacht — und kennt den Meldeweg".</p>
+  </div>
+
+  <div class="fall">
+   <div class="fall-t">Erkennen ist nicht Beheben</div>
+   <p>Ein System meldet ein Problem in Sekunden. Wer prüft den Befund? Wer entscheidet? Wer führt aus? <strong>Ohne diese drei Antworten hat man keine Aufgabe erledigt, sondern eine Warteschlange erzeugt.</strong></p>
+   <p>Die Erkennungsleistung ist Stufe ③ für einen <em>Teilschritt</em> — und sagt nichts über den Vorgang als Ganzes.</p>
+  </div>
+
+  <div class="gegenfrage">
+   <div class="gegenfrage-l">Deine Gegenfrage</div>
+   <strong>„Auf welcher Stufe steht diese Zahl — und welche Stufe behauptet der Satz, in dem sie vorkommt?"</strong><br>
+   Wenn die Antwort zwei verschiedene Stufen ergibt, ist der Sprung gefunden. Er muss nicht böswillig sein; er muss nur benannt werden.
+  </div>
+ </div>
+</div>
+
+<!-- ────────────────────────────── 2 -->
+<div class="fehler f2">
+ <div class="fehler-kopf">
+  <div class="fehler-nr">Verwechslung 2 — die teuerste</div>
+  <div class="fehler-name">Der Ebenenfehler</div>
+  <div class="fehler-kurz">Eine Größe wird in eine andere umgerechnet, ohne dass die Verbindung belegt ist.</div>
+ </div>
+ <div class="fehler-body">
+  <p><strong>Woran Du ihn erkennst:</strong> Im Satz steht ein „also" oder ein Multiplikationszeichen. Meist wird Zeit in Geld verwandelt.</p>
+
+  <div class="fall">
+   <div class="fall-t">Freigesetzte Zeit ist nicht Geld</div>
+   <p>Eine Zeitersparnis ist <strong>potenzielle Kapazität</strong>, nicht automatisch ein Ertrag. Ein Finanzargument braucht zwei belegte Angaben: <em>was das Team mit der freigewordenen Zeit tatsächlich gemacht hat</em> — und <em>was der Betrieb gekostet hat.</em></p>
+   <p>Ein Praktiker formuliert die Regel knapper: <strong>Eine Zeitkostenschätzung ist kein entgangener Umsatz, solange die Belege diese Verbindung nicht tragen.</strong></p>
+  </div>
+
+  <div class="fall">
+   <div class="fall-t">Die Arbeit ist nicht weg — sie ist umgezogen</div>
+   <p>Ein System kann die Zeit bis zum ersten Ergebnis verkürzen und gleichzeitig den Aufwand für <strong>Prüfung, Ausnahmebehandlung und Wiederherstellung</strong> erhöhen. Fällt dieser Teil aus der Rechnung, entsteht ein Gewinn, den es nicht gibt.</p>
+   <p>Der Fehlermodus in einem Satz: <strong>Die scheinbare Produktivität bildet Arbeit ab, die an eine andere Stelle im Ablauf gewandert ist.</strong></p>
+  </div>
+
+  <div class="note amber">
+   <strong>Fünf Kostenpositionen, die in KI-Rechnungen regelmäßig fehlen:</strong> Prüf- und Korrekturzeit · Ausnahmebehandlung · Nacharbeit und Wiederherstellung · Quellenpflege (wer hält den Datenbestand aktuell?) · die auf Mitarbeitende verlagerte gedankliche Last.<br><br>
+   <em>Keine davon steht im Angebot. Alle fallen bei Dir an.</em>
+  </div>
+
+  <div class="gegenfrage">
+   <div class="gegenfrage-l">Deine Gegenfrage</div>
+   <strong>„Welche Einheit steht links vom Gleichheitszeichen, welche rechts — und wer hat die Umrechnung belegt?"</strong><br>
+   Bei Stunden, die zu Euro werden, lautet die Anschlussfrage: <em>Wofür wurde die Zeit verwendet, und ist das dokumentiert?</em>
+  </div>
+ </div>
+</div>
+
+<!-- ────────────────────────────── 3 -->
+<div class="fehler f3">
+ <div class="fehler-kopf">
+  <div class="fehler-nr">Verwechslung 3 — die unauffälligste</div>
+  <div class="fehler-name">Der Indikatorfehler</div>
+  <div class="fehler-kurz">Der Indikator sieht gesund aus, weil er etwas anderes misst als das, worum es geht.</div>
+ </div>
+ <div class="fehler-body">
+  <p><strong>Woran Du ihn erkennst:</strong> Die Zahl hat sich verbessert, und niemand kann erklären, <em>warum</em>. Das ist kein Grund zur Freude, sondern ein Prüfanlass.</p>
+
+  <div class="fall">
+   <div class="fall-t">Zwei Zahlen, die sich gegenseitig erklären</div>
+   <p>Eine Organisation erprobt einen Chatbot im Kundendienst. Die Antwortzeit sinkt um <strong>40 Prozent</strong>. Im selben Zeitraum sinkt das Anfragevolumen um <strong>25 Prozent</strong>.</p>
+   <p>Es gab <strong>keine Vergleichsgruppe</strong> und <strong>keine Kostenerhebung</strong>. Trotzdem soll dem Vorstand berichtet werden, der Chatbot habe den Dienst beschleunigt und Kosten gesenkt.</p>
+   <p><strong>Das weniger gewordene Anfragevolumen kann den größten Teil der Beschleunigung allein erklären.</strong> Und über Kosten lässt sich ohne Kostendaten nichts sagen — auch nicht „vermutlich gesunken".</p>
+  </div>
+
+  <div class="note red">
+   <strong>Der Satz, den Du Dir merken solltest:</strong> Eine Verbesserung ohne Vergleichsgruppe ist eine Beobachtung, keine Wirkung. Sie darf so berichtet werden — <em>als Beobachtung.</em>
+  </div>
+
+  <div class="gegenfrage">
+   <div class="gegenfrage-l">Deine Gegenfrage</div>
+   <strong>„Was hat sich im selben Zeitraum sonst noch verändert — und womit vergleichen wir?"</strong><br>
+   Gibt es keine Vergleichsgruppe, lautet die ehrliche Formulierung „wir beobachten", nicht „wir haben bewirkt".
+  </div>
+ </div>
+</div>
+
+<div class="pagebreak"></div>
+
+<h2>Vier Fragen — das Arbeitswerkzeug</h2>
+
+<p>Diese vier Fragen kannst Du in jeder Vorlage stellen, in der eine KI-Zahl vorkommt. Sie sind bewusst unspektakulär; ihre Wirkung liegt darin, dass sie nacheinander gestellt werden.</p>
+
+<div class="pruef">
+ <div class="pf"><div class="pf-nr">1</div><div><div class="pf-t">Auf welcher Stufe steht die Zahl?</div><div class="pf-b">Zugang, Nutzung, Aufgabenbewertung oder Nettoergebnis. Und: Welche Stufe behauptet der Satz, in dem sie vorkommt?</div></div></div>
+ <div class="pf"><div class="pf-nr">2</div><div><div class="pf-t">Welche Einheit wurde in welche umgerechnet?</div><div class="pf-b">Besonders: Wurden Stunden zu Euro? Dann muss dokumentiert sein, was mit der Zeit geschehen ist.</div></div></div>
+ <div class="pf"><div class="pf-nr">3</div><div><div class="pf-t">Womit wird verglichen?</div><div class="pf-b">Ohne Vergleichsgruppe oder Vorher-Messung ist jede Wirkungsaussage eine Beobachtungsaussage.</div></div></div>
+ <div class="pf"><div class="pf-nr">4</div><div><div class="pf-t">Welche Kosten sind nicht in der Rechnung?</div><div class="pf-b">Prüfzeit, Ausnahmen, Nacharbeit, Quellenpflege, verlagerte Last. Fehlt eine davon, ist die Rechnung unvollständig — nicht falsch, aber unvollständig.</div></div></div>
+</div>
+
+<div class="note green">
+<strong>Wofür das Werkzeug ausdrücklich nicht gedacht ist.</strong> Es dient nicht dazu, Vorhaben zu Fall zu bringen. Die meisten Zahlen, die daran scheitern, sind gutgemeint und stammen von Kolleginnen und Kollegen, die etwas Richtiges zeigen wollten.<br><br>
+<strong>Das Ziel ist eine andere Formulierung, nicht ein anderes Ergebnis:</strong> aus „der Assistent hat die Bearbeitung um 40 Prozent beschleunigt" wird „wir beobachten eine um 40 Prozent kürzere Bearbeitung; im selben Zeitraum ist das Volumen um 25 Prozent gesunken, eine Vergleichsgruppe gab es nicht". <em>Der zweite Satz hält der Nachfrage stand. Der erste nicht.</em>
+</div>
+
+<h2>Übung · Zehn Minuten, allein, schriftlich</h2>
+
+<div class="card">
+<p><strong>Der Fall.</strong> Deine Vorstandssitzung ist am Donnerstag. Die Leiterin des Kundendienstes legt Dir folgende Folie vor:</p>
+
+<div class="note" style="font-size:13.5px;">
+<strong>„KI-Pilot Kundendienst — Ergebnis nach drei Monaten"</strong><br>
+· Antwortzeit <strong>−40 %</strong><br>
+· Team-Rückmeldung: „deutliche Entlastung"<br>
+· <strong>Empfehlung: Ausweitung auf alle Standorte</strong>
+</div>
+
+<p style="margin-top:.7rem;">Auf Nachfrage erfährst Du: Das Anfragevolumen ist im selben Zeitraum um 25 Prozent gesunken. Eine Vergleichsgruppe gab es nicht. Kosten wurden nicht erhoben.</p>
+
+<p style="margin-top:.6rem;"><strong>Deine Aufgabe:</strong> Formuliere zwei Dinge schriftlich. Erstens: die drei Fragen, die Du der Kollegin stellst — höflich, aber ohne Ausweichmöglichkeit. Zweitens: den Satz, mit dem die Folie <em>richtig</em> formuliert wäre.</p>
+
+<button class="rv-btn" onclick="rv('loes',this)">Auflösung einblenden</button>
+<div class="reveal" id="loes">
+ <div class="note teal" style="margin-top:.8rem;">
+ <strong>Die drei Fragen:</strong><br>
+ <strong>①</strong> <em>„Auf welcher Stufe steht die 40 Prozent — gemessene Bearbeitungszeit oder etwas anderes? Und wie ist ‚deutliche Entlastung' erhoben worden?"</em> Die Rückmeldung ist keine Messung; sie gehört als Rückmeldung gekennzeichnet.<br><br>
+ <strong>②</strong> <em>„Wie viel der Beschleunigung erklärt das um 25 Prozent gesunkene Volumen?"</em> Das ist die entscheidende Frage. Sie ist nicht beantwortbar — und genau das ist die Antwort.<br><br>
+ <strong>③</strong> <em>„Was hat der Betrieb gekostet, und was kostet die Ausweitung?"</em> Ohne Kostenseite gibt es keine Empfehlung zur Ausweitung, sondern nur einen Wunsch.
+ </div>
+
+ <div class="note green">
+ <strong>Die richtig formulierte Folie:</strong><br><br>
+ <em>„Im Pilotzeitraum lag die Antwortzeit 40 Prozent unter dem Vorzeitraum. Im selben Zeitraum sank das Anfragevolumen um 25 Prozent; welcher Anteil der Beschleunigung darauf entfällt, ist nicht bestimmt. Eine Vergleichsgruppe gab es nicht, Kosten wurden nicht erhoben. Das Team berichtet Entlastung. <strong>Empfehlung: kontrollierte Fortsetzung mit Kostenerfassung, Entscheidung über Ausweitung danach.</strong>"</em>
+ </div>
+
+ <div class="note amber">
+ <strong>Worauf es didaktisch ankommt:</strong> Die zweite Fassung ist <em>nicht</em> das Ende des Vorhabens. Sie ist die Fassung, die eine Ausweitung später tragen kann. Die erste Fassung hält der ersten kritischen Nachfrage im Vorstand nicht stand — und beschädigt dann das Vorhaben stärker, als die ehrliche Fassung es je getan hätte.
+ </div>
+</div>
+</div>
+
+<h2>Ein Nachsatz — die vierte Verwechslung</h2>
+
+<div class="card">
+<p>Sie betrifft keine Kennzahl, sondern den Zeitpunkt: <strong>Erwartung ist nicht Ergebnis.</strong></p>
+<p>Eine große Befragung zum Stand der KI in Unternehmen stellte 2025 die Frage, in welchen Geschäftsfunktionen mit einem Personalrückgang gerechnet werde, und wiederholte die Erhebung ein Jahr später. Erwartet hatten den Rückgang rund <strong>32 Prozent</strong>; eingetreten war er bei rund <strong>14 Prozent</strong>.</p>
+<p><strong>Der bemerkenswerte Teil:</strong> In <em>jeder</em> untersuchten Geschäftsfunktion blieb der berichtete Rückgang hinter der Erwartung des Vorjahres zurück.</p>
+<div class="note red">
+<strong>Für Deine Arbeit heißt das:</strong> Prognosen aus Befragungen sind Stimmungsbilder. Sie messen, was Führungskräfte zu einem Zeitpunkt für wahrscheinlich hielten — nicht, was geschah. Wer eine Erwartungszahl als Planungsgrundlage verwendet, plant auf einer Stimmung.<br><br>
+<em>Die belastbare Fassung lautet: „X Prozent rechneten damit" — niemals „X Prozent werden".</em>
+</div>
+</div>
+
+<h2>Woher das Material stammt</h2>
+
+<div class="card" style="font-size:12.5px;">
+<p><strong>Die Leiter und der Toyota-Fall</strong> stehen ausgearbeitet in KI-Manager Tag 5. Quelle des Falls: Fallbericht eines Beraters (Kamil Banc, AI Adopters Club), <span class="stufe s-c">Stufe C</span> — verwendet wird allein das Strukturbild, nicht die Wirkungsangaben.</p>
+<p><strong>Die Nutzungsquote und der „workslop"</strong> nach einem Debattenbeitrag von Ethan Mollick (Wharton School) im <em>Economist</em>, April 2026, <span class="stufe s-c">Stufe C</span> — sachkundige Meinung ohne eigene Datengrundlage. Ausführliche Einordnung in der Handreichung „Wenn KI ihre Fremdheit verliert".</p>
+<p><strong>„Erkennen ist nicht Beheben"</strong> und die Zeitkosten-Regel nach Kamil Banc, September 2026, <span class="stufe s-c">Stufe C</span>. Der zugehörige Bericht ist ein kostenpflichtiges Produkt und wird nicht ausgeteilt.</p>
+<p><strong>Die verschobene Arbeit und die fehlenden Kostenpositionen</strong> nach Wu, Ziems u. a., „When Does AI Augment Work?", arXiv 2609.12482, September 2026, CC BY 4.0, <span class="stufe s-b">Stufe B</span> — Whitepaper des CIVIC-AI-Workshops mit Autorenschaft an der National University of Singapore, Stanford, A*STAR und im Singapurer Arbeitsministerium.</p>
+<p><strong>Der Chatbot-Fall</strong> ist dem Beispielteil eines Anbieter-Verhaltenskodex nachgebildet (Microsoft AI, Entwurf vom 14.09.2026), dort als Gegenüberstellung regelkonformer und nicht regelkonformer Antworten. <span class="stufe s-c">Stufe C</span>; die Zahlen sind illustrativ, nicht erhoben.</p>
+<p><strong>Erwartung und Ergebnis</strong> nach McKinsey, „State of AI 2026", <span class="stufe s-c">Stufe C</span>; die Zahlen stammen aus 552 Personen, die beide Befragungen beantwortet haben. Ausführlich im Informationsblatt „KI und der Arbeitsmarkt".</p>
+<p><strong>Die Artikel-4-Kompetenzarchitektur</strong> steht ausgearbeitet in KI-Beauftragter Tag 14.</p>
+<p style="margin-top:.7rem;color:var(--muted);"><em>Hinweis zur Verwendung: Die Fälle sind Anschauungsmaterial, keine Wirksamkeitsbelege. Keine der hier genannten Zahlen gehört ohne Rückverfolgung auf ihre Primärquelle in eine eigene Vorlage — was zugleich die Übung dieser Handreichung ist.</em></p>
+</div>
+
+<div class="footer">
+ <span>KI-Schulungen · Handreichung · <strong>Entwurf zur Abstimmung</strong></span>
+ <span>Stand: September 2026</span>
+</div>
+
+</div>
+<script>
+function rv(id,btn){
+ var el=document.getElementById(id);
+ var open=el.classList.toggle('open');
+ btn.textContent=open?'Auflösung ausblenden':'Auflösung einblenden';
+}
+</script>
+</body>
+</html>
