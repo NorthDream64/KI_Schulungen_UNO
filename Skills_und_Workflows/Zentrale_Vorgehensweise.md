@@ -209,6 +209,18 @@ Das **Hand-Out ist das führende Tagesdokument** und wird auf Basis der Quellenr
 
 Die **Gamma-Präsentation speist sich aus dem Hand-Out** (Zusammenfassung in separatem Chat) und wird nicht parallel doppelt gepflegt. Ein eigenständiges Dozenten-„Labor" wird nicht mehr geführt.
 
+#### Schritt 3a — Formatprüfung nach jedem HTML-Einbau (Pflicht)
+
+**Hand-Outs teilen sich kein gemeinsames Stylesheet.** Jede Datei trägt ihr eigenes `<style>`-Element. Eine Klasse, die in Tag 10 definiert ist, existiert in Tag 11 möglicherweise nicht — der Kasten wird dann als Fließtext ohne Rahmen gerendert, ohne dass eine Fehlermeldung erscheint.
+
+Am 21.09.2026 fiel dadurch auf, dass **elf Hand-Outs** Klassen verwendeten, die dort nie definiert waren (vor allem die `.note`-Familie). Alle wurden nachgetragen. Damit das nicht wiederkehrt, nach **jedem** Einbau in eine HTML-Datei:
+
+1. **Klassenabgleich** — jede im Rumpf verwendete `class` muss im `<style>`-Element derselben Datei eine Regel haben.
+2. **Tag-Bilanz** — `<div>`/`</div>`, `<p>`/`</p>`, `<table>`/`</table>` zählen; bei Abweichung die Stelle suchen, nicht nur die Zahl ausgleichen.
+3. **Kernbotschaften-Reihenfolge** — die Nummern in `kb-nr` müssen aufsteigend stehen. Neue Botschaften erhalten einen Buchstabenzusatz (⑦a), damit bestehende Nummern nicht verrutschen.
+
+Punkte 1 und 2 laufen als Skript über alle Hand-Outs; Punkt 3 braucht eine Sichtprüfung der betroffenen Liste.
+
 ### Schritt 4 — Quiz prüfen oder erstellen
 
 → Vollständige Anforderungen: Abschnitt 5
