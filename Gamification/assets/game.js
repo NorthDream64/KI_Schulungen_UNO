@@ -118,7 +118,8 @@ async function ladePaket(nr) {
     const resp = await fetch(FRAGEN_DATEI + "?v=" + Date.now());
     const data = await resp.json();
     const pool = (data.fragen || []).filter(f => f.paket === nr);
-    const gezogen = shuffle([...pool]).slice(0, PAKET_GROESSE);
+    // Absicherung: wenn der Pool kleiner ist als PAKET_GROESSE, ziehen wir eben nur so viele.
+    const gezogen = shuffle([...pool]).slice(0, Math.min(PAKET_GROESSE, pool.length));
     state.fragen = gezogen;
 
     $("level-tag").textContent = "Reise " + nr;
@@ -128,7 +129,16 @@ async function ladePaket(nr) {
     zeigeFrage();
   } catch (e) {
     console.error("Paket-Ladefehler:", e);
-    $("q-text").textContent = "Fehler beim Laden der Fragen. Bitte Seite neu laden.";
+    // Sanfter UX-Rückweg: Nutzer:in bleibt nicht in game-view gefangen.
+    hide("game-view");
+    show("paket-auswahl-view");
+    // Kurzen Hinweis oben in die Auswahl setzen
+    const grid = $("paket-grid");
+    const warn = document.createElement("div");
+    warn.className = "load-error";
+    warn.textContent = "Die Fragen für Reise " + nr + " konnten nicht geladen werden. Bitte Seite neu laden oder eine andere Reise wählen.";
+    warn.style.cssText = "grid-column:1/-1;padding:.9rem 1.1rem;background:var(--wrong-bg);border:1px solid var(--wrong-border);border-radius:8px;color:var(--wrong);font-size:13px;margin-bottom:1rem;";
+    grid.insertBefore(warn, grid.firstChild);
   }
 }
 
@@ -149,14 +159,26 @@ function zeigeFrage() {
   $("q-text").textContent = frage.frage;
 
   const list = $("opt-list");
+  list.setAttribute("role", "group");
+  list.setAttribute("aria-label", "Antwortoptionen — eine oder mehrere auswählbar");
   list.innerHTML = "";
   const opts = shuffle([...frage.optionen]);
   opts.forEach((opt) => {
     const row = document.createElement("div");
     row.className = "opt";
     row.dataset.id = opt.id;
-    row.innerHTML = '<span class="opt-cb"></span><span class="opt-text">' + escapeHtml(opt.text) + '</span>';
+    // WAI-ARIA: als Checkbox verhalten, Tastatur-navigierbar
+    row.setAttribute("role", "checkbox");
+    row.setAttribute("aria-checked", "false");
+    row.setAttribute("tabindex", "0");
+    row.innerHTML = '<span class="opt-cb" aria-hidden="true"></span><span class="opt-text">' + escapeHtml(opt.text) + '</span>';
     row.addEventListener("click", () => toggleOption(row, opt.id));
+    row.addEventListener("keydown", (ev) => {
+      if (ev.key === " " || ev.key === "Enter") {
+        ev.preventDefault();
+        toggleOption(row, opt.id);
+      }
+    });
     list.appendChild(row);
   });
 
@@ -181,10 +203,12 @@ function toggleOption(row, id) {
     state.ausgewaehlt.delete(id);
     row.classList.remove("selected");
     row.querySelector(".opt-cb").classList.remove("chk");
+    row.setAttribute("aria-checked", "false");
   } else {
     state.ausgewaehlt.add(id);
     row.classList.add("selected");
     row.querySelector(".opt-cb").classList.add("chk");
+    row.setAttribute("aria-checked", "true");
   }
 }
 

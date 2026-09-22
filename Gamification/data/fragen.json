@@ -566,7 +566,7 @@
         },
         {
           "id": "c",
-          "text": "Fortgeschrittene Techniken gehören ebenfalls dazu — insbesondere Chain-of-Thought (das Modell wird gebeten, Zwischenschritte des Denkens auszuformulieren) und Self-Consistency (dieselbe Aufgabe wird mehrfach mit Chain-of-Thought gerechnet, die am häufigsten erreichte Antwort gewinnt). Kosten mehr Rechenzeit, verbessern aber die Präzision bei komplexen Aufgaben."
+          "text": "Fortgeschrittene Techniken gehören dazu — Chain-of-Thought (Modell formuliert Zwischenschritte aus) und Self-Consistency (mehrfach rechnen, häufigste Antwort gewinnt). Mehr Rechenzeit, aber bessere Präzision bei komplexen Aufgaben."
         },
         {
           "id": "d",
@@ -1409,7 +1409,7 @@
       "optionen": [
         {
           "id": "a",
-          "text": "Eine Datenpipeline ist die automatisierte Kette aus Daten-Extraktion (aus KIS/LIS — dem Krankenhaus- und dem Labor-Informationssystem — sowie Monitoring-Systemen), Transformation (Bereinigung, Vereinheitlichung, Feature-Berechnung) und Bereitstellung an das Modell — typischerweise nach dem ETL/ELT-Prinzip (Extract-Transform-Load bzw. Extract-Load-Transform: Daten holen, aufbereiten, laden)."
+          "text": "Eine Datenpipeline ist die automatisierte Kette aus Extraktion (aus KIS/LIS und Monitoring-Systemen), Transformation (Bereinigung, Vereinheitlichung, Feature-Berechnung) und Bereitstellung an das Modell — typisch nach ETL/ELT-Prinzip (Daten holen, aufbereiten, laden)."
         },
         {
           "id": "b",
@@ -1717,7 +1717,7 @@
         },
         {
           "id": "b",
-          "text": "World Models sind interne, prädiktive Modelle der Umgebung: Ein System, das „wenn ich das tue, passiert wahrscheinlich jenes“ simulieren kann, ohne es real ausprobieren zu müssen. Ursprünglich aus dem Reinforcement Learning (Lern-Paradigma mit Belohnungssignalen), prominent gemacht durch Yann LeCun (mit seiner JEPA-Architektur, einem Vorschlag für vorhersagende KI-Systeme)."
+          "text": "World Models sind interne, prädiktive Simulationen der Umgebung: das System kann „wenn ich das tue, passiert wahrscheinlich jenes“ durchdenken, ohne es real auszuprobieren. Ursprung: Reinforcement Learning; prominent durch Yann LeCuns JEPA-Architektur."
         },
         {
           "id": "c",
@@ -1903,7 +1903,7 @@
         },
         {
           "id": "b",
-          "text": "A/B Testing und Canary Release gehören zur selben Familie: Bei beiden trifft das neue Modell echte Entscheidungen für einen Teil des Live-Traffics. Der Unterschied: A/B splittet den Traffic in feste Anteile (etwa 90/10 oder 50/50) und vergleicht statistisch. Canary Release beginnt bei sehr kleinem Prozentsatz (1–5 %) und rampt automatisch hoch, wenn Metriken innerhalb definierter Schwellen bleiben — sonst automatischer Rückzug."
+          "text": "A/B Testing und Canary Release: verwandte Familie. Beide teilen echten Live-Traffic zwischen alt und neu. A/B splittet fest (z. B. 90/10) und vergleicht statistisch. Canary startet bei 1–5 %, rampt bei guten Metriken automatisch hoch — sonst automatischer Rückzug."
         },
         {
           "id": "c",
@@ -2717,11 +2717,11 @@
       "optionen": [
         {
           "id": "a",
-          "text": "RLHF (Reinforcement Learning from Human Feedback) trainiert ein Modell an menschlichen Präferenzen: Menschen bewerten paarweise, welche von zwei Antworten besser ist; daraus wird ein Belohnungs-Modell gelernt, das dann per Reinforcement Learning die Modell-Ausgaben steuert. Kern-Anwendung: Ausrichtung auf höfliches, hilfreiches, sicheres Verhalten. Prominent durch InstructGPT/ChatGPT (OpenAI, 2022)."
+          "text": "RLHF (Reinforcement Learning from Human Feedback): Menschen bewerten paarweise Antworten; daraus wird ein Belohnungs-Modell gelernt, das die Modell-Ausgaben per Reinforcement Learning steuert. Ausrichtung auf höfliches, hilfreiches Verhalten. Prominent durch InstructGPT/ChatGPT (OpenAI, 2022)."
         },
         {
           "id": "b",
-          "text": "RLVR (Reinforcement Learning from Verifiable Rewards) ersetzt die menschliche Präferenz durch automatisch prüfbare Belohnungen: mathematischer Beweis stimmt (ja/nein), Code kompiliert und läuft (ja/nein), Testfall geht durch (ja/nein). Das erlaubt Training in gigantischem Maßstab ohne menschliche Bewerter. Kernanwendung: Reasoning-Modelle wie OpenAI o1, DeepSeek-R1, Kimi k1.5."
+          "text": "RLVR (Reinforcement Learning from Verifiable Rewards) ersetzt menschliche Bewertung durch automatisch prüfbare Belohnungen: Beweis stimmt (ja/nein), Code kompiliert (ja/nein), Testfall grün (ja/nein). Training in gigantischem Maßstab ohne menschliche Bewerter. Kern der Reasoning-Modelle o1, DeepSeek-R1, Kimi k1.5."
         },
         {
           "id": "c",
@@ -2770,6 +2770,74 @@
             "art": "Wissenschaftliches Preprint",
             "institution": "arXiv",
             "url": "https://arxiv.org/abs/2506.14245"
+          }
+        ]
+      }
+    },
+    {
+      "id": "L4-10",
+      "schwierigkeit": 3,
+      "paket": 4,
+      "absender": "IT-Sicherheit",
+      "kanal": "Anruf",
+      "szenario": "Der Leiter IT-Sicherheit ruft nachts um 23:15 an: „Wir haben ein Problem. Das seit heute morgen live geschaltete Kredit-Scoring-Modell lehnt seit einer Stunde alle Anträge ab — auch die klar bewilligungsfähigen. Der Support brennt. Ich brauche jetzt Klarheit: Wie lange dauert es, bis wir wieder auf dem alten Modell sind? Und wer entscheidet das?“",
+      "frage": "Welche Aussagen sind für den Ernstfall zutreffend? (Mehrfachauswahl)",
+      "optionen": [
+        {
+          "id": "a",
+          "text": "Ein Kill Switch (Not-Aus für das Modell) muss vor dem Live-Gang definiert und getestet sein — meist als Feature Flag umgesetzt, das den Modell-Endpunkt in Sekunden deaktiviert. Wenn das erst im Ernstfall gebaut werden muss, ist es zu spät."
+        },
+        {
+          "id": "b",
+          "text": "Rollback-Zeit ist eine Kern-Governance-Kennzahl: Bei Blue-Green-Deployment Sekunden (Router umschalten), bei Canary Sekunden bis Minuten (Traffic-Anteil zurücknehmen), bei einem Deploy-only-Setup Stunden. Diese Zeiten müssen VOR Go-Live bekannt und geübt sein."
+        },
+        {
+          "id": "c",
+          "text": "Die Entscheidungs-Kette für den Ernstfall muss schriftlich festgelegt sein: Wer darf den Kill Switch drücken? Wer wird informiert? Wer schreibt den Post-Mortem? Ohne diese Klarheit vergeht in der akuten Situation wertvolle Zeit mit Rückfragen."
+        },
+        {
+          "id": "d",
+          "text": "Rollback und Kill Switch sind für ML-Systeme nicht anwendbar — man muss immer erst das Problem verstehen, bevor man reagiert."
+        }
+      ],
+      "korrekt": [
+        "a",
+        "b",
+        "c"
+      ],
+      "feedback_richtig": "Genau. Die Google SRE-Doktrin ist eindeutig: Mitigation zuerst, Root-Cause-Analyse später. Der Kern-Satz aus dem SRE Workbook: „Rollback ist die generische Mitigation — sie beschleunigt die Wiederherstellung und macht Kund:innen glücklicher.“ Für ML-Systeme kommt hinzu: Auch wenn die Ursache noch unklar ist, ist der Rückzug auf die letzte bekannte gute Version fast immer die richtige Ad-hoc-Reaktion. Fehlerdiagnose passiert danach in Ruhe.",
+      "feedback_falsch": "Der Reflex „erst verstehen, dann handeln“ ist im akuten Betriebs-Vorfall der falsche. Google SRE, AWS ML Lens und praktisch alle Ops-Referenzen fordern: erst mitigieren (Rollback / Kill Switch), dann analysieren. Bei einem laufenden Kundenschaden ist jede Minute Ausfall zurechenbar — Erklärungs-Ehrgeiz kostet dann Geld und Vertrauen.",
+      "glossar": {
+        "begriff": "Rollback und Kill Switch",
+        "erklaerung": "Zwei zentrale Notfall-Werkzeuge für produktive ML-Systeme. Rollback: Rückkehr zur letzten bekannt guten Version, technisch abhängig von der Rollout-Strategie (Blue-Green: Sekunden per Router; Canary: Minuten per Traffic-Reduktion). Kill Switch: sofortige Deaktivierung des Modell-Endpunkts (meist per Feature Flag). Beide müssen vor Go-Live definiert, dokumentiert und geübt sein. Google-SRE-Grundsatz: Mitigation vor Root-Cause-Analyse."
+      },
+      "vertiefung": {
+        "begriff": "Rollback und Kill Switch — der Ernstfall-Baukasten",
+        "laien_erklaerung": "Rollback und Kill Switch sind die zwei wichtigsten Notfall-Werkzeuge für produktive ML-Systeme. Beide beantworten dieselbe Frage: Was tun, wenn das Modell live Blödsinn liefert? Beide sind vor Go-Live zu bauen, nicht im Ernstfall zu improvisieren.\n\nDer Kill Switch ist die sofortige Deaktivierung. Historisch stammt der Begriff aus dem Maschinenbau — der große rote Notaus-Knopf, der ein Fließband oder eine Presse in Millisekunden anhält, auch wenn dabei Material Schaden nimmt. Übertragen auf ML-Systeme: Ein Mechanismus, der den Modell-Endpunkt sofort deaktiviert, meist implementiert als Feature Flag (siehe die Feature-Flag-Frage in dieser Reise). Bei aktiviertem Kill Switch liefert das System entweder gar keine Antwort mehr (kontrollierter Ausfall mit Fehlermeldung an den Anwender) oder eine sichere Standard-Antwort („Bitte wenden Sie sich an unseren Support“).\n\nRollback ist die Rückkehr zur letzten bekannt guten Version. Die Zeit dafür — die „Rollback-Time“ — ist eine der wichtigsten Governance-Kennzahlen und hängt direkt an der Rollout-Strategie:\n• Blue-Green: Sekunden. Der Router wird auf die Blue-Umgebung mit dem alten Modell zurück geschaltet.\n• Canary Release: Sekunden bis Minuten. Der Traffic-Anteil des neuen Modells wird auf 0 gestellt.\n• Feature Flag: Sekunden. Der Flag wird zurückgedreht.\n• Klassisches Deploy ohne Blue-Green: Stunden. Man muss die alte Version neu ausrollen.\n\nDie Google-SRE-Doktrin (Site Reliability Engineering Workbook, öffentlich verfügbar) formuliert den zentralen Grundsatz für den Incident: „Mitigation vor Root-Cause-Analyse.“ Also: Erst zurück zum bekannten guten Zustand, dann in Ruhe untersuchen, was schiefgelaufen ist. Der umgekehrte Reflex — erst verstehen, dann handeln — kostet in einem laufenden Kundenschaden pro Minute Geld und Vertrauen.\n\nFür ML-Systeme kommt eine besondere Herausforderung hinzu: das „Intervening Pull Request Problem“. Wenn zwischen dem Rollout des problematischen Modells und dem Ernstfall bereits weitere Änderungen live gegangen sind (etwa Bug-Fixes in der API-Schicht), löscht ein naiver Rollback auch die guten Zwischen-Änderungen. Deshalb setzen moderne Setups verstärkt auf feingranulare Deaktivierung per Feature Flag statt auf Voll-Rollback.\n\nDie organisatorische Seite ist genauso wichtig wie die technische. Vor Go-Live schriftlich festgelegt sein müssen: Wer darf den Kill Switch drücken (typisch: On-Call-Engineer plus zwei Backup-Personen)? Wer wird bei Aktivierung informiert (Produkt, Support, Rechts- und Compliance, Kommunikation)? Wer schreibt den Post-Mortem (typisch: On-Call-Engineer plus fachlich Betroffene, moderiert von einer neutralen Person). Ohne diese Klarheit vergeht in der akuten Situation wertvolle Zeit mit Rückfragen: „Darf ich das jetzt einfach machen?“.\n\nWarum das für Dich als KI-Managerin wichtig ist: Der Test des Notfall-Plans gehört in die Abnahme, nicht in den Ernstfall. Die Frage „Wie lange dauert Euer Rollback im Zweifel — und wer entscheidet?“ sollte in jedem Freigabe-Termin gestellt werden. Antwort „Wir haben's noch nicht geübt“ oder „Das entscheiden wir dann“ ist gleichbedeutend mit „Wir haben keinen Notfall-Plan“. Ein einziges Kill-Switch-Drill pro Quartal — echter Klick, echte Umschaltung — deckt die meisten Lücken auf, bevor der echte Ernstfall sie zeigt.",
+        "quellen": [
+          {
+            "titel": "Kill switch — Wikipedia (englisch), Grundlagen und historische Herkunft",
+            "art": "Enzyklopädie-Artikel",
+            "institution": "Wikipedia",
+            "url": "https://en.wikipedia.org/wiki/Kill_switch"
+          },
+          {
+            "titel": "Incident Response — Google SRE Workbook (Mitigation vor Root-Cause-Analyse)",
+            "art": "Fach-Referenzwerk (frei)",
+            "institution": "Google Site Reliability Engineering",
+            "url": "https://sre.google/workbook/incident-response/"
+          },
+          {
+            "titel": "Emergency Response — Google SRE Book",
+            "art": "Fach-Referenzwerk (frei)",
+            "institution": "Google Site Reliability Engineering",
+            "url": "https://sre.google/sre-book/emergency-response/"
+          },
+          {
+            "titel": "AWS Machine Learning Lens — Deployment Strategies (Rollback im ML-Kontext)",
+            "art": "Hersteller-Referenz-Architektur",
+            "institution": "Amazon Web Services",
+            "url": "https://docs.aws.amazon.com/wellarchitected/latest/machine-learning-lens/mlrel-11.html"
           }
         ]
       }
