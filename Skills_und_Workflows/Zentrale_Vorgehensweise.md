@@ -179,6 +179,8 @@ Tagesinhalte (Hand-Out, Gamma, Quiz) dürfen nie ohne Adaption der Perspektive u
 
 Wird ein Kurstag (z.B. „KIB Tag 7") reviewed oder aktualisiert, gelten folgende vier Schritte in dieser Reihenfolge:
 
+> **Seit 23.09.2026 als Skill hinterlegt: `kurstag-review`.** Der Workflow in diesem Abschnitt ist die inhaltliche Grundlage; der Skill ist die ausführbare Fassung mit fester Phasenfolge und Token-Disziplin. Aufruf: „Schau Dir KIM Tag 9 an" oder `/kurstag-review`. Diese Datei bleibt die Referenz für die *Regeln*, der Skill regelt den *Ablauf*. Ändert sich hier etwas Grundsätzliches, muss der Skill nachgezogen werden — er liegt nicht in diesem Repositorium, sondern im Konto und wird über `save_skill` aktualisiert.
+
 ### Schritt 1 — Quellenrecherche (immer zuerst)
 
 1. `Quellen_und_Dokumente_KI-Kurse.md` lesen → alle für diesen Tag freigegebenen Quellen identifizieren
