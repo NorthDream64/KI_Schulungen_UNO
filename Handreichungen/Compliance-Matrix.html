@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Compliance-Matrix — kein Rechtsgebiet übersehen</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400;500&family=Playfair+Display:ital,wght@0,600;1,600&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#1a1a18;--paper:#f8f6f1;--card:#ffffff;--rule:#d5d0c5;--muted:#6b6b60;--accent:#0a4a7a;--teal:#0a6b6b;--green:#2a5c3f;--amber:#7a4a00;--red:#6a1a1a;}
+*{box-sizing:border-box;}
+body{font-family:'DM Sans',sans-serif;background:var(--paper);color:var(--ink);font-size:14px;line-height:1.65;margin:0;}
+.page{max-width:1080px;margin:0 auto;padding:2rem 1.5rem 3.5rem;}
+a{color:var(--accent);}
+.ho-header{border-bottom:3px solid var(--ink);padding-bottom:1.4rem;margin-bottom:1.6rem;display:grid;grid-template-columns:1fr auto;gap:1rem;align-items:end;}
+.ho-eyebrow{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-bottom:.5rem;}
+.ho-title{font-family:'Playfair Display',serif;font-size:clamp(1.7rem,4.6vw,2.4rem);line-height:1.1;margin:0;}
+.ho-title em{font-style:italic;color:var(--teal);}
+.print-btn{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1px;text-transform:uppercase;padding:5px 14px;border:1px solid var(--rule);border-radius:4px;background:none;color:var(--muted);cursor:pointer;}
+.print-btn:hover{border-color:var(--accent);color:var(--accent);}
+.lead{background:var(--card);border:1px solid var(--rule);border-left:4px solid var(--teal);border-radius:0 8px 8px 0;padding:1rem 1.2rem;margin-bottom:1.6rem;font-size:14.5px;}
+.lead strong{color:var(--teal);}
+h2{font-family:'Playfair Display',serif;font-size:1.3rem;margin:2.2rem 0 .7rem;padding-bottom:.35rem;border-bottom:2px solid var(--ink);}
+h3{font-size:14.5px;font-weight:700;margin:1.3rem 0 .35rem;color:var(--accent);}
+p{margin:.55rem 0;}
+ul,ol{margin:.5rem 0 .5rem 1.15rem;padding:0;}
+li{margin:.3rem 0;}
+.tbl{width:100%;border-collapse:collapse;font-size:12.4px;margin:.7rem 0;}
+.tbl th{background:var(--ink);color:#fff;text-align:left;padding:.45rem .6rem;font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1.3px;text-transform:uppercase;font-weight:500;}
+.tbl td{padding:.5rem .6rem;border-bottom:1px solid var(--rule);vertical-align:top;}
+.tbl tr:last-child td{border-bottom:none;}
+.tbl tr:nth-child(even) td{background:#fafaf7;}
+.note{background:var(--card);border:1px solid var(--rule);border-left:4px solid var(--teal);border-radius:0 8px 8px 0;padding:.85rem 1.1rem;margin:.9rem 0;font-size:13.2px;}
+.note strong{color:var(--teal);}
+.note.amber{border-left-color:var(--amber);background:#fdfaf4;}
+.note.amber strong{color:var(--amber);}
+.note.red{border-left-color:var(--red);background:#fdf2f2;}
+.note.red strong{color:var(--red);}
+.note.green{border-left-color:var(--green);background:#f2f8f4;}
+.note.green strong{color:var(--green);}
+.merksatz{font-family:'Playfair Display',serif;font-size:1.12rem;line-height:1.4;font-style:italic;color:var(--teal);border-left:4px solid var(--teal);padding:.5rem 0 .5rem 1rem;margin:1.1rem 0;}
+.ampel{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1px;padding:1px 7px;border-radius:3px;white-space:nowrap;}
+.a-ja{background:#f6dcdc;color:var(--red);}
+.a-pr{background:#fdf0da;color:var(--amber);}
+.a-nein{background:#dff0e4;color:var(--green);}
+.schritt{display:flex;gap:.9rem;background:var(--card);border:1px solid var(--rule);border-radius:8px;padding:.75rem 1rem;margin:.55rem 0;}
+.schritt-nr{font-family:'DM Mono',monospace;font-size:1.25rem;font-weight:500;color:var(--teal);line-height:1;min-width:1.5rem;}
+.schritt-t{font-weight:700;font-size:13.4px;margin-bottom:.1rem;}
+.schritt-b{font-size:12.8px;color:var(--muted);line-height:1.55;}
+.leer td{height:2.1rem;}
+.footer{margin-top:2.4rem;padding-top:1rem;border-top:1px solid var(--rule);display:flex;justify-content:space-between;flex-wrap:wrap;gap:.5rem;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);}
+.rechtevermerk{flex-basis:100%;order:99;margin-top:.7rem;padding-top:.6rem;border-top:1px solid var(--rule);font-family:'DM Sans',sans-serif;font-size:10px;line-height:1.5;letter-spacing:0;text-transform:none;color:var(--muted);}
+@media print{.print-btn{display:none;}body{background:#fff;}.page{padding:0;max-width:100%;}.tbl{font-size:10.5px;}}
+</style>
+</head>
+<body>
+<div class="page">
+
+<div class="ho-header">
+ <div>
+  <div class="ho-eyebrow">Handreichung · KI-Beauftragte:r · Arbeitsvorlage</div>
+  <h1 class="ho-title">Compliance-Matrix — <em>kein Rechtsgebiet übersehen</em></h1>
+ </div>
+ <button class="print-btn" onclick="window.print()">Drucken</button>
+</div>
+
+<div class="lead">
+<strong>Wozu diese Vorlage.</strong> Die häufigste Compliance-Lücke bei KI-Vorhaben entsteht nicht dadurch, dass eine Pflicht falsch erfüllt wird — sondern dadurch, dass <strong>ein ganzes Rechtsgebiet nicht geprüft wurde</strong>. Wer über die KI-Verordnung nachdenkt, denkt selten gleichzeitig an das Urheberrecht, das Geschäftsgeheimnisgesetz und die Maschinenverordnung.<br><br>
+Die Matrix erzwingt den vollständigen Durchgang: <strong>Jede Zeile ist ein System oder ein Prozess, jede Spalte ein Rechtsgebiet, jede Zelle eine Entscheidung.</strong> Auch „nicht einschlägig" ist eine Entscheidung — und eine dokumentierte.
+</div>
+
+<div class="note red"><strong>Was diese Vorlage nicht ist.</strong> Sie ordnet die Prüfung, sie ersetzt sie nicht. Die Matrix sagt Dir, <em>wo</em> Du hinsehen musst und wo eine Antwort fehlt — die rechtliche Beurteilung im Einzelfall gehört in die Rechtsabteilung oder zu einer Anwältin. <strong>Eine ausgefüllte Matrix ist ein Arbeitsstand, kein Rechtsrat.</strong></div>
+
+<h2>Der Aufbau</h2>
+
+<div class="schritt"><div class="schritt-nr">1</div><div><div class="schritt-t">Zeilen festlegen — was genau wird geprüft?</div><div class="schritt-b">Nicht „KI im Unternehmen", sondern der einzelne <strong>Anwendungsfall</strong>: „Bewerbungsvorauswahl mit Fremdsystem X", „Chatbot im Kundenservice", „Agent, der Rechnungen vorkontiert". Die Zeile ist so eng zu schneiden, dass sich jede Zelle eindeutig beantworten lässt. <em>Ein System mit zwei sehr unterschiedlichen Einsätzen bekommt zwei Zeilen.</em></div></div></div>
+
+<div class="schritt"><div class="schritt-nr">2</div><div><div class="schritt-t">Spalten durchgehen — alle, nicht die naheliegenden</div><div class="schritt-b">Der Wert der Matrix liegt gerade in den Spalten, an die man von selbst nicht denkt. Deshalb wird <strong>jede</strong> Spalte beantwortet, auch mit „nicht einschlägig".</div></div></div>
+
+<div class="schritt"><div class="schritt-nr">3</div><div><div class="schritt-t">Je Zelle vier Angaben</div><div class="schritt-b"><strong>Relevanz</strong> (einschlägig / zu prüfen / nicht einschlägig) → <strong>Anforderung</strong> (welche Pflicht konkret) → <strong>Maßnahme</strong> (was wir tun) → <strong>Verantwortung</strong> (eine Person, kein Bereich). Eine fünfte Spalte <em>Nachweis</em> lohnt sich, sobald eine Aufsichtsbehörde ins Spiel kommen kann.</div></div></div>
+
+<div class="schritt"><div class="schritt-nr">4</div><div><div class="schritt-t">Offene Zellen sind das Ergebnis</div><div class="schritt-b">Eine Matrix ohne Lücken ist meist zu oberflächlich ausgefüllt. <strong>Die unbeantworteten Zellen sind die Arbeitsliste</strong> — sie gehören mit Termin und Verantwortung in die Nachverfolgung, nicht ins Vergessen.</div></div></div>
+
+<h2>Die Spalten — zehn Rechtsgebiete</h2>
+
+<p>Diese Auswahl deckt die Fälle ab, die uns im Kurs begegnen. Sie ist <strong>nicht abschließend</strong>: Branchen mit eigener Aufsicht ergänzen ihre Spalte.</p>
+
+<table class="tbl">
+ <thead><tr><th style="width:4%">#</th><th style="width:22%">Rechtsgebiet</th><th style="width:36%">Die Frage, die Du je Zeile beantwortest</th><th>Woran Du merkst, dass es einschlägig ist</th></tr></thead>
+ <tbody>
+ <tr><td><strong>1</strong></td><td><strong>KI-Verordnung</strong><br><span style="color:var(--muted);">(EU) 2024/1689 in der Fassung des Digital Omnibus (EU) 2026/1744</span></td><td>Welche <strong>Rolle</strong> haben wir — Anbieter, Betreiber, Einführer, Händler? Welche Einstufung folgt daraus, und welche Pflichten?</td><td>Fast immer einschlägig, sobald ein KI-System im Sinne des Art. 3 vorliegt. <strong>Die Rolle entscheidet über alles Weitere</strong> — und sie kann nach Art. 25 wechseln, etwa wenn wir ein fremdes System unter eigenem Namen einsetzen oder wesentlich verändern</td></tr>
+ <tr><td><strong>2</strong></td><td><strong>Datenschutz</strong><br><span style="color:var(--muted);">DSGVO, BDSG</span></td><td>Werden personenbezogene Daten verarbeitet — in den Eingaben, in den Trainingsdaten, in den Protokollen? Auf welche Rechtsgrundlage stützen wir das?</td><td>Sobald Menschen vorkommen. Prüfmarken: Art. 22 bei automatisierten Einzelentscheidungen, Art. 35 (Folgenabschätzung) <em>vor</em> Inbetriebnahme, § 26 BDSG bei Beschäftigtendaten. <strong>Auch Nutzungsprotokolle über eigene Beschäftigte sind Beschäftigtendaten</strong></td></tr>
+ <tr><td><strong>3</strong></td><td><strong>Betriebsverfassung</strong><br><span style="color:var(--muted);">BetrVG</span></td><td>Ist der Betriebsrat zu beteiligen — und ab wann?</td><td>§ 87 Abs. 1 Nr. 6 greift bei technischen Einrichtungen, die zur Überwachung <em>geeignet</em> sind; auf die Absicht kommt es nicht an. <strong>Unabhängig davon verlangt Art. 26 Abs. 7 KI-VO die Unterrichtung der Beschäftigten und ihrer Vertretung vor der Inbetriebnahme — und diese Pflicht greift auch ohne Betriebsrat</strong></td></tr>
+ <tr><td><strong>4</strong></td><td><strong>Urheber- und Leistungsschutzrecht</strong><br><span style="color:var(--muted);">UrhG</span></td><td>Woher stammen die Trainings- und Eingabedaten? Wem gehören die Ausgaben, und wer haftet, wenn sie geschützten Inhalten zu nahe kommen?</td><td>Bei allen generativen Systemen, bei eigenen Feinanpassungen und bei jeder Nutzung fremder Inhalte als Eingabe. <strong>Die Auskunft „das Modell enthält die Daten nicht mehr" ist eine Behauptung, keine Rechtsposition</strong></td></tr>
+ <tr><td><strong>5</strong></td><td><strong>Geschäftsgeheimnisse</strong><br><span style="color:var(--muted);">GeschGehG</span></td><td>Was verlässt bei der Nutzung das Haus — und bleiben die angemessenen Geheimhaltungsmaßnahmen gewahrt?</td><td>Sobald Beschäftigte eigene Unterlagen in ein fremdes System eingeben. <strong>Der Schutz setzt angemessene Maßnahmen voraus; fällt der Schutz weg, ist er nicht wiederherstellbar.</strong> Diese Spalte wird am häufigsten übersehen</td></tr>
+ <tr><td><strong>6</strong></td><td><strong>IT-Sicherheitsrecht</strong><br><span style="color:var(--muted);">NIS-2, KRITIS-Recht</span></td><td>Fällt unser Haus oder dieser Prozess unter besondere Sicherheits- und Meldepflichten?</td><td>Abhängig von Sektor und Größe. Wenn ja, treten <strong>Meldepflichten neben die des Art. 73 KI-VO</strong> — mit eigenen Fristen und eigenen Adressaten</td></tr>
+ <tr><td><strong>7</strong></td><td><strong>Produkt- und Haftungsrecht</strong><br><span style="color:var(--muted);">Produkthaftung, Maschinenverordnung</span></td><td>Ist das KI-System Teil eines Produkts oder einer Maschine, die wir in Verkehr bringen?</td><td>Sobald Software Sicherheitsfunktionen übernimmt oder in ein Gerät eingebettet ist. <strong>Ein blinder Fleck, der größer wird, je mehr Agenten physische Geräte steuern</strong></td></tr>
+ <tr><td><strong>8</strong></td><td><strong>Sektorrecht</strong><br><span style="color:var(--muted);">Medizinprodukte, Finanzaufsicht, Sozialrecht, Berufsrecht</span></td><td>Gibt es für unsere Branche eine eigene Aufsicht mit eigenen Anforderungen an dieses System?</td><td>Bei Medizin, Finanzen, Energie, Bildung, öffentlicher Verwaltung nahezu immer. <strong>Sektorrecht geht der KI-Verordnung nicht vor und weicht ihr nicht — es kommt hinzu</strong></td></tr>
+ <tr><td><strong>9</strong></td><td><strong>Antidiskriminierung</strong><br><span style="color:var(--muted);">AGG</span></td><td>Kann das System Menschen mittelbar wegen eines geschützten Merkmals schlechter stellen?</td><td>Überall dort, wo über Menschen entschieden oder vorsortiert wird. <strong>Der Nachweis, dass ein Merkmal nicht verwendet wurde, entlastet nicht — es genügt, dass ein Stellvertretermerkmal dieselbe Wirkung hat</strong></td></tr>
+ <tr><td><strong>10</strong></td><td><strong>Vertrag und Beschaffung</strong><br><span style="color:var(--muted);">AV-Vertrag, Leistungsvereinbarung, Ausstieg</span></td><td>Was schuldet uns der Anbieter, was schulden wir ihm — und wie kommen wir wieder heraus?</td><td>Bei jedem Fremdsystem. Prüfmarken: Auftragsverarbeitung, Unterauftragnehmer, Modellwechsel ohne Ankündigung, Protokollzugriff, Ausstiegsszenario. <strong>Was vertraglich nicht zugesichert ist, steht Dir im Streitfall nicht zur Verfügung</strong></td></tr>
+ </tbody>
+</table>
+
+<div class="note amber"><strong>Der Fehler, der diese Matrix überhaupt nötig macht.</strong> Die verbreitete Darstellung der KI-Verordnung als Pyramide mit vier Risikoklassen legt nahe, es gebe <em>eine</em> Einstufung und daraus folge <em>ein</em> Pflichtenpaket. So funktioniert es nicht. Pflichten aus verschiedenen Rechtsgebieten <strong>stapeln sich</strong>, und mehrere von ihnen greifen unabhängig von der Risikoklasse — die Transparenzpflichten des Art. 50 ebenso wie Datenschutz, Mitbestimmung und Geschäftsgeheimnisschutz.<br><br>
+<strong>Die Matrix ist die Antwort auf dieses Missverständnis:</strong> Nicht eine Einstufung mit einer Folge, sondern zehn Fragen mit je eigener Antwort.</div>
+
+<h2>Ein durchgerechnetes Beispiel</h2>
+
+<p>Eine Zeile, vollständig beantwortet. <strong>Anwendungsfall: Vorauswahl von Bewerbungen mit einem eingekauften Fremdsystem.</strong></p>
+
+<table class="tbl">
+ <thead><tr><th style="width:16%">Rechtsgebiet</th><th style="width:10%">Relevanz</th><th style="width:30%">Anforderung</th><th style="width:30%">Maßnahme</th><th>Verantwortung</th></tr></thead>
+ <tbody>
+ <tr><td><strong>KI-Verordnung</strong></td><td><span class="ampel a-ja">einschlägig</span></td><td>Betreiber eines Hochrisiko-Systems (Anhang III Nr. 4, Beschäftigung). Betriebsanleitung befolgen, Eingabedaten relevant und hinreichend repräsentativ, Überwachung, Protokolle mindestens sechs Monate, menschliche Aufsicht</td><td>Betriebsanleitung eingeholt und geprüft; Aufsichtsperson benannt und geschult; Protokollierung vertraglich zugesichert; Grundrechte-Folgenabschätzung geprüft</td><td>KI-Beauftragte:r</td></tr>
+ <tr><td><strong>Datenschutz</strong></td><td><span class="ampel a-ja">einschlägig</span></td><td>Rechtsgrundlage für die Verarbeitung von Bewerberdaten; Folgenabschätzung vor Inbetriebnahme; Betroffenenrechte; Prüfung, ob eine automatisierte Einzelentscheidung vorliegt</td><td>Folgenabschätzung durchgeführt; Vorauswahl ausdrücklich <em>ohne</em> abschließende Entscheidung ausgestaltet; Auskunftsprozess definiert</td><td>Datenschutzbeauftragte:r</td></tr>
+ <tr><td><strong>Betriebsverfassung</strong></td><td><span class="ampel a-ja">einschlägig</span></td><td>Mitbestimmung bei zur Überwachung geeigneten Einrichtungen; zusätzlich Unterrichtung der Beschäftigtenvertretung vor Inbetriebnahme</td><td>Betriebsvereinbarung geschlossen; Unterrichtung dokumentiert und datiert</td><td>Personalleitung</td></tr>
+ <tr><td><strong>Antidiskriminierung</strong></td><td><span class="ampel a-ja">einschlägig</span></td><td>Keine mittelbare Benachteiligung wegen eines geschützten Merkmals</td><td>Stellvertretermerkmale geprüft (Postleitzahl, Lücken im Lebenslauf, Namensherkunft); Verteilung der Vorauswahl quartalsweise ausgewertet</td><td>KI-Beauftragte:r</td></tr>
+ <tr><td><strong>Geschäftsgeheimnisse</strong></td><td><span class="ampel a-pr">zu prüfen</span></td><td>Gelangen mit den Bewerbungen interne Stellenbeschreibungen oder Projektangaben in das Fremdsystem?</td><td><strong>Offen</strong> — Eingabefelder werden gesichtet</td><td>Fachbereich, Termin gesetzt</td></tr>
+ <tr><td><strong>Vertrag und Beschaffung</strong></td><td><span class="ampel a-ja">einschlägig</span></td><td>Auftragsverarbeitung; Zusicherung der Protokollführung; Ankündigungspflicht bei Modellwechsel; Ausstiegsszenario</td><td>Vertrag um Ankündigungspflicht und Protokollzugriff ergänzt; Ausstieg noch offen</td><td>Einkauf</td></tr>
+ <tr><td><strong>Urheberrecht · IT-Sicherheit · Produktrecht · Sektorrecht</strong></td><td><span class="ampel a-nein">nicht einschlägig</span></td><td colspan="2">Begründung jeweils in einem Satz festhalten — das ist der Unterschied zwischen „geprüft" und „nicht daran gedacht"</td><td>KI-Beauftragte:r</td></tr>
+ </tbody>
+</table>
+
+<div class="note green"><strong>Was dieses Beispiel zeigt.</strong> Von zehn Spalten sind sechs einschlägig, eine offen, vier nicht einschlägig — und <strong>die beiden Zeilen, die am ehesten vergessen werden, sind Geschäftsgeheimnisse und Vertragsgestaltung</strong>. Beide stehen in keiner KI-Act-Checkliste, und beide entscheiden im Streitfall mit.</div>
+
+<h2>Vier Fragen, die eine fehlende Spalte sichtbar machen</h2>
+
+<table class="tbl">
+ <thead><tr><th style="width:42%">Frage</th><th>Worauf sie zeigt</th></tr></thead>
+ <tbody>
+ <tr><td><strong>Verlässt bei der Nutzung irgendetwas das Haus, das wir selbst als vertraulich behandeln?</strong></td><td>Geschäftsgeheimnisse · Datenschutz · Vertrag</td></tr>
+ <tr><td><strong>Entsteht aus der Nutzung ein Datum über eine bestimmte Person — auch über eine eigene Beschäftigte?</strong></td><td>Datenschutz · Betriebsverfassung. <em>Nutzungs-, Zeit- und Verbrauchsdaten zählen dazu</em></td></tr>
+ <tr><td><strong>Kann das System etwas <em>bewirken</em>, statt nur etwas vorzuschlagen?</strong></td><td>Produkt- und Haftungsrecht · Sektorrecht · Art. 14 und Art. 26 KI-VO</td></tr>
+ <tr><td><strong>Gäbe es für diesen Vorgang auch ohne KI eine Aufsicht oder eine Genehmigungspflicht?</strong></td><td>Sektorrecht. <strong>Die zuverlässigste der vier Fragen</strong> — wo vorher schon jemand zuständig war, ist er es weiterhin</td></tr>
+ </tbody>
+</table>
+
+<h2>Leere Matrix zum Ausfüllen</h2>
+
+<p>Je Anwendungsfall eine Tabelle. Bei mehr als fünf Anwendungsfällen lohnt der Wechsel in eine Tabellenkalkulation — die Matrix bleibt dieselbe.</p>
+
+<p><strong>Anwendungsfall:</strong> ________________________________________  <strong>Stand:</strong> ____________  <strong>Nächste Überprüfung:</strong> ____________</p>
+
+<table class="tbl">
+ <thead><tr><th style="width:18%">Rechtsgebiet</th><th style="width:12%">Relevanz</th><th style="width:25%">Anforderung</th><th style="width:25%">Maßnahme</th><th>Verantwortung · Nachweis</th></tr></thead>
+ <tbody>
+ <tr class="leer"><td>KI-Verordnung</td><td></td><td></td><td></td><td></td></tr>
+ <tr class="leer"><td>Datenschutz</td><td></td><td></td><td></td><td></td></tr>
+ <tr class="leer"><td>Betriebsverfassung</td><td></td><td></td><td></td><td></td></tr>
+ <tr class="leer"><td>Urheberrecht</td><td></td><td></td><td></td><td></td></tr>
+ <tr class="leer"><td>Geschäftsgeheimnisse</td><td></td><td></td><td></td><td></td></tr>
+ <tr class="leer"><td>IT-Sicherheitsrecht</td><td></td><td></td><td></td><td></td></tr>
+ <tr class="leer"><td>Produkt- und Haftungsrecht</td><td></td><td></td><td></td><td></td></tr>
+ <tr class="leer"><td>Sektorrecht</td><td></td><td></td><td></td><td></td></tr>
+ <tr class="leer"><td>Antidiskriminierung</td><td></td><td></td><td></td><td></td></tr>
+ <tr class="leer"><td>Vertrag und Beschaffung</td><td></td><td></td><td></td><td></td></tr>
+ <tr class="leer"><td>weiteres: ____________</td><td></td><td></td><td></td><td></td></tr>
+ </tbody>
+</table>
+
+<div class="note"><strong>Zwei Regeln für den Betrieb der Matrix.</strong><br>
+① <strong>Sie altert.</strong> Ein Modellwechsel beim Anbieter, ein neuer Einsatzzweck oder eine Rechtsänderung kann Zellen umwerfen, die gestern noch stimmten. Ein fester Überprüfungstermin je Zeile gehört dazu — und ein Anlass-Trigger: <em>neue Funktion, neuer Datenbestand, neuer Adressatenkreis.</em><br>
+② <strong>„Nicht einschlägig" braucht einen Satz Begründung.</strong> Ohne ihn ist nicht unterscheidbar, ob geprüft oder übersehen wurde. Genau diese Unterscheidung ist es, die im Ernstfall zählt.</div>
+
+<div class="merksatz">Die teuerste Lücke ist nicht die falsch beantwortete Frage, sondern die nicht gestellte.</div>
+
+<div class="footer">
+ <span>Handreichung · Compliance-Matrix · Stand 29.09.2026</span>
+ <span>Ulrich Nord</span>
+ <span class="rechtevermerk">&copy; 2026 Ulrich Nord &middot; Alle Rechte vorbehalten. Teilnehmerinnen und Teilnehmer d&uuml;rfen diese Arbeitsvorlage f&uuml;r die eigene berufliche Nutzung sowie innerhalb ihres Unternehmens verwenden, speichern, ausdrucken, ausf&uuml;llen und weitergeben. Ver&ouml;ffentlichung und Verwendung in eigenen Schulungs- oder Beratungsangeboten bed&uuml;rfen der schriftlichen Zustimmung.</span>
+</div>
+
+</div>
+</body>
+</html>
