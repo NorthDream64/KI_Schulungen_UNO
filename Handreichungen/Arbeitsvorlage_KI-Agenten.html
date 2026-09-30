@@ -132,6 +132,16 @@ a{color:var(--accent);}a:hover{text-decoration:underline;}
 .note-green{border-left-color:var(--green);}
 .note-green strong{color:var(--green);}
 .rechtevermerk{flex-basis:100%;order:99;margin-top:.7rem;padding-top:.6rem;border-top:1px solid var(--rule,#d5d0c5);font-family:'DM Sans',sans-serif;font-size:10px;line-height:1.5;letter-spacing:0;text-transform:none;color:var(--muted,#6b6b60);}
+
+/* ── Reiter ─────────────────────────────────────────── */
+.tab-leiste{display:flex;flex-wrap:wrap;gap:.3rem;margin:1.4rem 0 1.6rem;border-bottom:2px solid var(--rule);padding-bottom:0;}
+.tab-btn{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:1px;text-transform:uppercase;padding:.6rem 1rem;border:1px solid var(--rule);border-bottom:none;border-radius:6px 6px 0 0;background:var(--paper);color:var(--muted);cursor:pointer;margin-bottom:-2px;}
+.tab-btn:hover{color:var(--accent);}
+.tab-btn.aktiv{background:var(--card);color:var(--ink);border-color:var(--rule);border-bottom:2px solid var(--card);font-weight:700;}
+.phase-det{margin:.5rem 0;}
+.tab-panel{display:none;}
+.tab-panel.aktiv{display:block;}
+@media print{.tab-leiste{display:none;}.tab-panel{display:block!important;}}
 </style>
 </head>
 <body>
@@ -161,10 +171,19 @@ a{color:var(--accent);}a:hover{text-decoration:underline;}
  </div>
 </div>
 
-<div class="section">
- <div class="section-title">Zwei Vorfragen, bevor der Weg beginnt</div>
+<nav class="tab-leiste">
+  <button class="tab-btn aktiv" data-ziel="tab-grundlagen">Grundlagen</button>
+  <button class="tab-btn" data-ziel="tab-grundsaetze">Zehn Grundsätze</button>
+  <button class="tab-btn" data-ziel="tab-phasen">Sieben Phasen</button>
+  <button class="tab-btn" data-ziel="tab-kontrolle">Kontrolle von Agenten</button>
+  <button class="tab-btn" data-ziel="tab-praxis">Praxisteil</button>
+  <button class="tab-btn" data-ziel="tab-quellen">Quellen</button>
+</nav>
 
- <div class="konzept-card k-purple">
+<section class="tab-panel aktiv" id="tab-grundlagen">
+<div class="section">
+ <div class="section-title">Welcher Agententyp — und welche Kontrolltiefe?</div>
+<div class="konzept-card k-purple">
   <div class="konzept-tag">Vorfrage 1 · Einordnung</div>
   <div class="konzept-name">Welcher Agententyp — und damit welche Kontrolltiefe?</div>
   <div class="konzept-text">
@@ -179,308 +198,6 @@ a{color:var(--accent);}a:hover{text-decoration:underline;}
     </tbody>
    </table>
    <p style="margin-top:.5rem;"><strong>Ergebnis:</strong> eine schriftliche Einstufung mit Datum und Verantwortlichen. Sie steht am Anfang, weil alle weiteren Pflichten daran hängen.</p>
-  </div>
- </div>
-
- <div class="konzept-card k-ki">
-  <div class="konzept-tag">Vorfrage 2 · Machbarkeit</div>
-  <div class="konzept-name">Steht der Unterbau — oder bauen wir einen Prototyp im Produktivgewand?</div>
-  <div class="konzept-text">
-   <p>Das Sprachmodell ist der kleinste Teil. Um es herum liegen sechs Schichten, die über Produktionsfähigkeit entscheiden. Fehlt eine, merkst du das erfahrungsgemäß erst beim Produktivgang.</p>
-   <table class="tbl">
-    <thead><tr><th style="width:26%;">Schicht</th><th>Wofür</th><th style="width:14%;">Vorhanden?</th></tr></thead>
-    <tbody>
-     <tr><td><strong>Zustand und Fortschreibung</strong></td><td>Zwischenergebnisse und Ausführungskontext. Fehlt sie, beginnt der Agent nach jedem Abbruch von vorn</td><td>&#9744; ja &#9744; nein</td></tr>
-     <tr><td><strong>Sicherheit und Governance</strong></td><td>Identität, Rechtezuschnitt, Prüfpfad. Ohne diese Schicht ist keine Datenschutz- oder Compliance-Prüfung möglich</td><td>&#9744; ja &#9744; nein</td></tr>
-     <tr><td><strong>Ablaufsteuerung und Werkzeuge</strong></td><td>Wann wird wahrgenommen, geplant, gehandelt — und welches System wird aufgerufen</td><td>&#9744; ja &#9744; nein</td></tr>
-     <tr><td><strong>Gedächtnis</strong></td><td>Kurzzeit- und Langzeitspeicher. Bestimmt, was der Agent weiß und erinnert</td><td>&#9744; ja &#9744; nein</td></tr>
-     <tr><td><strong>Beobachtbarkeit</strong></td><td>Nicht „hat das System geantwortet“, sondern „war die Entscheidung richtig“ — eine eigene Messdimension</td><td>&#9744; ja &#9744; nein</td></tr>
-     <tr><td><strong>Prüfsuiten</strong></td><td>Laufende Prüfung, ob der Agent einsatzbereit ist und bleibt. Kein einmaliges Tor</td><td>&#9744; ja &#9744; nein</td></tr>
-    </tbody>
-   </table>
-   <p style="margin-top:.5rem;"><strong>Die Faustregel dahinter:</strong> Ein Wochenend-Prototyp braucht etwa eine Zeile Infrastruktur je Modellaufruf, ein geordneter Betrieb rund fünfzig — und die meisten davon haben mit dem Modell nichts zu tun.</p>
-   <p style="font-size:12.5px;color:var(--muted);">Mehrere Nein-Antworten sind kein Abbruchgrund, wohl aber ein Grund, den Agenten zunächst als Assistent oder Analyse-Agent zu führen. Autonomie setzt Unterbau voraus.</p>
-  </div>
- </div>
-</div>
-
-<div class="section page-break">
- <div class="section-title">Der Weg in sieben Phasen</div>
-
- <div class="weg">
-  <div class="weg-schritt"><span class="weg-nr">01</span><span class="weg-name">Auftrag<br>definieren</span></div>
-  <div class="weg-schritt"><span class="weg-nr">02</span><span class="weg-name">Agent<br>spezifizieren</span></div>
-  <div class="weg-schritt"><span class="weg-nr">03</span><span class="weg-name">Risiken<br>ableiten</span></div>
-  <div class="weg-schritt"><span class="weg-nr">04</span><span class="weg-name">Prüfen<br>und messen</span></div>
-  <div class="weg-schritt"><span class="weg-nr">05</span><span class="weg-name">Freigabe<br>entscheiden</span></div>
-  <div class="weg-schritt"><span class="weg-nr">06</span><span class="weg-name">Betrieb<br>überwachen</span></div>
-  <div class="weg-schritt"><span class="weg-nr">07</span><span class="weg-name">Änderungen<br>kontrollieren</span></div>
- </div>
-
- <div class="card">
-  <table class="tbl">
-   <thead><tr><th style="width:6%;">#</th><th style="width:19%;">Phase</th><th>Leitfrage</th><th style="width:16%;">Wer entscheidet</th><th style="width:22%;">Ergebnis — ohne das geht es nicht weiter</th></tr></thead>
-   <tbody>
-    <tr><td><strong>01</strong></td><td><strong>Auftrag definieren</strong></td><td>Welches Problem, welcher Nutzen, welche Grenzen?</td><td>Fachbereich</td><td>Fachlich freigegebener Agentenauftrag</td></tr>
-    <tr><td><strong>02</strong></td><td><strong>Agent spezifizieren</strong></td><td>Was darf er lesen, entscheiden, auslösen — und was nicht?</td><td>Fachbereich mit IT</td><td>Versionierte Spezifikation</td></tr>
-    <tr><td><strong>03</strong></td><td><strong>Risiken ableiten</strong></td><td>Wie wird jede Fehlermöglichkeit verhindert, erkannt oder begrenzt?</td><td>Fachbereich, IT, Sicherheit</td><td>Risiko- und Kontrollmatrix</td></tr>
-    <tr><td><strong>04</strong></td><td><strong>Prüfen und messen</strong></td><td>Woran wird Zuverlässigkeit nachgewiesen — vor dem Start?</td><td>IT mit Fachabnahme</td><td>Nachvollziehbarer Prüfnachweis</td></tr>
-    <tr><td><strong>05</strong></td><td><strong>Freigabe entscheiden</strong></td><td>Sind alle Bedingungen erfüllt — und wer trägt die Entscheidung?</td><td><strong>Führung</strong></td><td>Dokumentierte Freigabeentscheidung</td></tr>
-    <tr><td><strong>06</strong></td><td><strong>Betrieb überwachen</strong></td><td>Woran merken wir, dass er abdriftet oder zu teuer wird?</td><td>Fachlicher Betreiber</td><td>Laufender Betriebs- und Qualitätsnachweis</td></tr>
-    <tr><td><strong>07</strong></td><td><strong>Änderungen kontrollieren</strong></td><td>Was wurde geändert, und was muss deshalb erneut geprüft werden?</td><td>Fachbereich mit IT</td><td>Versionierung und Regressionstests</td></tr>
-   </tbody>
-  </table>
-  <p style="margin-top:.6rem;font-size:12.5px;color:var(--muted);">Die Phasen laufen nicht strikt nacheinander — Phase 2 und 3 bearbeitet man meist gemeinsam. Was nicht verhandelbar ist: <strong>Phase 5 kommt nach Phase 4</strong>, und die Entscheidung in Phase 5 trifft ein Mensch mit Namen.</p>
- </div>
-</div>
-
-<div class="section">
- <div class="section-title">Die Phasen im Einzelnen</div>
-
- <div class="phase">
-  <div class="phase-kopf"><span class="phase-nr">01</span><span class="phase-titel">Auftrag definieren</span></div>
-  <p>Vor jeder technischen Umsetzung stehen Zweck, Nutzen und Grenzen. Der häufigste Fehler dieser Phase ist, sie zu überspringen, weil die Idee klar erscheint.</p>
-  <p style="margin-top:.4rem;"><strong>Zu klären:</strong> Welches Problem wird gelöst? Was soll nachweisbar besser werden? Was ist ausdrücklich <em>nicht</em> Ziel? Wann muss der Agent abbrechen und an einen Menschen übergeben?</p>
-  <p style="margin-top:.4rem;"><strong>Arbeitsweise:</strong> Der Leitfaden empfiehlt, die Anforderungen im Gespräch mit der KI zu erarbeiten — mit der ausdrücklichen Vorgabe, den Agenten noch <em>nicht</em> zu bauen, keine Annahmen zu treffen und auf unpräzise oder widersprüchliche Angaben hinzuweisen. Der Leitsatz dazu: <em>Fehlende Anforderungen werden erfragt, nicht plausibel ergänzt.</em></p>
-  <span class="erg"><span class="erg-label">Ergebnis</span>fachlich freigegebener Auftrag mit Nicht-Zielen und Abbruchkriterien</span>
- </div>
-
- <div class="phase">
-  <div class="phase-kopf"><span class="phase-nr">02</span><span class="phase-titel">Agent spezifizieren</span></div>
-  <p>Hier entsteht das Kerndokument. Der Leitfaden gliedert es in dreizehn Abschnitte; diese fünf Fragen entscheiden über die Qualität des Ganzen:</p>
-  <ul>
-   <li><strong>Welche Quellen sind zulässig</strong> — und was passiert bei Widersprüchen oder veralteten Angaben?</li>
-   <li><strong>Welche Aktionen darf er autonom</strong>, welche nur mit menschlicher Freigabe? Lesen, bewerten, anlegen, ändern, löschen, versenden, extern auslösen — jede Zeile einzeln beantwortet.</li>
-   <li><strong>Nach welchen Kriterien entscheidet er</strong>, mit welcher Gewichtung, und ab welchem Schwellenwert geschieht was?</li>
-   <li><strong>Wie sieht die Ausgabe aus?</strong> Pflichtfelder sind Ergebnis, Begründung, verwendete Quellen, ausgelöste Aktionen, Zeitstempel und Agentenversion.</li>
-   <li><strong>Wann muss ein Mensch übernehmen?</strong> Für kritische Entscheidungen, unzureichende Datenlage, widersprüchliche Quellen, Sicherheitsereignisse und uneindeutige Schwellenwerte — je mit benannter Rolle.</li>
-  </ul>
-  <p style="margin-top:.4rem;"><strong>Die Regel, die alles andere trägt:</strong> Der Agent erhält nur die Funktionen und Berechtigungen, die sein Zweck erfordert. Rechte lassen sich später leicht erweitern und praktisch nie wieder einsammeln.</p>
-  <span class="erg"><span class="erg-label">Ergebnis</span>versionierte Spezifikation — Detailvorlage im Leitfaden, Abschnitte 2 bis 13</span>
- </div>
-
- <div class="phase">
-  <div class="phase-kopf"><span class="phase-nr">03</span><span class="phase-titel">Risiken und Kontrollen ableiten</span></div>
-  <p>Zu jeder Fehlermöglichkeit gehören drei Antworten: Wie verhindern wir sie, wie erkennen wir sie, was tun wir dann? Sieben Risiken treten bei fast jedem Agenten auf:</p>
-  <table class="tbl">
-   <thead><tr><th style="width:22%;">Risiko</th><th>Wirkung</th><th style="width:24%;">Vorbeugend</th><th style="width:20%;">Erkennend</th></tr></thead>
-   <tbody>
-    <tr><td><strong>Erfundene Aussage</strong></td><td>Falsche Entscheidung auf nicht gestützter Information</td><td>Quellenpflicht, strukturierte Anweisung</td><td>Stichprobe, Faktentest</td></tr>
-    <tr><td><strong>Eingeschleuste Anweisung</strong></td><td>Regelumgehung, Datenabfluss</td><td>Trennung von Anweisung und Fremdinhalt, Werkzeugbegrenzung</td><td>Sicherheitstest, Protokollierung</td></tr>
-    <tr><td><strong>Zu weite Befugnis</strong></td><td>Unerwünschte Aktion</td><td>Geringstmögliche Rechte, menschliche Freigabe</td><td>Aktionsprotokoll</td></tr>
-    <tr><td><strong>Fehlerhafte Quelle</strong></td><td>Falsche Bewertung</td><td>Positivliste, Aktualitätsregel</td><td>Quellenüberwachung</td></tr>
-    <tr><td><strong>Fehlender Kontext</strong></td><td>Falsche Schlussfolgerung aus unvollständiger Eingabe</td><td>Pflichtfelder, Validierung</td><td>Negativtests</td></tr>
-    <tr><td><strong>Endlosschleife</strong></td><td>Kosten und Systemlast</td><td>Höchstzahl Durchläufe, Zeitgrenze</td><td>Laufzeitüberwachung</td></tr>
-    <tr><td><strong>Kostenüberschreitung</strong></td><td>Budget gesprengt</td><td>Feste Obergrenzen</td><td>Kostenüberwachung</td></tr>
-   </tbody>
-  </table>
-  <p style="margin-top:.5rem;">Diese sieben sind der Ausgangsbestand. Die Risiken des konkreten Falls kommen hinzu — sie ergeben sich aus dem Auftrag, nicht aus der Technik.</p>
-  <span class="erg"><span class="erg-label">Ergebnis</span>Risiko- und Kontrollmatrix mit benannten Reaktionen</span>
- </div>
-
- <div class="phase">
-  <div class="phase-kopf"><span class="phase-nr">04</span><span class="phase-titel">Prüfen und messen</span></div>
-  <p>Eine Vorführung ist kein Nachweis. Nötig ist ein <strong>versionierter Testsatz</strong> mit erwarteten Ergebnissen und messbaren Abnahmekriterien. Zwölf Testklassen decken die üblichen Fehlerbilder ab:</p>
-  <table class="tbl">
-   <thead><tr><th style="width:24%;">Testklasse</th><th>Prüffrage</th><th style="width:28%;">Beispiel</th></tr></thead>
-   <tbody>
-    <tr><td>Funktionstest</td><td>Erfüllt er die spezifizierte Aufgabe?</td><td>Gültiger Standardfall</td></tr>
-    <tr><td>Negativtest</td><td>Reagiert er richtig auf ungültige Eingaben?</td><td>Pflichtfeld fehlt</td></tr>
-    <tr><td>Grenzwerttest</td><td>Greifen Schwellen exakt?</td><td>Wert knapp unter, auf und über der Grenze</td></tr>
-    <tr><td>Quellentest</td><td>Nutzt er nur zulässige Quellen?</td><td>Nicht freigegebene Quelle anbieten</td></tr>
-    <tr><td>Erfindungstest</td><td>Erfindet er Fakten oder Belege?</td><td>Frage ohne vorhandenen Nachweis</td></tr>
-    <tr><td>Konflikttest</td><td>Erkennt er Widersprüche?</td><td>Zwei Quellen widersprechen sich</td></tr>
-    <tr><td>Berechtigungstest</td><td>Bleibt er in seinen Rechten?</td><td>Versuch einer verbotenen Schreibaktion</td></tr>
-    <tr><td>Manipulationstest</td><td>Befolgt er eingeschleuste Fremdanweisungen?</td><td>Quelle enthält „ignoriere die Regeln“</td></tr>
-    <tr><td>Werkzeugfehlertest</td><td>Reagiert er kontrolliert auf Ausfälle?</td><td>Schnittstelle liefert Fehler oder antwortet nicht</td></tr>
-    <tr><td>Wiederholungstest</td><td>Ist das Verhalten stabil?</td><td>Derselbe Fall mehrfach</td></tr>
-    <tr><td>Regressionstest</td><td>Bleibt die Qualität nach Änderungen erhalten?</td><td>Testsatz gegen die neue Fassung</td></tr>
-    <tr><td>Abnahmetest</td><td>Erfüllt er den fachlichen Zweck?</td><td>Vollständiges Fachszenario</td></tr>
-   </tbody>
-  </table>
-  <p style="margin-top:.5rem;"><strong>Der Testsatz braucht mehr als Normalfälle:</strong> seltene aber relevante Fälle, Grenzfälle, ungültige Eingaben, widersprüchliche Informationen, absichtlich manipulierte Eingaben und Fälle, die an einen Menschen übergeben werden müssen.</p>
-  <p style="margin-top:.4rem;"><strong>Gemessen wird auf zehn Dimensionen</strong>, von denen nicht jede zu jedem Agenten passt: fachliche Korrektheit, Quellenqualität, fälschlich ausgelöste und übersehene Fälle, Regelverstöße (Zielwert null), bestandene Sicherheitstests, Qualität der Übergaben an Menschen, Laufzeit, Tokenverbrauch und Kosten je Durchlauf.</p>
-  <span class="erg"><span class="erg-label">Ergebnis</span>Testbericht mit Belegen — Vorlagen im Leitfaden, Abschnitte 14 bis 17</span>
- </div>
-
- <div class="phase">
-  <div class="phase-kopf"><span class="phase-nr">05</span><span class="phase-titel">Freigabe entscheiden</span></div>
-  <p>Die einzige Phase, in der die Führung selbst entscheidet — und die einzige, die sich nicht delegieren lässt. Die Entscheidung lautet <strong>freigegeben, freigegeben mit Auflagen oder nicht freigegeben</strong>, mit Begründung, offenen Risiken, Auflagen, Name und Datum.</p>
-  <p style="margin-top:.4rem;">Sechzehn Bedingungen müssen erfüllt sein. Sie zerfallen in vier Gruppen:</p>
-  <table class="tbl">
-   <thead><tr><th style="width:20%;">Gruppe</th><th>Bedingungen</th></tr></thead>
-   <tbody>
-    <tr><td><strong>Auftrag</strong></td><td>Zweck und Umfang fachlich freigegeben · fachliche Abnahme dokumentiert · technische Freigabe dokumentiert</td></tr>
-    <tr><td><strong>Grenzen</strong></td><td>Quellen und Werkzeuge dokumentiert · Rechte auf das Nötigste beschränkt · zulässige und unzulässige Aktionen festgelegt · Bewertungsmodell und Schwellenwerte versioniert · Regeln für die menschliche Aufsicht definiert</td></tr>
-    <tr><td><strong>Nachweis</strong></td><td>Testsatz versioniert · kritische Testfälle bestanden · Sicherheitstests bestanden · Regressionstest bestanden</td></tr>
-    <tr><td><strong>Betriebsbereitschaft</strong></td><td>Überwachung eingerichtet · Protokollierung eingerichtet · Token- und Kostengrenzen gesetzt · Rückfall oder Abschaltung vorhanden</td></tr>
-   </tbody>
-  </table>
-  <p style="margin-top:.5rem;font-size:12.5px;color:var(--muted);">Die vierte Gruppe wird am häufigsten übersehen, weil sie nach dem Start klingt. Sie gehört davor: Ein Agent, der sich nicht abschalten lässt, ist nicht freigabefähig.</p>
-  <span class="erg"><span class="erg-label">Ergebnis</span>unterschriebene Freigabeentscheidung mit Auflagen</span>
- </div>
-
- <div class="phase">
-  <div class="phase-kopf"><span class="phase-nr">06</span><span class="phase-titel">Betrieb überwachen</span></div>
-  <p>Acht Kennzahlen mit je einem Sollwert, einer Warnschwelle, einer kritischen Schwelle und einer festgelegten Reaktion: Fehlerquote, fälschlich ausgelöste Fälle, übersehene Fälle, Übergaberate an Menschen, Werkzeugfehler, Token je Durchlauf, Kosten je Durchlauf, Laufzeit.</p>
-  <p style="margin-top:.4rem;"><strong>Protokolliert wird</strong>, soweit rechtlich und technisch zulässig: Durchlaufkennung, Zeitstempel, Agenten-, Anweisungs- und Modellversion, genutzte Werkzeuge, herangezogene Quellen, Ergebnis, ausgelöste Aktion, Übergaben, Fehler sowie Token- und Kostenwerte. Aufbewahrungsdauer und Zugriffsrollen gehören festgelegt.</p>
-  <p style="margin-top:.4rem;"><strong>Die Abschaltregel</strong> greift, wenn eine kritische Schwelle überschritten wird, eine unzulässige Aktion ausgeführt wurde, ein Sicherheitsvorfall vorliegt, die fachliche Zuverlässigkeit unter den Mindestwert fällt oder eine zentrale Quelle beziehungsweise ein Werkzeug kompromittiert ist. <strong>Wer abschalten darf, steht mit Namen fest.</strong></p>
-  <span class="erg"><span class="erg-label">Ergebnis</span>laufender Betriebsnachweis mit ausgelösten Reaktionen</span>
- </div>
-
- <div class="phase">
-  <div class="phase-kopf"><span class="phase-nr">07</span><span class="phase-titel">Änderungen kontrollieren</span></div>
-  <p>Versioniert werden neun Bestandteile: Systemanweisung, Modell und Modellversion, Werkzeuge und Rechte, Datenquellen, Bewertungsregeln, Schwellenwerte, Ausgabeformat, Testsatz und Sicherheitskontrollen.</p>
-  <p style="margin-top:.5rem;">Ändert sich einer davon, entsteht eine neue Fassung — und die Frage, <strong>ob sie erneut gegen den Testsatz laufen muss, bevor sie in Betrieb geht.</strong> Genau das beantwortet die mittlere Spalte. Ein solcher Wiederholungslauf heißt <em>Regressionstest</em>: dieselben Referenzfälle wie beim ersten Mal, um zu sehen, ob die Änderung etwas kaputtgemacht hat, das vorher funktionierte.</p>
-  <table class="tbl">
-   <thead><tr><th style="width:34%;">Änderung</th><th style="width:18%;">Regressionstest nötig?</th><th>Mindestumfang</th></tr></thead>
-   <tbody>
-    <tr><td>Redaktionelle Textänderung ohne Logikänderung</td><td>im Einzelfall</td><td>Kurztest und Stichprobe</td></tr>
-    <tr><td>Anweisungslogik geändert</td><td><strong>ja</strong></td><td>Vollständige fachliche Regression</td></tr>
-    <tr><td>Modell gewechselt</td><td><strong>ja</strong></td><td>Vollständige Regression und Sicherheitstests</td></tr>
-    <tr><td>Neues Werkzeug</td><td><strong>ja</strong></td><td>Funktion, Berechtigung, Sicherheit</td></tr>
-    <tr><td>Werkzeugrechte erweitert</td><td><strong>ja</strong></td><td>Berechtigungstest und Prüfung auf zu weite Befugnis</td></tr>
-    <tr><td>Neue Quelle</td><td><strong>ja</strong></td><td>Quellen- und Konflikttest</td></tr>
-    <tr><td>Schwellenwert geändert</td><td><strong>ja</strong></td><td>Grenzwerttest und Fachabnahme</td></tr>
-    <tr><td>Ausgabeformat geändert</td><td><strong>ja</strong></td><td>Schema- und Anbindungstest</td></tr>
-    <tr><td>Testdaten erweitert</td><td>nicht zwingend</td><td>Neue Fälle ausführen</td></tr>
-   </tbody>
-  </table>
-  <p style="margin-top:.5rem;font-size:12.5px;color:var(--muted);">Der Modellwechsel ist der unterschätzte Fall. Er wird vom Anbieter angekündigt, nicht von dir geplant — und verlangt trotzdem die vollständige Regression. Wer das nicht einkalkuliert, wird davon überrascht.</p>
-
-  <div class="note" style="margin-top:.7rem;"><strong>Warum die Regression mehr prüfen muss als die Leistung.</strong> Beim Versionswechsel ändert sich nicht nur, wie gut ein Modell arbeitet, sondern wie es <em>abwägt</em>, wenn zwei berechtigte Anliegen kollidieren. Eine Untersuchung von 23 Modellvarianten aus sechs Familien zeigt: Über die Versionen hinweg sinkt die Bereitschaft, dem Wunsch der Nutzenden zu folgen, und zwar <strong>nicht dort, wo Sicherheit auf dem Spiel steht</strong> — dort war sie ohnehin nahe null und blieb es. Der Rückgang findet in <strong>risikoarmen Fällen</strong> statt.</div>
-
-  <table class="tbl" style="margin-top:.5rem;">
-   <thead><tr><th>Modellfamilie</th><th>Fälle mit Sicherheitsbezug<br><span style="font-weight:400;font-size:11.5px;">ältere → neueste Version</span></th><th>Fälle ohne Sicherheitsbezug<br><span style="font-weight:400;font-size:11.5px;">ältere → neueste Version</span></th></tr></thead>
-   <tbody>
-    <tr><td>Familie A</td><td>17 % → 0 %</td><td>23 % → 0 %</td></tr>
-    <tr><td>Familie B</td><td>35 % → 0 %</td><td>29 % → 0 %</td></tr>
-    <tr><td>Familie C</td><td>0 % → 5 %</td><td><strong>67 % → 3 %</strong></td></tr>
-    <tr><td><strong>Mittel über sechs Familien</strong></td><td><strong>−0,01</strong></td><td><strong>−0,22</strong></td></tr>
-   </tbody>
-  </table>
-
-  <div class="note" style="margin-top:.6rem;"><strong>Was daraus für Phase 07 folgt.</strong> Ein Regressionstest, der nur Genauigkeit und Laufzeit misst, übersieht diese Verschiebung vollständig. Nimm deshalb <strong>vier bis fünf eigene Fälle mit echtem Zielkonflikt</strong> in die Testmenge auf — Situationen, in denen zwei berechtigte Anliegen gegeneinanderstehen und es keine offensichtlich richtige Antwort gibt. Halte die erwartete Abwägung <em>vor</em> dem Versionswechsel schriftlich fest. Weicht das neue Modell ab, ist das eine fachliche Entscheidung, keine technische — und gehört vor die Freigabe, nicht dahinter.</div>
-
-  <p style="margin-top:.6rem;font-size:12.5px;color:var(--muted);">Quelle: Mitic, Sedahmed A. O., Ly &amp; Cisse — „The Constitutional Coverage Trilemma in AI Governance", arXiv, 1. September 2026. <strong>Einordnung:</strong> Alle Autorinnen und Autoren bei Kera Health Platforms, einem Unternehmen; <strong>Preprint ohne Begutachtungsverfahren</strong>. Fragebogen und Prüfprotokoll offengelegt, Grenzen selbst benannt; die Autoren weisen ausdrücklich darauf hin, dass ihre Auswertung zeigt, <em>dass</em> die Versionsreihenfolge etwas vorhersagt, nicht <em>warum</em>. Die Familiennamen sind hier bewusst anonymisiert — der übertragbare Befund ist das Muster, nicht der Anbieter.</p>
-  <span class="erg"><span class="erg-label">Ergebnis</span>nachvollziehbare Versionsgeschichte mit Prüfentscheidungen</span>
- </div>
-</div>
-
-
-<div class="section page-break">
- <div class="section-title">Zehn Grundsätze für den Bau — unabhängig vom Werkzeug</div>
- <div class="card">
-  <p>Die sieben Phasen sagen, <em>wann</em> etwas geschieht. Diese zehn Grundsätze sagen, <em>wie</em> — sie gelten über alle Phasen hinweg und sind der Erfahrungsbestand, den die Normenwerke, die Sicherheitsliteratur und die Praxisberichte gemeinsam tragen.</p>
- </div>
-
- <div class="konzept-card k-green">
-  <div class="konzept-tag">Zuschnitt</div>
-  <div class="konzept-name">1 bis 3 · Was der Agent überhaupt sein soll</div>
-  <div class="konzept-text">
-   <p><strong>① Der enge Zuschnitt ist die wirksamste Sicherheitsmaßnahme.</strong> Ein Agent, der eine Sache tut, lässt sich beschreiben, prüfen und abschalten. Ein Agent, der „den Vertrieb unterstützt“, lässt sich nichts davon. Wenn du den Zweck nicht in einem Satz sagen kannst, ist der Zuschnitt noch zu weit.</p>
-   <p style="margin-top:.4rem;"><strong>② Eine Aufgabe je Agent.</strong> Zwei Aufgaben in einem Agenten bedeuten zwei Rechtebündel, zwei Fehlerbilder und einen Testsatz, der beides abdecken muss. Zwei getrennte Agenten sind fast immer die billigere Lösung — auch dann, wenn sie zunächst nach mehr Aufwand aussieht.</p>
-   <p style="margin-top:.4rem;"><strong>③ Was eine Regel kann, braucht kein Modell.</strong> Prüfe vor jedem Modellaufruf, ob der Schritt sich fest verdrahten lässt. Feste Regeln sind billiger, schneller, nachvollziehbar und lassen sich nicht überreden. Das Modell ist für das zuständig, was sich nicht vorab aufschreiben lässt.</p>
-  </div>
- </div>
-
- <div class="konzept-card k-red">
-  <div class="konzept-tag">Grenzen</div>
-  <div class="konzept-name">4 bis 6 · Was er nicht darf</div>
-  <div class="konzept-text">
-   <p><strong>④ Erst die Abbruchbedingung, dann die Fähigkeit.</strong> Bevor du festlegst, was der Agent können soll, lege fest, wann er aufhören und übergeben muss. Diese Reihenfolge klingt umständlich und erspart die häufigste Nacharbeit — ein Agent ohne definierten Ausstieg läuft im Zweifelsfall weiter.</p>
-   <p style="margin-top:.4rem;"><strong>⑤ Rechte werden auf Anwendungsebene erzwungen, nicht im Text der Anweisung.</strong> Eine Anweisung wie „lösche niemals Datensätze“ ist eine Bitte, keine Schranke. Unter gezielten Angriffen lassen sich reine Textschranken zuverlässig aushebeln — nachgewiesen in begutachteter Forschung für alle verbreiteten Modelle. Was der Agent technisch nicht darf, kann er auch nicht überredet werden zu tun.</p>
-   <p style="margin-top:.4rem;"><strong>⑥ Nur die Rechte, die der Zweck erfordert.</strong> Rechte lassen sich später leicht erweitern und praktisch nie wieder einsammeln. Beginne mit Lesezugriff. Jedes Schreibrecht und jede nach außen wirkende Aktion wird einzeln begründet und einzeln freigegeben.</p>
-  </div>
- </div>
-
- <div class="konzept-card k-ki">
-  <div class="konzept-tag">Nachweisbarkeit</div>
-  <div class="konzept-name">7 bis 8 · Woran man erkennt, ob er funktioniert</div>
-  <div class="konzept-text">
-   <p><strong>⑦ Jede Anforderung braucht einen Test — sonst ist sie keine Anforderung.</strong> „Der Agent soll zuverlässig arbeiten“ ist eine Absichtserklärung. „In neun von zehn Referenzfällen liefert er dieselbe Einstufung wie die Fachabteilung“ ist eine Anforderung. Formuliere so, dass jemand anderes prüfen könnte, ob sie erfüllt ist.</p>
-   <p style="margin-top:.4rem;"><strong>⑧ Die Ausgabe wird strukturiert, nicht erzählt.</strong> Pflichtfelder sind Ergebnis, Begründung, verwendete Quellen, ausgelöste Aktionen, Zeitstempel und Agentenversion. Fließtext lässt sich nicht auswerten, nicht überwachen und im Streitfall nicht nachvollziehen — und er verdeckt, worauf die Aussage sich stützt.</p>
-  </div>
- </div>
-
- <div class="konzept-card k-warn">
-  <div class="konzept-tag">Haltbarkeit</div>
-  <div class="konzept-name">9 bis 10 · Was nach dem Start passiert</div>
-  <div class="konzept-text">
-   <p><strong>⑨ Das Modell ist der austauschbare Teil — versioniere alles darum herum.</strong> Anweisung, Werkzeuge, Rechte, Quellen, Bewertungsregeln, Schwellenwerte, Ausgabeformat, Testsatz und Sicherheitskontrollen. Der Modellwechsel kommt vom Anbieter und wird nicht von dir geplant; wenn er kommt, brauchst du einen Testsatz, gegen den du die neue Fassung laufen lassen kannst.</p>
-   <p style="margin-top:.4rem;"><strong>⑩ Mit dem Menschen im Kreislauf starten — Autonomie wird verdient.</strong> Beginne eine Stufe unterhalb dessen, was technisch ginge: als Assistent statt als Analyse-Agent, als Analyse-Agent statt autonom. Die Freigabegrenze wird nach belegter Zuverlässigkeit verschoben, nicht nach Zeitablauf oder Zuversicht.</p>
-   <p style="font-size:12.5px;color:var(--muted);">Die Umkehrung dieses Grundsatzes ist der häufigste Fehler in Agentenprojekten: Man startet mit der höchsten Autonomiestufe, weil sie die eigentliche Idee war — und baut die Kontrollen nach, wenn der erste Schaden entstanden ist.</p>
-  </div>
-
-  <div class="card" style="border-left:4px solid var(--red);margin-top:1.2rem;">
-   <p style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--red);margin-bottom:.4rem;">Nachtrag 29.09.2026 · Grundsatz ⑤ war eine Ebene zu kurz</p>
-   <h3 style="font-family:'Playfair Display',serif;font-weight:600;font-size:1.15rem;margin:.2rem 0 .5rem;">⑤a Die Schranke muss außerhalb dessen liegen, worin der Agent läuft</h3>
-
-   <p style="font-size:13px;">Grundsatz ⑤ sagt: Rechte werden <em>auf Anwendungsebene</em> erzwungen, nicht im Text der Anweisung. Das ist richtig und bleibt stehen — es reicht aber nicht. Der Grund ist unangenehm einfach:</p>
-
-   <div class="note note-red"><strong>Bei den bekannten Vorfällen des Jahres 2026 wurde genau diese Ebene umgangen.</strong> Der Hersteller der Rechenplattform, auf der ein großer Teil dieser Systeme läuft, formuliert das Muster in seiner eigenen Mitteilung so: Der Agent habe die Sicherheitskontrollen <em>auf der Anwendungsebene</em> umgangen, um seine zugewiesene Aufgabe zu erfüllen.<br><br>
-   Das ist keine Überraschung, wenn man es ausspricht: <strong>Die Anwendungsebene ist die Ebene, auf der der Agent arbeitet.</strong> Was dort durchgesetzt wird, liegt in seinem Zugriffsbereich — er kann es finden, verstehen und umplanen.</div>
-
-   <p style="font-size:13px;margin-top:.7rem;"><strong>Drei Ebenen, und sie sind nicht gleichwertig:</strong></p>
-   <table class="tbl" style="margin-top:.5rem;">
-    <thead><tr><th style="width:24%">Ebene</th><th style="width:30%">Was dort durchgesetzt wird</th><th>Wie weit sie trägt</th></tr></thead>
-    <tbody>
-     <tr><td><strong>Anweisung</strong> (Prompt, Systemprompt)</td><td>„Tu das nicht"</td><td>❌ Eine Bitte. Unter gezielten Eingaben zuverlässig aushebelbar</td></tr>
-     <tr><td><strong>Anwendung</strong> (Agentenrahmen, Werkzeugschicht)</td><td>Rechte, Freigaben, Werkzeugkatalog</td><td>⚠️ Deutlich besser — aber <strong>im Zugriffsbereich des Agenten</strong>. Er kann Umwege suchen und hat sie gefunden</td></tr>
-     <tr><td><strong>Außerhalb des Agentenrahmens</strong> (Laufzeitgrenze, unabhängiger Wächter)</td><td>Was technisch überhaupt erreichbar ist; Protokolle, die der Agent nicht ändern kann</td><td>✅ Die Ebene, auf die es ankommt — <em>weil der Agent sie nicht erreicht</em></td></tr>
-    </tbody>
-   </table>
-
-   <div class="note note-green"><strong>Nachtrag zur Beleglage: Die Verordnung sagt es selbst.</strong> Als ich diesen Grundsatz aufgeschrieben habe, stützte er sich auf ein UN-Gremium, eine Behördenempfehlung und Herstellerangaben. Eine begutachtete Arbeit von TU Dresden, DFKI und Universität Freiburg weist auf die nähere Fundstelle hin:<br><br>
-   <strong>Erwägungsgrund 73 Satz 3 der KI-Verordnung verlangt, dass Systeme „eingebauten Beschränkungen des Betriebs" unterliegen, <em>die das System selbst nicht außer Kraft setzen kann</em>.</strong><br><br>
-   Das ist keine Empfehlung und kein Marktstandard, sondern die Auslegungshilfe des europäischen Gesetzgebers zu Artikel 14. <strong>Der Grundsatz ⑤a steht damit nicht mehr auf Stufe C, sondern auf dem Verordnungstext</strong> — die Herstellerangebote sind nur die technische Umsetzung dessen, was die Verordnung ohnehin voraussetzt. <em>Das ist das stärkste Argument, das Du in einem Anbietergespräch haben kannst.</em></div>
-
-   <div class="note"><strong>Und dasselbe Prinzip dreifach daneben — der Grund, es ernst zu nehmen.</strong>
-    <ul style="margin:.4rem 0 0 1.1rem;">
-     <li>Das <strong>UN-Wissenschaftsgremium</strong> nennt unter seinen vier Prinzipien aus Luftfahrt, Kerntechnik und Cybersicherheit die <em>unabhängigen Kontrollen</em>: Kritische Sicherheitsmechanismen bleiben unabhängig von dem System, das sie schützen, <strong>damit dieses sie nicht verändern kann</strong>.</li>
-     <li>Die <strong>französische ANSSI</strong> empfiehlt mit R27, automatische Aktionen zu begrenzen, sobald ein System unkontrollierte Eingaben verarbeitet.</li>
-     <li><strong>Die Hersteller</strong> bauen es inzwischen als Produkt: eine erzwingbare Laufzeitgrenze <em>außerhalb von Modell und Agentenrahmen</em>, dazu ein unabhängiger Wächter, der nach eigener Darstellung für den Agenten nicht sichtbar ist und ihn bei Grenzüberschreitung binnen Millisekunden abtrennt.</li>
-    </ul>
-   </div>
-
-   <p style="font-size:13px;margin-top:.7rem;"><strong>Was sich dadurch für Dich praktisch ändert.</strong> Bis vor kurzem war die ehrliche Antwort auf die Frage „lässt sich das überhaupt umsetzen?" ein Vielleicht. Diese Antwort gilt nicht mehr — <strong>es gibt Angebote dafür, teils quelloffen.</strong> Damit verschiebt sich die Beweislast: Wer künftig einen Agenten mit Außenwirkung ohne Grenze außerhalb des Rahmens betreibt, muss das begründen, nicht rechtfertigen, warum er eine will.</p>
-
-   <div class="note note-amber"><strong>Drei Fragen für die Architekturentscheidung — und die erste ist die einzige, die zählt.</strong>
-    <ol style="margin:.4rem 0 0 1.1rem;">
-     <li><strong>Wo wird die Grenze durchgesetzt — innerhalb oder außerhalb des Agentenrahmens?</strong> Lautet die Antwort „im Agentenrahmen", hast Du Grundsatz ⑤ erfüllt und ⑤a nicht.</li>
-     <li><strong>Kann der Agent die Protokolle erreichen, die ihn protokollieren?</strong> Wenn ja, sind es keine Beweismittel, sondern Notizen.</li>
-     <li><strong>Was genau passiert bei einer Grenzüberschreitung — und wie lange dauert es?</strong> „Es wird protokolliert und jemand sieht es sich an" ist keine Antwort, solange nicht steht, wer wann hinsieht.</li>
-    </ol>
-   </div>
-
-   <div class="note note-green" style="margin-top:.7rem;"><strong>Was Du daraus für die Beschaffung machst — und diese Liste ist neu.</strong><br><br>
-   Artikel 14 Absatz 3 verlangt vom <em>Anbieter</em>, die Aufsichtsmaßnahmen im Voraus zu planen. Bei Agenten hängen die Bedingungen sicheren Betriebs aber stark vom Einsatzkontext ab — den kennt nur Dein Haus. Die zitierte Arbeit zieht daraus einen Schluss, der Dir in Verhandlungen hilft: <strong>Der Anbieter muss Dich in die Lage versetzen, die Vorsorge selbst zu leisten.</strong> Konkret verlangst Du deshalb vier Dinge:
-   <table class="tbl" style="margin-top:.5rem;">
-    <thead><tr><th style="width:30%">Was Du verlangst</th><th>Warum — und die Formulierung für die Ausschreibung</th></tr></thead>
-    <tbody>
-     <tr><td><strong>Konfigurierbare Leitplanken</strong></td><td>Grenzen, die <em>Du</em> setzt, nicht nur die vom Anbieter voreingestellten. <em>„Welche Beschränkungen können wir selbst festlegen, und welche sind fest verdrahtet?"</em></td></tr>
-     <tr><td><strong>Einstellbare Eskalationspunkte</strong></td><td>Stellen, an denen der Agent an einen Menschen zurückgeben <em>muss</em>. <em>„Können wir eigene Haltepunkte definieren — und woran erkennen wir, dass sie greifen?"</em></td></tr>
-     <tr><td><strong>Stolperdrähte</strong></td><td>Auslöser, die bei Überschreiten anspringen, ohne dass jemand hinsieht. <em>„Welche Ereignisse lösen automatisch eine Meldung aus, und wer bekommt sie?"</em></td></tr>
-     <tr><td><strong>Testumgebung für den eigenen Bestand</strong></td><td><strong>Die wichtigste der vier.</strong> Eine abgeschottete Umgebung, in der Du das Verhalten des Agenten <em>an Deinen eigenen Fällen</em> durchprobierst, bevor er live geht. <em>„Können wir vor der Inbetriebnahme gegen unseren eigenen Fallbestand testen — und stellen Sie die Mittel dafür bereit?"</em></td></tr>
-    </tbody>
-   </table>
-   <span style="display:block;margin-top:.5rem;">Kommt auf die vierte Frage ein Nein, hast Du eine belastbare Verhandlungsposition: Artikel 14 Absatz 1 und 3 verlangen, dass das System <em>so gebaut ist</em>, dass wirksame Aufsicht möglich ist. Wer Dir die Mittel zum Vorabtest verweigert, erschwert genau das.</span></div>
-
-   <div class="note note-amber" style="margin-top:.7rem;"><strong>Und die Tauschregel — mit der Grenze, an der sie endet.</strong><br><br>
-   Dieselbe Arbeit formuliert etwas, das Deine Planung erleichtert: Die drei Aufsichtsfunktionen über den Lebensweg sind <strong>einander ergänzend, nicht additiv</strong>. Starke Vorsorge im Entwurf kann eine <em>leichtere</em> Laufzeitaufsicht rechtfertigen — Kontrollpunkte statt Dauerbeobachtung. Umgekehrt gilt: Wo die Vorsorge dünn ist, muss die Laufzeitaufsicht dichter sein.<br><br>
-   <strong>Aber es gibt eine harte Grenze, und sie deckt sich mit unserer Grenzregel:</strong>
-   <span style="display:block;margin:.5rem 0 0;padding:.5rem 0 .5rem .9rem;border-left:3px solid var(--red);font-style:italic;">Wo ein Schaden nicht umkehrbar ist, kann nachträgliche Prüfung fehlende Laufzeitaufsicht nicht ausgleichen — weil es dann nichts mehr zu korrigieren gibt.</span>
-   <span style="display:block;margin-top:.5rem;">Übersetzt in Deine Entscheidung: Die Frage <em>„reichen Kontrollpunkte statt Dauerbeobachtung?"</em> lässt sich nur beantworten, nachdem Du die <strong>Umkehrbarkeit</strong> geklärt hast. Bei umkehrbaren Folgen ja. Bei unumkehrbaren nein — dort ist die Laufzeitaufsicht der einzige Ort, an dem Aufsicht noch etwas bewirkt.</span></div>
-
-   <div class="note note-red"><strong>Und der Vorbehalt, ohne den der Nachtrag irreführend wäre.</strong> Eine Laufzeitgrenze begrenzt, <em>was</em> ein Agent tun kann. Sie beseitigt nicht das Ziel, das den Umweg gesucht hat — und sie sagt nichts darüber, ob das System seine Aufgabe fachlich richtig erledigt. <strong>⑤a ersetzt keinen der übrigen Grundsätze</strong>, am wenigsten ① (enger Zuschnitt) und ⑩ (Autonomie wird verdient). Eine Herstellerlösung ist ein Bauteil, kein Freigabeersatz. Die Prüffrage bleibt: <em>Woran hätten wir gemerkt, dass sie nicht greift?</em></div>
-
-   <p style="font-size:12px;color:var(--muted);margin-top:.5rem;"><strong>Belege, nach Stärke geordnet.</strong> Das Prinzip der unabhängigen Kontrolle: UN-Wissenschaftsgremium für KI — <em>„AI Agents, Misalignment and the Risk of Losing Human Control"</em>, Advance Unedited Version 1, 21.09.2026 (<strong>Stufe A</strong>). Die Empfehlung R27: ANSSI — <em>Recommandations de sécurité pour un système d'IA générative</em>, Fassung 1.0 vom 29.04.2024 (<strong>Stufe A</strong>, Behördenempfehlung; inhaltlich vor der Agentenwelle entstanden — R27 trägt, der Leitfaden als Ganzes ist kein aktueller Agenten-Maßstab). Die Marktlage und die Formulierung zum Anwendungsebenen-Umweg: NVIDIA-Pressemitteilung vom 28.09.2026 (<strong>Stufe C</strong> — Herstellermitteilung mit Verkaufsinteresse und ausdrücklichem Zukunftsaussagen-Vorbehalt; die <em>Existenz</em> der Angebote ist belegt, die <em>Wirksamkeit</em> nicht).</p>
-   <div class="src-row">
-    <span class="src-chip"><a href="https://www.un.org/independent-international-scientific-panel-ai/en/thematic-briefs/ai-agents-misalignment-risks" target="_blank">UN-Gremium — Kurzbericht zu KI-Agenten (21.09.2026)</a></span>
-    <span class="src-chip"><a href="https://messervices.cyber.gouv.fr/guides/recommandations-de-securite-pour-un-systeme-dia-generative" target="_blank">ANSSI — R27</a></span>
-    <span class="src-chip"><a href="https://nvidianews.nvidia.com/news/open-agent-safety-platform" target="_blank">NVIDIA — Open Agent Safety Platform (28.09.2026)</a></span>
-   </div>
-   <p style="font-size:12px;color:var(--muted);margin-top:.5rem;"><strong>Die rechtliche Einordnung, die Beschaffungsliste und die Tauschregel nach:</strong> Meinel, P., Baum, K., Lauber-Rönsberg, A., Stenzel, L. &amp; Langer, M. — <em>„Human Oversight of AI Agents under the EU AI Act"</em>, Autorenfassung des angenommenen Manuskripts, 21.09.2026, 25 Seiten (TU Dresden · DFKI Saarbrücken · TU Hamburg · Universität Freiburg). <strong>Belegstufe A</strong> — angenommenes Manuskript, interdisziplinär aus Recht, KI-Forschung und Psychologie, ohne erkennbares Geschäftsinteresse. <em>Die Veröffentlichungsstelle ist in dieser Fassung nicht genannt; vor formalem Zitieren die endgültige Fundstelle nachtragen.</em></p>
   </div>
  </div>
 </div>
@@ -523,7 +240,297 @@ a{color:var(--accent);}a:hover{text-decoration:underline;}
   <p style="margin-top:.6rem;font-size:12.5px;color:var(--muted);"><strong>Zur Vertiefung, mit Vorbehalt:</strong> Microsoft stellt einen offenen Kurs zu agentischen Protokollen bereit (Lektion 11 in „AI Agents for Beginners"). Er ist fachlich brauchbar, aber ein Programmierkurs, der auf dem eigenen Framework und einem Azure-Konto aufbaut — als Marktübersicht also nicht neutral. Für technisch interessierte Teilnehmende ein Einstieg, für die Beschaffungsentscheidung nicht maßgeblich.</p>
  </div>
 </div>
+</section>
+<section class="tab-panel" id="tab-grundsaetze">
+<div class="section page-break">
+ <div class="section-title">Zehn Grundsätze für den Bau — unabhängig vom Werkzeug</div>
+ <div class="card">
+  <p>Die sieben Phasen sagen, <em>wann</em> etwas geschieht. Diese zehn Grundsätze sagen, <em>wie</em> — sie gelten über alle Phasen hinweg und sind der Erfahrungsbestand, den die Normenwerke, die Sicherheitsliteratur und die Praxisberichte gemeinsam tragen.</p>
+ </div>
 
+ <div class="konzept-card k-green">
+  <div class="konzept-tag">Zuschnitt</div>
+  <div class="konzept-name">1 bis 3 · Was der Agent überhaupt sein soll</div>
+  <div class="konzept-text">
+   <p><strong>① Der enge Zuschnitt ist die wirksamste Sicherheitsmaßnahme.</strong> Ein Agent, der eine Sache tut, lässt sich beschreiben, prüfen und abschalten. Ein Agent, der „den Vertrieb unterstützt“, lässt sich nichts davon. Wenn du den Zweck nicht in einem Satz sagen kannst, ist der Zuschnitt noch zu weit.</p>
+   <p style="margin-top:.4rem;"><strong>② Eine Aufgabe je Agent.</strong> Zwei Aufgaben in einem Agenten bedeuten zwei Rechtebündel, zwei Fehlerbilder und einen Testsatz, der beides abdecken muss. Zwei getrennte Agenten sind fast immer die billigere Lösung — auch dann, wenn sie zunächst nach mehr Aufwand aussieht.</p>
+   <p style="margin-top:.4rem;"><strong>③ Was eine Regel kann, braucht kein Modell.</strong> Prüfe vor jedem Modellaufruf, ob der Schritt sich fest verdrahten lässt. Feste Regeln sind billiger, schneller, nachvollziehbar und lassen sich nicht überreden. Das Modell ist für das zuständig, was sich nicht vorab aufschreiben lässt.</p>
+  </div>
+ </div>
+
+ <div class="konzept-card k-red">
+  <div class="konzept-tag">Grenzen</div>
+  <div class="konzept-name">4 bis 6 · Was er nicht darf</div>
+  <div class="konzept-text">
+   <p><strong>④ Erst die Abbruchbedingung, dann die Fähigkeit.</strong> Bevor du festlegst, was der Agent können soll, lege fest, wann er aufhören und übergeben muss. Diese Reihenfolge klingt umständlich und erspart die häufigste Nacharbeit — ein Agent ohne definierten Ausstieg läuft im Zweifelsfall weiter.</p>
+   <p style="margin-top:.4rem;"><strong>⑤ Rechte werden technisch erzwungen — und zwar außerhalb des Agentenrahmens.</strong> Eine Anweisung wie „lösche niemals Datensätze“ ist eine Bitte, keine Schranke; unter gezielten Angriffen lassen sich Textschranken zuverlässig aushebeln. Aber auch die <em>Anwendungsebene</em> genügt nicht: Sie ist die Ebene, auf der der Agent arbeitet — er kann sie finden und umplanen, und genau das ist bei den Vorfällen des Jahres 2026 geschehen. Die Schranke gehört dorthin, wo der Agent nicht hinreicht: Laufzeitgrenze, unabhängiger Wächter, Protokolle, die er nicht ändern kann. <em>Erwägungsgrund 73 der KI-Verordnung verlangt genau das</em> — „eingebaute Beschränkungen des Betriebs“, die das System selbst nicht außer Kraft setzen kann.</p>
+   <p style="margin-top:.4rem;"><strong>⑥ Nur die Rechte, die der Zweck erfordert.</strong> Rechte lassen sich später leicht erweitern und praktisch nie wieder einsammeln. Beginne mit Lesezugriff. Jedes Schreibrecht und jede nach außen wirkende Aktion wird einzeln begründet und einzeln freigegeben.</p>
+  </div>
+ </div>
+
+ <div class="konzept-card k-ki">
+  <div class="konzept-tag">Nachweisbarkeit</div>
+  <div class="konzept-name">7 bis 8 · Woran man erkennt, ob er funktioniert</div>
+  <div class="konzept-text">
+   <p><strong>⑦ Jede Anforderung braucht einen Test — sonst ist sie keine Anforderung.</strong> „Der Agent soll zuverlässig arbeiten“ ist eine Absichtserklärung. „In neun von zehn Referenzfällen liefert er dieselbe Einstufung wie die Fachabteilung“ ist eine Anforderung. Formuliere so, dass jemand anderes prüfen könnte, ob sie erfüllt ist.</p>
+   <p style="margin-top:.4rem;"><strong>⑧ Die Ausgabe wird strukturiert, nicht erzählt.</strong> Pflichtfelder sind Ergebnis, Begründung, verwendete Quellen, ausgelöste Aktionen, Zeitstempel und Agentenversion. Fließtext lässt sich nicht auswerten, nicht überwachen und im Streitfall nicht nachvollziehen — und er verdeckt, worauf die Aussage sich stützt.</p>
+  </div>
+ </div>
+
+ <div class="konzept-card k-warn">
+  <div class="konzept-tag">Haltbarkeit</div>
+  <div class="konzept-name">9 bis 10 · Was nach dem Start passiert</div>
+  <div class="konzept-text">
+   <p><strong>⑨ Das Modell ist der austauschbare Teil — versioniere alles darum herum.</strong> Anweisung, Werkzeuge, Rechte, Quellen, Bewertungsregeln, Schwellenwerte, Ausgabeformat, Testsatz und Sicherheitskontrollen. Der Modellwechsel kommt vom Anbieter und wird nicht von dir geplant; wenn er kommt, brauchst du einen Testsatz, gegen den du die neue Fassung laufen lassen kannst.</p>
+   <p style="margin-top:.4rem;"><strong>⑩ Mit dem Menschen im Kreislauf starten — Autonomie wird verdient.</strong> Beginne eine Stufe unterhalb dessen, was technisch ginge: als Assistent statt als Analyse-Agent, als Analyse-Agent statt autonom. Die Freigabegrenze wird nach belegter Zuverlässigkeit verschoben, nicht nach Zeitablauf oder Zuversicht.</p>
+   <p style="font-size:12.5px;color:var(--muted);">Die Umkehrung dieses Grundsatzes ist der häufigste Fehler in Agentenprojekten: Man startet mit der höchsten Autonomiestufe, weil sie die eigentliche Idee war — und baut die Kontrollen nach, wenn der erste Schaden entstanden ist.</p>
+  </div>
+
+  <div class="card" style="border-left:4px solid var(--red);margin-top:1.2rem;">
+   
+  </div>
+ </div>
+</div>
+</section>
+<section class="tab-panel" id="tab-phasen">
+<div class="section">
+ <div class="section-title">Vorphase · Steht der Unterbau?</div>
+<div class="konzept-card k-ki">
+  <div class="konzept-tag">Vorfrage 2 · Machbarkeit</div>
+  <div class="konzept-name">Steht der Unterbau — oder bauen wir einen Prototyp im Produktivgewand?</div>
+  <div class="konzept-text">
+   <p>Das Sprachmodell ist der kleinste Teil. Um es herum liegen sechs Schichten, die über Produktionsfähigkeit entscheiden. Fehlt eine, merkst du das erfahrungsgemäß erst beim Produktivgang.</p>
+   <table class="tbl">
+    <thead><tr><th style="width:30%;">Schicht</th><th>Wofür</th></tr></thead>
+    <tbody>
+     <tr><td><strong>Zustand und Fortschreibung</strong></td><td>Zwischenergebnisse und Ausführungskontext. Fehlt sie, beginnt der Agent nach jedem Abbruch von vorn</td></tr>
+     <tr><td><strong>Sicherheit und Governance</strong></td><td>Identität, Rechtezuschnitt, Prüfpfad. Ohne diese Schicht ist keine Datenschutz- oder Compliance-Prüfung möglich</td></tr>
+     <tr><td><strong>Ablaufsteuerung und Werkzeuge</strong></td><td>Wann wird wahrgenommen, geplant, gehandelt — und welches System wird aufgerufen</td></tr>
+     <tr><td><strong>Gedächtnis</strong></td><td>Kurzzeit- und Langzeitspeicher. Bestimmt, was der Agent weiß und erinnert</td></tr>
+     <tr><td><strong>Beobachtbarkeit</strong></td><td>Nicht „hat das System geantwortet“, sondern „war die Entscheidung richtig“ — eine eigene Messdimension</td></tr>
+     <tr><td><strong>Prüfsuiten</strong></td><td>Laufende Prüfung, ob der Agent einsatzbereit ist und bleibt. Kein einmaliges Tor</td></tr>
+    </tbody>
+   </table>
+   <p style="margin-top:.5rem;"><strong>Die Faustregel dahinter:</strong> Ein Wochenend-Prototyp braucht etwa eine Zeile Infrastruktur je Modellaufruf, ein geordneter Betrieb rund fünfzig — und die meisten davon haben mit dem Modell nichts zu tun.</p>
+   <p style="font-size:12.5px;color:var(--muted);">Mehrere Nein-Antworten sind kein Abbruchgrund, wohl aber ein Grund, den Agenten zunächst als Assistent oder Analyse-Agent zu führen. Autonomie setzt Unterbau voraus.</p>
+  </div>
+ </div>
+</div>
+
+<div class="section page-break">
+ <div class="section-title">Der Weg in sieben Phasen</div>
+
+ <div class="weg">
+  <div class="weg-schritt"><span class="weg-nr">01</span><span class="weg-name">Auftrag<br>definieren</span></div>
+  <div class="weg-schritt"><span class="weg-nr">02</span><span class="weg-name">Agent<br>spezifizieren</span></div>
+  <div class="weg-schritt"><span class="weg-nr">03</span><span class="weg-name">Risiken<br>ableiten</span></div>
+  <div class="weg-schritt"><span class="weg-nr">04</span><span class="weg-name">Prüfen<br>und messen</span></div>
+  <div class="weg-schritt"><span class="weg-nr">05</span><span class="weg-name">Freigabe<br>entscheiden</span></div>
+  <div class="weg-schritt"><span class="weg-nr">06</span><span class="weg-name">Betrieb<br>überwachen</span></div>
+  <div class="weg-schritt"><span class="weg-nr">07</span><span class="weg-name">Änderungen<br>kontrollieren</span></div>
+ </div>
+
+ <div class="card">
+  <table class="tbl">
+   <thead><tr><th style="width:6%;">#</th><th style="width:22%;">Phase</th><th>Leitfrage</th><th style="width:26%;">Ergebnis</th></tr></thead>
+   <tbody>
+    <tr><td><strong>01</strong></td><td><strong>Auftrag definieren</strong></td><td>Welches Problem, welcher Nutzen, welche Grenzen?</td><td>Fachlich freigegebener Agentenauftrag</td></tr>
+    <tr><td><strong>02</strong></td><td><strong>Agent spezifizieren</strong></td><td>Was darf er lesen, entscheiden, auslösen — und was nicht?</td><td>Versionierte Spezifikation</td></tr>
+    <tr><td><strong>03</strong></td><td><strong>Risiken ableiten</strong></td><td>Wie wird jede Fehlermöglichkeit verhindert, erkannt oder begrenzt?</td><td>Risiko- und Kontrollmatrix</td></tr>
+    <tr><td><strong>04</strong></td><td><strong>Prüfen und messen</strong></td><td>Woran wird Zuverlässigkeit nachgewiesen — vor dem Start?</td><td>Nachvollziehbarer Prüfnachweis</td></tr>
+    <tr><td><strong>05</strong></td><td><strong>Freigabe entscheiden</strong></td><td>Sind alle Bedingungen erfüllt — und wer trägt die Entscheidung?</td><td>Dokumentierte Freigabeentscheidung</td></tr>
+    <tr><td><strong>06</strong></td><td><strong>Betrieb überwachen</strong></td><td>Woran merken wir, dass er abdriftet oder zu teuer wird?</td><td>Laufender Betriebs- und Qualitätsnachweis</td></tr>
+    <tr><td><strong>07</strong></td><td><strong>Änderungen kontrollieren</strong></td><td>Was wurde geändert, und was muss deshalb erneut geprüft werden?</td><td>Fachbereich mit IT</td><td>Versionierung und Regressionstests</td></tr>
+   </tbody>
+  </table>
+  <p style="margin-top:.6rem;font-size:12.5px;color:var(--muted);">Die Phasen laufen nicht strikt nacheinander — Phase 2 und 3 bearbeitet man meist gemeinsam. Was nicht verhandelbar ist: <strong>Phase 5 kommt nach Phase 4</strong>, und die Entscheidung in Phase 5 trifft ein Mensch mit Namen.</p>
+ </div>
+</div>
+
+<div class="section">
+ <div class="section-title">Die Phasen im Einzelnen</div>
+
+ <details class="arbeitsbereich no-break phase-det">
+<summary><strong>01 · Auftrag definieren</strong> — Details</summary>
+<div class="ab-inner">
+
+  <p>Vor jeder technischen Umsetzung stehen Zweck, Nutzen und Grenzen. Der häufigste Fehler dieser Phase ist, sie zu überspringen, weil die Idee klar erscheint.</p>
+  <p style="margin-top:.4rem;"><strong>Zu klären:</strong> Welches Problem wird gelöst? Was soll nachweisbar besser werden? Was ist ausdrücklich <em>nicht</em> Ziel? Wann muss der Agent abbrechen und an einen Menschen übergeben?</p>
+  <p style="margin-top:.4rem;"><strong>Arbeitsweise:</strong> Der Leitfaden empfiehlt, die Anforderungen im Gespräch mit der KI zu erarbeiten — mit der ausdrücklichen Vorgabe, den Agenten noch <em>nicht</em> zu bauen, keine Annahmen zu treffen und auf unpräzise oder widersprüchliche Angaben hinzuweisen. Der Leitsatz dazu: <em>Fehlende Anforderungen werden erfragt, nicht plausibel ergänzt.</em></p>
+  <span class="erg"><span class="erg-label">Ergebnis</span>fachlich freigegebener Auftrag mit Nicht-Zielen und Abbruchkriterien</span>
+ 
+</div>
+</details>
+
+ <details class="arbeitsbereich no-break phase-det">
+<summary><strong>02 · Agent spezifizieren</strong> — Details</summary>
+<div class="ab-inner">
+
+  <p>Hier entsteht das Kerndokument. Der Leitfaden gliedert es in dreizehn Abschnitte; diese fünf Fragen entscheiden über die Qualität des Ganzen:</p>
+  <ul>
+   <li><strong>Welche Quellen sind zulässig</strong> — und was passiert bei Widersprüchen oder veralteten Angaben?</li>
+   <li><strong>Welche Aktionen darf er autonom</strong>, welche nur mit menschlicher Freigabe? Lesen, bewerten, anlegen, ändern, löschen, versenden, extern auslösen — jede Zeile einzeln beantwortet.</li>
+   <li><strong>Nach welchen Kriterien entscheidet er</strong>, mit welcher Gewichtung, und ab welchem Schwellenwert geschieht was?</li>
+   <li><strong>Wie sieht die Ausgabe aus?</strong> Pflichtfelder sind Ergebnis, Begründung, verwendete Quellen, ausgelöste Aktionen, Zeitstempel und Agentenversion.</li>
+   <li><strong>Wann muss ein Mensch übernehmen?</strong> Für kritische Entscheidungen, unzureichende Datenlage, widersprüchliche Quellen, Sicherheitsereignisse und uneindeutige Schwellenwerte — je mit benannter Rolle.</li>
+  </ul>
+  <p style="margin-top:.4rem;"><strong>Die Regel, die alles andere trägt:</strong> Der Agent erhält nur die Funktionen und Berechtigungen, die sein Zweck erfordert. Rechte lassen sich später leicht erweitern und praktisch nie wieder einsammeln.</p>
+  <span class="erg"><span class="erg-label">Ergebnis</span>versionierte Spezifikation — Detailvorlage im Leitfaden, Abschnitte 2 bis 13</span>
+ 
+</div>
+</details>
+
+ <details class="arbeitsbereich no-break phase-det">
+<summary><strong>03 · Risiken und Kontrollen ableiten</strong> — Details</summary>
+<div class="ab-inner">
+
+  <p>Zu jeder Fehlermöglichkeit gehören drei Antworten: Wie verhindern wir sie, wie erkennen wir sie, was tun wir dann? Sieben Risiken treten bei fast jedem Agenten auf:</p>
+  <table class="tbl">
+   <thead><tr><th style="width:22%;">Risiko</th><th>Wirkung</th><th style="width:24%;">Vorbeugend</th><th style="width:20%;">Erkennend</th></tr></thead>
+   <tbody>
+    <tr><td><strong>Erfundene Aussage</strong></td><td>Falsche Entscheidung auf nicht gestützter Information</td><td>Quellenpflicht, strukturierte Anweisung</td><td>Stichprobe, Faktentest</td></tr>
+    <tr><td><strong>Eingeschleuste Anweisung</strong></td><td>Regelumgehung, Datenabfluss</td><td>Trennung von Anweisung und Fremdinhalt, Werkzeugbegrenzung</td><td>Sicherheitstest, Protokollierung</td></tr>
+    <tr><td><strong>Zu weite Befugnis</strong></td><td>Unerwünschte Aktion</td><td>Geringstmögliche Rechte, menschliche Freigabe</td><td>Aktionsprotokoll</td></tr>
+    <tr><td><strong>Fehlerhafte Quelle</strong></td><td>Falsche Bewertung</td><td>Positivliste, Aktualitätsregel</td><td>Quellenüberwachung</td></tr>
+    <tr><td><strong>Fehlender Kontext</strong></td><td>Falsche Schlussfolgerung aus unvollständiger Eingabe</td><td>Pflichtfelder, Validierung</td><td>Negativtests</td></tr>
+    <tr><td><strong>Endlosschleife</strong></td><td>Kosten und Systemlast</td><td>Höchstzahl Durchläufe, Zeitgrenze</td><td>Laufzeitüberwachung</td></tr>
+    <tr><td><strong>Kostenüberschreitung</strong></td><td>Budget gesprengt</td><td>Feste Obergrenzen</td><td>Kostenüberwachung</td></tr>
+   </tbody>
+  </table>
+  <p style="margin-top:.5rem;">Diese sieben sind der Ausgangsbestand. Die Risiken des konkreten Falls kommen hinzu — sie ergeben sich aus dem Auftrag, nicht aus der Technik.</p>
+  <span class="erg"><span class="erg-label">Ergebnis</span>Risiko- und Kontrollmatrix mit benannten Reaktionen</span>
+ 
+</div>
+</details>
+
+ <details class="arbeitsbereich no-break phase-det">
+<summary><strong>04 · Prüfen und messen</strong> — Details</summary>
+<div class="ab-inner">
+
+  <p>Eine Vorführung ist kein Nachweis. Nötig ist ein <strong>versionierter Testsatz</strong> mit erwarteten Ergebnissen und messbaren Abnahmekriterien. Zwölf Testklassen decken die üblichen Fehlerbilder ab:</p>
+  <table class="tbl">
+   <thead><tr><th style="width:24%;">Testklasse</th><th>Prüffrage</th><th style="width:28%;">Beispiel</th></tr></thead>
+   <tbody>
+    <tr><td>Funktionstest</td><td>Erfüllt er die spezifizierte Aufgabe?</td><td>Gültiger Standardfall</td></tr>
+    <tr><td>Negativtest</td><td>Reagiert er richtig auf ungültige Eingaben?</td><td>Pflichtfeld fehlt</td></tr>
+    <tr><td>Grenzwerttest</td><td>Greifen Schwellen exakt?</td><td>Wert knapp unter, auf und über der Grenze</td></tr>
+    <tr><td>Quellentest</td><td>Nutzt er nur zulässige Quellen?</td><td>Nicht freigegebene Quelle anbieten</td></tr>
+    <tr><td>Erfindungstest</td><td>Erfindet er Fakten oder Belege?</td><td>Frage ohne vorhandenen Nachweis</td></tr>
+    <tr><td>Konflikttest</td><td>Erkennt er Widersprüche?</td><td>Zwei Quellen widersprechen sich</td></tr>
+    <tr><td>Berechtigungstest</td><td>Bleibt er in seinen Rechten?</td><td>Versuch einer verbotenen Schreibaktion</td></tr>
+    <tr><td>Manipulationstest</td><td>Befolgt er eingeschleuste Fremdanweisungen?</td><td>Quelle enthält „ignoriere die Regeln“</td></tr>
+    <tr><td>Werkzeugfehlertest</td><td>Reagiert er kontrolliert auf Ausfälle?</td><td>Schnittstelle liefert Fehler oder antwortet nicht</td></tr>
+    <tr><td>Wiederholungstest</td><td>Ist das Verhalten stabil?</td><td>Derselbe Fall mehrfach</td></tr>
+    <tr><td>Regressionstest</td><td>Bleibt die Qualität nach Änderungen erhalten?</td><td>Testsatz gegen die neue Fassung</td></tr>
+    <tr><td>Abnahmetest</td><td>Erfüllt er den fachlichen Zweck?</td><td>Vollständiges Fachszenario</td></tr>
+   </tbody>
+  </table>
+  <p style="margin-top:.5rem;"><strong>Der Testsatz braucht mehr als Normalfälle:</strong> seltene aber relevante Fälle, Grenzfälle, ungültige Eingaben, widersprüchliche Informationen, absichtlich manipulierte Eingaben und Fälle, die an einen Menschen übergeben werden müssen.</p>
+  <p style="margin-top:.4rem;"><strong>Gemessen wird auf zehn Dimensionen</strong>, von denen nicht jede zu jedem Agenten passt: fachliche Korrektheit, Quellenqualität, fälschlich ausgelöste und übersehene Fälle, Regelverstöße (Zielwert null), bestandene Sicherheitstests, Qualität der Übergaben an Menschen, Laufzeit, Tokenverbrauch und Kosten je Durchlauf.</p>
+  <span class="erg"><span class="erg-label">Ergebnis</span>Testbericht mit Belegen — Vorlagen im Leitfaden, Abschnitte 14 bis 17</span>
+ 
+</div>
+</details>
+
+ <details class="arbeitsbereich no-break phase-det">
+<summary><strong>05 · Freigabe entscheiden</strong> — Details</summary>
+<div class="ab-inner">
+
+  <p>Die einzige Phase, in der die Führung selbst entscheidet — und die einzige, die sich nicht delegieren lässt. Die Entscheidung lautet <strong>freigegeben, freigegeben mit Auflagen oder nicht freigegeben</strong>, mit Begründung, offenen Risiken, Auflagen, Name und Datum.</p>
+  <p style="margin-top:.4rem;">Sechzehn Bedingungen müssen erfüllt sein. Sie zerfallen in vier Gruppen:</p>
+  <table class="tbl">
+   <thead><tr><th style="width:20%;">Gruppe</th><th>Bedingungen</th></tr></thead>
+   <tbody>
+    <tr><td><strong>Auftrag</strong></td><td>Zweck und Umfang fachlich freigegeben · fachliche Abnahme dokumentiert · technische Freigabe dokumentiert</td></tr>
+    <tr><td><strong>Grenzen</strong></td><td>Quellen und Werkzeuge dokumentiert · Rechte auf das Nötigste beschränkt · zulässige und unzulässige Aktionen festgelegt · Bewertungsmodell und Schwellenwerte versioniert · Regeln für die menschliche Aufsicht definiert</td></tr>
+    <tr><td><strong>Nachweis</strong></td><td>Testsatz versioniert · kritische Testfälle bestanden · Sicherheitstests bestanden · Regressionstest bestanden</td></tr>
+    <tr><td><strong>Betriebsbereitschaft</strong></td><td>Überwachung eingerichtet · Protokollierung eingerichtet · Token- und Kostengrenzen gesetzt · Rückfall oder Abschaltung vorhanden</td></tr>
+   </tbody>
+  </table>
+  <p style="margin-top:.5rem;font-size:12.5px;color:var(--muted);">Die vierte Gruppe wird am häufigsten übersehen, weil sie nach dem Start klingt. Sie gehört davor: Ein Agent, der sich nicht abschalten lässt, ist nicht freigabefähig.</p>
+  <span class="erg"><span class="erg-label">Ergebnis</span>unterschriebene Freigabeentscheidung mit Auflagen</span>
+ 
+</div>
+</details>
+
+ <details class="arbeitsbereich no-break phase-det">
+<summary><strong>06 · Betrieb überwachen</strong> — Details</summary>
+<div class="ab-inner">
+
+  <p>Acht Kennzahlen mit je einem Sollwert, einer Warnschwelle, einer kritischen Schwelle und einer festgelegten Reaktion: Fehlerquote, fälschlich ausgelöste Fälle, übersehene Fälle, Übergaberate an Menschen, Werkzeugfehler, Token je Durchlauf, Kosten je Durchlauf, Laufzeit.</p>
+  <p style="margin-top:.4rem;"><strong>Protokolliert wird</strong>, soweit rechtlich und technisch zulässig: Durchlaufkennung, Zeitstempel, Agenten-, Anweisungs- und Modellversion, genutzte Werkzeuge, herangezogene Quellen, Ergebnis, ausgelöste Aktion, Übergaben, Fehler sowie Token- und Kostenwerte. Aufbewahrungsdauer und Zugriffsrollen gehören festgelegt.</p>
+  <p style="margin-top:.4rem;"><strong>Die Abschaltregel</strong> greift, wenn eine kritische Schwelle überschritten wird, eine unzulässige Aktion ausgeführt wurde, ein Sicherheitsvorfall vorliegt, die fachliche Zuverlässigkeit unter den Mindestwert fällt oder eine zentrale Quelle beziehungsweise ein Werkzeug kompromittiert ist. <strong>Wer abschalten darf, steht mit Namen fest.</strong></p>
+  <span class="erg"><span class="erg-label">Ergebnis</span>laufender Betriebsnachweis mit ausgelösten Reaktionen</span>
+ 
+</div>
+</details>
+
+ <details class="arbeitsbereich no-break phase-det">
+<summary><strong>07 · Änderungen kontrollieren</strong> — Details</summary>
+<div class="ab-inner">
+
+  <p>Versioniert werden neun Bestandteile: Systemanweisung, Modell und Modellversion, Werkzeuge und Rechte, Datenquellen, Bewertungsregeln, Schwellenwerte, Ausgabeformat, Testsatz und Sicherheitskontrollen.</p>
+  <p style="margin-top:.5rem;">Ändert sich einer davon, entsteht eine neue Fassung — und die Frage, <strong>ob sie erneut gegen den Testsatz laufen muss, bevor sie in Betrieb geht.</strong> Genau das beantwortet die mittlere Spalte. Ein solcher Wiederholungslauf heißt <em>Regressionstest</em>: dieselben Referenzfälle wie beim ersten Mal, um zu sehen, ob die Änderung etwas kaputtgemacht hat, das vorher funktionierte.</p>
+  <table class="tbl">
+   <thead><tr><th style="width:34%;">Änderung</th><th style="width:18%;">Regressionstest nötig?</th><th>Mindestumfang</th></tr></thead>
+   <tbody>
+    <tr><td>Redaktionelle Textänderung ohne Logikänderung</td><td>im Einzelfall</td><td>Kurztest und Stichprobe</td></tr>
+    <tr><td>Anweisungslogik geändert</td><td><strong>ja</strong></td><td>Vollständige fachliche Regression</td></tr>
+    <tr><td>Modell gewechselt</td><td><strong>ja</strong></td><td>Vollständige Regression und Sicherheitstests</td></tr>
+    <tr><td>Neues Werkzeug</td><td><strong>ja</strong></td><td>Funktion, Berechtigung, Sicherheit</td></tr>
+    <tr><td>Werkzeugrechte erweitert</td><td><strong>ja</strong></td><td>Berechtigungstest und Prüfung auf zu weite Befugnis</td></tr>
+    <tr><td>Neue Quelle</td><td><strong>ja</strong></td><td>Quellen- und Konflikttest</td></tr>
+    <tr><td>Schwellenwert geändert</td><td><strong>ja</strong></td><td>Grenzwerttest und Fachabnahme</td></tr>
+    <tr><td>Ausgabeformat geändert</td><td><strong>ja</strong></td><td>Schema- und Anbindungstest</td></tr>
+    <tr><td>Testdaten erweitert</td><td>nicht zwingend</td><td>Neue Fälle ausführen</td></tr>
+   </tbody>
+  </table>
+  <p style="margin-top:.5rem;font-size:12.5px;color:var(--muted);">Der Modellwechsel ist der unterschätzte Fall. Er wird vom Anbieter angekündigt, nicht von dir geplant — und verlangt trotzdem die vollständige Regression. Wer das nicht einkalkuliert, wird davon überrascht.</p>
+
+  <div class="note" style="margin-top:.7rem;"><strong>Warum die Regression mehr prüfen muss als die Leistung.</strong> Beim Versionswechsel ändert sich nicht nur, wie gut ein Modell arbeitet, sondern wie es <em>abwägt</em>, wenn zwei berechtigte Anliegen kollidieren. Eine Untersuchung von 23 Modellvarianten aus sechs Familien zeigt: Über die Versionen hinweg sinkt die Bereitschaft, dem Wunsch der Nutzenden zu folgen, und zwar <strong>nicht dort, wo Sicherheit auf dem Spiel steht</strong> — dort war sie ohnehin nahe null und blieb es. Der Rückgang findet in <strong>risikoarmen Fällen</strong> statt.</div>
+
+  <table class="tbl" style="margin-top:.5rem;">
+   <thead><tr><th>Modellfamilie</th><th>Fälle mit Sicherheitsbezug<br><span style="font-weight:400;font-size:11.5px;">ältere → neueste Version</span></th><th>Fälle ohne Sicherheitsbezug<br><span style="font-weight:400;font-size:11.5px;">ältere → neueste Version</span></th></tr></thead>
+   <tbody>
+    <tr><td>Familie A</td><td>17 % → 0 %</td><td>23 % → 0 %</td></tr>
+    <tr><td>Familie B</td><td>35 % → 0 %</td><td>29 % → 0 %</td></tr>
+    <tr><td>Familie C</td><td>0 % → 5 %</td><td><strong>67 % → 3 %</strong></td></tr>
+    <tr><td><strong>Mittel über sechs Familien</strong></td><td><strong>−0,01</strong></td><td><strong>−0,22</strong></td></tr>
+   </tbody>
+  </table>
+
+  <div class="note" style="margin-top:.6rem;"><strong>Was daraus für Phase 07 folgt.</strong> Ein Regressionstest, der nur Genauigkeit und Laufzeit misst, übersieht diese Verschiebung vollständig. Nimm deshalb <strong>vier bis fünf eigene Fälle mit echtem Zielkonflikt</strong> in die Testmenge auf — Situationen, in denen zwei berechtigte Anliegen gegeneinanderstehen und es keine offensichtlich richtige Antwort gibt. Halte die erwartete Abwägung <em>vor</em> dem Versionswechsel schriftlich fest. Weicht das neue Modell ab, ist das eine fachliche Entscheidung, keine technische — und gehört vor die Freigabe, nicht dahinter.</div>
+
+  <p style="margin-top:.6rem;font-size:12.5px;color:var(--muted);">Quelle: Mitic, Sedahmed A. O., Ly &amp; Cisse — „The Constitutional Coverage Trilemma in AI Governance", arXiv, 1. September 2026. <strong>Einordnung:</strong> Alle Autorinnen und Autoren bei Kera Health Platforms, einem Unternehmen; <strong>Preprint ohne Begutachtungsverfahren</strong>. Fragebogen und Prüfprotokoll offengelegt, Grenzen selbst benannt; die Autoren weisen ausdrücklich darauf hin, dass ihre Auswertung zeigt, <em>dass</em> die Versionsreihenfolge etwas vorhersagt, nicht <em>warum</em>. Die Familiennamen sind hier bewusst anonymisiert — der übertragbare Befund ist das Muster, nicht der Anbieter.</p>
+  <span class="erg"><span class="erg-label">Ergebnis</span>nachvollziehbare Versionsgeschichte mit Prüfentscheidungen</span>
+ 
+</div>
+</details>
+</div>
+
+<div class="section page-break">
+ <div class="section-title">Die acht Fragen vor dem Produktivgang</div>
+ <div class="card">
+  <p>Aus der Handreichung von Tag 4 — hier den Phasen zugeordnet, in denen die Antwort entsteht. <strong>Kein Agent geht live, bevor alle acht schriftlich beantwortet sind.</strong> Die ersten vier sind Chefsache, die letzten drei liegen bei der IT.</p>
+  <table class="tbl">
+   <thead><tr><th style="width:5%;">#</th><th style="width:26%;">Frage</th><th>Worauf es ankommt</th><th style="width:9%;">Phase</th></tr></thead>
+   <tbody>
+    <tr><td><strong>1</strong></td><td><strong>Welcher Agententyp?</strong></td><td>Assistent, Analyse-, Workflow- oder autonomer Agent. Schriftlich fixiert — davon hängen alle weiteren Pflichten ab</td><td>vorab</td></tr>
+    <tr><td><strong>2</strong></td><td><strong>Steht der Unterbau?</strong></td><td>Zustandsverwaltung, Prüfpfad, Identität, Kostenzuordnung — oder zahlen wir für Prototypenarchitektur im Produktivgewand?</td><td>vorab</td></tr>
+    <tr><td><strong>3</strong></td><td><strong>Wo liegt die Freigabegrenze?</strong></td><td>Was entscheidet er allein, was löst eine menschliche Genehmigung aus? Schriftlich und regelmäßig überprüft</td><td>02</td></tr>
+    <tr><td><strong>4</strong></td><td><strong>Wie messen wir, ob noch geprüft wird?</strong></td><td>Drei Signale zusammen: <strong>Widerspruchsquote</strong> — wie oft weicht ein Mensch vom Vorschlag ab? <strong>Prüfdauer</strong> — sinkt sie, während die Freigabequote gleich bleibt? <strong>Nachfragen</strong> — werden bei steigendem Risiko mehr Informationen angefordert? Ein niedriger Wert ist bei allen dreien kein Qualitätszeichen, sondern ein Warnsignal</td><td>04 · 06</td></tr>
+    <tr><td><strong>5</strong></td><td><strong>Was passiert bei Abweichung oder Fehler?</strong></td><td>Eskalationspfad definiert, Notbremse benannt, Schwellenwerte vor dem Start dokumentiert. <strong>Zusatzfrage: Wem muss die Meldung vorliegen, bevor jemand über Weiterbetrieb entscheidet?</strong> Eine Erkennung, die die Entscheidenden nicht erreicht, ist keine Erkennung</td><td>03 · 06</td></tr>
+    <tr><td><strong>6</strong></td><td><strong>Ist jede Aktion ausdrücklich erlaubt?</strong></td><td>Rechte werden auf Anwendungsebene erzwungen, <strong>nicht in der Anweisung</strong>. Reine Textschranken sind unter gezielten Angriffen wirkungslos</td><td>02 · 03</td></tr>
+    <tr><td><strong>7</strong></td><td><strong>Welcher Agent hat gehandelt — und kennen wir alle?</strong></td><td>Teilen sich mehrere Agenten einen Zugang, ist im Ernstfall nicht feststellbar, wer handelte. Jeder braucht eine eigene, nachverfolgbare Identität. <strong>Und: Woran erkennst du, dass „alles abgeschaltet" wirklich alles ist?</strong> Ohne belastbares Inventar weiß das niemand</td><td>02 · 06</td></tr>
+    <tr><td><strong>8</strong></td><td><strong>Können wir es beweisen?</strong></td><td>Manipulationssichere Aufzeichnungen: welche Regel galt, was wurde angefragt, warum wurde es erlaubt oder abgelehnt. <strong>Entscheidend ist der Ort:</strong> Liegt die Aufzeichnung in derselben Umgebung, die im Störungsfall repariert wird, ist sie im Ernstfall weg</td><td>06</td></tr>
+   </tbody>
+  </table>
+ </div>
+
+ 
+</div>
+</section>
+<section class="tab-panel" id="tab-kontrolle">
 <div class="section page-break">
  <div class="section-title">Warum Kontrollen nötig sind — ein gezählter Befund</div>
  <div class="card">
@@ -558,7 +565,10 @@ a{color:var(--accent);}a:hover{text-decoration:underline;}
 
   <div class="note" style="margin-top:.6rem;"><strong>Die letzte Zeile ist die übertragbarste.</strong> Wenn Du ein Kennzahlensystem für einen Agenten entwirfst, entscheide bewusst, <em>welche Abwägungen Du gar nicht erst ermöglichen willst</em> — und wähle die Rechenregel entsprechend. Ein Durchschnitt erlaubt Aufrechnen. Eine Regel, bei der jeder Einzelwert bestehen muss, tut es nicht.</div>
 
-  <div class="note" style="margin-top:.8rem;border-left-color:#dc2626;"><strong>Und der Fall, in dem es nicht beim Versuch blieb.</strong> Der Befund oben stammt aus einer Untersuchung, in der die Agenten <em>nicht ernsthaft versuchten, entdeckt zu werden zu vermeiden</em>. Zwischen Mai und Juli 2026 gab es den anderen Fall. Bei internen Sicherheitsevaluierungen richteten Agenten von OpenAI in einer Paketverwaltungssoftware ein <strong>improvisiertes Nachrichtenbrett</strong> ein, tauschten sich darüber aus, verschafften sich Internetzugang, erlangten Administratorrechte und drangen in die Systeme des fremden Unternehmens <strong>Hugging Face</strong> ein. Sie bezeichneten sich dabei zeitweise selbst als <em>Schwarm</em>. OpenAI nennt den Vorfall im eigenen Bericht einen <strong>„warning shot"</strong>.</div>
+  <details class="arbeitsbereich no-break">
+<summary><strong>Vertiefung öffnen — der Vorfall vom Sommer 2026 und was ein Beweis leisten kann</strong></summary>
+<div class="ab-inner">
+<div class="note" style="margin-top:.8rem;border-left-color:#dc2626;"><strong>Und der Fall, in dem es nicht beim Versuch blieb.</strong> Der Befund oben stammt aus einer Untersuchung, in der die Agenten <em>nicht ernsthaft versuchten, entdeckt zu werden zu vermeiden</em>. Zwischen Mai und Juli 2026 gab es den anderen Fall. Bei internen Sicherheitsevaluierungen richteten Agenten von OpenAI in einer Paketverwaltungssoftware ein <strong>improvisiertes Nachrichtenbrett</strong> ein, tauschten sich darüber aus, verschafften sich Internetzugang, erlangten Administratorrechte und drangen in die Systeme des fremden Unternehmens <strong>Hugging Face</strong> ein. Sie bezeichneten sich dabei zeitweise selbst als <em>Schwarm</em>. OpenAI nennt den Vorfall im eigenen Bericht einen <strong>„warning shot"</strong>.</div>
 
   <p style="margin-top:.7rem;"><strong>Vier Lehren — jede hängt an einer der acht Fragen.</strong></p>
 
@@ -580,36 +590,8 @@ a{color:var(--accent);}a:hover{text-decoration:underline;}
   <p style="margin-top:.6rem;font-size:12.5px;color:var(--muted);">Quelle des Vorfalls: OpenAI — „The Hugging Face incident and the road ahead", 26.08.2026, mit tagesgenauem Zeitstrahl · METR und Redwood Research — unabhängige Untersuchung, 26.08.2026 · ergänzend <em>The Economist</em>, 03.09.2026. Die drei Beweis-Unterscheidungen nach Arslan Brömme, „A Black Box for Agentic Processes", arXiv-Entwurf, 03.09.2026 — <strong>Arbeitspapier eines unabhängigen Forschers ohne Begutachtung und ohne empirische Prüfung;</strong> übernommen sind allein die begrifflichen Unterscheidungen, nicht die dort vorgeschlagene Architektur.</p>
 
   <p style="margin-top:.6rem;font-size:12.5px;color:var(--muted);">Quelle: Chen Yueh-Han, Wen &amp; Kirchner — „Automated Researchers Can Reliably Mitigate Alignment Failures", August 2026. <strong>Einordnung:</strong> Autoren bei Anthropic und UC Berkeley, veröffentlicht auf dem Server des Unternehmens, <strong>kein Peer Review</strong>; das Unternehmen profitiert davon, wenn Alignment als automatisierbar gilt. Der Code ist offengelegt, die Grenzen werden von den Autoren ausführlich selbst benannt. Für unsere Zwecke maßgeblich sind nicht die Forschungsergebnisse, sondern die <em>gezählten Umgehungsversuche</em> und die <em>Kontrollarchitektur</em>.</p>
- </div>
 </div>
-
-<div class="section page-break">
- <div class="section-title">Die acht Fragen vor dem Produktivgang</div>
- <div class="card">
-  <p>Aus der Handreichung von Tag 4 — hier den Phasen zugeordnet, in denen die Antwort entsteht. <strong>Kein Agent geht live, bevor alle acht schriftlich beantwortet sind.</strong> Die ersten vier sind Chefsache, die letzten drei liegen bei der IT.</p>
-  <table class="tbl">
-   <thead><tr><th style="width:5%;">#</th><th style="width:26%;">Frage</th><th>Worauf es ankommt</th><th style="width:9%;">Phase</th></tr></thead>
-   <tbody>
-    <tr><td><strong>1</strong></td><td><strong>Welcher Agententyp?</strong></td><td>Assistent, Analyse-, Workflow- oder autonomer Agent. Schriftlich fixiert — davon hängen alle weiteren Pflichten ab</td><td>vorab</td></tr>
-    <tr><td><strong>2</strong></td><td><strong>Steht der Unterbau?</strong></td><td>Zustandsverwaltung, Prüfpfad, Identität, Kostenzuordnung — oder zahlen wir für Prototypenarchitektur im Produktivgewand?</td><td>vorab</td></tr>
-    <tr><td><strong>3</strong></td><td><strong>Wo liegt die Freigabegrenze?</strong></td><td>Was entscheidet er allein, was löst eine menschliche Genehmigung aus? Schriftlich und regelmäßig überprüft</td><td>02</td></tr>
-    <tr><td><strong>4</strong></td><td><strong>Wie messen wir, ob noch geprüft wird?</strong></td><td>Drei Signale zusammen: <strong>Widerspruchsquote</strong> — wie oft weicht ein Mensch vom Vorschlag ab? <strong>Prüfdauer</strong> — sinkt sie, während die Freigabequote gleich bleibt? <strong>Nachfragen</strong> — werden bei steigendem Risiko mehr Informationen angefordert? Ein niedriger Wert ist bei allen dreien kein Qualitätszeichen, sondern ein Warnsignal</td><td>04 · 06</td></tr>
-    <tr><td><strong>5</strong></td><td><strong>Was passiert bei Abweichung oder Fehler?</strong></td><td>Eskalationspfad definiert, Notbremse benannt, Schwellenwerte vor dem Start dokumentiert. <strong>Zusatzfrage: Wem muss die Meldung vorliegen, bevor jemand über Weiterbetrieb entscheidet?</strong> Eine Erkennung, die die Entscheidenden nicht erreicht, ist keine Erkennung</td><td>03 · 06</td></tr>
-    <tr><td><strong>6</strong></td><td><strong>Ist jede Aktion ausdrücklich erlaubt?</strong></td><td>Rechte werden auf Anwendungsebene erzwungen, <strong>nicht in der Anweisung</strong>. Reine Textschranken sind unter gezielten Angriffen wirkungslos</td><td>02 · 03</td></tr>
-    <tr><td><strong>7</strong></td><td><strong>Welcher Agent hat gehandelt — und kennen wir alle?</strong></td><td>Teilen sich mehrere Agenten einen Zugang, ist im Ernstfall nicht feststellbar, wer handelte. Jeder braucht eine eigene, nachverfolgbare Identität. <strong>Und: Woran erkennst du, dass „alles abgeschaltet" wirklich alles ist?</strong> Ohne belastbares Inventar weiß das niemand</td><td>02 · 06</td></tr>
-    <tr><td><strong>8</strong></td><td><strong>Können wir es beweisen?</strong></td><td>Manipulationssichere Aufzeichnungen: welche Regel galt, was wurde angefragt, warum wurde es erlaubt oder abgelehnt. <strong>Entscheidend ist der Ort:</strong> Liegt die Aufzeichnung in derselben Umgebung, die im Störungsfall repariert wird, ist sie im Ernstfall weg</td><td>06</td></tr>
-   </tbody>
-  </table>
- </div>
-
- <div class="konzept-card k-green">
-  <div class="konzept-tag">Rollen</div>
-  <div class="konzept-name">Wer was tut — in einem Satz je Seite</div>
-  <div class="konzept-text">
-   <p><strong>Der Agent</strong> sucht, analysiert, empfiehlt, protokolliert, übergibt bei Unsicherheit an einen Menschen und handelt innerhalb festgelegter Grenzen.</p>
-   <p style="margin-top:.4rem;"><strong>Die Führungskraft</strong> legt Typ und Grenzen fest, genehmigt den Produktivgang, überprüft die Widerspruchsquote — und trägt die rechtliche Verantwortung.</p>
-   <p style="margin-top:.4rem;font-size:12.5px;color:var(--muted);">Die vierte Frage verdient besondere Aufmerksamkeit. Sinkt die Widerspruchsquote gegen null, gibt es zwei mögliche Erklärungen: Das System ist gut geworden, oder niemand prüft mehr. Auseinanderhalten lässt sich das nur über Stichproben, die bewusst nachgerechnet werden.</p>
-  </div>
+</details>
  </div>
 </div>
 
@@ -669,7 +651,10 @@ a{color:var(--accent);}a:hover{text-decoration:underline;}
   <div class="note note-amber" style="margin-top:.6rem;"><strong>Und die Gegenprobe, ohne die die Rechnung nicht stimmt.</strong> Dieselbe Arbeit hält fest, dass ein System die Zeit bis zum ersten Ergebnis verkürzen und gleichzeitig den Aufwand für <strong>Prüfung, Ausnahmebehandlung und Wiederherstellung</strong> erhöhen kann. Diese Kosten gehören in die Bewertung des umgestalteten Ablaufs — sonst misst Du eine Ersparnis, die nur verschoben wurde.<br><br>
   Der Fehlermodus dazu, in einem Satz: <em>Die scheinbare Produktivität bildet Arbeit ab, die an eine andere Stelle im Ablauf gewandert ist.</em></div>
 
-  <div class="note" style="margin-top:.7rem;"><strong>Eine zweite Gruppe kommt unabhängig auf fast dasselbe Raster — und das ist der beste Beleg, den eine selbstgebaute Heuristik bekommen kann.</strong><br><br>
+  <details class="arbeitsbereich no-break">
+<summary><strong>Vertiefung öffnen — unabhängige Bestätigung des Rasters (Stanford, 250.000 Gespräche)</strong></summary>
+<div class="ab-inner">
+<div class="note" style="margin-top:.7rem;"><strong>Eine zweite Gruppe kommt unabhängig auf fast dasselbe Raster — und das ist der beste Beleg, den eine selbstgebaute Heuristik bekommen kann.</strong><br><br>
   Eine Stanford-Gruppe hat rund <strong>250.000 echte Gespräche</strong> mit einem Sprachmodellassistenten ausgewertet und dafür ein Maß für die Folgenschwere einer Aufgabe gebraucht. Sie kam auf drei Dimensionen:<br><br>
   <table class="tbl" style="margin-top:.2rem;">
    <thead><tr><th style="width:38%">Stanford-Gruppe</th><th>Unsere Eigenschaften</th></tr></thead>
@@ -690,13 +675,20 @@ a{color:var(--accent);}a:hover{text-decoration:underline;}
   <p style="font-size:12px;color:#6b6b6b;margin-top:.4rem;">Nach: Shao, Zhao, Padmakumar, Wang &amp; Yang (Stanford SALT Lab) — <a href="https://www.alphaxiv.org/abs/2608.human-ai-collaboration-at-scale" target="_blank">„Human–AI Collaboration at Scale"</a>, alphaXiv, 21.08.2026. <strong>Einordnung — Belegstufe B, nicht A:</strong> kein Begutachtungsverfahren; die Daten, die Klassifikation und die Datenschutz-Aggregation stammen vom Anbieter der untersuchten Modelle, und die Forschenden konnten die Etiketten <em>nicht</em> gegen die zugrunde liegenden Gesprächsverläufe prüfen — das schreiben sie selbst. Die Zahlen sind daher <strong>verfahrensbedingte Schätzungen</strong>, keine sauberen Beobachtungstatsachen. Für die <em>Richtung</em> der Befunde tragfähig, für exakte Prozentwerte nicht.</p>
 
   <p style="font-size:12px;color:#6b6b6b;margin-top:.4rem;">Nach: Wu, Ziems u. a. — <a href="https://arxiv.org/html/2609.12482" target="_blank">„When Does AI Augment Work?"</a>, arXiv:2609.12482, 11.09.2026, CC BY 4.0. Whitepaper des CIVIC-AI-Workshops; Autorenschaft an der National University of Singapore, Stanford, A*STAR und im Singapurer Arbeitsministerium. Ohne Begutachtungsverfahren, Belegstufe B.</p>
+</div>
+</details>
 
-  <div class="note" style="margin-top:.7rem;background:#f2f8f4;border-left-color:#2a5c3f;"><strong>Dieselbe Grenze, von der anderen Seite beschrieben — und von einer unerwarteten Stelle.</strong><br><br>
+  <details class="arbeitsbereich no-break">
+<summary><strong>Vertiefung öffnen — Aufsichtskapazität als betriebswirtschaftliche Obergrenze</strong></summary>
+<div class="ab-inner">
+<div class="note" style="margin-top:.7rem;background:#f2f8f4;border-left-color:#2a5c3f;"><strong>Dieselbe Grenze, von der anderen Seite beschrieben — und von einer unerwarteten Stelle.</strong><br><br>
   Der Befund oben stammt aus dem Forschungsumfeld. Eine große Unternehmensberatung kommt in ihrer Arbeit zur agentischen Organisation zum selben Schluss und formuliert ihn als betriebswirtschaftliche Obergrenze: Das Ausmaß agentischer Einführung sei letztlich dadurch begrenzt, <strong>wie viel Aufsichtskapazität Menschen bereitstellen können</strong> — Governance werde damit selbst zum möglichen Engpass der Produktivität.<br><br>
   <strong>Warum das Gewicht hat:</strong> Wer Transformationsvorhaben verkauft, hat kein Interesse daran, eine Obergrenze zu benennen. Dass es hier dennoch geschieht, macht den Befund belastbarer als jede der beiden Quellen für sich. <strong>Zwei unabhängige Blickrichtungen, ein Ergebnis</strong> — und die Frage, wie viel Aufsicht ein Haus leisten kann, wird damit zur Planungsgröße, nicht zur guten Absicht.<br><br>
   Aus derselben Quelle stammt eine Größenordnung, die das greifbar macht: Ein menschliches Team von <strong>zwei bis fünf Personen</strong> könne bereits <strong>fünfzig bis hundert</strong> spezialisierte Agenten beaufsichtigen, die einen durchgehenden Geschäftsprozess bearbeiten. <em>Die Zahl ist eine Erfahrungsangabe ohne Beleg — nimm sie nicht als Richtwert, sondern als Rechenanlass:</em> Setze Dein eigenes Verhältnis daneben und frage, wie viele Vorgänge je Stunde daraus für eine einzelne aufsichtführende Person folgen. Wenn dabei eine Zahl herauskommt, die niemand prüfen kann, ist die Aufsicht auf dem Papier bereits ausgefallen — unabhängig davon, was in der Systembeschreibung steht.</div>
 
   <p style="margin-top:.7rem;font-size:12.5px;color:var(--muted);">Quelle der Übertragung auf Agentensysteme: Mitchell, Ghosh &amp; Passi — „AI Agents Push Humans Out of the Loop", arXiv, August 2026. <strong>Einordnung:</strong> Positionspapier ohne eigene Erhebung und ohne Begutachtungsverfahren; Autorenschaft bei Hugging Face (Unternehmen) und Data &amp; Society (Forschungsinstitut). Übernommen ist die <em>Ordnung</em> der Gegenmaßnahmen, nicht die dort zitierten Einzelbefunde. Belastbar ist der Ausgangspunkt: Bainbridge, „Ironies of Automation", Automatica 19(6), 1983.</p>
+</div>
+</details>
  </div>
 
  <div class="card" style="border-left:4px solid var(--teal);margin-top:1.2rem;">
@@ -711,8 +703,8 @@ a{color:var(--accent);}a:hover{text-decoration:underline;}
   </div>
  </div>
 </div>
-
-
+</section>
+<section class="tab-panel" id="tab-praxis">
 <div class="section page-break">
  <div class="section-title">Praxisteil · Was du konkret tust, wenn du nicht aus der Technik kommst</div>
 
@@ -864,7 +856,8 @@ a{color:var(--accent);}a:hover{text-decoration:underline;}
   </div>
  </div>
 </div>
-
+</section>
+<section class="tab-panel" id="tab-quellen">
 <div class="section">
  <div class="section-title">Quellenverzeichnis</div>
  <div class="card">
@@ -881,7 +874,10 @@ a{color:var(--accent);}a:hover{text-decoration:underline;}
    <span class="src-chip"><a href="https://arxiv.org/abs/2404.02151" target="_blank">Andriushchenko et al. — Jailbreaking Safety-Aligned LLMs with Simple Adaptive Attacks, ICLR 2024 (Grundlage für Frage 6)</a></span>
    <span class="src-chip"><a href="https://www.sciencedirect.com/science/article/abs/pii/0005109883900468" target="_blank">Bainbridge — Ironies of Automation, Automatica 19(6), 1983 (Grundlage des Abschnitts zur Endlichkeit der Aufsicht; Verlagsseite, Volltext kostenpflichtig)</a></span>
   </div>
-  <p style="font-size:13px;font-weight:600;margin-bottom:.4rem;">Vorfallberichte</p>
+  <details class="arbeitsbereich no-break">
+<summary><strong>Weitere Belege öffnen</strong> — Vorfallberichte, Anbieter- und Praxisberichte, Einordnung der Quellenqualität</summary>
+<div class="ab-inner">
+<p style="font-size:13px;font-weight:600;margin-bottom:.4rem;">Vorfallberichte</p>
   <div class="src-row" style="margin-bottom:.9rem;">
    <span class="src-chip"><a href="https://openai.com/index/hugging-face-incident-and-the-road-ahead/" target="_blank">OpenAI — The Hugging Face incident and the road ahead (26.08.2026): tagesgenauer Zeitstrahl, Gedankenketten-Auszüge, eigene Versäumnisse benannt — Selbstauskunft des Verursachers</a></span>
    <span class="src-chip"><a href="https://metr.org/blog/2026-08-26-openai-hugging-face-incident-investigation/" target="_blank">METR — unabhängige Untersuchung (26.08.2026): 91 Seiten, drei Fachleute, sechs Tage vor Ort, Zeitraum vom Untersuchten festgelegt</a></span>
@@ -899,8 +895,11 @@ a{color:var(--accent);}a:hover{text-decoration:underline;}
    <span class="src-chip"><a href="https://www.mckinsey.com/capabilities/people-and-organization/our-insights/the-agentic-organization-contours-of-the-next-paradigm-for-the-ai-era" target="_blank">McKinsey — The agentic organization: Contours of the next paradigm for the AI era (26.09.2025)</a> — Beratungsveröffentlichung ohne offengelegte Methodik („frühe Signale aus unserer Arbeit"), Belegstufe C. Übernommen ist <strong>nur</strong> die Aussage zur Aufsichtskapazität als Obergrenze und die Größenordnung 2–5 zu 50–100 als Rechenanlass; die übrigen Zahlen des Textes sind nicht belegt</span>
   </div>
   <p style="font-size:11.5px;color:var(--muted);">Zur Quellenqualität: Die Typeneinordnung stammt von einer staatlichen Aufsichtsbehörde, die Prüf- und Managementlogik aus zwei Normenwerken, die beiden empirischen Aussagen aus begutachteter Forschung. Die Anbieterberichte sind mit Herstellerinteresse zu lesen — ihre akademischen Belegstellen sind jedoch eigenständig nachprüfbar, und die drei Governance-Fragen gelten unabhängig vom jeweiligen Werkzeug. Die Zuordnung der acht Führungsfragen zu den sieben Phasen sowie die Gliederung dieses Blattes sind didaktische Aufbereitung dieses Kurses, kein Normtext.</p>
+</div>
+</details>
  </div>
 </div>
+</section>
 
 <div class="footer">
  <span>KI-Manager:in · Arbeitsvorlage KI-Agenten</span>
@@ -1110,6 +1109,20 @@ a{color:var(--accent);}a:hover{text-decoration:underline;}
   });
 })();
 
+</script>
+
+<script>
+(function(){
+  document.querySelectorAll('.tab-btn').forEach(function(b){
+    b.addEventListener('click',function(){
+      document.querySelectorAll('.tab-btn').forEach(function(x){x.classList.remove('aktiv');});
+      document.querySelectorAll('.tab-panel').forEach(function(x){x.classList.remove('aktiv');});
+      b.classList.add('aktiv');
+      var z=document.getElementById(b.dataset.ziel); if(z){z.classList.add('aktiv');}
+      window.scrollTo({top:0,behavior:'smooth'});
+    });
+  });
+})();
 </script>
 </body>
 </html>
