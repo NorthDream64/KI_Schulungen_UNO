@@ -22,7 +22,7 @@ main{padding:8px 12px 0}
 svg#stage{width:100%;height:auto;display:block;background:radial-gradient(ellipse at 50% 40%,#122033,#0b121b);border:1px solid #223447;border-radius:12px;touch-action:manipulation}
 .scene{transition:opacity .55s ease,transform .55s ease;transform-origin:800px 330px}
 .scene.off{opacity:0;pointer-events:none;transform:scale(1.07)}
-#scFab.off{transform:scale(.94)}
+#scFab.off,#scSrc.off{transform:scale(.94)}
 .pedge{fill:none;stroke:var(--pipe-edge)}
 .pin{fill:none;stroke:var(--pipe)}
 .pin.rej{stroke:#33281d}
@@ -97,9 +97,10 @@ text{pointer-events:none}
   <h1>Datenfluss-Diagramm <small>Zertifikatskurs KI-Manager:in</small></h1>
   <div class="ctrl">
     <button id="bPractice">Übungsmodus</button>
+    <button id="bSrc">Datenherkunft aufblättern ⊕</button>
     <button id="bView">Fabrik aufblättern ⊕</button>
     <button id="bPause">Pause</button>
-    <label class="sp">Tempo <input id="rSpeed" type="range" min="0.4" max="2.5" step="0.1" value="1"></label>
+    <label class="sp">Tempo <input id="rSpeed" type="range" min="0.4" max="4" step="0.1" value="1"></label>
     <button id="bAlarm" title="Löst im Betrieb einen Drift-Alarm aus">Drift auslösen</button>
     <button id="bReset">Zurücksetzen</button>
   </div>
@@ -143,13 +144,14 @@ const NS='http://www.w3.org/2000/svg';
 const el=(tag,a,parent)=>{const e=document.createElementNS(NS,tag);if(a)for(const k in a)e.setAttribute(k,a[k]);if(parent)parent.appendChild(e);return e;};
 const rnd=(a,b)=>a+Math.random()*(b-a);
 const COL={clean:'#e0f2fe',bad:'#8a5a2b',model:'#fde047',alarm:'#ef4444',pred:'#86efac'};
-const SRC={kasse:'#38bdf8',bestand:'#a78bfa',wetter:'#4ade80',verkehr:'#fb923c',events:'#f472b6'};
+const SRC={kasse:'#38bdf8',bestand:'#a78bfa',intern:'#fb923c',wetter:'#4ade80',verkehr:'#2dd4bf',events:'#f472b6'};
 const DEF={
   kasse:{dup:.06,miss:.04,fmt:.05,out:.03},
   bestand:{miss:.08,fmt:.10,dup:.04,out:.06},
   wetter:{fmt:.18,miss:.06},
   verkehr:{fmt:.15,miss:.10,dup:.08},
-  events:{dup:.15,fmt:.15,miss:.08}
+  events:{dup:.15,fmt:.15,miss:.08},
+  intern:{dup:.10,miss:.22,fmt:.25,out:.08}
 };
 const state={practice:false,unlocked:new Set(),paused:false,speed:1,view:'main'};
 const locked=k=>state.practice&&!state.unlocked.has(k);
@@ -239,7 +241,7 @@ function step(sc,dt){
   for(const s of sc.sources){
     const pi=sc.pipes[s.pipe];s.acc=(s.acc||0)+dt*s.rate;
     while(s.acc>=1){s.acc--;
-      const col=s.col==='mix'?Object.values(SRC)[Math.floor(Math.random()*5)]:s.col;
+      const col=s.col==='mix'?Object.values(SRC)[Math.floor(Math.random()*6)]:s.col;
       mkP(sc,pi,{col,def:pickDef(s.defp),s:rnd(0,6)});inc(sc,'in');}
   }
   for(const p of sc.parts){
@@ -313,9 +315,10 @@ function refreshLabels(){
   if(fab.hints)fab.hints.forEach(h=>h.t.style.opacity=(state.practice&&!state.unlocked.has(h.key))?0:1);
   const m=['st1','raw','st2','st3','st4','st5','st6'].filter(k=>state.unlocked.has(k)).length;
   const d=['ka','kb','kc'].filter(k=>state.unlocked.has(k)).length;
+  const e=['da','db','dc','dd','de'].filter(k=>state.unlocked.has(k)).length;
   $('hint').textContent=state.practice
-    ?'Übungsmodus: benannt Hauptansicht '+m+'/7 · Fabrik '+d+'/3. Tippe auf eine gestrichelte Station, wähle den passenden Begriff – erst dann fließt der Strom weiter.'
-    :'Tipp: Mit den roten Ventilen bei den Partnerdaten spielst Du eine Lieferung ein. „Fabrik aufblättern“ zeigt die Aufbereitung im Detail.';
+    ?'Übungsmodus: benannt Hauptansicht '+m+'/7 · Fabrik '+d+'/3 · Datenherkunft '+e+'/5. Tippe auf eine gestrichelte Station, wähle den passenden Begriff – erst dann fließt der Strom weiter.'
+    :'Tipp: Mit den roten Ventilen spielst Du manuelle Lieferungen ein. „Datenherkunft aufblättern“ und „Fabrik aufblättern“ zeigen die Details.';
 }
 
 /* ============ Aufbereitungs-Logik (Haupt- und Detailansicht gemeinsam) ============
@@ -342,40 +345,113 @@ const R={
 const enterReject=(p,sc)=>{p.col=COL.bad;shapeOf(p);inc(sc,'rej');};
 const enterClean=(p,sc)=>{p.col=COL.clean;shapeOf(p);};
 
+/* ============ Gemeinsame Quellen-Logik (Haupt- und Herkunfts-Detailansicht) ============ */
+const CLK={h:5,day:0};                       // Montag 05:00 Uhr; 1 Stunde = 2 s, 1 Tag = 48 s
+const DAYS=['Mo','Di','Mi','Do','Fr','Sa','So'];
+const Q={bestand:0,verkehr:0,wetter:0,intern:0,events:0};   // wartende Lieferungen (Datensätze)
+const SPEC={kasse:{col:SRC.kasse,defp:DEF.kasse},bestand:{col:SRC.bestand,defp:DEF.bestand},intern:{col:SRC.intern,defp:DEF.intern},wetter:{col:SRC.wetter,defp:DEF.wetter},verkehr:{col:SRC.verkehr,defp:DEF.verkehr},events:{col:SRC.events,defp:DEF.events}};
+const raw={q:[],total:0,read:0,acc:0,ops:[0,0],views:[],opsViews:[[],[]]};
+const rawUpdate=()=>{for(const v of raw.views){const lv=Math.min(v.max,raw.total*.08);v.fill.setAttribute('height',lv);v.fill.setAttribute('y',v.base-lv);v.t1.textContent=raw.total+' gespeichert';v.t2.textContent='Rückstand: '+raw.q.length;}};
+const opsUpdate=i=>raw.opsViews[i].forEach(t=>{t.textContent=raw.ops[i]+(i?' Meldungen':' Buchungen');});
+const rawSink=p=>{raw.q.push({col:p.col,def:p.def});raw.total++;rawUpdate();};
+const opsSink=i=>()=>{raw.ops[i]++;opsUpdate(i);};
+const crossed=(prev,h,hr)=>prev<=h?(prev<hr&&h>=hr):(hr>prev||hr<=h);
+const clocks=[];
+function mkClock(sc){
+  const U=sc.L.ui,X=h=>720+h/24*360;
+  el('rect',{x:690,y:8,width:420,height:56,rx:10,fill:'#0f1a26',stroke:'#2b445c'},U);
+  el('rect',{x:X(8),y:34,width:X(20)-X(8),height:10,rx:3,fill:'#38bdf8','fill-opacity':.28},U);
+  el('line',{x1:X(0),y1:39,x2:X(24),y2:39,stroke:'#4b6f8c','stroke-width':2},U);
+  [0,6,12,18,24].forEach(h=>{el('line',{x1:X(h),y1:34,x2:X(h),y2:44,stroke:'#4b6f8c'},U);el('text',{x:X(h),y:57,class:'tk2'},U).textContent=h+'';});
+  [12,18].forEach(h=>el('path',{d:'M'+(X(h)-5)+',26 l10,0 l-5,8z',fill:SRC.bestand},U));
+  el('path',{d:'M'+(X(6)-5)+',26 l10,0 l-5,8z',fill:SRC.verkehr},U);
+  const txt=el('text',{x:704,y:26,class:'tk tl'},U);
+  el('text',{x:1102,y:22,class:'tk2',style:'text-anchor:end'},U).textContent='▼ Bestand-Upload · ▼ extern automatisch · ▬ Ladenöffnung';
+  const dot=el('circle',{cx:X(CLK.h),cy:39,r:6,fill:'#fde047',stroke:'#fff','stroke-width':1.2},U);
+  clocks.push({dot,txt});
+}
+function updateClocks(){
+  const h=CLK.h,t=DAYS[CLK.day]+' '+String(Math.floor(h)).padStart(2,'0')+':'+String(Math.floor((h%1)*60)).padStart(2,'0')+' Uhr';
+  for(const c of clocks){c.dot.setAttribute('cx',720+h/24*360);c.txt.textContent=t;}
+}
+function spawnKind(sc,k){const sp=SPEC[k];mkP(sc,sc.pipes[sc.pipeFor(k)],{col:sp.col,def:pickDef(sp.defp),s:rnd(0,3)});inc(sc,'in');}
+function tickSources(sc,dt,gated){
+  const prev=CLK.h;CLK.h+=dt/2;
+  if(CLK.h>=24){CLK.h-=24;CLK.day=(CLK.day+1)%7;}
+  const h=CLK.h;
+  // Zeitgesteuerte Lieferungen: Bestand 12:00 + 18:00, Verkehr täglich 06:00, Wetter montags 06:00
+  if(crossed(prev,h,12)||crossed(prev,h,18))Q.bestand+=60;
+  if(crossed(prev,h,6)){Q.verkehr+=24;if(CLK.day===0)Q.wetter+=30;}
+  if(gated)return;
+  // Kasse: kontinuierlich, mit Tagesrhythmus (Ladenöffnung 8–20 Uhr)
+  const open=h>=8&&h<20;
+  const peak=Math.max(0,1-Math.abs(h-13)/2.5)*.8+Math.max(0,1-Math.abs(h-18)/2);
+  sc.kacc=(sc.kacc||0)+dt*(open?3+3*peak:.4);
+  while(sc.kacc>=1){sc.kacc--;spawnKind(sc,'kasse');}
+  // Lieferungen abarbeiten (Bestand, Verkehr, Wetter automatisch; intern/events nach Klick)
+  sc.qacc=sc.qacc||{};
+  for(const k in Q)if(Q[k]>0){
+    sc.qacc[k]=(sc.qacc[k]||0)+dt*(k==='bestand'?22:14);
+    while(sc.qacc[k]>=1&&Q[k]>0){sc.qacc[k]--;Q[k]--;spawnKind(sc,k);}
+  }
+}
+function rawRelease(sc,dt){
+  if(!locked('raw')&&raw.q.length){
+    let cnt=0;for(const p of sc.parts)if(p.pipe.id==='feed')cnt++;
+    raw.acc+=dt*10;
+    while(raw.acc>=1&&raw.q.length&&cnt<45){raw.acc--;const r=raw.q.shift();mkP(sc,sc.pipes.feed,{col:r.col,def:r.def,s:rnd(0,4)});raw.read++;cnt++;rawUpdate();}
+    if(cnt>=45)raw.acc=0;
+  }else raw.acc=0;
+}
+function house(sc,cx,cy,c){el('path',{d:'M'+(cx-10)+','+(cy+8)+'v-10l10,-7l10,7v10z',fill:'#0f1a26',stroke:c,'stroke-width':1.6},sc.L.deco);}
+function srcTank(sc,x,y,w,h,col,l1,l2,l3){
+  el('rect',{x,y:y-h/2,width:w,height:h,rx:8,fill:'#0f1a26',stroke:col,'stroke-width':1.8},sc.L.deco);
+  if(l3===undefined){el('text',{x:x+w/2,y:y-3,class:'tk'},sc.L.ui).textContent=l1;el('text',{x:x+w/2,y:y+12,class:'tk2'},sc.L.ui).textContent=l2;return;}
+  el('text',{x:x+w/2,y:y-10,class:'tk'},sc.L.ui).textContent=l1;
+  el('text',{x:x+w/2,y:y+4,class:'tk'},sc.L.ui).textContent=l2;
+  el('text',{x:x+w/2,y:y+19,class:'tk2'},sc.L.ui).textContent=l3;
+}
+function opsBox(sc,x,y,w,title,idx){
+  el('rect',{x,y:y-24,width:w,height:48,rx:8,fill:'#0f1a26',stroke:'#6b7f93','stroke-width':1.5},sc.L.deco);
+  el('text',{x:x+w/2,y:y-4,class:'tk'},sc.L.ui).textContent=title;
+  const t=el('text',{x:x+w/2,y:y+14,class:'tk2'},sc.L.ui);t.textContent=raw.ops[idx]+(idx?' Meldungen':' Buchungen');raw.opsViews[idx].push(t);
+}
+function mirrorMark(sc,x,y){
+  el('circle',{cx:x,cy:y,r:10,fill:'#0f2a3a',stroke:'#2dd4bf','stroke-width':1.8},sc.L.ui);el('circle',{cx:x,cy:y,r:3.5,fill:'#2dd4bf'},sc.L.ui);
+  el('text',{x:x+12,y:y-12,class:'tk2 tl',fill:'#2dd4bf'},sc.L.ui).textContent='Spiegel';
+}
+function autoMark(sc,pi){
+  const [x,y]=pos(pi,pi.len*.5,0);
+  el('circle',{cx:x,cy:y-pi.w/2-14,r:9,fill:'#0f2a3a',stroke:'#4ade80','stroke-width':1.6},sc.L.ui);
+  el('path',{d:'M'+x+','+(y-pi.w/2-20)+'v6h4',fill:'none',stroke:'#4ade80','stroke-width':1.6},sc.L.ui);
+  el('text',{x,y:y+pi.w/2+16,class:'tk2'},sc.L.ui).textContent='automatisch';
+}
+function pillGate(sc,key,x,y,w,short){
+  const g=el('g',{class:'card','data-k':key},sc.L.deco);
+  el('rect',{class:'card-bg',x,y,width:w,height:26,rx:13},g);
+  const hit=el('rect',{class:'hit',x,y,width:w,height:26,rx:13},sc.L.ui);
+  const t=el('text',{x:x+w/2,y:y+18,class:'lbl',style:'font-size:14px'},sc.L.ui);
+  hit.addEventListener('click',()=>{if(state.practice&&locked(key))openQuiz(key);});
+  sc.labels.push({key,t,short,g,hit});
+}
+
 /* ============ HAUPTANSICHT ============ */
 const main=mkScene('scMain');
 main.st={in:0,rej:0,dups:0,fix:0,leak:0,models:0,ok:0,back:0,pred:0,retrain:0};
-main.hour=7;
+main.pipeFor=k=>({kasse:'KC',bestand:'BC',intern:'IM',wetter:'EA',verkehr:'EA',events:'EM'})[k];
 const M=(id,pts,w,o)=>addPipe(main,Object.assign({id,pts,w},o||{}));
-const raw={q:[],total:0,read:0,acc:0,ops:[0,0]};
-const opsText=[];
-let rawFill,rawTxt1,rawTxt2;
-const rawUpdate=()=>{
-  const lv=Math.min(70,raw.total*.08);rawFill.setAttribute('height',lv);rawFill.setAttribute('y',376-lv);
-  rawTxt1.textContent=raw.total+' gespeichert';rawTxt2.textContent='Rückstand: '+raw.q.length;
-};
-
-// Stichleitungen der Läden (Kasse oben, Bestand darunter)
-for(let i=0;i<10;i++){
-  const x=40+i*30;
-  M('KS'+i,[[x,84],[x,120]],3,{next:'KC'});
-  M('BS'+i,[[x,184],[x,226]],3,{next:'BC'});
-}
-M('KC',[[24,120],[350,120]],8,{next:'KCops',fork:['mirT']});
-M('BC',[[24,226],[350,226]],10,{next:'BCops',fork:['mirT']});
-M('KCops',[[350,120],[420,120]],8,{sink:()=>{raw.ops[0]++;opsText[0].textContent=raw.ops[0]+' Buchungen';}});
-M('BCops',[[350,226],[420,226]],10,{sink:()=>{raw.ops[1]++;opsText[1].textContent=raw.ops[1]+' Meldungen';}});
+// Quellen (oberste Ebene): fünf Gruppen
+M('KC',[[178,100],[350,100]],12,{next:'KCops',fork:['mirT']});
+M('BC',[[178,190],[350,190]],14,{next:'BCops',fork:['mirT']});
+M('IM',[[178,280],[350,280]],8,{next:'mirT'});
+M('EA',[[178,420],[350,420]],8,{next:'mirBot'});
+M('EM',[[178,510],[350,510]],8,{next:'mirBot'});
+M('KCops',[[350,100],[420,100]],12,{sink:opsSink(0)});
+M('BCops',[[350,190],[420,190]],14,{sink:opsSink(1)});
 // Spiegel -> Rohdatenspeicher
-M('mirT',[[350,120],[350,330]],12,{next:'rawIn'});
-M('mirBot',[[350,590],[350,330]],12,{next:'rawIn'});
-M('rawIn',[[350,330],[470,330]],18,{sink:p=>{raw.q.push({col:p.col,def:p.def});raw.total++;rawUpdate();}});
-// Partnerdaten
-const PART=[
-  {id:'PW',y:424,name:'Wetter',sub:'wöchentlich',col:SRC.wetter,defp:DEF.wetter,key:'wetter'},
-  {id:'PV',y:494,name:'Verkehr/Baustellen',sub:'täglich',col:SRC.verkehr,defp:DEF.verkehr,key:'verkehr'},
-  {id:'PE',y:564,name:'Veranstaltungen',sub:'wöchentlich',col:SRC.events,defp:DEF.events,key:'events'}
-];
-PART.forEach(p=>{M(p.id,[[136,p.y],[350,p.y]],8,{next:'mirBot'});p.q=0;p.acc=0;});
+M('mirT',[[350,100],[350,330]],12,{next:'rawIn'});
+M('mirBot',[[350,540],[350,330]],12,{next:'rawIn'});
+M('rawIn',[[350,330],[470,330]],18,{sink:rawSink});
 // Aufbereitung (Fabrik)
 M('feed',[[590,330],[670,330]],24,{next:'k_a',gate:'st2'});
 M('k_a',[[670,330],[760,330]],26,{route:R.A,to:{rej:'rejA',pass:'k_b'}});
@@ -406,86 +482,46 @@ M('mon',[[1450,330],[1560,330]],12,{sink:(p,sc)=>{sc.st.pred++;}});
 M('retrain',[[1500,392],[1500,722],[1050,722],[1050,332]],7,{dash:true,cls:'ret',sink:(p)=>{if(p.kind==='alarm')retrainFx();}});
 
 // Takt: Uhr, Quellen, Rohdatenspeicher
-let clockDot,clockTxt;
-const spawnAt=(sc,pid,col,defp)=>{mkP(sc,sc.pipes[pid],{col,def:pickDef(defp),s:rnd(0,3)});inc(sc,'in');};
-main.tick=(sc,dt)=>{
-  const prev=sc.hour;sc.hour=(sc.hour+dt/3)%24;const h=sc.hour;
-  clockDot.setAttribute('cx',720+h/24*360);
-  clockTxt.textContent=String(Math.floor(h)).padStart(2,'0')+':'+String(Math.floor((h%1)*60)).padStart(2,'0')+' Uhr';
-  if(!locked('st1')){
-    // Kasse: kontinuierlich, mit Tagesrhythmus (Ladenöffnung 8–20 Uhr)
-    const open=h>=8&&h<20;
-    const peak=Math.max(0,1-Math.abs(h-13)/2.5)*.8+Math.max(0,1-Math.abs(h-18)/2);
-    sc.kacc=(sc.kacc||0)+dt*(open?3+3*peak:.4);
-    while(sc.kacc>=1){sc.kacc--;spawnAt(sc,'KS'+Math.floor(Math.random()*10),SRC.kasse,DEF.kasse);}
-    // Bestand: gebündelter Upload um 12:00 und 18:00 aus allen Läden
-    if((prev<12&&h>=12)||(prev<18&&h>=18))sc.bq=(sc.bq||0)+60;
-    if(sc.bq>0){sc.bacc=(sc.bacc||0)+dt*22;while(sc.bacc>=1&&sc.bq>0){sc.bacc--;sc.bq--;spawnAt(sc,'BS'+Math.floor(Math.random()*10),SRC.bestand,DEF.bestand);}}
-    // Partner: nur nach manueller Auslösung
-    for(const s of PART)if(s.q>0){s.acc+=dt*14;while(s.acc>=1&&s.q>0){s.acc--;s.q--;spawnAt(sc,s.id,s.col,s.defp);}}
-  }
-  // Rohdatenspeicher gibt Kopien an die Aufbereitung ab (Original bleibt)
-  if(!locked('raw')&&raw.q.length){
-    let cnt=0;for(const p of sc.parts)if(p.pipe.id==='feed')cnt++;
-    raw.acc+=dt*10;
-    while(raw.acc>=1&&raw.q.length&&cnt<45){raw.acc--;const r=raw.q.shift();mkP(sc,sc.pipes.feed,{col:r.col,def:r.def,s:rnd(0,4)});raw.read++;cnt++;rawUpdate();}
-    if(cnt>=45)raw.acc=0;
-  }else raw.acc=0;
-};
+main.tick=(sc,dt)=>{tickSources(sc,dt,locked('st1'));updateClocks();rawRelease(sc,dt);};
 
 // Dekor Hauptansicht
 (()=>{
   const U=main.L.ui,D=main.L.deco;
-  // Station-1-Pille
+  // Station 1: Pille + Aufblättern
   const g1=el('g',{class:'card','data-k':'st1'},D);
   el('rect',{class:'card-bg',x:10,y:6,width:250,height:30,rx:15},g1);
   const hit1=el('rect',{class:'hit',x:10,y:6,width:250,height:30,rx:12},U);
   const t1=el('text',{x:135,y:27,class:'lbl'},U);
   hit1.addEventListener('click',()=>{if(state.practice&&locked('st1'))openQuiz('st1');});
   main.labels.push({key:'st1',t:t1,short:'① Datenherkunft',g:g1,hit:hit1});
-  // Läden
-  const house=(cx,cy,c)=>{el('path',{d:'M'+(cx-10)+','+(cy+8)+'v-10l10,-7l10,7v10z',fill:'#0f1a26',stroke:c,'stroke-width':1.6},D);};
-  el('text',{x:24,y:56,class:'tk tl'},U).textContent='Verkaufsdaten (Kasse) · 10 Läden · laufend';
-  el('text',{x:24,y:160,class:'tk tl'},U).textContent='Bestandsdaten · 10 Läden · 12:00 & 18:00 Uhr';
-  for(let i=0;i<10;i++){house(40+i*30,76,SRC.kasse);house(40+i*30,176,SRC.bestand);}
-  // Operative Systeme (Original-Weg)
-  const ops=(y,title,idx)=>{
-    el('rect',{x:420,y:y-24,width:200,height:48,rx:8,fill:'#0f1a26',stroke:'#6b7f93','stroke-width':1.5},D);
-    el('text',{x:520,y:y-4,class:'tk'},U).textContent=title;
-    opsText[idx]=el('text',{x:520,y:y+14,class:'tk2'},U);opsText[idx].textContent='0';
-  };
-  ops(120,'Kassensystem (operativ)',0);ops(226,'Warenwirtschaft & Bestellwesen',1);
-  // Spiegel-Markierungen
-  [120,226].forEach(y=>{el('circle',{cx:350,cy:y,r:10,fill:'#0f2a3a',stroke:'#2dd4bf','stroke-width':1.8},U);el('circle',{cx:350,cy:y,r:3.5,fill:'#2dd4bf'},U);});
-  el('text',{x:362,y:108,class:'tk2 tl',fill:'#2dd4bf'},U).textContent='Spiegel';
-  el('text',{x:362,y:214,class:'tk2 tl',fill:'#2dd4bf'},U).textContent='Spiegel';
-  el('text',{x:304,y:300,class:'tk2',fill:'#2dd4bf'},U).textContent='Kopie → Rohdaten';
-  // Partner
-  el('text',{x:24,y:366,class:'tk tl'},U).textContent='Partnerdaten · Lieferung per Klick auslösen';
-  PART.forEach(p=>{
-    el('rect',{x:12,y:p.y-22,width:124,height:44,rx:8,fill:'#0f1a26',stroke:p.col,'stroke-width':1.8},D);
-    el('text',{x:74,y:p.y-3,class:'tk'},U).textContent=p.name;
-    el('text',{x:74,y:p.y+13,class:'tk2'},U).textContent=p.sub;
-    trigger(main,main.pipes[p.id],.45,'Lieferung',()=>{p.q+=14;});
-  });
+  const pl1=el('g',{style:'cursor:pointer'},U);
+  el('rect',{x:272,y:8,width:206,height:26,rx:13,class:'pill'},pl1);
+  el('text',{x:375,y:26,class:'tk'},pl1).textContent='⊕ Datenherkunft aufblättern';
+  pl1.addEventListener('click',()=>setView('src'));
+  // fünf Quellgruppen
+  srcTank(main,8,100,170,72,SRC.kasse,'Laufende Daten','(intern)','Kasse · 10 Läden');
+  srcTank(main,8,190,170,72,SRC.bestand,'Termin-gesteuerte','Daten (intern)','Bestand · 12:00 & 18:00');
+  srcTank(main,8,280,170,72,SRC.intern,'Interne Daten','(manuell)','z. B. Aktionen, Preislisten');
+  srcTank(main,8,420,170,72,SRC.wetter,'Regelmäßige Daten','(extern) – automatisch','Wetter · Verkehr');
+  srcTank(main,8,510,170,72,SRC.events,'Externe Daten','(manuell)','z. B. Veranstaltungen');
+  trigger(main,main.pipes.IM,.45,'Lieferung',()=>{Q.intern+=14;});
+  trigger(main,main.pipes.EM,.45,'Lieferung',()=>{Q.events+=14;});
+  autoMark(main,main.pipes.EA);
+  // Operative Systeme (Original-Weg) und Spiegel
+  opsBox(main,420,100,200,'Kassensystem (operativ)',0);
+  opsBox(main,420,190,200,'Warenwirtschaft & Bestellwesen',1);
+  mirrorMark(main,350,100);mirrorMark(main,350,190);
+  el('text',{x:300,y:322,class:'tk2',fill:'#2dd4bf'},U).textContent='Kopie → Rohdaten';
   // Rohdatenspeicher
   card(main,'raw',470,280,120,100,'1b','Rohdatenspeicher',{badgeIn:true});
-  rawFill=el('rect',{x:474,y:376,width:112,height:0,rx:4,fill:'#2dd4bf','fill-opacity':.28},D);
+  const rf=el('rect',{x:474,y:376,width:112,height:0,rx:4,fill:'#2dd4bf','fill-opacity':.28},D);
   el('path',{d:'M522,296v-6a8,8 0 0 1 16,0v6',fill:'none',stroke:'#9fb3c8','stroke-width':2},U);
   el('rect',{x:518,y:296,width:24,height:16,rx:3,fill:'#9fb3c8'},U);
   el('text',{x:530,y:330,class:'tk2'},U).textContent='schreibgeschützt';
-  rawTxt1=el('text',{x:530,y:350,class:'tk'},U);rawTxt1.textContent='0 gespeichert';
-  rawTxt2=el('text',{x:530,y:366,class:'tk2'},U);rawTxt2.textContent='Rückstand: 0';
-  // Uhr
-  const X=h=>720+h/24*360;
-  el('rect',{x:690,y:8,width:420,height:56,rx:10,fill:'#0f1a26',stroke:'#2b445c'},U);
-  el('rect',{x:X(8),y:34,width:X(20)-X(8),height:10,rx:3,fill:'#38bdf8','fill-opacity':.28},U);
-  el('line',{x1:X(0),y1:39,x2:X(24),y2:39,stroke:'#4b6f8c','stroke-width':2},U);
-  [0,6,12,18,24].forEach(h=>{el('line',{x1:X(h),y1:34,x2:X(h),y2:44,stroke:'#4b6f8c'},U);el('text',{x:X(h),y:57,class:'tk2'},U).textContent=h+'';});
-  [12,18].forEach(h=>el('path',{d:'M'+(X(h)-5)+',26 l10,0 l-5,8z',fill:SRC.bestand},U));
-  clockTxt=el('text',{x:704,y:26,class:'tk tl'},U);clockTxt.textContent='07:00 Uhr';
-  el('text',{x:1102,y:22,class:'tk2',style:'text-anchor:end'},U).textContent='▼ Bestand-Upload · ▬ Ladenöffnung';
-  clockDot=el('circle',{cx:X(7),cy:39,r:6,fill:'#fde047',stroke:'#fff','stroke-width':1.2},U);
+  const rt1=el('text',{x:530,y:350,class:'tk'},U);rt1.textContent='0 gespeichert';
+  const rt2=el('text',{x:530,y:366,class:'tk2'},U);rt2.textContent='Rückstand: 0';
+  raw.views.push({fill:rf,t1:rt1,t2:rt2,max:70,base:376});
+  mkClock(main);
   // Station 2: Fabrik
   card(main,'st2',670,255,270,150,'2','Datenaufbereitung');
   [[670,760],[760,850],[850,940]].forEach(c=>el('rect',{class:'water',x:c[0]+3,y:262,width:c[1]-c[0]-6,height:136,rx:6,fill:'#6b8aa5','fill-opacity':.07},D));
@@ -586,18 +622,76 @@ fab.hints=[];
   b.addEventListener('click',()=>setView('main'));
 })();
 
-const scenes=[main,fab];
+/* ============ DETAILANSICHT: Datenherkunft ============ */
+const src=mkScene('scSrc');src.g.classList.add('off');src.st={in:0};
+src.pipeFor=k=>({kasse:'KS'+Math.floor(Math.random()*10),bestand:'BS'+Math.floor(Math.random()*10),intern:'IM',wetter:'EW',verkehr:'EV',events:'EM'})[k];
+const SD=(id,pts,w,o)=>addPipe(src,Object.assign({id,pts,w},o||{}));
+for(let i=0;i<10;i++){const x=60+i*46;SD('KS'+i,[[x,110],[x,146]],3,{next:'KC'});SD('BS'+i,[[x,232],[x,262]],3,{next:'BC'});}
+SD('KC',[[30,146],[760,146]],8,{next:'KCops',fork:['mirD1'],gate:'da'});
+SD('BC',[[30,262],[760,262]],10,{next:'BCops',fork:['mirD1'],gate:'db'});
+SD('IM',[[200,346],[760,346]],8,{next:'mirD1',gate:'dc'});
+SD('EW',[[200,440],[760,440]],8,{next:'mirD2',gate:'dd'});
+SD('EV',[[200,496],[760,496]],8,{next:'mirD2',gate:'dd'});
+SD('EM',[[200,596],[760,596]],8,{next:'mirD2',gate:'de'});
+SD('KCops',[[760,146],[880,146]],8,{sink:opsSink(0)});
+SD('BCops',[[760,262],[880,262]],10,{sink:opsSink(1)});
+SD('mirD1',[[760,146],[760,400]],12,{next:'rawInD'});
+SD('mirD2',[[760,620],[760,400]],12,{next:'rawInD'});
+SD('rawInD',[[760,400],[1180,400]],18,{sink:rawSink});
+src.tick=(sc,dt)=>{tickSources(sc,dt,false);updateClocks();};
+(()=>{
+  const U=src.L.ui,D=src.L.deco;
+  el('text',{x:24,y:32,class:'lbl',style:'text-anchor:start;font-size:20px'},U).textContent='Datenherkunft im Detail';
+  pillGate(src,'da',24,50,350,'Laufende Daten (intern)');
+  pillGate(src,'db',24,172,350,'Termin-gesteuerte Daten (intern)');
+  pillGate(src,'dc',24,290,350,'Interne Daten (manuell)');
+  pillGate(src,'dd',24,388,350,'Regelmäßige Daten (extern) – automatisch');
+  pillGate(src,'de',24,540,350,'Externe Daten (manuell)');
+  const cap=(y,t,x=390)=>el('text',{x,y,class:'tk2 tl'},U).textContent=t;
+  cap(68,'Verkaufsdaten (Kasse) · 10 Läden · kontinuierlich');
+  cap(190,'Bestandsdaten · 10 Läden · um 12:00 und 18:00 Uhr gebündelt');
+  cap(308,'z. B. Aktionen & Preislisten (Excel)',520);
+  cap(406,'Wetter (montags) · Verkehr (täglich 06:00)',520);
+  cap(558,'z. B. Veranstaltungen (Datei/Meldung)',520);
+  for(let i=0;i<10;i++){house(src,60+i*46,100,SRC.kasse);house(src,60+i*46,222,SRC.bestand);}
+  srcTank(src,20,346,180,44,SRC.intern,'Zentrale / Fachabteilung','Excel-Listen');
+  srcTank(src,20,440,180,44,SRC.wetter,'Wetterdienst','wöchentlich');
+  srcTank(src,20,496,180,44,SRC.verkehr,'Verkehrsdaten · Baustellen','täglich');
+  srcTank(src,20,596,180,44,SRC.events,'Veranstaltungskalender','wöchentlich');
+  trigger(src,src.pipes.IM,.4,'Lieferung',()=>{Q.intern+=14;});
+  trigger(src,src.pipes.EM,.4,'Lieferung',()=>{Q.events+=14;});
+  autoMark(src,src.pipes.EW);autoMark(src,src.pipes.EV);
+  opsBox(src,880,146,200,'Kassensystem (operativ)',0);
+  opsBox(src,880,262,200,'Warenwirtschaft & Bestellwesen',1);
+  mirrorMark(src,760,146);mirrorMark(src,760,262);
+  // Rohdatenspeicher (Kurzdarstellung)
+  el('rect',{x:1180,y:360,width:150,height:80,rx:10,fill:'#13202e','fill-opacity':.85,stroke:'#2dd4bf','stroke-width':1.6},D);
+  const rf2=el('rect',{x:1184,y:436,width:142,height:0,rx:4,fill:'#2dd4bf','fill-opacity':.28},D);
+  el('text',{x:1255,y:348,class:'lbl',style:'font-size:14px'},U).textContent='Rohdatenspeicher';
+  const a=el('text',{x:1255,y:402,class:'tk'},U);a.textContent='0 gespeichert';
+  const b=el('text',{x:1255,y:419,class:'tk2'},U);b.textContent='Rückstand: 0';
+  el('text',{x:1255,y:460,class:'tk2'},U).textContent='weiter in der Hauptansicht →';
+  raw.views.push({fill:rf2,t1:a,t2:b,max:70,base:436});
+  mkClock(src);
+})();
+
+const scenes=[main,fab,src];
 
 /* ============ Quiz ============ */
 const N={st1:'Datenquellen & Datenerfassung',raw:'Rohdatenspeicher (Raw Layer)',st2:'Datenaufbereitung (Cleaning & Standardisierung)',st3:'Modellierung (Training)',st4:'Modellvalidierung',st5:'Deployment (Bereitstellung)',st6:'Monitoring & Drift-Erkennung'};
 const QUIZ={
- st1:{p:'Beobachte: Kassendaten fließen laufend, Bestandsmeldungen kommen gebündelt zweimal am Tag, Partnerdaten nur auf Knopfdruck – und jede Meldung wird auf dem Weg gespiegelt. Wie heißt diese Station?',c:N.st1,w:[N.st3,'Anforderungsanalyse','Lastverteilung','Penetrationstest'],why:'Am Anfang jeder KI-Lieferkette steht die Herkunft der Daten. Die Quellen unterscheiden sich in Takt (laufend, zweimal täglich, auf Abruf), Menge und Zuverlässigkeit – und jede bringt eigene Qualitätsrisiken mit.'},
+ st1:{p:'Beobachte: Laufende Ströme, Uploads zu festen Zeiten und Lieferungen auf Knopfdruck – und jede Meldung wird auf dem Weg gespiegelt. Wie heißt diese Station?',c:N.st1,w:[N.st3,'Anforderungsanalyse','Lastverteilung','Penetrationstest'],why:'Am Anfang jeder KI-Lieferkette steht die Herkunft der Daten. Die Quellen unterscheiden sich in Herkunft (intern/extern), Takt (laufend, termingesteuert, manuell), Menge und Zuverlässigkeit – und jede bringt eigene Qualitätsrisiken mit.'},
  raw:{p:'Beobachte: Alles, was eingeht, wird unverändert kopiert und abgelegt. Der Bestand wächst nur, gelesen wird eine Kopie. Wie heißt dieser Speicher?',c:N.raw,w:['Data Mart (Auswertungsschicht)','Operatives Kassensystem','Modellregister','Lastverteilung'],why:'Die Rohdatenschicht hält die Originale: AWS empfiehlt dafür das Originalformat und aktivierte Versionierung. Bereinigt wird erst danach in einer eigenen Stufe. So bleiben die Betriebssysteme unberührt, und bei einem Fehler in der Aufbereitung lässt sich neu rechnen.'},
  st2:{p:'Beobachte: Eine Fabrik prüft, vereinheitlicht und gleicht ab – Ausschuss und Kopien fallen heraus, der Rest läuft einheitlich weiter. Wie heißt diese Station?',c:N.st2,w:[N.st4,'Lieferantenaudit','Datenverschlüsselung',N.st5],why:'Rohdaten sind selten modelltauglich. Hier werden Fehlerhaftes aussortiert, Formate vereinheitlicht und Dubletten entfernt. Bei AWS entspricht das der Stage-Schicht (Validierung, Format-Konvertierung, Transformation), im ELT-Muster von Google dem Transform-Schritt nach dem Laden.'},
  st3:{p:'Beobachte: Aus dem sauberen Datenstrom entstehen nur wenige goldene Modellkandidaten – der Rest verschwindet im Zahnrad. Wie heißt diese Station?',c:N.st3,w:[N.st2,'Lastverteilung','Anforderungsanalyse',N.st6],why:'Im Training lernt das Modell Muster aus den Daten. Die Daten selbst bleiben nicht erhalten – es entsteht ein Modellartefakt, das später Vorhersagen liefert.'},
  st4:{p:'Beobachte: Nur ein Teil der Modelle passiert die Prüfschranke, die übrigen laufen zurück ins Training. Wie heißt diese Station?',c:N.st4,w:[N.st3,N.st5,N.st1,'Lieferantenaudit'],why:'Vor dem Einsatz wird das Modell auf ungesehenen Testdaten geprüft. Genauigkeit allein kann täuschen; die Abwägung zwischen falsch-positiv und falsch-negativ sowie der Schwellenwert sind Geschäftsentscheidungen.'},
  st5:{p:'Beobachte: Ein freigegebenes Modell bedient plötzlich viele Anfragen – grüne Prognosen strömen heraus. Wie heißt diese Station?',c:N.st5,w:[N.st4,N.st2,N.st6,'Penetrationstest'],why:'Beim Deployment geht das freigegebene Modell in den Betrieb und beantwortet laufend Anfragen. Es ist der Anfang des Modell-Lebens im Betrieb, nicht sein Ende.'},
  st6:{p:'Beobachte: Ein Drift-Alarm läuft über die gestrichelte Leitung zurück und startet das Nachtraining. Wie heißt diese Station?',c:N.st6,w:[N.st3,N.st5,N.st1,'Datenverschlüsselung'],why:'Im Betrieb entfernt sich die Realität von den Trainingsdaten – Drift ist der Normalfall. Monitoring erkennt das und stößt Nachtraining an (Continuous Training).'},
+ da:{p:'Beobachte: Aus den Läden strömen rund um die Uhr einzelne Kassenbewegungen – mit Tagesrhythmus, aber ohne feste Termine. Welche Gruppe ist das?',c:'Laufende Daten (intern)',w:['Termin-gesteuerte Daten (intern)','Regelmäßige Daten (extern) – automatisch','Interne Daten (manuell)','Archivdaten'],why:'Ereignisse, die laufend entstehen (Kassenbewegungen), werden einzeln als Strom übertragen (Streaming). Auf Google Cloud schreiben z. B. Pub/Sub-Abonnements eintreffende Nachrichten sofort in BigQuery. Das lohnt, wenn Aktualität wichtig ist.'},
+ db:{p:'Beobachte: Nur um 12:00 und 18:00 Uhr schicken alle Läden gebündelt ihre Bestände. Welche Gruppe ist das?',c:'Termin-gesteuerte Daten (intern)',w:['Laufende Daten (intern)','Interne Daten (manuell)','Regelmäßige Daten (extern) – automatisch','Archivdaten'],why:'Gebündelte Übertragung zu festen Zeiten (Batch): planbar und ressourcenschonend, wenn Aktualität im Stundenbereich genügt, etwa für das Bestellwesen. Google nennt dafür z. B. den BigQuery Data Transfer Service als automatisierten Bulk-Load.'},
+ dc:{p:'Beobachte: Eine Fachabteilung liefert Listen (etwa Aktionen oder Preise) – erst nach einem Klick fließen sie. Welche Gruppe ist das?',c:'Interne Daten (manuell)',w:['Externe Daten (manuell)','Termin-gesteuerte Daten (intern)','Laufende Daten (intern)','Archivdaten'],why:'Manuell eingespielte interne Listen sind unregelmäßig und fehleranfällig (Formate, Tippfehler, vergessene Lieferung). Hier lohnt es sich, Zuständigkeit, Rhythmus und eine Prüfung vor dem Einspielen festzulegen.'},
+ dd:{p:'Beobachte: Wetter und Verkehr treffen zu festen Zeiten von allein ein – ohne dass jemand etwas anstößt. Welche Gruppe ist das?',c:'Regelmäßige Daten (extern) – automatisch',w:['Externe Daten (manuell)','Laufende Daten (intern)','Interne Daten (manuell)','Archivdaten'],why:'Externe Lieferungen nach festem Rhythmus (täglich, wöchentlich) per Schnittstelle sind planbar und lassen sich überwachen – hängen aber von der Verfügbarkeit und Qualität des Partners ab.'},
+ de:{p:'Beobachte: Veranstaltungsdaten von außen kommen erst, wenn jemand sie per Klick einspielt. Welche Gruppe ist das?',c:'Externe Daten (manuell)',w:['Interne Daten (manuell)','Regelmäßige Daten (extern) – automatisch','Termin-gesteuerte Daten (intern)','Datenverschlüsselung'],why:'Externe Daten ohne feste Schnittstelle werden von Hand beschafft und eingespielt (z. B. Datei oder Meldung eines Veranstalters). Das ist fehleranfällig und braucht klare Verantwortung sowie eine Eingangsprüfung.'},
  ka:{p:'Beobachte: Riesige Werte und hohle Ringe werden vom Portal erfasst und fallen aus der Linie. Wie heißt dieser Schritt?',c:'Eingangsprüfung: Fehlerhaftes aussortieren',w:['Formate standardisieren','Dubletten entfernen','Datenverschlüsselung','Lastverteilung'],why:'Unplausible (z. B. negativer Bestand) oder unvollständige Datensätze werden aussortiert – besser in Quarantäne abgelegt als stillschweigend gelöscht, damit sich die Ursache an der Quelle beheben lässt. Kein Filter ist perfekt: einzelne Fehler rutschen durch.'},
  kb:{p:'Beobachte: Eckige Elemente werden unter der Presse rund – alles hat danach dasselbe Format. Wie heißt dieser Schritt?',c:'Standardisierung: Formate vereinheitlichen',w:['Fehlerhaftes aussortieren','Dubletten entfernen','Hyperparameter festlegen','Penetrationstest'],why:'Einheitliche Formate, Einheiten und Schreibweisen (z. B. °C statt °F, ein Datumsformat). Die Format-Konvertierung nennt AWS als Aufgabe der Stage-Schicht. Sie gehört zur Transformation – in der Praxis laufen Bereinigen und Standardisieren meist in derselben Stufe.'},
  kc:{p:'Beobachte: Aus zwei Kreisen wird einer – die Kopie fällt heraus. Wie heißt dieser Schritt?',c:'Deduplizierung: Dubletten entfernen',w:['Standardisierung: Formate vereinheitlichen','Modelltraining','Drift-Erkennung','Lastverteilung'],why:'Mehrfach gemeldete Datensätze (z. B. doppelt gebuchte Bons oder mehrfach gemeldete Veranstaltungen) werden auf einen reduziert. Das gelingt zuverlässiger nach der Standardisierung, weil gleiche Dinge dann auch gleich geschrieben sind.'}
@@ -632,10 +726,12 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')closeQ();});
 /* ============ Steuerung ============ */
 function setView(v){
   state.view=v;
-  main.g.classList.toggle('off',v!=='main');fab.g.classList.toggle('off',v!=='fab');
-  $('bView').textContent=v==='main'?'Fabrik aufblättern ⊕':'← Hauptansicht';
+  main.g.classList.toggle('off',v!=='main');fab.g.classList.toggle('off',v!=='fab');src.g.classList.toggle('off',v!=='src');
+  $('bView').textContent=v==='fab'?'← Hauptansicht':'Fabrik aufblättern ⊕';
+  $('bSrc').textContent=v==='src'?'← Hauptansicht':'Datenherkunft aufblättern ⊕';
 }
-$('bView').onclick=()=>setView(state.view==='main'?'fab':'main');
+$('bView').onclick=()=>setView(state.view==='fab'?'main':'fab');
+$('bSrc').onclick=()=>setView(state.view==='src'?'main':'src');
 $('bPause').onclick=()=>{state.paused=!state.paused;$('bPause').textContent=state.paused?'Weiter':'Pause';$('bPause').classList.toggle('on',state.paused);};
 $('rSpeed').oninput=e=>state.speed=+e.target.value;
 function clearAll(){
@@ -644,8 +740,9 @@ function clearAll(){
     for(const k in sc.st)sc.st[k]=0;
     for(const k in sc.tanks)sc.tanks[k].reset();
   }
-  raw.q=[];raw.total=0;raw.read=0;raw.acc=0;raw.ops=[0,0];opsText[0].textContent='0';opsText[1].textContent='0';rawUpdate();
-  main.hour=7;main.bq=0;main.kacc=0;PART.forEach(p=>{p.q=0;p.acc=0;});
+  raw.q=[];raw.total=0;raw.read=0;raw.acc=0;raw.ops=[0,0];opsUpdate(0);opsUpdate(1);rawUpdate();
+  CLK.h=5;CLK.day=0;for(const k in Q)Q[k]=0;updateClocks();
+  for(const sc of scenes){sc.kacc=0;sc.qacc={};}
 }
 $('bPractice').onclick=()=>{
   state.practice=!state.practice;$('bPractice').classList.toggle('on',state.practice);
@@ -674,7 +771,7 @@ function frame(now){
   const dt=Math.min(.05,(now-last)/1000);last=now;
   if(!state.paused){
     const d=dt*state.speed;
-    step(state.view==='main'?main:fab,d);
+    step(state.view==='main'?main:state.view==='fab'?fab:src,d);
     if(state.view==='main'){alarmT+=d;if(alarmT>32&&main.st.pred>12){alarmT=0;triggerAlarm();}}
   }
   barT+=dt;if(barT>.3){barT=0;updateBar();}
@@ -682,12 +779,13 @@ function frame(now){
 }
 function updateBar(){
   const s=main.st,k=fab.st;
+  if(state.view==='src'){$('bar').innerHTML='<span>Eingespeist (Detailansicht): <b>'+src.st.in+'</b></span><span>Rohdatenspeicher: <b>'+raw.total+'</b> (Rückstand '+raw.q.length+')</span><span>Kassensystem: <b>'+raw.ops[0]+'</b> · Warenwirtschaft/Bestellwesen: <b>'+raw.ops[1]+'</b></span><span>wartende Lieferungen: <b>'+Object.values(Q).reduce((a,b)=>a+b,0)+'</b></span>';return;}
   $('bar').innerHTML=state.view==='main'
    ?'<span>Eingespeist: <b>'+s.in+'</b></span><span>Rohdatenspeicher: <b>'+raw.total+'</b> (Rückstand '+raw.q.length+')</span><span>Quarantäne: <b>'+s.rej+'</b> · Dubletten: <b>'+s.dups+'</b></span><span>Modellkandidaten: <b>'+s.models+'</b></span><span>validiert: <b style="color:#4ade80">'+s.ok+'</b> · zurück ins Training: <b style="color:#f59e0b">'+s.back+'</b></span><span>Prognosen: <b>'+s.pred+'</b></span><span>Nachtrainings: <b>'+s.retrain+'</b></span>'
    :'<span>Eingang: <b>'+k.in+'</b></span><span>Quarantäne: <b>'+k.rej+'</b></span><span>Formate vereinheitlicht: <b>'+k.fix+'</b></span><span>Dubletten entfernt: <b>'+k.dups+'</b></span><span>aufbereitet weitergeleitet: <b>'+k.clean+'</b> (davon mit Restfehler: <b style="color:#f59e0b">'+(k.rest||0)+'</b>)</span>';
 }
 refreshLabels();updateBar();requestAnimationFrame(frame);
-window.__dfl={main,fab,state,step,raw};
+window.__dfl={main,fab,src,state,step,raw,CLK,Q};
 })();
 </script>
 </body>
