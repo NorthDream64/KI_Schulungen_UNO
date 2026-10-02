@@ -109,8 +109,11 @@ text{pointer-events:none}
   <div id="wrap">
     <svg id="stage" viewBox="0 0 1580 760" role="img" aria-label="Animierter Datenfluss von den Datenquellen bis zum Monitoring"></svg>
   </div>
-  <div id="bar"></div>
   <div id="legend">
+    <span><svg width="22" height="22"><circle cx="11" cy="11" r="8" fill="#0f2a3a" stroke="#2dd4bf" stroke-width="1.8"/><circle cx="11" cy="11" r="3" fill="#2dd4bf"/></svg>Datenspiegel / Kopie</span>
+    <span><svg width="22" height="22"><rect x="8" y="9" width="6" height="12" rx="2" fill="#ef4444"/><circle cx="11" cy="6" r="5" fill="#ef4444" stroke="#fff" stroke-width="1.2"/><line x1="7.5" y1="6" x2="14.5" y2="6" stroke="#fff" stroke-width="1.6"/></svg>Manueller Datenfluss</span>
+    <span><svg width="22" height="22"><circle cx="11" cy="11" r="8" fill="#0f2a3a" stroke="#4ade80" stroke-width="1.6"/><path d="M11,6v5h4" fill="none" stroke="#4ade80" stroke-width="1.6"/></svg>automatisch terminiert</span>
+    <span style="width:14px"></span>
     <span><svg width="16" height="16"><circle cx="8" cy="8" r="4" fill="#38bdf8"/></svg>Datensatz (Farbe = Quelle)</span>
     <span><svg width="22" height="16"><circle cx="8" cy="6" r="4" fill="#38bdf8"/><circle cx="14" cy="10" r="4" fill="#38bdf8"/></svg>Dublette</span>
     <span><svg width="20" height="20"><circle cx="10" cy="10" r="8" fill="#38bdf8" opacity=".85"/></svg>Ausreißer (unplausibel)</span>
@@ -293,7 +296,6 @@ function trigger(sc,pi,f,label,onFire){
   el('circle',{class:'ring',cx:x,cy:y-pi.w/2-26,r:15,fill:'none',stroke:'#ef4444','stroke-width':2},g);
   const wheel=el('circle',{cx:x,cy:y-pi.w/2-26,r:10,fill:'#ef4444',stroke:'#fff','stroke-width':1.5},g);
   el('line',{x1:x-7,y1:y-pi.w/2-26,x2:x+7,y2:y-pi.w/2-26,stroke:'#fff','stroke-width':2},g);
-  el('text',{x,y:y+pi.w/2+16,class:'tk2'},g).textContent=label;
   el('circle',{cx:x,cy:y-pi.w/2-20,r:24,fill:'transparent'},g);
   let busy=false;
   g.addEventListener('click',()=>{
@@ -426,13 +428,11 @@ function opsBox(sc,x,y,w,title,idx){
 }
 function mirrorMark(sc,x,y){
   el('circle',{cx:x,cy:y,r:10,fill:'#0f2a3a',stroke:'#2dd4bf','stroke-width':1.8},sc.L.ui);el('circle',{cx:x,cy:y,r:3.5,fill:'#2dd4bf'},sc.L.ui);
-  el('text',{x:x+12,y:y-12,class:'tk2 tl',fill:'#2dd4bf'},sc.L.ui).textContent='Spiegel';
 }
 function autoMark(sc,pi){
   const [x,y]=pos(pi,pi.len*.5,0);
   el('circle',{cx:x,cy:y-pi.w/2-14,r:9,fill:'#0f2a3a',stroke:'#4ade80','stroke-width':1.6},sc.L.ui);
   el('path',{d:'M'+x+','+(y-pi.w/2-20)+'v6h4',fill:'none',stroke:'#4ade80','stroke-width':1.6},sc.L.ui);
-  el('text',{x,y:y+pi.w/2+16,class:'tk2'},sc.L.ui).textContent='automatisch';
 }
 function pillGate(sc,key,x,y,w,short){
   const g=el('g',{class:'card','data-k':key},sc.L.deco);
@@ -501,7 +501,7 @@ main.tick=(sc,dt)=>{tickSources(sc,dt,locked('st1')||locked('ext'));updateClocks
   const hit1=el('rect',{class:'hit',x:10,y:6,width:250,height:30,rx:12},U);
   const t1=el('text',{x:135,y:27,class:'lbl'},U);
   hit1.addEventListener('click',()=>{if(state.practice&&locked('st1'))openQuiz('st1');});
-  main.labels.push({key:'st1',t:t1,short:'① Datenherkunft',g:g1,hit:hit1});
+  main.labels.push({key:'st1',t:t1,short:'Datenherkunft',g:g1,hit:hit1});
   // fünf Quellgruppen
   srcTank(main,8,100,170,72,SRC.kasse,'Verkaufsdaten','(Kassensystem)','laufend · 10 Läden');
   srcTank(main,8,190,170,72,SRC.bestand,'Bestandsveränderung','(2 x täglich)','10 Läden · 12:00 & 18:00');
@@ -515,9 +515,8 @@ main.tick=(sc,dt)=>{tickSources(sc,dt,locked('st1')||locked('ext'));updateClocks
   opsBox(main,420,100,200,'Buchhaltung',0);
   opsBox(main,420,190,200,'Warenwirtschaftssystem',1);
   mirrorMark(main,350,100);mirrorMark(main,350,190);
-  el('text',{x:300,y:322,class:'tk2',fill:'#2dd4bf'},U).textContent='Kopie → Rohdaten';
   // Rohdatenspeicher
-  card(main,'raw',470,280,120,100,'1b','Rohdatenspeicher',{badgeIn:true});
+  card(main,'raw',470,280,120,100,'2','Load',{badgeIn:true});
   const rf=mkLayers(D,474,112);
   el('path',{d:'M522,296v-6a8,8 0 0 1 16,0v6',fill:'none',stroke:'#9fb3c8','stroke-width':2},U);
   el('rect',{x:518,y:296,width:24,height:16,rx:3,fill:'#9fb3c8'},U);
@@ -525,16 +524,19 @@ main.tick=(sc,dt)=>{tickSources(sc,dt,locked('st1')||locked('ext'));updateClocks
   const rt1=el('text',{x:530,y:350,class:'tk'},U);rt1.textContent='0 gespeichert';
   const rt2=el('text',{x:530,y:366,class:'tk2'},U);rt2.textContent='Rückstand: 0';
   raw.views.push({layers:rf,t1:rt1,t2:rt2,max:88,base:376});
-  // Extract-Marke (Schritt 1 des ETL/ELT-Musters)
+  // Extract (1): unterhalb der Sammelleitung
   const gx=el('g',{class:'card','data-k':'ext'},D);
-  el('rect',{class:'card-bg',x:354,y:396,width:116,height:24,rx:12},gx);
-  const hitx=el('rect',{class:'hit',x:354,y:396,width:116,height:24,rx:12},U);
-  const tx=el('text',{x:412,y:412,class:'lbl',style:'font-size:11px'},U);
+  el('rect',{class:'card-bg',x:243,y:576,width:150,height:28,rx:14},gx);
+  const hitx=el('rect',{class:'hit',x:243,y:576,width:150,height:28,rx:12},U);
+  const bg=el('g',null,U);
+  el('circle',{class:'badge',cx:260,cy:590,r:11},bg);
+  el('text',{x:260,y:594,class:'badge-t'},bg).textContent='1';
+  const tx=el('text',{x:332,y:595,class:'lbl',style:'font-size:12px'},U);
   hitx.addEventListener('click',()=>{if(state.practice&&locked('ext'))openQuiz('ext');});
-  main.labels.push({key:'ext',t:tx,short:'Extract · Schritt 1',g:gx,hit:hitx});
+  main.labels.push({key:'ext',t:tx,short:'Extract',g:gx,hit:hitx});
   mkClock(main);
   // Station 2: Fabrik
-  card(main,'st2',670,255,270,150,'2','Datenaufbereitung');
+  card(main,'st2',670,255,270,150,'3','Datenaufbereitung');
   [[670,760],[760,850],[850,940]].forEach(c=>el('rect',{class:'water',x:c[0]+3,y:262,width:c[1]-c[0]-6,height:136,rx:6,fill:'#6b8aa5','fill-opacity':.07},D));
   // Eingangsprüfung: Portal
   el('rect',{x:700,y:272,width:6,height:116,fill:'#4b6f8c'},D);el('rect',{x:734,y:272,width:6,height:116,fill:'#4b6f8c'},D);
@@ -552,25 +554,25 @@ main.tick=(sc,dt)=>{tickSources(sc,dt,locked('st1')||locked('ext'));updateClocks
   tank(main,'qa',690,618,140,84,'Quarantäne','#c0843f');
   tank(main,'qd',870,618,140,84,'Dubletten (verworfen)','#c0843f');
   // Station 3 Modellierung
-  card(main,'st3',1000,270,100,120,'3','Modellierung');
+  card(main,'st3',1000,270,100,120,'4','Modellierung');
   const gear=el('g',{class:'gear',id:'gearG'},D);
   let gd='';for(let i=0;i<10;i++){const a=i*36*Math.PI/180;gd+=(i?'L':'M')+(1050+Math.cos(a-.12)*45).toFixed(1)+','+(330+Math.sin(a-.12)*45).toFixed(1)+'L'+(1050+Math.cos(a+.12)*45).toFixed(1)+','+(330+Math.sin(a+.12)*45).toFixed(1)+'L'+(1050+Math.cos(a+.2)*37).toFixed(1)+','+(330+Math.sin(a+.2)*37).toFixed(1)+'L'+(1050+Math.cos(a+.52)*37).toFixed(1)+','+(330+Math.sin(a+.52)*37).toFixed(1);}
   el('path',{d:gd+'Z',fill:'#274055',stroke:'#4b6f8c','stroke-width':1.5},gear);
   el('circle',{cx:1050,cy:330,r:14,fill:'#13202e',stroke:'#4b6f8c'},gear);
   el('text',{x:1050,y:408,class:'tk',id:'retrTxt',opacity:0,fill:'#fde047'},U).textContent='Retraining …';
   // Station 4 Validierung
-  card(main,'st4',1150,270,100,120,'4','Validierung');
+  card(main,'st4',1150,270,100,120,'5','Validierung');
   el('rect',{x:1198,y:276,width:4,height:48,fill:'#4b6f8c'},D);el('rect',{x:1198,y:336,width:4,height:48,fill:'#4b6f8c'},D);
   el('circle',{cx:1222,cy:362,r:12,fill:'#12351f',stroke:'#4ade80'},D);
   el('path',{d:'M1216,362 l5,5 l9,-10',fill:'none',stroke:'#4ade80','stroke-width':2.4},D);
   el('text',{x:1200,y:410,class:'tk2'},U).textContent='Testdaten · Schwellenwert';
   el('text',{x:1150,y:178,class:'tk2'},U).textContent='zurück ins Training';
   // Station 5 Deployment
-  card(main,'st5',1300,270,100,120,'5','Deployment');
+  card(main,'st5',1300,270,100,120,'6','Deployment');
   for(let i=0;i<3;i++)el('rect',{x:1318,y:278+i*36,width:64,height:26,rx:4,fill:'#1d3145',stroke:'#4b6f8c'},D);
   const leds=el('g',null,D);for(let i=0;i<3;i++)el('circle',{class:'led',cx:1327,cy:291+i*36,r:2.6,fill:'#4ade80'},leds);
   // Station 6 Monitoring
-  card(main,'st6',1450,270,100,120,'6','Monitoring');
+  card(main,'st6',1450,270,100,120,'7','Monitoring');
   const cx=1500,cy=374,rr=40;
   const arc=(a1,a2,c)=>{const p=a=>[cx+rr*Math.cos(a*Math.PI/180),cy+rr*Math.sin(a*Math.PI/180)];const A=p(a1),B=p(a2);el('path',{d:'M'+A[0]+','+A[1]+' A'+rr+','+rr+' 0 0 1 '+B[0]+','+B[1],fill:'none',stroke:c,'stroke-width':7},D);};
   arc(180,240,'#4ade80');arc(240,300,'#f59e0b');arc(300,360,'#ef4444');
@@ -675,7 +677,7 @@ src.tick=(sc,dt)=>{tickSources(sc,dt,false);updateClocks();};
   // Rohdatenspeicher (Kurzdarstellung)
   el('rect',{x:1180,y:360,width:150,height:80,rx:10,fill:'#13202e','fill-opacity':.85,stroke:'#2dd4bf','stroke-width':1.6},D);
   const rf2=mkLayers(D,1184,142);
-  el('text',{x:1255,y:348,class:'lbl',style:'font-size:14px'},U).textContent='Rohdatenspeicher';
+  el('text',{x:1255,y:348,class:'lbl',style:'font-size:14px'},U).textContent='Load';
   const a=el('text',{x:1255,y:402,class:'tk'},U);a.textContent='0 gespeichert';
   const b=el('text',{x:1255,y:419,class:'tk2'},U);b.textContent='Rückstand: 0';
   el('text',{x:1255,y:460,class:'tk2'},U).textContent='weiter in der Hauptansicht →';
@@ -686,11 +688,11 @@ src.tick=(sc,dt)=>{tickSources(sc,dt,false);updateClocks();};
 const scenes=[main,fab,src];
 
 /* ============ Quiz ============ */
-const N={st1:'Datenquellen & Datenerfassung',raw:'Rohdatenspeicher (Raw Layer)',st2:'Datenaufbereitung (Cleaning & Standardisierung)',st3:'Modellierung (Training)',st4:'Modellvalidierung',st5:'Deployment (Bereitstellung)',st6:'Monitoring & Drift-Erkennung'};
+const N={st1:'Datenquellen & Datenerfassung',raw:'Load (Rohdatenspeicher / Raw Layer)',st2:'Datenaufbereitung (Cleaning & Standardisierung)',st3:'Modellierung (Training)',st4:'Modellvalidierung',st5:'Deployment (Bereitstellung)',st6:'Monitoring & Drift-Erkennung'};
 const QUIZ={
  ext:{p:'Beobachte: Aus den Quellsystemen werden Daten herausgelesen und als Kopie auf den Weg in den Speicher geschickt – die Quellen selbst bleiben unverändert. Wie heißt dieser Schritt?',c:'Extract (Daten aus den Quellen entnehmen)',w:['Transform (Daten umformen)','Drift-Erkennung','Deployment (Bereitstellung)','Modelltraining'],why:'Extract ist der erste Schritt im ETL- wie im ELT-Muster: Rohdaten werden aus den Quellsystemen (Datenbanken, Dateien, Anwendungen, Sensoren u. a.) entnommen und in einen Speicher- oder Staging-Bereich kopiert. Ausgelöst wird er je nach Quelle zeitgesteuert (Batch), ereignisgesteuert oder fortlaufend (Streaming).'},
  st1:{p:'Beobachte: Laufende Ströme, Uploads zu festen Zeiten und Lieferungen auf Knopfdruck – und jede Meldung wird auf dem Weg gespiegelt. Wie heißt diese Station?',c:N.st1,w:[N.st3,'Anforderungsanalyse','Lastverteilung','Penetrationstest'],why:'Am Anfang jeder KI-Lieferkette steht die Herkunft der Daten. Die Quellen unterscheiden sich in Herkunft (intern/extern), Takt (laufend, termingesteuert, manuell), Menge und Zuverlässigkeit – und jede bringt eigene Qualitätsrisiken mit.'},
- raw:{p:'Beobachte: Alles, was eingeht, wird unverändert kopiert und abgelegt. Der Bestand wächst nur, gelesen wird eine Kopie. Wie heißt dieser Speicher?',c:N.raw,w:['Data Mart (Auswertungsschicht)','Operatives Kassensystem','Modellregister','Lastverteilung'],why:'Die Rohdatenschicht hält die Originale: AWS empfiehlt dafür das Originalformat und aktivierte Versionierung. Bereinigt wird erst danach in einer eigenen Stufe. So bleiben die Betriebssysteme unberührt, und bei einem Fehler in der Aufbereitung lässt sich neu rechnen.'},
+ raw:{p:'Beobachte: Alles, was eingeht, wird unverändert in einen Speicher geladen und dort abgelegt. Der Bestand wächst nur, gelesen wird eine Kopie. Wie heißt dieser Schritt?',c:N.raw,w:['Data Mart (Auswertungsschicht)','Operatives Kassensystem','Modellregister','Lastverteilung'],why:'Load heißt: Die entnommenen Daten werden in das Zielsystem geladen. Hier ist das die Rohdatenschicht, die die Originale hält – AWS empfiehlt dafür das Originalformat und aktivierte Versionierung. Bereinigt wird erst danach in einer eigenen Stufe (Transform, im ELT-Muster nach dem Laden). So bleiben die Betriebssysteme unberührt, und bei einem Fehler in der Aufbereitung lässt sich neu rechnen.'},
  st2:{p:'Beobachte: Eine Fabrik prüft, vereinheitlicht und gleicht ab – Ausschuss und Kopien fallen heraus, der Rest läuft einheitlich weiter. Wie heißt diese Station?',c:N.st2,w:[N.st4,'Lieferantenaudit','Datenverschlüsselung',N.st5],why:'Rohdaten sind selten modelltauglich. Hier werden Fehlerhaftes aussortiert, Formate vereinheitlicht und Dubletten entfernt. Bei AWS entspricht das der Stage-Schicht (Validierung, Format-Konvertierung, Transformation), im ELT-Muster von Google dem Transform-Schritt nach dem Laden.'},
  st3:{p:'Beobachte: Aus dem sauberen Datenstrom entstehen nur wenige goldene Modellkandidaten – der Rest verschwindet im Zahnrad. Wie heißt diese Station?',c:N.st3,w:[N.st2,'Lastverteilung','Anforderungsanalyse',N.st6],why:'Im Training lernt das Modell Muster aus den Daten. Die Daten selbst bleiben nicht erhalten – es entsteht ein Modellartefakt, das später Vorhersagen liefert.'},
  st4:{p:'Beobachte: Nur ein Teil der Modelle passiert die Prüfschranke, die übrigen laufen zurück ins Training. Wie heißt diese Station?',c:N.st4,w:[N.st3,N.st5,N.st1,'Lieferantenaudit'],why:'Vor dem Einsatz wird das Modell auf ungesehenen Testdaten geprüft. Genauigkeit allein kann täuschen; die Abwägung zwischen falsch-positiv und falsch-negativ sowie der Schwellenwert sind Geschäftsentscheidungen.'},
@@ -786,7 +788,7 @@ function frame(now){
   barT+=dt;if(barT>.3){barT=0;updateBar();}
   requestAnimationFrame(frame);
 }
-function updateBar(){
+function updateBar(){return;
   const s=main.st,k=fab.st;
   if(state.view==='src'){$('bar').innerHTML='<span>Eingespeist (Detailansicht): <b>'+src.st.in+'</b></span><span>Rohdatenspeicher: <b>'+raw.total+'</b> (Rückstand '+raw.q.length+')</span><span>Kassensystem: <b>'+raw.ops[0]+'</b> · Warenwirtschaft/Bestellwesen: <b>'+raw.ops[1]+'</b></span><span>wartende Lieferungen: <b>'+Object.values(Q).reduce((a,b)=>a+b,0)+'</b></span>';return;}
   $('bar').innerHTML=state.view==='main'
