@@ -313,11 +313,11 @@ function refreshLabels(){
     l.hit.classList.toggle('act',hide);
   }
   for(const sc of [fab,src])if(sc.hints)sc.hints.forEach(h=>h.t.style.opacity=(state.practice&&!state.unlocked.has(h.key))?0:1);
-  const m=['st1','raw','st2','st3','st4','st5','st6'].filter(k=>state.unlocked.has(k)).length;
+  const m=['st1','ext','raw','st2','st3','st4','st5','st6'].filter(k=>state.unlocked.has(k)).length;
   const d=['ka','kb','kc'].filter(k=>state.unlocked.has(k)).length;
   const e=['da','db','dc','dd','de'].filter(k=>state.unlocked.has(k)).length;
   $('hint').textContent=state.practice
-    ?'Übungsmodus: benannt Hauptansicht '+m+'/7 · Datenaufbereitung '+d+'/3 · Datenherkunft '+e+'/5. Tippe auf eine gestrichelte Station, wähle den passenden Begriff – erst dann fließt der Strom weiter.'
+    ?'Übungsmodus: benannt Hauptansicht '+m+'/8 · Datenaufbereitung '+d+'/3 · Datenherkunft '+e+'/5. Tippe auf eine gestrichelte Station, wähle den passenden Begriff – erst dann fließt der Strom weiter.'
     :'Tipp: Mit den roten Ventilen spielst Du manuelle Lieferungen ein. „Datenherkunft aufblättern“ und „Datenaufbereitung aufblättern“ zeigen die Details.';
 }
 
@@ -351,9 +351,16 @@ const DAYS=['Mo','Di','Mi','Do','Fr','Sa','So'];
 const Q={bestand:0,lokal:0,wetter:0,intern:0,events:0};   // wartende Lieferungen (Datensätze)
 const SPEC={kasse:{col:SRC.kasse,defp:DEF.kasse},bestand:{col:SRC.bestand,defp:DEF.bestand},intern:{col:SRC.intern,defp:DEF.intern},wetter:{col:SRC.wetter,defp:DEF.wetter},lokal:{col:SRC.lokal,defp:DEF.lokal},events:{col:SRC.events,defp:DEF.events}};
 const raw={q:[],total:0,read:0,acc:0,ops:[0,0],views:[],opsViews:[[],[]]};
-const rawUpdate=()=>{for(const v of raw.views){const lv=Math.min(v.max,raw.total*.08);v.fill.setAttribute('height',lv);v.fill.setAttribute('y',v.base-lv);v.t1.textContent=raw.total+' gespeichert';v.t2.textContent='Rückstand: '+raw.q.length;}};
+const RAWORD=['kasse','bestand','intern','wetter','lokal','events'];
+const COLKEY={};for(const k of RAWORD)COLKEY[SRC[k]]=k;
+raw.by={};RAWORD.forEach(k=>raw.by[k]=0);
+const mkLayers=(parent,x,w)=>{const o={};RAWORD.forEach(k=>{o[k]=el('rect',{x,width:w,height:0,y:0,fill:SRC[k],'fill-opacity':.6},parent);});return o;};
+const rawUpdate=()=>{for(const v of raw.views){
+  const tot=RAWORD.reduce((a,k)=>a+raw.by[k],0);const sc=tot?Math.min(.15,v.max/tot):.15;let y=v.base;
+  for(const k of RAWORD){const h=raw.by[k]*sc;y-=h;v.layers[k].setAttribute('y',y);v.layers[k].setAttribute('height',h);}
+  v.t1.textContent=raw.total+' gespeichert';v.t2.textContent='Rückstand: '+raw.q.length;}};
 const opsUpdate=i=>raw.opsViews[i].forEach(t=>{t.textContent=raw.ops[i]+(i?' Meldungen':' Buchungen');});
-const rawSink=p=>{raw.q.push({col:p.col,def:p.def});raw.total++;rawUpdate();};
+const rawSink=p=>{raw.q.push({col:p.col,def:p.def});raw.total++;const k=COLKEY[p.col];if(k)raw.by[k]++;rawUpdate();};
 const opsSink=i=>()=>{raw.ops[i]++;opsUpdate(i);};
 const crossed=(prev,h,hr)=>prev<=h?(prev<hr&&h>=hr):(hr>prev||hr<=h);
 const clocks=[];
@@ -483,7 +490,7 @@ M('mon',[[1450,330],[1560,330]],12,{sink:(p,sc)=>{sc.st.pred++;}});
 M('retrain',[[1500,392],[1500,722],[1050,722],[1050,332]],7,{dash:true,cls:'ret',sink:(p)=>{if(p.kind==='alarm')retrainFx();}});
 
 // Takt: Uhr, Quellen, Rohdatenspeicher
-main.tick=(sc,dt)=>{tickSources(sc,dt,locked('st1'));updateClocks();rawRelease(sc,dt);};
+main.tick=(sc,dt)=>{tickSources(sc,dt,locked('st1')||locked('ext'));updateClocks();rawRelease(sc,dt);};
 
 // Dekor Hauptansicht
 (()=>{
@@ -515,13 +522,20 @@ main.tick=(sc,dt)=>{tickSources(sc,dt,locked('st1'));updateClocks();rawRelease(s
   el('text',{x:300,y:322,class:'tk2',fill:'#2dd4bf'},U).textContent='Kopie → Rohdaten';
   // Rohdatenspeicher
   card(main,'raw',470,280,120,100,'1b','Rohdatenspeicher',{badgeIn:true});
-  const rf=el('rect',{x:474,y:376,width:112,height:0,rx:4,fill:'#2dd4bf','fill-opacity':.28},D);
+  const rf=mkLayers(D,474,112);
   el('path',{d:'M522,296v-6a8,8 0 0 1 16,0v6',fill:'none',stroke:'#9fb3c8','stroke-width':2},U);
   el('rect',{x:518,y:296,width:24,height:16,rx:3,fill:'#9fb3c8'},U);
   el('text',{x:530,y:330,class:'tk2'},U).textContent='schreibgeschützt';
   const rt1=el('text',{x:530,y:350,class:'tk'},U);rt1.textContent='0 gespeichert';
   const rt2=el('text',{x:530,y:366,class:'tk2'},U);rt2.textContent='Rückstand: 0';
-  raw.views.push({fill:rf,t1:rt1,t2:rt2,max:70,base:376});
+  raw.views.push({layers:rf,t1:rt1,t2:rt2,max:88,base:376});
+  // Extract-Marke (Schritt 1 des ETL/ELT-Musters)
+  const gx=el('g',{class:'card','data-k':'ext'},D);
+  el('rect',{class:'card-bg',x:354,y:396,width:116,height:24,rx:12},gx);
+  const hitx=el('rect',{class:'hit',x:354,y:396,width:116,height:24,rx:12},U);
+  const tx=el('text',{x:412,y:412,class:'lbl',style:'font-size:11px'},U);
+  hitx.addEventListener('click',()=>{if(state.practice&&locked('ext'))openQuiz('ext');});
+  main.labels.push({key:'ext',t:tx,short:'Extract · Schritt 1',g:gx,hit:hitx});
   mkClock(main);
   // Station 2: Fabrik
   card(main,'st2',670,255,270,150,'2','Datenaufbereitung');
@@ -668,12 +682,12 @@ src.tick=(sc,dt)=>{tickSources(sc,dt,false);updateClocks();};
   mirrorMark(src,760,146);mirrorMark(src,760,262);
   // Rohdatenspeicher (Kurzdarstellung)
   el('rect',{x:1180,y:360,width:150,height:80,rx:10,fill:'#13202e','fill-opacity':.85,stroke:'#2dd4bf','stroke-width':1.6},D);
-  const rf2=el('rect',{x:1184,y:436,width:142,height:0,rx:4,fill:'#2dd4bf','fill-opacity':.28},D);
+  const rf2=mkLayers(D,1184,142);
   el('text',{x:1255,y:348,class:'lbl',style:'font-size:14px'},U).textContent='Rohdatenspeicher';
   const a=el('text',{x:1255,y:402,class:'tk'},U);a.textContent='0 gespeichert';
   const b=el('text',{x:1255,y:419,class:'tk2'},U);b.textContent='Rückstand: 0';
   el('text',{x:1255,y:460,class:'tk2'},U).textContent='weiter in der Hauptansicht →';
-  raw.views.push({fill:rf2,t1:a,t2:b,max:70,base:436});
+  raw.views.push({layers:rf2,t1:a,t2:b,max:70,base:436});
   mkClock(src);
 })();
 
@@ -682,6 +696,7 @@ const scenes=[main,fab,src];
 /* ============ Quiz ============ */
 const N={st1:'Datenquellen & Datenerfassung',raw:'Rohdatenspeicher (Raw Layer)',st2:'Datenaufbereitung (Cleaning & Standardisierung)',st3:'Modellierung (Training)',st4:'Modellvalidierung',st5:'Deployment (Bereitstellung)',st6:'Monitoring & Drift-Erkennung'};
 const QUIZ={
+ ext:{p:'Beobachte: Aus den Quellsystemen werden Daten herausgelesen und als Kopie auf den Weg in den Speicher geschickt – die Quellen selbst bleiben unverändert. Wie heißt dieser Schritt?',c:'Extract (Daten aus den Quellen entnehmen)',w:['Transform (Daten umformen)','Drift-Erkennung','Deployment (Bereitstellung)','Modelltraining'],why:'Extract ist der erste Schritt im ETL- wie im ELT-Muster: Rohdaten werden aus den Quellsystemen (Datenbanken, Dateien, Anwendungen, Sensoren u. a.) entnommen und in einen Speicher- oder Staging-Bereich kopiert. Ausgelöst wird er je nach Quelle zeitgesteuert (Batch), ereignisgesteuert oder fortlaufend (Streaming).'},
  st1:{p:'Beobachte: Laufende Ströme, Uploads zu festen Zeiten und Lieferungen auf Knopfdruck – und jede Meldung wird auf dem Weg gespiegelt. Wie heißt diese Station?',c:N.st1,w:[N.st3,'Anforderungsanalyse','Lastverteilung','Penetrationstest'],why:'Am Anfang jeder KI-Lieferkette steht die Herkunft der Daten. Die Quellen unterscheiden sich in Herkunft (intern/extern), Takt (laufend, termingesteuert, manuell), Menge und Zuverlässigkeit – und jede bringt eigene Qualitätsrisiken mit.'},
  raw:{p:'Beobachte: Alles, was eingeht, wird unverändert kopiert und abgelegt. Der Bestand wächst nur, gelesen wird eine Kopie. Wie heißt dieser Speicher?',c:N.raw,w:['Data Mart (Auswertungsschicht)','Operatives Kassensystem','Modellregister','Lastverteilung'],why:'Die Rohdatenschicht hält die Originale: AWS empfiehlt dafür das Originalformat und aktivierte Versionierung. Bereinigt wird erst danach in einer eigenen Stufe. So bleiben die Betriebssysteme unberührt, und bei einem Fehler in der Aufbereitung lässt sich neu rechnen.'},
  st2:{p:'Beobachte: Eine Fabrik prüft, vereinheitlicht und gleicht ab – Ausschuss und Kopien fallen heraus, der Rest läuft einheitlich weiter. Wie heißt diese Station?',c:N.st2,w:[N.st4,'Lieferantenaudit','Datenverschlüsselung',N.st5],why:'Rohdaten sind selten modelltauglich. Hier werden Fehlerhaftes aussortiert, Formate vereinheitlicht und Dubletten entfernt. Bei AWS entspricht das der Stage-Schicht (Validierung, Format-Konvertierung, Transformation), im ELT-Muster von Google dem Transform-Schritt nach dem Laden.'},
@@ -742,7 +757,7 @@ function clearAll(){
     for(const k in sc.st)sc.st[k]=0;
     for(const k in sc.tanks)sc.tanks[k].reset();
   }
-  raw.q=[];raw.total=0;raw.read=0;raw.acc=0;raw.ops=[0,0];opsUpdate(0);opsUpdate(1);rawUpdate();
+  raw.q=[];RAWORD.forEach(k=>raw.by[k]=0);raw.total=0;raw.read=0;raw.acc=0;raw.ops=[0,0];opsUpdate(0);opsUpdate(1);rawUpdate();
   CLK.h=1;CLK.day=0;for(const k in Q)Q[k]=0;updateClocks();
   for(const sc of scenes){sc.kacc=0;sc.qacc={};}
 }
