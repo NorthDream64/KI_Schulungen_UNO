@@ -98,7 +98,7 @@ text{pointer-events:none}
   <div class="ctrl">
     <button id="bPractice">Übungsmodus</button>
     <button id="bSrc">Datenherkunft aufblättern ⊕</button>
-    <button id="bView">Fabrik aufblättern ⊕</button>
+    <button id="bView">Datenaufbereitung aufblättern ⊕</button>
     <button id="bPause">Pause</button>
     <label class="sp">Tempo <input id="rSpeed" type="range" min="0.4" max="4" step="0.1" value="1"></label>
     <button id="bAlarm" title="Löst im Betrieb einen Drift-Alarm aus">Drift auslösen</button>
@@ -144,12 +144,12 @@ const NS='http://www.w3.org/2000/svg';
 const el=(tag,a,parent)=>{const e=document.createElementNS(NS,tag);if(a)for(const k in a)e.setAttribute(k,a[k]);if(parent)parent.appendChild(e);return e;};
 const rnd=(a,b)=>a+Math.random()*(b-a);
 const COL={clean:'#e0f2fe',bad:'#8a5a2b',model:'#fde047',alarm:'#ef4444',pred:'#86efac'};
-const SRC={kasse:'#38bdf8',bestand:'#a78bfa',intern:'#fb923c',wetter:'#4ade80',verkehr:'#2dd4bf',events:'#f472b6'};
+const SRC={kasse:'#38bdf8',bestand:'#a78bfa',intern:'#fb923c',wetter:'#4ade80',lokal:'#2dd4bf',events:'#f472b6'};
 const DEF={
   kasse:{dup:.06,miss:.04,fmt:.05,out:.03},
   bestand:{miss:.08,fmt:.10,dup:.04,out:.06},
   wetter:{fmt:.18,miss:.06},
-  verkehr:{fmt:.15,miss:.10,dup:.08},
+  lokal:{fmt:.15,miss:.10,dup:.08},
   events:{dup:.15,fmt:.15,miss:.08},
   intern:{dup:.10,miss:.22,fmt:.25,out:.08}
 };
@@ -312,13 +312,13 @@ function refreshLabels(){
     l.g.classList.toggle('named',state.practice&&!hide);
     l.hit.classList.toggle('act',hide);
   }
-  if(fab.hints)fab.hints.forEach(h=>h.t.style.opacity=(state.practice&&!state.unlocked.has(h.key))?0:1);
+  for(const sc of [fab,src])if(sc.hints)sc.hints.forEach(h=>h.t.style.opacity=(state.practice&&!state.unlocked.has(h.key))?0:1);
   const m=['st1','raw','st2','st3','st4','st5','st6'].filter(k=>state.unlocked.has(k)).length;
   const d=['ka','kb','kc'].filter(k=>state.unlocked.has(k)).length;
   const e=['da','db','dc','dd','de'].filter(k=>state.unlocked.has(k)).length;
   $('hint').textContent=state.practice
-    ?'Übungsmodus: benannt Hauptansicht '+m+'/7 · Fabrik '+d+'/3 · Datenherkunft '+e+'/5. Tippe auf eine gestrichelte Station, wähle den passenden Begriff – erst dann fließt der Strom weiter.'
-    :'Tipp: Mit den roten Ventilen spielst Du manuelle Lieferungen ein. „Datenherkunft aufblättern“ und „Fabrik aufblättern“ zeigen die Details.';
+    ?'Übungsmodus: benannt Hauptansicht '+m+'/7 · Datenaufbereitung '+d+'/3 · Datenherkunft '+e+'/5. Tippe auf eine gestrichelte Station, wähle den passenden Begriff – erst dann fließt der Strom weiter.'
+    :'Tipp: Mit den roten Ventilen spielst Du manuelle Lieferungen ein. „Datenherkunft aufblättern“ und „Datenaufbereitung aufblättern“ zeigen die Details.';
 }
 
 /* ============ Aufbereitungs-Logik (Haupt- und Detailansicht gemeinsam) ============
@@ -346,10 +346,10 @@ const enterReject=(p,sc)=>{p.col=COL.bad;shapeOf(p);inc(sc,'rej');};
 const enterClean=(p,sc)=>{p.col=COL.clean;shapeOf(p);};
 
 /* ============ Gemeinsame Quellen-Logik (Haupt- und Herkunfts-Detailansicht) ============ */
-const CLK={h:5,day:0};                       // Montag 05:00 Uhr; 1 Stunde = 2 s, 1 Tag = 48 s
+const CLK={h:1,day:0};                       // Montag 01:00 Uhr; 1 Stunde = 2 s, 1 Tag = 48 s
 const DAYS=['Mo','Di','Mi','Do','Fr','Sa','So'];
-const Q={bestand:0,verkehr:0,wetter:0,intern:0,events:0};   // wartende Lieferungen (Datensätze)
-const SPEC={kasse:{col:SRC.kasse,defp:DEF.kasse},bestand:{col:SRC.bestand,defp:DEF.bestand},intern:{col:SRC.intern,defp:DEF.intern},wetter:{col:SRC.wetter,defp:DEF.wetter},verkehr:{col:SRC.verkehr,defp:DEF.verkehr},events:{col:SRC.events,defp:DEF.events}};
+const Q={bestand:0,lokal:0,wetter:0,intern:0,events:0};   // wartende Lieferungen (Datensätze)
+const SPEC={kasse:{col:SRC.kasse,defp:DEF.kasse},bestand:{col:SRC.bestand,defp:DEF.bestand},intern:{col:SRC.intern,defp:DEF.intern},wetter:{col:SRC.wetter,defp:DEF.wetter},lokal:{col:SRC.lokal,defp:DEF.lokal},events:{col:SRC.events,defp:DEF.events}};
 const raw={q:[],total:0,read:0,acc:0,ops:[0,0],views:[],opsViews:[[],[]]};
 const rawUpdate=()=>{for(const v of raw.views){const lv=Math.min(v.max,raw.total*.08);v.fill.setAttribute('height',lv);v.fill.setAttribute('y',v.base-lv);v.t1.textContent=raw.total+' gespeichert';v.t2.textContent='Rückstand: '+raw.q.length;}};
 const opsUpdate=i=>raw.opsViews[i].forEach(t=>{t.textContent=raw.ops[i]+(i?' Meldungen':' Buchungen');});
@@ -364,7 +364,7 @@ function mkClock(sc){
   el('line',{x1:X(0),y1:39,x2:X(24),y2:39,stroke:'#4b6f8c','stroke-width':2},U);
   [0,6,12,18,24].forEach(h=>{el('line',{x1:X(h),y1:34,x2:X(h),y2:44,stroke:'#4b6f8c'},U);el('text',{x:X(h),y:57,class:'tk2'},U).textContent=h+'';});
   [12,18].forEach(h=>el('path',{d:'M'+(X(h)-5)+',26 l10,0 l-5,8z',fill:SRC.bestand},U));
-  el('path',{d:'M'+(X(6)-5)+',26 l10,0 l-5,8z',fill:SRC.verkehr},U);
+  el('path',{d:'M'+(X(2)-5)+',26 l10,0 l-5,8z',fill:SRC.lokal},U);el('path',{d:'M'+(X(6)-5)+',26 l10,0 l-5,8z',fill:SRC.wetter},U);
   const txt=el('text',{x:704,y:26,class:'tk tl'},U);
   el('text',{x:1102,y:22,class:'tk2',style:'text-anchor:end'},U).textContent='▼ Bestand-Upload · ▼ extern automatisch · ▬ Ladenöffnung';
   const dot=el('circle',{cx:X(CLK.h),cy:39,r:6,fill:'#fde047',stroke:'#fff','stroke-width':1.2},U);
@@ -379,9 +379,10 @@ function tickSources(sc,dt,gated){
   const prev=CLK.h;CLK.h+=dt/2;
   if(CLK.h>=24){CLK.h-=24;CLK.day=(CLK.day+1)%7;}
   const h=CLK.h;
-  // Zeitgesteuerte Lieferungen: Bestand 12:00 + 18:00, Verkehr täglich 06:00, Wetter montags 06:00
+  // Zeitgesteuerte Lieferungen: Bestand 12:00 + 18:00, Lokale Information täglich 02:00 (über Nacht), Wettervorhersage täglich 06:00
   if(crossed(prev,h,12)||crossed(prev,h,18))Q.bestand+=60;
-  if(crossed(prev,h,6)){Q.verkehr+=24;if(CLK.day===0)Q.wetter+=30;}
+  if(crossed(prev,h,2))Q.lokal+=24;
+  if(crossed(prev,h,6))Q.wetter+=20;
   if(gated)return;
   // Kasse: kontinuierlich, mit Tagesrhythmus (Ladenöffnung 8–20 Uhr)
   const open=h>=8&&h<20;
@@ -438,7 +439,7 @@ function pillGate(sc,key,x,y,w,short){
 /* ============ HAUPTANSICHT ============ */
 const main=mkScene('scMain');
 main.st={in:0,rej:0,dups:0,fix:0,leak:0,models:0,ok:0,back:0,pred:0,retrain:0};
-main.pipeFor=k=>({kasse:'KC',bestand:'BC',intern:'IM',wetter:'EA',verkehr:'EA',events:'EM'})[k];
+main.pipeFor=k=>({kasse:'KC',bestand:'BC',intern:'IM',wetter:'EA',lokal:'EA',events:'EM'})[k];
 const M=(id,pts,w,o)=>addPipe(main,Object.assign({id,pts,w},o||{}));
 // Quellen (oberste Ebene): fünf Gruppen
 M('KC',[[178,100],[350,100]],12,{next:'KCops',fork:['mirT']});
@@ -499,11 +500,11 @@ main.tick=(sc,dt)=>{tickSources(sc,dt,locked('st1'));updateClocks();rawRelease(s
   el('text',{x:375,y:26,class:'tk'},pl1).textContent='⊕ Datenherkunft aufblättern';
   pl1.addEventListener('click',()=>setView('src'));
   // fünf Quellgruppen
-  srcTank(main,8,100,170,72,SRC.kasse,'Laufende Daten','(intern)','Kasse · 10 Läden');
-  srcTank(main,8,190,170,72,SRC.bestand,'Termin-gesteuerte','Daten (intern)','Bestand · 12:00 & 18:00');
-  srcTank(main,8,280,170,72,SRC.intern,'Interne Daten','(manuell)','z. B. Aktionen, Preislisten');
-  srcTank(main,8,420,170,72,SRC.wetter,'Regelmäßige Daten','(extern) – automatisch','Wetter · Verkehr');
-  srcTank(main,8,510,170,72,SRC.events,'Externe Daten','(manuell)','z. B. Veranstaltungen');
+  srcTank(main,8,100,170,72,SRC.kasse,'Verkaufsdaten','(Kassensystem)','laufend · 10 Läden');
+  srcTank(main,8,190,170,72,SRC.bestand,'Bestandsveränderung','(2 x täglich)','10 Läden · 12:00 & 18:00');
+  srcTank(main,8,280,170,72,SRC.intern,'Interne Daten (manuell)','z. B. Schichtplanung','Lieferung per Klick');
+  srcTank(main,8,420,170,72,SRC.wetter,'Regelmäßige Daten','(extern) – automatisch','Wetter · Lokale Information');
+  srcTank(main,8,510,170,72,SRC.events,'Externe Daten (manuell)','z. B. Marktforschung u. ä.','Lieferung per Klick');
   trigger(main,main.pipes.IM,.45,'Lieferung',()=>{Q.intern+=14;});
   trigger(main,main.pipes.EM,.45,'Lieferung',()=>{Q.events+=14;});
   autoMark(main,main.pipes.EA);
@@ -539,8 +540,8 @@ main.tick=(sc,dt)=>{tickSources(sc,dt,locked('st1'));updateClocks();rawRelease(s
   el('text',{x:805,y:398,class:'tk2'},U).textContent='vereinheitlichen';
   el('text',{x:895,y:398,class:'tk2'},U).textContent='abgleichen';
   const pl=el('g',{style:'cursor:pointer'},U);
-  el('rect',{x:715,y:166,width:180,height:26,rx:13,class:'pill'},pl);
-  el('text',{x:805,y:184,class:'tk'},pl).textContent='⊕ Fabrik aufblättern';
+  el('rect',{x:685,y:166,width:240,height:26,rx:13,class:'pill'},pl);
+  el('text',{x:805,y:184,class:'tk'},pl).textContent='⊕ Datenaufbereitung aufblättern';
   pl.addEventListener('click',()=>setView('fab'));
   tank(main,'qa',690,618,140,84,'Quarantäne','#c0843f');
   tank(main,'qd',870,618,140,84,'Dubletten (verworfen)','#c0843f');
@@ -587,7 +588,7 @@ fab.sources=[{pipe:'dA',rate:5.5,col:'mix',defp:{dup:.1,out:.08,miss:.1,fmt:.2}}
 fab.hints=[];
 (()=>{
   const U=fab.L.ui,D=fab.L.deco;
-  el('text',{x:790,y:36,class:'lbl',style:'font-size:22px'},U).textContent='Fabrik – Datenaufbereitung im Detail';
+  el('text',{x:790,y:36,class:'lbl',style:'font-size:22px'},U).textContent='Datenaufbereitung im Detail';
   // Halle
   el('path',{d:'M200,236 L200,190 L290,150 L290,190 L380,150 L380,190 L470,150 L470,190 L560,150 L560,190 L650,150 L650,190 L740,150 L740,190 L830,150 L830,190 L920,150 L920,190 L1010,150 L1010,190 L1100,150 L1100,190 L1190,150 L1190,190 L1230,190 L1230,236 Z',fill:'#16273a',stroke:'#35506b','stroke-width':1.5},D);
   el('rect',{x:1170,y:104,width:22,height:70,fill:'#1d3145',stroke:'#35506b'},D);
@@ -624,15 +625,15 @@ fab.hints=[];
 
 /* ============ DETAILANSICHT: Datenherkunft ============ */
 const src=mkScene('scSrc');src.g.classList.add('off');src.st={in:0};
-src.pipeFor=k=>({kasse:'KS'+Math.floor(Math.random()*10),bestand:'BS'+Math.floor(Math.random()*10),intern:'IM',wetter:'EW',verkehr:'EV',events:'EM'})[k];
+src.pipeFor=k=>({kasse:'KS'+Math.floor(Math.random()*10),bestand:'BS'+Math.floor(Math.random()*10),intern:'IM',wetter:'EW',lokal:'EV',events:'EM'})[k];
 const SD=(id,pts,w,o)=>addPipe(src,Object.assign({id,pts,w},o||{}));
 for(let i=0;i<10;i++){const x=60+i*46;SD('KS'+i,[[x,110],[x,146]],3,{next:'KC'});SD('BS'+i,[[x,232],[x,262]],3,{next:'BC'});}
 SD('KC',[[30,146],[760,146]],8,{next:'KCops',fork:['mirD1'],gate:'da'});
 SD('BC',[[30,262],[760,262]],10,{next:'BCops',fork:['mirD1'],gate:'db'});
-SD('IM',[[200,346],[760,346]],8,{next:'mirD1',gate:'dc'});
-SD('EW',[[200,440],[760,440]],8,{next:'mirD2',gate:'dd'});
-SD('EV',[[200,496],[760,496]],8,{next:'mirD2',gate:'dd'});
-SD('EM',[[200,596],[760,596]],8,{next:'mirD2',gate:'de'});
+SD('IM',[[236,346],[760,346]],8,{next:'mirD1',gate:'dc'});
+SD('EW',[[236,440],[760,440]],8,{next:'mirD2',gate:'dd'});
+SD('EV',[[236,500],[760,500]],8,{next:'mirD2',gate:'dd'});
+SD('EM',[[236,596],[760,596]],8,{next:'mirD2',gate:'de'});
 SD('KCops',[[760,146],[880,146]],8,{sink:opsSink(0)});
 SD('BCops',[[760,262],[880,262]],10,{sink:opsSink(1)});
 SD('mirD1',[[760,146],[760,400]],12,{next:'rawInD'});
@@ -642,22 +643,23 @@ src.tick=(sc,dt)=>{tickSources(sc,dt,false);updateClocks();};
 (()=>{
   const U=src.L.ui,D=src.L.deco;
   el('text',{x:24,y:32,class:'lbl',style:'text-anchor:start;font-size:20px'},U).textContent='Datenherkunft im Detail';
-  pillGate(src,'da',24,50,350,'Laufende Daten (intern)');
-  pillGate(src,'db',24,172,350,'Termin-gesteuerte Daten (intern)');
+  pillGate(src,'da',24,50,350,'Verkaufsdaten (Kassensystem)');
+  pillGate(src,'db',24,172,350,'Bestandsveränderung (2 x täglich)');
   pillGate(src,'dc',24,290,350,'Interne Daten (manuell)');
   pillGate(src,'dd',24,388,350,'Regelmäßige Daten (extern) – automatisch');
   pillGate(src,'de',24,540,350,'Externe Daten (manuell)');
-  const cap=(y,t,x=390)=>el('text',{x,y,class:'tk2 tl'},U).textContent=t;
-  cap(68,'Verkaufsdaten (Kasse) · 10 Läden · kontinuierlich');
-  cap(190,'Bestandsdaten · 10 Läden · um 12:00 und 18:00 Uhr gebündelt');
-  cap(308,'z. B. Aktionen & Preislisten (Excel)',520);
-  cap(406,'Wetter (montags) · Verkehr (täglich 06:00)',520);
-  cap(558,'z. B. Veranstaltungen (Datei/Meldung)',520);
+  src.hints=[];
+  const cap=(y,t,x,key)=>{const e=el('text',{x:x||390,y,class:'tk2 tl hinttxt'},U);e.textContent=t;src.hints.push({key,t:e});};
+  cap(68,'Kassenbewegungen aus 10 Läden · laufend',390,'da');
+  cap(190,'Bestandsmeldungen aus 10 Läden · gebündelt um 12:00 und 18:00 Uhr',390,'db');
+  cap(308,'z. B. Schichtplanung · nach Klick',520,'dc');
+  cap(406,'Wetter 06:00 · Lokale Info. 02:00',470,'dd');
+  cap(558,'z. B. Marktforschung · nach Klick',520,'de');
   for(let i=0;i<10;i++){house(src,60+i*46,100,SRC.kasse);house(src,60+i*46,222,SRC.bestand);}
-  srcTank(src,20,346,180,44,SRC.intern,'Zentrale / Fachabteilung','Excel-Listen');
-  srcTank(src,20,440,180,44,SRC.wetter,'Wetterdienst','wöchentlich');
-  srcTank(src,20,496,180,44,SRC.verkehr,'Verkehrsdaten · Baustellen','täglich');
-  srcTank(src,20,596,180,44,SRC.events,'Veranstaltungskalender','wöchentlich');
+  srcTank(src,6,346,230,44,SRC.intern,'Schichtplanung','manuell eingespielt');
+  srcTank(src,6,440,230,44,SRC.wetter,'Wettervorhersage (täglich)','automatisch');
+  srcTank(src,6,500,230,58,SRC.lokal,'Lokale Information','(Baustellen, Veranstaltungen u. ä.)','über Nacht');
+  srcTank(src,6,596,230,44,SRC.events,'Externe Daten','(Marktforschung u. ä.)');
   trigger(src,src.pipes.IM,.4,'Lieferung',()=>{Q.intern+=14;});
   trigger(src,src.pipes.EM,.4,'Lieferung',()=>{Q.events+=14;});
   autoMark(src,src.pipes.EW);autoMark(src,src.pipes.EV);
@@ -687,11 +689,11 @@ const QUIZ={
  st4:{p:'Beobachte: Nur ein Teil der Modelle passiert die Prüfschranke, die übrigen laufen zurück ins Training. Wie heißt diese Station?',c:N.st4,w:[N.st3,N.st5,N.st1,'Lieferantenaudit'],why:'Vor dem Einsatz wird das Modell auf ungesehenen Testdaten geprüft. Genauigkeit allein kann täuschen; die Abwägung zwischen falsch-positiv und falsch-negativ sowie der Schwellenwert sind Geschäftsentscheidungen.'},
  st5:{p:'Beobachte: Ein freigegebenes Modell bedient plötzlich viele Anfragen – grüne Prognosen strömen heraus. Wie heißt diese Station?',c:N.st5,w:[N.st4,N.st2,N.st6,'Penetrationstest'],why:'Beim Deployment geht das freigegebene Modell in den Betrieb und beantwortet laufend Anfragen. Es ist der Anfang des Modell-Lebens im Betrieb, nicht sein Ende.'},
  st6:{p:'Beobachte: Ein Drift-Alarm läuft über die gestrichelte Leitung zurück und startet das Nachtraining. Wie heißt diese Station?',c:N.st6,w:[N.st3,N.st5,N.st1,'Datenverschlüsselung'],why:'Im Betrieb entfernt sich die Realität von den Trainingsdaten – Drift ist der Normalfall. Monitoring erkennt das und stößt Nachtraining an (Continuous Training).'},
- da:{p:'Beobachte: Aus den Läden strömen rund um die Uhr einzelne Kassenbewegungen – mit Tagesrhythmus, aber ohne feste Termine. Welche Gruppe ist das?',c:'Laufende Daten (intern)',w:['Termin-gesteuerte Daten (intern)','Regelmäßige Daten (extern) – automatisch','Interne Daten (manuell)','Archivdaten'],why:'Ereignisse, die laufend entstehen (Kassenbewegungen), werden einzeln als Strom übertragen (Streaming). Auf Google Cloud schreiben z. B. Pub/Sub-Abonnements eintreffende Nachrichten sofort in BigQuery. Das lohnt, wenn Aktualität wichtig ist.'},
- db:{p:'Beobachte: Nur um 12:00 und 18:00 Uhr schicken alle Läden gebündelt ihre Bestände. Welche Gruppe ist das?',c:'Termin-gesteuerte Daten (intern)',w:['Laufende Daten (intern)','Interne Daten (manuell)','Regelmäßige Daten (extern) – automatisch','Archivdaten'],why:'Gebündelte Übertragung zu festen Zeiten (Batch): planbar und ressourcenschonend, wenn Aktualität im Stundenbereich genügt, etwa für das Bestellwesen. Google nennt dafür z. B. den BigQuery Data Transfer Service als automatisierten Bulk-Load.'},
- dc:{p:'Beobachte: Eine Fachabteilung liefert Listen (etwa Aktionen oder Preise) – erst nach einem Klick fließen sie. Welche Gruppe ist das?',c:'Interne Daten (manuell)',w:['Externe Daten (manuell)','Termin-gesteuerte Daten (intern)','Laufende Daten (intern)','Archivdaten'],why:'Manuell eingespielte interne Listen sind unregelmäßig und fehleranfällig (Formate, Tippfehler, vergessene Lieferung). Hier lohnt es sich, Zuständigkeit, Rhythmus und eine Prüfung vor dem Einspielen festzulegen.'},
- dd:{p:'Beobachte: Wetter und Verkehr treffen zu festen Zeiten von allein ein – ohne dass jemand etwas anstößt. Welche Gruppe ist das?',c:'Regelmäßige Daten (extern) – automatisch',w:['Externe Daten (manuell)','Laufende Daten (intern)','Interne Daten (manuell)','Archivdaten'],why:'Externe Lieferungen nach festem Rhythmus (täglich, wöchentlich) per Schnittstelle sind planbar und lassen sich überwachen – hängen aber von der Verfügbarkeit und Qualität des Partners ab.'},
- de:{p:'Beobachte: Veranstaltungsdaten von außen kommen erst, wenn jemand sie per Klick einspielt. Welche Gruppe ist das?',c:'Externe Daten (manuell)',w:['Interne Daten (manuell)','Regelmäßige Daten (extern) – automatisch','Termin-gesteuerte Daten (intern)','Datenverschlüsselung'],why:'Externe Daten ohne feste Schnittstelle werden von Hand beschafft und eingespielt (z. B. Datei oder Meldung eines Veranstalters). Das ist fehleranfällig und braucht klare Verantwortung sowie eine Eingangsprüfung.'},
+ da:{p:'Beobachte: Aus den Läden strömen einzelne Kassenbewegungen – mit Tagesrhythmus, aber ohne feste Termine. Welche Quelle ist das?',c:'Verkaufsdaten (Kassensystem)',w:['Bestandsveränderung (2 x täglich)','Regelmäßige Daten (extern) – automatisch','Interne Daten (manuell)','Archivdaten'],why:'Ereignisse, die laufend entstehen (Kassenbewegungen), werden einzeln als Strom übertragen (Streaming). Auf Google Cloud schreiben z. B. Pub/Sub-Abonnements eintreffende Nachrichten sofort in BigQuery. Das lohnt, wenn Aktualität wichtig ist.'},
+ db:{p:'Beobachte: Nur um 12:00 und 18:00 Uhr schicken alle Läden gebündelt ihre Bestandsveränderungen. Welche Quelle ist das?',c:'Bestandsveränderung (2 x täglich)',w:['Verkaufsdaten (Kassensystem)','Interne Daten (manuell)','Regelmäßige Daten (extern) – automatisch','Archivdaten'],why:'Gebündelte Übertragung zu festen Zeiten (Batch): planbar und ressourcenschonend, wenn Aktualität im Stundenbereich genügt, etwa für das Bestellwesen. Google nennt dafür z. B. den BigQuery Data Transfer Service als automatisierten Bulk-Load.'},
+ dc:{p:'Beobachte: Eine Fachabteilung liefert Listen (etwa die Schichtplanung) – erst nach einem Klick fließen sie. Welche Quelle ist das?',c:'Interne Daten (manuell)',w:['Externe Daten (manuell)','Bestandsveränderung (2 x täglich)','Verkaufsdaten (Kassensystem)','Archivdaten'],why:'Manuell eingespielte interne Listen sind unregelmäßig und fehleranfällig (Formate, Tippfehler, vergessene Lieferung). Hier lohnt es sich, Zuständigkeit, Rhythmus und eine Prüfung vor dem Einspielen festzulegen.'},
+ dd:{p:'Beobachte: Wettervorhersage und lokale Informationen treffen täglich zu festen Zeiten von allein ein – ohne dass jemand etwas anstößt. Welche Quelle ist das?',c:'Regelmäßige Daten (extern) – automatisch',w:['Externe Daten (manuell)','Verkaufsdaten (Kassensystem)','Interne Daten (manuell)','Archivdaten'],why:'Externe Lieferungen nach festem Rhythmus (hier täglich, teils über Nacht) per Schnittstelle sind planbar und lassen sich überwachen – hängen aber von der Verfügbarkeit und Qualität des Partners ab.'},
+ de:{p:'Beobachte: Externe Daten (etwa Marktforschung) kommen erst, wenn jemand sie per Klick einspielt. Welche Quelle ist das?',c:'Externe Daten (manuell)',w:['Interne Daten (manuell)','Regelmäßige Daten (extern) – automatisch','Bestandsveränderung (2 x täglich)','Datenverschlüsselung'],why:'Externe Daten ohne feste Schnittstelle werden von Hand beschafft und eingespielt (z. B. eine Marktforschungsstudie als Datei). Das ist fehleranfällig und braucht klare Verantwortung sowie eine Eingangsprüfung.'},
  ka:{p:'Beobachte: Riesige Werte und hohle Ringe werden vom Portal erfasst und fallen aus der Linie. Wie heißt dieser Schritt?',c:'Eingangsprüfung: Fehlerhaftes aussortieren',w:['Formate standardisieren','Dubletten entfernen','Datenverschlüsselung','Lastverteilung'],why:'Unplausible (z. B. negativer Bestand) oder unvollständige Datensätze werden aussortiert – besser in Quarantäne abgelegt als stillschweigend gelöscht, damit sich die Ursache an der Quelle beheben lässt. Kein Filter ist perfekt: einzelne Fehler rutschen durch.'},
  kb:{p:'Beobachte: Eckige Elemente werden unter der Presse rund – alles hat danach dasselbe Format. Wie heißt dieser Schritt?',c:'Standardisierung: Formate vereinheitlichen',w:['Fehlerhaftes aussortieren','Dubletten entfernen','Hyperparameter festlegen','Penetrationstest'],why:'Einheitliche Formate, Einheiten und Schreibweisen (z. B. °C statt °F, ein Datumsformat). Die Format-Konvertierung nennt AWS als Aufgabe der Stage-Schicht. Sie gehört zur Transformation – in der Praxis laufen Bereinigen und Standardisieren meist in derselben Stufe.'},
  kc:{p:'Beobachte: Aus zwei Kreisen wird einer – die Kopie fällt heraus. Wie heißt dieser Schritt?',c:'Deduplizierung: Dubletten entfernen',w:['Standardisierung: Formate vereinheitlichen','Modelltraining','Drift-Erkennung','Lastverteilung'],why:'Mehrfach gemeldete Datensätze (z. B. doppelt gebuchte Bons oder mehrfach gemeldete Veranstaltungen) werden auf einen reduziert. Das gelingt zuverlässiger nach der Standardisierung, weil gleiche Dinge dann auch gleich geschrieben sind.'}
@@ -727,7 +729,7 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')closeQ();});
 function setView(v){
   state.view=v;
   main.g.classList.toggle('off',v!=='main');fab.g.classList.toggle('off',v!=='fab');src.g.classList.toggle('off',v!=='src');
-  $('bView').textContent=v==='fab'?'← Hauptansicht':'Fabrik aufblättern ⊕';
+  $('bView').textContent=v==='fab'?'← Hauptansicht':'Datenaufbereitung aufblättern ⊕';
   $('bSrc').textContent=v==='src'?'← Hauptansicht':'Datenherkunft aufblättern ⊕';
 }
 $('bView').onclick=()=>setView(state.view==='fab'?'main':'fab');
@@ -741,7 +743,7 @@ function clearAll(){
     for(const k in sc.tanks)sc.tanks[k].reset();
   }
   raw.q=[];raw.total=0;raw.read=0;raw.acc=0;raw.ops=[0,0];opsUpdate(0);opsUpdate(1);rawUpdate();
-  CLK.h=5;CLK.day=0;for(const k in Q)Q[k]=0;updateClocks();
+  CLK.h=1;CLK.day=0;for(const k in Q)Q[k]=0;updateClocks();
   for(const sc of scenes){sc.kacc=0;sc.qacc={};}
 }
 $('bPractice').onclick=()=>{
