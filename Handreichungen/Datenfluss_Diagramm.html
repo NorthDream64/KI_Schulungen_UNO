@@ -316,11 +316,11 @@ function refreshLabels(){
     l.hit.classList.toggle('act',hide);
   }
   for(const sc of [fab,src,main])if(sc.hints)sc.hints.forEach(h=>h.t.style.opacity=(state.practice&&!state.unlocked.has(h.key))?0:1);
-  const m=['st1','ext','sens','raw','st2','st3','st4','st5','st6'].filter(k=>state.unlocked.has(k)).length;
+  const m=['st1','ext','sens','anon','raw','st2','st3','st4','st5','st6'].filter(k=>state.unlocked.has(k)).length;
   const d=['ka','kb','kc'].filter(k=>state.unlocked.has(k)).length;
   const e=['da','db','dz','dc','dd','de'].filter(k=>state.unlocked.has(k)).length;
   $('hint').textContent=state.practice
-    ?'Übungsmodus: benannt Hauptansicht '+m+'/9 · Transform '+d+'/3 · Datenherkunft '+e+'/6. Tippe auf eine gestrichelte Station, wähle den passenden Begriff – erst dann fließt der Strom weiter.'
+    ?'Übungsmodus: benannt Hauptansicht '+m+'/10 · Transform '+d+'/3 · Datenherkunft '+e+'/6. Tippe auf eine gestrichelte Station, wähle den passenden Begriff – erst dann fließt der Strom weiter.'
     :'Tipp: Mit den roten Ventilen spielst Du manuelle Lieferungen ein. „Datenherkunft (Detail)“ und „Transform (Detail)“ in der Kopfzeile zeigen die Details.';
 }
 
@@ -353,7 +353,7 @@ const CLK={h:1,day:0};                       // Montag 01:00 Uhr; 1 Stunde = 2 s
 const DAYS=['Mo','Di','Mi','Do','Fr','Sa','So'];
 const Q={bestand:0,lokal:0,wetter:0,intern:0,events:0};   // wartende Lieferungen (Datensätze)
 const SPEC={kasse:{col:SRC.kasse,defp:DEF.kasse},bestand:{col:SRC.bestand,defp:DEF.bestand},intern:{col:SRC.intern,defp:DEF.intern},wetter:{col:SRC.wetter,defp:DEF.wetter},lokal:{col:SRC.lokal,defp:DEF.lokal},events:{col:SRC.events,defp:DEF.events},zeit:{col:SRC.zeit,defp:DEF.zeit}};
-const raw={q:[],total:0,read:0,acc:0,ops:[0,0],views:[],opsViews:[[],[]]};
+const raw={q:[],total:0,read:0,acc:0,ops:[0,0,0],views:[],opsViews:[[],[],[]]};
 const RAWORD=['kasse','bestand','zeit','intern','wetter','lokal','events'];
 const COLKEY={};for(const k of RAWORD)COLKEY[SRC[k]]=k;
 raw.by={};RAWORD.forEach(k=>raw.by[k]=0);
@@ -362,7 +362,7 @@ const rawUpdate=()=>{for(const v of raw.views){
   const tot=RAWORD.reduce((a,k)=>a+raw.by[k],0);const sc=tot?Math.min(.15,v.max/tot):.15;let y=v.base;
   for(const k of RAWORD){const h=raw.by[k]*sc;y-=h;v.layers[k].setAttribute('y',y);v.layers[k].setAttribute('height',h);}
   v.t1.textContent=raw.total+' gespeichert';v.t2.textContent='Rückstand: '+raw.q.length;}};
-const opsUpdate=i=>raw.opsViews[i].forEach(t=>{t.textContent=raw.ops[i]+(i?' Meldungen':' Buchungen');});
+const opsUpdate=i=>raw.opsViews[i].forEach(t=>{t.textContent=raw.ops[i]+[' Buchungen',' Meldungen',' Stempelungen'][i];});
 const rawSink=p=>{raw.q.push({col:p.col,def:p.def,sens:p.sens});raw.total++;const k=COLKEY[p.col];if(k)raw.by[k]++;rawUpdate();};
 const opsSink=i=>()=>{raw.ops[i]++;opsUpdate(i);};
 const crossed=(prev,h,hr)=>prev<=h?(prev<hr&&h>=hr):(hr>prev||hr<=h);
@@ -429,7 +429,7 @@ function srcTank(sc,x,y,w,h,col,l1,l2,l3){
 function opsBox(sc,x,y,w,title,idx){
   el('rect',{x,y:y-24,width:w,height:48,rx:8,fill:'#0f1a26',stroke:'#6b7f93','stroke-width':1.5},sc.L.deco);
   el('text',{x:x+w/2,y:y-4,class:'tk'},sc.L.ui).textContent=title;
-  const t=el('text',{x:x+w/2,y:y+14,class:'tk2'},sc.L.ui);t.textContent=raw.ops[idx]+(idx?' Meldungen':' Buchungen');raw.opsViews[idx].push(t);
+  const t=el('text',{x:x+w/2,y:y+14,class:'tk2'},sc.L.ui);t.textContent=raw.ops[idx]+[' Buchungen',' Meldungen',' Stempelungen'][idx];raw.opsViews[idx].push(t);
 }
 function mirrorMark(sc,x,y){
   el('circle',{cx:x,cy:y,r:10,fill:'#0f2a3a',stroke:'#2dd4bf','stroke-width':1.8},sc.L.ui);el('circle',{cx:x,cy:y,r:3.5,fill:'#2dd4bf'},sc.L.ui);
@@ -454,18 +454,26 @@ main.st={in:0,rej:0,dups:0,fix:0,leak:0,models:0,ok:0,back:0,pred:0,retrain:0};
 main.pipeFor=k=>({kasse:'KC',bestand:'BC',zeit:'AZ',intern:'IM',wetter:'EA',lokal:'EA',events:'EM'})[k];
 const M=(id,pts,w,o)=>addPipe(main,Object.assign({id,pts,w},o||{}));
 // Quellen (oberste Ebene): fünf Gruppen
+const markSens=p=>{if(p.col===SRC.intern){p.sens=true;shapeOf(p);}};
+const anonFilter=(p,sc,pi)=>{if(Math.random()<.6){const q=pos(pi,p.s,0);puff(sc,q[0],q[1],SRC.zeit);return false;}};   // Zusammenfassung: weniger Datensätze, kein Personenbezug
 M('KC',[[178,100],[350,100]],12,{next:'KCops',fork:['mirT']});
 M('BC',[[178,190],[350,190]],14,{next:'BCops',fork:['mirT']});
-M('AZ',[[178,280],[350,280]],8,{next:'mirT'});
-M('IM',[[178,370],[350,370]],8,{next:'mirBot'});
-M('EA',[[178,460],[350,460]],8,{next:'mirBot'});
-M('EM',[[178,550],[350,550]],8,{next:'mirBot'});
+M('IM',[[178,280],[350,280]],8,{next:'mirT'});
+M('EA',[[178,420],[350,420]],8,{next:'mirBot'});
+M('EM',[[178,510],[350,510]],8,{next:'mirBot'});
 M('KCops',[[350,100],[420,100]],12,{sink:opsSink(0)});
 M('BCops',[[350,190],[420,190]],14,{sink:opsSink(1)});
 // Spiegel -> Rohdatenspeicher
 M('mirT',[[350,100],[350,330]],12,{next:'rawIn'});
-M('mirBot',[[350,580],[350,330]],12,{next:'rawIn'});
-const markSens=p=>{if(p.col===SRC.intern||p.col===SRC.zeit){p.sens=true;shapeOf(p);}};
+M('mirBot',[[350,625],[350,330]],12,{next:'rawIn'});
+M('AZ',[[178,625],[262,625]],8,{next:'AZanon',fork:['AZpay'],gate:'anon'});
+M('AZanon',[[262,625],[336,625]],8,{next:'AZout',enter:anonFilter});
+M('AZout',[[336,625],[350,625]],8,{next:'mirBot'});
+M('AZpay',[[262,625],[262,715],[440,715]],8,{sink:opsSink(2)});
+function funnelBox(g,cx,cy){
+  el('rect',{x:cx-27,y:cy-34,width:54,height:68,rx:9,fill:'#0f1a26','fill-opacity':.55,stroke:'#f8fafc','stroke-width':1.6,'stroke-dasharray':'5 4'},g);
+  el('path',{d:'M'+(cx-13)+','+(cy-18)+'h26l-10,15v17l-6,-4v-13z',fill:'none',stroke:'#f8fafc','stroke-width':1.8,'stroke-linejoin':'round'},g);
+}
 M('rawIn',[[350,330],[386,330]],18,{next:'rawM',gate:'sens'});
 M('rawM',[[386,330],[434,330]],18,{next:'rawOut',enter:markSens});
 M('rawOut',[[434,330],[470,330]],18,{sink:rawSink});
@@ -514,10 +522,24 @@ main.tick=(sc,dt)=>{tickSources(sc,dt,locked('st1')||locked('ext'));updateClocks
   // fünf Quellgruppen
   srcTank(main,8,100,170,72,SRC.kasse,'Verkaufsdaten','(Kassensystem)','laufend · 10 Läden');
   srcTank(main,8,190,170,72,SRC.bestand,'Bestandsveränderung','(2 x täglich)','10 Läden · 12:00 & 18:00');
-  srcTank(main,8,280,170,72,SRC.zeit,'Registrierte','Arbeitszeiten (Stechuhr)','laufend · inkl. Pausen');
-  srcTank(main,8,370,170,72,SRC.intern,'Interne Daten (manuell)','z. B. Schichtplanung','Lieferung per Klick');
-  srcTank(main,8,460,170,72,SRC.wetter,'Regelmäßige Daten','(extern) – automatisch','Wetter · Lokale Information');
-  srcTank(main,8,550,170,72,SRC.events,'Externe Daten (manuell)','z. B. Marktforschung u. ä.','Lieferung per Klick');
+  srcTank(main,8,280,170,72,SRC.intern,'Interne Daten (manuell)','z. B. Schichtplanung','Lieferung per Klick');
+  srcTank(main,8,420,170,72,SRC.wetter,'Regelmäßige Daten','(extern) – automatisch','Wetter · Lokale Information');
+  srcTank(main,8,510,170,72,SRC.events,'Externe Daten (manuell)','z. B. Marktforschung u. ä.','Lieferung per Klick');
+  srcTank(main,8,625,170,72,SRC.zeit,'Registrierte','Arbeitszeiten (Stechuhr)','laufend · inkl. Pausen');
+  // Anonymisierung am Ende der Leitung "Registrierte Arbeitszeiten": offener Teil -> Lohnbuchhaltung, anonymer Teil -> Modell
+  funnelBox(D,299,625);
+  mirrorMark(main,262,625);
+  el('line',{x1:299,y1:591,x2:299,y2:584,stroke:'#f8fafc','stroke-width':1.2,'stroke-dasharray':'3 3',opacity:.6},D);
+  const ga=el('g',{class:'card','data-k':'anon'},D);
+  el('rect',{class:'card-bg',x:186,y:556,width:156,height:28,rx:14},ga);
+  const hita=el('rect',{class:'hit',x:186,y:556,width:156,height:28,rx:12},U);
+  const bga=el('g',null,U);
+  el('circle',{class:'badge',cx:203,cy:570,r:11},bga);el('text',{x:203,y:574,class:'badge-t'},bga).textContent='2';
+  const tan=el('text',{x:277,y:575,class:'lbl',style:'font-size:12px'},U);
+  hita.addEventListener('click',()=>{if(state.practice&&locked('anon'))openQuiz('anon');});
+  main.labels.push({key:'anon',t:tan,short:'Anonymisierung',g:ga,hit:hita});
+  opsBox(main,440,715,200,'Lohnbuchhaltung',2);
+  el('rect',{x:430,y:681,width:220,height:68,rx:12,fill:'none',stroke:'#8196ab','stroke-width':1.6,'stroke-dasharray':'7 5'},D);
   trigger(main,main.pipes.IM,.45,'Lieferung',()=>{Q.intern+=14;});
   trigger(main,main.pipes.EM,.45,'Lieferung',()=>{Q.events+=14;});
   autoMark(main,main.pipes.EA);
@@ -536,15 +558,15 @@ main.tick=(sc,dt)=>{tickSources(sc,dt,locked('st1')||locked('ext'));updateClocks
   raw.views.push({layers:rf,t1:rt1,t2:rt2,max:88,base:376});
   // Extract (1): unterhalb der Sammelleitung
   const gx=el('g',{class:'card','data-k':'ext'},D);
-  el('rect',{class:'card-bg',x:243,y:594,width:150,height:28,rx:14},gx);
-  const hitx=el('rect',{class:'hit',x:243,y:594,width:150,height:28,rx:12},U);
+  el('rect',{class:'card-bg',x:278,y:666,width:144,height:28,rx:14},gx);
+  const hitx=el('rect',{class:'hit',x:278,y:666,width:144,height:28,rx:12},U);
   const bg=el('g',null,U);
-  el('circle',{class:'badge',cx:260,cy:608,r:11},bg);
-  el('text',{x:260,y:612,class:'badge-t'},bg).textContent='1';
-  const tx=el('text',{x:332,y:613,class:'lbl',style:'font-size:12px'},U);
+  el('circle',{class:'badge',cx:294,cy:680,r:11},bg);
+  el('text',{x:294,y:684,class:'badge-t'},bg).textContent='1';
+  const tx=el('text',{x:362,y:685,class:'lbl',style:'font-size:12px'},U);
   hitx.addEventListener('click',()=>{if(state.practice&&locked('ext'))openQuiz('ext');});
   main.labels.push({key:'ext',t:tx,short:'Extract',g:gx,hit:hitx});
-  // Markierung sensibler Daten (2) – Landing-Zone-Muster: erst markieren/maskieren, dann in den Raw Layer
+  // Maskierung sensibler Daten (2) – Landing-Zone-Muster: erst markieren/maskieren, dann in den Raw Layer
   const SH=(g,cx,cy)=>{el('rect',{x:cx-24,y:cy-34,width:48,height:68,rx:9,fill:'#0f1a26','fill-opacity':.55,stroke:'#f8fafc','stroke-width':1.6,'stroke-dasharray':'5 4'},g);
     el('path',{d:'M'+cx+','+(cy-24)+'l13,5v9c0,9-6,15-13,18c-7-3-13-9-13-18v-9z',fill:'none',stroke:'#f8fafc','stroke-width':1.8},g);
     el('circle',{cx,cy:cy-6,r:3.2,fill:'#f8fafc'},g);el('path',{d:'M'+(cx-5.5)+','+(cy+9)+'a5.5,5.5 0 0 1 11,0z',fill:'#f8fafc'},g);};
@@ -557,7 +579,7 @@ main.tick=(sc,dt)=>{tickSources(sc,dt,locked('st1')||locked('ext'));updateClocks
   el('circle',{class:'badge',cx:380,cy:414,r:11},bgs);el('text',{x:380,y:418,class:'badge-t'},bgs).textContent='2';
   const tsn=el('text',{x:488,y:419,class:'lbl',style:'font-size:12px'},U);
   hits.addEventListener('click',()=>{if(state.practice&&locked('sens'))openQuiz('sens');});
-  main.labels.push({key:'sens',t:tsn,short:'Markierung sensibler Daten',g:gs,hit:hits});
+  main.labels.push({key:'sens',t:tsn,short:'Maskierung sensibler Daten',g:gs,hit:hits});
   main.hints=[];
   const cs=el('text',{x:476,y:446,class:'tk2 hinttxt'},U);cs.textContent='z. B. Beschäftigten- und Lieferantendaten';main.hints.push({key:'sens',t:cs});
   // außerhalb der Betrachtung
@@ -649,7 +671,7 @@ fab.hints=[];
   ex.forEach(e=>{const t=el('text',{x:e[2],y:474,class:'sub hinttxt'},U);
     e[1].forEach((ln,i)=>el('tspan',{x:e[2],dy:i?16:0},t).textContent=ln);
     fab.hints.push({key:e[0],t});});
-  el('text',{x:90,y:296,class:'sub'},U).textContent='Rohdaten (Kopie)';
+  el('text',{x:90,y:296,class:'sub'},U).textContent='Gespiegelte Rohdaten';
   el('text',{x:1400,y:296,class:'sub'},U).textContent='aufbereitet → zum Modell';
   tank(fab,'ta',390,610,160,84,'Quarantäne','#c0843f');
   tank(fab,'tc',1080,610,160,84,'Dubletten (verworfen)','#c0843f');
@@ -666,15 +688,17 @@ const SD=(id,pts,w,o)=>addPipe(src,Object.assign({id,pts,w},o||{}));
 for(let i=0;i<10;i++){const x=60+i*46;SD('KS'+i,[[x,110],[x,146]],3,{next:'KC'});SD('BS'+i,[[x,232],[x,262]],3,{next:'BC'});}
 SD('KC',[[30,146],[760,146]],8,{next:'KCops',fork:['mirD1'],gate:'da'});
 SD('BC',[[30,262],[760,262]],10,{next:'BCops',fork:['mirD1'],gate:'db'});
-SD('AZ',[[236,346],[760,346]],8,{next:'mirD1',gate:'dz'});
-SD('IM',[[236,436],[760,436]],8,{next:'mirD2',gate:'dc'});
-SD('EW',[[236,530],[760,530]],8,{next:'mirD2',gate:'dd'});
-SD('EV',[[236,590],[760,590]],8,{next:'mirD2',gate:'dd'});
-SD('EM',[[236,686],[760,686]],8,{next:'mirD2',gate:'de'});
+SD('IM',[[236,346],[760,346]],8,{next:'mirD1',gate:'dc'});
+SD('EW',[[236,440],[760,440]],8,{next:'mirD2',gate:'dd'});
+SD('EV',[[236,500],[760,500]],8,{next:'mirD2',gate:'dd'});
+SD('EM',[[236,596],[760,596]],8,{next:'mirD2',gate:'de'});
+SD('AZ',[[236,696],[520,696]],8,{next:'AZanonD',fork:['AZpayD'],gate:'dz'});
+SD('AZanonD',[[520,696],[760,696]],8,{next:'mirD2',enter:anonFilter});
+SD('AZpayD',[[520,696],[520,728],[880,728]],8,{sink:opsSink(2)});
 SD('KCops',[[760,146],[880,146]],8,{sink:opsSink(0)});
 SD('BCops',[[760,262],[880,262]],10,{sink:opsSink(1)});
 SD('mirD1',[[760,146],[760,400]],12,{next:'rawInD'});
-SD('mirD2',[[760,710],[760,400]],12,{next:'rawInD'});
+SD('mirD2',[[760,696],[760,400]],12,{next:'rawInD'});
 SD('rawInD',[[760,400],[940,400]],18,{next:'rawMD'});
 SD('rawMD',[[940,400],[1000,400]],18,{next:'rawOutD',enter:markSens});
 SD('rawOutD',[[1000,400],[1180,400]],18,{sink:rawSink});
@@ -684,36 +708,40 @@ src.tick=(sc,dt)=>{tickSources(sc,dt,false);updateClocks();};
   el('text',{x:24,y:32,class:'lbl',style:'text-anchor:start;font-size:20px'},U).textContent='Datenherkunft im Detail';
   pillGate(src,'da',24,50,350,'Verkaufsdaten (Kassensystem)');
   pillGate(src,'db',24,172,350,'Bestandsveränderung (2 x täglich)');
-  pillGate(src,'dz',24,290,350,'Registrierte Arbeitszeiten (Stechuhr)');
-  pillGate(src,'dc',24,380,350,'Interne Daten (manuell)');
-  pillGate(src,'dd',24,478,350,'Regelmäßige Daten (extern) – automatisch');
-  pillGate(src,'de',24,630,350,'Externe Daten (manuell)');
+  pillGate(src,'dc',24,290,350,'Interne Daten (manuell)');
+  pillGate(src,'dd',24,388,350,'Regelmäßige Daten (extern) – automatisch');
+  pillGate(src,'de',24,540,350,'Externe Daten (manuell)');
+  pillGate(src,'dz',24,634,350,'Registrierte Arbeitszeiten (Stechuhr)');
   src.hints=[];
   const cap=(y,t,x,key)=>{const e=el('text',{x:x||390,y,class:'tk2 tl hinttxt'},U);e.textContent=t;src.hints.push({key,t:e});};
   cap(68,'Kassenbewegungen aus 10 Läden · laufend',390,'da');
   cap(190,'Bestandsmeldungen aus 10 Läden · gebündelt um 12:00 und 18:00 Uhr',390,'db');
-  cap(308,'Stechuhr-Buchungen aus 10 Läden · laufend, inkl. Pausen',390,'dz');
-  cap(398,'z. B. Schichtplanung · nach Klick',520,'dc');
-  cap(496,'Wetter 06:00 · Lokale Info. 02:00',470,'dd');
-  cap(648,'z. B. Marktforschung · nach Klick',520,'de');
+  cap(308,'z. B. Schichtplanung · nach Klick',520,'dc');
+  cap(406,'Wetter 06:00 · Lokale Info. 02:00',470,'dd');
+  cap(558,'z. B. Marktforschung · nach Klick',520,'de');
+  cap(652,'Stechuhr · 10 Läden · laufend',390,'dz');
   for(let i=0;i<10;i++){house(src,60+i*46,100,SRC.kasse);house(src,60+i*46,222,SRC.bestand);}
-  srcTank(src,6,346,230,44,SRC.zeit,'Registrierte Arbeitszeiten','(Stechuhr, inkl. Pausen)');
-  srcTank(src,6,436,230,44,SRC.intern,'Schichtplanung','manuell eingespielt');
-  srcTank(src,6,530,230,44,SRC.wetter,'Wettervorhersage (täglich)','automatisch');
-  srcTank(src,6,590,230,58,SRC.lokal,'Lokale Information','(Baustellen, Veranstaltungen u. ä.)','über Nacht');
-  srcTank(src,6,686,230,44,SRC.events,'Externe Daten','(Marktforschung u. ä.)');
+  srcTank(src,6,346,230,44,SRC.intern,'Schichtplanung','manuell eingespielt');
+  srcTank(src,6,440,230,44,SRC.wetter,'Wettervorhersage (täglich)','automatisch');
+  srcTank(src,6,500,230,58,SRC.lokal,'Lokale Information','(Baustellen, Veranstaltungen u. ä.)','über Nacht');
+  srcTank(src,6,596,230,44,SRC.events,'Externe Daten','(Marktforschung u. ä.)');
+  srcTank(src,6,696,230,44,SRC.zeit,'Registrierte Arbeitszeiten','(Stechuhr, inkl. Pausen)');
   trigger(src,src.pipes.IM,.4,'Lieferung',()=>{Q.intern+=14;});
   trigger(src,src.pipes.EM,.4,'Lieferung',()=>{Q.events+=14;});
   autoMark(src,src.pipes.EW);autoMark(src,src.pipes.EV);
   opsBox(src,880,146,200,'Buchhaltung',0);
   opsBox(src,880,262,200,'Warenwirtschaftssystem',1);
-  mirrorMark(src,760,146);mirrorMark(src,760,262);
+  mirrorMark(src,760,146);mirrorMark(src,760,262);mirrorMark(src,520,696);
+  funnelBox(src.L.deco,640,696);
+  el('text',{x:640,y:654,class:'tk2'},src.L.ui).textContent='Anonymisierung';
+  opsBox(src,880,728,200,'Lohnbuchhaltung',2);
+  el('rect',{x:870,y:696,width:220,height:60,rx:12,fill:'none',stroke:'#8196ab','stroke-width':1.6,'stroke-dasharray':'7 5'},src.L.deco);
   el('rect',{x:870,y:112,width:220,height:184,rx:12,fill:'none',stroke:'#8196ab','stroke-width':1.6,'stroke-dasharray':'7 5'},src.L.deco);
   (()=>{const g=src.L.deco,cx=970,cy=400;
     el('rect',{x:cx-24,y:cy-34,width:48,height:68,rx:9,fill:'#0f1a26','fill-opacity':.55,stroke:'#f8fafc','stroke-width':1.6,'stroke-dasharray':'5 4'},g);
     el('path',{d:'M'+cx+','+(cy-24)+'l13,5v9c0,9-6,15-13,18c-7-3-13-9-13-18v-9z',fill:'none',stroke:'#f8fafc','stroke-width':1.8},g);
     el('circle',{cx,cy:cy-6,r:3.2,fill:'#f8fafc'},g);el('path',{d:'M'+(cx-5.5)+','+(cy+9)+'a5.5,5.5 0 0 1 11,0z',fill:'#f8fafc'},g);
-    el('text',{x:cx,y:cy+54,class:'tk2'},src.L.ui).textContent='Markierung sensibler Daten';})();
+    el('text',{x:cx,y:cy+54,class:'tk2'},src.L.ui).textContent='Maskierung sensibler Daten';})();
   // Rohdatenspeicher (Kurzdarstellung)
   el('rect',{x:1180,y:360,width:150,height:80,rx:10,fill:'#13202e','fill-opacity':.85,stroke:'#2dd4bf','stroke-width':1.6},D);
   const rf2=mkLayers(D,1184,142);
@@ -730,8 +758,9 @@ const scenes=[main,fab,src];
 /* ============ Quiz ============ */
 const N={st1:'Datenquellen & Datenerfassung',raw:'Load (Rohdatenspeicher / Raw Layer)',st2:'Transform (Cleaning & Standardisierung)',st3:'Modellierung (Training)',st4:'Modellvalidierung',st5:'Deployment (Bereitstellung)',st6:'Monitoring & Drift-Erkennung'};
 const QUIZ={
- dz:{p:'Beobachte: Mitarbeiterinnen und Mitarbeiter stempeln in den Läden selbst ein und aus, auch Pausen werden erfasst. Die Einträge fließen laufend, mit Spitzen zu Schichtbeginn und Schichtende. Welche Quelle ist das?',c:'Registrierte Arbeitszeiten (Stechuhr)',w:['Verkaufsdaten (Kassensystem)','Interne Daten (manuell)','Externe Daten (manuell)','Bestandsveränderung (2 x täglich)'],why:'Stechuhr-Daten sind Beschäftigtendaten und damit personenbezogen. Dieselbe Quelle dient zwei Zwecken: Für die Gehaltsabrechnung wird der Personenbezug gebraucht, für die Kapazitätsplanung gegenüber der Nachfrage genügen anonymisierte oder zusammengefasste Werte. Deshalb werden diese Daten vor dem Speichern als sensibel markiert.'},
- sens:{p:'Beobachte: Bestimmte Datensätze – etwa Schichtpläne und Arbeitszeiten von Beschäftigten oder Angaben zu Lieferanten – werden vor dem Speichern erkannt, gekennzeichnet und geschützt, zum Beispiel durch Pseudonymisierung. Wie heißt dieser Schritt?',c:'Markierung sensibler Daten',w:['Dublettenprüfung','Hyperparameter-Tuning','Lastverteilung','Modellregistrierung'],why:'Sensible Daten sollen nicht ungeschützt im Rohdatenspeicher landen. AWS beschreibt dafür für teilsensible Datensätze eine Landing Zone: Dort werden sensible Zeilen und Spalten maskiert, erst danach gelangen die Daten in die Raw-Schicht. Wichtig: Pseudonymisierte Daten gelten nach der DSGVO weiterhin als personenbezogen, die Zuordnungsinformation muss getrennt und geschützt aufbewahrt werden. Erst echt anonyme Daten fallen nicht mehr unter die DSGVO.'},
+ dz:{p:'Beobachte: Mitarbeiterinnen und Mitarbeiter stempeln in den Läden selbst ein und aus, auch Pausen werden erfasst. Die Einträge fließen laufend, mit Spitzen zu Schichtbeginn und Schichtende. Welche Quelle ist das?',c:'Registrierte Arbeitszeiten (Stechuhr)',w:['Verkaufsdaten (Kassensystem)','Interne Daten (manuell)','Externe Daten (manuell)','Bestandsveränderung (2 x täglich)'],why:'Stechuhr-Daten sind Beschäftigtendaten und damit personenbezogen. Dieselbe Quelle dient zwei Zwecken: Für die Gehaltsabrechnung wird der Personenbezug gebraucht, für die Kapazitätsplanung gegenüber der Nachfrage genügen anonymisierte oder zusammengefasste Werte. Deshalb wird die Leitung am Ende geteilt.'},
+ anon:{p:'Beobachte: Am Ende ihrer Leitung werden die Stechuhr-Daten geteilt. Die vollständigen Einträge gehen an die Lohnbuchhaltung, in Richtung Modell fließen nur noch zusammengefasste Werte ohne Personenbezug. Wie heißt dieser Schritt?',c:'Anonymisierung',w:['Dublettenprüfung','Deployment (Bereitstellung)','Hyperparameter-Tuning','Datenspiegel'],why:'Für die Kapazitätsplanung braucht das Modell keine Personen, sondern zum Beispiel Stunden je Laden und Schicht (Datenminimierung). Wird vor dem Speichern anonymisiert, liegen keine personenbezogenen Stempeldaten im Rohdatenspeicher. Für die Gehaltsabrechnung bleiben die vollständigen Daten im operativen System. Echt anonym sind Daten nur, wenn sich Personen auch mit Zusatzwissen nicht mehr bestimmen lassen; bloße Pseudonymisierung genügt dafür nicht (EDPB-Leitlinien 01/2025, Erwägungsgrund 26 DSGVO). Die Anonymisierung ist selbst eine Verarbeitung und braucht eine Rechtsgrundlage (BfDI).'},
+ sens:{p:'Beobachte: Bestimmte Datensätze – etwa Schichtpläne von Beschäftigten oder Angaben zu Lieferanten – werden vor dem Speichern erkannt, gekennzeichnet und geschützt, zum Beispiel durch Pseudonymisierung. Wie heißt dieser Schritt?',c:'Maskierung sensibler Daten',w:['Dublettenprüfung','Hyperparameter-Tuning','Lastverteilung','Modellregistrierung'],why:'Sensible Daten sollen nicht ungeschützt im Rohdatenspeicher landen. AWS beschreibt dafür für teilsensible Datensätze eine Landing Zone: Dort werden sensible Zeilen und Spalten maskiert, erst danach gelangen die Daten in die Raw-Schicht. Wichtig: Pseudonymisierte Daten gelten nach der DSGVO weiterhin als personenbezogen, die Zuordnungsinformation muss getrennt und geschützt aufbewahrt werden. Erst echt anonyme Daten fallen nicht mehr unter die DSGVO.'},
  ext:{p:'Beobachte: Aus den Quellsystemen werden Daten herausgelesen und als Kopie auf den Weg in den Speicher geschickt – die Quellen selbst bleiben unverändert. Wie heißt dieser Schritt?',c:'Extract (Daten aus den Quellen entnehmen)',w:['Transform (Daten umformen)','Drift-Erkennung','Deployment (Bereitstellung)','Modelltraining'],why:'Extract ist der erste Schritt im ETL- wie im ELT-Muster: Rohdaten werden aus den Quellsystemen (Datenbanken, Dateien, Anwendungen, Sensoren u. a.) entnommen und in einen Speicher- oder Staging-Bereich kopiert. Ausgelöst wird er je nach Quelle zeitgesteuert (Batch), ereignisgesteuert oder fortlaufend (Streaming).'},
  st1:{p:'Beobachte: Laufende Ströme, Uploads zu festen Zeiten und Lieferungen auf Knopfdruck – und jede Meldung wird auf dem Weg gespiegelt. Wie heißt diese Station?',c:N.st1,w:[N.st3,'Anforderungsanalyse','Lastverteilung','Penetrationstest'],why:'Am Anfang jeder KI-Lieferkette steht die Herkunft der Daten. Die Quellen unterscheiden sich in Herkunft (intern/extern), Takt (laufend, termingesteuert, manuell), Menge und Zuverlässigkeit – und jede bringt eigene Qualitätsrisiken mit.'},
  raw:{p:'Beobachte: Alles, was eingeht, wird unverändert in einen Speicher geladen und dort abgelegt. Der Bestand wächst nur, gelesen wird eine Kopie. Wie heißt dieser Schritt?',c:N.raw,w:['Data Mart (Auswertungsschicht)','Operatives Kassensystem','Modellregister','Lastverteilung'],why:'Load heißt: Die entnommenen Daten werden in das Zielsystem geladen. Hier ist das die Rohdatenschicht, die die Originale hält – AWS empfiehlt dafür das Originalformat und aktivierte Versionierung. Bereinigt wird erst danach in einer eigenen Stufe (Transform, im ELT-Muster nach dem Laden). So bleiben die Betriebssysteme unberührt, und bei einem Fehler in der Aufbereitung lässt sich neu rechnen.'},
@@ -792,7 +821,7 @@ function clearAll(){
     for(const k in sc.st)sc.st[k]=0;
     for(const k in sc.tanks)sc.tanks[k].reset();
   }
-  raw.q=[];RAWORD.forEach(k=>raw.by[k]=0);raw.total=0;raw.read=0;raw.acc=0;raw.ops=[0,0];opsUpdate(0);opsUpdate(1);rawUpdate();
+  raw.q=[];RAWORD.forEach(k=>raw.by[k]=0);raw.total=0;raw.read=0;raw.acc=0;raw.ops=[0,0,0];opsUpdate(0);opsUpdate(1);opsUpdate(2);rawUpdate();
   CLK.h=1;CLK.day=0;for(const k in Q)Q[k]=0;updateClocks();
   for(const sc of scenes){sc.kacc=0;sc.qacc={};}
 }
