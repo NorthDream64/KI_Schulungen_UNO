@@ -388,13 +388,13 @@ function tickSources(sc,dt,gated){
   const h=CLK.h;
   // Zeitgesteuerte Lieferungen: Bestand 12:00 + 18:00, Lokale Information täglich 02:00 (über Nacht), Wettervorhersage täglich 06:00
   if(crossed(prev,h,12)||crossed(prev,h,18))Q.bestand+=60;
-  if(crossed(prev,h,2))Q.lokal+=24;
-  if(crossed(prev,h,6))Q.wetter+=20;
+  if(crossed(prev,h,2))Q.lokal+=8;
+  if(crossed(prev,h,6))Q.wetter+=5;
   if(gated)return;
   // Kasse: kontinuierlich, mit Tagesrhythmus (Ladenöffnung 8–20 Uhr)
   const open=h>=8&&h<20;
   const peak=Math.max(0,1-Math.abs(h-13)/2.5)*.8+Math.max(0,1-Math.abs(h-18)/2);
-  sc.kacc=(sc.kacc||0)+dt*(open?3+3*peak:.4);
+  sc.kacc=(sc.kacc||0)+dt*(open?6+6*peak:.8);
   while(sc.kacc>=1){sc.kacc--;spawnKind(sc,'kasse');}
   // Lieferungen abarbeiten (Bestand, Verkehr, Wetter automatisch; intern/events nach Klick)
   sc.qacc=sc.qacc||{};
