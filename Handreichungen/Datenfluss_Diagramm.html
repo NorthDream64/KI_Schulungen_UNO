@@ -858,8 +858,8 @@ const TIP_PREP='<p><b>Datenvorbereitung: Bereinigung, Transformation, Selektion<
  +'<small>Grundlage: Hand-Out Tag 6 (Die drei Arbeitsschritte)</small>';
 const TIP_INT='<p><b>Datenintegration – die Brücke zum Modell</b></p>'
  +'<p>Datenintegration führt Daten aus verschiedenen internen Quellen zusammen, vereinheitlicht sie und schafft so eine verlässliche Grundlage für das Training. Sie ist die Brücke zwischen Datenvorbereitung und Modellbau – hier entscheidet sich, ob die Qualität aus den Quellsystemen erhalten bleibt oder unterwegs verloren geht.</p>'
- +'<p><b>Prüffrage 1: Nutzt ihr nur Daten, die zum Entscheidungszeitpunkt vorliegen?</b> Sonst droht Zukunftswissen im Training (Look-ahead Bias bzw. Data Leakage): Im Test glänzt das Modell, in der Praxis versagt es. Nicht zu verwechseln mit Datenabfluss – dort verlassen Daten unkontrolliert das Unternehmen.</p>'
- +'<p><b>Prüffrage 2: Wie viele gelabelte Beispiele gibt es je Kategorie?</b> Googles Faustregel: 10 × Merkmalszahl bei einer Klassifikation, 50 × bei der Vorhersage eines Zahlenwerts. Ein Feld mit k Kategorien zählt als k − 1 Merkmale. Liegt man weit darunter, ist das ein Machbarkeitsproblem.</p>'
+ +'<p><b>Nutzt ihr nur Daten, die zum Entscheidungszeitpunkt vorliegen?</b> Sonst droht Zukunftswissen im Training (Look-ahead Bias bzw. Data Leakage): Im Test glänzt das Modell, in der Praxis versagt es. Nicht zu verwechseln mit Datenabfluss – dort verlassen Daten unkontrolliert das Unternehmen.</p>'
+ +'<p><b>Wie viele gelabelte Beispiele gibt es je Kategorie?</b> Googles Faustregel: 10 × Merkmalszahl bei einer Klassifikation, 50 × bei der Vorhersage eines Zahlenwerts. Ein Feld mit k Kategorien zählt als k − 1 Merkmale. Liegt man weit darunter, ist das ein Machbarkeitsproblem.</p>'
  +'<small>Quellen: Hand-Out Tag 6 · <a href="https://cloud.google.com/blog/products/gcp/preparing-and-curating-your-data-for-machine-learning" target="_blank" rel="noopener">Google Cloud: Preparing and curating your data for ML</a></small>';
 const TIP_MLOPS='<p><b>MLOps – Machine Learning Operations</b></p>'
  +'<p>MLOps überträgt Prinzipien aus DevOps (<b>Automatisierung, Monitoring</b>) auf den <b>gesamten</b> Lebenszyklus – von der Datensammlung über Training und Validierung bis zum Deployment und Betrieb.</p>'
@@ -874,6 +874,38 @@ const TIP_LOG='<p><b>Protokollierung und Versionierung</b></p>'
  +'<p>Jede Anfrage und jede Prognose wird mit Zeitpunkt, Eingangsdaten und <b>Modellversion</b> protokolliert. Modelle liegen versioniert im Modellregister, die Rohdaten im schreibgeschützten Rohdatenspeicher. So lässt sich jede Modellentscheidung später nachvollziehen – Grundlage für Audits und Compliance (z. B. ISO/IEC 42001).</p>'
  +'<p>Google empfiehlt zudem, die im Betrieb verwendeten Merkmale zu protokollieren und für das Training wiederzuverwenden – so trainiert man, wie man betreibt.</p>'
  +'<small>Quelle: <a href="https://developers.google.com/machine-learning/guides/rules-of-ml" target="_blank" rel="noopener">Google: Rules of Machine Learning</a> (Regel 29)</small>';
+
+const TIP_SPLIT='<p><b>Training · Validierung · Test</b></p>'
+ +'<table><tr><th>Datensatz</th><th>Wozu</th></tr>'
+ +'<tr><td>Trainingsdaten</td><td>Das Modell lernt daraus.</td></tr>'
+ +'<tr><td>Validierungsdaten</td><td>Feinabstimmung der Einstellungen (Hyperparameter) und frühzeitiges Erkennen von Overfitting – während der Entwicklung.</td></tr>'
+ +'<tr><td>Testdaten</td><td>Einmalige, abschließende Prüfung des ausgewählten Modells – für eine unvoreingenommene Bewertung.</td></tr></table>'
+ +'<p>Bei Zeitreihen wie Absatzdaten wird zeitlich getrennt, nicht zufällig gemischt. Statt eines festen Validierungsanteils kann man auch eine <b>Kreuzvalidierung</b> innerhalb der Trainingsdaten nutzen (so im Microsoft-Beispiel aus Tag 9). Auch Validierungs- und Testdaten „nutzen sich ab“, wenn man sie immer wieder für Entscheidungen verwendet.</p>'
+ +'<small>Quellen: <a href="https://developers.google.com/machine-learning/crash-course/overfitting/dividing-datasets" target="_blank" rel="noopener">Google: Dividing the original dataset</a> · Kursmaterial Tag 9</small>';
+const TIP_OVER='<p><b>Overfitting vermeiden</b></p>'
+ +'<p>Overfitting (Überanpassung): Das Modell lernt die Beispiele auswendig statt der Regel – im Training sehr gut, auf neuen Daten schlecht. Erkennbar daran, dass die Kennzahlen auf Trainings- und Validierungsdaten deutlich auseinanderfallen.</p>'
+ +'<table><tr><th>Technik</th><th>Idee</th></tr>'
+ +'<tr><td>Regularisierung</td><td>bestraft zu komplexe Modelle („Budgetdeckel“ für Komplexität)</td></tr>'
+ +'<tr><td>Dropout</td><td>nur bei neuronalen Netzen: In jedem Durchlauf fällt ein zufälliger Teil der Neuronen aus.</td></tr>'
+ +'<tr><td>Early Stopping</td><td>Training stoppt, sobald sich die Güte auf den Validierungsdaten nicht mehr verbessert.</td></tr>'
+ +'<tr><td>Kreuzvalidierung</td><td>Daten in mehrere Teile zerlegen, jeder Teil prüft einmal – zeigt, wie stabil die Leistung ist.</td></tr></table>'
+ +'<p>Ziel ist <b>Generalisierungsfähigkeit</b>: gute Ergebnisse auf Daten, die das Modell nie gesehen hat.</p>'
+ +'<small>Grundlage: Kursmaterial Tag 9 (Vier Techniken gegen Overfitting)</small>';
+const TIP_TESTS='<p><b>Testverfahren</b></p>'
+ +'<table><tr><th>Testart</th><th>Was wird geprüft?</th></tr>'
+ +'<tr><td>Black-Box-Test</td><td>nur Ein- und Ausgabe: Verhält sich das System wie spezifiziert – ohne Blick ins Innere. Beispiel: der Probelauf im Test (Staging) der Modellbereitstellung.</td></tr>'
+ +'<tr><td>White-Box-Test</td><td>die interne Logik und Struktur des Algorithmus: Welche Merkmale tragen die Entscheidung, mit welchem Gewicht? Stärkt Robustheit und Sicherheit.</td></tr>'
+ +'<tr><td>Unit-Test</td><td>einzelne Code- oder Datenverarbeitungskomponenten, z. B. eine Station der Datenpipeline: Wandelt die Standardisierung jedes Datumsformat korrekt um?</td></tr></table>'
+ +'<p>Kennzahlen sagen, wie gut ein Modell im Durchschnitt ist – nicht, ob es vor dem Einsatz geprüft wurde.</p>'
+ +'<small>Grundlage: Kursmaterial Tag 9 (Testverfahren)</small>';
+const TIP_XAI='<p><b>Erklärbarkeit (XAI)</b></p>'
+ +'<p>Viele Modelle sind eine „Black Box“: Man sieht Ein- und Ausgabe, aber nicht, warum entschieden wurde. Methoden der erklärbaren KI (XAI) machen Entscheidungen nachvollziehbar – nötig auch, um Transparenzpflichten zu erfüllen, z. B. bei automatisierten Einzelentscheidungen (Art. 22 DSGVO) oder dem Recht auf Erläuterung (Art. 86 EU AI Act).</p>'
+ +'<p><b>Global</b> erklärt, worauf das Modell insgesamt achtet; <b>lokal</b>, warum ein einzelner Fall so entschieden wurde. Erklärungen sind Näherungen, keine Messwerte.</p>'
+ +'<small>Grundlage: Kursmaterial Tag 9 (Erklärbare KI)</small>';
+const TIP_DOC='<p><b>Dokumentation der Evaluierung</b></p>'
+ +'<p>Evaluierungsmethoden und Leistungskennzahlen (z. B. Genauigkeit, Präzision, Trefferquote, Robustheit) gehören in die technische Dokumentation des Systems – ebenso der gewählte <b>Schwellenwert</b> und wer ihn verantwortet. Das macht die Bewertung nachvollziehbar und prüfbar (Audit).</p>'
+ +'<p>Ein Wert allein reicht nicht: Kennzahlen auf Trainings-, Validierungs- und Testdaten nebeneinanderstellen.</p>'
+ +'<small>Grundlage: Kursmaterial Tag 9 (Kernbotschaften) · <a href="https://developers.google.com/machine-learning/crash-course/classification/accuracy-precision-recall" target="_blank" rel="noopener">Google: Accuracy, precision, recall</a></small>';
 function infoI(sc,cx,cy,getHtml,up,ax,ay){
   const g=el('g',{style:'cursor:pointer'},sc.L.ui);
   el('circle',{cx,cy,r:11,fill:'#0f2a3a',stroke:'#4cc9f0'},g);
@@ -1020,7 +1052,7 @@ const trn=mkScene('scTrn');trn.g.classList.add('off');trn.st={in:0};
 const TP=(id,pts,w,o)=>addPipe(trn,Object.assign({id,pts,w},o||{}));
 let regCount=0;
 TP('tIn',[[30,190],[330,190]],22,{next:'tSplit'});
-TP('tSplit',[[330,190],[470,190]],22,{route:()=>Math.random()<.8?'train':'test',to:{train:'tTr',test:'tTe'}});
+TP('tSplit',[[330,190],[470,190]],22,{route:()=>{const r=Math.random();return r<.7?'train':r<.85?'val':'test';},to:{train:'tTr',val:'tTe',test:'tTs'}});
 TP('tTr',[[470,190],[700,190]],18,{next:'tGear'});
 TP('tGear',[[700,190],[820,190]],16,{next:'tM',gate:'st3',enter:(p,sc,pi)=>{
   if(p.kind==='model')return;
@@ -1028,9 +1060,12 @@ TP('tGear',[[700,190],[820,190]],16,{next:'tM',gate:'st3',enter:(p,sc,pi)=>{
   const q=pos(pi,p.s,0);puff(sc,q[0],q[1],COL.model);return false;}});
 TP('tM',[[820,190],[1010,190]],14,{next:'tVal'});
 TP('tVal',[[1010,190],[1130,190]],14,{route:()=>Math.random()<.7?'ok':'back',to:{ok:'tOk',back:'tBack'},gate:'st4'});
-TP('tOk',[[1130,190],[1330,190]],12,{sink:()=>{regCount++;trn.regT.textContent=regCount+' freigegeben';}});
+TP('tOk',[[1130,190],[1180,190]],12,{next:'tFin'});
+TP('tFin',[[1180,190],[1280,190]],12,{next:'tReg',gate:'st4'});
+TP('tReg',[[1280,190],[1330,190]],12,{sink:()=>{regCount++;trn.regT.textContent=regCount+' freigegeben';}});
 TP('tBack',[[1130,190],[1130,84],[690,84],[690,190]],6,{next:'tTr',dash:true,cls:'ret'});
-TP('tTe',[[470,190],[470,310],[1070,310],[1070,250]],12,{sink:(p,sc,pi)=>{const q=pos(pi,pi.len,0);puff(sc,q[0],q[1],'#7dd3fc');}});
+TP('tTs',[[470,190],[470,345],[1230,345],[1230,250]],10,{sink:(p,sc,pi)=>{const q=pos(pi,pi.len,0);puff(sc,q[0],q[1],'#fde047');}});
+TP('tTe',[[470,190],[470,310],[1070,310],[1070,250]],10,{sink:(p,sc,pi)=>{const q=pos(pi,pi.len,0);puff(sc,q[0],q[1],'#7dd3fc');}});
 trn.sources=[{pipe:'tIn',rate:4,col:COL.clean}];
 (()=>{
   const U=trn.L.ui,D=trn.L.deco;
@@ -1039,19 +1074,26 @@ trn.sources=[{pipe:'tIn',rate:4,col:COL.clean}];
   // Aufteilen
   el('rect',{class:'card-bg',x:330,y:140,width:140,height:100,rx:12},D);
   TX(U,400,128,'Daten aufteilen','lbl','font-size:15px');
-  TX(U,400,214,'zeitlich: ältere 80 %','tk2');TX(U,400,228,'Training, neuere 20 % Test','tk2');
+  TX(U,400,214,'Training · Validierung · Test','tk2');TX(U,400,228,'z. B. 70 / 15 / 15 %, zeitlich','tk2');
+  infoI(trn,488,128,()=>TIP_SPLIT,false);
   TX(U,585,170,'Trainingsdaten','sub');
-  TX(U,700,334,'Testdaten: bleiben zurückgehalten und prüfen später das Modell','sub','text-anchor:start');
+  TX(U,560,292,'Validierungsdaten: Feinabstimmung, Overfitting früh erkennen','tk2','text-anchor:start');
+  TX(U,560,368,'Testdaten: bleiben bis zum Schluss unangetastet','tk2','text-anchor:start');
   // Modelltraining
   card(trn,'st3',700,130,120,120,'','Modelltraining');
   gearIcon(D,760,190,40);
+  infoI(trn,836,118,()=>TIP_OVER,false);
   TX(U,760,270,'wenige Modellkandidaten entstehen','tk2');
   // Validierung
   card(trn,'st4',1010,130,120,120,'','Validierung');
   el('circle',{cx:1070,cy:190,r:24,fill:'#12351f',stroke:'#4ade80','stroke-width':1.6},D);
   el('path',{d:'M1058,190 l9,9 l17,-19',fill:'none',stroke:'#4ade80','stroke-width':3},D);
-  btn(trn,1145,262,110,24,'Details ⊕',()=>setView('val'));
-  TX(U,1200,304,'Testdaten · Baseline · Schwellenwert','tk2');
+  btn(trn,1015,262,110,24,'Details ⊕',()=>setView('val'));
+  // abschließender Test
+  el('rect',{class:'card-bg',x:1180,y:130,width:100,height:120,rx:12},D);
+  TX(U,1230,118,'Test','lbl','font-size:15px');
+  el('path',{d:'M1222,168 v40 M1222,168 h22 l-6,7 l6,7 h-22',fill:'none',stroke:'#fde047','stroke-width':2.2},D);
+  TX(U,1230,272,'einmal, ganz am Ende','tk2');
   TX(U,910,72,'zurück ins Modelltraining (nicht bestanden)','tk2');
   // Modellregister
   el('rect',{class:'card-bg',x:1330,y:130,width:200,height:120,rx:12},D);
@@ -1065,9 +1107,9 @@ trn.sources=[{pipe:'tIn',rate:4,col:COL.clean}];
   const ST=[
    ['Ziel festlegen',['Was genau soll vorhergesagt','werden? Die Antwort, die das','Modell lernen soll, heißt','Zielvariable (Target).'],['„Verkauft Filiale F3 morgen','mehr Grillkohle als üblich?“']],
    ['Merkmale bilden',['Aus Vermutungen werden Zahlen','(Feature Engineering). Nur Infor-','mationen nutzen, die am Prognose-','tag schon bekannt sind – sonst','entsteht ein Datenleck.'],['Wochentag, Wetterprognose,','Absatz der letzten 7 / 90 Tage']],
-   ['Zeitlich trennen',['Ältere 80 % zum Lernen (Trai-','ning), neuere 20 % zum Prüfen','(Test). Nicht zufällig mischen:','sonst lernt das Modell aus','der Zukunft.'],['Training bis Februar,','Test ab März']],
+   ['Daten aufteilen',['Training (lernen), Validierung','(feinabstimmen) und Test (ab-','schließend prüfen). Zeitlich','trennen, nicht zufällig mischen –','sonst lernt das Modell aus der','Zukunft.'],['Training bis Januar, Validie-','rung Februar, Test März']],
    ['Baseline festlegen',['Eine einfache Vergleichsregel','als Messlatte. Ein Modell ist','erst interessant, wenn es','sie schlägt.'],['„Morgen wie am gleichen','Wochentag letzte Woche“']],
-   ['Trainieren und vergleichen',['Mehrere Modelle lernen aus den','Trainingsdaten, z. B. logistische','Regression und Entscheidungs-','baum. Einstellungen nur mit','Trainingsdaten wählen.'],['Schwellenwert per zeitlich','geordneter Kreuzvalidierung']],
+   ['Trainieren und vergleichen',['Mehrere Modelle lernen, z. B.','logistische Regression und Ent-','scheidungsbaum. Einstellungen','(Hyperparameter) anhand der','Validierungsdaten wählen, z. B.','per Kreuzvalidierung.'],['Schwellenwert per zeitlich','geordneter Kreuzvalidierung']],
    ['Einmal testen',['Erst ganz am Ende prüft der','unangetastete Test das Modell.','Wer vorher immer wieder auf das','Testergebnis schaut, lernt den','Test auswendig.'],null]];
   ST.forEach((s,i)=>{
     const x=24+i*257,y=430;
@@ -1132,7 +1174,7 @@ const val=mkScene('scVal');val.g.classList.add('off');val.st={in:0};
   TX(U,SX0,684,'niedrig: viele anschreiben','tk2','text-anchor:start');TX(U,SX1,684,'hoch: wenige','tk2','text-anchor:end');
   const bl=btn(val,SX0-20,366,SX1-SX0+40,26,'Vergleich: „Niemanden anschreiben“',()=>{base=!base;upd();});
   // Kennzahlen-Balken
-  const rows=[['Genauigkeit (Accuracy)','richtig eingestuft ÷ alle','#38bdf8'],['Präzision (Precision)','Käufer:innen ÷ Angeschriebene','#a78bfa'],['Trefferquote (Recall)','erreichte Käufer:innen ÷ alle Käufer:innen','#4ade80']];
+  const rows=[['Genauigkeit (Accuracy)','richtig eingestuft ÷ alle','#38bdf8'],['Präzision (Precision)','Käufer:innen ÷ Angeschriebene','#a78bfa'],['Trefferquote (Recall, Sensitivität)','erreichte Käufer:innen ÷ alle Käufer:innen','#4ade80']];
   const bars=rows.map((r,i)=>{
     const y=452+i*62;
     TX(U,720,y,r[0],'lbl','text-anchor:start;font-size:16px');TX(U,720,y+16,r[1],'tk2','text-anchor:start');
@@ -1145,7 +1187,7 @@ const val=mkScene('scVal');val.g.classList.add('off');val.st={in:0};
   // rechte Spalte
   TX(U,1190,452,'So liest Du die Kennzahlen','lbl','text-anchor:start;font-size:15px');
   const gl=para(U,1190,474,17,'font-size:12.5px');
-  gl.set(['Genauigkeit (Accuracy): Anteil aller richtigen','Einstufungen.','Präzision (Precision): Anteil der Angeschriebenen,','die wirklich kaufen (wenig „unnötige Coupons“).','Trefferquote (Recall): Anteil aller Käufer:innen,','die erreicht werden (wenig „verpasste Chancen“).','Bei seltenen Ereignissen täuscht die Genauigkeit.']);
+  gl.set(['Genauigkeit (Accuracy): Anteil aller richtigen','Einstufungen.','Präzision (Precision): Anteil der Angeschriebenen,','die wirklich kaufen (wenig „unnötige Coupons“).','Trefferquote (Recall, Sensitivität): Anteil aller Käufer:innen,','die erreicht werden (wenig „verpasste Chancen“).','Bei seltenen Ereignissen täuscht die Genauigkeit.']);
   TX(U,1190,590,'Quelle: Google, Machine Learning Crash Course','tk2','text-anchor:start');
   TX(U,1190,606,'(Classification: Accuracy, recall, precision)','tk2','text-anchor:start');
   pillGate(val,'k1',1190,294,350,'Frage 1: Sind 90 % Genauigkeit gut?');pq(val);
@@ -1181,13 +1223,22 @@ const val=mkScene('scVal');val.g.classList.add('off');val.st={in:0};
   const RU=[
    ['Testdaten bleiben unangetastet',['Geprüft wird auf Daten, die das Modell nie gesehen','hat. Wer immer wieder auf das Testergebnis schaut','und nachbessert, lernt den Test auswendig.']],
    ['Die Baseline schlagen',['Ein Modell ist erst interessant, wenn es eine ein-','fache Vergleichsregel schlägt – oben: „niemanden','anschreiben“, im Handel z. B. „wie letzte Woche“.']],
-   ['Training und Test vergleichen',['Sind die Kennzahlen im Training deutlich besser als','im Test, ist das Modell überangepasst (Overfitting).','Wer nur einen Wert nennt: nach dem zweiten fragen.']],
+   ['Training und Validierung vergleichen',['Sind die Kennzahlen im Training deutlich besser als','auf den Validierungsdaten, ist das Modell überan-','gepasst (Overfitting). Nur einen Wert? Nachfragen.']],
    ['Schwellenwert = Geschäftsentscheidung',['Welcher Fehler teurer ist, entscheidet das Geschäft,','nicht die Technik. Der Schwellenwert braucht einen','Eigentümer und gehört in die Dokumentation.']]];
   RU.forEach((r,i)=>{
     const x=24+i*386,y=494;
     el('rect',{class:'card-bg',x,y,width:372,height:128,rx:12},D0);
     TX(U0,x+16,y+28,r[0],'lbl','text-anchor:start;font-size:14.5px');
     para(U0,x+16,y+54,17,'font-size:12.5px').set(r[1]);
+  });
+  TX(U0,24,676,'Vertiefung (Maus über die Begriffe):','tk2','text-anchor:start');
+  [['ⓘ Training · Validierung · Test',()=>TIP_SPLIT],['ⓘ Overfitting vermeiden',()=>TIP_OVER],['ⓘ Testverfahren',()=>TIP_TESTS],['ⓘ Erklärbarkeit (XAI)',()=>TIP_XAI],['ⓘ Dokumentation',()=>TIP_DOC]].forEach((p,i)=>{
+    const x=24+i*306,g=el('g',{style:'cursor:pointer'},U0);
+    el('rect',{class:'ipill',x,y:690,width:290,height:30,rx:15},g);
+    el('text',{x:x+145,y:710,class:'tk',style:'font-size:13px'},g).textContent=p[0];
+    const h=el('rect',{class:'vhit',x,y:690,width:290,height:30,rx:15,fill:'transparent'},g);
+    const sh=()=>showTip(x+145,684,p[1](),true);
+    h.addEventListener('mouseenter',sh);h.addEventListener('mouseleave',hideTipSoon);h.addEventListener('click',e=>{e.stopPropagation();sh();});
   });
   TX(U0,24,650,'Grundlagen: Kursmaterial Tag 9 (Modellvalidierung; Beispielprojekt „Steigt oder fällt die Microsoft-Aktie morgen?“) sowie Google, Machine Learning Crash Course.','tk2','text-anchor:start;font-size:11px');
 })();
@@ -1241,7 +1292,7 @@ function startTest(){D_.phase='testing';D_.tn=0;D_.q=0;dep.tm.setAttribute('opac
   TX(U,496,yMin+4,'85 %','tk2','text-anchor:end;font-size:9.5px');
   TX(U,470,460,'Modellqualität im Test','tk2','text-anchor:end');
   const qT=TX(U,470,476,'–','tk','font-size:12px;text-anchor:end');
-  TX(U,492,520,'Testdaten','tk2','text-anchor:start');
+  TX(U,492,520,'Testanfragen','tk2','text-anchor:start');
   // Freigabe
   el('rect',{class:'card-bg',x:592,y:320,width:116,height:120,rx:12},D);
   TX(U,650,308,'Freigabe','lbl','font-size:15px');
@@ -1278,7 +1329,7 @@ function startTest(){D_.phase='testing';D_.tn=0;D_.q=0;dep.tm.setAttribute('opac
   // Erklärung
   TX(U,1190,290,'Stufen der Bereitstellung','lbl','text-anchor:start;font-size:15px');
   const t=para(U,1190,312,17,'font-size:12.5px');
-  t.set(['1  Modellregister: validierte Version liegt bereit.','2  Test (Staging): Probelauf mit Testdaten. Erst wenn','    die Modellqualität reicht, wird die Freigabe aktiv.','3  Freigabe: Der Mensch entscheidet („Ja“ / „Nein“).','4  Produktion: Das Modell beantwortet Anfragen.','    Vorher warten die Anfragen der Filialen.','5  Danach beobachtet das Monitoring den Betrieb.']);
+  t.set(['1  Modellregister: validierte Version liegt bereit.','2  Test (Staging): Probelauf mit Testanfragen (Black-Box-Test).','    Erst wenn die Modellqualität reicht, wird die Freigabe aktiv.','3  Freigabe: Der Mensch entscheidet („Ja“ / „Nein“).','4  Produktion: Das Modell beantwortet Anfragen.','    Vorher warten die Anfragen der Filialen.','5  Danach beobachtet das Monitoring den Betrieb.']);
   TX(U,1190,444,'Quelle: Microsoft, Machine learning operations (MLOps v2),','tk2','text-anchor:start');
   TX(U,1190,460,'Model deployment (outer loop)','tk2','text-anchor:start');
   const nb=btn(dep,1190,482,240,30,'Neue Version bereitstellen',()=>sendModel());
@@ -1479,7 +1530,7 @@ const QUIZ={
  raw:{p:'Beobachte: Alles, was eingeht, wird unverändert in einen Speicher geladen und dort abgelegt. Der Bestand wächst nur, gelesen wird eine Kopie. Wie heißt dieser Schritt?',c:N.raw,w:['Data Mart (Auswertungsschicht)','Operatives Kassensystem','Modellregister','Lastverteilung'],why:'Load heißt: Die entnommenen Daten werden in das Zielsystem geladen. Hier ist das die Rohdatenschicht, die die Originale hält – AWS empfiehlt dafür das Originalformat und aktivierte Versionierung. Bereinigt wird erst danach in einer eigenen Stufe (Transform, im ELT-Muster nach dem Laden). So bleiben die Betriebssysteme unberührt, und bei einem Fehler in der Aufbereitung lässt sich neu rechnen.'},
  st2:{p:'Beobachte: Eine Fabrik vereinheitlicht, bereinigt, löst Dubletten auf und wählt aus – Ausschuss und Kopien fallen heraus, der Rest läuft einheitlich weiter. Wie heißt diese Station?',c:N.st2,w:[N.st4,'Lieferantenaudit','Datenverschlüsselung',N.st5],why:'Rohdaten sind selten modelltauglich. Hier werden Fehlerhaftes aussortiert, Formate vereinheitlicht und Dubletten entfernt. Bei AWS entspricht das der Stage-Schicht (Validierung, Format-Konvertierung, Transformation), im ELT-Muster von Google dem Transform-Schritt nach dem Laden.'},
  st3:{p:'Beobachte: Aus dem sauberen Datenstrom entstehen nur wenige goldene Modellkandidaten – der Rest verschwindet im Zahnrad. Wie heißt diese Station?',c:N.st3,w:[N.st2,'Lastverteilung','Anforderungsanalyse',N.st6],why:'Im Training lernt das Modell Muster aus den Daten. Die Daten selbst bleiben nicht erhalten – es entsteht ein Modellartefakt, das später Vorhersagen liefert.'},
- st4:{p:'Beobachte: Nur ein Teil der Modelle passiert die Prüfschranke, die übrigen laufen zurück ins Training. Wie heißt diese Station?',c:N.st4,w:[N.st3,N.st5,N.st1,'Lieferantenaudit'],why:'Vor dem Einsatz wird das Modell auf ungesehenen Testdaten geprüft. Genauigkeit allein kann täuschen; die Abwägung zwischen falsch-positiv und falsch-negativ sowie der Schwellenwert sind Geschäftsentscheidungen.'},
+ st4:{p:'Beobachte: Die Modellkandidaten werden mit eigenen Validierungsdaten geprüft – wer nicht besteht, läuft zurück ins Training. Wie heißt diese Station?',c:N.st4,w:[N.st3,N.st5,N.st1,'Lieferantenaudit'],why:'Mit den Validierungsdaten werden die Einstellungen (Hyperparameter) feinabgestimmt und Overfitting früh erkannt: Ist das Modell im Training deutlich besser als auf den Validierungsdaten, hat es auswendig gelernt. Erst danach prüft der unangetastete Testdatensatz das ausgewählte Modell einmalig – für eine unvoreingenommene Bewertung. Genauigkeit allein kann täuschen; die Abwägung zwischen falsch-positiv und falsch-negativ ist eine Geschäftsentscheidung.'},
  st5:{p:'Beobachte: Ein freigegebenes Modell bedient plötzlich viele Anfragen – grüne Prognosen strömen heraus. Wie heißt diese Station?',c:N.st5,w:[N.st4,N.st2,N.st6,'Penetrationstest'],why:'Beim Deployment geht das freigegebene Modell in den Betrieb und beantwortet laufend Anfragen. Es ist der Anfang des Modell-Lebens im Betrieb, nicht sein Ende.'},
  st6:{p:'Beobachte: Ein Drift-Alarm läuft über die gestrichelte Leitung zurück und startet das Retraining. Wie heißt diese Station?',c:N.st6,w:[N.st3,N.st5,N.st1,'Datenverschlüsselung'],why:'Im Betrieb entfernt sich die Realität von den Trainingsdaten – Drift ist der Normalfall. Monitoring erkennt das und stößt Retraining an (Continuous Training).'},
  da:{p:'Beobachte: Aus den Läden strömen einzelne Kassenbewegungen – mit Tagesrhythmus, aber ohne feste Termine. Welche Quelle ist das?',c:'Verkaufsdaten (Kassensystem)',w:['Bestandsveränderung (2 x täglich)','Regelmäßige Daten (extern) – automatisch','Interne Daten (manuell)','Archivdaten'],why:'Ereignisse, die laufend entstehen (Kassenbewegungen), werden einzeln als Strom übertragen (Streaming). Auf Google Cloud schreiben z. B. Pub/Sub-Abonnements eintreffende Nachrichten sofort in BigQuery. Das lohnt, wenn Aktualität wichtig ist.'},
