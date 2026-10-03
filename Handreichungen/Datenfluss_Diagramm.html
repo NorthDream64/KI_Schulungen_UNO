@@ -902,6 +902,16 @@ const TIP_DOC='<p><b>Dokumentation der Evaluierung</b></p>'
  +'<p>Evaluierungsmethoden und Leistungskennzahlen (z. B. Genauigkeit, Präzision, Trefferquote, Robustheit) gehören in die technische Dokumentation des Systems – ebenso der gewählte <b>Schwellenwert</b> und wer ihn verantwortet. Das macht die Bewertung nachvollziehbar und prüfbar (Audit).</p>'
  +'<p>Ein Wert allein reicht nicht: Kennzahlen auf Trainings-, Validierungs- und Testdaten nebeneinanderstellen.</p>'
  +'<small>Grundlage: Kursmaterial Tag 9 (Kernbotschaften) · <a href="https://developers.google.com/machine-learning/crash-course/classification/accuracy-precision-recall" target="_blank" rel="noopener">Google: Accuracy, precision, recall</a></small>';
+
+const TIP_MON='<p><b>Was das Monitoring im Betrieb überwacht</b></p>'
+ +'<table><tr><th>Bereich</th><th>Worum es geht</th></tr>'
+ +'<tr><td>Modellleistung</td><td>Verschlechtert sich die Leistung (<b>Model Drift</b>)? Bei Prognosen von Mengen: Abweichung Prognose ↔ Ist. Bei Ja/Nein-Entscheidungen (z. B. Coupon ja/nein): Präzision, Trefferquote oder F1-Score, der beide zu einem Wert zusammenfasst.</td></tr>'
+ +'<tr><td>Datenintegrität</td><td>Kommen die Eingabedaten vollständig und im richtigen Format an – fehlen Felder, fällt eine Filiale aus?</td></tr>'
+ +'<tr><td>Input-Drift</td><td>Haben sich die Eigenschaften der Eingabedaten verändert (z. B. neue Preise)? Frühwarnung – oft lange bevor die tatsächlichen Verkäufe die Prognose widerlegen.</td></tr>'
+ +'<tr><td>Bias</td><td>Ist das Modell für alle Gruppen gleich gut (z. B. Stadt- und Landfilialen)?</td></tr></table>'
+ +'<p><b>Model Drift</b> hat zwei Ursachen: veränderte Eingabedaten (Input-Drift) oder eine veränderte Realität – etwa ein neues Kaufverhalten bei gleichen Eingaben.</p>'
+ +'<p><b>Feedback-Schleife:</b> Die tatsächlichen Verkäufe fließen zurück und werden mit den Prognosen verglichen; daraus entsteht automatisch oder nach menschlicher Prüfung ein Retraining. Diese Schleife ist zugleich der Nachweis kontinuierlicher Verbesserung, die ein KI-Managementsystem (ISO/IEC 42001) verlangt. Dazu kommen regelmäßige Robustheits- und Leistungsprüfungen im Betrieb.</p>'
+ +'<small>Quellen: <a href="https://learn.microsoft.com/en-us/azure/machine-learning/concept-model-monitoring?view=azureml-api-2" target="_blank" rel="noopener">Microsoft: Model monitoring in production</a> · <a href="https://docs.aws.amazon.com/sagemaker/latest/dg/model-monitor.html" target="_blank" rel="noopener">AWS: SageMaker Model Monitor</a></small>';
 function infoI(sc,cx,cy,getHtml,up,ax,ay){
   const g=el('g',{style:'cursor:pointer'},sc.L.ui);
   el('circle',{cx,cy,r:11,fill:'#0f2a3a',stroke:'#4cc9f0'},g);
@@ -1395,6 +1405,7 @@ mon.sources=MXs.map((x,i)=>({pipe:'MS'+i,rate:.9,col:SRC.kasse}));
   el('rect',{class:'card-bg',x:668,y:520,width:180,height:44,rx:10},D);
   TX(U,758,547,'Bestellvorschläge · Personalbedarf','tk2');
   TX(U,758,320,'Absatz- und Ereignisdaten','tk2','font-size:10px');
+  TX(U,668,590,'Feedback: Ist-Absatz wird mit der Prognose verglichen','tk2','text-anchor:start;font-size:10.5px');
   // Linke Spalte
   TX(U,24,66,'Ereignis auslösen','lbl','text-anchor:start;font-size:15px');
   const defs=[['karneval','Sonderaktion „Karneval“'],['mall','Neues Einkaufszentrum am Stadtrand'],['price','Neue Preisliste'],['bias','Verzerrte Prognose (Bias)']];
@@ -1405,10 +1416,11 @@ mon.sources=MXs.map((x,i)=>({pipe:'MS'+i,rate:.9,col:SRC.kasse}));
   const what=para(U,24,338,18);
   TX(U,24,520,'Begriffe','lbl','text-anchor:start;font-size:15px');
   const gl=para(U,24,542,17,'font-size:12.5px');
-  gl.set(['Daten-Drift: Die Eingabedaten verändern sich gegenüber','den Trainingsdaten – Frühwarnung, bevor die Güte sinkt.','Bias-Drift: Das Modell liegt bei Gruppen systematisch','unterschiedlich daneben.','Retraining: erneutes Training mit aktuellen Daten.','Quelle: AWS, SageMaker Model Monitor (Data quality,','Model quality, Bias drift, Feature attribution drift)']);
+  gl.set(['Input-Drift: Die Eingabedaten verändern sich gegen-','über den Trainingsdaten – Frühwarnung.','Model Drift: Die Leistung des Modells verschlechtert sich –','durch Input-Drift oder eine veränderte Realität.','Bias: Das Modell liegt bei Gruppen unterschiedlich daneben.','Retraining: erneutes Training mit aktuellen Daten.']);
   // Dashboard
   TX(U,1150,66,'Monitoring-Signale','lbl','text-anchor:start;font-size:15px');
-  const sig=[['Prognosegüte','Abweichung Prognose ↔ Ist',15,25,40],['Daten-Drift','Eingabedaten weichen von Trainingsdaten ab',40,60,100],['Bias','Fehlerlücke Stadt ↔ Land',8,15,30]];
+  infoI(mon,1318,61,()=>TIP_MON,false,1150,80);
+  const sig=[['Prognosegüte','Abweichung Prognose ↔ Ist',15,25,40],['Input-Drift','Eingabedaten weichen von Trainingsdaten ab',40,60,100],['Bias','Fehlerlücke Stadt ↔ Land',8,15,30]];
   const sg=sig.map((s,i)=>{
     const y=96+i*70;
     TX(U,1150,y,s[0],'lbl','text-anchor:start;font-size:15px');TX(U,1150,y+16,s[1],'tk2','text-anchor:start');
@@ -1434,10 +1446,10 @@ mon.sources=MXs.map((x,i)=>({pipe:'MS'+i,rate:.9,col:SRC.kasse}));
   let scen='normal',t=0,ver=1,phase='run',pt=0,evT=0;
   const NORMAL={err:6.8,drift:12,gap:2,eS:6,eL:8};
   const WHAT={
-    normal:['Normalbetrieb: Die Filialen melden Absatzdaten, das','Modell liefert Bestellvorschläge und Personalbedarf.','Die Signale rechts zeigen, ob das Modell noch zur','Realität passt: Prognosegüte, Daten-Drift und Bias.'],
+    normal:['Normalbetrieb: Die Filialen melden Absatzdaten, das','Modell liefert Bestellvorschläge und Personalbedarf.','Die Signale rechts zeigen, ob das Modell noch zur','Realität passt: Prognosegüte, Input-Drift und Bias.'],
     karneval:['Sonderaktion Karneval: Das Modell kennt den Termin','aus den Ereignisdaten und empfiehlt Karnevalsartikel','nur für Filialen in Karnevalsregionen (F1–F3).','Das Modell arbeitet wie vorgesehen: Alle Signale','bleiben grün. Nicht jede Veränderung ist Drift.'],
     mall:['Neues Einkaufszentrum: Das Modell sagt den','Umsatzrückgang in Filiale F6 am Stadtrand voraus.','Prognose und Ist stimmen überein, die Signale bleiben','grün. Ein eingebetteter KI-Agent wertet die Zahlen','aus und schlägt der Filialleitung Maßnahmen vor.'],
-    price:['Neue Preisliste: Einige Produkte werden teurer. Die','Preise liegen sofort außerhalb dessen, was das Modell','im Training gesehen hat: Daten-Drift als Frühwarnung.','Viele Kund:innen kaufen zunächst wie gewohnt – das','Kaufverhalten ändert sich erst nach und nach. Erst','dann sinkt die Prognosegüte unter den Schwellenwert,','und das Monitoring löst ein Retraining aus.'],
+    price:['Neue Preisliste: Einige Produkte werden teurer. Die','Preise liegen sofort außerhalb dessen, was das Modell','im Training gesehen hat: Input-Drift als Frühwarnung.','Viele Kund:innen kaufen zunächst wie gewohnt – das','Kaufverhalten ändert sich erst nach und nach. Erst','dann sinkt die Prognosegüte unter den Schwellenwert,','und das Monitoring löst ein Retraining aus.'],
     bias:['Bias: Insgesamt wirkt die Prognosegüte akzeptabel,','aber in Landfilialen liegt das Modell systematisch','daneben (zu niedrige Bestellmengen, leere Regale).','Ursache: Die Trainingsdaten stammen überwiegend aus','Stadtfilialen. Das Monitoring prüft deshalb den Fehler','je Gruppe und nicht nur im Durchschnitt.']
   };
   const wrap=(t,n)=>{const out=[];let l='';for(const w of t.split(' ')){if((l+' '+w).trim().length>n){out.push(l);l=w;}else l=(l+' '+w).trim();}if(l)out.push(l);return out;};
@@ -1507,7 +1519,7 @@ mon.sources=MXs.map((x,i)=>({pipe:'MS'+i,rate:.9,col:SRC.kasse}));
     if(phase!=='retrain'){
       const eL=vals[0]>=sig[0][3]?2:vals[0]>=sig[0][2]?1:0,gL=vals[2]>=sig[2][3]?2:vals[2]>=sig[2][2]?1:0,dL=vals[1]>=sig[1][3]?2:vals[1]>=sig[1][2]?1:0;
       const lvl=Math.max(eL,gL,dL>0&&eL<2&&gL<2?1:0);
-      banner.textContent=gL===2?'Bias-Alarm: Fehlerlücke zu groß':eL===2?'Alarm: Prognosegüte unter Schwellenwert':dL===2&&eL<2?'Frühwarnung: Daten-Drift – Prognosegüte beobachten':lvl===1?'Warnung: Signal im gelben Bereich':'Alle Signale im grünen Bereich';
+      banner.textContent=gL===2?'Bias-Alarm: Fehlerlücke zu groß':eL===2?'Model Drift: Prognosegüte unter Schwellenwert':dL===2&&eL<2?'Frühwarnung: Input-Drift – Prognosegüte beobachten':lvl===1?'Warnung: Signal im gelben Bereich':'Alle Signale im grünen Bereich';
       bannerR.setAttribute('fill',lvl===2?'#3a1717':lvl===1?'#3a2f12':'#12351f');bannerR.setAttribute('stroke',lvl===2?'#ef4444':lvl===1?'#f59e0b':'#4ade80');
     }
     // Balken
@@ -1540,7 +1552,7 @@ const QUIZ={
  st3:{p:'Beobachte: Aus dem sauberen Datenstrom entstehen nur wenige goldene Modellkandidaten – der Rest verschwindet im Zahnrad. Wie heißt diese Station?',c:N.st3,w:[N.st2,'Lastverteilung','Anforderungsanalyse',N.st6],why:'Im Training lernt das Modell Muster aus den Daten. Die Daten selbst bleiben nicht erhalten – es entsteht ein Modellartefakt, das später Vorhersagen liefert.'},
  st4:{p:'Beobachte: Die Modellkandidaten werden mit eigenen Validierungsdaten geprüft – wer nicht besteht, läuft zurück ins Training. Wie heißt diese Station?',c:N.st4,w:[N.st3,N.st5,N.st1,'Lieferantenaudit'],why:'Mit den Validierungsdaten werden die Einstellungen (Hyperparameter) feinabgestimmt und Overfitting früh erkannt: Ist das Modell im Training deutlich besser als auf den Validierungsdaten, hat es auswendig gelernt. Erst danach prüft der unangetastete Testdatensatz das ausgewählte Modell einmalig – für eine unvoreingenommene Bewertung. Genauigkeit allein kann täuschen; die Abwägung zwischen falsch-positiv und falsch-negativ ist eine Geschäftsentscheidung.'},
  st5:{p:'Beobachte: Ein freigegebenes Modell bedient plötzlich viele Anfragen – grüne Prognosen strömen heraus. Wie heißt diese Station?',c:N.st5,w:[N.st4,N.st2,N.st6,'Penetrationstest'],why:'Beim Deployment geht das freigegebene Modell in den Betrieb und beantwortet laufend Anfragen. Es ist der Anfang des Modell-Lebens im Betrieb, nicht sein Ende.'},
- st6:{p:'Beobachte: Ein Drift-Alarm läuft über die gestrichelte Leitung zurück und startet das Retraining. Wie heißt diese Station?',c:N.st6,w:[N.st3,N.st5,N.st1,'Datenverschlüsselung'],why:'Im Betrieb entfernt sich die Realität von den Trainingsdaten – Drift ist der Normalfall. Monitoring erkennt das und stößt Retraining an (Continuous Training).'},
+ st6:{p:'Beobachte: Ein Drift-Alarm läuft über die gestrichelte Leitung zurück und startet das Retraining. Wie heißt diese Station?',c:N.st6,w:[N.st3,N.st5,N.st1,'Datenverschlüsselung'],why:'Im Betrieb entfernen sich Eingabedaten und Realität von den Trainingsdaten – Drift ist der Normalfall. Das Monitoring überwacht die Modellleistung (Model Drift), die Datenintegrität und den Input-Drift; über eine Feedback-Schleife wird automatisch oder nach menschlicher Prüfung nachtrainiert (Continuous Training).'},
  da:{p:'Beobachte: Aus den Läden strömen einzelne Kassenbewegungen – mit Tagesrhythmus, aber ohne feste Termine. Welche Quelle ist das?',c:'Verkaufsdaten (Kassensystem)',w:['Bestandsveränderung (2 x täglich)','Regelmäßige Daten (extern) – automatisch','Interne Daten (manuell)','Archivdaten'],why:'Ereignisse, die laufend entstehen (Kassenbewegungen), werden einzeln als Strom übertragen (Streaming). Auf Google Cloud schreiben z. B. Pub/Sub-Abonnements eintreffende Nachrichten sofort in BigQuery. Das lohnt, wenn Aktualität wichtig ist.'},
  db:{p:'Beobachte: Nur um 12:00 und 18:00 Uhr schicken alle Läden gebündelt ihre Bestandsveränderungen. Welche Quelle ist das?',c:'Bestandsveränderung (2 x täglich)',w:['Verkaufsdaten (Kassensystem)','Interne Daten (manuell)','Regelmäßige Daten (extern) – automatisch','Archivdaten'],why:'Gebündelte Übertragung zu festen Zeiten (Batch): planbar und ressourcenschonend, wenn Aktualität im Stundenbereich genügt, etwa für das Bestellwesen. Google nennt dafür z. B. den BigQuery Data Transfer Service als automatisierten Bulk-Load.'},
  dc:{p:'Beobachte: Eine Fachabteilung liefert Listen (etwa die Schichtplanung) – erst nach einem Klick fließen sie. Welche Quelle ist das?',c:'Interne Daten (manuell)',w:['Externe Daten (manuell)','Bestandsveränderung (2 x täglich)','Verkaufsdaten (Kassensystem)','Archivdaten'],why:'Manuell eingespielte interne Listen sind unregelmäßig und fehleranfällig (Formate, Tippfehler, vergessene Lieferung). Hier lohnt es sich, Zuständigkeit, Rhythmus und eine Prüfung vor dem Einspielen festzulegen.'},
