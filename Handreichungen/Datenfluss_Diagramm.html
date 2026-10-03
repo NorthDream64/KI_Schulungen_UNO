@@ -130,7 +130,7 @@ text{pointer-events:none}
     <span><svg width="22" height="22"><circle cx="11" cy="11" r="8" fill="#0f2a3a" stroke="#4ade80" stroke-width="1.6"/><path d="M11,6v5h4" fill="none" stroke="#4ade80" stroke-width="1.6"/></svg>automatisch terminiert</span>
     <span style="width:14px"></span>
     <span><svg width="16" height="16"><circle cx="8" cy="8" r="4" fill="#38bdf8"/></svg>Datensatz (Farbe = Quelle)</span>
-    <span><svg width="22" height="16"><circle cx="8" cy="6" r="4" fill="#38bdf8"/><circle cx="14" cy="10" r="4" fill="#38bdf8"/></svg>Dublette</span>
+    <span><svg width="24" height="16"><circle cx="7" cy="8" r="4" fill="#38bdf8" stroke="#f8fafc" stroke-width=".9"/><circle cx="16" cy="8" r="4" fill="#38bdf8" stroke="#f8fafc" stroke-width=".9"/></svg>Dublette (doppelt übertragen)</span>
     <span><svg width="20" height="20"><circle cx="10" cy="10" r="8" fill="#38bdf8" opacity=".85"/></svg>Ausreißer (unplausibel)</span>
     <span><svg width="16" height="16"><circle cx="8" cy="8" r="4.5" fill="none" stroke="#38bdf8" stroke-width="1.8"/></svg>unvollständig</span>
     <span><svg width="16" height="16"><rect x="3" y="3" width="10" height="10" fill="#38bdf8"/></svg>falsches Format</span>
@@ -228,7 +228,7 @@ function shapeOf(p){
   if(p.kind==='model')el('rect',{x:-r*1.1,y:-r*1.1,width:r*2.2,height:r*2.2,fill:COL.model,stroke:'#fff','stroke-width':.8,transform:'rotate(45)'},g);
   else if(p.kind==='alarm'){el('circle',{r:r*1.5,fill:COL.alarm},g);el('circle',{r:r*2.6,fill:'none',stroke:COL.alarm,'stroke-width':1.3,opacity:.6},g);}
   else if(p.kind==='pred')el('circle',{r:r*.85,fill:COL.pred},g);
-  else if(p.def==='dup'){el('circle',{cx:-r*.6,cy:-r*.5,r,fill:c},g);el('circle',{cx:r*.6,cy:r*.5,r,fill:c,stroke:'#0b121b','stroke-width':.6},g);}
+  else if(p.def==='dup'){el('circle',{cx:-r*1.05,cy:0,r,fill:c,stroke:'#f8fafc','stroke-width':.9},g);el('circle',{cx:r*1.05,cy:0,r,fill:c,stroke:'#f8fafc','stroke-width':.9},g);}
   else if(p.def==='out')el('circle',{r:r*1.9,fill:c,opacity:.85},g);
   else if(p.def==='miss')el('circle',{r:r*1.05,fill:'none',stroke:c,'stroke-width':1.8},g);
   else if(p.def==='fmt')el('rect',{x:-r*.95,y:-r*.95,width:r*1.9,height:r*1.9,fill:c},g);
@@ -667,7 +667,7 @@ fab.hints=[];
   el('path',{d:'M200,236 L200,190 L290,150 L290,190 L380,150 L380,190 L470,150 L470,190 L560,150 L560,190 L650,150 L650,190 L740,150 L740,190 L830,150 L830,190 L920,150 L920,190 L1010,150 L1010,190 L1100,150 L1100,190 L1190,150 L1190,190 L1230,190 L1230,236 Z',fill:'#16273a',stroke:'#35506b','stroke-width':1.5},D);
   el('rect',{x:1170,y:104,width:22,height:70,fill:'#1d3145',stroke:'#35506b'},D);
   el('rect',{x:200,y:236,width:1030,height:208,fill:'#0f1c2a',stroke:'#35506b','stroke-width':1.5},D);
-  [['kb',300,'1','Standardisierung'],['ka',650,'2','Plausibilitätsprüfung'],['kc',990,'3','Deduplizierung']].forEach(m=>{
+  [['kb',300,'1','Standardisierung'],['ka',650,'2','Bereinigung'],['kc',990,'3','Deduplizierung']].forEach(m=>{
     card(fab,m[0],m[1],262,170,160,m[2],m[3]);
   });
   const gA=el('g',{transform:'translate(350 0)'},D),gB=el('g',{transform:'translate(-350 0)'},D);
@@ -684,7 +684,7 @@ fab.hints=[];
   el('circle',{class:'lens',cx:1048,cy:290,r:20,fill:'none',stroke:'#7b97ae','stroke-width':3},D);
   el('circle',{class:'lens2',cx:1102,cy:290,r:20,fill:'none',stroke:'#7b97ae','stroke-width':3},D);
   el('line',{x1:1000,y1:372,x2:1148,y2:372,stroke:'#4b6f8c','stroke-width':3},D);
-  const ex=[['kb',['Eckiges wird rund: ein einheitliches','Format (Datum, Einheiten, Schreibweisen).'],365],['ka',['Riesige Werte und hohle Ringe','werden aussortiert (Quarantäne).'],712],['kc',['Zwei Kreise werden zu einem –','die Kopie fällt heraus.'],1050]];
+  const ex=[['kb',['Datums- und Währungsformate oder','Produktziffern werden erkannt','und vereinheitlicht.'],365],['ka',['Fehlbuchungen, Personalkäufe und','einmalige Großeinkäufe werden','aussortiert (Quarantäne).'],700],['kc',['Doppelt übertragene Datensätze,','z. B. ein Bon nach Verbindungs-','abbruch: die Kopie fällt heraus.'],1030]];
   ex.forEach(e=>{const t=el('text',{x:e[2],y:474,class:'sub hinttxt'},U);
     e[1].forEach((ln,i)=>el('tspan',{x:e[2],dy:i?16:0},t).textContent=ln);
     fab.hints.push({key:e[0],t});});
@@ -701,8 +701,8 @@ fab.hints=[];
   pillGate(fab,'st2',715,100,160,'Transform');
   el('text',{x:1400,y:296,class:'sub'},U).textContent='aufbereitet → zum Modell';
   tank(fab,'ta',740,610,160,84,'Quarantäne','#c0843f');
-  el('text',{x:820,y:714,class:'tk2'},U).textContent='mit Fehlergrund abgelegt, geprüft und an der Quelle';
-  el('text',{x:820,y:728,class:'tk2'},U).textContent='korrigiert und neu eingespielt oder verworfen';
+  el('text',{x:820,y:714,class:'tk2'},U).textContent='Fehler: mit Fehlergrund abgelegt, an der Quelle korrigiert';
+  el('text',{x:820,y:728,class:'tk2'},U).textContent='Sondereffekte: gekennzeichnet, bleiben im Rohdatenspeicher';
   tank(fab,'tc',1080,610,160,84,'Dubletten (verworfen)','#c0843f');
   const ip=el('g',null,U);
   el('rect',{class:'ipill',x:30,y:56,width:136,height:26,rx:13},ip);
@@ -1321,9 +1321,9 @@ const QUIZ={
  dc:{p:'Beobachte: Eine Fachabteilung liefert Listen (etwa die Schichtplanung) – erst nach einem Klick fließen sie. Welche Quelle ist das?',c:'Interne Daten (manuell)',w:['Externe Daten (manuell)','Bestandsveränderung (2 x täglich)','Verkaufsdaten (Kassensystem)','Archivdaten'],why:'Manuell eingespielte interne Listen sind unregelmäßig und fehleranfällig (Formate, Tippfehler, vergessene Lieferung). Hier lohnt es sich, Zuständigkeit, Rhythmus und eine Prüfung vor dem Einspielen festzulegen.'},
  dd:{p:'Beobachte: Wettervorhersage und lokale Informationen treffen täglich zu festen Zeiten von allein ein – ohne dass jemand etwas anstößt. Welche Quelle ist das?',c:'Regelmäßige Daten (extern) – automatisch',w:['Externe Daten (manuell)','Verkaufsdaten (Kassensystem)','Interne Daten (manuell)','Archivdaten'],why:'Externe Lieferungen nach festem Rhythmus (hier täglich, teils über Nacht) per Schnittstelle sind planbar und lassen sich überwachen – hängen aber von der Verfügbarkeit und Qualität des Partners ab.'},
  de:{p:'Beobachte: Externe Daten (etwa Marktforschung) kommen erst, wenn jemand sie per Klick einspielt. Welche Quelle ist das?',c:'Externe Daten (manuell)',w:['Interne Daten (manuell)','Regelmäßige Daten (extern) – automatisch','Bestandsveränderung (2 x täglich)','Datenverschlüsselung'],why:'Externe Daten ohne feste Schnittstelle werden von Hand beschafft und eingespielt (z. B. eine Marktforschungsstudie als Datei). Das ist fehleranfällig und braucht klare Verantwortung sowie eine Eingangsprüfung.'},
- ka:{p:'Beobachte: Riesige Werte und hohle Ringe werden vom Portal erfasst und fallen aus der Linie in die Quarantäne. Wie heißt dieser Schritt?',c:'Plausibilitätsprüfung: Fehlerhaftes aussortieren',w:['Formate standardisieren','Dubletten entfernen','Datenverschlüsselung','Lastverteilung'],why:'Unplausible (z. B. negativer Bestand) oder unvollständige Datensätze werden aussortiert – mit Fehlergrund in die Quarantäne statt stillschweigend gelöscht, damit sich die Ursache an der Quelle beheben lässt. Die Prüfung kommt nach der Standardisierung: Sonst sähe z. B. ein Datum im falschen Format wie eine riesige Zahl aus und würde fälschlich aussortiert. Kein Filter ist perfekt: einzelne Fehler rutschen durch.'},
- kb:{p:'Beobachte: Eckige Elemente werden unter der Presse rund – alles hat danach dasselbe Format. Wie heißt dieser Schritt?',c:'Standardisierung: Formate vereinheitlichen',w:['Plausibilitätsprüfung: Fehlerhaftes aussortieren','Dubletten entfernen','Hyperparameter festlegen','Penetrationstest'],why:'Einheitliche Formate, Einheiten und Schreibweisen (z. B. °C statt °F, ein Datumsformat). Die Format-Konvertierung nennt AWS als Aufgabe der Stage-Schicht. Sie steht am Anfang der Transformation, weil Plausibilitätsprüfung und Dublettenabgleich nur auf einheitlichen Formaten zuverlässig funktionieren.'},
- kc:{p:'Beobachte: Aus zwei Kreisen wird einer – die Kopie fällt heraus. Wie heißt dieser Schritt?',c:'Deduplizierung: Dubletten entfernen',w:['Standardisierung: Formate vereinheitlichen','Modelltraining','Drift-Erkennung','Lastverteilung'],why:'Mehrfach gemeldete Datensätze (z. B. doppelt gebuchte Bons oder mehrfach gemeldete Veranstaltungen) werden auf einen reduziert. Das gelingt zuverlässiger nach der Standardisierung, weil gleiche Dinge dann auch gleich geschrieben sind.'}
+ ka:{p:'Beobachte: Große Kreise und hohle Ringe werden vom Portal erfasst und fallen aus der Linie in die Quarantäne. Wie heißt dieser Schritt?',c:'Bereinigung: Fehlbuchungen und Sondereffekte aussortieren',w:['Formate standardisieren','Dubletten entfernen','Datenverschlüsselung','Lastverteilung'],why:'Aussortiert wird, was das Modell in die Irre führen würde: Fehlbuchungen (z. B. stornierte Bons), unvollständige Datensätze, aber auch Sondereffekte wie Personalkäufe oder einmalige Großeinkäufe. Echte Fehler gehen mit Fehlergrund in die Quarantäne; Sondereffekte werden gekennzeichnet und für das Training ausgeklammert, im Rohdatenspeicher bleiben sie erhalten. Vorsicht: Ungewöhnlich ist nicht automatisch falsch. Der Wochenendeinkauf am Samstag ist ein echtes Muster, deshalb vergleicht man mit dem gleichen Wochentag statt mit dem Durchschnitt. Die Bereinigung kommt nach der Standardisierung, sonst sähe z. B. ein Datum im falschen Format wie eine riesige Zahl aus.'},
+ kb:{p:'Beobachte: Eckige Elemente werden unter der Presse rund – Datums- und Währungsformate oder Produktziffern werden erkannt und vereinheitlicht. Wie heißt dieser Schritt?',c:'Standardisierung: Formate vereinheitlichen',w:['Bereinigung: Fehlbuchungen und Sondereffekte aussortieren','Dubletten entfernen','Hyperparameter festlegen','Penetrationstest'],why:'Einheitliche Formate, Einheiten und Schreibweisen (z. B. °C statt °F, ein Datumsformat). Die Format-Konvertierung nennt AWS als Aufgabe der Stage-Schicht. Sie steht am Anfang der Transformation, weil Bereinigung und Dublettenabgleich nur auf einheitlichen Formaten zuverlässig funktionieren.'},
+ kc:{p:'Beobachte: Doppelt übertragene Datensätze (zwei Kreise) werden erkannt, aus zwei wird einer – die Kopie fällt heraus. Wie heißt dieser Schritt?',c:'Deduplizierung: Dubletten entfernen',w:['Standardisierung: Formate vereinheitlichen','Modelltraining','Drift-Erkennung','Lastverteilung'],why:'Mehrfach übertragene Datensätze (z. B. ein Bon, den die Kasse nach einem Verbindungsabbruch erneut sendet, oder dieselbe Veranstaltung aus zwei Quellen) werden auf einen reduziert. Das gelingt zuverlässiger nach der Standardisierung, weil gleiche Dinge dann auch gleich geschrieben sind.'}
 };
 function openQuiz(k){
   const q=QUIZ[k];
