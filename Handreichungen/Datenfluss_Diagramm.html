@@ -32,6 +32,7 @@ svg#stage{width:100%;height:auto;display:block;background:radial-gradient(ellips
 .beltl{fill:none;stroke:#566679;stroke-dasharray:2 12;animation:dash 1s linear infinite}
 .dl{fill:none;stroke:#d98a8a;stroke-width:2.2;stroke-dasharray:6 9;animation:dash 1.1s linear infinite}
 text{pointer-events:none}
+.lnk text{pointer-events:auto;cursor:pointer;fill:#4cc9f0;text-decoration:underline}
 .hinttxt{transition:opacity .4s}
 @keyframes dash{to{stroke-dashoffset:-14}}
 .lbl{fill:var(--ink);font:650 16px system-ui,sans-serif;text-anchor:middle}
@@ -841,22 +842,22 @@ function showTip(x,y,html,up){
 function hideTip(){clearTimeout(tipT);tip.style.display='none';}
 const TIP_INV='<p><b>Dateninventur – bevor Daten fließen</b></p>'
  +'<p>Die Dateninventur ist die systematische Bestandsaufnahme: Welche Daten gibt es, wo liegen sie, wem gehören sie – und sind sie <b>vollständig und konsistent</b>? Sie steht vor dem Datenfluss und entscheidet über die Machbarkeit eines Projekts.</p>'
- +'<p><b>Beispiel:</b> Liefern alle zehn Filialen Kassendaten für denselben Zeitraum? Fehlen an einzelnen Tagen Stempelungen? Heißt dasselbe Feld in zwei Systemen gleich?</p>'
- +'<small>Grundlage: Hand-Out Tag 6 (Datenvorbereitung, Dateninventur)</small>';
+ +'<p><b>Beispiel:</b> Liefern alle zehn Filialen Kassendaten für denselben Zeitraum? Fehlen an einzelnen Tagen Stempelungen? Bedeutet ein Feld überall dasselbe – etwa „Preis“ einmal Einkaufs-, einmal Verkaufspreis?</p>'
+ +'<small>Quelle: <a href="https://cloud.google.com/blog/products/gcp/preparing-and-curating-your-data-for-machine-learning" target="_blank" rel="noopener">Google Cloud: Preparing and curating your data for machine learning</a> (fehlende Werte, Konsistenz der Felder)</small>';
 const TIP_PREP='<p><b>Datenvorbereitung: Bereinigung, Transformation, Selektion</b></p>'
- +'<p>„Transform“ ist der Schritt aus ETL / ELT. Inhaltlich steckt darin die <b>Datenvorbereitung</b> mit ihren drei Arbeitsschritten. Sie beansprucht typischerweise bis zu 80 % des Aufwands eines ML-Projekts.</p>'
- +'<table><tr><th>Station im Diagramm</th><th>Arbeitsschritt (Hand-Out Tag 6)</th></tr>'
+ +'<p>„Transform“ ist der Schritt aus ETL / ELT. Inhaltlich steckt darin die <b>Datenvorbereitung</b> mit ihren drei Arbeitsschritten. Sie beansprucht oft mehr Zeit als die Optimierung der Algorithmen selbst.</p>'
+ +'<table><tr><th>Station im Diagramm</th><th>Arbeitsschritt</th></tr>'
  +'<tr><td>Standardisierung</td><td>Bereinigung (Formate vereinheitlichen) bzw. Transformation (Einheiten angleichen)</td></tr>'
  +'<tr><td>Bereinigung</td><td>Bereinigung</td></tr>'
  +'<tr><td>Dubletten auflösen</td><td>Bereinigung</td></tr>'
  +'<tr><td>Selektion</td><td>Selektion</td></tr>'
  +'<tr><td>Merkmale bilden (Seite Modellentwicklung)</td><td>Transformation (abgeleitete Merkmale berechnen)</td></tr></table>'
- +'<small>Grundlage: Hand-Out Tag 6 (Die drei Arbeitsschritte)</small>';
+ +'<small>Quellen: <a href="https://www.tensorflow.org/tfx/guide/tft_bestpractices" target="_blank" rel="noopener">Google/TensorFlow: Data preprocessing for ML</a> · <a href="https://cloud.google.com/blog/products/gcp/preparing-and-curating-your-data-for-machine-learning" target="_blank" rel="noopener">Google Cloud: Preparing and curating your data for ML</a></small>';
 const TIP_INT='<p><b>Datenintegration – die Brücke zum Modell</b></p>'
  +'<p>Datenintegration führt Daten aus verschiedenen internen Quellen zusammen, vereinheitlicht sie und schafft so eine verlässliche Grundlage für das Training. Sie ist die Brücke zwischen Datenvorbereitung und Modellbau – hier entscheidet sich, ob die Qualität aus den Quellsystemen erhalten bleibt oder unterwegs verloren geht.</p>'
  +'<p><b>Nutzt ihr nur Daten, die zum Entscheidungszeitpunkt vorliegen?</b> Sonst droht Zukunftswissen im Training (Look-ahead Bias bzw. Data Leakage): Im Test glänzt das Modell, in der Praxis versagt es. Nicht zu verwechseln mit Datenabfluss – dort verlassen Daten unkontrolliert das Unternehmen.</p>'
  +'<p><b>Wie viele gelabelte Beispiele gibt es je Kategorie?</b> Googles Faustregel: 10 × Merkmalszahl bei einer Klassifikation, 50 × bei der Vorhersage eines Zahlenwerts. Ein Feld mit k Kategorien zählt als k − 1 Merkmale. Liegt man weit darunter, ist das ein Machbarkeitsproblem.</p>'
- +'<small>Quellen: Hand-Out Tag 6 · <a href="https://cloud.google.com/blog/products/gcp/preparing-and-curating-your-data-for-machine-learning" target="_blank" rel="noopener">Google Cloud: Preparing and curating your data for ML</a></small>';
+ +'<small>Quellen: <a href="https://aws.amazon.com/what-is/data-integration" target="_blank" rel="noopener">AWS: What is data integration?</a> · <a href="https://cloud.google.com/blog/products/gcp/preparing-and-curating-your-data-for-machine-learning" target="_blank" rel="noopener">Google Cloud: Preparing and curating your data for ML</a></small>';
 const TIP_MLOPS='<p><b>MLOps – Machine Learning Operations</b></p>'
  +'<p>MLOps überträgt Prinzipien aus DevOps (<b>Automatisierung, Monitoring</b>) auf den <b>gesamten</b> Lebenszyklus – von der Datensammlung über Training und Validierung bis zum Deployment und Betrieb.</p>'
  +'<p><b>Bausteine</b></p><ul style="margin:0 0 8px;padding-left:18px">'
@@ -876,32 +877,32 @@ const TIP_SPLIT='<p><b>Training · Validierung · Test</b></p>'
  +'<tr><td>Trainingsdaten</td><td>Das Modell lernt daraus.</td></tr>'
  +'<tr><td>Validierungsdaten</td><td>Feinabstimmung der Einstellungen (Hyperparameter) und frühzeitiges Erkennen von Overfitting – während der Entwicklung.</td></tr>'
  +'<tr><td>Testdaten</td><td>Einmalige, abschließende Prüfung des ausgewählten Modells – für eine unvoreingenommene Bewertung.</td></tr></table>'
- +'<p>Bei Zeitreihen wie Absatzdaten wird zeitlich getrennt, nicht zufällig gemischt. Statt eines festen Validierungsanteils kann man auch eine <b>Kreuzvalidierung</b> innerhalb der Trainingsdaten nutzen (so im Microsoft-Beispiel aus Tag 9). Auch Validierungs- und Testdaten „nutzen sich ab“, wenn man sie immer wieder für Entscheidungen verwendet.</p>'
- +'<small>Quellen: <a href="https://developers.google.com/machine-learning/crash-course/overfitting/dividing-datasets" target="_blank" rel="noopener">Google: Dividing the original dataset</a> · Kursmaterial Tag 9</small>';
+ +'<p>Bei Zeitreihen wie Absatzdaten wird zeitlich getrennt, nicht zufällig gemischt. Statt eines festen Validierungsanteils kann man auch eine <b>Kreuzvalidierung</b> innerhalb der Trainingsdaten nutzen. Auch Validierungs- und Testdaten „nutzen sich ab“, wenn man sie immer wieder für Entscheidungen verwendet.</p>'
+ +'<small>Quellen: <a href="https://developers.google.com/machine-learning/crash-course/overfitting/dividing-datasets" target="_blank" rel="noopener">Google: Dividing the original dataset</a></small>';
 const TIP_OVER='<p><b>Overfitting vermeiden</b></p>'
  +'<p>Overfitting (Überanpassung): Das Modell lernt die Beispiele auswendig statt der Regel – im Training sehr gut, auf neuen Daten schlecht. Erkennbar daran, dass die Kennzahlen auf Trainings- und Validierungsdaten deutlich auseinanderfallen.</p>'
  +'<table><tr><th>Technik</th><th>Idee</th></tr>'
  +'<tr><td>Regularisierung</td><td>bestraft zu komplexe Modelle („Budgetdeckel“ für Komplexität)</td></tr>'
- +'<tr><td>Dropout</td><td>nur bei neuronalen Netzen: In jedem Durchlauf fällt ein zufälliger Teil der Neuronen aus.</td></tr>'
- +'<tr><td>Early Stopping</td><td>Training stoppt, sobald sich die Güte auf den Validierungsdaten nicht mehr verbessert.</td></tr>'
+ +'<tr><td>Dropout</td><td>nur bei neuronalen Netzen: In jedem Trainingsschritt fällt ein zufälliger Teil der Neuronen aus.</td></tr>'
+ +'<tr><td>Early Stopping</td><td>Training stoppt, sobald sich die Güte auf den Validierungsdaten wieder verschlechtert.</td></tr>'
  +'<tr><td>Kreuzvalidierung</td><td>Daten in mehrere Teile zerlegen, jeder Teil prüft einmal – zeigt, wie stabil die Leistung ist.</td></tr></table>'
  +'<p>Ziel ist <b>Generalisierungsfähigkeit</b>: gute Ergebnisse auf Daten, die das Modell nie gesehen hat.</p>'
- +'<small>Grundlage: Kursmaterial Tag 9 (Vier Techniken gegen Overfitting)</small>';
+ +'<small>Quellen: <a href="https://developers.google.com/machine-learning/crash-course/overfitting" target="_blank" rel="noopener">Google: Generalization and overfitting</a> · <a href="https://developers.google.com/machine-learning/crash-course/overfitting/regularization" target="_blank" rel="noopener">Google: Regularization, Early Stopping</a> · <a href="https://developers.google.com/machine-learning/crash-course/training-neural-networks/best-practices" target="_blank" rel="noopener">Google: Dropout</a></small>';
 const TIP_TESTS='<p><b>Testverfahren</b></p>'
  +'<table><tr><th>Testart</th><th>Was wird geprüft?</th></tr>'
  +'<tr><td>Black-Box-Test</td><td>nur Ein- und Ausgabe: Verhält sich das System wie spezifiziert – ohne Blick ins Innere. Beispiel: der Probelauf im Test (Staging) der Modellbereitstellung.</td></tr>'
  +'<tr><td>White-Box-Test</td><td>die interne Logik und Struktur des Algorithmus: Welche Merkmale tragen die Entscheidung, mit welchem Gewicht? Stärkt Robustheit und Sicherheit.</td></tr>'
  +'<tr><td>Unit-Test</td><td>einzelne Code- oder Datenverarbeitungskomponenten, z. B. eine Station der Datenpipeline: Wandelt die Standardisierung jedes Datumsformat korrekt um?</td></tr></table>'
- +'<p>Kennzahlen sagen, wie gut ein Modell im Durchschnitt ist – nicht, ob es vor dem Einsatz geprüft wurde.</p>'
- +'<small>Grundlage: Kursmaterial Tag 9 (Testverfahren)</small>';
+ +'<p>Kennzahlen sagen, wie gut ein Modell im Durchschnitt ist – nicht, ob es vor dem Einsatz geprüft wurde. Dazu gehören auch Robustheitstests, etwa mit fehlenden oder unerwarteten Eingaben.</p>'
+ +'<small>Quellen: <a href="https://learn.microsoft.com/en-us/azure/well-architected/ai/test" target="_blank" rel="noopener">Microsoft: Test and evaluate AI workloads</a> · <a href="https://research.google/pubs/the-ml-test-score-a-rubric-for-ml-production-readiness-and-technical-debt-reduction/" target="_blank" rel="noopener">Google Research: The ML Test Score</a> · <a href="https://learn.microsoft.com/en-us/azure/machine-learning/how-to-machine-learning-interpretability?view=azureml-api-2" target="_blank" rel="noopener">Microsoft: Model interpretability</a></small>';
 const TIP_XAI='<p><b>Erklärbarkeit (XAI)</b></p>'
  +'<p>Viele Modelle sind eine „Black Box“: Man sieht Ein- und Ausgabe, aber nicht, warum entschieden wurde. Methoden der erklärbaren KI (XAI) machen Entscheidungen nachvollziehbar – nötig auch, um Transparenzpflichten zu erfüllen, z. B. bei automatisierten Einzelentscheidungen (Art. 22 DSGVO) oder dem Recht auf Erläuterung (Art. 86 EU AI Act).</p>'
  +'<p><b>Global</b> erklärt, worauf das Modell insgesamt achtet; <b>lokal</b>, warum ein einzelner Fall so entschieden wurde. Erklärungen sind Näherungen, keine Messwerte.</p>'
- +'<small>Grundlage: Kursmaterial Tag 9 (Erklärbare KI)</small>';
+ +'<small>Quellen: <a href="https://learn.microsoft.com/en-us/azure/machine-learning/how-to-machine-learning-interpretability?view=azureml-api-2" target="_blank" rel="noopener">Microsoft: Model interpretability</a> · <a href="https://docs.cloud.google.com/vertex-ai/docs/explainable-ai/overview" target="_blank" rel="noopener">Google Cloud: Vertex Explainable AI</a> · <a href="https://eur-lex.europa.eu/eli/reg/2016/679/oj/eng" target="_blank" rel="noopener">DSGVO (EUR-Lex)</a> · <a href="https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=OJ%3AL_202401689" target="_blank" rel="noopener">EU AI Act (EUR-Lex)</a></small>';
 const TIP_DOC='<p><b>Dokumentation der Evaluierung</b></p>'
- +'<p>Evaluierungsmethoden und Leistungskennzahlen (z. B. Genauigkeit, Präzision, Trefferquote, Robustheit) gehören in die technische Dokumentation des Systems – ebenso der gewählte <b>Schwellenwert</b> und wer ihn verantwortet. Das macht die Bewertung nachvollziehbar und prüfbar (Audit).</p>'
- +'<p>Ein Wert allein reicht nicht: Kennzahlen auf Trainings-, Validierungs- und Testdaten nebeneinanderstellen.</p>'
- +'<small>Grundlage: Kursmaterial Tag 9 (Kernbotschaften) · <a href="https://developers.google.com/machine-learning/crash-course/classification/accuracy-precision-recall" target="_blank" rel="noopener">Google: Accuracy, precision, recall</a></small>';
+ +'<p>Evaluierungsmethoden und Leistungskennzahlen (z. B. Genauigkeit, Präzision, Trefferquote, Robustheit) gehören in die technische Dokumentation des Systems – ebenso der gewählte <b>Schwellenwert</b> und wer ihn verantwortet. Für Hochrisiko-Systeme schreibt der EU AI Act die technische Dokumentation vor (Art. 11, Anhang IV).</p>'
+ +'<p>Ein Wert allein reicht nicht: mehrere Kennzahlen kombinieren und auf Trainings-, Validierungs- und Testdaten nebeneinanderstellen.</p>'
+ +'<small>Quellen: <a href="https://learn.microsoft.com/en-us/azure/well-architected/ai/test" target="_blank" rel="noopener">Microsoft: Test and evaluate AI workloads</a> · <a href="https://developers.google.com/machine-learning/crash-course/classification/accuracy-precision-recall" target="_blank" rel="noopener">Google: Accuracy, precision, recall</a> · <a href="https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=OJ%3AL_202401689" target="_blank" rel="noopener">EU AI Act (EUR-Lex)</a></small>';
 
 const TIP_MON='<p><b>Was das Monitoring im Betrieb überwacht</b></p>'
  +'<table><tr><th>Bereich</th><th>Worum es geht</th></tr>'
@@ -912,6 +913,7 @@ const TIP_MON='<p><b>Was das Monitoring im Betrieb überwacht</b></p>'
  +'<p><b>Model Drift</b> hat zwei Ursachen: veränderte Eingabedaten (Input-Drift) oder eine veränderte Realität – etwa ein neues Kaufverhalten bei gleichen Eingaben.</p>'
  +'<p><b>Feedback-Schleife:</b> Die tatsächlichen Verkäufe fließen zurück und werden mit den Prognosen verglichen; daraus entsteht automatisch oder nach menschlicher Prüfung ein Retraining. Diese Schleife ist zugleich der Nachweis kontinuierlicher Verbesserung, die ein KI-Managementsystem (ISO/IEC 42001) verlangt. Dazu kommen regelmäßige Robustheits- und Leistungsprüfungen im Betrieb.</p>'
  +'<small>Quellen: <a href="https://learn.microsoft.com/en-us/azure/machine-learning/concept-model-monitoring?view=azureml-api-2" target="_blank" rel="noopener">Microsoft: Model monitoring in production</a> · <a href="https://docs.aws.amazon.com/sagemaker/latest/dg/model-monitor.html" target="_blank" rel="noopener">AWS: SageMaker Model Monitor</a></small>';
+function LTX(p,x,y,t,url,st){const a=el('a',{href:url,target:'_blank',rel:'noopener',class:'lnk'},p);const e=el('text',{x,y,class:'tk2',style:'text-anchor:start;'+(st||'')},a);e.textContent=t;return a;}
 function infoI(sc,cx,cy,getHtml,up,ax,ay){
   const g=el('g',{style:'cursor:pointer'},sc.L.ui);
   el('circle',{cx,cy,r:11,fill:'#0f2a3a',stroke:'#4cc9f0'},g);
@@ -1109,7 +1111,7 @@ trn.sources=[{pipe:'tIn',rate:4,col:COL.clean}];
   TX(U,1430,242,'weiter zur Bereitstellung','tk2');
   // Arbeitsschritte eines Data Scientists
   TX(U,24,392,'So entwickelt ein Data Scientist ein Modell','lbl','text-anchor:start;font-size:18px');
-  TX(U,24,412,'nach dem Beispielprojekt „Steigt oder fällt die Microsoft-Aktie morgen?“ (Kursmaterial Tag 9), übertragen auf den Handel','sub','text-anchor:start;font-size:12.5px');
+  TX(U,24,412,'nach dem Beispielprojekt eines Data Scientists („Steigt oder fällt die Microsoft-Aktie morgen?“), übertragen auf den Handel','sub','text-anchor:start;font-size:12.5px');
   const ST=[
    ['Ziel festlegen',['Was genau soll vorhergesagt','werden? Die Antwort, die das','Modell lernen soll, heißt','Zielvariable (Target).'],['„Verkauft Filiale F3 morgen','mehr Grillkohle als üblich?“']],
    ['Merkmale bilden',['Aus Vermutungen werden Zahlen','(Feature Engineering). Nur Infor-','mationen nutzen, die am Prognose-','tag schon bekannt sind – sonst','entsteht ein Datenleck.'],['Wochentag, Wetterprognose,','Absatz der letzten 7 / 90 Tage']],
@@ -1194,8 +1196,8 @@ const val=mkScene('scVal');val.g.classList.add('off');val.st={in:0};
   TX(U,1190,452,'So liest Du die Kennzahlen','lbl','text-anchor:start;font-size:15px');
   const gl=para(U,1190,474,17,'font-size:12.5px');
   gl.set(['Genauigkeit (Accuracy): Anteil aller richtigen','Einstufungen.','Präzision (Precision): Anteil der Angeschriebenen,','die wirklich kaufen (wenig „unnötige Coupons“).','Trefferquote (Recall, Sensitivität): Anteil aller Käufer:innen,','die erreicht werden (wenig „verpasste Chancen“).','Bei seltenen Ereignissen täuscht die Genauigkeit.']);
-  TX(U,1190,590,'Quelle: Google, Machine Learning Crash Course','tk2','text-anchor:start');
-  TX(U,1190,606,'(Classification: Accuracy, recall, precision)','tk2','text-anchor:start');
+  TX(U,1190,590,'Quelle:','tk2','text-anchor:start');
+  LTX(U,1228,590,'Google: Accuracy, precision, recall','https://developers.google.com/machine-learning/crash-course/classification/accuracy-precision-recall');
   pillGate(val,'k1',1190,294,350,'Frage 1: Sind 90 % Genauigkeit gut?');pq(val);
   pillGate(val,'k2',1190,330,350,'Frage 2: Kein Käufer darf fehlen');pq(val);
   pillGate(val,'k3',1190,366,350,'Frage 3: Coupons sind teuer');pq(val);
@@ -1224,7 +1226,7 @@ const val=mkScene('scVal');val.g.classList.add('off');val.st={in:0};
   const _u=upd;
   val.thr=v=>{thr=v;base=false;_u();};
   upd();
-  // Regeln der Validierung (Kursmaterial Tag 9)
+  // Regeln der Validierung
   TX(U0,24,478,'Worauf es bei der Validierung ankommt','lbl','text-anchor:start;font-size:18px');
   const RU=[
    ['Testdaten bleiben unangetastet',['Geprüft wird auf Daten, die das Modell nie gesehen','hat. Wer immer wieder auf das Testergebnis schaut','und nachbessert, lernt den Test auswendig.']],
@@ -1246,7 +1248,9 @@ const val=mkScene('scVal');val.g.classList.add('off');val.st={in:0};
     const sh=()=>showTip(x+145,684,p[1](),true);
     h.addEventListener('mouseenter',sh);h.addEventListener('mouseleave',hideTipSoon);h.addEventListener('click',e=>{e.stopPropagation();sh();});
   });
-  TX(U0,24,650,'Grundlagen: Kursmaterial Tag 9 (Modellvalidierung; Beispielprojekt „Steigt oder fällt die Microsoft-Aktie morgen?“) sowie Google, Machine Learning Crash Course.','tk2','text-anchor:start;font-size:11px');
+  TX(U0,24,650,'Quellen:','tk2','text-anchor:start;font-size:11px');
+  LTX(U0,72,650,'Google: Dividing the original dataset','https://developers.google.com/machine-learning/crash-course/overfitting/dividing-datasets','font-size:11px');
+  LTX(U0,290,650,'Google: Accuracy, precision, recall','https://developers.google.com/machine-learning/crash-course/classification/accuracy-precision-recall','font-size:11px');
 })();
 
 /* ============ VOLLSEITE: Modellbereitstellung ============ */
@@ -1336,8 +1340,8 @@ function startTest(){D_.phase='testing';D_.tn=0;D_.q=0;dep.tm.setAttribute('opac
   TX(U,1190,290,'Stufen der Bereitstellung','lbl','text-anchor:start;font-size:15px');
   const t=para(U,1190,312,17,'font-size:12.5px');
   t.set(['1  Modellregister: validierte Version liegt bereit.','2  Test (Staging): Probelauf mit Testanfragen (Black-Box-Test).','    Erst wenn die Modellqualität reicht, wird die Freigabe aktiv.','3  Freigabe: Der Mensch entscheidet („Ja“ / „Nein“).','4  Produktion: Das Modell beantwortet Anfragen.','    Vorher warten die Anfragen der Filialen.','5  Danach beobachtet das Monitoring den Betrieb.']);
-  TX(U,1190,444,'Quelle: Microsoft, Machine learning operations (MLOps v2),','tk2','text-anchor:start');
-  TX(U,1190,460,'Model deployment (outer loop)','tk2','text-anchor:start');
+  TX(U,1190,444,'Quelle:','tk2','text-anchor:start');
+  LTX(U,1228,444,'Microsoft: Machine learning operations (MLOps v2)','https://learn.microsoft.com/en-us/azure/architecture/ai-ml/guide/machine-learning-operations-v2');
   const nb=btn(dep,1190,482,240,30,'Neue Version bereitstellen',()=>sendModel());
   dep.tick=(sc,dt)=>{
     if(D_.lastVer===0){sc.t0=(sc.t0||0)+dt;if(sc.t0>.6)sendModel();}
@@ -1540,7 +1544,7 @@ main.g.style.display='none';
 /* ============ Quiz ============ */
 const N={st1:'Datenquellen & Datenerfassung',raw:'Load (Rohdatenspeicher / Raw Layer)',st2:'Transform (Cleaning & Standardisierung)',st3:'Modelltraining (Model Training)',st4:'Modellvalidierung',st5:'Deployment (Bereitstellung)',st6:'Monitoring & Drift-Erkennung'};
 const QUIZ={
- k1:{t:'Kennzahl wählen',p:'Eine Handelskette verschickt Coupons. Nur 10 % der Kund:innen reagieren. Ein Modell sagt für alle voraus „kauft nicht“ und erreicht damit 90 % Genauigkeit (Accuracy). Was zeigt das Beispiel?',c:'Die Genauigkeit allein täuscht bei seltenen Ereignissen; die Trefferquote (Recall) wäre 0 %.',w:['Das Modell ist sehr gut, weil 90 % richtig sind.','Die Präzision (Precision) beträgt 90 %.','Mehr Daten würden die Genauigkeit automatisch verbessern.'],no:'Rechne nach: Wie viele der tatsächlichen Käufer:innen würde dieses Modell erreichen?',why:'Bei seltenen Ereignissen erreicht schon ein nutzloses Modell, das immer die häufige Klasse vorhersagt, eine hohe Genauigkeit. Hier werden alle Käufer:innen verpasst, die Trefferquote liegt bei 0 %. Deshalb braucht man Präzision und Trefferquote („Genauigkeit kann lügen“, Kursmaterial Tag 9; Google, Machine Learning Crash Course).'},
+ k1:{t:'Kennzahl wählen',p:'Eine Handelskette verschickt Coupons. Nur 10 % der Kund:innen reagieren. Ein Modell sagt für alle voraus „kauft nicht“ und erreicht damit 90 % Genauigkeit (Accuracy). Was zeigt das Beispiel?',c:'Die Genauigkeit allein täuscht bei seltenen Ereignissen; die Trefferquote (Recall) wäre 0 %.',w:['Das Modell ist sehr gut, weil 90 % richtig sind.','Die Präzision (Precision) beträgt 90 %.','Mehr Daten würden die Genauigkeit automatisch verbessern.'],no:'Rechne nach: Wie viele der tatsächlichen Käufer:innen würde dieses Modell erreichen?',why:'Bei seltenen Ereignissen erreicht schon ein nutzloses Modell, das immer die häufige Klasse vorhersagt, eine hohe Genauigkeit. Hier werden alle Käufer:innen verpasst, die Trefferquote liegt bei 0 %. Deshalb braucht man Präzision und Trefferquote (Google, Machine Learning Crash Course).'},
  k2:{t:'Kennzahl wählen',p:'Die Coupons sind sehr günstig, aber keine kaufbereite Person soll übersehen werden. Auf welche Kennzahl kommt es vor allem an?',c:'Trefferquote (Recall)',w:['Präzision (Precision)','Genauigkeit (Accuracy)','Anzahl der Kund:innen im Verteiler'],no:'Denke daran, was „übersehen“ in der Matrix bedeutet: Käufer:innen, die nicht angeschrieben werden.',why:'Die Trefferquote ist der Anteil aller tatsächlichen Käufer:innen, die das Modell erkennt. Wer nichts verpassen will, senkt den Schwellenwert: Die Trefferquote steigt, dafür sinkt meist die Präzision – es gehen also mehr unnötige Coupons raus.'},
  k3:{t:'Kennzahl wählen',p:'Jede Kampagne kostet pro angeschriebener Person viel Geld (z. B. persönliches Angebot mit Beratungstermin). Welche Kennzahl sollte jetzt im Vordergrund stehen?',c:'Präzision (Precision)',w:['Trefferquote (Recall)','Genauigkeit (Accuracy)','Anzahl der Filialen'],no:'Wer teuer anschreibt, will vor allem wenige Fehlversuche. Welche Zelle der Matrix ist das?',why:'Die Präzision ist der Anteil der Angeschriebenen, die wirklich kaufen. Bei hohen Kosten je Ansprache zählen unnötige Ansprachen (falsch-positiv) stark, deshalb wird der Schwellenwert höher gesetzt. Der Preis dafür: Die Trefferquote sinkt, einige Käufer:innen werden verpasst. Welcher Fehler teurer ist, ist eine Geschäftsentscheidung.'},
  dz:{p:'Beobachte: Mitarbeiterinnen und Mitarbeiter stempeln in den Läden selbst ein und aus, auch Pausen werden erfasst. Die Einträge fließen laufend, mit Spitzen zu Schichtbeginn und Schichtende. Welche Quelle ist das?',c:'Registrierte Arbeitszeiten (Stechuhr)',w:['Verkaufsdaten (Kassensystem)','Interne Daten (manuell)','Externe Daten (manuell)','Bestandsveränderung (2 x täglich)'],why:'Stechuhr-Daten sind Beschäftigtendaten und damit personenbezogen. Dieselbe Quelle dient zwei Zwecken: Für die Gehaltsabrechnung wird der Personenbezug gebraucht, für die Kapazitätsplanung gegenüber der Nachfrage genügen anonymisierte oder zusammengefasste Werte. Deshalb werden anonymisierte Kopien abgezweigt, während die vollständigen Daten zur Lohnbuchhaltung weiterlaufen.'},
