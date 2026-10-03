@@ -388,7 +388,7 @@ const mkLayers=(parent,x,w)=>{const o={};RAWORD.forEach(k=>{o[k]=el('rect',{x,wi
 const rawUpdate=()=>{for(const v of raw.views){
   const tot=RAWORD.reduce((a,k)=>a+raw.by[k],0);const sc=tot?Math.min(.15,v.max/tot):.15;let y=v.base;
   for(const k of RAWORD){const h=raw.by[k]*sc;y-=h;v.layers[k].setAttribute('y',y);v.layers[k].setAttribute('height',h);}
-  v.t1.textContent=raw.total+' gespeichert';v.t2.textContent='Rückstand: '+raw.q.length;}};
+  v.t1.textContent=raw.total+' gespeichert';v.t2.textContent='';}};
 const opsUpdate=i=>raw.opsViews[i].forEach(t=>{t.textContent=raw.ops[i]+[' Buchungen',' Meldungen',' Stempelungen'][i];});
 const rawSink=p=>{raw.q.push({col:p.col,def:p.def,sens:p.sens});raw.total++;const k=COLKEY[p.col];if(k)raw.by[k]++;rawUpdate();};
 const opsSink=i=>()=>{raw.ops[i]++;opsUpdate(i);};
@@ -579,7 +579,7 @@ main.tick=(sc,dt)=>{tickSources(sc,dt,locked('st1')||locked('ext'));updateClocks
   el('rect',{x:518,y:296,width:24,height:16,rx:3,fill:'#9fb3c8'},U);
   el('text',{x:530,y:330,class:'tk2'},U).textContent='schreibgeschützt';
   const rt1=el('text',{x:530,y:350,class:'tk'},U);rt1.textContent='0 gespeichert';
-  const rt2=el('text',{x:530,y:366,class:'tk2'},U);rt2.textContent='Rückstand: 0';
+  const rt2=el('text',{x:530,y:366,class:'tk2'},U);rt2.textContent='';
   raw.views.push({layers:rf,t1:rt1,t2:rt2,max:88,base:376});
   // Extract: oberhalb der Sammelleitung
   const gx=el('g',{class:'card','data-k':'ext'},D);
@@ -703,7 +703,7 @@ fab.hints=[];
   el('text',{x:108,y:102,class:'sub'},U).textContent='Gespiegelte Rohdaten';el('text',{x:108,y:116,class:'tk2'},U).textContent='(aus Extract)';
   pillGate(fab,'raw',48,262,120,'Load');
   const la=el('text',{x:108,y:390,class:'tk'},U);la.textContent='0 gespeichert';
-  const lb=el('text',{x:108,y:408,class:'tk2'},U);lb.textContent='Rückstand: 0';
+  const lb=el('text',{x:108,y:408,class:'tk2'},U);lb.textContent='';
   el('text',{x:108,y:444,class:'tk2'},U).textContent='Rohdatenspeicher (Raw Layer)';
   el('text',{x:108,y:458,class:'tk2'},U).textContent='schreibgeschützt';
   raw.views.push({layers:rfL,t1:la,t2:lb,max:110,base:424});
@@ -760,10 +760,6 @@ src.tick=(sc,dt)=>{tickSources(sc,dt,false);updateClocks();};
   (()=>{const g=el('g',{style:'cursor:pointer'},U);el('rect',{class:'ipill',x:520,y:14,width:140,height:26,rx:13},g);el('text',{x:590,y:32,class:'tk'},g).textContent='ⓘ Dateninventur';const h=el('rect',{class:'vhit',x:520,y:14,width:140,height:26,rx:13,fill:'transparent'},g);h.addEventListener('mouseenter',()=>showTip(590,44,TIP_INV));h.addEventListener('mouseleave',hideTipSoon);h.addEventListener('click',e=>{e.stopPropagation();showTip(590,44,TIP_INV);});})();
   pillGate(src,'da',24,50,350,'Verkaufsdaten (Kassensystem)');
   pillGate(src,'db',24,172,350,'Bestandsveränderung (2 x täglich)');
-  pillGate(src,'dc',24,290,350,'Interne Daten (manuell)');
-  pillGate(src,'dd',24,388,350,'Regelmäßige Daten (extern) – automatisch');
-  pillGate(src,'de',24,540,350,'Externe Daten (manuell)');
-  pillGate(src,'dz',24,634,350,'Registrierte Arbeitszeiten (Stechuhr)');
   src.hints=[];
   const cap=(y,t,x,key)=>{const e=el('text',{x:x||390,y,class:'tk2 tl hinttxt'},U);e.textContent=t;src.hints.push({key,t:e});};
   cap(68,'Kassenbewegungen aus 10 Läden · laufend',390,'da');
@@ -807,7 +803,7 @@ src.tick=(sc,dt)=>{tickSources(sc,dt,false);updateClocks();};
   const rf2=mkLayers(D,1184,142);
   el('text',{x:1255,y:348,class:'lbl',style:'font-size:14px'},U).textContent='Rohdatenspeicher';
   const a=el('text',{x:1255,y:402,class:'tk'},U);a.textContent='0 gespeichert';
-  const b=el('text',{x:1255,y:419,class:'tk2'},U);b.textContent='Rückstand: 0';
+  const b=el('text',{x:1255,y:419,class:'tk2'},U);b.textContent='';
   raw.views.push({layers:rf2,t1:a,t2:b,max:70,base:436});
   mkClock(src);
 })();
@@ -856,7 +852,7 @@ const TIP_PREP='<p><b>Datenvorbereitung: Bereinigung, Transformation, Selektion<
 const TIP_INT='<p><b>Datenintegration – die Brücke zum Modell</b></p>'
  +'<p>Datenintegration führt Daten aus verschiedenen internen Quellen zusammen, vereinheitlicht sie und schafft so eine verlässliche Grundlage für das Training. Sie ist die Brücke zwischen Datenvorbereitung und Modellbau – hier entscheidet sich, ob die Qualität aus den Quellsystemen erhalten bleibt oder unterwegs verloren geht.</p>'
  +'<p><b>Nutzt ihr nur Daten, die zum Entscheidungszeitpunkt vorliegen?</b> Sonst droht Zukunftswissen im Training (Look-ahead Bias bzw. Data Leakage): Im Test glänzt das Modell, in der Praxis versagt es. Nicht zu verwechseln mit Datenabfluss – dort verlassen Daten unkontrolliert das Unternehmen.</p>'
- +'<p><b>Wie viele gelabelte Beispiele gibt es je Kategorie?</b> Googles Faustregel: 10 × Merkmalszahl bei einer Klassifikation, 50 × bei der Vorhersage eines Zahlenwerts. Ein Feld mit k Kategorien zählt als k − 1 Merkmale. Liegt man weit darunter, ist das ein Machbarkeitsproblem.</p>'
+ +'<p><b>Wie viele gelabelte Beispiele gibt es je Kategorie?</b> Googles Faustregel: 10 × Merkmalszahl bei einer Klassifikation, 50 × bei der Vorhersage eines Zahlenwerts.</p>'
  +'<small>Quellen: <a href="https://aws.amazon.com/what-is/data-integration" target="_blank" rel="noopener">AWS: What is data integration?</a> · <a href="https://cloud.google.com/blog/products/gcp/preparing-and-curating-your-data-for-machine-learning" target="_blank" rel="noopener">Google Cloud: Preparing and curating your data for ML</a></small>';
 const TIP_MLOPS='<p><b>MLOps – Machine Learning Operations</b></p>'
  +'<p>MLOps überträgt Prinzipien aus DevOps (<b>Automatisierung, Monitoring</b>) auf den <b>gesamten</b> Lebenszyklus – von der Datensammlung über Training und Validierung bis zum Deployment und Betrieb.</p>'
@@ -1309,7 +1305,6 @@ function startTest(){D_.phase='testing';D_.tn=0;D_.q=0;dep.tm.setAttribute('opac
   el('path',{d:'M622,346 Q650,326 678,346 Q650,366 622,346Z',fill:'#0f2a3a',stroke:'#e8eef5','stroke-width':1.8},D);
   el('circle',{cx:650,cy:346,r:7,fill:'#38bdf8'},D);el('circle',{cx:650,cy:346,r:3,fill:'#0b121b'},D);
   const pend=el('rect',{x:640,y:370,width:20,height:20,fill:COL.model,stroke:'#fff','stroke-width':.8,transform:'rotate(45 650 380)',opacity:0},U);
-  const askT=TX(U,650,460,'Entscheidung: Mensch','tk2');
   const yes=btn(dep,596,408,52,26,'Ja',()=>{if(!D_.waiting)return;dep.wait(false);mkP(dep,dep.pipes.rel3,{kind:'model',col:COL.model,r:5.5,off:0});askT.textContent='v'+D_.testVer+' freigegeben';});
   const no=btn(dep,652,408,52,26,'Nein',()=>{if(!D_.waiting)return;dep.wait(false);puff(dep,650,380,COL.model);D_.phase='idle';askT.textContent='v'+D_.testVer+' abgelehnt';});
   dep.wait=on=>{D_.waiting=on;pend.setAttribute('opacity',on?1:0);[yes,no].forEach(b=>{b.g.setAttribute('opacity',on?1:.3);b.g.style.pointerEvents=on?'':'none';});if(on){D_.phase='await';askT.textContent='Freigeben? Bitte entscheiden';}};
