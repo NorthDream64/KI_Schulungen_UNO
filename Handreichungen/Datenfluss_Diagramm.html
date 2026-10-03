@@ -1175,12 +1175,14 @@ const val=mkScene('scVal');val.g.classList.add('off');val.st={in:0};
   const MX=[430,550],MY=[448,528];
   TX(U,487,438,'angeschrieben','tk');TX(U,607,438,'nicht angeschrieben','tk');
   TX(U,424,492,'kauft','tk','text-anchor:end');TX(U,424,572,'kauft nicht','tk','text-anchor:end');
-  const cell=(cx,cy,col,name)=>{
-    el('rect',{x:cx,y:cy,width:114,height:74,rx:8,fill:col,'fill-opacity':.22,stroke:col},U);
+  const CELLR={};
+  const cell=(cx,cy,col,name,key)=>{
+    CELLR[key]=el('rect',{x:cx,y:cy,width:114,height:74,rx:8,fill:col,'fill-opacity':.22,stroke:col,style:'transition:stroke-width .2s,fill-opacity .2s'},U);
     const n=TX(U,cx+57,cy+38,'0','lbl','font-size:26px');TX(U,cx+57,cy+60,name,'tk2');return n;
   };
-  const cTP=cell(MX[0],MY[0],'#4ade80','richtig erkannt'),cFN=cell(MX[1],MY[0],'#f59e0b','verpasst'),
-        cFP=cell(MX[0],MY[1],'#f59e0b','unnötiger Coupon'),cTN=cell(MX[1],MY[1],'#4ade80','richtig erkannt');
+  const cTP=cell(MX[0],MY[0],'#4ade80','richtig erkannt','TP'),cFN=cell(MX[1],MY[0],'#f59e0b','verpasst','FN'),
+        cFP=cell(MX[0],MY[1],'#f59e0b','unnötiger Coupon','FP'),cTN=cell(MX[1],MY[1],'#4ade80','richtig erkannt','TN');
+  const hiCells=keys=>{for(const k in CELLR){const on=keys&&keys.includes(k);CELLR[k].setAttribute('stroke-width',on?3.5:1);CELLR[k].setAttribute('fill-opacity',keys?(on?.4:.06):.22);}};
   // Schwellenwert
   const SX0=440,SX1=660;let thr=.5,base=false,mode=null;   // mode: null = Modell, 'none' = niemand, 'all' = alle
   const COST=2,MARGIN=15;   // Annahmen: Kosten je Anschreiben, Deckungsbeitrag je Kauf
@@ -1206,25 +1208,28 @@ const val=mkScene('scVal');val.g.classList.add('off');val.st={in:0};
   TX(U,720,748,'Wirtschaftlichkeit (Beispielannahmen)','lbl','text-anchor:start;font-size:15px');
   const eco=para(U,720,768,17);
   // Kennzahlen-Balken
-  const rows=[['Genauigkeit (Accuracy)','richtig eingestuft ÷ alle','#38bdf8'],['Präzision (Precision)','Käufer:innen ÷ Angeschriebene','#a78bfa'],['Trefferquote (Recall, Sensitivität)','erreichte Käufer:innen ÷ alle Käufer:innen','#4ade80']];
+  const rows=[['Genauigkeit (Accuracy)','(richtig angeschrieben + richtig nicht angeschrieben) ÷ alle 100','#38bdf8',['TP','TN']],['Präzision (Precision)','Käufer:innen ÷ alle Angeschriebenen','#a78bfa',['TP','FP']],['Trefferquote (Recall, Sensitivität)','erreichte Käufer:innen ÷ alle Käufer:innen','#4ade80',['TP','FN']]];
   const bars=rows.map((r,i)=>{
     const y=452+i*62;
     TX(U,720,y,r[0],'lbl','text-anchor:start;font-size:16px');TX(U,720,y+16,r[1],'tk2','text-anchor:start');
     el('rect',{x:720,y:y+24,width:300,height:12,rx:6,fill:'#22384d'},U);
     const b=el('rect',{x:720,y:y+24,width:0,height:12,rx:6,fill:r[2]},U);
     const v=TX(U,1034,y+35,'0 %','lbl','text-anchor:start;font-size:15px');
+    const h=el('rect',{x:714,y:y-16,width:380,height:58,fill:'transparent',style:'cursor:help'},U);
+    h.addEventListener('mouseenter',()=>hiCells(r[3]));h.addEventListener('mouseleave',()=>hiCells(null));
+    h.addEventListener('click',()=>hiCells(r[3]));
     return {b,v};
   });
   const msg=para(U,720,654,17);
   // rechte Spalte
   TX(U,1190,452,'So liest Du die Kennzahlen','lbl','text-anchor:start;font-size:15px');
-  const gl=para(U,1190,474,17,'font-size:12.5px');
-  gl.set(['Genauigkeit (Accuracy): Anteil aller richtigen','Einstufungen.','Präzision (Precision): Anteil der Angeschriebenen,','die wirklich kaufen (wenig „unnötige Coupons“).','Trefferquote (Recall, Sensitivität): Anteil aller Käufer:innen,','die erreicht werden (wenig „verpasste Chancen“).','Bei seltenen Ereignissen täuscht die Genauigkeit.']);
-  TX(U,1190,590,'Quelle:','tk2','text-anchor:start');
-  LTX(U,1228,590,'Google: Accuracy, precision, recall','https://developers.google.com/machine-learning/crash-course/classification/accuracy-precision-recall');
-  pillGate(val,'k1',1190,294,350,'Frage 1: Sind 90 % Genauigkeit gut?');pq(val);
-  pillGate(val,'k2',1190,330,350,'Frage 2: Kein Käufer darf fehlen');pq(val);
-  pillGate(val,'k3',1190,366,350,'Frage 3: Coupons sind teuer');pq(val);
+  const gl=para(U,1190,474,16,'font-size:12px');
+  gl.set(['Genauigkeit: Anteil aller richtigen Einstufungen – ange-','schrieben & kauft sowie nicht angeschrieben & kauft nicht.','Hilft nur, wenn beide Gruppen ähnlich groß sind. Bei','seltenen Ereignissen (Käufer:innen, Betrug) täuscht sie.','Präzision: Anteil der Angeschriebenen, die kaufen.','Trefferquote: Anteil der Käufer:innen, die erreicht werden.','Maus über einen Balken: Die Matrix zeigt, welche','Felder in die Kennzahl eingehen.']);
+  TX(U,1190,616,'Quelle:','tk2','text-anchor:start');
+  LTX(U,1228,616,'Google: Accuracy, precision, recall','https://developers.google.com/machine-learning/crash-course/classification/accuracy-precision-recall');
+  pillGate(val,'k1',1190,300,350,'Frage 1: Sind 90 % Genauigkeit gut?');pq(val);
+  pillGate(val,'k2',1190,334,350,'Frage 2: Kein Käufer darf fehlen');pq(val);
+  pillGate(val,'k3',1190,368,350,'Frage 3: Coupons sind teuer');pq(val);
   function upd(){
     let TP=0,FP=0,FN=0,TN=0;
     cust.forEach((c,i)=>{const t=mode==='all'?true:mode==='none'?false:c.s>=thr;dots[i].setAttribute('opacity',t?1:0);
