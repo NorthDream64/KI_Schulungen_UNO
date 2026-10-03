@@ -36,6 +36,18 @@ text{pointer-events:none}
 @keyframes dash{to{stroke-dashoffset:-14}}
 .lbl{fill:var(--ink);font:650 16px system-ui,sans-serif;text-anchor:middle}
 .lbl.q{fill:var(--warn)}
+.blk .bg{fill:#13202e;fill-opacity:.88;stroke:#35506b;stroke-width:1.6;transition:stroke .2s,fill .2s}
+.blk.hov .bg{stroke:var(--acc);fill:#18293a}
+.blk .hit,.vhit{cursor:pointer}
+.ovg,.vg{transition:opacity .5s}
+.ovg.off,.vg.off{opacity:0;pointer-events:none}
+.clk{transition:transform .5s ease}
+.btxt{fill:var(--ink);font:650 18px system-ui,sans-serif;text-anchor:middle}
+.ben{fill:var(--acc);font:12px system-ui,sans-serif;text-anchor:middle}
+.tag{fill:var(--ok);font:650 15px system-ui,sans-serif;text-anchor:middle}
+.ipill{fill:#0f2a3a;stroke:#2f6f8f}
+#tip{position:absolute;z-index:5;width:620px;max-width:92%;background:#16222f;border:1px solid #4cc9f0;border-radius:12px;padding:12px 15px;font-size:13px;line-height:1.4;box-shadow:0 14px 40px rgba(0,0,0,.55);display:none}
+#tip b{color:var(--acc)}#tip p{margin:0 0 8px}#tip a{color:var(--acc)}#tip small{color:var(--mut)}
 .sub{fill:var(--mut);font:13px system-ui,sans-serif;text-anchor:middle}
 .tk{fill:var(--ink);font:600 12px system-ui,sans-serif;text-anchor:middle}
 .tk2{fill:var(--mut);font:10.5px system-ui,sans-serif;text-anchor:middle}
@@ -99,6 +111,7 @@ text{pointer-events:none}
 <header>
   <h1>Datenfluss-Diagramm (ELT-Modell)<small>Zertifikatskurs KI-Manager:in</small></h1>
   <div class="ctrl">
+    <button id="bBack" style="display:none">← Überblick</button>
     <button id="bPractice">Übungsmodus</button>
     <button id="bSrc">Datenherkunft (Detail) ⊕</button>
     <button id="bView">Transform (Detail) ⊕</button>
@@ -109,6 +122,7 @@ text{pointer-events:none}
 </header>
 <main>
   <div id="wrap">
+    <div id="tip"></div>
     <svg id="stage" viewBox="0 0 1580 760" role="img" aria-label="Animierter Datenfluss von den Datenquellen bis zum Monitoring"></svg>
   </div>
   <div id="legend">
@@ -160,7 +174,7 @@ const DEF={
   zeit:{dup:.08,miss:.07,fmt:.05,out:.02}
 };
 const state={practice:false,unlocked:new Set(),paused:false,speed:.8,view:'main'};
-const locked=k=>state.practice&&!state.unlocked.has(k);
+const locked=k=>state.practice&&k!=='st1'&&!state.unlocked.has(k);
 const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;};
 const inc=(sc,k,n=1)=>{sc.st[k]=(sc.st[k]||0)+n;};
 
@@ -283,10 +297,6 @@ function card(sc,key,x,y,w,h,num,short,opt){
   const g=el('g',{class:'card','data-k':key},sc.L.deco);
   el('rect',{class:'card-bg',x,y,width:w,height:h,rx:12},g);
   const t=el('text',{x:x+w/2,y:y-12,class:'lbl'},sc.L.ui);
-  const b=el('g',null,sc.L.ui);
-  const bx=opt.badgeIn?x+16:x+w/2,by=opt.badgeIn?y+16:y-40;
-  el('circle',{class:'badge',cx:bx,cy:by,r:11},b);
-  el('text',{x:bx,y:by+4,class:'badge-t'},b).textContent=num;
   const hit=el('rect',{class:'hit',x:x-6,y:y-52,width:w+12,height:h+52,rx:12},sc.L.ui);
   hit.addEventListener('click',()=>{if(state.practice&&locked(key))openQuiz(key);});
   sc.labels.push({key,t,short,g,hit});
@@ -315,19 +325,25 @@ function trigger(sc,pi,f,label,onFire){
 function refreshLabels(){
   for(const sc of scenes)for(const l of sc.labels){
     const hide=locked(l.key);
-    l.t.textContent=hide?'? Station benennen':l.short;
+    if(l.fs0===undefined)l.fs0=l.t.style.fontSize||'';
+    l.t.textContent=hide?'?':l.short;
+    l.t.style.fontSize=hide?(l.fs0?'26px':'36px'):l.fs0;
     l.t.setAttribute('class','lbl'+(hide?' q':''));
     l.g.classList.toggle('ask',hide);
-    l.g.classList.toggle('named',state.practice&&!hide);
+    l.g.classList.toggle('named',state.practice&&!hide&&l.key!=='st1');
     l.hit.classList.toggle('act',hide);
   }
   for(const sc of [fab,src,main])if(sc.hints)sc.hints.forEach(h=>h.t.style.opacity=(state.practice&&!state.unlocked.has(h.key))?0:1);
-  const m=['st1','ext','sens','anon','raw','st2','st3','st4','st5','st6'].filter(k=>state.unlocked.has(k)).length;
-  const d=['ka','kb','kc'].filter(k=>state.unlocked.has(k)).length;
-  const e=['da','db','dz','dc','dd','de'].filter(k=>state.unlocked.has(k)).length;
-  $('hint').textContent=state.practice
-    ?'Übungsmodus: benannt Hauptansicht '+m+'/10 · Transform '+d+'/3 · Datenherkunft '+e+'/6. Tippe auf eine gestrichelte Station, wähle den passenden Begriff – erst dann fließt der Strom weiter.'
-    :'Tipp: Mit den Wasserhähnen spielst Du manuelle Lieferungen ein. „Datenherkunft (Detail)“ und „Transform (Detail)“ in der Kopfzeile zeigen die Details.';
+  const cnt=a=>a.filter(k=>state.unlocked.has(k)).length;
+  const v=state.view,eK=['ext','sens','anon','raw','st2'],mK=['st3','st4','st5','st6'];
+  const upLocked=state.practice&&eK.some(k=>!state.unlocked.has(k));
+  let h;
+  if(v==='top')h=state.practice?'Wähle einen Block. Die Fragen findest Du in Ebene 1 (Kurstag 6: Datenherkunft & -verarbeitung · Kurstag 8: Modellentwicklung bis -überwachung).':'Klicke auf einen Block, um in die Ebene 1 zu wechseln. Fahre mit der Maus über „Datenverarbeitung“ (oder das ⓘ): Dort steht der Unterschied zwischen ETL und ELT. Die Begriffe der fünf Blöcke folgen der <a href="https://docs.aws.amazon.com/wellarchitected/latest/machine-learning-lens/machine-learning-lifecycle.html" target="_blank" rel="noopener">AWS Well-Architected Machine Learning Lens</a>.';
+  else if(state.practice){
+    const p=v==='mlops'?'Modellentwicklung bis -überwachung '+cnt(mK)+'/4'+(upLocked?' · Hinweis: Damit Daten ankommen, müssen zuerst die Schritte in Datenherkunft & -verarbeitung benannt sein.':''):v==='etl'?'Datenherkunft & -verarbeitung '+cnt(eK)+'/5':v==='fab'?'Transform (Detail) '+cnt(['ka','kb','kc'])+'/3':'Datenherkunft (Detail) '+cnt(['da','db','dz','dc','dd','de'])+'/6';
+    h='Übungsmodus: '+p+'. Tippe auf ein gelb gestricheltes Fragezeichen und wähle den passenden Begriff – erst dann fließt der Strom weiter.';
+  }else h=v==='etl'?'Tipp: Mit den Wasserhähnen spielst Du manuelle Lieferungen ein. „Datenherkunft (Detail)“ und „Transform (Detail)“ in der Kopfzeile zeigen die Details.':v==='mlops'?'Tipp: „Drift auslösen“ simuliert, dass sich die Realität von den Trainingsdaten entfernt: Das Monitoring schlägt Alarm und das Modell wird neu trainiert (Retraining).':'Tipp: Mit „← Zurück“ gelangst Du in die Ebene 1.';
+  $('hint').innerHTML=h;
 }
 
 /* ============ Aufbereitungs-Logik (Haupt- und Detailansicht gemeinsam) ============
@@ -374,7 +390,7 @@ const opsSink=i=>()=>{raw.ops[i]++;opsUpdate(i);};
 const crossed=(prev,h,hr)=>prev<=h?(prev<hr&&h>=hr):(hr>prev||hr<=h);
 const clocks=[];
 function mkClock(sc){
-  const U=sc.L.ui,X=h=>720+h/24*360;
+  const U=el('g',{class:'clk'},sc.L.ui);sc.clk=U;const X=h=>720+h/24*360;
   el('rect',{x:690,y:8,width:420,height:56,rx:10,fill:'#0f1a26',stroke:'#2b445c'},U);
   el('rect',{x:X(8),y:34,width:X(20)-X(8),height:10,rx:3,fill:'#38bdf8','fill-opacity':.28},U);
   el('line',{x1:X(0),y1:39,x2:X(24),y2:39,stroke:'#4b6f8c','stroke-width':2},U);
@@ -539,9 +555,7 @@ main.tick=(sc,dt)=>{tickSources(sc,dt,locked('st1')||locked('ext'));updateClocks
   const ga=el('g',{class:'card','data-k':'anon'},D);
   el('rect',{class:'card-bg',x:186,y:556,width:156,height:28,rx:14},ga);
   const hita=el('rect',{class:'hit',x:186,y:556,width:156,height:28,rx:12},U);
-  const bga=el('g',null,U);
-  el('circle',{class:'badge',cx:203,cy:570,r:11},bga);el('text',{x:203,y:574,class:'badge-t'},bga).textContent='2';
-  const tan=el('text',{x:277,y:575,class:'lbl',style:'font-size:12px'},U);
+  const tan=el('text',{x:264,y:575,class:'lbl',style:'font-size:12px'},U);
   hita.addEventListener('click',()=>{if(state.practice&&locked('anon'))openQuiz('anon');});
   main.labels.push({key:'anon',t:tan,short:'Anonymisierung',g:ga,hit:hita});
   opsBox(main,440,715,200,'Lohnbuchhaltung',2);
@@ -562,14 +576,11 @@ main.tick=(sc,dt)=>{tickSources(sc,dt,locked('st1')||locked('ext'));updateClocks
   const rt1=el('text',{x:530,y:350,class:'tk'},U);rt1.textContent='0 gespeichert';
   const rt2=el('text',{x:530,y:366,class:'tk2'},U);rt2.textContent='Rückstand: 0';
   raw.views.push({layers:rf,t1:rt1,t2:rt2,max:88,base:376});
-  // Extract (1): unterhalb der Sammelleitung
+  // Extract: oberhalb der Sammelleitung
   const gx=el('g',{class:'card','data-k':'ext'},D);
-  el('rect',{class:'card-bg',x:278,y:666,width:144,height:28,rx:14},gx);
-  const hitx=el('rect',{class:'hit',x:278,y:666,width:144,height:28,rx:12},U);
-  const bg=el('g',null,U);
-  el('circle',{class:'badge',cx:294,cy:680,r:11},bg);
-  el('text',{x:294,y:684,class:'badge-t'},bg).textContent='1';
-  const tx=el('text',{x:362,y:685,class:'lbl',style:'font-size:12px'},U);
+  el('rect',{class:'card-bg',x:276,y:50,width:124,height:28,rx:14},gx);
+  const hitx=el('rect',{class:'hit',x:276,y:50,width:124,height:28,rx:12},U);
+  const tx=el('text',{x:338,y:69,class:'lbl',style:'font-size:12px'},U);
   hitx.addEventListener('click',()=>{if(state.practice&&locked('ext'))openQuiz('ext');});
   main.labels.push({key:'ext',t:tx,short:'Extract',g:gx,hit:hitx});
   // Maskierung sensibler Daten (2) – Landing-Zone-Muster: erst markieren/maskieren, dann in den Raw Layer
@@ -581,9 +592,7 @@ main.tick=(sc,dt)=>{tickSources(sc,dt,locked('st1')||locked('ext'));updateClocks
   const gs=el('g',{class:'card','data-k':'sens'},D);
   el('rect',{class:'card-bg',x:362,y:400,width:228,height:28,rx:14},gs);
   const hits=el('rect',{class:'hit',x:362,y:400,width:228,height:28,rx:12},U);
-  const bgs=el('g',null,U);
-  el('circle',{class:'badge',cx:380,cy:414,r:11},bgs);el('text',{x:380,y:418,class:'badge-t'},bgs).textContent='2';
-  const tsn=el('text',{x:488,y:419,class:'lbl',style:'font-size:12px'},U);
+  const tsn=el('text',{x:476,y:419,class:'lbl',style:'font-size:12px'},U);
   hits.addEventListener('click',()=>{if(state.practice&&locked('sens'))openQuiz('sens');});
   main.labels.push({key:'sens',t:tsn,short:'Maskierung sensibler Daten',g:gs,hit:hits});
   main.hints=[];
@@ -609,8 +618,8 @@ main.tick=(sc,dt)=>{tickSources(sc,dt,locked('st1')||locked('ext'));updateClocks
   el('text',{x:895,y:398,class:'tk2'},U).textContent='abgleichen';
   tank(main,'qa',690,618,140,84,'Quarantäne','#c0843f');
   tank(main,'qd',870,618,140,84,'Dubletten (verworfen)','#c0843f');
-  // Station 3 Modellierung
-  card(main,'st3',1000,270,100,120,'5','Modellierung');
+  // Station 3 Modelltraining
+  card(main,'st3',1000,270,100,120,'5','Modelltraining');
   const gear=el('g',{class:'gear',id:'gearG'},D);
   let gd='';for(let i=0;i<10;i++){const a=i*36*Math.PI/180;gd+=(i?'L':'M')+(1050+Math.cos(a-.12)*45).toFixed(1)+','+(330+Math.sin(a-.12)*45).toFixed(1)+'L'+(1050+Math.cos(a+.12)*45).toFixed(1)+','+(330+Math.sin(a+.12)*45).toFixed(1)+'L'+(1050+Math.cos(a+.2)*37).toFixed(1)+','+(330+Math.sin(a+.2)*37).toFixed(1)+'L'+(1050+Math.cos(a+.52)*37).toFixed(1)+','+(330+Math.sin(a+.52)*37).toFixed(1);}
   el('path',{d:gd+'Z',fill:'#274055',stroke:'#4b6f8c','stroke-width':1.5},gear);
@@ -622,7 +631,7 @@ main.tick=(sc,dt)=>{tickSources(sc,dt,locked('st1')||locked('ext'));updateClocks
   el('circle',{cx:1222,cy:362,r:12,fill:'#12351f',stroke:'#4ade80'},D);
   el('path',{d:'M1216,362 l5,5 l9,-10',fill:'none',stroke:'#4ade80','stroke-width':2.4},D);
   el('text',{x:1200,y:410,class:'tk2'},U).textContent='Testdaten · Schwellenwert';
-  el('text',{x:1150,y:178,class:'tk2'},U).textContent='zurück ins Training';
+  el('text',{x:1150,y:178,class:'tk2'},U).textContent='zurück ins Modelltraining';
   // Station 5 Deployment
   card(main,'st5',1300,270,100,120,'7','Deployment');
   for(let i=0;i<3;i++)el('rect',{x:1318,y:278+i*36,width:64,height:26,rx:4,fill:'#1d3145',stroke:'#4b6f8c'},D);
@@ -635,7 +644,7 @@ main.tick=(sc,dt)=>{tickSources(sc,dt,locked('st1')||locked('ext'));updateClocks
   const ng=el('g',{transform:'translate('+cx+' '+cy+')'},U);
   el('line',{class:'needle',id:'needle',x1:0,y1:0,x2:0,y2:-34,stroke:'#e8eef5','stroke-width':2.6,style:'transform:rotate(-45deg)'},ng);
   el('circle',{r:4,fill:'#e8eef5'},ng);
-  el('text',{x:1275,y:714,class:'tk2'},U).textContent='Rückkopplung: Drift-Alarm → Nachtraining (Continuous Training)';
+  el('text',{x:1275,y:714,class:'tk2'},U).textContent='Rückkopplung: Drift-Alarm → Retraining (Continuous Training)';
 })();
 
 /* ============ DETAILANSICHT: Fabrik ============ */
@@ -683,7 +692,7 @@ fab.hints=[];
   tank(fab,'tc',1080,610,160,84,'Dubletten (verworfen)','#c0843f');
   const b=el('g',{style:'cursor:pointer'},U);
   el('rect',{x:30,y:60,width:160,height:30,rx:15,class:'pill'},b);
-  el('text',{x:110,y:80,class:'tk'},b).textContent='← zur Hauptansicht';
+  el('text',{x:110,y:80,class:'tk'},b).textContent='← zurück zu Ebene 1';
   b.addEventListener('click',()=>setView('main'));
 })();
 
@@ -756,27 +765,167 @@ src.tick=(sc,dt)=>{tickSources(sc,dt,false);updateClocks();};
   el('text',{x:1255,y:348,class:'lbl',style:'font-size:14px'},U).textContent='Load';
   const a=el('text',{x:1255,y:402,class:'tk'},U);a.textContent='0 gespeichert';
   const b=el('text',{x:1255,y:419,class:'tk2'},U);b.textContent='Rückstand: 0';
-  el('text',{x:1255,y:460,class:'tk2'},U).textContent='weiter in der Hauptansicht →';
+  el('text',{x:1255,y:460,class:'tk2'},U).textContent='weiter in Ebene 1 (Transform) →';
   raw.views.push({layers:rf2,t1:a,t2:b,max:70,base:436});
   mkClock(src);
 })();
 
-const scenes=[main,fab,src];
+
+/* ============ Ebene 1: Überlagerungen, Titel, Info-Pille ============ */
+(()=>{
+  const g=main.g,U=el('g',null,g);
+  const mkOv=(cls,x,w,lines,click)=>{
+    const o=el('g',{class:'ovg '+cls},U);
+    el('rect',{x,y:0,width:w,height:760,fill:'#0b121b','fill-opacity':.86},o);
+    const cx=x+w/2;
+    lines.forEach((l,i)=>el('text',{x:cx,y:300+i*30,class:l[1]},o).textContent=l[0]);
+    const h=el('rect',{class:'vhit',x:cx-200,y:262,width:400,height:130,fill:'transparent'},o);
+    h.addEventListener('click',click);
+    return o;
+  };
+  main.ovR=mkOv('off',985,595,[['Weiter mit der Modellentwicklung','btxt'],['Modelltraining · Validierung · Bereitstellung · Überwachung','sub'],['Kurstag 8 – hier klicken →','tag']],()=>setView('mlops'));
+  main.ovL=mkOv('off',0,940,[['← Datenherkunft & Datenverarbeitung','btxt'],['Die aufbereiteten Daten kommen aus Transform','sub'],['Kurstag 6 – hier klicken','tag']],()=>setView('etl'));
+  main.vtE=el('g',{class:'vg off'},U);
+  const ip=el('g',null,main.vtE);
+  el('rect',{class:'ipill',x:410,y:12,width:128,height:26,rx:13},ip);
+  el('text',{x:474,y:30,class:'tk'},ip).textContent='ⓘ ETL oder ELT?';
+  const h=el('rect',{class:'vhit',x:410,y:12,width:128,height:26,rx:13,fill:'transparent'},ip);
+  h.addEventListener('mouseenter',()=>showTip(474,40));h.addEventListener('mouseleave',hideTipSoon);
+  h.addEventListener('click',e=>{e.stopPropagation();showTip(474,40);});
+  main.vtM=el('g',{class:'vg off'},U);
+  el('text',{x:16,y:28,class:'tag',style:'text-anchor:start'},main.vtM).textContent='Modellentwicklung bis Modellüberwachung · Kurstag 8';
+})();
+
+/* ============ Info-Box ETL / ELT ============ */
+const tip=$('tip');let tipT=0;
+tip.innerHTML='<p><b>ETL oder ELT – der Unterschied in Kürze</b></p>'
+ +'<p><b>Gemeinsam:</b> Beide beginnen mit <b>Extract</b>: Rohdaten werden aus den Quellen kopiert, die Quellen bleiben unverändert.</p>'
+ +'<p><b>ETL</b> (Extract → Transform → Load): Die Daten werden <i>vor</i> dem Laden auf einem Zwischenserver aufbereitet. Ins Zielsystem gelangen nur bereinigte Daten.</p>'
+ +'<p><b>ELT</b> (Extract → Load → Transform): Die Rohdaten werden <i>zuerst</i> ins Zielsystem geladen (hier: Rohdatenspeicher / Raw Layer) und erst dort aufbereitet. Die Rohdaten bleiben erhalten und können später neu ausgewertet werden.</p>'
+ +'<p>Dieses Diagramm folgt <b>ELT</b>. Ausnahme: Personenbezogene Stechuhr-Daten werden schon vor dem Load anonymisiert (Datenminimierung).</p>'
+ +'<small>Quellen: <a href="https://aws.amazon.com/compare/the-difference-between-etl-and-elt/" target="_blank" rel="noopener">AWS: ETL vs. ELT</a> · <a href="https://www.ibm.com/think/topics/etl" target="_blank" rel="noopener">IBM: Was ist ETL?</a> · <a href="https://docs.aws.amazon.com/prescriptive-guidance/latest/defining-bucket-names-data-lakes/introduction.html" target="_blank" rel="noopener">AWS Prescriptive Guidance: Data-Lake-Schichten</a></small>';
+function showTip(x,y){
+  clearTimeout(tipT);
+  const k=$('wrap').clientWidth/1580,w=Math.min(620,$('wrap').clientWidth*.92);
+  tip.style.display='block';
+  tip.style.left=Math.max(4,Math.min($('wrap').clientWidth-w-4,x*k-w/2))+'px';
+  tip.style.top=(y*k)+'px';
+}
+function hideTip(){clearTimeout(tipT);tip.style.display='none';}
+function hideTipSoon(){clearTimeout(tipT);tipT=setTimeout(()=>{tip.style.display='none';},350);}
+tip.addEventListener('mouseenter',()=>clearTimeout(tipT));tip.addEventListener('mouseleave',hideTipSoon);
+
+/* ============ Ebene 0: Überblick ============ */
+const top=mkScene('scTop');top.st={in:0};
+(()=>{
+  const U=top.L.ui,D=top.L.deco;
+  const BX=i=>40+i*310,BW=250,BY=250,BH=270,CY=385;
+  const T=(id,pts,w,o)=>addPipe(top,Object.assign({id,pts,w},o||{}));
+  const A=BX(4)+BW;
+  const dirt=(p,sc,pi)=>{if(p.def&&Math.random()<.7){const q=pos(pi,p.s,0);puff(sc,q[0],q[1],COL.bad);return false;}p.def=null;p.col=COL.clean;shapeOf(p);};
+  T('T0',[[BX(0),CY],[BX(1),CY]],26,{next:'T1'});
+  T('T1',[[BX(1),CY],[BX(2),CY]],20,{next:'T2',enter:dirt});
+  T('T2',[[BX(2),CY],[BX(3),CY]],16,{next:'T3',enter:(p,sc,pi)=>{
+    if(Math.random()<.25){p.kind='model';p.col=COL.model;p.r=5;shapeOf(p);return;}
+    const q=pos(pi,p.s,0);puff(sc,q[0],q[1],COL.model);return false;}});
+  T('T3',[[BX(3),CY],[BX(4),CY]],12,{next:'T4'});
+  T('T4',[[BX(4),CY],[A,CY]],12,{sink:()=>{},enter:(p,sc,pi)=>{
+    p.kind='pred';p.col=COL.pred;p.r=3.6;shapeOf(p);
+    for(let i=0;i<2;i++)mkP(sc,pi,{kind:'pred',col:COL.pred,r:3.6,s:i*22+10,off:rnd(-.8,.8)});}});
+  const lx=BX(4)+BW/2,gx=BX(2)+BW/2;
+  T('loop',[[lx,BY+BH],[lx,BY+BH+70],[gx,BY+BH+70],[gx,BY+BH]],8,{dash:true,cls:'ret',sink:()=>retrain()});
+  top.sources.push({pipe:'T0',rate:8,col:'mix',defp:{dup:.08,miss:.08,fmt:.10,out:.05}});
+  // Blöcke
+  const defs=[
+    ['Datenherkunft','Data Collection','etl','Kasse · Bestand · Stechuhr · extern'],
+    ['Datenverarbeitung','Data Processing (ETL / ELT)','etl','Rohdaten bleiben erhalten'],
+    ['Modellentwicklung','Model Development','mlops','Training · Validierung'],
+    ['Modellbereitstellung','Model Deployment','mlops','Prognosen im Betrieb'],
+    ['Modellüberwachung','Model Monitoring','mlops','Drift erkennen → Retraining']];
+  const bl=[];
+  defs.forEach((d,i)=>{
+    const x=BX(i),cx=x+BW/2,g=el('g',{class:'blk'},D);
+    el('rect',{class:'bg',x,y:BY,width:BW,height:BH,rx:16},g);
+    el('text',{x:cx,y:BY+36,class:'btxt'},U).textContent=d[0];
+    el('text',{x:cx,y:BY+56,class:'ben'},U).textContent=d[1];
+    el('text',{x:cx,y:BY+BH-14,class:'tk2',style:'font-size:12px'},U).textContent=d[3];
+    bl.push(g);
+  });
+  // Icons
+  const SRCKEYS=['kasse','bestand','intern','wetter','lokal','zeit'];
+  SRCKEYS.forEach((k,i)=>el('circle',{cx:BX(0)+45+i*32,cy:450,r:9,fill:SRC[k]},D));
+  [['Extract',14],['Load',94],['Transform',174]].forEach((t,i)=>{
+    el('rect',{class:'ipill',x:BX(1)+t[1],y:430,width:62,height:24,rx:12},D);
+    el('text',{x:BX(1)+t[1]+31,y:446,class:'tk',style:'font-size:11.5px'},U).textContent=t[0];
+    if(i<2)el('text',{x:BX(1)+t[1]+71,y:447,class:'tk2',style:'font-size:14px'},U).textContent='→';
+  });
+  // Zahnrad
+  const gcx=BX(2)+BW/2,gcy=455,R=30;
+  let gd='';for(let i=0;i<10;i++){const a=i*36*Math.PI/180,f=(r,da)=>(i?'L':'M')+(gcx+Math.cos(a+da)*r).toFixed(1)+','+(gcy+Math.sin(a+da)*r).toFixed(1);}
+  gd='';for(let i=0;i<10;i++){const a=i*36*Math.PI/180,P=(r,da)=>(gcx+Math.cos(a+da)*r).toFixed(1)+','+(gcy+Math.sin(a+da)*r).toFixed(1);gd+=(i?'L':'M')+P(R,-.12)+'L'+P(R,.12)+'L'+P(R*.82,.2)+'L'+P(R*.82,.52);}
+  const gear=el('g',{class:'gear'},D);
+  el('path',{d:gd+'Z',fill:'#274055',stroke:'#4b6f8c','stroke-width':1.5},gear);el('circle',{cx:gcx,cy:gcy,r:9,fill:'#13202e',stroke:'#4b6f8c'},gear);
+  // Server
+  for(let i=0;i<3;i++){el('rect',{x:BX(3)+BW/2-34,y:425+i*26,width:68,height:20,rx:4,fill:'#1d3145',stroke:'#4b6f8c'},D);el('circle',{class:'led',cx:BX(3)+BW/2-24,cy:435+i*26,r:2.6,fill:'#4ade80'},D);}
+  // Messgerät
+  const mx=BX(4)+BW/2,my=480,mr=34;
+  const arc=(a1,a2,c)=>{const p=a=>[mx+mr*Math.cos(a*Math.PI/180),my+mr*Math.sin(a*Math.PI/180)],P=p(a1),Q2=p(a2);el('path',{d:'M'+P[0]+','+P[1]+' A'+mr+','+mr+' 0 0 1 '+Q2[0]+','+Q2[1],fill:'none',stroke:c,'stroke-width':7},D);};
+  arc(180,240,'#4ade80');arc(240,300,'#f59e0b');arc(300,360,'#ef4444');
+  const ng=el('g',{transform:'translate('+mx+' '+my+')'},U);
+  const needle=el('line',{class:'needle',x1:0,y1:0,x2:0,y2:-28,stroke:'#e8eef5','stroke-width':2.6,style:'transform:rotate(-45deg)'},ng);el('circle',{r:4,fill:'#e8eef5'},ng);
+  // Klammern + Kurstage
+  const brk=(x1,x2,txt,view)=>{
+    el('path',{d:'M'+x1+',232 v-10 H'+x2+' v10',fill:'none',stroke:'#4ade80','stroke-width':2},D);
+    el('text',{x:(x1+x2)/2,y:208,class:'tag'},U).textContent=txt;
+    const h=el('rect',{class:'vhit',x:x1,y:186,width:x2-x1,height:48,fill:'transparent'},U);h.addEventListener('click',()=>setView(view));
+  };
+  brk(BX(0),BX(1)+BW,'Kurstag 6 · Data Processing (AWS)','etl');
+  brk(BX(2),A,'Kurstag 8 · MLOps: Entwicklung → Bereitstellung → Überwachung','mlops');
+  el('text',{x:790,y:70,class:'btxt',style:'font-size:24px'},U).textContent='Überblick: Der Weg der Daten – von der Herkunft bis zur Prognose';
+  el('text',{x:790,y:100,class:'sub'},U).textContent='Klicke auf einen Block, um die Details zu öffnen';
+  el('text',{x:(lx+gx)/2,y:BY+BH+60,class:'tk',style:'font-size:13px'},U).textContent='Retraining (Continuous Training) – ausgelöst durch Drift-Alarm';
+  // Klickflächen
+  defs.forEach((d,i)=>{
+    const h=el('rect',{class:'hit',x:BX(i),y:BY,width:BW,height:BH,rx:16},U);
+    h.addEventListener('mouseenter',()=>{bl[i].classList.add('hov');if(i===1)showTip(BX(1)+BW/2,BY+BH+4);});
+    h.addEventListener('mouseleave',()=>{bl[i].classList.remove('hov');if(i===1)hideTipSoon();});
+    h.addEventListener('click',()=>setView(d[2]));
+  });
+  const ii=el('g',null,U);
+  el('circle',{cx:BX(1)+BW-22,cy:BY+24,r:11,fill:'#0f2a3a',stroke:'#4cc9f0'},ii);
+  el('text',{x:BX(1)+BW-22,y:BY+29,class:'tk',style:'font-size:14px'},ii).textContent='i';
+  const ih=el('circle',{class:'hit',cx:BX(1)+BW-22,cy:BY+24,r:14},ii);
+  ih.addEventListener('mouseenter',()=>showTip(BX(1)+BW/2,BY+BH+4));ih.addEventListener('mouseleave',hideTipSoon);
+  ih.addEventListener('click',e=>{e.stopPropagation();showTip(BX(1)+BW/2,BY+BH+4);});
+  // Retraining-Effekt + Alarm
+  let gt=0;
+  top.retrain=()=>{gear.classList.add('fast');clearTimeout(gt);gt=setTimeout(()=>gear.classList.remove('fast'),3500);};
+  window.__retr=top.retrain;
+  top.alT=0;
+  top.tick=(sc,dt)=>{
+    sc.alT+=dt;
+    if(sc.alT>11&&!locked('st6')){sc.alT=0;
+      mkP(sc,sc.pipes.loop,{kind:'alarm',col:COL.alarm,r:3.4,off:0,v:70,s:0});
+      needle.style.transform='rotate(55deg)';setTimeout(()=>{needle.style.transform='rotate(-45deg)';},4500);}
+  };
+  function retrain(){top.retrain();}
+})();
+
+const scenes=[top,main,fab,src];
 
 /* ============ Quiz ============ */
-const N={st1:'Datenquellen & Datenerfassung',raw:'Load (Rohdatenspeicher / Raw Layer)',st2:'Transform (Cleaning & Standardisierung)',st3:'Modellierung (Training)',st4:'Modellvalidierung',st5:'Deployment (Bereitstellung)',st6:'Monitoring & Drift-Erkennung'};
+const N={st1:'Datenquellen & Datenerfassung',raw:'Load (Rohdatenspeicher / Raw Layer)',st2:'Transform (Cleaning & Standardisierung)',st3:'Modelltraining (Model Training)',st4:'Modellvalidierung',st5:'Deployment (Bereitstellung)',st6:'Monitoring & Drift-Erkennung'};
 const QUIZ={
  dz:{p:'Beobachte: Mitarbeiterinnen und Mitarbeiter stempeln in den Läden selbst ein und aus, auch Pausen werden erfasst. Die Einträge fließen laufend, mit Spitzen zu Schichtbeginn und Schichtende. Welche Quelle ist das?',c:'Registrierte Arbeitszeiten (Stechuhr)',w:['Verkaufsdaten (Kassensystem)','Interne Daten (manuell)','Externe Daten (manuell)','Bestandsveränderung (2 x täglich)'],why:'Stechuhr-Daten sind Beschäftigtendaten und damit personenbezogen. Dieselbe Quelle dient zwei Zwecken: Für die Gehaltsabrechnung wird der Personenbezug gebraucht, für die Kapazitätsplanung gegenüber der Nachfrage genügen anonymisierte oder zusammengefasste Werte. Deshalb werden anonymisierte Kopien abgezweigt, während die vollständigen Daten zur Lohnbuchhaltung weiterlaufen.'},
  anon:{p:'Beobachte: Am roten Sperrschild werden von den Stechuhr-Daten Kopien in eine Hülle gesteckt und abgezweigt, während die vollständigen Einträge weiter zur Lohnbuchhaltung laufen. Nur die umhüllten, zusammengefassten Werte ohne Personenbezug fließen in Richtung Modell. Wie heißt dieser Schritt?',c:'Anonymisierung',w:['Dublettenprüfung','Deployment (Bereitstellung)','Hyperparameter-Tuning','Datenspiegel'],why:'Für die Kapazitätsplanung braucht das Modell keine Personen, sondern zum Beispiel Stunden je Laden und Schicht (Datenminimierung). Wird vor dem Speichern anonymisiert, liegen keine personenbezogenen Stempeldaten im Rohdatenspeicher. Für die Gehaltsabrechnung bleiben die vollständigen Daten im operativen System. Echt anonym sind Daten nur, wenn sich Personen auch mit Zusatzwissen nicht mehr bestimmen lassen; bloße Pseudonymisierung genügt dafür nicht (EDPB-Leitlinien 01/2025, Erwägungsgrund 26 DSGVO). Die Anonymisierung ist selbst eine Verarbeitung und braucht eine Rechtsgrundlage (BfDI).'},
  sens:{p:'Beobachte: Bestimmte Datensätze – etwa Schichtpläne von Beschäftigten oder Angaben zu Lieferanten – werden vor dem Speichern erkannt, gekennzeichnet und geschützt, zum Beispiel durch Pseudonymisierung. Wie heißt dieser Schritt?',c:'Maskierung sensibler Daten',w:['Dublettenprüfung','Hyperparameter-Tuning','Lastverteilung','Modellregistrierung'],why:'Sensible Daten sollen nicht ungeschützt im Rohdatenspeicher landen. AWS beschreibt dafür für teilsensible Datensätze eine Landing Zone: Dort werden sensible Zeilen und Spalten maskiert, erst danach gelangen die Daten in die Raw-Schicht. Wichtig: Pseudonymisierte Daten gelten nach der DSGVO weiterhin als personenbezogen, die Zuordnungsinformation muss getrennt und geschützt aufbewahrt werden. Erst echt anonyme Daten fallen nicht mehr unter die DSGVO.'},
  ext:{p:'Beobachte: Aus den Quellsystemen werden Daten herausgelesen und als Kopie auf den Weg in den Speicher geschickt – die Quellen selbst bleiben unverändert. Wie heißt dieser Schritt?',c:'Extract (Daten aus den Quellen entnehmen)',w:['Transform (Daten umformen)','Drift-Erkennung','Deployment (Bereitstellung)','Modelltraining'],why:'Extract ist der erste Schritt im ETL- wie im ELT-Muster: Rohdaten werden aus den Quellsystemen (Datenbanken, Dateien, Anwendungen, Sensoren u. a.) entnommen und in einen Speicher- oder Staging-Bereich kopiert. Ausgelöst wird er je nach Quelle zeitgesteuert (Batch), ereignisgesteuert oder fortlaufend (Streaming).'},
- st1:{p:'Beobachte: Laufende Ströme, Uploads zu festen Zeiten und Lieferungen auf Knopfdruck – und jede Meldung wird auf dem Weg gespiegelt. Wie heißt diese Station?',c:N.st1,w:[N.st3,'Anforderungsanalyse','Lastverteilung','Penetrationstest'],why:'Am Anfang jeder KI-Lieferkette steht die Herkunft der Daten. Die Quellen unterscheiden sich in Herkunft (intern/extern), Takt (laufend, termingesteuert, manuell), Menge und Zuverlässigkeit – und jede bringt eigene Qualitätsrisiken mit.'},
  raw:{p:'Beobachte: Alles, was eingeht, wird unverändert in einen Speicher geladen und dort abgelegt. Der Bestand wächst nur, gelesen wird eine Kopie. Wie heißt dieser Schritt?',c:N.raw,w:['Data Mart (Auswertungsschicht)','Operatives Kassensystem','Modellregister','Lastverteilung'],why:'Load heißt: Die entnommenen Daten werden in das Zielsystem geladen. Hier ist das die Rohdatenschicht, die die Originale hält – AWS empfiehlt dafür das Originalformat und aktivierte Versionierung. Bereinigt wird erst danach in einer eigenen Stufe (Transform, im ELT-Muster nach dem Laden). So bleiben die Betriebssysteme unberührt, und bei einem Fehler in der Aufbereitung lässt sich neu rechnen.'},
  st2:{p:'Beobachte: Eine Fabrik prüft, vereinheitlicht und gleicht ab – Ausschuss und Kopien fallen heraus, der Rest läuft einheitlich weiter. Wie heißt diese Station?',c:N.st2,w:[N.st4,'Lieferantenaudit','Datenverschlüsselung',N.st5],why:'Rohdaten sind selten modelltauglich. Hier werden Fehlerhaftes aussortiert, Formate vereinheitlicht und Dubletten entfernt. Bei AWS entspricht das der Stage-Schicht (Validierung, Format-Konvertierung, Transformation), im ELT-Muster von Google dem Transform-Schritt nach dem Laden.'},
  st3:{p:'Beobachte: Aus dem sauberen Datenstrom entstehen nur wenige goldene Modellkandidaten – der Rest verschwindet im Zahnrad. Wie heißt diese Station?',c:N.st3,w:[N.st2,'Lastverteilung','Anforderungsanalyse',N.st6],why:'Im Training lernt das Modell Muster aus den Daten. Die Daten selbst bleiben nicht erhalten – es entsteht ein Modellartefakt, das später Vorhersagen liefert.'},
  st4:{p:'Beobachte: Nur ein Teil der Modelle passiert die Prüfschranke, die übrigen laufen zurück ins Training. Wie heißt diese Station?',c:N.st4,w:[N.st3,N.st5,N.st1,'Lieferantenaudit'],why:'Vor dem Einsatz wird das Modell auf ungesehenen Testdaten geprüft. Genauigkeit allein kann täuschen; die Abwägung zwischen falsch-positiv und falsch-negativ sowie der Schwellenwert sind Geschäftsentscheidungen.'},
  st5:{p:'Beobachte: Ein freigegebenes Modell bedient plötzlich viele Anfragen – grüne Prognosen strömen heraus. Wie heißt diese Station?',c:N.st5,w:[N.st4,N.st2,N.st6,'Penetrationstest'],why:'Beim Deployment geht das freigegebene Modell in den Betrieb und beantwortet laufend Anfragen. Es ist der Anfang des Modell-Lebens im Betrieb, nicht sein Ende.'},
- st6:{p:'Beobachte: Ein Drift-Alarm läuft über die gestrichelte Leitung zurück und startet das Nachtraining. Wie heißt diese Station?',c:N.st6,w:[N.st3,N.st5,N.st1,'Datenverschlüsselung'],why:'Im Betrieb entfernt sich die Realität von den Trainingsdaten – Drift ist der Normalfall. Monitoring erkennt das und stößt Nachtraining an (Continuous Training).'},
+ st6:{p:'Beobachte: Ein Drift-Alarm läuft über die gestrichelte Leitung zurück und startet das Retraining. Wie heißt diese Station?',c:N.st6,w:[N.st3,N.st5,N.st1,'Datenverschlüsselung'],why:'Im Betrieb entfernt sich die Realität von den Trainingsdaten – Drift ist der Normalfall. Monitoring erkennt das und stößt Retraining an (Continuous Training).'},
  da:{p:'Beobachte: Aus den Läden strömen einzelne Kassenbewegungen – mit Tagesrhythmus, aber ohne feste Termine. Welche Quelle ist das?',c:'Verkaufsdaten (Kassensystem)',w:['Bestandsveränderung (2 x täglich)','Regelmäßige Daten (extern) – automatisch','Interne Daten (manuell)','Archivdaten'],why:'Ereignisse, die laufend entstehen (Kassenbewegungen), werden einzeln als Strom übertragen (Streaming). Auf Google Cloud schreiben z. B. Pub/Sub-Abonnements eintreffende Nachrichten sofort in BigQuery. Das lohnt, wenn Aktualität wichtig ist.'},
  db:{p:'Beobachte: Nur um 12:00 und 18:00 Uhr schicken alle Läden gebündelt ihre Bestandsveränderungen. Welche Quelle ist das?',c:'Bestandsveränderung (2 x täglich)',w:['Verkaufsdaten (Kassensystem)','Interne Daten (manuell)','Regelmäßige Daten (extern) – automatisch','Archivdaten'],why:'Gebündelte Übertragung zu festen Zeiten (Batch): planbar und ressourcenschonend, wenn Aktualität im Stundenbereich genügt, etwa für das Bestellwesen. Google nennt dafür z. B. den BigQuery Data Transfer Service als automatisierten Bulk-Load.'},
  dc:{p:'Beobachte: Eine Fachabteilung liefert Listen (etwa die Schichtplanung) – erst nach einem Klick fließen sie. Welche Quelle ist das?',c:'Interne Daten (manuell)',w:['Externe Daten (manuell)','Bestandsveränderung (2 x täglich)','Verkaufsdaten (Kassensystem)','Archivdaten'],why:'Manuell eingespielte interne Listen sind unregelmäßig und fehleranfällig (Formate, Tippfehler, vergessene Lieferung). Hier lohnt es sich, Zuständigkeit, Rhythmus und eine Prüfung vor dem Einspielen festzulegen.'},
@@ -815,13 +964,22 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')closeQ();});
 
 /* ============ Steuerung ============ */
 function setView(v){
-  state.view=v;
-  main.g.classList.toggle('off',v!=='main');fab.g.classList.toggle('off',v!=='fab');src.g.classList.toggle('off',v!=='src');
-  $('bView').textContent=v==='fab'?'← Hauptansicht':'Transform (Detail) ⊕';
-  $('bSrc').textContent=v==='src'?'← Hauptansicht':'Datenherkunft (Detail) ⊕';
+  state.view=v;hideTip();
+  const mo=v==='etl'||v==='mlops';
+  top.g.classList.toggle('off',v!=='top');
+  main.g.classList.toggle('off',!mo);fab.g.classList.toggle('off',v!=='fab');src.g.classList.toggle('off',v!=='src');
+  main.ovR.classList.toggle('off',v!=='etl');main.ovL.classList.toggle('off',v!=='mlops');
+  main.vtE.classList.toggle('off',v!=='etl');main.vtM.classList.toggle('off',v!=='mlops');
+  main.clk.style.transform=v==='etl'?'translate(-130px,0)':v==='mlops'?'translate(330px,0)':'';
+  $('bBack').style.display=v==='top'?'none':'';
+  $('bBack').textContent=(v==='fab'||v==='src')?'← Zurück zu Ebene 1':'← Überblick';
+  $('bSrc').style.display=v==='etl'?'':'none';$('bView').style.display=v==='etl'?'':'none';
+  $('bAlarm').style.display=v==='mlops'?'':'none';
+  refreshLabels();
 }
-$('bView').onclick=()=>setView(state.view==='fab'?'main':'fab');
-$('bSrc').onclick=()=>setView(state.view==='src'?'main':'src');
+$('bBack').onclick=()=>setView(state.view==='fab'||state.view==='src'?'etl':'top');
+$('bView').onclick=()=>setView('fab');
+$('bSrc').onclick=()=>setView('src');
 $('bPause').onclick=()=>{state.paused=!state.paused;$('bPause').textContent=state.paused?'Weiter':'Pause';$('bPause').classList.toggle('on',state.paused);};
 function clearAll(){
   for(const sc of scenes){
@@ -860,8 +1018,9 @@ function frame(now){
   const dt=Math.min(.05,(now-last)/1000);last=now;
   if(!state.paused){
     const d=dt*state.speed;
-    step(state.view==='main'?main:state.view==='fab'?fab:src,d);
-    if(state.view==='main'){alarmT+=d;if(alarmT>32&&main.st.pred>12){alarmT=0;triggerAlarm();}}
+    const mo=state.view==='etl'||state.view==='mlops';
+    step(state.view==='top'?top:mo?main:state.view==='fab'?fab:src,d);
+    if(mo){alarmT+=d;if(alarmT>32&&main.st.pred>12){alarmT=0;triggerAlarm();}}
   }
   barT+=dt;if(barT>.3){barT=0;updateBar();}
   requestAnimationFrame(frame);
@@ -873,8 +1032,8 @@ function updateBar(){return;
    ?'<span>Eingespeist: <b>'+s.in+'</b></span><span>Rohdatenspeicher: <b>'+raw.total+'</b> (Rückstand '+raw.q.length+')</span><span>Quarantäne: <b>'+s.rej+'</b> · Dubletten: <b>'+s.dups+'</b></span><span>Modellkandidaten: <b>'+s.models+'</b></span><span>validiert: <b style="color:#4ade80">'+s.ok+'</b> · zurück ins Training: <b style="color:#f59e0b">'+s.back+'</b></span><span>Prognosen: <b>'+s.pred+'</b></span><span>Nachtrainings: <b>'+s.retrain+'</b></span>'
    :'<span>Eingang: <b>'+k.in+'</b></span><span>Quarantäne: <b>'+k.rej+'</b></span><span>Formate vereinheitlicht: <b>'+k.fix+'</b></span><span>Dubletten entfernt: <b>'+k.dups+'</b></span><span>aufbereitet weitergeleitet: <b>'+k.clean+'</b> (davon mit Restfehler: <b style="color:#f59e0b">'+(k.rest||0)+'</b>)</span>';
 }
-refreshLabels();updateBar();requestAnimationFrame(frame);
-window.__dfl={main,fab,src,state,step,raw,CLK,Q};
+setView('top');updateBar();requestAnimationFrame(frame);
+window.__dfl={top,main,fab,src,state,step,raw,CLK,Q,setView};
 })();
 </script>
 </body>
