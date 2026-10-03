@@ -709,6 +709,8 @@ fab.hints=[];
   el('text',{x:108,y:458,class:'tk2'},U).textContent='schreibgeschützt';
   raw.views.push({layers:rfL,t1:la,t2:lb,max:110,base:424});
   pillGate(fab,'st2',715,100,160,'Transform');
+  infoI(fab,893,113,()=>TIP_PREP,false);
+  (()=>{const g=el('g',{style:'cursor:pointer'},U);el('rect',{class:'ipill',x:1430,y:216,width:136,height:24,rx:12},g);el('text',{x:1498,y:233,class:'tk'},g).textContent='ⓘ Datenintegration';const h=el('rect',{class:'vhit',x:1430,y:216,width:136,height:24,rx:12,fill:'transparent'},g);const sh=()=>showTip(1300,246,TIP_INT);h.addEventListener('mouseenter',sh);h.addEventListener('mouseleave',hideTipSoon);h.addEventListener('click',e=>{e.stopPropagation();sh();});})();
   el('text',{x:1520,y:300,class:'sub'},U).textContent='zum Modell →';
   el('text',{x:1500,y:282,class:'tk',style:'fill:#fde047'},U).textContent='= Gold (aufbereitet)';
   el('text',{x:1258,y:255,class:'tk',style:'fill:#cbd5e1'},U).textContent='Silber (geprüft)';
@@ -757,7 +759,8 @@ SD('rawOutD',[[1000,400],[1180,400]],18,{sink:rawSink});
 src.tick=(sc,dt)=>{tickSources(sc,dt,false);updateClocks();};
 (()=>{
   const U=src.L.ui,D=src.L.deco;
-  el('text',{x:24,y:32,class:'lbl',style:'text-anchor:start;font-size:20px'},U).textContent='Extract: Datenherkunft im Detail';
+  el('text',{x:24,y:32,class:'lbl',style:'text-anchor:start;font-size:20px'},U).textContent='Extract: Datenherkunft/-sammlung im Detail';
+  (()=>{const g=el('g',{style:'cursor:pointer'},U);el('rect',{class:'ipill',x:520,y:14,width:140,height:26,rx:13},g);el('text',{x:590,y:32,class:'tk'},g).textContent='ⓘ Dateninventur';const h=el('rect',{class:'vhit',x:520,y:14,width:140,height:26,rx:13,fill:'transparent'},g);h.addEventListener('mouseenter',()=>showTip(590,44,TIP_INV));h.addEventListener('mouseleave',hideTipSoon);h.addEventListener('click',e=>{e.stopPropagation();showTip(590,44,TIP_INV);});})();
   pillGate(src,'da',24,50,350,'Verkaufsdaten (Kassensystem)');
   pillGate(src,'db',24,172,350,'Bestandsveränderung (2 x täglich)');
   pillGate(src,'dc',24,290,350,'Interne Daten (manuell)');
@@ -840,6 +843,47 @@ function showTip(x,y,html,up){
   tip.style.top=(up?Math.max(0,y*k-tip.offsetHeight):y*k)+'px';
 }
 function hideTip(){clearTimeout(tipT);tip.style.display='none';}
+const TIP_INV='<p><b>Dateninventur – bevor Daten fließen</b></p>'
+ +'<p>Die Dateninventur ist die systematische Bestandsaufnahme: Welche Daten gibt es, wo liegen sie, wem gehören sie – und sind sie <b>vollständig und konsistent</b>? Sie steht vor dem Datenfluss und entscheidet über die Machbarkeit eines Projekts.</p>'
+ +'<p><b>Beispiel:</b> Liefern alle zehn Filialen Kassendaten für denselben Zeitraum? Fehlen an einzelnen Tagen Stempelungen? Heißt dasselbe Feld in zwei Systemen gleich?</p>'
+ +'<small>Grundlage: Hand-Out Tag 6 (Datenvorbereitung, Dateninventur)</small>';
+const TIP_PREP='<p><b>Datenvorbereitung: Bereinigung, Transformation, Selektion</b></p>'
+ +'<p>„Transform“ ist der Schritt aus ETL / ELT. Inhaltlich steckt darin die <b>Datenvorbereitung</b> mit ihren drei Arbeitsschritten. Sie beansprucht typischerweise bis zu 80 % des Aufwands eines ML-Projekts.</p>'
+ +'<table><tr><th>Station im Diagramm</th><th>Arbeitsschritt (Hand-Out Tag 6)</th></tr>'
+ +'<tr><td>Standardisierung</td><td>Bereinigung (Formate vereinheitlichen) bzw. Transformation (Einheiten angleichen)</td></tr>'
+ +'<tr><td>Bereinigung</td><td>Bereinigung</td></tr>'
+ +'<tr><td>Dubletten auflösen</td><td>Bereinigung</td></tr>'
+ +'<tr><td>Selektion</td><td>Selektion</td></tr>'
+ +'<tr><td>Merkmale bilden (Seite Modellentwicklung)</td><td>Transformation (abgeleitete Merkmale berechnen)</td></tr></table>'
+ +'<small>Grundlage: Hand-Out Tag 6 (Die drei Arbeitsschritte)</small>';
+const TIP_INT='<p><b>Datenintegration – die Brücke zum Modell</b></p>'
+ +'<p>Datenintegration führt Daten aus verschiedenen internen Quellen zusammen, vereinheitlicht sie und schafft so eine verlässliche Grundlage für das Training. Sie ist die Brücke zwischen Datenvorbereitung und Modellbau – hier entscheidet sich, ob die Qualität aus den Quellsystemen erhalten bleibt oder unterwegs verloren geht.</p>'
+ +'<p><b>Prüffrage 1: Nutzt ihr nur Daten, die zum Entscheidungszeitpunkt vorliegen?</b> Sonst droht Zukunftswissen im Training (Look-ahead Bias bzw. Data Leakage): Im Test glänzt das Modell, in der Praxis versagt es. Nicht zu verwechseln mit Datenabfluss – dort verlassen Daten unkontrolliert das Unternehmen.</p>'
+ +'<p><b>Prüffrage 2: Wie viele gelabelte Beispiele gibt es je Kategorie?</b> Googles Faustregel: 10 × Merkmalszahl bei einer Klassifikation, 50 × bei der Vorhersage eines Zahlenwerts. Ein Feld mit k Kategorien zählt als k − 1 Merkmale. Liegt man weit darunter, ist das ein Machbarkeitsproblem.</p>'
+ +'<small>Quellen: Hand-Out Tag 6 · <a href="https://cloud.google.com/blog/products/gcp/preparing-and-curating-your-data-for-machine-learning" target="_blank" rel="noopener">Google Cloud: Preparing and curating your data for ML</a></small>';
+const TIP_MLOPS='<p><b>MLOps – Machine Learning Operations</b></p>'
+ +'<p>MLOps überträgt Prinzipien aus DevOps (<b>Automatisierung, Monitoring</b>) auf den <b>gesamten</b> Lebenszyklus – von der Datensammlung über Training und Validierung bis zum Deployment und Betrieb.</p>'
+ +'<table><tr><th>Baustein</th><th>Im Diagramm</th></tr>'
+ +'<tr><td>Datenpipelines sichern den laufenden Datenfluss für Evaluation und erneutes Training</td><td>Extract, Load &amp; Transform</td></tr>'
+ +'<tr><td>Standardisierte Abläufe für Training, Validierung und Deployment</td><td>Modellentwicklung, Test, Freigabe</td></tr>'
+ +'<tr><td>Monitoring und automatisiertes Nachtrainieren bei Leistungsverlust (Model Drift)</td><td>Modellüberwachung, Retraining</td></tr>'
+ +'<tr><td>Versionierung und Protokollierung von Daten, Modellen und Entscheidungen</td><td>Rohdatenspeicher, Modellregister, Protokoll</td></tr></table>'
+ +'<p>Einheitliche, protokollierte Abläufe machen das KI-System auditierbar und nachvollziehbar (Traceability) und unterstützen Compliance-Anforderungen, z. B. nach ISO/IEC 42001.</p>'
+ +'<small>Quellen: <a href="https://docs.cloud.google.com/architecture/mlops-continuous-delivery-and-automation-pipelines-in-machine-learning" target="_blank" rel="noopener">Google Cloud: MLOps</a> · <a href="https://learn.microsoft.com/en-us/azure/architecture/ai-ml/guide/machine-learning-operations-v2" target="_blank" rel="noopener">Microsoft: MLOps v2</a> · <a href="https://docs.aws.amazon.com/sagemaker/latest/dg/model-monitor.html" target="_blank" rel="noopener">AWS: SageMaker Model Monitor</a></small>';
+const TIP_LOG='<p><b>Protokollierung und Versionierung</b></p>'
+ +'<p>Jede Anfrage und jede Prognose wird mit Zeitpunkt, Eingangsdaten und <b>Modellversion</b> protokolliert. Modelle liegen versioniert im Modellregister, die Rohdaten im schreibgeschützten Rohdatenspeicher. So lässt sich jede Modellentscheidung später nachvollziehen – Grundlage für Audits und Compliance (z. B. ISO/IEC 42001).</p>'
+ +'<p>Google empfiehlt zudem, die im Betrieb verwendeten Merkmale zu protokollieren und für das Training wiederzuverwenden – so trainiert man, wie man betreibt.</p>'
+ +'<small>Quelle: <a href="https://developers.google.com/machine-learning/guides/rules-of-ml" target="_blank" rel="noopener">Google: Rules of Machine Learning</a> (Regel 29)</small>';
+function infoI(sc,cx,cy,getHtml,up,ax,ay){
+  const g=el('g',{style:'cursor:pointer'},sc.L.ui);
+  el('circle',{cx,cy,r:11,fill:'#0f2a3a',stroke:'#4cc9f0'},g);
+  el('text',{x:cx,y:cy+5,class:'tk',style:'font-size:14px'},g).textContent='i';
+  const h=el('circle',{class:'vhit',cx,cy,r:14,fill:'transparent'},g);
+  const sh=()=>showTip(ax===undefined?cx:ax,ay===undefined?(up?cy-16:cy+16):ay,getHtml(),up);
+  h.addEventListener('mouseenter',sh);h.addEventListener('mouseleave',hideTipSoon);
+  h.addEventListener('click',e=>{e.stopPropagation();sh();});
+}
+
 function hideTipSoon(){clearTimeout(tipT);tipT=setTimeout(()=>{tip.style.display='none';},350);}
 tip.addEventListener('mouseenter',()=>clearTimeout(tipT));tip.addEventListener('mouseleave',hideTipSoon);
 
@@ -865,7 +909,7 @@ const top=mkScene('scTop');top.st={in:0};
   top.sources.push({pipe:'T0',rate:8,col:'mix',defp:{dup:.08,miss:.08,fmt:.10,out:.05}});
   // Blöcke
   const defs=[
-    ['Datenherkunft','Extract','src','Kasse · Bestand · Stechuhr · extern'],
+    ['Datenherkunft/-sammlung','Extract','src','Kasse · Bestand · Stechuhr · extern'],
     ['Datenverarbeitung','Load & Transform','fab','Rohdaten bleiben erhalten'],
     ['Modellentwicklung','Model Development','trn','Training · Validierung'],
     ['Modellbereitstellung','Model Deployment','dep','Prognosen im Betrieb'],
@@ -908,7 +952,10 @@ const top=mkScene('scTop');top.st={in:0};
     el('text',{x:(x1+x2)/2,y:208,class:'tag'},U).textContent=txt;
   };
   brk(BX(0),BX(1)+BW,'Data Processing','etl');
-  brk(BX(2),A,'Data Management (MLOps)','mlops');
+  brk(BX(2),A,'Modell: Entwicklung · Bereitstellung · Überwachung','mlops');
+  el('rect',{x:BX(0),y:660,width:A-BX(0),height:40,rx:20,fill:'#0f2a3a',stroke:'#4cc9f0','stroke-width':1.4},D);
+  el('text',{x:(BX(0)+A)/2-10,y:685,class:'tk',style:'font-size:13.5px'},U).textContent='MLOps: Automatisierung, Monitoring, Versionierung und Protokollierung – über den gesamten Lebenszyklus, von der Datensammlung bis zum Betrieb';
+  infoI(top,A-24,680,()=>TIP_MLOPS,true);
   el('text',{x:790,y:70,class:'btxt',style:'font-size:24px'},U).textContent='Überblick: Der Weg der Daten – von der Herkunft bis zur Prognose';
   el('text',{x:790,y:100,class:'sub'},U).textContent='Klicke auf einen Block, um die Details zu öffnen';
   el('text',{x:(lx+gx)/2,y:BY+BH+60,class:'tk',style:'font-size:13px'},U).textContent='Retraining (Continuous Training) – ausgelöst durch Drift-Alarm';
@@ -1164,7 +1211,7 @@ DP('rqUp',[[875,600],[875,440]],14,{next:'inCard',hold:()=>!D_.prod});
 const ansTo={};for(let i=0;i<10;i++)ansTo['a'+i]='ans'+i;
 DP('inCard',[[875,440],[875,320]],14,{route:p=>'a'+p.st,to:ansTo,enter:p=>{
   p.ptype=Math.random()<.6?'order':'cap';p.col=PCOL[p.ptype];p.r=3.8;shapeOf(p);}});
-for(let i=0;i<10;i++)DP('ans'+i,[[875,320],[875,210],[DTX(i),210],[DTX(i),130]],8,{sink:p=>{depN[i][p.ptype]++;dep.cnt[i].a.textContent=depN[i].order;dep.cnt[i].b.textContent=depN[i].cap;}});
+for(let i=0;i<10;i++)DP('ans'+i,[[875,320],[875,210],[DTX(i),210],[DTX(i),130]],8,{sink:p=>{depN[i][p.ptype]++;dep.logN=(dep.logN||0)+1;dep.logT.textContent='Protokoll: '+dep.logN+' Einträge';dep.cnt[i].a.textContent=depN[i].order;dep.cnt[i].b.textContent=depN[i].cap;}});
 dep.flash=0;dep.acc=Array(10).fill(0);
 function sendModel(){
   if(D_.phase!=='idle'||D_.lastVer>=3)return;
@@ -1211,6 +1258,8 @@ function startTest(){D_.phase='testing';D_.tn=0;D_.q=0;dep.tm.setAttribute('opac
   TX(U,815,308,'Produktion','lbl','font-size:15px');
   for(let i=0;i<3;i++){el('rect',{x:776,y:332+i*30,width:88,height:22,rx:4,fill:'#1d3145',stroke:'#4b6f8c'},D);el('circle',{class:'led',cx:786,cy:343+i*30,r:2.6,fill:'#4ade80'},D);}
   dep.verT=TX(U,912,384,'noch kein Modell','tk','text-anchor:start;font-size:13px');
+  dep.logT=TX(U,912,404,'Protokoll: 0 Einträge','tk2','text-anchor:start');TX(U,912,418,'mit Zeitpunkt und Modellversion','tk2','text-anchor:start');
+  infoI(dep,1090,404,()=>TIP_LOG,false);
   const waitT=TX(U,885,560,'Anfragen warten auf ein Modell','tk2','text-anchor:start;fill:#f59e0b');
   TX(U,885,520,'Anfragen','tk2','text-anchor:start');
   TX(U,885,270,'Prognosen','tk2','text-anchor:start');
