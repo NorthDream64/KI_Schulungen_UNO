@@ -36,6 +36,7 @@ text{pointer-events:none}
 @keyframes dash{to{stroke-dashoffset:-14}}
 .lbl{fill:var(--ink);font:650 16px system-ui,sans-serif;text-anchor:middle}
 .lbl.q{fill:var(--warn)}
+.pq{display:none}.practice .pq{display:inline}
 .blk .bg{fill:#13202e;fill-opacity:.88;stroke:#35506b;stroke-width:1.6;transition:stroke .2s,fill .2s}
 .blk.hov .bg{stroke:var(--acc);fill:#18293a}
 .blk .hit,.vhit{cursor:pointer}
@@ -113,10 +114,7 @@ text{pointer-events:none}
   <div class="ctrl">
     <button id="bBack" style="display:none">← Überblick</button>
     <button id="bPractice">Übungsmodus</button>
-    <button id="bSrc">Datenherkunft (Detail) ⊕</button>
-    <button id="bView">Transform (Detail) ⊕</button>
     <button id="bPause">Pause</button>
-    <button id="bAlarm" title="Löst im Betrieb einen Drift-Alarm aus">Drift auslösen</button>
     <button id="bReset">Zurücksetzen</button>
   </div>
 </header>
@@ -328,21 +326,20 @@ function refreshLabels(){
     if(l.fs0===undefined)l.fs0=l.t.style.fontSize||'';
     l.t.textContent=hide?'?':l.short;
     l.t.style.fontSize=hide?(l.fs0?'26px':'36px'):l.fs0;
-    l.t.setAttribute('class','lbl'+(hide?' q':''));
+    l.t.setAttribute('class','lbl'+(hide?' q':'')+(l.pq?' pq':''));
     l.g.classList.toggle('ask',hide);
     l.g.classList.toggle('named',state.practice&&!hide&&l.key!=='st1');
     l.hit.classList.toggle('act',hide);
   }
   for(const sc of [fab,src,main])if(sc.hints)sc.hints.forEach(h=>h.t.style.opacity=(state.practice&&!state.unlocked.has(h.key))?0:1);
   const cnt=a=>a.filter(k=>state.unlocked.has(k)).length;
-  const v=state.view,eK=['ext','sens','anon','raw','st2'],mK=['st3','st4','st5','st6'];
-  const upLocked=state.practice&&eK.some(k=>!state.unlocked.has(k));
+  const v=state.view,K={src:['da','db','dz','dc','dd','de','ext','sens','anon'],fab:['ka','kb','kc','raw','st2'],trn:['st3','st4','k1','k2','k3']};
+  const AWS='<a href="https://docs.aws.amazon.com/wellarchitected/latest/machine-learning-lens/machine-learning-lifecycle.html" target="_blank" rel="noopener">AWS Well-Architected Machine Learning Lens</a>';
   let h;
-  if(v==='top')h=state.practice?'Wähle einen Block. Die Fragen findest Du in Ebene 1 (Datenherkunft & -verarbeitung (Data processing) · Modellentwicklung bis -überwachung).':'Klicke auf einen Block, um in die Ebene 1 zu wechseln. Fahre mit der Maus über „Datenverarbeitung“ (oder das ⓘ): Dort steht der Unterschied zwischen ETL und ELT. Die Begriffe der fünf Blöcke folgen der <a href="https://docs.aws.amazon.com/wellarchitected/latest/machine-learning-lens/machine-learning-lifecycle.html" target="_blank" rel="noopener">AWS Well-Architected Machine Learning Lens</a>.';
-  else if(state.practice){
-    const p=v==='mlops'?'Modellentwicklung bis -überwachung '+cnt(mK)+'/4'+(upLocked?' · Hinweis: Damit Daten ankommen, müssen zuerst die Schritte in Datenherkunft & -verarbeitung benannt sein.':''):v==='etl'?'Datenherkunft & -verarbeitung '+cnt(eK)+'/5':v==='fab'?'Transform (Detail) '+cnt(['ka','kb','kc'])+'/3':'Datenherkunft (Detail) '+cnt(['da','db','dz','dc','dd','de'])+'/6';
-    h='Übungsmodus: '+p+'. Tippe auf ein gelb gestricheltes Fragezeichen und wähle den passenden Begriff – erst dann fließt der Strom weiter.';
-  }else h=v==='etl'?'Tipp: Mit den Wasserhähnen spielst Du manuelle Lieferungen ein. „Datenherkunft (Detail)“ und „Transform (Detail)“ in der Kopfzeile zeigen die Details.':v==='mlops'?'Tipp: „Drift auslösen“ simuliert, dass sich die Realität von den Trainingsdaten entfernt: Das Monitoring schlägt Alarm und das Modell wird neu trainiert (Retraining).':'Tipp: Mit „← Zurück“ gelangst Du in die Ebene 1.';
+  if(v==='top')h=state.practice?'Wähle einen Block. Die Fragen findest Du in den Detailseiten (Extract, Load &amp; Transform, Modellentwicklung).':'Klicke auf einen Block, um die Detailseite zu öffnen. Fahre mit der Maus über „Datenverarbeitung“ (oder das ⓘ): Dort steht der Unterschied zwischen ETL und ELT. Die Begriffe der Blöcke folgen der '+AWS+'.';
+  else if(state.practice&&K[v])h='Übungsmodus: '+cnt(K[v])+'/'+K[v].length+' benannt. Tippe auf ein gelb gestricheltes Fragezeichen und wähle den passenden Begriff – erst dann fließt der Strom weiter.';
+  else if(state.practice)h='Übungsmodus: Auf dieser Seite gibt es keine Fragen.';
+  else h={src:'Tipp: Mit den Wasserhähnen spielst Du manuelle Lieferungen ein. Alle Quellen fließen über den Datenspiegel (Extract) in den Rohdatenspeicher.',fab:'Tipp: Die gespiegelten Rohdaten werden im Rohdatenspeicher abgelegt (Load) und dann in der Fabrik aufbereitet (Transform).',trn:'Tipp: Schiebe den Schwellenwert und beobachte, wie Precision und Recall gegenläufig reagieren. Mit dem Vergleich „Niemanden anschreiben“ siehst Du, warum Accuracy allein täuscht.',dep:'Tipp: „Neue Version ausrollen“ zeigt, wie eine neue Modellversion durch Test und Freigabe in die Produktion kommt.',mon:'Tipp: Löse ein Ereignis aus und beobachte die Monitoring-Signale rechts. Nicht jede Veränderung ist Drift.'}[v];
   $('hint').innerHTML=h;
 }
 
@@ -434,7 +431,7 @@ function tickSources(sc,dt,gated){
 }
 function rawRelease(sc,dt){
   if(!locked('raw')&&raw.q.length){
-    let cnt=0;for(const p of sc.parts)if(p.pipe.id==='feed')cnt++;
+    let cnt=0;for(const p of sc.parts)if(p.pipe===sc.pipes.feed)cnt++;
     raw.acc+=dt*10;
     while(raw.acc>=1&&raw.q.length&&cnt<45){raw.acc--;const r=raw.q.shift();mkP(sc,sc.pipes.feed,{col:r.col,def:r.def,sens:r.sens,s:rnd(0,4)});raw.read++;cnt++;rawUpdate();}
     if(cnt>=45)raw.acc=0;
@@ -651,17 +648,20 @@ main.tick=(sc,dt)=>{tickSources(sc,dt,locked('st1')||locked('ext'));updateClocks
 const fab=mkScene('scFab');fab.st={in:0,rej:0,dups:0,fix:0,leak:0,clean:0};
 fab.g.classList.add('off');
 const F=(id,pts,w,o)=>addPipe(fab,Object.assign({id,pts,w,belt:true},o||{}));
-F('dA',[[30,330],[470,330]],34,{route:R.A,to:{rej:'rA',pass:'dB'},gate:'ka'});
+F('dA',[[190,330],[470,330]],34,{route:R.A,to:{rej:'rA',pass:'dB'},gate:'ka'});
+F('ldIn',[[108,124],[108,250]],18,{belt:false,sink:rawSink});
+fab.pipes.feed=fab.pipes.dA;
 F('dB',[[470,330],[820,330]],34,{route:R.B,to:{pass:'dC'},gate:'kb'});
 F('dC',[[820,330],[1160,330]],34,{route:R.C,to:{rej:'rC',pass:'dOut'},gate:'kc'});
 F('dOut',[[1160,330],[1560,330]],30,{enter:enterClean,sink:(p,sc)=>{inc(sc,'clean');if(p.def)inc(sc,'rest');}});
 F('rA',[[470,330],[470,610]],14,{cls:'rej',belt:false,enter:enterReject,sink:()=>fab.tanks.ta.add()});
 F('rC',[[1160,330],[1160,610]],14,{cls:'rej',belt:false,sink:()=>fab.tanks.tc.add()});
-fab.sources=[{pipe:'dA',rate:5.5,col:'mix',defp:{dup:.1,out:.08,miss:.1,fmt:.2}}];
+fab.sources=[{pipe:'ldIn',rate:5.5,col:'mix',defp:{dup:.1,out:.08,miss:.1,fmt:.2}}];
+fab.tick=(sc,dt)=>{rawRelease(sc,dt);};
 fab.hints=[];
 (()=>{
   const U=fab.L.ui,D=fab.L.deco;
-  el('text',{x:790,y:36,class:'lbl',style:'font-size:22px'},U).textContent='Transform im Detail';
+  el('text',{x:790,y:36,class:'lbl',style:'font-size:22px'},U).textContent='Load & Transform: Datenverarbeitung im Detail';
   // Halle
   el('path',{d:'M200,236 L200,190 L290,150 L290,190 L380,150 L380,190 L470,150 L470,190 L560,150 L560,190 L650,150 L650,190 L740,150 L740,190 L830,150 L830,190 L920,150 L920,190 L1010,150 L1010,190 L1100,150 L1100,190 L1190,150 L1190,190 L1230,190 L1230,236 Z',fill:'#16273a',stroke:'#35506b','stroke-width':1.5},D);
   el('rect',{x:1170,y:104,width:22,height:70,fill:'#1d3145',stroke:'#35506b'},D);
@@ -686,14 +686,26 @@ fab.hints=[];
   ex.forEach(e=>{const t=el('text',{x:e[2],y:474,class:'sub hinttxt'},U);
     e[1].forEach((ln,i)=>el('tspan',{x:e[2],dy:i?16:0},t).textContent=ln);
     fab.hints.push({key:e[0],t});});
-  el('text',{x:90,y:296,class:'sub'},U).textContent='Gespiegelte Rohdaten';
+  // Load: Rohdatenspeicher
+  el('rect',{x:28,y:250,width:160,height:176,rx:12,fill:'#13202e','fill-opacity':.9,stroke:'#2dd4bf','stroke-width':1.6},D);
+  const rfL=mkLayers(D,32,152);
+  el('text',{x:108,y:102,class:'sub'},U).textContent='Gespiegelte Rohdaten';el('text',{x:108,y:116,class:'tk2'},U).textContent='(aus Extract)';
+  pillGate(fab,'raw',48,262,120,'Load');
+  const la=el('text',{x:108,y:390,class:'tk'},U);la.textContent='0 gespeichert';
+  const lb=el('text',{x:108,y:408,class:'tk2'},U);lb.textContent='Rückstand: 0';
+  el('text',{x:108,y:444,class:'tk2'},U).textContent='Rohdatenspeicher (Raw Layer)';
+  el('text',{x:108,y:458,class:'tk2'},U).textContent='schreibgeschützt';
+  raw.views.push({layers:rfL,t1:la,t2:lb,max:110,base:424});
+  pillGate(fab,'st2',715,100,160,'Transform');
   el('text',{x:1400,y:296,class:'sub'},U).textContent='aufbereitet → zum Modell';
   tank(fab,'ta',390,610,160,84,'Quarantäne','#c0843f');
   tank(fab,'tc',1080,610,160,84,'Dubletten (verworfen)','#c0843f');
-  const b=el('g',{style:'cursor:pointer'},U);
-  el('rect',{x:30,y:60,width:160,height:30,rx:15,class:'pill'},b);
-  el('text',{x:110,y:80,class:'tk'},b).textContent='← zurück zu Ebene 1';
-  b.addEventListener('click',()=>setView('main'));
+  const ip=el('g',null,U);
+  el('rect',{class:'ipill',x:30,y:56,width:136,height:26,rx:13},ip);
+  el('text',{x:98,y:74,class:'tk'},ip).textContent='ⓘ ETL oder ELT?';
+  const ih=el('rect',{class:'vhit',x:30,y:56,width:136,height:26,rx:13,fill:'transparent'},ip);
+  ih.addEventListener('mouseenter',()=>showTip(98,86));ih.addEventListener('mouseleave',hideTipSoon);
+  ih.addEventListener('click',e=>{e.stopPropagation();showTip(98,86);});
 })();
 
 /* ============ DETAILANSICHT: Datenherkunft ============ */
@@ -709,19 +721,19 @@ SD('EV',[[236,500],[760,500]],8,{next:'mirD2',gate:'dd'});
 SD('EM',[[236,596],[760,596]],8,{next:'mirD2',gate:'de'});
 SD('AZ',[[236,696],[520,696]],8,{next:'AZpayD',fork:['AZxD'],gate:'dz'});
 SD('AZpayD',[[520,696],[520,728],[880,728]],8,{sink:opsSink(2)});
-SD('AZxD',[[520,696],[532,696]],8,{next:'AZanonD'});
+SD('AZxD',[[520,696],[532,696]],8,{next:'AZanonD',gate:'anon'});
 SD('AZanonD',[[532,696],[760,696]],8,{next:'mirD2',enter:anonFilter});
 SD('KCops',[[760,146],[880,146]],8,{sink:opsSink(0)});
 SD('BCops',[[760,262],[880,262]],10,{sink:opsSink(1)});
-SD('mirD1',[[760,146],[760,400]],12,{next:'rawInD'});
-SD('mirD2',[[760,696],[760,400]],12,{next:'rawInD'});
-SD('rawInD',[[760,400],[940,400]],18,{next:'rawMD'});
+SD('mirD1',[[760,146],[760,400]],12,{next:'rawInD',gate:'ext'});
+SD('mirD2',[[760,696],[760,400]],12,{next:'rawInD',gate:'ext'});
+SD('rawInD',[[760,400],[940,400]],18,{next:'rawMD',gate:'sens'});
 SD('rawMD',[[940,400],[1000,400]],18,{next:'rawOutD',enter:markSens});
 SD('rawOutD',[[1000,400],[1180,400]],18,{sink:rawSink});
 src.tick=(sc,dt)=>{tickSources(sc,dt,false);updateClocks();};
 (()=>{
   const U=src.L.ui,D=src.L.deco;
-  el('text',{x:24,y:32,class:'lbl',style:'text-anchor:start;font-size:20px'},U).textContent='Datenherkunft im Detail';
+  el('text',{x:24,y:32,class:'lbl',style:'text-anchor:start;font-size:20px'},U).textContent='Extract: Datenherkunft im Detail';
   pillGate(src,'da',24,50,350,'Verkaufsdaten (Kassensystem)');
   pillGate(src,'db',24,172,350,'Bestandsveränderung (2 x täglich)');
   pillGate(src,'dc',24,290,350,'Interne Daten (manuell)');
@@ -750,7 +762,8 @@ src.tick=(sc,dt)=>{tickSources(sc,dt,false);updateClocks();};
   mirrorMark(src,760,146);mirrorMark(src,760,262);
   el('circle',{cx:520,cy:696,r:13,fill:'#ef4444',stroke:'#fff','stroke-width':2},src.L.ui);
   el('rect',{x:511,y:693.5,width:18,height:5,rx:1.5,fill:'#fff'},src.L.ui);
-  el('text',{x:520,y:672,class:'tk2'},src.L.ui).textContent='Anonymisierung';
+  pillGate(src,'anon',600,658,134,'Anonymisierung');
+  pillGate(src,'ext',776,184,90,'Extract');
   opsBox(src,880,728,200,'Lohnbuchhaltung',2);
   el('rect',{x:870,y:696,width:220,height:60,rx:12,fill:'none',stroke:'#8196ab','stroke-width':1.6,'stroke-dasharray':'7 5'},src.L.deco);
   el('rect',{x:870,y:112,width:220,height:184,rx:12,fill:'none',stroke:'#8196ab','stroke-width':1.6,'stroke-dasharray':'7 5'},src.L.deco);
@@ -758,43 +771,21 @@ src.tick=(sc,dt)=>{tickSources(sc,dt,false);updateClocks();};
     el('rect',{x:cx-24,y:cy-34,width:48,height:68,rx:9,fill:'#0f1a26','fill-opacity':.55,stroke:'#f8fafc','stroke-width':1.6,'stroke-dasharray':'5 4'},g);
     el('path',{d:'M'+cx+','+(cy-24)+'l13,5v9c0,9-6,15-13,18c-7-3-13-9-13-18v-9z',fill:'none',stroke:'#f8fafc','stroke-width':1.8},g);
     el('circle',{cx,cy:cy-6,r:3.2,fill:'#f8fafc'},g);el('path',{d:'M'+(cx-5.5)+','+(cy+9)+'a5.5,5.5 0 0 1 11,0z',fill:'#f8fafc'},g);
-    el('text',{x:cx,y:cy+54,class:'tk2'},src.L.ui).textContent='Maskierung sensibler Daten';})();
+    pillGate(src,'sens',cx-120,cy+40,240,'Maskierung sensibler Daten');})();
   // Rohdatenspeicher (Kurzdarstellung)
   el('rect',{x:1180,y:360,width:150,height:80,rx:10,fill:'#13202e','fill-opacity':.85,stroke:'#2dd4bf','stroke-width':1.6},D);
   const rf2=mkLayers(D,1184,142);
-  el('text',{x:1255,y:348,class:'lbl',style:'font-size:14px'},U).textContent='Load';
+  el('text',{x:1255,y:348,class:'lbl',style:'font-size:14px'},U).textContent='Rohdatenspeicher';
   const a=el('text',{x:1255,y:402,class:'tk'},U);a.textContent='0 gespeichert';
   const b=el('text',{x:1255,y:419,class:'tk2'},U);b.textContent='Rückstand: 0';
-  el('text',{x:1255,y:460,class:'tk2'},U).textContent='weiter in Ebene 1 (Transform) →';
+  const nb=el('g',{style:'cursor:pointer'},U);
+  el('rect',{x:1170,y:452,width:170,height:28,rx:14,class:'pill'},nb);
+  el('text',{x:1255,y:471,class:'tk'},nb).textContent='weiter: Load & Transform →';
+  nb.addEventListener('click',()=>setView('fab'));
   raw.views.push({layers:rf2,t1:a,t2:b,max:70,base:436});
   mkClock(src);
 })();
 
-
-/* ============ Ebene 1: Überlagerungen, Titel, Info-Pille ============ */
-(()=>{
-  const g=main.g,U=el('g',null,g);
-  const mkOv=(cls,x,w,lines,click)=>{
-    const o=el('g',{class:'ovg '+cls},U);
-    el('rect',{x,y:0,width:w,height:760,fill:'#0b121b','fill-opacity':.86},o);
-    const cx=x+w/2;
-    lines.forEach((l,i)=>el('text',{x:cx,y:300+i*30,class:l[1]},o).textContent=l[0]);
-    const h=el('rect',{class:'vhit',x:cx-200,y:262,width:400,height:130,fill:'transparent'},o);
-    h.addEventListener('click',click);
-    return o;
-  };
-  main.ovR=mkOv('off',985,595,[['Weiter mit der Modellentwicklung','btxt'],['Modelltraining · Validierung · Bereitstellung · Überwachung','sub'],['Hier klicken →','tag']],()=>setView('mlops'));
-  main.ovL=mkOv('off',0,940,[['← Datenherkunft & Datenverarbeitung','btxt'],['Die aufbereiteten Daten kommen aus Transform','sub'],['Hier klicken','tag']],()=>setView('etl'));
-  main.vtE=el('g',{class:'vg off'},U);
-  const ip=el('g',null,main.vtE);
-  el('rect',{class:'ipill',x:410,y:12,width:128,height:26,rx:13},ip);
-  el('text',{x:474,y:30,class:'tk'},ip).textContent='ⓘ ETL oder ELT?';
-  const h=el('rect',{class:'vhit',x:410,y:12,width:128,height:26,rx:13,fill:'transparent'},ip);
-  h.addEventListener('mouseenter',()=>showTip(474,40));h.addEventListener('mouseleave',hideTipSoon);
-  h.addEventListener('click',e=>{e.stopPropagation();showTip(474,40);});
-  main.vtM=el('g',{class:'vg off'},U);
-  el('text',{x:16,y:28,class:'tag',style:'text-anchor:start'},main.vtM).textContent='Modellentwicklung bis Modellüberwachung';
-})();
 
 /* ============ Info-Box ETL / ELT ============ */
 const tip=$('tip');let tipT=0;
@@ -837,11 +828,11 @@ const top=mkScene('scTop');top.st={in:0};
   top.sources.push({pipe:'T0',rate:8,col:'mix',defp:{dup:.08,miss:.08,fmt:.10,out:.05}});
   // Blöcke
   const defs=[
-    ['Datenherkunft','Data Collection','etl','Kasse · Bestand · Stechuhr · extern'],
-    ['Datenverarbeitung','Data Processing (ETL / ELT)','etl','Rohdaten bleiben erhalten'],
-    ['Modellentwicklung','Model Development','mlops','Training · Validierung'],
-    ['Modellbereitstellung','Model Deployment','mlops','Prognosen im Betrieb'],
-    ['Modellüberwachung','Model Monitoring','mlops','Drift erkennen → Retraining']];
+    ['Datenherkunft','Extract','src','Kasse · Bestand · Stechuhr · extern'],
+    ['Datenverarbeitung','Load & Transform','fab','Rohdaten bleiben erhalten'],
+    ['Modellentwicklung','Model Development','trn','Training · Validierung'],
+    ['Modellbereitstellung','Model Deployment','dep','Prognosen im Betrieb'],
+    ['Modellüberwachung','Model Monitoring','mon','Drift erkennen → Retraining']];
   const bl=[];
   defs.forEach((d,i)=>{
     const x=BX(i),cx=x+BW/2,g=el('g',{class:'blk'},D);
@@ -853,11 +844,12 @@ const top=mkScene('scTop');top.st={in:0};
   });
   // Icons
   const SRCKEYS=['kasse','bestand','intern','wetter','lokal','zeit'];
-  SRCKEYS.forEach((k,i)=>el('circle',{cx:BX(0)+45+i*32,cy:450,r:9,fill:SRC[k]},D));
-  [['Extract',14],['Load',94],['Transform',174]].forEach((t,i)=>{
-    el('rect',{class:'ipill',x:BX(1)+t[1],y:430,width:62,height:24,rx:12},D);
-    el('text',{x:BX(1)+t[1]+31,y:446,class:'tk',style:'font-size:11.5px'},U).textContent=t[0];
-    if(i<2)el('text',{x:BX(1)+t[1]+71,y:447,class:'tk2',style:'font-size:14px'},U).textContent='→';
+  SRCKEYS.forEach((k,i)=>el('circle',{cx:BX(0)+45+i*32,cy:430,r:9,fill:SRC[k]},D));
+  el('rect',{class:'ipill',x:BX(0)+94,y:458,width:62,height:24,rx:12},D);el('text',{x:BX(0)+125,y:474,class:'tk',style:'font-size:11.5px'},U).textContent='Extract';
+  [['Load',30,64],['Transform',120,100]].forEach((t,i)=>{
+    el('rect',{class:'ipill',x:BX(1)+t[1],y:430,width:t[2],height:24,rx:12},D);
+    el('text',{x:BX(1)+t[1]+t[2]/2,y:446,class:'tk',style:'font-size:11.5px'},U).textContent=t[0];
+    if(i<1)el('text',{x:BX(1)+t[1]+t[2]+13,y:447,class:'tk2',style:'font-size:14px'},U).textContent='→';
   });
   // Zahnrad
   const gcx=BX(2)+BW/2,gcy=455,R=30;
@@ -877,7 +869,6 @@ const top=mkScene('scTop');top.st={in:0};
   const brk=(x1,x2,txt,view)=>{
     el('path',{d:'M'+x1+',232 v-10 H'+x2+' v10',fill:'none',stroke:'#4ade80','stroke-width':2},D);
     el('text',{x:(x1+x2)/2,y:208,class:'tag'},U).textContent=txt;
-    const h=el('rect',{class:'vhit',x:x1,y:186,width:x2-x1,height:48,fill:'transparent'},U);h.addEventListener('click',()=>setView(view));
   };
   brk(BX(0),BX(1)+BW,'Data Processing','etl');
   brk(BX(2),A,'Data Management (MLOps)','mlops');
@@ -911,11 +902,392 @@ const top=mkScene('scTop');top.st={in:0};
   function retrain(){top.retrain();}
 })();
 
-const scenes=[top,main,fab,src];
+/* ============ Gemeinsame Helfer für die Vollseiten ============ */
+const TX=(p,x,y,s,cls,st)=>{const e=el('text',{x,y,class:cls||'sub'},p);if(st)e.setAttribute('style',st);e.textContent=s;return e;};
+function btn(sc,x,y,w,h,label,fn){
+  const g=el('g',{style:'cursor:pointer'},sc.L.ui);
+  const r=el('rect',{x,y,width:w,height:h,rx:h/2,class:'pill'},g);
+  const t=el('text',{x:x+w/2,y:y+h/2+4.5,class:'tk',style:'font-size:13px'},g);t.textContent=label;
+  g.addEventListener('click',fn);return {g,r,t};
+}
+function para(parent,x,y,dy,st){
+  const t=el('text',{x,y,class:'tl',style:'fill:#cbd5e1;font:13px system-ui,sans-serif;'+(st||'')},parent);
+  t.set=ls=>{while(t.firstChild)t.removeChild(t.firstChild);ls.forEach((l,i)=>{const s=el('tspan',{x,dy:i?dy:0},t);s.textContent=l;});};
+  return t;
+}
+function bigHouse(sc,cx,cy,c){
+  const g=el('g',{transform:'translate('+cx+' '+cy+')'},sc.L.deco);
+  el('path',{d:'M-17,14 v-18 l17,-13 l17,13 v18z',fill:'#0f1a26',stroke:c,'stroke-width':1.8},g);
+  el('rect',{x:-4,y:2,width:8,height:12,fill:c,'fill-opacity':.5},g);
+  return g;
+}
+const svgX=e=>{const pt=svg.createSVGPoint();pt.x=e.clientX;pt.y=e.clientY;return pt.matrixTransform(svg.getScreenCTM().inverse()).x;};
+const pq=sc=>{const l=sc.labels[sc.labels.length-1];l.pq=true;[l.g,l.hit,l.t].forEach(n=>n.classList.add('pq'));};   // nur im Übungsmodus sichtbar
+const pct=x=>Math.round(x*100)+' %';
+const gearPath=(cx,cy,R)=>{let d='';for(let i=0;i<10;i++){const a=i*36*Math.PI/180,P=(r,da)=>(cx+Math.cos(a+da)*r).toFixed(1)+','+(cy+Math.sin(a+da)*r).toFixed(1);d+=(i?'L':'M')+P(R,-.12)+'L'+P(R,.12)+'L'+P(R*.82,.2)+'L'+P(R*.82,.52);}return d+'Z';};
+const gearIcon=(parent,cx,cy,R)=>{
+  const g=el('g',{class:'gear'},parent);
+  el('path',{d:gearPath(cx,cy,R),fill:'#274055',stroke:'#4b6f8c','stroke-width':1.5},g);
+  el('circle',{cx,cy,r:R*.3,fill:'#13202e',stroke:'#4b6f8c'},g);return g;
+};
+
+/* ============ VOLLSEITE: Modellentwicklung ============ */
+const trn=mkScene('scTrn');trn.g.classList.add('off');trn.st={in:0};
+const TP=(id,pts,w,o)=>addPipe(trn,Object.assign({id,pts,w},o||{}));
+let regCount=0;
+TP('tIn',[[30,190],[330,190]],22,{next:'tSplit'});
+TP('tSplit',[[330,190],[470,190]],22,{route:()=>Math.random()<.8?'train':'test',to:{train:'tTr',test:'tTe'}});
+TP('tTr',[[470,190],[700,190]],18,{next:'tGear'});
+TP('tGear',[[700,190],[820,190]],16,{next:'tM',gate:'st3',enter:(p,sc,pi)=>{
+  if(p.kind==='model')return;
+  if(Math.random()<.2){p.kind='model';p.col=COL.model;p.r=5.5;shapeOf(p);return;}
+  const q=pos(pi,p.s,0);puff(sc,q[0],q[1],COL.model);return false;}});
+TP('tM',[[820,190],[1010,190]],14,{next:'tVal'});
+TP('tVal',[[1010,190],[1130,190]],14,{route:()=>Math.random()<.7?'ok':'back',to:{ok:'tOk',back:'tBack'},gate:'st4'});
+TP('tOk',[[1130,190],[1330,190]],12,{sink:()=>{regCount++;trn.regT.textContent=regCount+' freigegeben';}});
+TP('tBack',[[1130,190],[1130,84],[690,84],[690,190]],6,{next:'tTr',dash:true,cls:'ret'});
+TP('tTe',[[470,190],[470,310],[1070,310],[1070,250]],12,{sink:(p,sc,pi)=>{const q=pos(pi,pi.len,0);puff(sc,q[0],q[1],'#7dd3fc');}});
+trn.sources=[{pipe:'tIn',rate:4,col:COL.clean}];
+(()=>{
+  const U=trn.L.ui,D=trn.L.deco;
+  TX(U,24,32,'Modellentwicklung im Detail','lbl','text-anchor:start;font-size:20px');
+  TX(U,30,150,'aufbereitete Daten (aus Transform)','sub','text-anchor:start');
+  // Aufteilen
+  el('rect',{class:'card-bg',x:330,y:140,width:140,height:100,rx:12},D);
+  TX(U,400,128,'Daten aufteilen','lbl','font-size:15px');
+  TX(U,400,222,'80 % / 20 %','tk2');
+  TX(U,585,170,'Trainingsdaten','sub');
+  TX(U,700,334,'Testdaten: bleiben zurückgehalten und prüfen später das Modell','sub','text-anchor:start');
+  // Modelltraining
+  card(trn,'st3',700,130,120,120,'','Modelltraining');
+  gearIcon(D,760,190,40);
+  TX(U,760,270,'wenige Modellkandidaten entstehen','tk2');
+  // Validierung
+  card(trn,'st4',1010,130,120,120,'','Validierung');
+  el('circle',{cx:1070,cy:190,r:24,fill:'#12351f',stroke:'#4ade80','stroke-width':1.6},D);
+  el('path',{d:'M1058,190 l9,9 l17,-19',fill:'none',stroke:'#4ade80','stroke-width':3},D);
+  TX(U,1070,270,'Testdaten · Schwellenwert','tk2');
+  TX(U,910,72,'zurück ins Modelltraining (nicht bestanden)','tk2');
+  // Modellregister
+  el('rect',{class:'card-bg',x:1330,y:130,width:200,height:120,rx:12},D);
+  TX(U,1430,118,'Modellregister','lbl','font-size:15px');
+  el('rect',{x:1418,y:160,width:24,height:24,fill:COL.model,stroke:'#fff','stroke-width':.8,transform:'rotate(45 1430 172)'},D);
+  trn.regT=TX(U,1430,226,'0 freigegeben','tk');
+  TX(U,1430,242,'weiter zur Bereitstellung','tk2');
+  // Kennzahlen-Demo
+  TX(U,24,392,'Validierung am Beispiel: Werbekampagne','lbl','text-anchor:start;font-size:18px');
+  TX(U,24,412,'Welche der 100 Kund:innen sollen einen Coupon erhalten? Das Modell schätzt für jede Person die Kaufwahrscheinlichkeit.','sub','text-anchor:start;font-size:12.5px');
+  // Kundendaten (festes Zufallsmuster)
+  let seed=7;const rn=()=>{seed=(seed*1664525+1013904223)%4294967296;return seed/4294967296;};
+  const idx=[...Array(100).keys()];for(let i=99;i>0;i--){const j=Math.floor(rn()*(i+1));[idx[i],idx[j]]=[idx[j],idx[i]];}
+  const buyer=new Set(idx.slice(0,10)),look=new Set(idx.slice(10,16));
+  const cust=[];
+  for(let i=0;i<100;i++){
+    const b=buyer.has(i);let s;
+    if(b)s=.3+.65*Math.pow(rn(),.6);else if(look.has(i))s=.45+.4*rn();else s=.5*Math.pow(rn(),1.8);
+    cust.push({b,s,x:60+(i%10)*30,y:458+Math.floor(i/10)*26});
+  }
+  const dots=cust.map(c=>{
+    const g=el('g',null,U);
+    const ring=el('circle',{cx:c.x,cy:c.y,r:11,fill:'none',stroke:'#22d3ee','stroke-width':2,opacity:0},g);
+    el('circle',{cx:c.x,cy:c.y,r:7,fill:c.b?COL.model:'#2b3b4d',stroke:c.b?'#fff':'#46607a','stroke-width':c.b?.8:1},g);
+    return ring;
+  });
+  // Legende
+  el('circle',{cx:64,cy:726,r:6,fill:COL.model,stroke:'#fff','stroke-width':.8},U);TX(U,76,730,'kauft mit Coupon','tk2','text-anchor:start');
+  el('circle',{cx:180,cy:726,r:6,fill:'#2b3b4d',stroke:'#46607a'},U);TX(U,192,730,'kauft nicht','tk2','text-anchor:start');
+  el('circle',{cx:262,cy:726,r:8,fill:'none',stroke:'#22d3ee','stroke-width':2},U);TX(U,276,730,'Modell: anschreiben','tk2','text-anchor:start');
+  // Konfusionsmatrix
+  const MX=[430,550],MY=[448,528];
+  TX(U,487,438,'angeschrieben','tk');TX(U,607,438,'nicht angeschrieben','tk');
+  TX(U,424,492,'kauft','tk','text-anchor:end');TX(U,424,572,'kauft nicht','tk','text-anchor:end');
+  const cell=(cx,cy,col,name)=>{
+    el('rect',{x:cx,y:cy,width:114,height:74,rx:8,fill:col,'fill-opacity':.22,stroke:col},U);
+    const n=TX(U,cx+57,cy+38,'0','lbl','font-size:26px');TX(U,cx+57,cy+60,name,'tk2');return n;
+  };
+  const cTP=cell(MX[0],MY[0],'#4ade80','richtig erkannt'),cFN=cell(MX[1],MY[0],'#f59e0b','verpasst'),
+        cFP=cell(MX[0],MY[1],'#f59e0b','unnötiger Coupon'),cTN=cell(MX[1],MY[1],'#4ade80','richtig erkannt');
+  // Schwellenwert
+  const SX0=440,SX1=660;let thr=.5,base=false;
+  TX(U,SX0,642,'Schwellenwert','tk','text-anchor:start');
+  const thrT=TX(U,SX1,642,'0,50','tk','text-anchor:end');
+  el('rect',{x:SX0,y:654,width:SX1-SX0,height:6,rx:3,fill:'#22384d'},U);
+  const knob=el('circle',{cx:SX0+(SX1-SX0)*.5,cy:657,r:9,fill:'#22d3ee',stroke:'#fff','stroke-width':1.4,style:'cursor:ew-resize'},U);
+  const trk=el('rect',{x:SX0-8,y:644,width:SX1-SX0+16,height:26,fill:'transparent',style:'cursor:ew-resize'},U);
+  TX(U,SX0,684,'niedrig: viele anschreiben','tk2','text-anchor:start');TX(U,SX1,684,'hoch: wenige','tk2','text-anchor:end');
+  const bl=btn(trn,SX0-20,696,SX1-SX0+40,26,'Vergleich: „Niemanden anschreiben“',()=>{base=!base;upd();});
+  // Kennzahlen-Balken
+  const rows=[['Accuracy','richtig eingestuft ÷ alle','#38bdf8'],['Precision','Käufer:innen ÷ Angeschriebene','#a78bfa'],['Recall','erreichte Käufer:innen ÷ alle Käufer:innen','#4ade80']];
+  const bars=rows.map((r,i)=>{
+    const y=452+i*62;
+    TX(U,720,y,r[0],'lbl','text-anchor:start;font-size:16px');TX(U,720,y+16,r[1],'tk2','text-anchor:start');
+    el('rect',{x:720,y:y+24,width:300,height:12,rx:6,fill:'#22384d'},U);
+    const b=el('rect',{x:720,y:y+24,width:0,height:12,rx:6,fill:r[2]},U);
+    const v=TX(U,1034,y+35,'0 %','lbl','text-anchor:start;font-size:15px');
+    return {b,v};
+  });
+  const msg=para(U,720,654,17);
+  // rechte Spalte
+  TX(U,1190,452,'So liest Du die Kennzahlen','lbl','text-anchor:start;font-size:15px');
+  const gl=para(U,1190,474,17,'font-size:12.5px');
+  gl.set(['Accuracy: Anteil aller richtigen Einstufungen.','Precision: Anteil der Angeschriebenen, die wirklich','kaufen (wenig „unnötige Coupons“).','Recall: Anteil aller Käufer:innen, die erreicht','werden (wenig „verpasste Chancen“).','Bei seltenen Ereignissen täuscht Accuracy leicht.']);
+  TX(U,1190,590,'Quelle: Google, Machine Learning Crash Course','tk2','text-anchor:start');
+  TX(U,1190,606,'(Classification: Accuracy, recall, precision)','tk2','text-anchor:start');
+  pillGate(trn,'k1',1190,624,350,'Frage 1: Aussage von 90 % Accuracy');pq(trn);
+  pillGate(trn,'k2',1190,660,350,'Frage 2: Kein Käufer darf fehlen');pq(trn);
+  pillGate(trn,'k3',1190,696,350,'Frage 3: Coupons sind teuer');pq(trn);
+  function upd(){
+    let TP=0,FP=0,FN=0,TN=0;
+    cust.forEach((c,i)=>{const t=!base&&c.s>=thr;dots[i].setAttribute('opacity',t?1:0);
+      if(t&&c.b)TP++;else if(t)FP++;else if(c.b)FN++;else TN++;});
+    cTP.textContent=TP;cFN.textContent=FN;cFP.textContent=FP;cTN.textContent=TN;
+    const acc=(TP+TN)/100,pre=TP+FP?TP/(TP+FP):null,rec=TP+FN?TP/(TP+FN):0;
+    const set=(i,v,t)=>{bars[i].b.setAttribute('width',300*(v||0));bars[i].v.textContent=t;};
+    set(0,acc,pct(acc));set(1,pre,pre===null?'n. d.':pct(pre));set(2,rec,pct(rec));
+    thrT.textContent=thr.toFixed(2).replace('.',',');
+    knob.setAttribute('cx',SX0+(SX1-SX0)*(thr-.1)/.8);
+    if(base)bl.r.setAttribute('fill','#0b5a74');else bl.r.removeAttribute('fill');
+    if(base)msg.set(['Niemand wird angeschrieben: Die Accuracy sieht mit '+pct(acc),'gut aus, aber Recall ist 0 %. Alle Käufer:innen werden','verpasst. Precision ist nicht definiert (0 ÷ 0).']);
+    else msg.set([(TP+FP)+' Kund:innen werden angeschrieben, '+TP+' davon kaufen','(Precision '+pct(pre)+'). '+FN+' von '+(TP+FN)+' Käufer:innen werden verpasst','(Recall '+pct(rec)+'). Schwellenwert senken: Recall steigt,','Precision sinkt – und umgekehrt.']);
+  }
+  const mv=e=>{const x=Math.max(SX0,Math.min(SX1,svgX(e)));thr=Math.round((.1+.8*(x-SX0)/(SX1-SX0))*100)/100;base=false;upd();};
+  let drag=false;
+  trk.addEventListener('pointerdown',e=>{drag=true;trk.setPointerCapture(e.pointerId);mv(e);});
+  trk.addEventListener('pointermove',e=>{if(drag)mv(e);});
+  trk.addEventListener('pointerup',()=>{drag=false;});
+  trn.upd=upd;trn.kn=()=>({thr,cust});
+  // Schieberegler-Skala: x -> .1 ... .9
+  knob.setAttribute('cx',SX0+(SX1-SX0)*(thr-.1)/.8);
+  const _u=upd;
+  trn.thr=v=>{thr=v;base=false;_u();};
+  upd();
+})();
+
+/* ============ VOLLSEITE: Modellbereitstellung ============ */
+const dep=mkScene('scDep');dep.g.classList.add('off');dep.st={in:0};
+const DP=(id,pts,w,o)=>addPipe(dep,Object.assign({id,pts,w},o||{}));
+let depVer=1,depSent=0,depPred=[0,0];
+DP('rel',[[220,190],[420,190]],14,{next:'stg'});
+DP('stg',[[420,190],[540,190]],14,{next:'rel2'});
+DP('rel2',[[540,190],[760,190]],14,{sink:()=>{depVer=dep.nextVer;dep.verT.textContent='v'+depVer;dep.regT.textContent='v'+depVer+' im Register';dep.flash=1.2;}});
+for(let i=0;i<10;i++){const x=120+i*58;DP('rq'+i,[[x,628],[x,560]],3,{next:'rq'});}
+DP('rq',[[120,560],[830,560]],10,{next:'rqUp'});
+DP('rqUp',[[830,560],[830,250]],16,{next:'inCard'});
+DP('inCard',[[830,250],[830,190],[900,190]],14,{enter:(p,sc)=>{p.kind='pred';p.col=COL.pred;p.r=3.6;shapeOf(p);},route:()=>Math.random()<.5?'a':'b',to:{a:'pA',b:'pB'}});
+DP('pA',[[900,190],[1160,190]],10,{sink:()=>{depPred[0]++;dep.cA.textContent=depPred[0]+' Bestellvorschläge';}});
+DP('pB',[[900,190],[1000,190],[1000,330],[1160,330]],10,{sink:()=>{depPred[1]++;dep.cB.textContent=depPred[1]+' Personalbedarfe';}});
+dep.sources=[];for(let i=0;i<10;i++)dep.sources.push({pipe:'rq'+i,rate:.9,col:SRC.kasse});
+dep.nextVer=1;dep.flash=0;dep.relT=2;
+(()=>{
+  const U=dep.L.ui,D=dep.L.deco;
+  TX(U,24,32,'Modellbereitstellung im Detail','lbl','text-anchor:start;font-size:20px');
+  // Register
+  el('rect',{class:'card-bg',x:40,y:130,width:180,height:120,rx:12},D);
+  TX(U,130,118,'Modellregister','lbl','font-size:15px');
+  el('rect',{x:118,y:160,width:24,height:24,fill:COL.model,stroke:'#fff','stroke-width':.8,transform:'rotate(45 130 172)'},D);
+  dep.regT=TX(U,130,226,'v1 im Register','tk');TX(U,130,242,'freigegebene Version','tk2');
+  // Test
+  el('rect',{class:'card-bg',x:420,y:130,width:120,height:120,rx:12},D);
+  TX(U,480,118,'Test (Staging)','lbl','font-size:15px');
+  el('circle',{cx:480,cy:190,r:22,fill:'#12351f',stroke:'#4ade80','stroke-width':1.6},D);el('path',{d:'M469,190 l8,8 l15,-17',fill:'none',stroke:'#4ade80','stroke-width':3},D);
+  TX(U,480,270,'Probelauf mit Testdaten','tk2');
+  // Freigabe
+  el('circle',{cx:650,cy:190,r:18,fill:'#0f2a3a',stroke:'#4cc9f0','stroke-width':1.6},D);
+  TX(U,650,196,'✓','tk','font-size:18px');TX(U,650,226,'Freigabe','tk2');TX(U,650,240,'(Mensch)','tk2');
+  // Produktion
+  el('rect',{class:'card-bg',x:760,y:130,width:140,height:120,rx:12},D);
+  TX(U,830,118,'Produktion','lbl','font-size:15px');
+  for(let i=0;i<3;i++){el('rect',{x:786,y:142+i*30,width:88,height:22,rx:4,fill:'#1d3145',stroke:'#4b6f8c'},D);el('circle',{class:'led',cx:796,cy:153+i*30,r:2.6,fill:'#4ade80'},D);}
+  dep.verT=TX(U,884,146,'v1','tk','font-size:14px;text-anchor:end');
+  // Ausgänge
+  const box=(y,t)=>{el('rect',{class:'card-bg',x:1160,y:y-40,width:240,height:80,rx:12},D);TX(U,1280,y-14,t,'tk');return TX(U,1280,y+10,'0','lbl','font-size:14px');};
+  dep.cA=box(190,'Bestellsystem');dep.cB=box(330,'Schichtplanung');
+  TX(U,1030,168,'Prognosen','tk2');
+  // Filialen
+  for(let i=0;i<10;i++){bigHouse(dep,120+i*58,650,SRC.kasse);}
+  TX(U,120,700,'Filialen fragen Prognosen an (laufende Absatzdaten)','sub','text-anchor:start');
+  TX(U,300,545,'Anfragen','tk2');
+  // Erklärung
+  TX(U,1190,430,'Stufen der Bereitstellung','lbl','text-anchor:start;font-size:15px');
+  const t=para(U,1190,452,17,'font-size:12.5px');
+  t.set(['1  Modellregister: freigegebene Version liegt bereit.','2  Test (Staging): Probelauf, bevor echte Daten fließen.','3  Freigabe: der Mensch entscheidet.','4  Produktion: Das Modell beantwortet Anfragen.','5  Danach beobachtet das Monitoring den Betrieb.']);
+  TX(U,1190,552,'Quelle: Microsoft, Machine learning operations (MLOps v2),','tk2','text-anchor:start');
+  TX(U,1190,568,'Model deployment (outer loop)','tk2','text-anchor:start');
+  btn(dep,1190,598,240,30,'Neue Version ausrollen (v2)',()=>{if(depVer>=2||dep.pend)return;dep.pend=true;dep.nextVer=2;dep.manual=1;});
+  dep.tick=(sc,dt)=>{
+    sc.relT-=dt;
+    if(dep.manual){dep.manual=0;mkP(sc,sc.pipes.rel,{kind:'model',col:COL.model,r:5.5,off:0});}
+    else if(sc.relT<=0&&!dep.started){dep.started=true;mkP(sc,sc.pipes.rel,{kind:'model',col:COL.model,r:5.5,off:0});}
+    if(dep.flash>0)dep.flash-=dt;
+    dep.verT.setAttribute('fill',dep.flash>0?'#fde047':'');
+  };
+})();
+
+/* ============ VOLLSEITE: Modellüberwachung ============ */
+const mon=mkScene('scMon');mon.g.classList.add('off');mon.st={in:0};
+const MP=(id,pts,w,o)=>addPipe(mon,Object.assign({id,pts,w},o||{}));
+const MXs=[];for(let i=0;i<6;i++)MXs.push(450+i*58);for(let i=0;i<4;i++)MXs.push(830+i*58);
+MXs.forEach((x,i)=>MP('MS'+i,[[x,262],[x,290]],3,{next:i<6?'mColL':'mColR'}));
+MP('mColL',[[450,290],[758,290]],10,{next:'mDown'});
+MP('mColR',[[1004,290],[758,290]],10,{next:'mDown'});
+MP('mDown',[[758,290],[758,330]],14,{next:'mThru'});
+MP('mThru',[[758,330],[758,440]],14,{next:'mOut',enter:()=>{}});
+MP('mOut',[[758,440],[758,520]],12,{sink:()=>{},enter:(p)=>{p.kind='pred';p.col=COL.pred;p.r=3.6;shapeOf(p);}});
+mon.sources=MXs.map((x,i)=>({pipe:'MS'+i,rate:.9,col:SRC.kasse}));
+(()=>{
+  const U=mon.L.ui,D=mon.L.deco;
+  TX(U,24,32,'Modellüberwachung im Detail','lbl','text-anchor:start;font-size:20px');
+  // Filialen
+  const bars=[],fcs=[];
+  MXs.forEach((x,i)=>{
+    bigHouse(mon,x,118,i<6?SRC.kasse:SRC.wetter);
+    TX(U,x,150,'F'+(i+1),'tk2');
+    el('rect',{x:x-10,y:160,width:20,height:55,rx:2,fill:'#13202e'},D);
+    bars.push(el('rect',{x:x-9,y:215,width:18,height:0,rx:2,fill:'#38bdf8','fill-opacity':.85},U));
+    fcs.push(el('line',{x1:x-13,x2:x+13,y1:215,y2:215,stroke:'#fde047','stroke-width':2,'stroke-dasharray':'3 2'},U));
+  });
+  const brk=(x1,x2,t)=>{el('path',{d:'M'+x1+',226 v8 H'+x2+' v-8',fill:'none',stroke:'#4b6f8c','stroke-width':1.6},D);TX(U,(x1+x2)/2,252,t,'tk2');};
+  brk(436,754,'Stadtfilialen');brk(816,1018,'Landfilialen');
+  TX(U,436,78,'Balken: Ist-Absatz · gelbe Marke: Prognose','tk2','text-anchor:start;font-size:11px');
+  // Karnevals-Marken
+  const kv=MXs.slice(0,3).map(x=>{const g=el('g',{opacity:0,style:'transition:opacity .6s'},U);
+    for(let k=0;k<5;k++)el('circle',{cx:x-12+k*6,cy:92+(k%2)*6,r:2.4,fill:SRC.events},g);return g;});
+  // Einkaufszentrum
+  const mall=el('g',{opacity:0,style:'transition:opacity .8s'},U);
+  el('rect',{x:768,y:104,width:38,height:30,fill:'#1b2a3a',stroke:SRC.events,'stroke-width':1.8},mall);
+  el('rect',{x:774,y:114,width:8,height:20,fill:SRC.events,'fill-opacity':.5},mall);
+  TX(mall,787,150,'Einkaufs-','tk2','font-size:9.5px');TX(mall,787,161,'zentrum','tk2','font-size:9.5px');
+  // Modell
+  el('rect',{class:'card-bg',x:668,y:330,width:180,height:110,rx:12},D);
+  const mver=TX(U,650,376,'Prognosemodell','tk','text-anchor:end');
+  const mv=TX(U,650,394,'Version v1','tk2','text-anchor:end');
+  el('rect',{x:742,y:356,width:32,height:32,fill:COL.model,stroke:'#fff','stroke-width':.8,transform:'rotate(45 758 372)',opacity:.9},D);
+  el('rect',{class:'card-bg',x:668,y:520,width:180,height:44,rx:10},D);
+  TX(U,758,547,'Bestellvorschläge · Personalbedarf','tk2');
+  TX(U,758,320,'Absatz- und Ereignisdaten','tk2','font-size:10px');
+  // Linke Spalte
+  TX(U,24,66,'Ereignis auslösen','lbl','text-anchor:start;font-size:15px');
+  const defs=[['karneval','Sonderaktion „Karneval“'],['mall','Neues Einkaufszentrum am Stadtrand'],['price','Neue Preisliste'],['bias','Verzerrte Prognose (Bias)']];
+  const bt={};
+  defs.forEach((d,i)=>{bt[d[0]]=btn(mon,24,80+i*42,376,34,d[1],()=>setScen(d[0]));});
+  bt.normal=btn(mon,24,252,376,28,'Normalbetrieb',()=>setScen('normal'));
+  TX(U,24,316,'Was passiert?','lbl','text-anchor:start;font-size:15px');
+  const what=para(U,24,338,18);
+  TX(U,24,520,'Begriffe','lbl','text-anchor:start;font-size:15px');
+  const gl=para(U,24,542,17,'font-size:12.5px');
+  gl.set(['Daten-Drift: Die Eingabedaten verändern sich gegenüber','den Trainingsdaten.','Bias-Drift: Das Modell liegt bei Gruppen systematisch','unterschiedlich daneben.','Retraining: erneutes Training mit aktuellen Daten.','Quelle: AWS, SageMaker Model Monitor (Data quality,','Model quality, Bias drift, Feature attribution drift)']);
+  // Dashboard
+  TX(U,1150,66,'Monitoring-Signale','lbl','text-anchor:start;font-size:15px');
+  const sig=[['Prognosegüte','Abweichung Prognose ↔ Ist',15,25,40],['Daten-Drift','Eingabedaten ↔ Trainingsdaten (Index)',40,60,100],['Bias','Fehlerlücke Stadt ↔ Land',8,15,30]];
+  const sg=sig.map((s,i)=>{
+    const y=96+i*70;
+    TX(U,1150,y,s[0],'lbl','text-anchor:start;font-size:15px');TX(U,1150,y+16,s[1],'tk2','text-anchor:start');
+    el('rect',{x:1150,y:y+24,width:300,height:12,rx:6,fill:'#22384d'},U);
+    [s[2],s[3]].forEach((t,k)=>el('line',{x1:1150+300*t/s[4],x2:1150+300*t/s[4],y1:y+21,y2:y+39,stroke:k?'#ef4444':'#f59e0b','stroke-width':1.5},U));
+    const b=el('rect',{x:1150,y:y+24,width:0,height:12,rx:6,fill:'#4ade80'},U);
+    const v=TX(U,1462,y+35,'','lbl','text-anchor:start;font-size:14px');
+    const lamp=el('circle',{cx:1538,cy:y+14,r:9,fill:'#4ade80'},U);
+    return {b,v,lamp,s};
+  });
+  const bsub=sg[2];
+  const bannerR=el('rect',{x:1150,y:312,width:406,height:50,rx:10,fill:'#12351f',stroke:'#4ade80'},U);
+  const banner=TX(U,1170,342,'Alle Signale im grünen Bereich','lbl','text-anchor:start;font-size:14px');
+  const gearG=gearIcon(U,1520,337,16);
+  TX(U,1150,392,'Meldung','lbl','text-anchor:start;font-size:15px');
+  const mtitle=TX(U,1150,412,'','tk','text-anchor:start;fill:#fde047');
+  const mbody=para(U,1150,434,17);
+  // Zustand
+  const N=10,act=Array(N).fill(1),fc=Array(N).fill(1),sact=Array(N).fill(1),sfc=Array(N).fill(1);
+  const S={err:6.8,drift:12,gap:2,eS:6,eL:8};let T={err:6.8,drift:12,gap:2,eS:6,eL:8};
+  const CUR={err:6.8,drift:12,gap:2};
+  let scen='normal',t=0,ver=1,phase='run',pt=0,evT=0;
+  const NORMAL={err:6.8,drift:12,gap:2,eS:6,eL:8};
+  const WHAT={
+    normal:['Normalbetrieb: Die Filialen melden Absatzdaten, das','Modell liefert Bestellvorschläge und Personalbedarf.','Die Signale rechts zeigen, ob das Modell noch zur','Realität passt: Prognosegüte, Daten-Drift und Bias.'],
+    karneval:['Sonderaktion Karneval: Das Modell kennt den Termin','aus den Ereignisdaten und empfiehlt Karnevalsartikel','nur für Filialen in Karnevalsregionen (F1–F3).','Das Modell arbeitet wie vorgesehen: Alle Signale','bleiben grün. Nicht jede Veränderung ist Drift.'],
+    mall:['Neues Einkaufszentrum: Das Modell sagt den','Umsatzrückgang in Filiale F6 am Stadtrand voraus.','Prognose und Ist stimmen überein, die Signale bleiben','grün. Ein eingebetteter KI-Agent wertet die Zahlen','aus und schlägt der Filialleitung Maßnahmen vor.'],
+    price:['Neue Preisliste: Einige Produkte werden teurer.','Die Eingabedaten (Preise) liegen nun außerhalb dessen,','was das Modell im Training gesehen hat (Daten-Drift).','Folge: Die Bestellmengen-Prognosen weichen von der','Realität ab. Das Monitoring schlägt Alarm und löst','ein Retraining mit aktuellen Daten aus.'],
+    bias:['Bias: Insgesamt wirkt die Prognosegüte akzeptabel,','aber in Landfilialen liegt das Modell systematisch','daneben (zu niedrige Bestellmengen, leere Regale).','Ursache: Die Trainingsdaten stammen überwiegend aus','Stadtfilialen. Das Monitoring prüft deshalb den Fehler','je Gruppe und nicht nur im Durchschnitt.']
+  };
+  const MSG={
+    karneval:['Bestellvorschlag (Beispiel)',['Karnevalsartikel (Kostüme, Konfetti, Süßwaren):','•  Filiale F1–F3: bestellen','•  Filiale F4–F10: nicht bestellen','Grundlage: Ereignisdaten „Karneval“ und','regionale Daten. Einkauf prüft und gibt frei.']],
+    mall:['KI-Agent: Analyse für die Filialleitung (Beispiel)',['Befund: Umsatz Filiale F6 liegt rund 18 % unter','Vorjahr, wie vom Modell prognostiziert. Der Rückgang','beginnt mit der Eröffnung des Einkaufszentrums.','Mögliche Maßnahmen:','1  Sortiment auf Nahversorgung und Frische schärfen','2  Öffnungszeiten und Schichtplan anpassen','3  Stammkunden-Aktion in F6 starten','4  Bestellmengen für F6 senken','Entscheidung: Filialleitung. Zahlen: Beispielwerte.']],
+    price:['Meldung an das MLOps-Team (Beispiel)',['Daten-Drift erkannt: Die Preisverteilung weicht','deutlich von den Trainingsdaten ab.','Prognosegüte unter Schwellenwert (Abweichung > 25 %).','Aktion: Retraining mit Daten der neuen Preisliste,','danach Validierung und Bereitstellung als Version v2.']],
+    bias:['Meldung an das MLOps-Team (Beispiel)',['Bias-Alarm: Fehler Landfilialen 24 %, Stadtfilialen 6 %.','Im Durchschnitt (13 %) fällt das Problem kaum auf.','Aktion: Trainingsdaten ausbalancieren (mehr','Landfilialen), Retraining, Validierung je Gruppe.']]
+  };
+  function setScen(id){
+    scen=id;t=0;phase='run';pt=0;evT=0;
+    for(const k in bt){if(k===id)bt[k].r.setAttribute('fill','#0b5a74');else bt[k].r.removeAttribute('fill');}
+    what.set(WHAT[id]);
+    mtitle.textContent='';mbody.set([]);
+    kv.forEach(g=>g.setAttribute('opacity',id==='karneval'?1:0));
+    mall.setAttribute('opacity',id==='mall'?1:0);
+    for(let i=0;i<N;i++){sact[i]=1;sfc[i]=1;}
+    T=Object.assign({},NORMAL);
+    if(id==='karneval'){for(let i=0;i<3;i++){sact[i]=1.45;sfc[i]=1.45;}}
+    if(id==='mall'){sact[5]=.6;sfc[5]=.62;sact[4]=.85;sfc[4]=.86;T.err=8;T.drift=14;T.gap=3;}
+    if(id==='price'){for(let i=1;i<8;i++){sact[i]=.7;}T.err=31;T.drift=78;}
+    if(id==='bias'){for(let i=6;i<10;i++){sact[i]=1.3;}T.err=13.2;T.gap=18;T.drift=14;T.eS=6;T.eL=24;}
+    if(id==='price'||id==='bias')ver=ver;
+  }
+  mon.setScen=setScen;
+  const col=(v,a,r)=>v>=r?'#ef4444':v>=a?'#f59e0b':'#4ade80';
+  mon.tick=(sc,dt)=>{
+    t+=dt;
+    // Ereignisdaten einspeisen
+    if(scen!=='normal'&&t<5){evT+=dt*2;while(evT>=1){evT--;mkP(sc,sc.pipes.mDown,{col:scen==='price'?SRC.intern:SRC.events,r:4});}}
+    // Szenario-Ablauf
+    if(scen==='karneval'&&t>1.2&&!mtitle.textContent){mtitle.textContent=MSG.karneval[0];mbody.set(MSG.karneval[1]);}
+    if(scen==='mall'){
+      if(t<3.5){mtitle.textContent='KI-Agent wertet die Zahlen aus …';mbody.set([]);}
+      else if(mtitle.textContent!==MSG.mall[0]){mtitle.textContent=MSG.mall[0];mbody.set(MSG.mall[1]);}
+    }
+    if((scen==='price'||scen==='bias')&&phase==='run'){
+      if(t>3&&!mtitle.textContent){mtitle.textContent=MSG[scen][0];mbody.set(MSG[scen][1]);}
+      if(t>9){phase='retrain';pt=0;}
+    }
+    if(phase==='retrain'){
+      pt+=dt;gearG.classList.add('fast');
+      banner.textContent='Retraining läuft … Modell v'+(ver+1)+' entsteht';
+      bannerR.setAttribute('fill','#3a2f12');bannerR.setAttribute('stroke','#f59e0b');
+      if(pt>4.5){phase='done';ver++;mv.textContent='Version v'+ver;T=Object.assign({},NORMAL);for(let i=0;i<N;i++){sact[i]=sact[i];sfc[i]=1;}
+        for(let i=0;i<N;i++)sfc[i]=sact[i];
+        mtitle.textContent='Retraining abgeschlossen';mbody.set(['Neue Modellversion v'+ver+' wurde validiert und','bereitgestellt. Prognose und Ist passen wieder zusammen.','Das Monitoring beobachtet weiter.']);}
+    }else gearG.classList.remove('fast');
+    // Werte glätten
+    const k=Math.min(1,dt*1.2);
+    for(const key of ['err','drift','gap'])CUR[key]+=(T[key]-CUR[key])*k;
+    S.eS+=(T.eS-S.eS)*k;S.eL+=(T.eL-S.eL)*k;
+    const vals=[CUR.err,CUR.drift,CUR.gap];
+    sg.forEach((s,i)=>{const v=vals[i];s.b.setAttribute('width',Math.min(300,300*v/s.s[4]));const c=col(v,s.s[2],s.s[3]);s.b.setAttribute('fill',c);s.lamp.setAttribute('fill',c);
+      s.v.textContent=i===1?Math.round(v)+'':v.toFixed(0)+' %';});
+    sg[2].v.textContent=Math.round(CUR.gap)+' PP';
+    const worst=Math.max(...sg.map((s,i)=>vals[i]>=s.s[3]?2:vals[i]>=s.s[2]?1:0));
+    if(phase!=='retrain'){
+      banner.textContent=worst===2?(scen==='bias'?'Bias-Alarm: Fehlerlücke zu groß':'Drift-Alarm: Prognosegüte sinkt'):worst===1?'Warnung: Signal im gelben Bereich':'Alle Signale im grünen Bereich';
+      bannerR.setAttribute('fill',worst===2?'#3a1717':worst===1?'#3a2f12':'#12351f');bannerR.setAttribute('stroke',worst===2?'#ef4444':worst===1?'#f59e0b':'#4ade80');
+    }
+    // Balken
+    for(let i=0;i<N;i++){
+      act[i]+=(sact[i]-act[i])*k;fc[i]+=(sfc[i]-fc[i])*k;
+      const h=Math.min(55,38*act[i]);bars[i].setAttribute('height',h);bars[i].setAttribute('y',215-h);
+      bars[i].setAttribute('fill',(scen==='karneval'&&i<3)?SRC.events:'#38bdf8');
+      const y=215-Math.min(55,38*fc[i]);fcs[i].setAttribute('y1',y);fcs[i].setAttribute('y2',y);
+    }
+  };
+  setScen('normal');
+  mon.reset=()=>setScen('normal');
+})();
+
+const scenes=[top,main,fab,src,trn,dep,mon];
+main.g.style.display='none';
 
 /* ============ Quiz ============ */
 const N={st1:'Datenquellen & Datenerfassung',raw:'Load (Rohdatenspeicher / Raw Layer)',st2:'Transform (Cleaning & Standardisierung)',st3:'Modelltraining (Model Training)',st4:'Modellvalidierung',st5:'Deployment (Bereitstellung)',st6:'Monitoring & Drift-Erkennung'};
 const QUIZ={
+ k1:{t:'Kennzahl wählen',p:'Eine Handelskette verschickt Coupons. Nur 10 % der Kund:innen reagieren. Ein Modell sagt für alle voraus „kauft nicht“ und erreicht damit 90 % Accuracy. Was zeigt das Beispiel?',c:'Accuracy allein täuscht bei seltenen Ereignissen; der Recall wäre 0 %.',w:['Das Modell ist sehr gut, weil 90 % richtig sind.','Die Precision beträgt 90 %.','Mehr Daten würden die Accuracy automatisch verbessern.'],no:'Rechne nach: Wie viele der tatsächlichen Käufer:innen würde dieses Modell erreichen?',why:'Bei seltenen Ereignissen erreicht schon ein nutzloses Modell, das immer die häufige Klasse vorhersagt, eine hohe Accuracy. Hier werden alle Käufer:innen verpasst, der Recall liegt bei 0 %. Deshalb braucht man Precision und Recall (Google, Machine Learning Crash Course).'},
+ k2:{t:'Kennzahl wählen',p:'Die Coupons sind sehr günstig, aber keine kaufbereite Person soll übersehen werden. Auf welche Kennzahl kommt es vor allem an?',c:'Recall',w:['Precision','Accuracy','Anzahl der Kund:innen im Verteiler'],no:'Denke daran, was „übersehen“ in der Matrix bedeutet: Käufer:innen, die nicht angeschrieben werden.',why:'Recall ist der Anteil aller tatsächlichen Käufer:innen, die das Modell erkennt. Wer nichts verpassen will, senkt den Schwellenwert: Der Recall steigt, dafür sinkt meist die Precision, es gehen also mehr unnötige Coupons raus (Google, Machine Learning Crash Course).'},
+ k3:{t:'Kennzahl wählen',p:'Jede Kampagne kostet pro angeschriebener Person viel Geld (z. B. persönliches Angebot mit Beratungstermin). Welche Kennzahl sollte jetzt im Vordergrund stehen?',c:'Precision',w:['Recall','Accuracy','Anzahl der Filialen'],no:'Wer teuer anschreibt, will vor allem wenige Fehlversuche. Welche Zelle der Matrix ist das?',why:'Precision ist der Anteil der Angeschriebenen, die wirklich kaufen. Bei hohen Kosten je Ansprache zählen unnötige Ansprachen (falsch-positiv) stark, deshalb wird der Schwellenwert höher gesetzt. Der Preis dafür: Der Recall sinkt, einige Käufer:innen werden verpasst.'},
  dz:{p:'Beobachte: Mitarbeiterinnen und Mitarbeiter stempeln in den Läden selbst ein und aus, auch Pausen werden erfasst. Die Einträge fließen laufend, mit Spitzen zu Schichtbeginn und Schichtende. Welche Quelle ist das?',c:'Registrierte Arbeitszeiten (Stechuhr)',w:['Verkaufsdaten (Kassensystem)','Interne Daten (manuell)','Externe Daten (manuell)','Bestandsveränderung (2 x täglich)'],why:'Stechuhr-Daten sind Beschäftigtendaten und damit personenbezogen. Dieselbe Quelle dient zwei Zwecken: Für die Gehaltsabrechnung wird der Personenbezug gebraucht, für die Kapazitätsplanung gegenüber der Nachfrage genügen anonymisierte oder zusammengefasste Werte. Deshalb werden anonymisierte Kopien abgezweigt, während die vollständigen Daten zur Lohnbuchhaltung weiterlaufen.'},
  anon:{p:'Beobachte: Am roten Sperrschild werden von den Stechuhr-Daten Kopien in eine Hülle gesteckt und abgezweigt, während die vollständigen Einträge weiter zur Lohnbuchhaltung laufen. Nur die umhüllten, zusammengefassten Werte ohne Personenbezug fließen in Richtung Modell. Wie heißt dieser Schritt?',c:'Anonymisierung',w:['Dublettenprüfung','Deployment (Bereitstellung)','Hyperparameter-Tuning','Datenspiegel'],why:'Für die Kapazitätsplanung braucht das Modell keine Personen, sondern zum Beispiel Stunden je Laden und Schicht (Datenminimierung). Wird vor dem Speichern anonymisiert, liegen keine personenbezogenen Stempeldaten im Rohdatenspeicher. Für die Gehaltsabrechnung bleiben die vollständigen Daten im operativen System. Echt anonym sind Daten nur, wenn sich Personen auch mit Zusatzwissen nicht mehr bestimmen lassen; bloße Pseudonymisierung genügt dafür nicht (EDPB-Leitlinien 01/2025, Erwägungsgrund 26 DSGVO). Die Anonymisierung ist selbst eine Verarbeitung und braucht eine Rechtsgrundlage (BfDI).'},
  sens:{p:'Beobachte: Bestimmte Datensätze – etwa Schichtpläne von Beschäftigten oder Angaben zu Lieferanten – werden vor dem Speichern erkannt, gekennzeichnet und geschützt, zum Beispiel durch Pseudonymisierung. Wie heißt dieser Schritt?',c:'Maskierung sensibler Daten',w:['Dublettenprüfung','Hyperparameter-Tuning','Lastverteilung','Modellregistrierung'],why:'Sensible Daten sollen nicht ungeschützt im Rohdatenspeicher landen. AWS beschreibt dafür für teilsensible Datensätze eine Landing Zone: Dort werden sensible Zeilen und Spalten maskiert, erst danach gelangen die Daten in die Raw-Schicht. Wichtig: Pseudonymisierte Daten gelten nach der DSGVO weiterhin als personenbezogen, die Zuordnungsinformation muss getrennt und geschützt aufbewahrt werden. Erst echt anonyme Daten fallen nicht mehr unter die DSGVO.'},
@@ -937,7 +1309,7 @@ const QUIZ={
 };
 function openQuiz(k){
   const q=QUIZ[k];
-  $('mt').textContent='Station benennen';$('mp').textContent=q.p;$('fb').textContent='';$('fb').className='';
+  $('mt').textContent=q.t||'Station benennen';$('mp').textContent=q.p;$('fb').textContent='';$('fb').className='';
   $('mNext').style.display='none';
   const box=$('opts');box.innerHTML='';
   shuffle([q.c].concat(q.w)).forEach(t=>{
@@ -949,7 +1321,7 @@ function openQuiz(k){
         $('fb').className='ok';$('fb').textContent='Richtig. '+q.why;
         $('mNext').style.display='';state.unlocked.add(k);refreshLabels();
       }else{
-        b.classList.add('wrong');$('fb').className='no';$('fb').textContent='Das passt nicht zu dem, was Du gerade im Fluss siehst. Schau noch einmal hin.';
+        b.classList.add('wrong');$('fb').className='no';$('fb').textContent=q.no||'Das passt nicht zu dem, was Du gerade im Fluss siehst. Schau noch einmal hin.';
         setTimeout(()=>b.classList.remove('wrong'),400);
       }
     });
@@ -965,21 +1337,12 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')closeQ();});
 /* ============ Steuerung ============ */
 function setView(v){
   state.view=v;hideTip();
-  const mo=v==='etl'||v==='mlops';
-  top.g.classList.toggle('off',v!=='top');
-  main.g.classList.toggle('off',!mo);fab.g.classList.toggle('off',v!=='fab');src.g.classList.toggle('off',v!=='src');
-  main.ovR.classList.toggle('off',v!=='etl');main.ovL.classList.toggle('off',v!=='mlops');
-  main.vtE.classList.toggle('off',v!=='etl');main.vtM.classList.toggle('off',v!=='mlops');
-  main.clk.style.transform=v==='etl'?'translate(-130px,0)':v==='mlops'?'translate(330px,0)':'';
+  const V={top,src,fab,trn,dep,mon};
+  for(const k in V)V[k].g.classList.toggle('off',k!==v);
   $('bBack').style.display=v==='top'?'none':'';
-  $('bBack').textContent=(v==='fab'||v==='src')?'← Zurück zu Ebene 1':'← Überblick';
-  $('bSrc').style.display=v==='etl'?'':'none';$('bView').style.display=v==='etl'?'':'none';
-  $('bAlarm').style.display=v==='mlops'?'':'none';
   refreshLabels();
 }
-$('bBack').onclick=()=>setView(state.view==='fab'||state.view==='src'?'etl':'top');
-$('bView').onclick=()=>setView('fab');
-$('bSrc').onclick=()=>setView('src');
+$('bBack').onclick=()=>setView('top');
 $('bPause').onclick=()=>{state.paused=!state.paused;$('bPause').textContent=state.paused?'Weiter':'Pause';$('bPause').classList.toggle('on',state.paused);};
 function clearAll(){
   for(const sc of scenes){
@@ -1005,7 +1368,6 @@ function triggerAlarm(){
   const n=$('needle');n.style.transform='rotate(55deg)';
   setTimeout(()=>{n.style.transform='rotate(-45deg)';},5200);
 }
-$('bAlarm').onclick=triggerAlarm;
 function retrainFx(){
   main.st.retrain++;
   const g=$('gearG'),t=$('retrTxt');g.classList.add('fast');t.setAttribute('opacity',1);
@@ -1018,9 +1380,7 @@ function frame(now){
   const dt=Math.min(.05,(now-last)/1000);last=now;
   if(!state.paused){
     const d=dt*state.speed;
-    const mo=state.view==='etl'||state.view==='mlops';
-    step(state.view==='top'?top:mo?main:state.view==='fab'?fab:src,d);
-    if(mo){alarmT+=d;if(alarmT>32&&main.st.pred>12){alarmT=0;triggerAlarm();}}
+    step({top,src,fab,trn,dep,mon}[state.view],d);
   }
   barT+=dt;if(barT>.3){barT=0;updateBar();}
   requestAnimationFrame(frame);
@@ -1033,7 +1393,7 @@ function updateBar(){return;
    :'<span>Eingang: <b>'+k.in+'</b></span><span>Quarantäne: <b>'+k.rej+'</b></span><span>Formate vereinheitlicht: <b>'+k.fix+'</b></span><span>Dubletten entfernt: <b>'+k.dups+'</b></span><span>aufbereitet weitergeleitet: <b>'+k.clean+'</b> (davon mit Restfehler: <b style="color:#f59e0b">'+(k.rest||0)+'</b>)</span>';
 }
 setView('top');updateBar();requestAnimationFrame(frame);
-window.__dfl={top,main,fab,src,state,step,raw,CLK,Q,setView};
+window.__dfl={top,main,fab,src,trn,dep,mon,state,step,raw,CLK,Q,setView};
 })();
 </script>
 </body>
