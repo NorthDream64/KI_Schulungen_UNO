@@ -180,7 +180,7 @@ const DEF={
   zeit:{dup:.08,miss:.07,fmt:.05,out:.02}
 };
 const state={practice:false,unlocked:new Set(),paused:false,speed:.4,view:'main'};
-const NOQUIZ=new Set(['st1','da','db','dc','dd','de','dz','st4']);   // Datenherkunft/Quellen: im Übungsmodus nicht abgefragt
+const NOQUIZ=new Set(['st1','da','db','dc','dd','de','dz']);   // Datenherkunft/Quellen: im Übungsmodus nicht abgefragt
 const locked=k=>state.practice&&!NOQUIZ.has(k)&&!state.unlocked.has(k);
 const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;};
 const inc=(sc,k,n=1)=>{sc.st[k]=(sc.st[k]||0)+n;};
@@ -341,9 +341,9 @@ function refreshLabels(){
     l.g.classList.toggle('named',state.practice&&!hide&&!NOQUIZ.has(l.key));
     l.hit.classList.toggle('act',hide);
   }
-  for(const sc of [fab,src,main])if(sc.hints)sc.hints.forEach(h=>h.t.style.opacity=(state.practice&&!state.unlocked.has(h.key))?0:1);
+  for(const sc of [fab,src,main,trn])if(sc.hints)sc.hints.forEach(h=>h.t.style.opacity=(state.practice&&!state.unlocked.has(h.key))?0:1);
   const cnt=a=>a.filter(k=>state.unlocked.has(k)).length;
-  const v=state.view,K={src:['ext','sens','anon'],fab:['ka','kb','kc','ks','raw','st2'],trn:['st3'],dep:['dreg','dtest','dfrei','dprod']};
+  const v=state.view,K={src:['ext','sens','anon'],fab:['ka','kb','kc','ks','raw','st2'],trn:['st3','st4','ttest'],dep:['dreg','dtest','dfrei','dprod']};
   const AWS='<a href="https://docs.aws.amazon.com/wellarchitected/latest/machine-learning-lens/machine-learning-lifecycle.html" target="_blank" rel="noopener">AWS Well-Architected Machine Learning Lens</a>';
   let h;
   if(v==='top')h=state.practice?'Wähle einen Block. Die Fragen findest Du in den Detailseiten (Extract, Load &amp; Transform, Modellentwicklung).':'Klicke auf einen Block, um die Detailseite zu öffnen. Fahre mit der Maus über „Datenverarbeitung“ (oder das ⓘ): Dort steht der Unterschied zwischen ETL und ELT. Die Begriffe der Blöcke folgen der '+AWS+'.';
@@ -1108,7 +1108,7 @@ TP('tGear',[[700,190],[820,190]],16,{next:'tM',gate:'st3',enter:(p,sc,pi)=>{
 TP('tM',[[820,190],[1010,190]],14,{next:'tVal'});
 TP('tVal',[[1010,190],[1130,190]],14,{route:()=>Math.random()<.7?'ok':'back',to:{ok:'tOk',back:'tBack'},gate:'st4'});
 TP('tOk',[[1130,190],[1180,190]],12,{next:'tFin'});
-TP('tFin',[[1180,190],[1280,190]],12,{next:'tReg',gate:'st4'});
+TP('tFin',[[1180,190],[1280,190]],12,{next:'tReg',gate:'ttest'});
 TP('tReg',[[1280,190],[1330,190]],12,{sink:()=>{regCount++;trn.regT.textContent=regCount+' freigegeben';}});
 TP('tBack',[[1130,190],[1130,84],[690,84],[690,190]],6,{next:'tTr',dash:true,cls:'ret'});
 TP('tTs',[[470,190],[470,345],[1230,345],[1230,250]],10,{sink:(p,sc,pi)=>{const q=pos(pi,pi.len,0);puff(sc,q[0],q[1],'#fde047');}});
@@ -1124,23 +1124,23 @@ trn.sources=[{pipe:'tIn',rate:4,col:COL.clean}];
   TX(U,400,214,'Training · Validierung · Test','tk2');TX(U,400,228,'z. B. 70 / 15 / 15 %, zeitlich','tk2');
   infoI(trn,488,128,()=>TIP_SPLIT,false);
   TX(U,585,170,'Trainingsdaten','sub');
-  TX(U,560,292,'Validierungsdaten: Feinabstimmung, Overfitting früh erkennen','tk2','text-anchor:start');
-  TX(U,560,368,'Testdaten: bleiben bis zum Schluss unangetastet','tk2','text-anchor:start');
+  trn.hints=[];const HT=(k,e)=>{trn.hints.push({key:k,t:e});return e;};
+  HT('st4',TX(U,560,292,'Validierungsdaten: Feinabstimmung, Overfitting früh erkennen','tk2','text-anchor:start'));
+  HT('ttest',TX(U,560,368,'Testdaten: bleiben bis zum Schluss unangetastet','tk2','text-anchor:start'));
   // Modelltraining
   card(trn,'st3',700,130,120,120,'','Modelltraining');
   gearIcon(D,760,190,40);
   infoI(trn,836,118,()=>TIP_OVER,false);
-  TX(U,760,270,'wenige Modellkandidaten entstehen','tk2');
+  HT('st3',TX(U,760,270,'wenige Modellkandidaten entstehen','tk2'));
   // Validierung
   card(trn,'st4',1010,130,120,120,'','Validierung');
   el('circle',{cx:1070,cy:190,r:24,fill:'#12351f',stroke:'#4ade80','stroke-width':1.6},D);
   el('path',{d:'M1058,190 l9,9 l17,-19',fill:'none',stroke:'#4ade80','stroke-width':3},D);
   btn(trn,1015,262,110,24,'Details ⊕',()=>setView('val'));
   // abschließender Test
-  el('rect',{class:'card-bg',x:1180,y:130,width:100,height:120,rx:12},D);
-  TX(U,1230,118,'Test','lbl','font-size:15px');
+  card(trn,'ttest',1180,130,100,120,'','Test');
   el('path',{d:'M1222,168 v40 M1222,168 h22 l-6,7 l6,7 h-22',fill:'none',stroke:'#fde047','stroke-width':2.2},D);
-  TX(U,1230,272,'einmal, ganz am Ende','tk2');
+  HT('ttest',TX(U,1230,228,'einmal,','tk2','font-size:10.5px'));HT('ttest',TX(U,1230,241,'ganz am Ende','tk2','font-size:10.5px'));
   TX(U,910,72,'zurück ins Modelltraining (nicht bestanden)','tk2');
   // Modellregister
   el('rect',{class:'card-bg',x:1330,y:130,width:200,height:120,rx:12},D);
@@ -1635,7 +1635,8 @@ const QUIZ={
  dtest:{p:'Beobachte: Die neue Modellversion wird mit Testanfragen geprüft, bevor echte Anfragen sie erreichen. Ein Thermometer zeigt die Modellqualität; erst ab dem Mindestwert geht es weiter. Wie heißt diese Station?',c:'Test (Staging)',w:['Validierung','Produktion','Monitoring'],why:'In einer Testumgebung, die der Produktion möglichst gleicht, wird die Version im Zusammenspiel mit den übrigen Systemen geprüft – als Black-Box-Test: Eingabe hinein, Ausgabe prüfen. Das ist etwas anderes als die Validierung in der Modellentwicklung, die die Modellgüte auf Validierungsdaten misst.'},
  dfrei:{p:'Beobachte: Das getestete Modell wartet, bis ein Mensch „Ja“ oder „Nein“ drückt. Erst danach geht es in den Betrieb. Wie heißt dieser Schritt?',c:'Freigabe (menschliche Entscheidung)',w:['Automatisches Deployment','Retraining','Datenintegration'],why:'Vor dem Einsatz entscheidet eine verantwortliche Person, ob die Version in Betrieb geht – das sichert Verantwortlichkeit und menschliche Aufsicht und wird dokumentiert. Technisch ließe sich auch automatisch ausrollen; ob ein Mensch freigibt, ist eine Governance-Entscheidung.'},
  dprod:{p:'Beobachte: Hier beantwortet das Modell die Anfragen der Filialen und liefert Bestell- und Kapazitätsprognosen. Jede Antwort wird mit Zeitpunkt und Modellversion protokolliert. Wie heißt diese Station?',c:'Produktion (Betrieb)',w:['Test (Staging)','Modellregister','Datenspiegel'],why:'In der Produktionsumgebung arbeitet das Modell mit echten Anfragen. Protokollierung und Versionsangabe machen jede Prognose nachvollziehbar; das Monitoring beobachtet den laufenden Betrieb.'},
- st4:{p:'Beobachte: Die Modellkandidaten werden mit eigenen Validierungsdaten geprüft – wer nicht besteht, läuft zurück ins Training. Wie heißt diese Station?',c:N.st4,w:[N.st3,N.st5,N.st1,'Lieferantenaudit'],why:'Mit den Validierungsdaten werden die Einstellungen (Hyperparameter) feinabgestimmt und Overfitting früh erkannt: Ist das Modell im Training deutlich besser als auf den Validierungsdaten, hat es auswendig gelernt. Erst danach prüft der unangetastete Testdatensatz das ausgewählte Modell einmalig – für eine unvoreingenommene Bewertung. Genauigkeit allein kann täuschen; die Abwägung zwischen falsch-positiv und falsch-negativ ist eine Geschäftsentscheidung.'},
+ st4:{p:'Beobachte: Die Modellkandidaten werden mit eigenen, vom Training getrennten Daten geprüft. Wer nicht besteht, läuft über die gestrichelte Leitung zurück ins Modelltraining. Wie heißt diese Station?',c:'Validierung (Modellvalidierung)',w:['Test (abschließende Prüfung mit Testdaten)','Modelltraining','Freigabe (menschliche Entscheidung)','Datenintegration'],why:'Mit den Validierungsdaten werden die Einstellungen (Hyperparameter) feinabgestimmt, Modelle verglichen und Overfitting früh erkannt: Ist das Modell im Training deutlich besser als auf den Validierungsdaten, hat es auswendig gelernt. Weil die Entwicklung immer wieder auf diese Daten schaut, ist ihr Ergebnis leicht geschönt. Deshalb prüft danach der unangetastete Testdatensatz das ausgewählte Modell einmalig – für eine unvoreingenommene Bewertung.'},
+ ttest:{p:'Beobachte: Nur die ausgewählten Modelle erreichen diese Station. Hier kommen Daten zum Einsatz, die weder im Training noch in der Feinabstimmung verwendet wurden – ein einziges Mal, ganz am Ende. Wie heißt diese Station?',c:'Test (abschließende Prüfung mit Testdaten)',w:['Validierung (Modellvalidierung)','Test (Staging) in der Bereitstellung','Monitoring','Modelltraining'],why:'Der Testdatensatz bleibt bis zum Schluss unangetastet und schätzt unvoreingenommen, wie gut das ausgewählte Modell auf neuen Daten abschneidet. Wird nach dem Testergebnis weiter nachjustiert, wird der Test faktisch zur Validierung, und sein Ergebnis ist zu optimistisch. Nicht zu verwechseln mit dem Test (Staging) in der Bereitstellung: Dort wird eine Modellversion im Zusammenspiel mit den übrigen Systemen geprüft, bevor sie freigegeben wird.'},
  st5:{p:'Beobachte: Ein freigegebenes Modell bedient plötzlich viele Anfragen – grüne Prognosen strömen heraus. Wie heißt diese Station?',c:N.st5,w:[N.st4,N.st2,N.st6,'Penetrationstest'],why:'Beim Deployment geht das freigegebene Modell in den Betrieb und beantwortet laufend Anfragen. Es ist der Anfang des Modell-Lebens im Betrieb, nicht sein Ende.'},
  st6:{p:'Beobachte: Ein Drift-Alarm läuft über die gestrichelte Leitung zurück und startet das Retraining. Wie heißt diese Station?',c:N.st6,w:[N.st3,N.st5,N.st1,'Datenverschlüsselung'],why:'Im Betrieb entfernen sich Eingabedaten und Realität von den Trainingsdaten – Drift ist der Normalfall. Das Monitoring überwacht die Modellleistung (Model Drift), die Datenintegrität und den Input-Drift; über eine Feedback-Schleife wird automatisch oder nach menschlicher Prüfung nachtrainiert (Continuous Training).'},
  da:{p:'Beobachte: Aus den Läden strömen einzelne Kassenbewegungen – mit Tagesrhythmus, aber ohne feste Termine. Welche Quelle ist das?',c:'Verkaufsdaten (Kassensystem)',w:['Bestandsveränderung (2 x täglich)','Regelmäßige Daten (extern) – automatisch','Interne Daten (manuell)','Archivdaten'],why:'Ereignisse, die laufend entstehen (Kassenbewegungen), werden einzeln als Strom übertragen (Streaming). Auf Google Cloud schreiben z. B. Pub/Sub-Abonnements eintreffende Nachrichten sofort in BigQuery. Das lohnt, wenn Aktualität wichtig ist.'},
