@@ -148,7 +148,7 @@ text{pointer-events:none}
 
 <div id="modal" role="dialog" aria-modal="true">
   <div id="mbox">
-    <h2 id="mt">Station benennen</h2>
+    <h2 id="mt">Was geschieht hier?</h2>
     <p id="mp"></p>
     <div id="opts"></div>
     <div id="fb"></div>
@@ -177,7 +177,8 @@ const DEF={
   zeit:{dup:.08,miss:.07,fmt:.05,out:.02}
 };
 const state={practice:false,unlocked:new Set(),paused:false,speed:.4,view:'main'};
-const locked=k=>state.practice&&k!=='st1'&&!state.unlocked.has(k);
+const NOQUIZ=new Set(['st1','da','db','dc','dd','de','dz']);   // Datenherkunft/Quellen: im Übungsmodus nicht abgefragt
+const locked=k=>state.practice&&!NOQUIZ.has(k)&&!state.unlocked.has(k);
 const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;};
 const inc=(sc,k,n=1)=>{sc.st[k]=(sc.st[k]||0)+n;};
 
@@ -334,18 +335,18 @@ function refreshLabels(){
     l.t.style.fontSize=hide?(l.fs0?'26px':'36px'):l.fs0;
     l.t.setAttribute('class','lbl'+(hide?' q':'')+(l.pq?' pq':''));
     l.g.classList.toggle('ask',hide);
-    l.g.classList.toggle('named',state.practice&&!hide&&l.key!=='st1');
+    l.g.classList.toggle('named',state.practice&&!hide&&!NOQUIZ.has(l.key));
     l.hit.classList.toggle('act',hide);
   }
   for(const sc of [fab,src,main])if(sc.hints)sc.hints.forEach(h=>h.t.style.opacity=(state.practice&&!state.unlocked.has(h.key))?0:1);
   const cnt=a=>a.filter(k=>state.unlocked.has(k)).length;
-  const v=state.view,K={src:['da','db','dz','dc','dd','de','ext','sens','anon'],fab:['ka','kb','kc','ks','raw','st2'],trn:['st3','st4','k1','k2','k3']};
+  const v=state.view,K={src:['ext','sens','anon'],fab:['ka','kb','kc','ks','raw','st2'],trn:['st3','st4'],val:['k1','k2','k3']};
   const AWS='<a href="https://docs.aws.amazon.com/wellarchitected/latest/machine-learning-lens/machine-learning-lifecycle.html" target="_blank" rel="noopener">AWS Well-Architected Machine Learning Lens</a>';
   let h;
   if(v==='top')h=state.practice?'Wähle einen Block. Die Fragen findest Du in den Detailseiten (Extract, Load &amp; Transform, Modellentwicklung).':'Klicke auf einen Block, um die Detailseite zu öffnen. Fahre mit der Maus über „Datenverarbeitung“ (oder das ⓘ): Dort steht der Unterschied zwischen ETL und ELT. Die Begriffe der Blöcke folgen der '+AWS+'.';
   else if(state.practice&&K[v])h='Übungsmodus: '+cnt(K[v])+'/'+K[v].length+' benannt. Tippe auf ein gelb gestricheltes Fragezeichen und wähle den passenden Begriff – erst dann fließt der Strom weiter.';
   else if(state.practice)h='Übungsmodus: Auf dieser Seite gibt es keine Fragen.';
-  else h={src:'Tipp: Mit den Wasserhähnen spielst Du manuelle Lieferungen ein. Alle Quellen fließen über den Datenspiegel (Extract) in den Rohdatenspeicher.',fab:'Tipp: Die gespiegelten Rohdaten werden im Rohdatenspeicher abgelegt (Load) und dann in der Fabrik aufbereitet (Transform).',trn:'Tipp: Schiebe den Schwellenwert und beobachte, wie Precision und Recall gegenläufig reagieren. Mit dem Vergleich „Niemanden anschreiben“ siehst Du, warum Accuracy allein täuscht.',dep:'Tipp: Das Modell durchläuft den Test, das Thermometer zeigt die Modellqualität. Erst ab dem Mindestwert wird die Freigabe aktiv, und erst nach „Ja“ beantwortet das Modell die wartenden Anfragen. Grün sind Bestellprognosen, orange Kapazitätsprognosen; die Zahlen an den Filialen oben zählen beide.',mon:'Tipp: Löse ein Ereignis aus und beobachte die Monitoring-Signale rechts. Nicht jede Veränderung ist Drift.'}[v];
+  else h={src:'Tipp: Mit den Wasserhähnen spielst Du manuelle Lieferungen ein. Alle Quellen fließen über den Datenspiegel (Extract) in den Rohdatenspeicher.',fab:'Tipp: Die gespiegelten Rohdaten werden im Rohdatenspeicher abgelegt (Load) und dann in der Fabrik aufbereitet (Transform).',trn:'Tipp: Oben läuft der Entwicklungsprozess, unten stehen die Arbeitsschritte eines Data Scientists. „Details ⊕“ an der Validierung öffnet die Kennzahlen am Beispiel einer Werbekampagne.',val:'Tipp: Schiebe den Schwellenwert und beobachte, wie Präzision und Trefferquote gegenläufig reagieren. Mit dem Vergleich „Niemanden anschreiben“ siehst Du, warum die Genauigkeit allein täuscht.',dep:'Tipp: Das Modell durchläuft den Test, das Thermometer zeigt die Modellqualität. Erst ab dem Mindestwert wird die Freigabe aktiv, und erst nach „Ja“ beantwortet das Modell die wartenden Anfragen. Grün sind Bestellprognosen, orange Kapazitätsprognosen; die Zahlen an den Filialen oben zählen beide.',mon:'Tipp: Löse ein Ereignis aus und beobachte die Monitoring-Signale rechts. Nicht jede Veränderung ist Drift.'}[v];
   $('hint').innerHTML=h;
 }
 
@@ -987,7 +988,7 @@ trn.sources=[{pipe:'tIn',rate:4,col:COL.clean}];
   // Aufteilen
   el('rect',{class:'card-bg',x:330,y:140,width:140,height:100,rx:12},D);
   TX(U,400,128,'Daten aufteilen','lbl','font-size:15px');
-  TX(U,400,222,'80 % / 20 %','tk2');
+  TX(U,400,214,'zeitlich: ältere 80 %','tk2');TX(U,400,228,'Training, neuere 20 % Test','tk2');
   TX(U,585,170,'Trainingsdaten','sub');
   TX(U,700,334,'Testdaten: bleiben zurückgehalten und prüfen später das Modell','sub','text-anchor:start');
   // Modelltraining
@@ -998,7 +999,8 @@ trn.sources=[{pipe:'tIn',rate:4,col:COL.clean}];
   card(trn,'st4',1010,130,120,120,'','Validierung');
   el('circle',{cx:1070,cy:190,r:24,fill:'#12351f',stroke:'#4ade80','stroke-width':1.6},D);
   el('path',{d:'M1058,190 l9,9 l17,-19',fill:'none',stroke:'#4ade80','stroke-width':3},D);
-  TX(U,1070,270,'Testdaten · Schwellenwert','tk2');
+  btn(trn,1145,262,110,24,'Details ⊕',()=>setView('val'));
+  TX(U,1200,304,'Testdaten · Baseline · Schwellenwert','tk2');
   TX(U,910,72,'zurück ins Modelltraining (nicht bestanden)','tk2');
   // Modellregister
   el('rect',{class:'card-bg',x:1330,y:130,width:200,height:120,rx:12},D);
@@ -1006,7 +1008,36 @@ trn.sources=[{pipe:'tIn',rate:4,col:COL.clean}];
   el('rect',{x:1418,y:160,width:24,height:24,fill:COL.model,stroke:'#fff','stroke-width':.8,transform:'rotate(45 1430 172)'},D);
   trn.regT=TX(U,1430,226,'0 freigegeben','tk');
   TX(U,1430,242,'weiter zur Bereitstellung','tk2');
-  // Kennzahlen-Demo
+  // Arbeitsschritte eines Data Scientists
+  TX(U,24,392,'So entwickelt ein Data Scientist ein Modell','lbl','text-anchor:start;font-size:18px');
+  TX(U,24,412,'nach dem Beispielprojekt „Steigt oder fällt die Microsoft-Aktie morgen?“ (Kursmaterial Tag 9), übertragen auf den Handel','sub','text-anchor:start;font-size:12.5px');
+  const ST=[
+   ['Ziel festlegen',['Was genau soll vorhergesagt','werden? Die Antwort, die das','Modell lernen soll, heißt','Zielvariable (Target).'],['„Verkauft Filiale F3 morgen','mehr Grillkohle als üblich?“']],
+   ['Merkmale bilden',['Aus Vermutungen werden Zahlen','(Feature Engineering). Nur Infor-','mationen nutzen, die am Prognose-','tag schon bekannt sind – sonst','entsteht ein Datenleck.'],['Wochentag, Wetterprognose,','Absatz der letzten 7 / 90 Tage']],
+   ['Zeitlich trennen',['Ältere 80 % zum Lernen (Trai-','ning), neuere 20 % zum Prüfen','(Test). Nicht zufällig mischen:','sonst lernt das Modell aus','der Zukunft.'],['Training bis Februar,','Test ab März']],
+   ['Baseline festlegen',['Eine einfache Vergleichsregel','als Messlatte. Ein Modell ist','erst interessant, wenn es','sie schlägt.'],['„Morgen wie am gleichen','Wochentag letzte Woche“']],
+   ['Trainieren und vergleichen',['Mehrere Modelle lernen aus den','Trainingsdaten, z. B. logistische','Regression und Entscheidungs-','baum. Einstellungen nur mit','Trainingsdaten wählen.'],['Schwellenwert per zeitlich','geordneter Kreuzvalidierung']],
+   ['Einmal testen',['Erst ganz am Ende prüft der','unangetastete Test das Modell.','Wer vorher immer wieder auf das','Testergebnis schaut, lernt den','Test auswendig.'],null]];
+  ST.forEach((s,i)=>{
+    const x=24+i*257,y=430;
+    el('rect',{class:'card-bg',x,y,width:245,height:232,rx:12},D);
+    el('circle',{cx:x+22,cy:y+24,r:13,fill:'#0b5a74',stroke:'#4cc9f0'},D);
+    TX(U,x+22,y+29,String(i+1),'tk','font-size:13px');
+    TX(U,x+44,y+29,s[0],'lbl','text-anchor:start;font-size:14.5px');
+    para(U,x+14,y+58,16,'font-size:12px').set(s[1]);
+    if(s[2]){TX(U,x+14,y+168,'Beispiel','tk2','text-anchor:start;fill:#4cc9f0');para(U,x+14,y+186,16,'font-size:12px;fill:#9fb3c8').set(s[2]);}
+    else btn(trn,x+14,y+170,217,30,'Validierung im Detail ⊕',()=>setView('val'));
+  });
+  TX(U,24,690,'Merksatz: Der Test bleibt bis zum letzten Schritt unangetastet – und ein Modell muss eine einfache Baseline schlagen.','sub','text-anchor:start;font-size:13px;fill:#fde047');
+})();
+
+/* ============ VOLLSEITE: Modellvalidierung ============ */
+const val=mkScene('scVal');val.g.classList.add('off');val.st={in:0};
+(()=>{
+  const U0=val.L.ui,D0=val.L.deco;
+  TX(U0,24,32,'Modellvalidierung im Detail','lbl','text-anchor:start;font-size:20px');
+  const U=el('g',{transform:'translate(0 -330)'},U0),D=el('g',{transform:'translate(0 -330)'},D0);
+  // Kennzahlen-Demo (um 330 nach oben versetzt)
   TX(U,24,392,'Validierung am Beispiel: Werbekampagne','lbl','text-anchor:start;font-size:18px');
   TX(U,24,412,'Welche der 100 Kund:innen sollen einen Coupon erhalten? Das Modell schätzt für jede Person die Kaufwahrscheinlichkeit.','sub','text-anchor:start;font-size:12.5px');
   // Kundendaten (festes Zufallsmuster)
@@ -1047,9 +1078,9 @@ trn.sources=[{pipe:'tIn',rate:4,col:COL.clean}];
   const knob=el('circle',{cx:SX0+(SX1-SX0)*.5,cy:657,r:9,fill:'#22d3ee',stroke:'#fff','stroke-width':1.4,style:'cursor:ew-resize'},U);
   const trk=el('rect',{x:SX0-8,y:644,width:SX1-SX0+16,height:26,fill:'transparent',style:'cursor:ew-resize'},U);
   TX(U,SX0,684,'niedrig: viele anschreiben','tk2','text-anchor:start');TX(U,SX1,684,'hoch: wenige','tk2','text-anchor:end');
-  const bl=btn(trn,SX0-20,696,SX1-SX0+40,26,'Vergleich: „Niemanden anschreiben“',()=>{base=!base;upd();});
+  const bl=btn(val,SX0-20,366,SX1-SX0+40,26,'Vergleich: „Niemanden anschreiben“',()=>{base=!base;upd();});
   // Kennzahlen-Balken
-  const rows=[['Accuracy','richtig eingestuft ÷ alle','#38bdf8'],['Precision','Käufer:innen ÷ Angeschriebene','#a78bfa'],['Recall','erreichte Käufer:innen ÷ alle Käufer:innen','#4ade80']];
+  const rows=[['Genauigkeit (Accuracy)','richtig eingestuft ÷ alle','#38bdf8'],['Präzision (Precision)','Käufer:innen ÷ Angeschriebene','#a78bfa'],['Trefferquote (Recall)','erreichte Käufer:innen ÷ alle Käufer:innen','#4ade80']];
   const bars=rows.map((r,i)=>{
     const y=452+i*62;
     TX(U,720,y,r[0],'lbl','text-anchor:start;font-size:16px');TX(U,720,y+16,r[1],'tk2','text-anchor:start');
@@ -1062,12 +1093,12 @@ trn.sources=[{pipe:'tIn',rate:4,col:COL.clean}];
   // rechte Spalte
   TX(U,1190,452,'So liest Du die Kennzahlen','lbl','text-anchor:start;font-size:15px');
   const gl=para(U,1190,474,17,'font-size:12.5px');
-  gl.set(['Accuracy: Anteil aller richtigen Einstufungen.','Precision: Anteil der Angeschriebenen, die wirklich','kaufen (wenig „unnötige Coupons“).','Recall: Anteil aller Käufer:innen, die erreicht','werden (wenig „verpasste Chancen“).','Bei seltenen Ereignissen täuscht Accuracy leicht.']);
+  gl.set(['Genauigkeit (Accuracy): Anteil aller richtigen','Einstufungen.','Präzision (Precision): Anteil der Angeschriebenen,','die wirklich kaufen (wenig „unnötige Coupons“).','Trefferquote (Recall): Anteil aller Käufer:innen,','die erreicht werden (wenig „verpasste Chancen“).','Bei seltenen Ereignissen täuscht die Genauigkeit.']);
   TX(U,1190,590,'Quelle: Google, Machine Learning Crash Course','tk2','text-anchor:start');
   TX(U,1190,606,'(Classification: Accuracy, recall, precision)','tk2','text-anchor:start');
-  pillGate(trn,'k1',1190,624,350,'Frage 1: Aussage von 90 % Accuracy');pq(trn);
-  pillGate(trn,'k2',1190,660,350,'Frage 2: Kein Käufer darf fehlen');pq(trn);
-  pillGate(trn,'k3',1190,696,350,'Frage 3: Coupons sind teuer');pq(trn);
+  pillGate(val,'k1',1190,294,350,'Frage 1: Sind 90 % Genauigkeit gut?');pq(val);
+  pillGate(val,'k2',1190,330,350,'Frage 2: Kein Käufer darf fehlen');pq(val);
+  pillGate(val,'k3',1190,366,350,'Frage 3: Coupons sind teuer');pq(val);
   function upd(){
     let TP=0,FP=0,FN=0,TN=0;
     cust.forEach((c,i)=>{const t=!base&&c.s>=thr;dots[i].setAttribute('opacity',t?1:0);
@@ -1079,20 +1110,34 @@ trn.sources=[{pipe:'tIn',rate:4,col:COL.clean}];
     thrT.textContent=thr.toFixed(2).replace('.',',');
     knob.setAttribute('cx',SX0+(SX1-SX0)*(thr-.1)/.8);
     if(base)bl.r.setAttribute('fill','#0b5a74');else bl.r.removeAttribute('fill');
-    if(base)msg.set(['Niemand wird angeschrieben: Die Accuracy sieht mit '+pct(acc),'gut aus, aber Recall ist 0 %. Alle Käufer:innen werden','verpasst. Precision ist nicht definiert (0 ÷ 0).']);
-    else msg.set([(TP+FP)+' Kund:innen werden angeschrieben, '+TP+' davon kaufen','(Precision '+pct(pre)+'). '+FN+' von '+(TP+FN)+' Käufer:innen werden verpasst','(Recall '+pct(rec)+'). Schwellenwert senken: Recall steigt,','Precision sinkt – und umgekehrt.']);
+    if(base)msg.set(['Niemand wird angeschrieben: Die Genauigkeit sieht mit '+pct(acc),'gut aus, aber die Trefferquote ist 0 %. Alle Käufer:innen','werden verpasst. Die Präzision ist nicht definiert (0 ÷ 0).']);
+    else msg.set([(TP+FP)+' Kund:innen werden angeschrieben, '+TP+' davon kaufen','(Präzision '+pct(pre)+'). '+FN+' von '+(TP+FN)+' Käufer:innen werden verpasst','(Trefferquote '+pct(rec)+'). Schwellenwert senken: Trefferquote','steigt, Präzision sinkt – und umgekehrt.']);
   }
   const mv=e=>{const x=Math.max(SX0,Math.min(SX1,svgX(e)));thr=Math.round((.1+.8*(x-SX0)/(SX1-SX0))*100)/100;base=false;upd();};
   let drag=false;
   trk.addEventListener('pointerdown',e=>{drag=true;trk.setPointerCapture(e.pointerId);mv(e);});
   trk.addEventListener('pointermove',e=>{if(drag)mv(e);});
   trk.addEventListener('pointerup',()=>{drag=false;});
-  trn.upd=upd;trn.kn=()=>({thr,cust});
+  val.upd=upd;val.kn=()=>({thr,cust});
   // Schieberegler-Skala: x -> .1 ... .9
   knob.setAttribute('cx',SX0+(SX1-SX0)*(thr-.1)/.8);
   const _u=upd;
-  trn.thr=v=>{thr=v;base=false;_u();};
+  val.thr=v=>{thr=v;base=false;_u();};
   upd();
+  // Regeln der Validierung (Kursmaterial Tag 9)
+  TX(U0,24,478,'Worauf es bei der Validierung ankommt','lbl','text-anchor:start;font-size:18px');
+  const RU=[
+   ['Testdaten bleiben unangetastet',['Geprüft wird auf Daten, die das Modell nie gesehen','hat. Wer immer wieder auf das Testergebnis schaut','und nachbessert, lernt den Test auswendig.']],
+   ['Die Baseline schlagen',['Ein Modell ist erst interessant, wenn es eine ein-','fache Vergleichsregel schlägt – oben: „niemanden','anschreiben“, im Handel z. B. „wie letzte Woche“.']],
+   ['Training und Test vergleichen',['Sind die Kennzahlen im Training deutlich besser als','im Test, ist das Modell überangepasst (Overfitting).','Wer nur einen Wert nennt: nach dem zweiten fragen.']],
+   ['Schwellenwert = Geschäftsentscheidung',['Welcher Fehler teurer ist, entscheidet das Geschäft,','nicht die Technik. Der Schwellenwert braucht einen','Eigentümer und gehört in die Dokumentation.']]];
+  RU.forEach((r,i)=>{
+    const x=24+i*386,y=494;
+    el('rect',{class:'card-bg',x,y,width:372,height:128,rx:12},D0);
+    TX(U0,x+16,y+28,r[0],'lbl','text-anchor:start;font-size:14.5px');
+    para(U0,x+16,y+54,17,'font-size:12.5px').set(r[1]);
+  });
+  TX(U0,24,650,'Grundlagen: Kursmaterial Tag 9 (Modellvalidierung; Beispielprojekt „Steigt oder fällt die Microsoft-Aktie morgen?“) sowie Google, Machine Learning Crash Course.','tk2','text-anchor:start;font-size:11px');
 })();
 
 /* ============ VOLLSEITE: Modellbereitstellung ============ */
@@ -1364,15 +1409,15 @@ mon.sources=MXs.map((x,i)=>({pipe:'MS'+i,rate:.9,col:SRC.kasse}));
   mon.reset=()=>setScen('normal');
 })();
 
-const scenes=[top,main,fab,src,trn,dep,mon];
+const scenes=[top,main,fab,src,trn,val,dep,mon];
 main.g.style.display='none';
 
 /* ============ Quiz ============ */
 const N={st1:'Datenquellen & Datenerfassung',raw:'Load (Rohdatenspeicher / Raw Layer)',st2:'Transform (Cleaning & Standardisierung)',st3:'Modelltraining (Model Training)',st4:'Modellvalidierung',st5:'Deployment (Bereitstellung)',st6:'Monitoring & Drift-Erkennung'};
 const QUIZ={
- k1:{t:'Kennzahl wählen',p:'Eine Handelskette verschickt Coupons. Nur 10 % der Kund:innen reagieren. Ein Modell sagt für alle voraus „kauft nicht“ und erreicht damit 90 % Accuracy. Was zeigt das Beispiel?',c:'Accuracy allein täuscht bei seltenen Ereignissen; der Recall wäre 0 %.',w:['Das Modell ist sehr gut, weil 90 % richtig sind.','Die Precision beträgt 90 %.','Mehr Daten würden die Accuracy automatisch verbessern.'],no:'Rechne nach: Wie viele der tatsächlichen Käufer:innen würde dieses Modell erreichen?',why:'Bei seltenen Ereignissen erreicht schon ein nutzloses Modell, das immer die häufige Klasse vorhersagt, eine hohe Accuracy. Hier werden alle Käufer:innen verpasst, der Recall liegt bei 0 %. Deshalb braucht man Precision und Recall (Google, Machine Learning Crash Course).'},
- k2:{t:'Kennzahl wählen',p:'Die Coupons sind sehr günstig, aber keine kaufbereite Person soll übersehen werden. Auf welche Kennzahl kommt es vor allem an?',c:'Recall',w:['Precision','Accuracy','Anzahl der Kund:innen im Verteiler'],no:'Denke daran, was „übersehen“ in der Matrix bedeutet: Käufer:innen, die nicht angeschrieben werden.',why:'Recall ist der Anteil aller tatsächlichen Käufer:innen, die das Modell erkennt. Wer nichts verpassen will, senkt den Schwellenwert: Der Recall steigt, dafür sinkt meist die Precision, es gehen also mehr unnötige Coupons raus (Google, Machine Learning Crash Course).'},
- k3:{t:'Kennzahl wählen',p:'Jede Kampagne kostet pro angeschriebener Person viel Geld (z. B. persönliches Angebot mit Beratungstermin). Welche Kennzahl sollte jetzt im Vordergrund stehen?',c:'Precision',w:['Recall','Accuracy','Anzahl der Filialen'],no:'Wer teuer anschreibt, will vor allem wenige Fehlversuche. Welche Zelle der Matrix ist das?',why:'Precision ist der Anteil der Angeschriebenen, die wirklich kaufen. Bei hohen Kosten je Ansprache zählen unnötige Ansprachen (falsch-positiv) stark, deshalb wird der Schwellenwert höher gesetzt. Der Preis dafür: Der Recall sinkt, einige Käufer:innen werden verpasst.'},
+ k1:{t:'Kennzahl wählen',p:'Eine Handelskette verschickt Coupons. Nur 10 % der Kund:innen reagieren. Ein Modell sagt für alle voraus „kauft nicht“ und erreicht damit 90 % Genauigkeit (Accuracy). Was zeigt das Beispiel?',c:'Die Genauigkeit allein täuscht bei seltenen Ereignissen; die Trefferquote (Recall) wäre 0 %.',w:['Das Modell ist sehr gut, weil 90 % richtig sind.','Die Präzision (Precision) beträgt 90 %.','Mehr Daten würden die Genauigkeit automatisch verbessern.'],no:'Rechne nach: Wie viele der tatsächlichen Käufer:innen würde dieses Modell erreichen?',why:'Bei seltenen Ereignissen erreicht schon ein nutzloses Modell, das immer die häufige Klasse vorhersagt, eine hohe Genauigkeit. Hier werden alle Käufer:innen verpasst, die Trefferquote liegt bei 0 %. Deshalb braucht man Präzision und Trefferquote („Genauigkeit kann lügen“, Kursmaterial Tag 9; Google, Machine Learning Crash Course).'},
+ k2:{t:'Kennzahl wählen',p:'Die Coupons sind sehr günstig, aber keine kaufbereite Person soll übersehen werden. Auf welche Kennzahl kommt es vor allem an?',c:'Trefferquote (Recall)',w:['Präzision (Precision)','Genauigkeit (Accuracy)','Anzahl der Kund:innen im Verteiler'],no:'Denke daran, was „übersehen“ in der Matrix bedeutet: Käufer:innen, die nicht angeschrieben werden.',why:'Die Trefferquote ist der Anteil aller tatsächlichen Käufer:innen, die das Modell erkennt. Wer nichts verpassen will, senkt den Schwellenwert: Die Trefferquote steigt, dafür sinkt meist die Präzision – es gehen also mehr unnötige Coupons raus.'},
+ k3:{t:'Kennzahl wählen',p:'Jede Kampagne kostet pro angeschriebener Person viel Geld (z. B. persönliches Angebot mit Beratungstermin). Welche Kennzahl sollte jetzt im Vordergrund stehen?',c:'Präzision (Precision)',w:['Trefferquote (Recall)','Genauigkeit (Accuracy)','Anzahl der Filialen'],no:'Wer teuer anschreibt, will vor allem wenige Fehlversuche. Welche Zelle der Matrix ist das?',why:'Die Präzision ist der Anteil der Angeschriebenen, die wirklich kaufen. Bei hohen Kosten je Ansprache zählen unnötige Ansprachen (falsch-positiv) stark, deshalb wird der Schwellenwert höher gesetzt. Der Preis dafür: Die Trefferquote sinkt, einige Käufer:innen werden verpasst. Welcher Fehler teurer ist, ist eine Geschäftsentscheidung.'},
  dz:{p:'Beobachte: Mitarbeiterinnen und Mitarbeiter stempeln in den Läden selbst ein und aus, auch Pausen werden erfasst. Die Einträge fließen laufend, mit Spitzen zu Schichtbeginn und Schichtende. Welche Quelle ist das?',c:'Registrierte Arbeitszeiten (Stechuhr)',w:['Verkaufsdaten (Kassensystem)','Interne Daten (manuell)','Externe Daten (manuell)','Bestandsveränderung (2 x täglich)'],why:'Stechuhr-Daten sind Beschäftigtendaten und damit personenbezogen. Dieselbe Quelle dient zwei Zwecken: Für die Gehaltsabrechnung wird der Personenbezug gebraucht, für die Kapazitätsplanung gegenüber der Nachfrage genügen anonymisierte oder zusammengefasste Werte. Deshalb werden anonymisierte Kopien abgezweigt, während die vollständigen Daten zur Lohnbuchhaltung weiterlaufen.'},
  anon:{p:'Beobachte: Am roten Sperrschild werden von den Stechuhr-Daten Kopien in eine Hülle gesteckt und abgezweigt, während die vollständigen Einträge weiter zur Lohnbuchhaltung laufen. Nur die umhüllten, zusammengefassten Werte ohne Personenbezug fließen in Richtung Modell. Wie heißt dieser Schritt?',c:'Anonymisierung',w:['Dublettenprüfung','Deployment (Bereitstellung)','Hyperparameter-Tuning','Datenspiegel'],why:'Für die Kapazitätsplanung braucht das Modell keine Personen, sondern zum Beispiel Stunden je Laden und Schicht (Datenminimierung). Wird vor dem Speichern anonymisiert, liegen keine personenbezogenen Stempeldaten im Rohdatenspeicher. Für die Gehaltsabrechnung bleiben die vollständigen Daten im operativen System. Echt anonym sind Daten nur, wenn sich Personen auch mit Zusatzwissen nicht mehr bestimmen lassen; bloße Pseudonymisierung genügt dafür nicht (EDPB-Leitlinien 01/2025, Erwägungsgrund 26 DSGVO). Die Anonymisierung ist selbst eine Verarbeitung und braucht eine Rechtsgrundlage (BfDI).'},
  sens:{p:'Beobachte: Bestimmte Datensätze – etwa Schichtpläne von Beschäftigten oder Angaben zu Lieferanten – werden vor dem Speichern erkannt, gekennzeichnet und geschützt, zum Beispiel durch Pseudonymisierung. Wie heißt dieser Schritt?',c:'Maskierung sensibler Daten',w:['Dublettenprüfung','Hyperparameter-Tuning','Lastverteilung','Modellregistrierung'],why:'Sensible Daten sollen nicht ungeschützt im Rohdatenspeicher landen. AWS beschreibt dafür für teilsensible Datensätze eine Landing Zone: Dort werden sensible Zeilen und Spalten maskiert, erst danach gelangen die Daten in die Raw-Schicht. Wichtig: Pseudonymisierte Daten gelten nach der DSGVO weiterhin als personenbezogen, die Zuordnungsinformation muss getrennt und geschützt aufbewahrt werden. Erst echt anonyme Daten fallen nicht mehr unter die DSGVO.'},
@@ -1395,7 +1440,7 @@ const QUIZ={
 };
 function openQuiz(k){
   const q=QUIZ[k];
-  $('mt').textContent=q.t||'Station benennen';$('mp').textContent=q.p;$('fb').textContent='';$('fb').className='';
+  $('mt').textContent=q.t||'Was geschieht hier?';$('mp').textContent=q.p;$('fb').textContent='';$('fb').className='';
   $('mNext').style.display='none';
   const box=$('opts');box.innerHTML='';
   shuffle([q.c].concat(q.w)).forEach(t=>{
@@ -1423,12 +1468,13 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')closeQ();});
 /* ============ Steuerung ============ */
 function setView(v){
   state.view=v;hideTip();document.body.dataset.view=v;
-  const V={top,src,fab,trn,dep,mon};
+  const V={top,src,fab,trn,val,dep,mon};
   for(const k in V)V[k].g.classList.toggle('off',k!==v);
   $('bBack').style.display=v==='top'?'none':'';
+  $('bBack').textContent=v==='val'?'← Modellentwicklung':'← Überblick';
   refreshLabels();
 }
-$('bBack').onclick=()=>setView('top');
+$('bBack').onclick=()=>setView(state.view==='val'?'trn':'top');
 $('bPause').onclick=()=>{state.paused=!state.paused;$('bPause').textContent=state.paused?'Weiter':'Pause';$('bPause').classList.toggle('on',state.paused);};
 function clearAll(){
   for(const sc of scenes){
@@ -1466,7 +1512,7 @@ function frame(now){
   const dt=Math.min(.05,(now-last)/1000);last=now;
   if(!state.paused){
     const d=dt*state.speed;
-    step({top,src,fab,trn,dep,mon}[state.view],d);
+    step({top,src,fab,trn,val,dep,mon}[state.view],d);
   }
   barT+=dt;if(barT>.3){barT=0;updateBar();}
   requestAnimationFrame(frame);
@@ -1479,7 +1525,7 @@ function updateBar(){return;
    :'<span>Eingang: <b>'+k.in+'</b></span><span>Quarantäne: <b>'+k.rej+'</b></span><span>Formate vereinheitlicht: <b>'+k.fix+'</b></span><span>Dubletten entfernt: <b>'+k.dups+'</b></span><span>aufbereitet weitergeleitet: <b>'+k.clean+'</b> (davon mit Restfehler: <b style="color:#f59e0b">'+(k.rest||0)+'</b>)</span>';
 }
 setView('top');updateBar();requestAnimationFrame(frame);
-window.__dfl={top,main,fab,src,trn,dep,mon,state,step,raw,CLK,Q,setView};
+window.__dfl={top,main,fab,src,trn,val,dep,mon,state,step,raw,CLK,Q,setView};
 })();
 </script>
 </body>
