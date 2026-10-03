@@ -273,6 +273,7 @@ function step(sc,dt){
     if(p.dead)continue;
     const pi=p.pipe;let lim=pi.len;
     if(pi.gate&&locked(pi.gate))lim=Math.min(lim,pi.len-5-p.jit);
+    else if(pi.hold&&pi.hold())lim=Math.min(lim,pi.len-5-p.jit*3.5);
     let ns=p.s+p.v*dt;
     ns=p.s<=lim?Math.min(ns,lim):p.s;
     p.s=ns;
@@ -344,7 +345,7 @@ function refreshLabels(){
   if(v==='top')h=state.practice?'Wähle einen Block. Die Fragen findest Du in den Detailseiten (Extract, Load &amp; Transform, Modellentwicklung).':'Klicke auf einen Block, um die Detailseite zu öffnen. Fahre mit der Maus über „Datenverarbeitung“ (oder das ⓘ): Dort steht der Unterschied zwischen ETL und ELT. Die Begriffe der Blöcke folgen der '+AWS+'.';
   else if(state.practice&&K[v])h='Übungsmodus: '+cnt(K[v])+'/'+K[v].length+' benannt. Tippe auf ein gelb gestricheltes Fragezeichen und wähle den passenden Begriff – erst dann fließt der Strom weiter.';
   else if(state.practice)h='Übungsmodus: Auf dieser Seite gibt es keine Fragen.';
-  else h={src:'Tipp: Mit den Wasserhähnen spielst Du manuelle Lieferungen ein. Alle Quellen fließen über den Datenspiegel (Extract) in den Rohdatenspeicher.',fab:'Tipp: Die gespiegelten Rohdaten werden im Rohdatenspeicher abgelegt (Load) und dann in der Fabrik aufbereitet (Transform).',trn:'Tipp: Schiebe den Schwellenwert und beobachte, wie Precision und Recall gegenläufig reagieren. Mit dem Vergleich „Niemanden anschreiben“ siehst Du, warum Accuracy allein täuscht.',dep:'Tipp: Grün sind Bestellprognosen (Bestellmengen), orange Kapazitätsprognosen (Personalbedarf); die Zahlen an den Filialen oben zählen beide. „Neue Version v2 bereitstellen“ schickt eine neue Modellversion durch den Test – in Produktion geht sie erst, wenn bei der Freigabe „Ja“ gedrückt wird.',mon:'Tipp: Löse ein Ereignis aus und beobachte die Monitoring-Signale rechts. Nicht jede Veränderung ist Drift.'}[v];
+  else h={src:'Tipp: Mit den Wasserhähnen spielst Du manuelle Lieferungen ein. Alle Quellen fließen über den Datenspiegel (Extract) in den Rohdatenspeicher.',fab:'Tipp: Die gespiegelten Rohdaten werden im Rohdatenspeicher abgelegt (Load) und dann in der Fabrik aufbereitet (Transform).',trn:'Tipp: Schiebe den Schwellenwert und beobachte, wie Precision und Recall gegenläufig reagieren. Mit dem Vergleich „Niemanden anschreiben“ siehst Du, warum Accuracy allein täuscht.',dep:'Tipp: Das Modell durchläuft den Test, das Thermometer zeigt die Modellqualität. Erst ab dem Mindestwert wird die Freigabe aktiv, und erst nach „Ja“ beantwortet das Modell die wartenden Anfragen. Grün sind Bestellprognosen, orange Kapazitätsprognosen; die Zahlen an den Filialen oben zählen beide.',mon:'Tipp: Löse ein Ereignis aus und beobachte die Monitoring-Signale rechts. Nicht jede Veränderung ist Drift.'}[v];
   $('hint').innerHTML=h;
 }
 
@@ -1097,23 +1098,31 @@ trn.sources=[{pipe:'tIn',rate:4,col:COL.clean}];
 /* ============ VOLLSEITE: Modellbereitstellung ============ */
 const dep=mkScene('scDep');dep.g.classList.add('off');dep.st={in:0};
 const DP=(id,pts,w,o)=>addPipe(dep,Object.assign({id,pts,w},o||{}));
-let depVer=1;
 const PCOL={order:'#86efac',cap:'#fdba74'};
 const DBX=i=>110+i*58,DTX=i=>960+i*58;
 const DRATE=[2.2,.6,1.6,.35,1.1,1.9,.5,.9,.3,1.3];      // Anfragen je Filiale: unterschiedlich häufig
+const QMIN=.85,QTARGET={1:.91,2:.94,3:.95};             // Mindestqualität und (simulierte) Testergebnisse je Version
 const depN=Array.from({length:10},()=>({order:0,cap:0}));
-DP('rel',[[220,380],[420,380]],14,{next:'stg'});
-DP('stg',[[420,380],[540,380]],14,{next:'rel2'});
+const D_={prod:0,lastVer:0,testVer:0,phase:'idle',tn:0,q:0,tacc:0,qacc:0,waiting:false};
+DP('rel',[[220,380],[420,380]],14,{sink:()=>startTest()});
+DP('tdat',[[480,560],[480,440]],8,{sink:()=>{D_.tn++;}});
 DP('rel2',[[540,380],[650,380]],14,{sink:()=>{dep.wait(true);}});
-DP('rel3',[[650,380],[760,380]],14,{sink:()=>{depVer=dep.nextVer;dep.verT.textContent='Version v'+depVer;dep.regT.textContent='v'+depVer+' im Register';dep.flash=1.2;}});
+DP('rel3',[[650,380],[760,380]],14,{sink:()=>{D_.prod=D_.testVer;dep.verT.textContent='Version v'+D_.prod;dep.flash=1.2;D_.phase='idle';}});
 for(let i=0;i<10;i++)DP('rq'+i,[[DBX(i),645],[DBX(i),600]],3,{next:'rq'});
 DP('rq',[[DBX(0),600],[875,600]],10,{next:'rqUp'});
-DP('rqUp',[[875,600],[875,440]],14,{next:'inCard'});
+DP('rqUp',[[875,600],[875,440]],14,{next:'inCard',hold:()=>!D_.prod});
 const ansTo={};for(let i=0;i<10;i++)ansTo['a'+i]='ans'+i;
 DP('inCard',[[875,440],[875,320]],14,{route:p=>'a'+p.st,to:ansTo,enter:p=>{
   p.ptype=Math.random()<.6?'order':'cap';p.col=PCOL[p.ptype];p.r=3.8;shapeOf(p);}});
 for(let i=0;i<10;i++)DP('ans'+i,[[875,320],[875,210],[DTX(i),210],[DTX(i),130]],8,{sink:p=>{depN[i][p.ptype]++;dep.cnt[i].a.textContent=depN[i].order;dep.cnt[i].b.textContent=depN[i].cap;}});
-dep.nextVer=1;dep.flash=0;dep.acc=Array(10).fill(0);
+dep.flash=0;dep.acc=Array(10).fill(0);
+function sendModel(){
+  if(D_.phase!=='idle'||D_.lastVer>=3)return;
+  D_.lastVer++;D_.testVer=D_.lastVer;D_.phase='send';
+  dep.regT.textContent='v'+D_.testVer+' im Register';
+  mkP(dep,dep.pipes.rel,{kind:'model',col:COL.model,r:5.5,off:0});
+}
+function startTest(){D_.phase='testing';D_.tn=0;D_.q=0;dep.tm.setAttribute('opacity',1);}
 (()=>{
   const U=dep.L.ui,D=dep.L.deco;
   TX(U,24,32,'Modellbereitstellung im Detail','lbl','text-anchor:start;font-size:20px');
@@ -1121,12 +1130,21 @@ dep.nextVer=1;dep.flash=0;dep.acc=Array(10).fill(0);
   el('rect',{class:'card-bg',x:40,y:320,width:180,height:120,rx:12},D);
   TX(U,130,308,'Modellregister','lbl','font-size:15px');
   el('rect',{x:118,y:350,width:24,height:24,fill:COL.model,stroke:'#fff','stroke-width':.8,transform:'rotate(45 130 362)'},D);
-  dep.regT=TX(U,130,416,'v1 im Register','tk');TX(U,130,432,'freigegebene Version','tk2');
-  // Test
+  dep.regT=TX(U,130,416,'validierte Versionen','tk');TX(U,130,432,'aus der Modellentwicklung','tk2');
+  // Test mit Thermometer
   el('rect',{class:'card-bg',x:420,y:320,width:120,height:120,rx:12},D);
   TX(U,480,308,'Test (Staging)','lbl','font-size:15px');
-  el('circle',{cx:480,cy:380,r:22,fill:'#12351f',stroke:'#4ade80','stroke-width':1.6},D);el('path',{d:'M469,380 l8,8 l15,-17',fill:'none',stroke:'#4ade80','stroke-width':3},D);
-  TX(U,480,460,'Probelauf mit Testdaten','tk2');
+  dep.tm=el('rect',{x:448,y:362,width:22,height:22,fill:COL.model,stroke:'#fff','stroke-width':.8,transform:'rotate(45 459 373)',opacity:0},U);
+  el('rect',{x:504,y:334,width:14,height:86,rx:7,fill:'#0f1a26',stroke:'#4b6f8c','stroke-width':1.4},D);
+  el('circle',{cx:511,cy:428,r:9,fill:'#0f1a26',stroke:'#4b6f8c','stroke-width':1.4},D);
+  const thF=el('rect',{x:507,y:418,width:8,height:0,rx:4,fill:'#f59e0b'},U);
+  const thB=el('circle',{cx:511,cy:428,r:6.5,fill:'#f59e0b'},U);
+  const yMin=418-82*QMIN;
+  el('line',{x1:498,x2:524,y1:yMin,y2:yMin,stroke:'#ef4444','stroke-width':1.6},U);
+  TX(U,496,yMin+4,'85 %','tk2','text-anchor:end;font-size:9.5px');
+  TX(U,470,460,'Modellqualität im Test','tk2','text-anchor:end');
+  const qT=TX(U,470,476,'–','tk','font-size:12px;text-anchor:end');
+  TX(U,492,520,'Testdaten','tk2','text-anchor:start');
   // Freigabe
   el('rect',{class:'card-bg',x:592,y:320,width:116,height:120,rx:12},D);
   TX(U,650,308,'Freigabe','lbl','font-size:15px');
@@ -1134,15 +1152,16 @@ dep.nextVer=1;dep.flash=0;dep.acc=Array(10).fill(0);
   el('circle',{cx:650,cy:346,r:7,fill:'#38bdf8'},D);el('circle',{cx:650,cy:346,r:3,fill:'#0b121b'},D);
   const pend=el('rect',{x:640,y:370,width:20,height:20,fill:COL.model,stroke:'#fff','stroke-width':.8,transform:'rotate(45 650 380)',opacity:0},U);
   const askT=TX(U,650,460,'Entscheidung: Mensch','tk2');
-  const yes=btn(dep,596,408,52,26,'Ja',()=>{if(!dep.waiting)return;dep.wait(false);mkP(dep,dep.pipes.rel3,{kind:'model',col:COL.model,r:5.5,off:0});askT.textContent='freigegeben';});
-  const no=btn(dep,652,408,52,26,'Nein',()=>{if(!dep.waiting)return;dep.wait(false);puff(dep,650,380,COL.model);dep.pend=false;dep.nextVer=depVer;askT.textContent='abgelehnt – v'+depVer+' bleibt aktiv';});
-  [yes,no].forEach(b=>b.g.setAttribute('opacity',.35));
-  dep.wait=on=>{dep.waiting=on;pend.setAttribute('opacity',on?1:0);[yes,no].forEach(b=>b.g.setAttribute('opacity',on?1:.35));if(on)askT.textContent='Freigeben? Bitte entscheiden';};
+  const yes=btn(dep,596,408,52,26,'Ja',()=>{if(!D_.waiting)return;dep.wait(false);mkP(dep,dep.pipes.rel3,{kind:'model',col:COL.model,r:5.5,off:0});askT.textContent='v'+D_.testVer+' freigegeben';});
+  const no=btn(dep,652,408,52,26,'Nein',()=>{if(!D_.waiting)return;dep.wait(false);puff(dep,650,380,COL.model);D_.phase='idle';askT.textContent='v'+D_.testVer+' abgelehnt';});
+  dep.wait=on=>{D_.waiting=on;pend.setAttribute('opacity',on?1:0);[yes,no].forEach(b=>{b.g.setAttribute('opacity',on?1:.3);b.g.style.pointerEvents=on?'':'none';});if(on){D_.phase='await';askT.textContent='Freigeben? Bitte entscheiden';}};
+  dep.wait(false);
   // Produktion
   el('rect',{class:'card-bg',x:760,y:320,width:140,height:120,rx:12},D);
-  TX(U,830,308,'Produktion','lbl','font-size:15px');
+  TX(U,815,308,'Produktion','lbl','font-size:15px');
   for(let i=0;i<3;i++){el('rect',{x:776,y:332+i*30,width:88,height:22,rx:4,fill:'#1d3145',stroke:'#4b6f8c'},D);el('circle',{class:'led',cx:786,cy:343+i*30,r:2.6,fill:'#4ade80'},D);}
-  dep.verT=TX(U,912,384,'Version v1','tk','text-anchor:start;font-size:13px');
+  dep.verT=TX(U,912,384,'noch kein Modell','tk','text-anchor:start;font-size:13px');
+  const waitT=TX(U,885,560,'Anfragen warten auf ein Modell','tk2','text-anchor:start;fill:#f59e0b');
   TX(U,885,520,'Anfragen','tk2','text-anchor:start');
   TX(U,885,270,'Prognosen','tk2','text-anchor:start');
   // Filialen unten: fragen an
@@ -1160,14 +1179,29 @@ dep.nextVer=1;dep.flash=0;dep.acc=Array(10).fill(0);
   // Erklärung
   TX(U,1190,290,'Stufen der Bereitstellung','lbl','text-anchor:start;font-size:15px');
   const t=para(U,1190,312,17,'font-size:12.5px');
-  t.set(['1  Modellregister: freigegebene Version liegt bereit.','2  Test (Staging): Probelauf, bevor echte Daten fließen.','3  Freigabe: der Mensch entscheidet.','4  Produktion: Das Modell beantwortet Anfragen.','5  Danach beobachtet das Monitoring den Betrieb.']);
-  TX(U,1190,412,'Quelle: Microsoft, Machine learning operations (MLOps v2),','tk2','text-anchor:start');
-  TX(U,1190,428,'Model deployment (outer loop)','tk2','text-anchor:start');
-  btn(dep,1190,456,240,30,'Neue Version v2 bereitstellen',()=>{if(depVer>=2||dep.pend)return;dep.pend=true;dep.nextVer=2;dep.manual=1;dep.regT.textContent='v2 im Register';});
+  t.set(['1  Modellregister: validierte Version liegt bereit.','2  Test (Staging): Probelauf mit Testdaten. Erst wenn','    die Modellqualität reicht, wird die Freigabe aktiv.','3  Freigabe: Der Mensch entscheidet („Ja“ / „Nein“).','4  Produktion: Das Modell beantwortet Anfragen.','    Vorher warten die Anfragen der Filialen.','5  Danach beobachtet das Monitoring den Betrieb.']);
+  TX(U,1190,444,'Quelle: Microsoft, Machine learning operations (MLOps v2),','tk2','text-anchor:start');
+  TX(U,1190,460,'Model deployment (outer loop)','tk2','text-anchor:start');
+  const nb=btn(dep,1190,482,240,30,'Neue Version bereitstellen',()=>sendModel());
   dep.tick=(sc,dt)=>{
-    sc.relT-=dt;
-    if(dep.manual){dep.manual=0;mkP(sc,sc.pipes.rel,{kind:'model',col:COL.model,r:5.5,off:0});}
-    for(let i=0;i<10;i++){sc.acc[i]+=dt*DRATE[i];while(sc.acc[i]>=1){sc.acc[i]--;mkP(sc,sc.pipes['rq'+i],{col:SRC.kasse,st:i,s:rnd(0,2),off:0});}}
+    if(D_.lastVer===0){sc.t0=(sc.t0||0)+dt;if(sc.t0>.6)sendModel();}
+    // Test: Testdaten fließen ein, Thermometer steigt
+    if(D_.phase==='testing'){
+      sc.tacc+=dt*8;while(sc.tacc>=1){sc.tacc--;mkP(sc,sc.pipes.tdat,{col:'#7dd3fc',s:rnd(0,2),r:3});}
+      const goal=QTARGET[D_.testVer]*Math.min(1,D_.tn/36);D_.q+=(goal-D_.q)*Math.min(1,dt*3);
+      if(D_.tn>=36&&Math.abs(D_.q-QTARGET[D_.testVer])<.005){
+        D_.phase='passed';dep.tm.setAttribute('opacity',0);
+        if(D_.q>=QMIN)mkP(sc,sc.pipes.rel2,{kind:'model',col:COL.model,r:5.5,off:0});
+      }
+    }else sc.tacc=0;
+    const h=82*D_.q,c=D_.q>=QMIN?'#4ade80':'#f59e0b';
+    thF.setAttribute('height',h);thF.setAttribute('y',418-h);thF.setAttribute('fill',c);thB.setAttribute('fill',D_.q>0?c:'#22384d');
+    qT.textContent=D_.q>0?Math.round(D_.q*100)+' % (Ziel ≥ 85 %)':'–';
+    // Filialen fragen an; ohne Modell in Produktion stauen sich die Anfragen
+    let held=0;if(!D_.prod)for(const p of sc.parts)if(p.pipe.id==='rq'||p.pipe.id==='rqUp'||p.pipe.id.startsWith('rq'))held++;
+    for(let i=0;i<10;i++){sc.acc[i]+=dt*DRATE[i];while(sc.acc[i]>=1){sc.acc[i]--;if(held<70){mkP(sc,sc.pipes['rq'+i],{col:SRC.kasse,st:i,s:rnd(0,2),off:0});held+=D_.prod?0:1;}}}
+    waitT.setAttribute('opacity',D_.prod?0:1);
+    nb.g.setAttribute('opacity',D_.phase==='idle'&&D_.lastVer<3?1:.35);
     if(dep.flash>0)dep.flash-=dt;
     dep.verT.setAttribute('fill',dep.flash>0?'#fde047':'');
   };
