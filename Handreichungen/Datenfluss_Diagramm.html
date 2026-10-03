@@ -692,7 +692,7 @@ fab.hints=[];
   el('circle',{class:'lens',cx:1048,cy:290,r:20,fill:'none',stroke:'#7b97ae','stroke-width':3},D);
   el('circle',{class:'lens2',cx:1102,cy:290,r:20,fill:'none',stroke:'#7b97ae','stroke-width':3},D);
   el('line',{x1:1000,y1:372,x2:1148,y2:372,stroke:'#4b6f8c','stroke-width':3},D);
-  const ex=[['kb',['Datums- und Währungsformate oder','Produktziffern werden erkannt','und vereinheitlicht.'],365],['ka',['Fehlbuchungen, Personalkäufe und','einmalige Großeinkäufe werden','aussortiert (Quarantäne).'],700],['kc',['Doppelt übertragene Datensätze,','z. B. ein Bon nach Verbindungs-','abbruch: die Kopie fällt heraus.'],1030],['ks',['Auswahl der Merkmale','und Datensätze, die','tatsächlich ins Training','eingehen.'],1360]];
+  const ex=[['kb',['Datums- und Währungsformate oder','Produktziffern werden erkannt','und vereinheitlicht.'],365],['ka',['Fehlbuchungen, Personalkäufe und','einmalige Großeinkäufe werden','aussortiert (Quarantäne).'],700],['kc',['Doppelt übertragene Datensätze,','z. B. ein Bon nach Verbindungs-','abbruch: die Kopie fällt heraus.'],1030],['ks',['Auswahl der Merkmale','und Datensätze, die','tatsächlich ins Training','eingehen – und Prüfung,','ob sie alle Filialen','repräsentativ abbilden','(z. B. Stadt und Land).'],1360]];
   ex.forEach(e=>{const t=el('text',{x:e[2],y:474,class:'sub hinttxt'},U);
     e[1].forEach((ln,i)=>el('tspan',{x:e[2],dy:i?16:0},t).textContent=ln);
     fab.hints.push({key:e[0],t});});
@@ -704,10 +704,14 @@ fab.hints=[];
   const la=el('text',{x:108,y:390,class:'tk'},U);la.textContent='0 gespeichert';
   const lb=el('text',{x:108,y:408,class:'tk2'},U);lb.textContent='Rückstand: 0';
   el('text',{x:108,y:444,class:'tk2'},U).textContent='Rohdatenspeicher (Raw Layer)';
+  el('text',{x:108,y:472,class:'tk',style:'fill:#d6a36a'},U).textContent='= Bronze (roh)';
+  ['Bronze · Silber · Gold:','Stufen der Medaillon-','Architektur (Microsoft)'].forEach((t,i)=>{el('text',{x:24,y:560+i*14,class:'tk2',style:'text-anchor:start'},U).textContent=t;});
   el('text',{x:108,y:458,class:'tk2'},U).textContent='schreibgeschützt';
   raw.views.push({layers:rfL,t1:la,t2:lb,max:110,base:424});
   pillGate(fab,'st2',715,100,160,'Transform');
   el('text',{x:1520,y:300,class:'sub'},U).textContent='zum Modell →';
+  el('text',{x:1500,y:282,class:'tk',style:'fill:#fde047'},U).textContent='= Gold (aufbereitet)';
+  el('text',{x:1258,y:255,class:'tk',style:'fill:#cbd5e1'},U).textContent='Silber (geprüft)';
   // Selektion: Auge = menschliche Entscheidung
   el('path',{d:'M1343,292 Q1375,268 1407,292 Q1375,316 1343,292Z',fill:'#0f2a3a',stroke:'#e8eef5','stroke-width':1.8},D);
   el('circle',{cx:1375,cy:292,r:8,fill:'#38bdf8'},D);el('circle',{cx:1375,cy:292,r:3.4,fill:'#0b121b'},D);
@@ -1025,6 +1029,7 @@ trn.sources=[{pipe:'tIn',rate:4,col:COL.clean}];
     TX(U,x+22,y+29,String(i+1),'tk','font-size:13px');
     TX(U,x+44,y+29,s[0],'lbl','text-anchor:start;font-size:14.5px');
     para(U,x+14,y+58,16,'font-size:12px').set(s[1]);
+    if(i===1)para(U,x+14,y+138,13,'font-size:10.5px;fill:#8fa3b8').set(['Gehört streng genommen zur','Datenvorbereitung (Transform).']);
     if(s[2]){TX(U,x+14,y+168,'Beispiel','tk2','text-anchor:start;fill:#4cc9f0');para(U,x+14,y+186,16,'font-size:12px;fill:#9fb3c8').set(s[2]);}
     else btn(trn,x+14,y+170,217,30,'Validierung im Detail ⊕',()=>setView('val'));
   });
@@ -1435,7 +1440,7 @@ const QUIZ={
  de:{p:'Beobachte: Externe Daten (etwa Marktforschung) kommen erst, wenn jemand sie per Klick einspielt. Welche Quelle ist das?',c:'Externe Daten (manuell)',w:['Interne Daten (manuell)','Regelmäßige Daten (extern) – automatisch','Bestandsveränderung (2 x täglich)','Datenverschlüsselung'],why:'Externe Daten ohne feste Schnittstelle werden von Hand beschafft und eingespielt (z. B. eine Marktforschungsstudie als Datei). Das ist fehleranfällig und braucht klare Verantwortung sowie eine Eingangsprüfung.'},
  ka:{p:'Beobachte: Große Kreise und hohle Ringe werden vom Portal erfasst und fallen aus der Linie in die Quarantäne. Wie heißt dieser Schritt?',c:'Bereinigung: Fehlbuchungen und Sondereffekte aussortieren',w:['Formate standardisieren','Dubletten auflösen','Datenverschlüsselung','Lastverteilung'],why:'Aussortiert wird, was das Modell in die Irre führen würde: Fehlbuchungen (z. B. stornierte Bons), unvollständige Datensätze, aber auch Sondereffekte wie Personalkäufe oder einmalige Großeinkäufe. Echte Fehler gehen mit Fehlergrund in die Quarantäne; Sondereffekte werden gekennzeichnet und für das Training ausgeklammert, im Rohdatenspeicher bleiben sie erhalten. Vorsicht: Ungewöhnlich ist nicht automatisch falsch. Der Wochenendeinkauf am Samstag ist ein echtes Muster, deshalb vergleicht man mit dem gleichen Wochentag statt mit dem Durchschnitt. Die Bereinigung kommt nach der Standardisierung, sonst sähe z. B. ein Datum im falschen Format wie eine riesige Zahl aus.'},
  kb:{p:'Beobachte: Eckige Elemente werden unter der Presse rund – Datums- und Währungsformate oder Produktziffern werden erkannt und vereinheitlicht. Wie heißt dieser Schritt?',c:'Standardisierung: Formate vereinheitlichen',w:['Bereinigung: Fehlbuchungen und Sondereffekte aussortieren','Dubletten auflösen','Hyperparameter festlegen','Penetrationstest'],why:'Einheitliche Formate, Einheiten und Schreibweisen (z. B. °C statt °F, ein Datumsformat). Die Format-Konvertierung nennt AWS als Aufgabe der Stage-Schicht. Sie steht am Anfang der Transformation, weil Bereinigung und Dublettenabgleich nur auf einheitlichen Formaten zuverlässig funktionieren.'},
- ks:{p:'Beobachte: Am Auge wird entschieden, welche Datensätze und Merkmale ins Training gehen. Der Rest zweigt ab und bleibt gespeichert. Wie heißt dieser Schritt?',c:'Selektion: Merkmale und Datensätze für das Training auswählen',w:['Standardisierung: Formate vereinheitlichen','Dubletten auflösen','Modellvalidierung','Lastverteilung'],why:'Nicht jedes Merkmal und nicht jeder Datensatz gehört ins Training: Irrelevante oder doppelt aussagende Merkmale werden weggelassen, ebenso Datensätze, die nicht zur Fragestellung passen (z. B. Zeiträume vor einer Sortimentsumstellung). Entscheidend ist die Dokumentation: Nach welchem Kriterium wurde ausgewählt – und wer hat das entschieden? Nicht ausgewählte Daten bleiben gespeichert und lassen sich später nutzen; für personenbezogene Daten gelten aber Datenminimierung und Speicherbegrenzung (Art. 5 DSGVO).'},
+ ks:{p:'Beobachte: Am Auge wird entschieden, welche Datensätze und Merkmale ins Training gehen. Der Rest zweigt ab und bleibt gespeichert. Wie heißt dieser Schritt?',c:'Selektion: Merkmale und Datensätze für das Training auswählen',w:['Standardisierung: Formate vereinheitlichen','Dubletten auflösen','Modellvalidierung','Lastverteilung'],why:'Nicht jedes Merkmal und nicht jeder Datensatz gehört ins Training: Irrelevante oder doppelt aussagende Merkmale werden weggelassen, ebenso Datensätze, die nicht zur Fragestellung passen (z. B. Zeiträume vor einer Sortimentsumstellung). Entscheidend ist die Dokumentation: Nach welchem Kriterium wurde ausgewählt – und wer hat das entschieden? Dazu gehört die Repräsentativitätsprüfung: Bildet die Auswahl die Filialen ab, für die das Modell später Prognosen liefert (z. B. Stadt und Land)? Sonst droht Bias wie im Szenario der Modellüberwachung. Nicht ausgewählte Daten bleiben gespeichert und lassen sich später nutzen; für personenbezogene Daten gelten aber Datenminimierung und Speicherbegrenzung (Art. 5 DSGVO).'},
  kc:{p:'Beobachte: Doppelt übertragene Datensätze (zwei Kreise) werden erkannt, aus zwei wird einer – die Kopie fällt heraus. Wie heißt dieser Schritt?',c:'Dubletten auflösen',w:['Standardisierung: Formate vereinheitlichen','Modelltraining','Drift-Erkennung','Lastverteilung'],why:'Mehrfach übertragene Datensätze (z. B. ein Bon, den die Kasse nach einem Verbindungsabbruch erneut sendet, oder dieselbe Veranstaltung aus zwei Quellen) werden auf einen reduziert. Das gelingt zuverlässiger nach der Standardisierung, weil gleiche Dinge dann auch gleich geschrieben sind.'}
 };
 function openQuiz(k){
