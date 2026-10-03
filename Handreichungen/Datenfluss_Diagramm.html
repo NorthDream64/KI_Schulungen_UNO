@@ -909,6 +909,18 @@ const TIP_MON='<p><b>Was das Monitoring im Betrieb überwacht</b></p>'
  +'<p><b>Model Drift</b> hat zwei Ursachen: veränderte Eingabedaten (Input-Drift) oder eine veränderte Realität – etwa ein neues Kaufverhalten bei gleichen Eingaben.</p>'
  +'<p><b>Feedback-Schleife:</b> Die tatsächlichen Verkäufe fließen zurück und werden mit den Prognosen verglichen; daraus entsteht automatisch oder nach menschlicher Prüfung ein Retraining. Diese Schleife ist zugleich der Nachweis kontinuierlicher Verbesserung, die ein KI-Managementsystem (ISO/IEC 42001) verlangt. Dazu kommen regelmäßige Robustheits- und Leistungsprüfungen im Betrieb.</p>'
  +'<small>Quellen: <a href="https://learn.microsoft.com/en-us/azure/machine-learning/concept-model-monitoring?view=azureml-api-2" target="_blank" rel="noopener">Microsoft: Model monitoring in production</a> · <a href="https://docs.aws.amazon.com/sagemaker/latest/dg/model-monitor.html" target="_blank" rel="noopener">AWS: SageMaker Model Monitor</a></small>';
+const TIP_TERMS='<p><b>Fachbegriffe der Modellentwicklung</b></p>'
+ +'<table><tr><th>Begriff</th><th>Bedeutung</th></tr>'
+ +'<tr><td>Zielvariable (Label)</td><td>das Ergebnis, das das Modell vorhersagen soll – z. B. „kauft Grillkohle: ja/nein“.</td></tr>'
+ +'<tr><td>Merkmal (Feature)</td><td>eine Eingangsgröße, aus der das Modell seine Vorhersage ableitet – z. B. Wochentag oder Wetterprognose.</td></tr>'
+ +'<tr><td>Feature Engineering</td><td>aus Rohdaten und Vermutungen messbare Merkmale bilden – z. B. „Absatz der letzten 7 Tage“.</td></tr>'
+ +'<tr><td>Datenleck (Data Leakage)</td><td>das Modell nutzt beim Lernen Informationen, die zum Zeitpunkt der Vorhersage noch nicht vorliegen. Im Test glänzt es, im Betrieb versagt es.</td></tr>'
+ +'<tr><td>Baseline</td><td>eine einfache Vergleichsregel als Messlatte – z. B. „wie am gleichen Wochentag letzte Woche“.</td></tr>'
+ +'<tr><td>Logistische Regression</td><td>ein einfaches Modell, das die <b>Wahrscheinlichkeit</b> für ein Ja/Nein-Ergebnis berechnet (benannt nach der logistischen Funktion, nicht nach „Logik“).</td></tr>'
+ +'<tr><td>Entscheidungsbaum</td><td>ein Modell aus hintereinander geschalteten Ja/Nein-Fragen, z. B. „Ist Samstag?“ → „Sind über 25 °C angesagt?“ → Prognose. Gut nachvollziehbar.</td></tr>'
+ +'<tr><td>Hyperparameter</td><td>Einstellungen, die das Training steuern und vom Menschen festgelegt werden (z. B. Baumtiefe, Lernrate). Die eigentlichen Parameter lernt das Modell selbst.</td></tr>'
+ +'<tr><td>Kreuzvalidierung</td><td>die Daten werden in mehrere Teile zerlegt; jeder Teil dient einmal zur Prüfung, auf den übrigen wird trainiert. Zeigt, wie stabil die Leistung ist. Bei Zeitreihen werden die Teile zeitlich geordnet gebildet.</td></tr></table>'
+ +'<small>Quellen: <a href="https://developers.google.com/machine-learning/glossary" target="_blank" rel="noopener">Google: ML Glossary</a> · <a href="https://developers.google.com/machine-learning/crash-course/logistic-regression" target="_blank" rel="noopener">Google: Logistic Regression</a> · <a href="https://developers.google.com/machine-learning/decision-forests/decision-trees" target="_blank" rel="noopener">Google: Decision trees</a> · <a href="https://developers.google.com/machine-learning/crash-course/linear-regression/hyperparameters" target="_blank" rel="noopener">Google: Hyperparameters</a> · <a href="https://cloud.google.com/blog/products/gcp/preparing-and-curating-your-data-for-machine-learning" target="_blank" rel="noopener">Google Cloud: Data leakage</a></small>';
 function LTX(p,x,y,t,url,st){const a=el('a',{href:url,target:'_blank',rel:'noopener',class:'lnk'},p);const e=el('text',{x,y,class:'tk2',style:'text-anchor:start;'+(st||'')},a);e.textContent=t;return a;}
 function infoI(sc,cx,cy,getHtml,up,ax,ay){
   const g=el('g',{style:'cursor:pointer'},sc.L.ui);
@@ -1107,6 +1119,7 @@ trn.sources=[{pipe:'tIn',rate:4,col:COL.clean}];
   TX(U,1430,242,'weiter zur Bereitstellung','tk2');
   // Arbeitsschritte eines Data Scientists
   TX(U,24,392,'So entwickelt ein Data Scientist ein Modell','lbl','text-anchor:start;font-size:18px');
+  (()=>{const g=el('g',{style:'cursor:pointer'},U);el('rect',{class:'ipill',x:440,y:374,width:150,height:26,rx:13},g);el('text',{x:515,y:392,class:'tk'},g).textContent='ⓘ Fachbegriffe';const h=el('rect',{class:'vhit',x:440,y:374,width:150,height:26,rx:13,fill:'transparent'},g);const sh=()=>showTip(515,370,TIP_TERMS,true);h.addEventListener('mouseenter',sh);h.addEventListener('mouseleave',hideTipSoon);h.addEventListener('click',e=>{e.stopPropagation();sh();});})();
   TX(U,24,412,'nach dem Beispielprojekt eines Data Scientists („Steigt oder fällt die Microsoft-Aktie morgen?“), übertragen auf den Handel','sub','text-anchor:start;font-size:12.5px');
   const ST=[
    ['Ziel festlegen',['Was genau soll vorhergesagt','werden? Die Antwort, die das','Modell lernen soll, heißt','Zielvariable (Target).'],['„Verkauft Filiale F3 morgen','mehr Grillkohle als üblich?“']],
@@ -1227,7 +1240,7 @@ const val=mkScene('scVal');val.g.classList.add('off');val.st={in:0};
   const RU=[
    ['Testdaten bleiben unangetastet',['Geprüft wird auf Daten, die das Modell nie gesehen','hat. Wer immer wieder auf das Testergebnis schaut','und nachbessert, lernt den Test auswendig.']],
    ['Die Baseline schlagen',['Ein Modell ist erst interessant, wenn es eine ein-','fache Vergleichsregel schlägt – oben: „niemanden','anschreiben“, im Handel z. B. „wie letzte Woche“.']],
-   ['Training und Validierung vergleichen',['Sind die Kennzahlen im Training deutlich besser als','auf den Validierungsdaten, ist das Modell überan-','gepasst (Overfitting). Nur einen Wert? Nachfragen.']],
+   ['Training und Validierung vergleichen',['Sind die Kennzahlen im Training deutlich besser als','auf den Validierungsdaten, ist das Modell überan-','gepasst (Overfitting).']],
    ['Schwellenwert = Geschäftsentscheidung',['Welcher Fehler teurer ist, entscheidet das Geschäft,','nicht die Technik. Der Schwellenwert braucht einen','Eigentümer und gehört in die Dokumentation.']]];
   RU.forEach((r,i)=>{
     const x=24+i*386,y=494;
