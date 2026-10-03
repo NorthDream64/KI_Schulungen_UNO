@@ -95,6 +95,7 @@ text{pointer-events:none}
 #legend span{display:inline-flex;gap:6px;align-items:center}
 #legend .lg-dep{display:none}body[data-view=dep] #legend .lg-dep{display:inline-flex}
 #hint{max-width:1560px;margin:0 auto;padding:0 4px 14px;font-size:13px;color:var(--mut)}
+.rechtevermerk{display:block;max-width:1560px;margin:0 auto;padding:.6rem 4px 1rem;border-top:1px solid #243649;font-size:10px;line-height:1.5;color:var(--mut)}
 #modal{position:fixed;inset:0;background:rgba(5,10,16,.72);display:none;align-items:center;justify-content:center;z-index:10;padding:14px}
 #modal.show{display:flex}
 #mbox{background:var(--panel);border:1px solid #3a566f;border-radius:14px;max-width:580px;width:100%;padding:20px 22px;box-shadow:0 20px 60px rgba(0,0,0,.5)}
@@ -145,6 +146,7 @@ text{pointer-events:none}
     <span class="lg-dep"><svg width="16" height="16"><circle cx="8" cy="8" r="4" fill="#38bdf8"/></svg>Anfrage einer Filiale</span>
   </div>
   <div id="hint"></div>
+  <span class="rechtevermerk">&copy; 2026 Ulrich Nord &middot; Alle Rechte vorbehalten. Teilnehmerinnen und Teilnehmer d&uuml;rfen dieses Material f&uuml;r die eigene berufliche Nutzung verwenden, speichern und ausdrucken. Weitergabe an Dritte, Ver&ouml;ffentlichung und Verwendung in eigenen Schulungs- oder Beratungsangeboten bed&uuml;rfen der schriftlichen Zustimmung.</span>
 </main>
 
 <div id="modal" role="dialog" aria-modal="true">
@@ -1507,7 +1509,7 @@ mon.sources=MXs.map((x,i)=>({pipe:'MS'+i,rate:.9,col:SRC.kasse}));
     bias:['Bias: Insgesamt wirkt die Prognosegüte akzeptabel,','aber in Landfilialen liegt das Modell systematisch','daneben (zu niedrige Bestellmengen, leere Regale).','Ursache: Die Trainingsdaten stammen überwiegend aus','Stadtfilialen. Das Monitoring prüft deshalb den Fehler','je Gruppe und nicht nur im Durchschnitt.']
   };
   const wrap=(t,n)=>{const out=[];let l='';for(const w of t.split(' ')){if((l+' '+w).trim().length>n){out.push(l);l=w;}else l=(l+' '+w).trim();}if(l)out.push(l);return out;};
-  const AG=(bef,emp,tech)=>['Befund:'].concat(wrap(bef,58),['Empfehlung:'],wrap(emp,58),tech?['Technisch:'].concat(wrap(tech,58)):[],['Entscheidung: Management. Zahlen: Beispielwerte.']);
+  const AG=(bef,emp,tech)=>['Befund:'].concat(wrap(bef,58),['Empfehlung:'],wrap(emp,58),tech?['Technisch:'].concat(wrap(tech,58)):[]);
   const AGT='KI-Agent: Bewertung und Empfehlung (Beispiel)';
   const MSG={
     karneval:[AGT,AG('Die Sonderaktion läuft wie prognostiziert: Karnevalsartikel verkaufen sich in F1–F3 stark, in F4–F10 kaum.','Karnevalsartikel nur in F1–F3 nachbestellen, Restmengen nach Aschermittwoch reduzieren; in F1–F3 zusätzliche Kassenschicht einplanen.',null)],
