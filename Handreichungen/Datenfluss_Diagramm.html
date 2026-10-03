@@ -48,6 +48,7 @@ text{pointer-events:none}
 .tag{fill:var(--ok);font:650 15px system-ui,sans-serif;text-anchor:middle}
 .ipill{fill:#0f2a3a;stroke:#2f6f8f}
 #tip{position:absolute;z-index:5;width:620px;max-width:92%;background:#16222f;border:1px solid #4cc9f0;border-radius:12px;padding:12px 15px;font-size:13px;line-height:1.4;box-shadow:0 14px 40px rgba(0,0,0,.55);display:none}
+#tip table{border-collapse:collapse;width:100%;margin:0 0 8px;font-size:12.5px}#tip th,#tip td{text-align:left;border-bottom:1px solid #2b445c;padding:3px 6px 3px 0;vertical-align:top}#tip th{color:var(--mut);font-weight:600}
 #tip b{color:var(--acc)}#tip p{margin:0 0 8px}#tip a{color:var(--acc)}#tip small{color:var(--mut)}
 .sub{fill:var(--mut);font:13px system-ui,sans-serif;text-anchor:middle}
 .tk{fill:var(--ink);font:600 12px system-ui,sans-serif;text-anchor:middle}
@@ -171,7 +172,7 @@ const DEF={
   intern:{dup:.10,miss:.22,fmt:.25,out:.08},
   zeit:{dup:.08,miss:.07,fmt:.05,out:.02}
 };
-const state={practice:false,unlocked:new Set(),paused:false,speed:.8,view:'main'};
+const state={practice:false,unlocked:new Set(),paused:false,speed:.4,view:'main'};
 const locked=k=>state.practice&&k!=='st1'&&!state.unlocked.has(k);
 const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;};
 const inc=(sc,k,n=1)=>{sc.st[k]=(sc.st[k]||0)+n;};
@@ -648,13 +649,13 @@ main.tick=(sc,dt)=>{tickSources(sc,dt,locked('st1')||locked('ext'));updateClocks
 const fab=mkScene('scFab');fab.st={in:0,rej:0,dups:0,fix:0,leak:0,clean:0};
 fab.g.classList.add('off');
 const F=(id,pts,w,o)=>addPipe(fab,Object.assign({id,pts,w,belt:true},o||{}));
-F('dA',[[190,330],[470,330]],34,{route:R.A,to:{rej:'rA',pass:'dB'},gate:'ka'});
+F('dA',[[190,330],[470,330]],34,{route:R.B,to:{pass:'dB'},gate:'kb'});
 F('ldIn',[[108,124],[108,250]],18,{belt:false,sink:rawSink});
 fab.pipes.feed=fab.pipes.dA;
-F('dB',[[470,330],[820,330]],34,{route:R.B,to:{pass:'dC'},gate:'kb'});
+F('dB',[[470,330],[820,330]],34,{route:R.A,to:{rej:'rA',pass:'dC'},gate:'ka'});
 F('dC',[[820,330],[1160,330]],34,{route:R.C,to:{rej:'rC',pass:'dOut'},gate:'kc'});
 F('dOut',[[1160,330],[1560,330]],30,{enter:enterClean,sink:(p,sc)=>{inc(sc,'clean');if(p.def)inc(sc,'rest');}});
-F('rA',[[470,330],[470,610]],14,{cls:'rej',belt:false,enter:enterReject,sink:()=>fab.tanks.ta.add()});
+F('rA',[[820,330],[820,610]],14,{cls:'rej',belt:false,enter:enterReject,sink:()=>fab.tanks.ta.add()});
 F('rC',[[1160,330],[1160,610]],14,{cls:'rej',belt:false,sink:()=>fab.tanks.tc.add()});
 fab.sources=[{pipe:'ldIn',rate:5.5,col:'mix',defp:{dup:.1,out:.08,miss:.1,fmt:.2}}];
 fab.tick=(sc,dt)=>{rawRelease(sc,dt);};
@@ -666,23 +667,24 @@ fab.hints=[];
   el('path',{d:'M200,236 L200,190 L290,150 L290,190 L380,150 L380,190 L470,150 L470,190 L560,150 L560,190 L650,150 L650,190 L740,150 L740,190 L830,150 L830,190 L920,150 L920,190 L1010,150 L1010,190 L1100,150 L1100,190 L1190,150 L1190,190 L1230,190 L1230,236 Z',fill:'#16273a',stroke:'#35506b','stroke-width':1.5},D);
   el('rect',{x:1170,y:104,width:22,height:70,fill:'#1d3145',stroke:'#35506b'},D);
   el('rect',{x:200,y:236,width:1030,height:208,fill:'#0f1c2a',stroke:'#35506b','stroke-width':1.5},D);
-  [['ka',300,'1','Eingangsprüfung'],['kb',650,'2','Standardisierung'],['kc',990,'3','Deduplizierung']].forEach(m=>{
+  [['kb',300,'1','Standardisierung'],['ka',650,'2','Plausibilitätsprüfung'],['kc',990,'3','Deduplizierung']].forEach(m=>{
     card(fab,m[0],m[1],262,170,160,m[2],m[3]);
   });
+  const gA=el('g',{transform:'translate(350 0)'},D),gB=el('g',{transform:'translate(-350 0)'},D);
   // Maschine A: Prüfportal mit Scanner
-  el('rect',{x:324,y:270,width:10,height:130,fill:'#4b6f8c'},D);el('rect',{x:436,y:270,width:10,height:130,fill:'#4b6f8c'},D);
-  el('rect',{x:320,y:262,width:130,height:18,rx:4,fill:'#35506b'},D);
-  el('circle',{class:'scan',cx:385,cy:271,r:5,fill:'#ef4444'},D);
-  el('path',{class:'scan',d:'M385,276 L360,326 L410,326 Z',fill:'#ef4444','fill-opacity':.18},D);
+  el('rect',{x:324,y:270,width:10,height:130,fill:'#4b6f8c'},gA);el('rect',{x:436,y:270,width:10,height:130,fill:'#4b6f8c'},gA);
+  el('rect',{x:320,y:262,width:130,height:18,rx:4,fill:'#35506b'},gA);
+  el('circle',{class:'scan',cx:385,cy:271,r:5,fill:'#ef4444'},gA);
+  el('path',{class:'scan',d:'M385,276 L360,326 L410,326 Z',fill:'#ef4444','fill-opacity':.18},gA);
   // Maschine B: Presse
-  el('rect',{x:680,y:270,width:10,height:130,fill:'#4b6f8c'},D);el('rect',{x:780,y:270,width:10,height:130,fill:'#4b6f8c'},D);
-  el('rect',{x:676,y:262,width:118,height:14,rx:3,fill:'#35506b'},D);
-  el('rect',{class:'press',x:700,y:282,width:70,height:18,rx:3,fill:'#6b8aa5'},D);
+  el('rect',{x:680,y:270,width:10,height:130,fill:'#4b6f8c'},gB);el('rect',{x:780,y:270,width:10,height:130,fill:'#4b6f8c'},gB);
+  el('rect',{x:676,y:262,width:118,height:14,rx:3,fill:'#35506b'},gB);
+  el('rect',{class:'press',x:700,y:282,width:70,height:18,rx:3,fill:'#6b8aa5'},gB);
   // Maschine C: Abgleich
   el('circle',{class:'lens',cx:1048,cy:290,r:20,fill:'none',stroke:'#7b97ae','stroke-width':3},D);
   el('circle',{class:'lens2',cx:1102,cy:290,r:20,fill:'none',stroke:'#7b97ae','stroke-width':3},D);
   el('line',{x1:1000,y1:372,x2:1148,y2:372,stroke:'#4b6f8c','stroke-width':3},D);
-  const ex=[['ka',['Riesige Werte und hohle Ringe','werden aussortiert (Quarantäne).'],365],['kb',['Eckiges wird rund:','ein einheitliches Format.'],735],['kc',['Zwei Kreise werden zu einem –','die Kopie fällt heraus.'],1050]];
+  const ex=[['kb',['Eckiges wird rund: ein einheitliches','Format (Datum, Einheiten, Schreibweisen).'],365],['ka',['Riesige Werte und hohle Ringe','werden aussortiert (Quarantäne).'],712],['kc',['Zwei Kreise werden zu einem –','die Kopie fällt heraus.'],1050]];
   ex.forEach(e=>{const t=el('text',{x:e[2],y:474,class:'sub hinttxt'},U);
     e[1].forEach((ln,i)=>el('tspan',{x:e[2],dy:i?16:0},t).textContent=ln);
     fab.hints.push({key:e[0],t});});
@@ -698,7 +700,9 @@ fab.hints=[];
   raw.views.push({layers:rfL,t1:la,t2:lb,max:110,base:424});
   pillGate(fab,'st2',715,100,160,'Transform');
   el('text',{x:1400,y:296,class:'sub'},U).textContent='aufbereitet → zum Modell';
-  tank(fab,'ta',390,610,160,84,'Quarantäne','#c0843f');
+  tank(fab,'ta',740,610,160,84,'Quarantäne','#c0843f');
+  el('text',{x:820,y:714,class:'tk2'},U).textContent='mit Fehlergrund abgelegt, geprüft und an der Quelle';
+  el('text',{x:820,y:728,class:'tk2'},U).textContent='korrigiert und neu eingespielt oder verworfen';
   tank(fab,'tc',1080,610,160,84,'Dubletten (verworfen)','#c0843f');
   const ip=el('g',null,U);
   el('rect',{class:'ipill',x:30,y:56,width:136,height:26,rx:13},ip);
@@ -771,17 +775,19 @@ src.tick=(sc,dt)=>{tickSources(sc,dt,false);updateClocks();};
     el('rect',{x:cx-24,y:cy-34,width:48,height:68,rx:9,fill:'#0f1a26','fill-opacity':.55,stroke:'#f8fafc','stroke-width':1.6,'stroke-dasharray':'5 4'},g);
     el('path',{d:'M'+cx+','+(cy-24)+'l13,5v9c0,9-6,15-13,18c-7-3-13-9-13-18v-9z',fill:'none',stroke:'#f8fafc','stroke-width':1.8},g);
     el('circle',{cx,cy:cy-6,r:3.2,fill:'#f8fafc'},g);el('path',{d:'M'+(cx-5.5)+','+(cy+9)+'a5.5,5.5 0 0 1 11,0z',fill:'#f8fafc'},g);
-    pillGate(src,'sens',cx-120,cy+40,240,'Maskierung sensibler Daten');})();
+    pillGate(src,'sens',cx-120,cy+40,240,'Maskierung sensibler Daten');
+    const mi=el('g',{style:'cursor:pointer'},src.L.ui);
+    el('circle',{cx:cx+136,cy:cy+53,r:11,fill:'#0f2a3a',stroke:'#4cc9f0'},mi);
+    el('text',{x:cx+136,y:cy+58,class:'tk',style:'font-size:14px'},mi).textContent='i';
+    const mh=el('circle',{class:'vhit',cx:cx+136,cy:cy+53,r:14,fill:'transparent'},mi);
+    mh.addEventListener('mouseenter',()=>showTip(cx+136,cy+6,TIP_MASK,true));mh.addEventListener('mouseleave',hideTipSoon);
+    mh.addEventListener('click',e=>{e.stopPropagation();showTip(cx+136,cy+6,TIP_MASK,true);});})();
   // Rohdatenspeicher (Kurzdarstellung)
   el('rect',{x:1180,y:360,width:150,height:80,rx:10,fill:'#13202e','fill-opacity':.85,stroke:'#2dd4bf','stroke-width':1.6},D);
   const rf2=mkLayers(D,1184,142);
   el('text',{x:1255,y:348,class:'lbl',style:'font-size:14px'},U).textContent='Rohdatenspeicher';
   const a=el('text',{x:1255,y:402,class:'tk'},U);a.textContent='0 gespeichert';
   const b=el('text',{x:1255,y:419,class:'tk2'},U);b.textContent='Rückstand: 0';
-  const nb=el('g',{style:'cursor:pointer'},U);
-  el('rect',{x:1170,y:452,width:170,height:28,rx:14,class:'pill'},nb);
-  el('text',{x:1255,y:471,class:'tk'},nb).textContent='weiter: Load & Transform →';
-  nb.addEventListener('click',()=>setView('fab'));
   raw.views.push({layers:rf2,t1:a,t2:b,max:70,base:436});
   mkClock(src);
 })();
@@ -789,18 +795,29 @@ src.tick=(sc,dt)=>{tickSources(sc,dt,false);updateClocks();};
 
 /* ============ Info-Box ETL / ELT ============ */
 const tip=$('tip');let tipT=0;
-tip.innerHTML='<p><b>ETL oder ELT – der Unterschied in Kürze</b></p>'
+const TIP_ETL='<p><b>ETL oder ELT – der Unterschied in Kürze</b></p>'
  +'<p><b>Gemeinsam:</b> Beide beginnen mit <b>Extract</b>: Rohdaten werden aus den Quellen kopiert, die Quellen bleiben unverändert.</p>'
  +'<p><b>ETL</b> (Extract → Transform → Load): Die Daten werden <i>vor</i> dem Laden auf einem Zwischenserver aufbereitet. Ins Zielsystem gelangen nur bereinigte Daten.</p>'
  +'<p><b>ELT</b> (Extract → Load → Transform): Die Rohdaten werden <i>zuerst</i> ins Zielsystem geladen (hier: Rohdatenspeicher / Raw Layer) und erst dort aufbereitet. Die Rohdaten bleiben erhalten und können später neu ausgewertet werden.</p>'
  +'<p>Dieses Diagramm folgt <b>ELT</b>. Ausnahme: Personenbezogene Stechuhr-Daten werden schon vor dem Load anonymisiert (Datenminimierung).</p>'
  +'<small>Quellen: <a href="https://aws.amazon.com/compare/the-difference-between-etl-and-elt/" target="_blank" rel="noopener">AWS: ETL vs. ELT</a> · <a href="https://www.ibm.com/think/topics/etl" target="_blank" rel="noopener">IBM: Was ist ETL?</a> · <a href="https://docs.aws.amazon.com/prescriptive-guidance/latest/defining-bucket-names-data-lakes/introduction.html" target="_blank" rel="noopener">AWS Prescriptive Guidance: Data-Lake-Schichten</a></small>';
-function showTip(x,y){
+const TIP_MASK='<p><b>Maskierung sensibler Daten – was passiert hier?</b></p>'
+ +'<p>Bevor Daten im Rohdatenspeicher landen, werden sensible Felder erkannt und unkenntlich gemacht. AWS empfiehlt für teilweise sensible Datensätze eine eigene Zwischenzone (Landing Zone): Die Daten kommen dort an, werden maskiert und erst danach in die Raw-Schicht geladen. Komplett sensible Datensätze kommen dagegen in getrennte, verschlüsselte Speicher.</p>'
+ +'<p><b>Beispiel Lieferdaten</b></p><table><tr><th>Feld</th><th>Behandlung</th><th>Grund</th></tr>'
+ +'<tr><td>Ansprechpartner (Name, E-Mail, Telefon)</td><td>entfernen</td><td>personenbezogen, für das Modell überflüssig</td></tr>'
+ +'<tr><td>Lieferanten-Nr.</td><td>hashen (Pseudonym)</td><td>Auswertung je Lieferant bleibt möglich</td></tr>'
+ +'<tr><td>Einkaufskonditionen</td><td>entfernen</td><td>Geschäftsgeheimnis</td></tr>'
+ +'<tr><td>Produkt, Menge, Lieferdatum, Filiale</td><td>bleiben</td><td>braucht das Modell</td></tr></table>'
+ +'<p><b>Beispiel Schichtpläne:</b> Namen der Beschäftigten entfernen oder hashen; Filiale, Schicht und Stunden bleiben.</p>'
+ +'<p><b>Achtung:</b> Gehashte Werte sind pseudonymisiert, nicht anonym – bei Personenbezug gilt weiter die DSGVO (EDPB-Leitlinien 01/2025). Lieferanten sind oft Unternehmen (kein Personenbezug), ihre Ansprechpartner aber schon.</p>'
+ +'<small>Quellen: <a href="https://docs.aws.amazon.com/prescriptive-guidance/latest/defining-bucket-names-data-lakes/sensitive-data.html" target="_blank" rel="noopener">AWS Prescriptive Guidance: sensible Daten</a> · <a href="https://docs.aws.amazon.com/glue/latest/dg/detect-PII.html" target="_blank" rel="noopener">AWS Glue: Detect and process sensitive data</a></small>';
+function showTip(x,y,html,up){
   clearTimeout(tipT);
+  tip.innerHTML=html||TIP_ETL;
   const k=$('wrap').clientWidth/1580,w=Math.min(620,$('wrap').clientWidth*.92);
   tip.style.display='block';
   tip.style.left=Math.max(4,Math.min($('wrap').clientWidth-w-4,x*k-w/2))+'px';
-  tip.style.top=(y*k)+'px';
+  tip.style.top=(up?Math.max(0,y*k-tip.offsetHeight):y*k)+'px';
 }
 function hideTip(){clearTimeout(tipT);tip.style.display='none';}
 function hideTipSoon(){clearTimeout(tipT);tipT=setTimeout(()=>{tip.style.display='none';},350);}
@@ -1233,6 +1250,7 @@ mon.sources=MXs.map((x,i)=>({pipe:'MS'+i,rate:.9,col:SRC.kasse}));
   mon.setScen=setScen;
   const col=(v,a,r)=>v>=r?'#ef4444':v>=a?'#f59e0b':'#4ade80';
   mon.tick=(sc,dt)=>{
+    dt*=2;   // Szenario-Ablauf unabhängig von der halbierten Flussgeschwindigkeit
     t+=dt;
     // Ereignisdaten einspeisen
     if(scen!=='normal'&&t<5){evT+=dt*2;while(evT>=1){evT--;mkP(sc,sc.pipes.mDown,{col:scen==='price'?SRC.intern:SRC.events,r:4});}}
@@ -1303,8 +1321,8 @@ const QUIZ={
  dc:{p:'Beobachte: Eine Fachabteilung liefert Listen (etwa die Schichtplanung) – erst nach einem Klick fließen sie. Welche Quelle ist das?',c:'Interne Daten (manuell)',w:['Externe Daten (manuell)','Bestandsveränderung (2 x täglich)','Verkaufsdaten (Kassensystem)','Archivdaten'],why:'Manuell eingespielte interne Listen sind unregelmäßig und fehleranfällig (Formate, Tippfehler, vergessene Lieferung). Hier lohnt es sich, Zuständigkeit, Rhythmus und eine Prüfung vor dem Einspielen festzulegen.'},
  dd:{p:'Beobachte: Wettervorhersage und lokale Informationen treffen täglich zu festen Zeiten von allein ein – ohne dass jemand etwas anstößt. Welche Quelle ist das?',c:'Regelmäßige Daten (extern) – automatisch',w:['Externe Daten (manuell)','Verkaufsdaten (Kassensystem)','Interne Daten (manuell)','Archivdaten'],why:'Externe Lieferungen nach festem Rhythmus (hier täglich, teils über Nacht) per Schnittstelle sind planbar und lassen sich überwachen – hängen aber von der Verfügbarkeit und Qualität des Partners ab.'},
  de:{p:'Beobachte: Externe Daten (etwa Marktforschung) kommen erst, wenn jemand sie per Klick einspielt. Welche Quelle ist das?',c:'Externe Daten (manuell)',w:['Interne Daten (manuell)','Regelmäßige Daten (extern) – automatisch','Bestandsveränderung (2 x täglich)','Datenverschlüsselung'],why:'Externe Daten ohne feste Schnittstelle werden von Hand beschafft und eingespielt (z. B. eine Marktforschungsstudie als Datei). Das ist fehleranfällig und braucht klare Verantwortung sowie eine Eingangsprüfung.'},
- ka:{p:'Beobachte: Riesige Werte und hohle Ringe werden vom Portal erfasst und fallen aus der Linie. Wie heißt dieser Schritt?',c:'Eingangsprüfung: Fehlerhaftes aussortieren',w:['Formate standardisieren','Dubletten entfernen','Datenverschlüsselung','Lastverteilung'],why:'Unplausible (z. B. negativer Bestand) oder unvollständige Datensätze werden aussortiert – besser in Quarantäne abgelegt als stillschweigend gelöscht, damit sich die Ursache an der Quelle beheben lässt. Kein Filter ist perfekt: einzelne Fehler rutschen durch.'},
- kb:{p:'Beobachte: Eckige Elemente werden unter der Presse rund – alles hat danach dasselbe Format. Wie heißt dieser Schritt?',c:'Standardisierung: Formate vereinheitlichen',w:['Fehlerhaftes aussortieren','Dubletten entfernen','Hyperparameter festlegen','Penetrationstest'],why:'Einheitliche Formate, Einheiten und Schreibweisen (z. B. °C statt °F, ein Datumsformat). Die Format-Konvertierung nennt AWS als Aufgabe der Stage-Schicht. Sie gehört zur Transformation – in der Praxis laufen Bereinigen und Standardisieren meist in derselben Stufe.'},
+ ka:{p:'Beobachte: Riesige Werte und hohle Ringe werden vom Portal erfasst und fallen aus der Linie in die Quarantäne. Wie heißt dieser Schritt?',c:'Plausibilitätsprüfung: Fehlerhaftes aussortieren',w:['Formate standardisieren','Dubletten entfernen','Datenverschlüsselung','Lastverteilung'],why:'Unplausible (z. B. negativer Bestand) oder unvollständige Datensätze werden aussortiert – mit Fehlergrund in die Quarantäne statt stillschweigend gelöscht, damit sich die Ursache an der Quelle beheben lässt. Die Prüfung kommt nach der Standardisierung: Sonst sähe z. B. ein Datum im falschen Format wie eine riesige Zahl aus und würde fälschlich aussortiert. Kein Filter ist perfekt: einzelne Fehler rutschen durch.'},
+ kb:{p:'Beobachte: Eckige Elemente werden unter der Presse rund – alles hat danach dasselbe Format. Wie heißt dieser Schritt?',c:'Standardisierung: Formate vereinheitlichen',w:['Plausibilitätsprüfung: Fehlerhaftes aussortieren','Dubletten entfernen','Hyperparameter festlegen','Penetrationstest'],why:'Einheitliche Formate, Einheiten und Schreibweisen (z. B. °C statt °F, ein Datumsformat). Die Format-Konvertierung nennt AWS als Aufgabe der Stage-Schicht. Sie steht am Anfang der Transformation, weil Plausibilitätsprüfung und Dublettenabgleich nur auf einheitlichen Formaten zuverlässig funktionieren.'},
  kc:{p:'Beobachte: Aus zwei Kreisen wird einer – die Kopie fällt heraus. Wie heißt dieser Schritt?',c:'Deduplizierung: Dubletten entfernen',w:['Standardisierung: Formate vereinheitlichen','Modelltraining','Drift-Erkennung','Lastverteilung'],why:'Mehrfach gemeldete Datensätze (z. B. doppelt gebuchte Bons oder mehrfach gemeldete Veranstaltungen) werden auf einen reduziert. Das gelingt zuverlässiger nach der Standardisierung, weil gleiche Dinge dann auch gleich geschrieben sind.'}
 };
 function openQuiz(k){
