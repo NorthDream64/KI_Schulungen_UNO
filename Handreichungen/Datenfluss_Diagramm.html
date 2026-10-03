@@ -347,7 +347,7 @@ function refreshLabels(){
   if(v==='top')h=state.practice?'Wähle einen Block. Die Fragen findest Du in den Detailseiten (Extract, Load &amp; Transform, Modellentwicklung).':'Klicke auf einen Block, um die Detailseite zu öffnen. Fahre mit der Maus über „Datenverarbeitung“ (oder das ⓘ): Dort steht der Unterschied zwischen ETL und ELT. Die Begriffe der Blöcke folgen der '+AWS+'.';
   else if(state.practice&&K[v])h='Übungsmodus: '+cnt(K[v])+'/'+K[v].length+' benannt. Tippe auf ein gelb gestricheltes Fragezeichen und wähle den passenden Begriff – erst dann fließt der Strom weiter.';
   else if(state.practice)h='Übungsmodus: Auf dieser Seite gibt es keine Fragen.';
-  else h={src:'Tipp: Mit den Wasserhähnen spielst Du manuelle Lieferungen ein. Alle Quellen fließen über den Datenspiegel (Extract) in den Rohdatenspeicher.',fab:'Tipp: Die gespiegelten Rohdaten werden im Rohdatenspeicher abgelegt (Load) und dann in der Fabrik aufbereitet (Transform).',trn:'Tipp: Oben läuft der Entwicklungsprozess, unten stehen die Arbeitsschritte eines Data Scientists. „Details ⊕“ an der Validierung öffnet die Kennzahlen am Beispiel einer Werbekampagne.',val:'Tipp: Schiebe den Schwellenwert und beobachte, wie Präzision und Trefferquote gegenläufig reagieren. Die Benchmarks „Niemanden anschreiben“ und „Alle anschreiben“ zeigen die Extreme; die Kurve zeigt, bei welchem Schwellenwert sich die Kampagne am meisten lohnt.',dep:'Tipp: Das Modell durchläuft den Test, das Thermometer zeigt die Modellqualität. Erst ab dem Mindestwert wird die Freigabe aktiv, und erst nach „Ja“ beantwortet das Modell die wartenden Anfragen. Grün sind Bestellprognosen, orange Kapazitätsprognosen; die Zahlen an den Filialen oben zählen beide.',mon:'Tipp: Löse ein Ereignis aus und beobachte die Monitoring-Signale rechts. Nicht jede Veränderung ist Drift.'}[v];
+  else h={src:'Tipp: Mit den Wasserhähnen spielst Du manuelle Lieferungen ein. Alle Quellen fließen über den Datenspiegel (Extract) in den Rohdatenspeicher.',fab:'Tipp: Die gespiegelten Rohdaten werden im Rohdatenspeicher abgelegt (Load) und dann in der Fabrik aufbereitet (Transform).',trn:'Tipp: Oben läuft der Entwicklungsprozess, unten stehen die Arbeitsschritte eines Data Scientists. „Details ⊕“ an der Validierung öffnet die Kennzahlen am Beispiel einer Werbekampagne.',val:'Tipp: Verschiebe den Regler und beobachte, wie Präzision, Trefferquote und das Ergebnis der Kampagne reagieren. Finde selbst heraus, wo sich die Kampagne am meisten lohnt – und vergleiche mit den Benchmarks „Niemanden“ und „Alle anschreiben“.',dep:'Tipp: Das Modell durchläuft den Test, das Thermometer zeigt die Modellqualität. Erst ab dem Mindestwert wird die Freigabe aktiv, und erst nach „Ja“ beantwortet das Modell die wartenden Anfragen. Grün sind Bestellprognosen, orange Kapazitätsprognosen; die Zahlen an den Filialen oben zählen beide.',mon:'Tipp: Löse ein Ereignis aus und beobachte die Monitoring-Signale rechts. Nicht jede Veränderung ist Drift.'}[v];
   $('hint').innerHTML=h;
 }
 
@@ -1186,22 +1186,22 @@ const val=mkScene('scVal');val.g.classList.add('off');val.st={in:0};
   // Schwellenwert
   const SX0=440,SX1=660;let thr=.5,base=false,mode=null;   // mode: null = Modell, 'none' = niemand, 'all' = alle
   const COST=2,MARGIN=15;   // Annahmen: Kosten je Anschreiben, Deckungsbeitrag je Kauf
-  TX(U,SX0,642,'Schwellenwert','tk','text-anchor:start');
-  const thrT=TX(U,SX1,642,'0,50','tk','text-anchor:end');
+  TX(U,SX0,642,'Regler: Wen anschreiben?','tk','text-anchor:start');
+  const thrT=TX(U,SX1,642,'','tk2','text-anchor:end');
+
   el('rect',{x:SX0,y:654,width:SX1-SX0,height:6,rx:3,fill:'#22384d'},U);
   const knob=el('circle',{cx:SX0+(SX1-SX0)*.5,cy:657,r:9,fill:'#22d3ee',stroke:'#fff','stroke-width':1.4,style:'cursor:ew-resize'},U);
   const trk=el('rect',{x:SX0-8,y:644,width:SX1-SX0+16,height:26,fill:'transparent',style:'cursor:ew-resize'},U);
-  TX(U,SX0,684,'niedrig: viele anschreiben','tk2','text-anchor:start');TX(U,SX1,684,'hoch: wenige','tk2','text-anchor:end');
+  TX(U,SX0,684,'← mehr','tk2','text-anchor:start');TX(U,SX1,684,'weniger →','tk2','text-anchor:end');TX(U,(SX0+SX1)/2,684,'(= Schwellenwert)','tk2','font-size:10px');
   const bN=btn(val,410,380,160,26,'Niemanden anschreiben',()=>{mode=mode==='none'?null:'none';upd();});
   const bA=btn(val,574,380,128,26,'Alle anschreiben',()=>{mode=mode==='all'?null:'all';upd();});
   TX(U,420,704,'Vergleichsmaßstäbe (Benchmarks):','tk2','text-anchor:start');
   // Ergebniskurve je Schwellenwert
-  TX(U,SX0,756,'Ergebnis der Kampagne je Schwellenwert','tk2','text-anchor:start');
+  TX(U,SX0,756,'Ergebnis der Kampagne je Reglerstellung','tk2','text-anchor:start');
   const CY0=764,CY1=824;
   el('rect',{x:SX0,y:CY0,width:SX1-SX0,height:CY1-CY0,fill:'#0f1a26',stroke:'#22384d'},U);
   const zeroL=el('line',{x1:SX0,x2:SX1,stroke:'#4b6f8c','stroke-dasharray':'3 3'},U);
   const curve=el('path',{fill:'none',stroke:'#fde047','stroke-width':2},U);
-  const optD=el('circle',{r:4.5,fill:'#4ade80',stroke:'#fff','stroke-width':1},U);
   const curD=el('circle',{r:4.5,fill:'#22d3ee',stroke:'#fff','stroke-width':1},U);
   TX(U,SX1+4,CY0+8,'Gewinn','tk2','text-anchor:start;font-size:9.5px');TX(U,SX1+4,CY1,'Verlust','tk2','text-anchor:start;font-size:9.5px');
   // Wirtschaftlichkeit
@@ -1238,7 +1238,6 @@ const val=mkScene('scVal');val.g.classList.add('off');val.st={in:0};
     const acc=(TP+TN)/100,pre=TP+FP?TP/(TP+FP):null,rec=TP+FN?TP/(TP+FN):0;
     const set=(i,v,t)=>{bars[i].b.setAttribute('width',300*(v||0));bars[i].v.textContent=t;};
     set(0,acc,pct(acc));set(1,pre,pre===null?'n. d.':pct(pre));set(2,rec,pct(rec));
-    thrT.textContent=thr.toFixed(2).replace('.',',');
     knob.setAttribute('cx',SX0+(SX1-SX0)*(thr-.1)/.8);
     [[bN,'none'],[bA,'all']].forEach(([b,m])=>{if(mode===m)b.r.setAttribute('fill','#0b5a74');else b.r.removeAttribute('fill');});
     const prof=(tp,fp)=>MARGIN*tp-COST*(tp+fp);
@@ -1249,17 +1248,15 @@ const val=mkScene('scVal');val.g.classList.add('off');val.st={in:0};
     curve.setAttribute('d',ps.map((p,k)=>(k?'L':'M')+X(ths[k]).toFixed(1)+','+Y(p).toFixed(1)).join(''));
     zeroL.setAttribute('y1',Y(0));zeroL.setAttribute('y2',Y(0));
     let bk=0;ps.forEach((p,k)=>{if(p>ps[bk])bk=k;});
-    optD.setAttribute('cx',X(ths[bk]));optD.setAttribute('cy',Y(ps[bk]));
     curD.setAttribute('cx',X(thr));curD.setAttribute('cy',Y(profAt(thr)));curD.setAttribute('opacity',mode?0:1);
     const eur=v=>(v<0?'−':'')+Math.abs(Math.round(v))+' €';
     const pNow=prof(TP,FP);
     eco.set(['Annahmen: 2 € Kosten je Anschreiben, 15 € Deckungsbeitrag je Kauf.',
-      (mode==='none'?'Niemanden anschreiben':mode==='all'?'Alle anschreiben':'Modell, Schwellenwert '+thr.toFixed(2).replace('.',','))+': '+(TP*MARGIN)+' € Deckungsbeitrag − '+((TP+FP)*COST)+' € Kosten = '+eur(pNow),
-      'Benchmarks: niemanden 0 € · alle '+eur(pAll),
-      'Optimum (grüner Punkt): Schwellenwert '+ths[bk].toFixed(2).replace('.',',')+' → '+eur(ps[bk])]);
+      (mode==='none'?'Niemanden anschreiben':mode==='all'?'Alle anschreiben':'Modell, aktuelle Reglerstellung')+': '+(TP*MARGIN)+' € Deckungsbeitrag − '+((TP+FP)*COST)+' € Kosten = '+eur(pNow),
+      'Benchmarks: niemanden 0 € · alle '+eur(pAll)]);
     if(mode==='all')msg.set(['Alle werden angeschrieben: Die Trefferquote ist 100 %,','aber die Präzision nur '+pct(pre)+' – 90 Coupons gehen an','Menschen, die nicht kaufen. Das kostet mehr, als es bringt.']);
     else if(mode==='none')msg.set(['Niemand wird angeschrieben: Die Genauigkeit sieht mit '+pct(acc),'gut aus, aber die Trefferquote ist 0 %. Alle Käufer:innen','werden verpasst. Die Präzision ist nicht definiert (0 ÷ 0).']);
-    else msg.set([(TP+FP)+' Kund:innen werden angeschrieben, '+TP+' davon kaufen','(Präzision '+pct(pre)+'). '+FN+' von '+(TP+FN)+' Käufer:innen werden verpasst','(Trefferquote '+pct(rec)+'). Schwellenwert senken: Trefferquote','steigt, Präzision sinkt – und umgekehrt.']);
+    else msg.set([(TP+FP)+' Kund:innen werden angeschrieben, '+TP+' davon kaufen','(Präzision '+pct(pre)+'). '+FN+' von '+(TP+FN)+' Käufer:innen werden verpasst','(Trefferquote '+pct(rec)+'). Regler nach links: Trefferquote','steigt, Präzision sinkt – und umgekehrt.']);
   }
   const mv=e=>{const x=Math.max(SX0,Math.min(SX1,svgX(e)));thr=Math.round((.1+.8*(x-SX0)/(SX1-SX0))*100)/100;mode=null;upd();};
   let drag=false;
@@ -1278,7 +1275,7 @@ const val=mkScene('scVal');val.g.classList.add('off');val.st={in:0};
    ['Testdaten bleiben unangetastet',['Geprüft wird auf Daten, die das Modell nie gesehen','hat. Wer immer wieder auf das Testergebnis schaut','und nachbessert, lernt den Test auswendig.']],
    ['Die Baseline schlagen',['Ein Modell ist erst interessant, wenn es eine ein-','fache Vergleichsregel schlägt – oben: „niemanden','anschreiben“, im Handel z. B. „wie letzte Woche“.']],
    ['Training und Validierung vergleichen',['Sind die Kennzahlen im Training deutlich besser als','auf den Validierungsdaten, ist das Modell überan-','gepasst (Overfitting).']],
-   ['Schwellenwert = Geschäftsentscheidung',['Welcher Fehler teurer ist, entscheidet das Geschäft,','nicht die Technik. Der Schwellenwert braucht einen','Eigentümer und gehört in die Dokumentation.']]];
+   ['Der Regler ist eine Geschäftsentscheidung',['Welcher Fehler teurer ist, entscheidet das Geschäft,','nicht die Technik. Die Reglerstellung (Schwellen-','wert) braucht Eigentümer und Dokumentation.']]];
   RU.forEach((r,i)=>{
     const x=24+i*386,y=530;
     el('rect',{class:'card-bg',x,y,width:372,height:104,rx:12},D0);
