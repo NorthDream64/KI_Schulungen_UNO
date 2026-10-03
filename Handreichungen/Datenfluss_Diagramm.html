@@ -710,6 +710,8 @@ fab.hints=[];
   el('text',{x:108,y:458,class:'tk2'},U).textContent='schreibgeschützt';
   raw.views.push({layers:rfL,t1:la,t2:lb,max:110,base:424});
   pillGate(fab,'st2',715,100,160,'Transform');
+  gateMark(fab,203,280,'1',()=>TIP_G1,false);
+  gateMark(fab,1250,282,'2',()=>TIP_G2,false);
   infoI(fab,893,113,()=>TIP_PREP,false);
   (()=>{const g=el('g',{style:'cursor:pointer'},U);el('rect',{class:'ipill',x:1430,y:216,width:136,height:24,rx:12},g);el('text',{x:1498,y:233,class:'tk'},g).textContent='ⓘ Datenintegration';const h=el('rect',{class:'vhit',x:1430,y:216,width:136,height:24,rx:12,fill:'transparent'},g);const sh=()=>showTip(1300,246,TIP_INT);h.addEventListener('mouseenter',sh);h.addEventListener('mouseleave',hideTipSoon);h.addEventListener('click',e=>{e.stopPropagation();sh();});})();
   el('text',{x:1520,y:300,class:'sub'},U).textContent='zum Modell →';
@@ -759,7 +761,8 @@ src.tick=(sc,dt)=>{tickSources(sc,dt,false);updateClocks();};
 (()=>{
   const U=src.L.ui,D=src.L.deco;
   el('text',{x:24,y:32,class:'lbl',style:'text-anchor:start;font-size:20px'},U).textContent='Extract: Datenherkunft/-sammlung im Detail';
-  (()=>{const g=el('g',{style:'cursor:pointer'},U);el('rect',{class:'ipill',x:520,y:14,width:140,height:26,rx:13},g);el('text',{x:590,y:32,class:'tk'},g).textContent='ⓘ Dateninventur';const h=el('rect',{class:'vhit',x:520,y:14,width:140,height:26,rx:13,fill:'transparent'},g);h.addEventListener('mouseenter',()=>showTip(590,44,TIP_INV));h.addEventListener('mouseleave',hideTipSoon);h.addEventListener('click',e=>{e.stopPropagation();showTip(590,44,TIP_INV);});})();
+  gateMark(src,546,27,'0',()=>TIP_G0,false);
+  el('text',{x:612,y:31,class:'tk2',style:'text-anchor:start'},U).textContent='Dateninventur';
   pillGate(src,'da',24,50,350,'Verkaufsdaten (Kassensystem)');
   pillGate(src,'db',24,172,350,'Bestandsveränderung (2 x täglich)');
   src.hints=[];
@@ -924,6 +927,20 @@ const TIP_TERMS='<p><b>Fachbegriffe der Modellentwicklung</b></p>'
  +'<tr><td>Kreuzvalidierung</td><td>die Daten werden in mehrere Teile zerlegt; jeder Teil dient einmal zur Prüfung, auf den übrigen wird trainiert. Zeigt, wie stabil die Leistung ist. Bei Zeitreihen werden die Teile zeitlich geordnet gebildet.</td></tr></table>'
  +'<small>Quellen: <a href="https://developers.google.com/machine-learning/glossary" target="_blank" rel="noopener">Google: ML Glossary</a> · <a href="https://developers.google.com/machine-learning/crash-course/logistic-regression" target="_blank" rel="noopener">Google: Logistic Regression</a> · <a href="https://developers.google.com/machine-learning/decision-forests/decision-trees" target="_blank" rel="noopener">Google: Decision trees</a> · <a href="https://developers.google.com/machine-learning/crash-course/linear-regression/hyperparameters" target="_blank" rel="noopener">Google: Hyperparameters</a> · <a href="https://cloud.google.com/blog/products/gcp/preparing-and-curating-your-data-for-machine-learning" target="_blank" rel="noopener">Google Cloud: Data leakage</a></small>';
 function LTX(p,x,y,t,url,st){const a=el('a',{href:url,target:'_blank',rel:'noopener',class:'lnk'},p);const e=el('text',{x,y,class:'tk2',style:'text-anchor:start;'+(st||'')},a);e.textContent=t;return a;}
+const TIP_DQ='<p><b>Datenqualität: sechs Dimensionen</b></p><table><tr><th>Dimension</th><th>Leitfrage</th></tr><tr><td>Vollständigkeit</td><td>Fehlen Einträge, die da sein müssten?</td></tr><tr><td>Konsistenz</td><td>Sind die Daten über alle Quellen hinweg widerspruchsfrei?</td></tr><tr><td>Genauigkeit</td><td>Entsprechen die Werte der Realität?</td></tr><tr><td>Aktualität</td><td>Taugen sie als Basis für heutige Entscheidungen?</td></tr><tr><td>Relevanz</td><td>Helfen sie bei genau dieser Frage?</td></tr><tr><td>Eindeutigkeit</td><td>Ist jedes Objekt genau einmal erfasst?</td></tr></table><p>Die Dimensionen werden an <b>Quality Gates</b> geprüft – Entscheidungspunkten, an denen ein Vorhaben nur weiterläuft, wenn eine überprüfbare Bedingung erfüllt ist. Im Diagramm stehen sie als Schild mit Nummer (Gate 0 bis 3).</p><small>Quellen: <a href="https://dama-nl.org/wp-content/uploads/2020/11/How-to-Select-the-Right-Dimensions-of-Data-Quality-v1.1-d.d.-14-Nov-2020.pdf" target="_blank" rel="noopener">DAMA NL: Dimensions of Data Quality</a> · <a href="https://docs.cloud.google.com/dataplex/docs/auto-data-quality-overview" target="_blank" rel="noopener">Google Cloud: Data quality dimensions</a></small>';
+const TIP_G0='<p><b>Gate 0 · vor Projektfreigabe · Dateninventur</b></p><p><b>Gibt es die Daten überhaupt?</b> Bestandsaufnahme: welche Daten es gibt, wo sie liegen, wem sie gehören. Das billigste Gate, weil noch nichts gebaut wurde.</p><table><tr><th>Dimension</th><th>Leitfrage</th></tr><tr><td>Relevanz</td><td>Helfen sie bei genau dieser Frage?</td></tr><tr><td>Vollständigkeit</td><td>Fehlen Einträge, die da sein müssten?</td></tr></table><p><b>Beispiel:</b> Weiter, wenn für alle zehn Filialen mindestens zwei Jahre Kassendaten vorliegen und weniger als 1 % der Tage fehlen.</p><small>Quellen: <a href="https://dama-nl.org/wp-content/uploads/2020/11/How-to-Select-the-Right-Dimensions-of-Data-Quality-v1.1-d.d.-14-Nov-2020.pdf" target="_blank" rel="noopener">DAMA NL: Dimensions of Data Quality</a> · <a href="https://cloud.google.com/blog/products/gcp/preparing-and-curating-your-data-for-machine-learning" target="_blank" rel="noopener">Google Cloud: Preparing and curating your data for ML</a></small>';
+const TIP_G1='<p><b>Gate 1 · Bronze → Silber · Bereinigbarkeit</b></p><p><b>Ist der Bestand bereinigbar – und zu welchem Aufwand?</b> Bronze sind die Rohdaten, so wie sie ankommen (hier: Rohdatenspeicher). Silber sind geprüfte, bereinigte und vereinheitlichte Daten (nach Standardisierung, Bereinigung und Dubletten auflösen).</p><table><tr><th>Dimension</th><th>Leitfrage</th></tr><tr><td>Genauigkeit</td><td>Entsprechen die Werte der Realität?</td></tr><tr><td>Eindeutigkeit</td><td>Ist jedes Objekt genau einmal erfasst?</td></tr><tr><td>Konsistenz</td><td>Sind die Daten über alle Quellen hinweg widerspruchsfrei?</td></tr></table><p><b>Beispiel:</b> Weiter, wenn höchstens 2 % der Bons in der Quarantäne landen und keine Dubletten mehr enthalten sind.</p><small>Quellen: <a href="https://learn.microsoft.com/en-us/azure/databricks/lakehouse/medallion" target="_blank" rel="noopener">Microsoft: Medallion-Architektur</a> · <a href="https://dama-nl.org/wp-content/uploads/2020/11/How-to-Select-the-Right-Dimensions-of-Data-Quality-v1.1-d.d.-14-Nov-2020.pdf" target="_blank" rel="noopener">DAMA NL: Dimensions of Data Quality</a></small>';
+const TIP_G2='<p><b>Gate 2 · Silber → Gold · Zwecktauglichkeit</b></p><p><b>Taugt der Bestand für genau diese Frage?</b> Gold sind die für den Zweck zugeschnittenen Daten, mit denen das Modell trainiert wird (nach der Selektion).</p><table><tr><th>Dimension</th><th>Leitfrage</th></tr><tr><td>Aktualität</td><td>Taugen sie als Basis für heutige Entscheidungen?</td></tr><tr><td>Relevanz</td><td>Helfen sie bei genau dieser Frage?</td></tr></table><p>Dazu die <b>Repräsentativität</b>: Bildet der Datensatz alle Filialen ab, für die das Modell später Prognosen liefert – Stadt und Land?</p><p><b>Beispiel:</b> Weiter, wenn die Daten nicht älter als eine Woche sind und jede Filiale mit mindestens 5 % vertreten ist.</p><small>Quellen: <a href="https://learn.microsoft.com/en-us/azure/databricks/lakehouse/medallion" target="_blank" rel="noopener">Microsoft: Medallion-Architektur</a> · <a href="https://dama-nl.org/wp-content/uploads/2020/11/How-to-Select-the-Right-Dimensions-of-Data-Quality-v1.1-d.d.-14-Nov-2020.pdf" target="_blank" rel="noopener">DAMA NL: Dimensions of Data Quality</a></small>';
+const TIP_G3='<p><b>Gate 3 · vor Go-Live · laufende Sicherung</b></p><p><b>Wer merkt es, wenn die Qualität kippt?</b> Datenqualität ist kein Projektzustand, sondern ein Betriebszustand. Vor dem Go-Live wird festgelegt, was laufend überwacht wird, mit welcher Alarmschwelle – und wer dann was tut.</p><p><b>Beispiel:</b> Täglich prüfen, ob alle Filialen Kassendaten geliefert haben (Vollständigkeit); bei mehr als einem fehlenden Tag geht ein Alarm an das MLOps-Team, das die Lieferung nachfordert.</p><small>Quellen: <a href="https://learn.microsoft.com/en-us/azure/machine-learning/concept-model-monitoring?view=azureml-api-2" target="_blank" rel="noopener">Microsoft: Model monitoring in production</a> · <a href="https://docs.cloud.google.com/dataplex/docs/auto-data-quality-overview" target="_blank" rel="noopener">Google Cloud: Data quality dimensions</a></small>';
+function gateMark(sc,x,y,n,getHtml,up){
+  const g=el('g',{style:'cursor:pointer'},sc.L.ui);
+  el('path',{d:'M'+x+','+(y-13)+' l11,4 v7 c0,8 -5,13 -11,16 c-6,-3 -11,-8 -11,-16 v-7 z',fill:'#3a2f12',stroke:'#f59e0b','stroke-width':1.6},g);
+  el('text',{x,y:y+5,class:'tk',style:'font-size:11px;fill:#fde047'},g).textContent=n;
+  el('text',{x:x+16,y:y+4,class:'tk',style:'text-anchor:start;font-size:11.5px;fill:#fbbf24'},g).textContent='Gate '+n;
+  const h=el('rect',{class:'vhit',x:x-14,y:y-16,width:70,height:32,fill:'transparent'},g);
+  const sh=()=>showTip(x,up?y-18:y+18,getHtml(),up);
+  h.addEventListener('mouseenter',sh);h.addEventListener('mouseleave',hideTipSoon);h.addEventListener('click',e=>{e.stopPropagation();sh();});
+}
 function infoI(sc,cx,cy,getHtml,up,ax,ay){
   const g=el('g',{style:'cursor:pointer'},sc.L.ui);
   el('circle',{cx,cy,r:11,fill:'#0f2a3a',stroke:'#4cc9f0'},g);
@@ -1009,6 +1026,7 @@ const top=mkScene('scTop');top.st={in:0};
   el('text',{x:790,y:70,class:'btxt',style:'font-size:24px'},U).textContent='Überblick: Der Weg der Daten – von der Herkunft bis zur Prognose';
   el('text',{x:790,y:100,class:'sub'},U).textContent='Klicke auf einen Block, um die Details zu öffnen';
   el('text',{x:(lx+gx)/2,y:BY+BH+60,class:'tk',style:'font-size:13px'},U).textContent='Retraining (Continuous Training) – ausgelöst durch Drift-Alarm';
+  (()=>{const x=BX(0),y=BY+BH+30,w=BX(1)+BW-BX(0),g=el('g',{style:'cursor:pointer'},U);el('rect',{class:'ipill',x,y,width:w,height:30,rx:15},g);el('text',{x:x+w/2,y:y+20,class:'tk',style:'font-size:13px'},g).textContent='ⓘ Datenqualität: sechs Dimensionen und vier Quality Gates';const h=el('rect',{class:'vhit',x,y,width:w,height:30,rx:15,fill:'transparent'},g);const sh=()=>showTip(x+w/2,y-6,TIP_DQ,true);h.addEventListener('mouseenter',sh);h.addEventListener('mouseleave',hideTipSoon);h.addEventListener('click',e=>{e.stopPropagation();sh();});})();
   // Klickflächen
   defs.forEach((d,i)=>{
     const h=el('rect',{class:'hit',x:BX(i),y:BY,width:BW,height:BH,rx:16},U);
@@ -1469,6 +1487,7 @@ mon.sources=MXs.map((x,i)=>({pipe:'MS'+i,rate:.9,col:SRC.kasse}));
   // Dashboard
   TX(U,1150,66,'Monitoring-Signale','lbl','text-anchor:start;font-size:15px');
   infoI(mon,1318,61,()=>TIP_MON,false,1150,80);
+  gateMark(mon,1360,61,'3',()=>TIP_G3,false);
   const sig=[['Prognosegüte','Abweichung Prognose ↔ Ist',15,25,40],['Input-Drift','Eingabedaten weichen von Trainingsdaten ab',40,60,100],['Bias','Fehlerlücke Stadt ↔ Land',8,15,30]];
   const sg=sig.map((s,i)=>{
     const y=96+i*70;
