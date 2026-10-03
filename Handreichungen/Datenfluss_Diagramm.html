@@ -180,7 +180,7 @@ const DEF={
   zeit:{dup:.08,miss:.07,fmt:.05,out:.02}
 };
 const state={practice:false,unlocked:new Set(),paused:false,speed:.4,view:'main'};
-const NOQUIZ=new Set(['st1','da','db','dc','dd','de','dz']);   // Datenherkunft/Quellen: im Übungsmodus nicht abgefragt
+const NOQUIZ=new Set(['st1','da','db','dc','dd','de','dz','st4']);   // Datenherkunft/Quellen: im Übungsmodus nicht abgefragt
 const locked=k=>state.practice&&!NOQUIZ.has(k)&&!state.unlocked.has(k);
 const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;};
 const inc=(sc,k,n=1)=>{sc.st[k]=(sc.st[k]||0)+n;};
@@ -343,7 +343,7 @@ function refreshLabels(){
   }
   for(const sc of [fab,src,main])if(sc.hints)sc.hints.forEach(h=>h.t.style.opacity=(state.practice&&!state.unlocked.has(h.key))?0:1);
   const cnt=a=>a.filter(k=>state.unlocked.has(k)).length;
-  const v=state.view,K={src:['ext','sens','anon'],fab:['ka','kb','kc','ks','raw','st2'],trn:['st3','st4'],val:['k1','k2','k3']};
+  const v=state.view,K={src:['ext','sens','anon'],fab:['ka','kb','kc','ks','raw','st2'],trn:['st3'],dep:['dreg','dtest','dfrei','dprod']};
   const AWS='<a href="https://docs.aws.amazon.com/wellarchitected/latest/machine-learning-lens/machine-learning-lifecycle.html" target="_blank" rel="noopener">AWS Well-Architected Machine Learning Lens</a>';
   let h;
   if(v==='top')h=state.practice?'Wähle einen Block. Die Fragen findest Du in den Detailseiten (Extract, Load &amp; Transform, Modellentwicklung).':'Klicke auf einen Block, um die Detailseite zu öffnen. Fahre mit der Maus über „Datenverarbeitung“ (oder das ⓘ): Dort steht der Unterschied zwischen ETL und ELT. Die Begriffe der Blöcke folgen der '+AWS+'.';
@@ -1234,9 +1234,6 @@ const val=mkScene('scVal');val.g.classList.add('off');val.st={in:0};
   // rechte Spalte
   TX(U,720,628,'Quelle:','tk2','text-anchor:start');
   LTX(U,758,628,'Google: Accuracy, precision, recall','https://developers.google.com/machine-learning/crash-course/classification/accuracy-precision-recall');
-  pillGate(val,'k1',1190,300,350,'Frage 1: Sind 90 % Genauigkeit gut?');pq(val);
-  pillGate(val,'k2',1190,334,350,'Frage 2: Kein Käufer darf fehlen');pq(val);
-  pillGate(val,'k3',1190,368,350,'Frage 3: Coupons sind teuer');pq(val);
   function upd(){
     let TP=0,FP=0,FN=0,TN=0;
     cust.forEach((c,i)=>{const t=mode==='all'?true:mode==='none'?false:c.s>=thr;dots[i].setAttribute('opacity',t?1:0);
@@ -1314,13 +1311,13 @@ const DRATE=[2.2,.6,1.6,.35,1.1,1.9,.5,.9,.3,1.3];      // Anfragen je Filiale: 
 const QMIN=.85,QTARGET={1:.91,2:.94,3:.95};             // Mindestqualität und (simulierte) Testergebnisse je Version
 const depN=Array.from({length:10},()=>({order:0,cap:0}));
 const D_={prod:0,lastVer:0,testVer:0,phase:'idle',tn:0,q:0,tacc:0,qacc:0,waiting:false};
-DP('rel',[[220,380],[420,380]],14,{sink:()=>startTest()});
+DP('rel',[[220,380],[420,380]],14,{gate:'dreg',sink:()=>startTest()});
 DP('tdat',[[480,560],[480,440]],8,{sink:()=>{D_.tn++;}});
-DP('rel2',[[540,380],[650,380]],14,{sink:()=>{dep.wait(true);}});
-DP('rel3',[[650,380],[760,380]],14,{sink:()=>{D_.prod=D_.testVer;dep.verT.textContent='Version v'+D_.prod;dep.flash=1.2;D_.phase='idle';}});
+DP('rel2',[[540,380],[650,380]],14,{gate:'dtest',sink:()=>{dep.wait(true);}});
+DP('rel3',[[650,380],[760,380]],14,{gate:'dfrei',sink:()=>{D_.prod=D_.testVer;dep.verT.textContent='Version v'+D_.prod;dep.flash=1.2;D_.phase='idle';}});
 for(let i=0;i<10;i++)DP('rq'+i,[[DBX(i),645],[DBX(i),600]],3,{next:'rq'});
 DP('rq',[[DBX(0),600],[875,600]],10,{next:'rqUp'});
-DP('rqUp',[[875,600],[875,440]],14,{next:'inCard',hold:()=>!D_.prod});
+DP('rqUp',[[875,600],[875,440]],14,{next:'inCard',gate:'dprod',hold:()=>!D_.prod});
 const ansTo={};for(let i=0;i<10;i++)ansTo['a'+i]='ans'+i;
 DP('inCard',[[875,440],[875,320]],14,{route:p=>'a'+p.st,to:ansTo,enter:p=>{
   p.ptype=Math.random()<.6?'order':'cap';p.col=PCOL[p.ptype];p.r=3.8;shapeOf(p);}});
@@ -1337,13 +1334,11 @@ function startTest(){D_.phase='testing';D_.tn=0;D_.q=0;dep.tm.setAttribute('opac
   const U=dep.L.ui,D=dep.L.deco;
   TX(U,24,32,'Modellbereitstellung im Detail','lbl','text-anchor:start;font-size:20px');
   // Register
-  el('rect',{class:'card-bg',x:40,y:320,width:180,height:120,rx:12},D);
-  TX(U,130,308,'Modellregister','lbl','font-size:15px');
+  card(dep,'dreg',40,320,180,120,'','Modellregister');
   el('rect',{x:118,y:350,width:24,height:24,fill:COL.model,stroke:'#fff','stroke-width':.8,transform:'rotate(45 130 362)'},D);
   dep.regT=TX(U,130,416,'validierte Versionen','tk');TX(U,130,432,'aus der Modellentwicklung','tk2');
   // Test mit Thermometer
-  el('rect',{class:'card-bg',x:420,y:320,width:120,height:120,rx:12},D);
-  TX(U,480,308,'Test (Staging)','lbl','font-size:15px');
+  card(dep,'dtest',420,320,120,120,'','Test (Staging)');
   dep.tm=el('rect',{x:448,y:362,width:22,height:22,fill:COL.model,stroke:'#fff','stroke-width':.8,transform:'rotate(45 459 373)',opacity:0},U);
   el('rect',{x:504,y:334,width:14,height:86,rx:7,fill:'#0f1a26',stroke:'#4b6f8c','stroke-width':1.4},D);
   el('circle',{cx:511,cy:428,r:9,fill:'#0f1a26',stroke:'#4b6f8c','stroke-width':1.4},D);
@@ -1356,8 +1351,7 @@ function startTest(){D_.phase='testing';D_.tn=0;D_.q=0;dep.tm.setAttribute('opac
   const qT=TX(U,470,476,'–','tk','font-size:12px;text-anchor:end');
   TX(U,492,520,'Testanfragen','tk2','text-anchor:start');
   // Freigabe
-  el('rect',{class:'card-bg',x:592,y:320,width:116,height:120,rx:12},D);
-  TX(U,650,308,'Freigabe','lbl','font-size:15px');
+  card(dep,'dfrei',592,320,116,120,'','Freigabe');
   el('path',{d:'M622,346 Q650,326 678,346 Q650,366 622,346Z',fill:'#0f2a3a',stroke:'#e8eef5','stroke-width':1.8},D);
   el('circle',{cx:650,cy:346,r:7,fill:'#38bdf8'},D);el('circle',{cx:650,cy:346,r:3,fill:'#0b121b'},D);
   const pend=el('rect',{x:640,y:370,width:20,height:20,fill:COL.model,stroke:'#fff','stroke-width':.8,transform:'rotate(45 650 380)',opacity:0},U);
@@ -1367,8 +1361,7 @@ function startTest(){D_.phase='testing';D_.tn=0;D_.q=0;dep.tm.setAttribute('opac
   dep.wait=on=>{D_.waiting=on;pend.setAttribute('opacity',on?1:0);[yes,no].forEach(b=>{b.g.setAttribute('opacity',on?1:.3);b.g.style.pointerEvents=on?'':'none';});if(on){D_.phase='await';askT.textContent='Freigeben? Bitte entscheiden';}};
   dep.wait(false);
   // Produktion
-  el('rect',{class:'card-bg',x:760,y:320,width:140,height:120,rx:12},D);
-  TX(U,815,308,'Produktion','lbl','font-size:15px');
+  card(dep,'dprod',760,320,140,120,'','Produktion');
   for(let i=0;i<3;i++){el('rect',{x:776,y:332+i*30,width:88,height:22,rx:4,fill:'#1d3145',stroke:'#4b6f8c'},D);el('circle',{class:'led',cx:786,cy:343+i*30,r:2.6,fill:'#4ade80'},D);}
   dep.verT=TX(U,912,384,'noch kein Modell','tk','text-anchor:start;font-size:13px');
   dep.logT=TX(U,912,404,'Protokoll: 0 Einträge','tk2','text-anchor:start');TX(U,912,418,'mit Zeitpunkt und Modellversion','tk2','text-anchor:start');
@@ -1606,6 +1599,10 @@ const QUIZ={
  raw:{p:'Beobachte: Alles, was eingeht, wird unverändert in einen Speicher geladen und dort abgelegt. Der Bestand wächst nur, gelesen wird eine Kopie. Wie heißt dieser Schritt?',c:N.raw,w:['Data Mart (Auswertungsschicht)','Operatives Kassensystem','Modellregister','Lastverteilung'],why:'Load heißt: Die entnommenen Daten werden in das Zielsystem geladen. Hier ist das die Rohdatenschicht, die die Originale hält – AWS empfiehlt dafür das Originalformat und aktivierte Versionierung. Bereinigt wird erst danach in einer eigenen Stufe (Transform, im ELT-Muster nach dem Laden). So bleiben die Betriebssysteme unberührt, und bei einem Fehler in der Aufbereitung lässt sich neu rechnen.'},
  st2:{p:'Beobachte: Eine Fabrik vereinheitlicht, bereinigt, löst Dubletten auf und wählt aus – Ausschuss und Kopien fallen heraus, der Rest läuft einheitlich weiter. Wie heißt diese Station?',c:N.st2,w:[N.st4,'Lieferantenaudit','Datenverschlüsselung',N.st5],why:'Rohdaten sind selten modelltauglich. Hier werden Fehlerhaftes aussortiert, Formate vereinheitlicht und Dubletten entfernt. Bei AWS entspricht das der Stage-Schicht (Validierung, Format-Konvertierung, Transformation), im ELT-Muster von Google dem Transform-Schritt nach dem Laden.'},
  st3:{p:'Beobachte: Aus dem sauberen Datenstrom entstehen nur wenige goldene Modellkandidaten – der Rest verschwindet im Zahnrad. Wie heißt diese Station?',c:N.st3,w:[N.st2,'Lastverteilung','Anforderungsanalyse',N.st6],why:'Im Training lernt das Modell Muster aus den Daten. Die Daten selbst bleiben nicht erhalten – es entsteht ein Modellartefakt, das später Vorhersagen liefert.'},
+ dreg:{p:'Beobachte: Hier liegen die freigegebenen Modellversionen aus der Modellentwicklung bereit – versioniert und nachvollziehbar. Von hier startet jede neue Version in Richtung Betrieb. Wie heißt diese Station?',c:'Modellregister',w:['Rohdatenspeicher','Testdatensatz','Data Mart'],why:'Das Modellregister verwaltet Modellversionen samt Angaben zu Trainingsdaten, Kennzahlen und Freigabestatus. So ist nachvollziehbar, welche Version wann im Einsatz war – Grundlage für Audits und für ein schnelles Zurückkehren zur Vorversion.'},
+ dtest:{p:'Beobachte: Die neue Modellversion wird mit Testanfragen geprüft, bevor echte Anfragen sie erreichen. Ein Thermometer zeigt die Modellqualität; erst ab dem Mindestwert geht es weiter. Wie heißt diese Station?',c:'Test (Staging)',w:['Validierung','Produktion','Monitoring'],why:'In einer Testumgebung, die der Produktion möglichst gleicht, wird die Version im Zusammenspiel mit den übrigen Systemen geprüft – als Black-Box-Test: Eingabe hinein, Ausgabe prüfen. Das ist etwas anderes als die Validierung in der Modellentwicklung, die die Modellgüte auf Validierungsdaten misst.'},
+ dfrei:{p:'Beobachte: Das getestete Modell wartet, bis ein Mensch „Ja“ oder „Nein“ drückt. Erst danach geht es in den Betrieb. Wie heißt dieser Schritt?',c:'Freigabe (menschliche Entscheidung)',w:['Automatisches Deployment','Retraining','Datenintegration'],why:'Vor dem Einsatz entscheidet eine verantwortliche Person, ob die Version in Betrieb geht – das sichert Verantwortlichkeit und menschliche Aufsicht und wird dokumentiert. Technisch ließe sich auch automatisch ausrollen; ob ein Mensch freigibt, ist eine Governance-Entscheidung.'},
+ dprod:{p:'Beobachte: Hier beantwortet das Modell die Anfragen der Filialen und liefert Bestell- und Kapazitätsprognosen. Jede Antwort wird mit Zeitpunkt und Modellversion protokolliert. Wie heißt diese Station?',c:'Produktion (Betrieb)',w:['Test (Staging)','Modellregister','Datenspiegel'],why:'In der Produktionsumgebung arbeitet das Modell mit echten Anfragen. Protokollierung und Versionsangabe machen jede Prognose nachvollziehbar; das Monitoring beobachtet den laufenden Betrieb.'},
  st4:{p:'Beobachte: Die Modellkandidaten werden mit eigenen Validierungsdaten geprüft – wer nicht besteht, läuft zurück ins Training. Wie heißt diese Station?',c:N.st4,w:[N.st3,N.st5,N.st1,'Lieferantenaudit'],why:'Mit den Validierungsdaten werden die Einstellungen (Hyperparameter) feinabgestimmt und Overfitting früh erkannt: Ist das Modell im Training deutlich besser als auf den Validierungsdaten, hat es auswendig gelernt. Erst danach prüft der unangetastete Testdatensatz das ausgewählte Modell einmalig – für eine unvoreingenommene Bewertung. Genauigkeit allein kann täuschen; die Abwägung zwischen falsch-positiv und falsch-negativ ist eine Geschäftsentscheidung.'},
  st5:{p:'Beobachte: Ein freigegebenes Modell bedient plötzlich viele Anfragen – grüne Prognosen strömen heraus. Wie heißt diese Station?',c:N.st5,w:[N.st4,N.st2,N.st6,'Penetrationstest'],why:'Beim Deployment geht das freigegebene Modell in den Betrieb und beantwortet laufend Anfragen. Es ist der Anfang des Modell-Lebens im Betrieb, nicht sein Ende.'},
  st6:{p:'Beobachte: Ein Drift-Alarm läuft über die gestrichelte Leitung zurück und startet das Retraining. Wie heißt diese Station?',c:N.st6,w:[N.st3,N.st5,N.st1,'Datenverschlüsselung'],why:'Im Betrieb entfernen sich Eingabedaten und Realität von den Trainingsdaten – Drift ist der Normalfall. Das Monitoring überwacht die Modellleistung (Model Drift), die Datenintegrität und den Input-Drift; über eine Feedback-Schleife wird automatisch oder nach menschlicher Prüfung nachtrainiert (Continuous Training).'},
