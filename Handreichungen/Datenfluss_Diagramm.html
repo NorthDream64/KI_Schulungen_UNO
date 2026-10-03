@@ -1405,10 +1405,10 @@ mon.sources=MXs.map((x,i)=>({pipe:'MS'+i,rate:.9,col:SRC.kasse}));
   const what=para(U,24,338,18);
   TX(U,24,520,'Begriffe','lbl','text-anchor:start;font-size:15px');
   const gl=para(U,24,542,17,'font-size:12.5px');
-  gl.set(['Daten-Drift: Die Eingabedaten verändern sich gegenüber','den Trainingsdaten.','Bias-Drift: Das Modell liegt bei Gruppen systematisch','unterschiedlich daneben.','Retraining: erneutes Training mit aktuellen Daten.','Quelle: AWS, SageMaker Model Monitor (Data quality,','Model quality, Bias drift, Feature attribution drift)']);
+  gl.set(['Daten-Drift: Die Eingabedaten verändern sich gegenüber','den Trainingsdaten – Frühwarnung, bevor die Güte sinkt.','Bias-Drift: Das Modell liegt bei Gruppen systematisch','unterschiedlich daneben.','Retraining: erneutes Training mit aktuellen Daten.','Quelle: AWS, SageMaker Model Monitor (Data quality,','Model quality, Bias drift, Feature attribution drift)']);
   // Dashboard
   TX(U,1150,66,'Monitoring-Signale','lbl','text-anchor:start;font-size:15px');
-  const sig=[['Prognosegüte','Abweichung Prognose ↔ Ist',15,25,40],['Daten-Drift','Eingabedaten ↔ Trainingsdaten (Index)',40,60,100],['Bias','Fehlerlücke Stadt ↔ Land',8,15,30]];
+  const sig=[['Prognosegüte','Abweichung Prognose ↔ Ist',15,25,40],['Daten-Drift','Eingabedaten weichen von Trainingsdaten ab',40,60,100],['Bias','Fehlerlücke Stadt ↔ Land',8,15,30]];
   const sg=sig.map((s,i)=>{
     const y=96+i*70;
     TX(U,1150,y,s[0],'lbl','text-anchor:start;font-size:15px');TX(U,1150,y+16,s[1],'tk2','text-anchor:start');
@@ -1426,6 +1426,7 @@ mon.sources=MXs.map((x,i)=>({pipe:'MS'+i,rate:.9,col:SRC.kasse}));
   TX(U,1150,392,'Meldung','lbl','text-anchor:start;font-size:15px');
   const mtitle=TX(U,1150,412,'','tk','text-anchor:start;fill:#fde047');
   const mbody=para(U,1150,434,17);
+  {const _set=mbody.set;mbody.set=ls=>{_set(ls);[...mbody.childNodes].forEach(n=>{if(/^(Befund|Empfehlung|Technisch):$/.test(n.textContent)){n.setAttribute('fill','#4cc9f0');n.setAttribute('font-weight','600');}});};}
   // Zustand
   const N=10,act=Array(N).fill(1),fc=Array(N).fill(1),sact=Array(N).fill(1),sfc=Array(N).fill(1);
   const S={err:6.8,drift:12,gap:2,eS:6,eL:8};let T={err:6.8,drift:12,gap:2,eS:6,eL:8};
@@ -1436,14 +1437,17 @@ mon.sources=MXs.map((x,i)=>({pipe:'MS'+i,rate:.9,col:SRC.kasse}));
     normal:['Normalbetrieb: Die Filialen melden Absatzdaten, das','Modell liefert Bestellvorschläge und Personalbedarf.','Die Signale rechts zeigen, ob das Modell noch zur','Realität passt: Prognosegüte, Daten-Drift und Bias.'],
     karneval:['Sonderaktion Karneval: Das Modell kennt den Termin','aus den Ereignisdaten und empfiehlt Karnevalsartikel','nur für Filialen in Karnevalsregionen (F1–F3).','Das Modell arbeitet wie vorgesehen: Alle Signale','bleiben grün. Nicht jede Veränderung ist Drift.'],
     mall:['Neues Einkaufszentrum: Das Modell sagt den','Umsatzrückgang in Filiale F6 am Stadtrand voraus.','Prognose und Ist stimmen überein, die Signale bleiben','grün. Ein eingebetteter KI-Agent wertet die Zahlen','aus und schlägt der Filialleitung Maßnahmen vor.'],
-    price:['Neue Preisliste: Einige Produkte werden teurer.','Die Eingabedaten (Preise) liegen nun außerhalb dessen,','was das Modell im Training gesehen hat (Daten-Drift).','Folge: Die Bestellmengen-Prognosen weichen von der','Realität ab. Das Monitoring schlägt Alarm und löst','ein Retraining mit aktuellen Daten aus.'],
+    price:['Neue Preisliste: Einige Produkte werden teurer. Die','Preise liegen sofort außerhalb dessen, was das Modell','im Training gesehen hat: Daten-Drift als Frühwarnung.','Viele Kund:innen kaufen zunächst wie gewohnt – das','Kaufverhalten ändert sich erst nach und nach. Erst','dann sinkt die Prognosegüte unter den Schwellenwert,','und das Monitoring löst ein Retraining aus.'],
     bias:['Bias: Insgesamt wirkt die Prognosegüte akzeptabel,','aber in Landfilialen liegt das Modell systematisch','daneben (zu niedrige Bestellmengen, leere Regale).','Ursache: Die Trainingsdaten stammen überwiegend aus','Stadtfilialen. Das Monitoring prüft deshalb den Fehler','je Gruppe und nicht nur im Durchschnitt.']
   };
+  const wrap=(t,n)=>{const out=[];let l='';for(const w of t.split(' ')){if((l+' '+w).trim().length>n){out.push(l);l=w;}else l=(l+' '+w).trim();}if(l)out.push(l);return out;};
+  const AG=(bef,emp,tech)=>['Befund:'].concat(wrap(bef,58),['Empfehlung:'],wrap(emp,58),tech?['Technisch:'].concat(wrap(tech,58)):[],['Entscheidung: Management. Zahlen: Beispielwerte.']);
+  const AGT='KI-Agent: Bewertung und Empfehlung (Beispiel)';
   const MSG={
-    karneval:['Bestellvorschlag (Beispiel)',['Karnevalsartikel (Kostüme, Konfetti, Süßwaren):','•  Filiale F1–F3: bestellen','•  Filiale F4–F10: nicht bestellen','Grundlage: Ereignisdaten „Karneval“ und','regionale Daten. Einkauf prüft und gibt frei.']],
-    mall:['KI-Agent: Analyse für die Filialleitung (Beispiel)',['Befund: Umsatz Filiale F6 liegt rund 18 % unter','Vorjahr, wie vom Modell prognostiziert. Der Rückgang','beginnt mit der Eröffnung des Einkaufszentrums.','Mögliche Maßnahmen:','1  Sortiment auf Nahversorgung und Frische schärfen','2  Öffnungszeiten und Schichtplan anpassen','3  Stammkunden-Aktion in F6 starten','4  Bestellmengen für F6 senken','Entscheidung: Filialleitung. Zahlen: Beispielwerte.']],
-    price:['Meldung an das MLOps-Team (Beispiel)',['Daten-Drift erkannt: Die Preisverteilung weicht','deutlich von den Trainingsdaten ab.','Prognosegüte unter Schwellenwert (Abweichung > 25 %).','Aktion: Retraining mit Daten der neuen Preisliste,','danach Validierung und Bereitstellung als Version v2.']],
-    bias:['Meldung an das MLOps-Team (Beispiel)',['Bias-Alarm: Fehler Landfilialen 24 %, Stadtfilialen 6 %.','Im Durchschnitt (13 %) fällt das Problem kaum auf.','Aktion: Trainingsdaten ausbalancieren (mehr','Landfilialen), Retraining, Validierung je Gruppe.']]
+    karneval:[AGT,AG('Die Sonderaktion läuft wie prognostiziert: Karnevalsartikel verkaufen sich in F1–F3 stark, in F4–F10 kaum.','Karnevalsartikel nur in F1–F3 nachbestellen, Restmengen nach Aschermittwoch reduzieren; in F1–F3 zusätzliche Kassenschicht einplanen.',null)],
+    mall:[AGT,AG('Der Umsatz in Filiale F6 liegt rund 18 % unter Vorjahr, wie vom Modell prognostiziert. Der Rückgang beginnt mit der Eröffnung des Einkaufszentrums.','Sortiment in F6 auf Nahversorgung und Frische schärfen, Öffnungszeiten und Schichtplan anpassen, Bestellmengen senken, Stammkunden-Aktion starten.',null)],
+    price:[AGT,AG('Die neuen Preise haben zu einer Kaufzurückhaltung bei den Produktgruppen A, F und K geführt. Die geringeren Volumina werden durch höhere Umsätze je Stück ausgeglichen.','Regalfläche für A, F und K verringern und Produktgruppe M stärker platzieren.','Prognosegüte unter Schwellenwert – Retraining mit Daten der neuen Preisliste.')],
+    bias:[AGT,AG('In den Landfilialen F7–F10 waren Artikel wiederholt ausverkauft. Die Prognosen liegen dort systematisch zu niedrig (Fehler 24 % gegenüber 6 % in der Stadt); im Durchschnitt fällt das kaum auf.','Bis zum Retraining Bestellmengen für die Landfilialen anheben; Trainingsdaten ausbalancieren lassen (mehr Daten aus Landfilialen).','Bias-Alarm – Retraining, danach Validierung je Gruppe.')]
   };
   function setScen(id){
     scen=id;t=0;phase='run';pt=0;evT=0;
@@ -1456,7 +1460,7 @@ mon.sources=MXs.map((x,i)=>({pipe:'MS'+i,rate:.9,col:SRC.kasse}));
     T=Object.assign({},NORMAL);
     if(id==='karneval'){for(let i=0;i<3;i++){sact[i]=1.45;sfc[i]=1.45;}}
     if(id==='mall'){sact[5]=.6;sfc[5]=.62;sact[4]=.85;sfc[4]=.86;T.err=8;T.drift=14;T.gap=3;}
-    if(id==='price'){for(let i=1;i<8;i++){sact[i]=.7;}T.err=31;T.drift=78;}
+    if(id==='price'){T.drift=78;}   // Preise ändern sich sofort, das Kaufverhalten erst nach und nach (siehe tick)
     if(id==='bias'){for(let i=6;i<10;i++){sact[i]=1.3;}T.err=13.2;T.gap=18;T.drift=14;T.eS=6;T.eL=24;}
     if(id==='price'||id==='bias')ver=ver;
   }
@@ -1468,21 +1472,27 @@ mon.sources=MXs.map((x,i)=>({pipe:'MS'+i,rate:.9,col:SRC.kasse}));
     // Ereignisdaten einspeisen
     if(scen!=='normal'&&t<5){evT+=dt*2;while(evT>=1){evT--;mkP(sc,sc.pipes.mDown,{col:scen==='price'?SRC.intern:SRC.events,r:4});}}
     // Szenario-Ablauf
-    if(scen==='karneval'&&t>1.2&&!mtitle.textContent){mtitle.textContent=MSG.karneval[0];mbody.set(MSG.karneval[1]);}
-    if(scen==='mall'){
-      if(t<3.5){mtitle.textContent='KI-Agent wertet die Zahlen aus …';mbody.set([]);}
-      else if(mtitle.textContent!==MSG.mall[0]){mtitle.textContent=MSG.mall[0];mbody.set(MSG.mall[1]);}
+    // Neue Preisliste: Kaufverhalten ändert sich verzögert
+    if(scen==='price'&&phase==='run'){
+      const f=Math.max(0,Math.min(1,(t-3)/12));
+      for(let i=1;i<8;i++)sact[i]=1-.3*f;
+      T.err=6.8+26*f*f;
     }
-    if((scen==='price'||scen==='bias')&&phase==='run'){
-      if(t>3&&!mtitle.textContent){mtitle.textContent=MSG[scen][0];mbody.set(MSG[scen][1]);}
-      if(t>9){phase='retrain';pt=0;}
+    // KI-Agent bewertet jede Veränderung
+    const agentAt={karneval:3,mall:3.5,price:13,bias:5}[scen];
+    if(agentAt!==undefined&&phase==='run'){
+      if(t>agentAt-2.5&&t<agentAt){if(mtitle.textContent!=='KI-Agent bewertet die Veränderung …'){mtitle.textContent='KI-Agent bewertet die Veränderung …';mbody.set([]);}}
+      else if(t>=agentAt&&mtitle.textContent!==MSG[scen][0]){mtitle.textContent=MSG[scen][0];mbody.set(MSG[scen][1]);}
     }
+    if(scen==='price'&&phase==='run'&&t>19){phase='retrain';pt=0;}
+    if(scen==='bias'&&phase==='run'&&t>11){phase='retrain';pt=0;}
     if(phase==='retrain'){
       pt+=dt;gearG.classList.add('fast');
       banner.textContent='Retraining läuft … Modell v'+(ver+1)+' entsteht';
       bannerR.setAttribute('fill','#3a2f12');bannerR.setAttribute('stroke','#f59e0b');
       if(pt>4.5){phase='done';ver++;mv.textContent='Version v'+ver;T=Object.assign({},NORMAL);for(let i=0;i<N;i++){sact[i]=sact[i];sfc[i]=1;}
         for(let i=0;i<N;i++)sfc[i]=sact[i];
+        if(scen==='price')T.drift=NORMAL.drift;
         mtitle.textContent='Retraining abgeschlossen';mbody.set(['Neue Modellversion v'+ver+' wurde validiert und','bereitgestellt. Prognose und Ist passen wieder zusammen.','Das Monitoring beobachtet weiter.']);}
     }else gearG.classList.remove('fast');
     // Werte glätten
@@ -1491,12 +1501,14 @@ mon.sources=MXs.map((x,i)=>({pipe:'MS'+i,rate:.9,col:SRC.kasse}));
     S.eS+=(T.eS-S.eS)*k;S.eL+=(T.eL-S.eL)*k;
     const vals=[CUR.err,CUR.drift,CUR.gap];
     sg.forEach((s,i)=>{const v=vals[i];s.b.setAttribute('width',Math.min(300,300*v/s.s[4]));const c=col(v,s.s[2],s.s[3]);s.b.setAttribute('fill',c);s.lamp.setAttribute('fill',c);
-      s.v.textContent=i===1?Math.round(v)+'':v.toFixed(0)+' %';});
+      s.v.textContent=i===1?(v>=60?'stark':v>=40?'erhöht':'gering'):v.toFixed(0)+' %';});
     sg[2].v.textContent=Math.round(CUR.gap)+' PP';
     const worst=Math.max(...sg.map((s,i)=>vals[i]>=s.s[3]?2:vals[i]>=s.s[2]?1:0));
     if(phase!=='retrain'){
-      banner.textContent=worst===2?(scen==='bias'?'Bias-Alarm: Fehlerlücke zu groß':'Drift-Alarm: Prognosegüte sinkt'):worst===1?'Warnung: Signal im gelben Bereich':'Alle Signale im grünen Bereich';
-      bannerR.setAttribute('fill',worst===2?'#3a1717':worst===1?'#3a2f12':'#12351f');bannerR.setAttribute('stroke',worst===2?'#ef4444':worst===1?'#f59e0b':'#4ade80');
+      const eL=vals[0]>=sig[0][3]?2:vals[0]>=sig[0][2]?1:0,gL=vals[2]>=sig[2][3]?2:vals[2]>=sig[2][2]?1:0,dL=vals[1]>=sig[1][3]?2:vals[1]>=sig[1][2]?1:0;
+      const lvl=Math.max(eL,gL,dL>0&&eL<2&&gL<2?1:0);
+      banner.textContent=gL===2?'Bias-Alarm: Fehlerlücke zu groß':eL===2?'Alarm: Prognosegüte unter Schwellenwert':dL===2&&eL<2?'Frühwarnung: Daten-Drift – Prognosegüte beobachten':lvl===1?'Warnung: Signal im gelben Bereich':'Alle Signale im grünen Bereich';
+      bannerR.setAttribute('fill',lvl===2?'#3a1717':lvl===1?'#3a2f12':'#12351f');bannerR.setAttribute('stroke',lvl===2?'#ef4444':lvl===1?'#f59e0b':'#4ade80');
     }
     // Balken
     for(let i=0;i<N;i++){
