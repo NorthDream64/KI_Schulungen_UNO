@@ -879,6 +879,7 @@ const TIP_SPLIT='<p><b>Training · Validierung · Test</b></p>'
  +'<tr><td>Validierungsdaten</td><td>Feinabstimmung der Einstellungen (Hyperparameter) und frühzeitiges Erkennen von Overfitting – während der Entwicklung.</td></tr>'
  +'<tr><td>Testdaten</td><td>Einmalige, abschließende Prüfung des ausgewählten Modells – für eine unvoreingenommene Bewertung.</td></tr></table>'
  +'<p>Bei Zeitreihen wie Absatzdaten wird zeitlich getrennt, nicht zufällig gemischt. Statt eines festen Validierungsanteils kann man auch eine <b>Kreuzvalidierung</b> innerhalb der Trainingsdaten nutzen. Auch Validierungs- und Testdaten „nutzen sich ab“, wenn man sie immer wieder für Entscheidungen verwendet.</p>'
+ +'<p><b>Vor dem Training prüfen:</b> Ist die Aufteilung korrekt und repräsentativ? Kein Datensatz liegt in zwei Teilen, die Zeiträume folgen aufeinander, und alle Filialen sind in allen drei Teilen vertreten. Den Testbestand legt man am besten schon bei der Datenbeschaffung fest und schaut ihn danach nicht mehr an.</p>'
  +'<small>Quellen: <a href="https://developers.google.com/machine-learning/crash-course/overfitting/dividing-datasets" target="_blank" rel="noopener">Google: Dividing the original dataset</a></small>';
 const TIP_OVER='<p><b>Overfitting vermeiden</b></p>'
  +'<p>Overfitting (Überanpassung): Das Modell lernt die Beispiele auswendig statt der Regel – im Training sehr gut, auf neuen Daten schlecht. Erkennbar daran, dass die Kennzahlen auf Trainings- und Validierungsdaten deutlich auseinanderfallen.</p>'
@@ -889,13 +890,18 @@ const TIP_OVER='<p><b>Overfitting vermeiden</b></p>'
  +'<tr><td>Kreuzvalidierung</td><td>Daten in mehrere Teile zerlegen, jeder Teil prüft einmal – zeigt, wie stabil die Leistung ist.</td></tr></table>'
  +'<p>Ziel ist <b>Generalisierungsfähigkeit</b>: gute Ergebnisse auf Daten, die das Modell nie gesehen hat.</p>'
  +'<small>Quellen: <a href="https://developers.google.com/machine-learning/crash-course/overfitting" target="_blank" rel="noopener">Google: Generalization and overfitting</a> · <a href="https://developers.google.com/machine-learning/crash-course/overfitting/regularization" target="_blank" rel="noopener">Google: Regularization, Early Stopping</a> · <a href="https://developers.google.com/machine-learning/crash-course/training-neural-networks/best-practices" target="_blank" rel="noopener">Google: Dropout</a></small>';
+const TIP_DS='<p><b>Best Practice: acht Stationen einer Modellentwicklung</b></p>'
+ +'<p>Die acht Stationen bündeln, wie Entwicklungsteams in der Praxis arbeiten: vom Rahmen des Problems über Daten und Modelle bis zum Betrieb. Microsoft hat in eigenen Teams einen sehr ähnlichen Ablauf in neun Stufen beobachtet – von den Anforderungen bis zum Monitoring.</p>'
+ +'<p><b>Kein Wasserfall, sondern eine Schleife:</b> Die Stationen 3 bis 6 werden mehrfach durchlaufen. Ein Befund beim Erkunden führt zurück zur Beschaffung, ein Fehlermuster beim Sichten zurück zur Aufbereitung. Auch Test und Monitoring können zu jeder früheren Station zurückführen. Die sinnvolle Frage an ein Team lautet daher nicht „Seid ihr fertig?“, sondern „Welche Station läuft gerade, und was hat die letzte Runde ergeben?“</p>'
+ +'<p><b>Zwei Regeln, die über den Erfolg entscheiden:</b> Der Testbestand wird früh beiseitegelegt und genau einmal genutzt. Und jedes Modell muss sich an einer einfachen Baseline messen lassen – schlägt es sie nicht, lohnt sich der Aufwand nicht.</p>'
+ +'<small>Quellen: <a href="https://www.microsoft.com/en-us/research/wp-content/uploads/2019/03/amershi-icse-2019_Software_Engineering_for_Machine_Learning.pdf" target="_blank" rel="noopener">Microsoft Research: Software Engineering for Machine Learning (neun Stufen)</a> · <a href="https://developers.google.com/machine-learning/problem-framing" target="_blank" rel="noopener">Google: Machine Learning Problem Framing</a> · <a href="https://developers.google.com/machine-learning/crash-course/overfitting/dividing-datasets" target="_blank" rel="noopener">Google: Dividing the original dataset</a> · <a href="https://developers.google.com/machine-learning/guides/rules-of-ml" target="_blank" rel="noopener">Google: Rules of ML</a></small>';
 const TIP_TESTS='<p><b>Testverfahren</b></p>'
  +'<table><tr><th>Testart</th><th>Was wird geprüft?</th></tr>'
- +'<tr><td>Black-Box-Test</td><td>nur Ein- und Ausgabe: Verhält sich das System wie spezifiziert – ohne Blick ins Innere. Beispiel: der Probelauf im Test (Staging) der Modellbereitstellung.</td></tr>'
- +'<tr><td>White-Box-Test</td><td>die interne Logik und Struktur des Algorithmus: Welche Merkmale tragen die Entscheidung, mit welchem Gewicht? Stärkt Robustheit und Sicherheit.</td></tr>'
- +'<tr><td>Unit-Test</td><td>einzelne Code- oder Datenverarbeitungskomponenten, z. B. eine Station der Datenpipeline: Wandelt die Standardisierung jedes Datumsformat korrekt um?</td></tr></table>'
- +'<p>Kennzahlen sagen, wie gut ein Modell im Durchschnitt ist – nicht, ob es vor dem Einsatz geprüft wurde. Dazu gehören auch Robustheitstests, etwa mit fehlenden oder unerwarteten Eingaben.</p>'
- +'<small>Quellen: <a href="https://learn.microsoft.com/en-us/azure/well-architected/ai/test" target="_blank" rel="noopener">Microsoft: Test and evaluate AI workloads</a> · <a href="https://research.google/pubs/the-ml-test-score-a-rubric-for-ml-production-readiness-and-technical-debt-reduction/" target="_blank" rel="noopener">Google Research: The ML Test Score</a> · <a href="https://learn.microsoft.com/en-us/azure/machine-learning/how-to-machine-learning-interpretability?view=azureml-api-2" target="_blank" rel="noopener">Microsoft: Model interpretability</a></small>';
+ +'<tr><td>Black-Box-Test</td><td>nur das Verhalten von außen: Passt die Ausgabe zur Eingabe – ohne Blick in das Modell. Auch die einmalige Messung mit dem unangetasteten Testdatensatz ist ein Black-Box-Test: Sie zeigt unvoreingenommen, wie gut das Modell auf Daten abschneidet, die es nie gesehen hat (<b>Generalisierungsfähigkeit</b>). In der Bereitstellung gehört der Probelauf im Test (Staging) dazu.</td></tr>'
+ +'<tr><td>White-Box-Test</td><td>das Innere: Wie kommt der Algorithmus zu seiner Entscheidung – welche Merkmale wirken mit welchem Gewicht? So werden Schwachstellen sichtbar, bevor sie im Betrieb auffallen; das stärkt Robustheit und Sicherheit.</td></tr>'
+ +'<tr><td>Unit-Test</td><td>einzelne Code-Bausteine der Datenverarbeitungspipeline, jeweils für sich: Wandelt die Standardisierung jedes Datumsformat richtig um? Liegen alle Werte nach der Aufbereitung im erwarteten Bereich?</td></tr></table>'
+ +'<p><b>Robustheit</b> ist eine eigene Leistungskennzahl neben Genauigkeit, Präzision und Trefferquote: Bleibt die Leistung stabil, wenn Eingaben fehlen, gestört oder ungewöhnlich sind? Man misst sie, indem man die Kennzahlen auf gezielt veränderten oder seltenen Testfällen wiederholt. Die <a href="https://eur-lex.europa.eu/legal-content/DE/TXT/?uri=CELEX%3A32024R1689" target="_blank" rel="noopener">KI-Verordnung</a> nennt Genauigkeit, Robustheit und Cybersicherheit für Hochrisiko-Systeme in einem Atemzug (Art. 15).</p>'
+ +'<small>Quellen: <a href="https://developers.google.com/machine-learning/crash-course/production-ml-systems/monitoring" target="_blank" rel="noopener">Google: Testing and monitoring pipelines (Unit-Tests)</a> · <a href="https://learn.microsoft.com/en-us/azure/machine-learning/concept-responsible-ai?view=azureml-api-2" target="_blank" rel="noopener">Microsoft: Reliability and safety (Robustheit)</a> · <a href="https://learn.microsoft.com/en-us/azure/machine-learning/how-to-machine-learning-interpretability?view=azureml-api-2" target="_blank" rel="noopener">Microsoft: Model interpretability</a> · <a href="https://learn.microsoft.com/en-us/azure/well-architected/ai/test" target="_blank" rel="noopener">Microsoft: Test and evaluate AI workloads</a></small>';
 const TIP_XAI='<p><b>Erklärbarkeit (XAI)</b></p>'
  +'<p>Viele Modelle sind eine „Black Box“: Man sieht Ein- und Ausgabe, aber nicht, warum entschieden wurde. Methoden der erklärbaren KI (XAI) machen Entscheidungen nachvollziehbar – nötig auch, um Transparenzpflichten zu erfüllen, z. B. bei automatisierten Einzelentscheidungen (Art. 22 DSGVO) oder dem Recht auf Erläuterung (Art. 86 EU AI Act).</p>'
  +'<p><b>Global</b> erklärt, worauf das Modell insgesamt achtet; <b>lokal</b>, warum ein einzelner Fall so entschieden wurde. Erklärungen sind Näherungen, keine Messwerte.</p>'
@@ -920,9 +926,9 @@ const TIP_MON='<p><b>Was das Monitoring im Betrieb überwacht</b></p>'
  +'<table><tr><th>Bereich</th><th>Worum es geht</th></tr>'
  +'<tr><td>Modellleistung</td><td>Verschlechtert sich die Leistung (<b>Model Drift</b>)? Bei Prognosen von Mengen: Abweichung Prognose ↔ Ist. Bei Ja/Nein-Entscheidungen (z. B. Coupon ja/nein): Präzision, Trefferquote oder F1-Score, der beide zu einem Wert zusammenfasst.</td></tr>'
  +'<tr><td>Datenintegrität</td><td>Kommen die Eingabedaten vollständig und im richtigen Format an – fehlen Felder, fällt eine Filiale aus?</td></tr>'
- +'<tr><td>Input-Drift</td><td>Haben sich die Eigenschaften der Eingabedaten verändert (z. B. neue Preise)? Frühwarnung – oft lange bevor die tatsächlichen Verkäufe die Prognose widerlegen.</td></tr>'
+ +'<tr><td>Input- oder Datendrift</td><td>Haben sich die Eigenschaften der Eingabedaten verändert (z. B. neue Preise)? Frühwarnung – oft lange bevor die tatsächlichen Verkäufe die Prognose widerlegen.</td></tr>'
  +'<tr><td>Bias</td><td>Ist das Modell für alle Gruppen gleich gut (z. B. Filialen in Gebieten mit hoher und niedriger Kaufkraft)?</td></tr></table>'
- +'<p><b>Model Drift</b> hat zwei Ursachen: veränderte Eingabedaten (Input-Drift) oder eine veränderte Realität – etwa ein neues Kaufverhalten bei gleichen Eingaben.</p>'
+ +'<p><b>Model Drift</b> hat zwei Ursachen: veränderte Eingabedaten (Input- oder Datendrift) oder eine veränderte Realität – etwa ein neues Kaufverhalten bei gleichen Eingaben.</p>'
  +'<p><b>Feedback-Schleife:</b> Die tatsächlichen Verkäufe fließen zurück und werden mit den Prognosen verglichen; daraus entsteht automatisch oder nach menschlicher Prüfung ein Retraining. Diese Schleife ist zugleich der Nachweis kontinuierlicher Verbesserung, die ein KI-Managementsystem (ISO/IEC 42001) verlangt. Dazu kommen regelmäßige Robustheits- und Leistungsprüfungen im Betrieb.</p>'
  +'<small>Quellen: <a href="https://learn.microsoft.com/en-us/azure/machine-learning/concept-model-monitoring?view=azureml-api-2" target="_blank" rel="noopener">Microsoft: Model monitoring in production</a> · <a href="https://docs.aws.amazon.com/sagemaker/latest/dg/model-monitor.html" target="_blank" rel="noopener">AWS: SageMaker Model Monitor</a></small>';
 const TIP_TERMS='<p><b>Fachbegriffe der Modellentwicklung</b></p>'
@@ -1148,29 +1154,31 @@ trn.sources=[{pipe:'tIn',rate:4,col:COL.clean}];
   el('rect',{x:1418,y:160,width:24,height:24,fill:COL.model,stroke:'#fff','stroke-width':.8,transform:'rotate(45 1430 172)'},D);
   trn.regT=TX(U,1430,226,'0 freigegeben','tk');
   TX(U,1430,242,'weiter zur Bereitstellung','tk2');
-  // Arbeitsschritte eines Data Scientists
+  // Arbeitsschritte eines Data Scientists (Best Practice, 8 Stationen)
   TX(U,24,392,'So entwickelt ein Data Scientist ein Modell','lbl','text-anchor:start;font-size:18px');
   (()=>{const g=el('g',{style:'cursor:pointer'},U);el('rect',{class:'ipill',x:440,y:374,width:330,height:26,rx:13},g);el('text',{x:605,y:392,class:'tk'},g).textContent='Fachbegriffe erklärt: Validierung im Detail ⊕';g.addEventListener('click',()=>setView('val'));})();
-  TX(U,24,412,'nach dem Beispielprojekt eines Data Scientists („Steigt oder fällt die Microsoft-Aktie morgen?“), übertragen auf den Handel','sub','text-anchor:start;font-size:12.5px');
+  TX(U,24,412,'Best Practice in acht Stationen, am Beispiel Handel. Die Stationen 3 bis 6 werden mehrfach durchlaufen.','sub','text-anchor:start;font-size:12.5px');
+  infoI(trn,676,407,()=>TIP_DS,true,700,400);
   const ST=[
-   ['Ziel festlegen',['Was genau soll vorhergesagt','werden? Die Antwort, die das','Modell lernen soll, heißt','Zielvariable (Target).'],['„Verkauft Filiale F3 morgen','mehr Grillkohle als üblich?“']],
-   ['Merkmale bilden',['Aus Vermutungen werden Zahlen','(Feature Engineering). Nur Infor-','mationen nutzen, die am Prognose-','tag schon bekannt sind – sonst','entsteht ein Datenleck.'],['Wochentag, Wetterprognose,','Absatz der letzten 7 / 90 Tage']],
-   ['Daten aufteilen',['Training (lernen), Validierung','(feinabstimmen) und Test (ab-','schließend prüfen). Zeitlich','trennen, nicht zufällig mischen –','sonst lernt das Modell aus der','Zukunft.'],['Training bis Januar, Validie-','rung Februar, Test März']],
-   ['Baseline festlegen',['Eine einfache Vergleichsregel','als Messlatte. Ein Modell ist','erst interessant, wenn es','sie schlägt.'],['„Morgen wie am gleichen','Wochentag letzte Woche“']],
-   ['Trainieren und vergleichen',['Mehrere Modelle lernen, z. B.','logistische Regression und Ent-','scheidungsbaum. Einstellungen','(Hyperparameter) anhand der','Validierungsdaten wählen, z. B.','per Kreuzvalidierung.'],['Schwellenwert per zeitlich','geordneter Kreuzvalidierung']],
-   ['Einmal testen',['Erst ganz am Ende prüft der','unangetastete Test das Modell.','Wer vorher immer wieder auf das','Testergebnis schaut, lernt den','Test auswendig.'],null]];
+   ['Problem rahmen',['Geschäftsziel, Zielvariable','und Messgröße festlegen.','Und: Wie löst man es heute','ohne KI? Diese Regel ist die','Baseline – die Messlatte','für jedes Modell.'],['„Verkauft F3 morgen mehr','Grillkohle als üblich?“'],null],
+   ['Daten beschaffen',['Welche Daten, woher, wie','viel – mit Rechtsprüfung','und Freigaben. Gleich hier','den Testbestand abzweigen,','bei Zeitreihen den','jüngsten Zeitraum.'],['Kassendaten aus zwei Jahren;','der letzte Monat ist Test.'],['Extract ⊕','src']],
+   ['Daten erkunden',['Je Merkmal: Typ, fehlende','Werte, Ausreißer, Vertei-','lung, Nutzen für die Auf-','gabe. Nur auf den Trai-','ningsdaten – und alles','dokumentieren.'],['Wie oft fehlt die Wetter-','prognose einer Filiale?'],null],
+   ['Daten aufbereiten',['Bereinigen und Merkmale','bilden (Feature Enginee-','ring) – als wiederholbare','Schritte. Nur nutzen, was','am Prognosetag bekannt ist,','sonst droht ein Datenleck.'],['Wochentag, Wetterprognose,','Absatz der letzten 7 Tage'],['Load & Transform ⊕','fab']],
+   ['Modelle sichten',['Mehrere einfache Modelle','trainieren, z. B. logistische','Regression und Entschei-','dungsbaum. Auf den Vali-','dierungsdaten vergleichen:','Wer schlägt die Baseline?'],['Baseline: „wie am gleichen','Wochentag letzte Woche“'],null],
+   ['Feinschliff und Test',['Hyperparameter per Kreuz-','validierung abstimmen,','Overfitting verhindern (z. B.','Early Stopping). Dann genau','einmal den Testbestand','messen – danach nichts','mehr ändern.'],null,['Validierung im Detail ⊕','val']],
+   ['Ergebnis vorstellen',['Kennzahlen mit Annahmen,','Grenzen und Fehlschlägen','vorstellen und dokumen-','tieren. Den Schwellenwert','entscheidet die Fachseite,','nicht die Entwicklung allein.'],['„Bei Neueröffnungen ist die','Prognose noch unsicher.“'],null],
+   ['In Betrieb nehmen',['Modellregister, Test,','Freigabe und Produktion;','danach Überwachung mit','Alarmen und Nachtrainieren,','wenn die Leistung nach-','lässt.'],null,['Modellbereitstellung ⊕','dep']]];
   ST.forEach((s,i)=>{
-    const x=24+i*257,y=430;
-    el('rect',{class:'card-bg',x,y,width:245,height:232,rx:12},D);
-    el('circle',{cx:x+22,cy:y+24,r:13,fill:'#0b5a74',stroke:'#4cc9f0'},D);
-    TX(U,x+22,y+29,String(i+1),'tk','font-size:13px');
-    TX(U,x+44,y+29,s[0],'lbl','text-anchor:start;font-size:14.5px');
-    para(U,x+14,y+58,16,'font-size:12px').set(s[1]);
-    if(i===1)para(U,x+14,y+135,11,'font-size:10px;fill:#8fa3b8').set(['Gehört streng genommen zur','Datenvorbereitung (Transform)','als Datenintegration.']);
-    if(s[2]){TX(U,x+14,y+168,'Beispiel','tk2','text-anchor:start;fill:#4cc9f0');para(U,x+14,y+186,16,'font-size:12px;fill:#9fb3c8').set(s[2]);}
-    else btn(trn,x+14,y+170,217,30,'Validierung im Detail ⊕',()=>setView('val'));
+    const W=186,x=24+i*(W+5),y=428;
+    el('rect',{class:'card-bg',x,y,width:W,height:252,rx:12},D);
+    el('circle',{cx:x+19,cy:y+22,r:11,fill:'#0b5a74',stroke:'#4cc9f0'},D);
+    TX(U,x+19,y+26.5,String(i+1),'tk','font-size:12px');
+    TX(U,x+36,y+27,s[0],'lbl','text-anchor:start;font-size:13.5px');
+    para(U,x+11,y+54,15,'font-size:11.5px').set(s[1]);
+    if(s[2]){TX(U,x+11,y+172,'Beispiel','tk2','text-anchor:start;fill:#4cc9f0;font-size:11px');para(U,x+11,y+188,14,'font-size:11px;fill:#9fb3c8').set(s[2]);}
+    if(s[3])btn(trn,x+10,y+214,W-20,26,s[3][0],()=>setView(s[3][1]));
   });
-  TX(U,24,690,'Merksatz: Der Test bleibt bis zum letzten Schritt unangetastet – und ein Modell muss eine einfache Baseline schlagen.','sub','text-anchor:start;font-size:13px;fill:#fde047');
+  TX(U,24,706,'Merksatz: Der Testbestand wird früh beiseitegelegt und genau einmal genutzt – und ein Modell muss eine einfache Baseline schlagen.','sub','text-anchor:start;font-size:13px;fill:#fde047');
 })();
 
 /* ============ VOLLSEITE: Modellvalidierung ============ */
@@ -1247,7 +1255,7 @@ const val=mkScene('scVal');val.g.classList.add('off');val.st={in:0};
   el('line',{x1:1190,x2:1545,y1:603,y2:603,stroke:'#4b6f8c'},U);
   const ecoB=TX(U,1190,676,'','tk2','text-anchor:start;font-size:12px');
   // Kennzahlen-Balken
-  const rows=[['Genauigkeit (Accuracy)','(richtig angeschrieben + richtig nicht angeschrieben) ÷ alle 100','#38bdf8',['TP','TN']],['Präzision (Precision)','Käufer:innen ÷ alle Angeschriebenen','#a78bfa',['TP','FP']],['Trefferquote (Recall, Sensitivität)','erreichte Käufer:innen ÷ alle Käufer:innen','#4ade80',['TP','FN']]];
+  const rows=[['Genauigkeit (Accuracy)','(richtig angeschrieben + richtig nicht angeschrieben) ÷ alle 100','#38bdf8',['TP','TN']],['Präzision (Precision)','Käufer:innen ÷ alle Angeschriebenen','#a78bfa',['TP','FP']],['Trefferquote (Recall, Sensitivität)','erreichte Käufer:innen ÷ alle Käufer:innen','#4ade80',['TP','FN']],['F1-Score','fasst Präzision und Trefferquote zu einem Wert zusammen (harmonisches Mittel)','#f472b6',['TP','FP','FN']]];
   const bars=rows.map((r,i)=>{
     const y=452+i*62;
     TX(U,720,y,r[0],'lbl','text-anchor:start;font-size:16px');TX(U,720,y+16,r[1],'tk2','text-anchor:start');
@@ -1259,10 +1267,10 @@ const val=mkScene('scVal');val.g.classList.add('off');val.st={in:0};
     h.addEventListener('click',()=>hiCells(r[3]));
     return {b,v};
   });
-  const msg=para(U,720,658,17);
+  const msg=para(U,720,720,17);
   // rechte Spalte
-  TX(U,720,628,'Quelle:','tk2','text-anchor:start');
-  LTX(U,758,628,'Google: Accuracy, precision, recall','https://developers.google.com/machine-learning/crash-course/classification/accuracy-precision-recall');
+  TX(U,720,690,'Quelle:','tk2','text-anchor:start');
+  LTX(U,758,690,'Google: Accuracy, precision, recall','https://developers.google.com/machine-learning/crash-course/classification/accuracy-precision-recall');
   function upd(){
     let TP=0,FP=0,FN=0,TN=0;
     cust.forEach((c,i)=>{const t=mode==='all'?true:mode==='none'?false:c.s>=thr;dots[i].setAttribute('opacity',t?1:0);
@@ -1270,7 +1278,7 @@ const val=mkScene('scVal');val.g.classList.add('off');val.st={in:0};
     cTP.textContent=TP;cFN.textContent=FN;cFP.textContent=FP;cTN.textContent=TN;
     const acc=(TP+TN)/100,pre=TP+FP?TP/(TP+FP):null,rec=TP+FN?TP/(TP+FN):0;
     const set=(i,v,t)=>{bars[i].b.setAttribute('width',300*(v||0));bars[i].v.textContent=t;};
-    set(0,acc,pct(acc));set(1,pre,pre===null?'n. d.':pct(pre));set(2,rec,pct(rec));
+    set(0,acc,pct(acc));set(1,pre,pre===null?'n. d.':pct(pre));set(2,rec,pct(rec));const f1=pre===null?null:(pre+rec?2*pre*rec/(pre+rec):0);set(3,f1,f1===null?'n. d.':pct(f1));
     knob.setAttribute('cx',SX0+(SX1-SX0)*(thr-.1)/.8);
     [[bN,'none'],[bA,'all']].forEach(([b,m])=>{if(mode===m)b.r.setAttribute('fill','#0b5a74');else b.r.removeAttribute('fill');});
     const prof=(tp,fp)=>MARGIN*tp-COST*(tp+fp);
@@ -1417,6 +1425,7 @@ function startTest(){D_.phase='testing';D_.tn=0;D_.q=0;dep.tm.setAttribute('opac
   TX(U,1190,444,'Quelle:','tk2','text-anchor:start');
   LTX(U,1228,444,'Microsoft: Machine learning operations (MLOps v2)','https://learn.microsoft.com/en-us/azure/architecture/ai-ml/guide/machine-learning-operations-v2');
   const nb=btn(dep,1190,482,240,30,'Neue Version bereitstellen',()=>sendModel());
+  (()=>{const x=1190,y=530,w=340,g=el('g',{style:'cursor:pointer'},U);el('rect',{class:'ipill',x,y,width:w,height:28,rx:14},g);el('text',{x:x+w/2,y:y+19,class:'tk',style:'font-size:13px'},g).textContent='ⓘ Testverfahren: Black-Box, White-Box, Unit-Test';const h=el('rect',{class:'vhit',x,y,width:w,height:28,rx:14,fill:'transparent'},g);const sh=()=>showTip(1000,90,TIP_TESTS,false);h.addEventListener('mouseenter',sh);h.addEventListener('mouseleave',hideTipSoon);h.addEventListener('click',e=>{e.stopPropagation();sh();});})();
   dep.tick=(sc,dt)=>{
     if(D_.lastVer===0){sc.t0=(sc.t0||0)+dt;if(sc.t0>.6)sendModel();}
     // Test: Testdaten fließen ein, Thermometer steigt
@@ -1494,14 +1503,14 @@ mon.sources=MXs.map((x,i)=>({pipe:'MS'+i,rate:.9,col:SRC.kasse}));
   const what=para(U,24,338,18);
   TX(U,24,540,'Begriffe','lbl','text-anchor:start;font-size:15px');
   const gl=para(U,24,562,17,'font-size:12.5px');
-  gl.set(['Input-Drift: Die Eingabedaten verändern sich gegen-','über den Trainingsdaten – Frühwarnung.','Model Drift: Die Leistung des Modells verschlechtert sich –','durch Input-Drift oder eine veränderte Realität.','Bias: Das Modell liegt bei Gruppen unterschiedlich daneben.','Retraining: erneutes Training mit aktuellen Daten.']);
+  gl.set(['Input- oder Datendrift: Die Eingabedaten verändern sich gegen-','über den Trainingsdaten – Frühwarnung.','Model Drift: Die Leistung des Modells verschlechtert sich –','durch Input- oder Datendrift oder eine veränderte Realität.','Bias: Das Modell liegt bei Gruppen unterschiedlich daneben.','Retraining: erneutes Training mit aktuellen Daten.']);
   // Dashboard
   TX(U,1150,66,'Monitoring-Signale','lbl','text-anchor:start;font-size:15px');
   infoI(mon,1318,61,()=>TIP_MON,false,1150,80);
   gateMark(mon,1360,61,'3',()=>TIP_G3,false);
   infoI(mon,1196,231,()=>TIP_BIAS,false,1150,80);
   (()=>{const x=24,y=482,w=376,g=el('g',{style:'cursor:pointer'},U);el('rect',{class:'ipill',x,y,width:w,height:28,rx:14},g);el('text',{x:x+w/2,y:y+19,class:'tk',style:'font-size:13px'},g).textContent='ⓘ Bias und sozio-demografische Merkmale';const h=el('rect',{class:'vhit',x,y,width:w,height:28,rx:14,fill:'transparent'},g);const sh=()=>showTip(640,80,TIP_BIAS,false);h.addEventListener('mouseenter',sh);h.addEventListener('mouseleave',hideTipSoon);h.addEventListener('click',e=>{e.stopPropagation();sh();});})();
-  const sig=[['Prognosegüte','Abweichung Prognose ↔ Ist',15,25,40],['Input-Drift','Eingabedaten weichen von Trainingsdaten ab',40,60,100],['Bias','Fehlerlücke zwischen den Kaufkraft-Gruppen',8,15,30]];
+  const sig=[['Prognosegüte','Abweichung Prognose ↔ Ist',15,25,40],['Input- oder Datendrift','Eingabedaten weichen von Trainingsdaten ab',40,60,100],['Bias','Fehlerlücke zwischen den Kaufkraft-Gruppen',8,15,30]];
   const sg=sig.map((s,i)=>{
     const y=96+i*70;
     TX(U,1150,y,s[0],'lbl','text-anchor:start;font-size:15px');TX(U,1150,y+16,s[1],'tk2','text-anchor:start');
@@ -1527,10 +1536,10 @@ mon.sources=MXs.map((x,i)=>({pipe:'MS'+i,rate:.9,col:SRC.kasse}));
   let scen='normal',t=0,ver=1,phase='run',pt=0,evT=0;
   const NORMAL={err:6.8,drift:12,gap:2,eS:6,eL:8};
   const WHAT={
-    normal:['Normalbetrieb: Die Filialen melden Absatzdaten, das','Modell liefert Bestellvorschläge und Personalbedarf.','Die Signale rechts zeigen, ob das Modell noch zur','Realität passt: Prognosegüte, Input-Drift und Bias.'],
+    normal:['Normalbetrieb: Die Filialen melden Absatzdaten, das','Modell liefert Bestellvorschläge und Personalbedarf.','Die Signale rechts zeigen, ob das Modell noch zur','Realität passt: Prognosegüte, Input- oder Datendrift und Bias.'],
     karneval:['Sonderaktion Karneval: Das Modell kennt den Termin','aus den Ereignisdaten und empfiehlt Karnevalsartikel','nur für Filialen in Karnevalsregionen (F1–F3).','Das Modell arbeitet wie vorgesehen: Alle Signale','bleiben grün. Nicht jede Veränderung ist Drift.'],
     mall:['Neues Einkaufszentrum: Das Modell sagt den','Umsatzrückgang in Filiale F6 am Stadtrand voraus.','Prognose und Ist stimmen überein, die Signale bleiben','grün. Ein eingebetteter KI-Agent wertet die Zahlen','aus und schlägt der Filialleitung Maßnahmen vor.'],
-    price:['Neue Preisliste: Einige Produkte werden teurer. Die','Preise liegen sofort außerhalb dessen, was das Modell','im Training gesehen hat: Input-Drift als Frühwarnung.','Viele Kund:innen kaufen zunächst wie gewohnt – das','Kaufverhalten ändert sich erst nach und nach. Erst','dann sinkt die Prognosegüte unter den Schwellenwert,','und das Monitoring löst ein Retraining aus.'],
+    price:['Neue Preisliste: Einige Produkte werden teurer. Die','Preise liegen sofort außerhalb dessen, was das Modell','im Training gesehen hat: Input- oder Datendrift als','Frühwarnung.','Viele Kund:innen kaufen zunächst wie gewohnt – das','Kaufverhalten ändert sich erst nach und nach. Erst','dann sinkt die Prognosegüte unter den Schwellenwert,','und das Monitoring löst ein Retraining aus.'],
     bias:['Bias: Insgesamt wirkt die Prognosegüte akzeptabel,','aber für Filialen in Gebieten mit niedriger Kaufkraft','(F7–F10) liegt sie systematisch zu niedrig: zu kleine','Bestellmengen, leere Regale. Ursache: Die Trainings-','daten stammen überwiegend aus den übrigen Filialen.','Tückisch: Leere Regale senken den erfassten Absatz –','das nächste Training bestätigt die zu niedrige Prognose.','Das Monitoring prüft deshalb den Fehler je Gruppe.']
   };
   const wrap=(t,n)=>{const out=[];let l='';for(const w of t.split(' ')){if((l+' '+w).trim().length>n){out.push(l);l=w;}else l=(l+' '+w).trim();}if(l)out.push(l);return out;};
@@ -1600,7 +1609,7 @@ mon.sources=MXs.map((x,i)=>({pipe:'MS'+i,rate:.9,col:SRC.kasse}));
     if(phase!=='retrain'){
       const eL=vals[0]>=sig[0][3]?2:vals[0]>=sig[0][2]?1:0,gL=vals[2]>=sig[2][3]?2:vals[2]>=sig[2][2]?1:0,dL=vals[1]>=sig[1][3]?2:vals[1]>=sig[1][2]?1:0;
       const lvl=Math.max(eL,gL,dL>0&&eL<2&&gL<2?1:0);
-      banner.textContent=gL===2?'Bias-Alarm: Fehlerlücke zu groß':eL===2?'Model Drift: Prognosegüte unter Schwellenwert':dL===2&&eL<2?'Frühwarnung: Input-Drift – Prognosegüte beobachten':lvl===1?'Warnung: Signal im gelben Bereich':'Alle Signale im grünen Bereich';
+      banner.textContent=gL===2?'Bias-Alarm: Fehlerlücke zu groß':eL===2?'Model Drift: Prognosegüte unter Schwellenwert':dL===2&&eL<2?'Frühwarnung: Input- oder Datendrift':lvl===1?'Warnung: Signal im gelben Bereich':'Alle Signale im grünen Bereich';
       bannerR.setAttribute('fill',lvl===2?'#3a1717':lvl===1?'#3a2f12':'#12351f');bannerR.setAttribute('stroke',lvl===2?'#ef4444':lvl===1?'#f59e0b':'#4ade80');
     }
     // Balken
@@ -1638,7 +1647,7 @@ const QUIZ={
  st4:{p:'Beobachte: Die Modellkandidaten werden mit eigenen, vom Training getrennten Daten geprüft. Wer nicht besteht, läuft über die gestrichelte Leitung zurück ins Modelltraining. Wie heißt diese Station?',c:'Validierung (Modellvalidierung)',w:['Test (abschließende Prüfung mit Testdaten)','Modelltraining','Freigabe (menschliche Entscheidung)','Datenintegration'],why:'Mit den Validierungsdaten werden die Einstellungen (Hyperparameter) feinabgestimmt, Modelle verglichen und Overfitting früh erkannt: Ist das Modell im Training deutlich besser als auf den Validierungsdaten, hat es auswendig gelernt. Weil die Entwicklung immer wieder auf diese Daten schaut, ist ihr Ergebnis leicht geschönt. Deshalb prüft danach der unangetastete Testdatensatz das ausgewählte Modell einmalig – für eine unvoreingenommene Bewertung.'},
  ttest:{p:'Beobachte: Nur die ausgewählten Modelle erreichen diese Station. Hier kommen Daten zum Einsatz, die weder im Training noch in der Feinabstimmung verwendet wurden – ein einziges Mal, ganz am Ende. Wie heißt diese Station?',c:'Test (abschließende Prüfung mit Testdaten)',w:['Validierung (Modellvalidierung)','Test (Staging) in der Bereitstellung','Monitoring','Modelltraining'],why:'Der Testdatensatz bleibt bis zum Schluss unangetastet und schätzt unvoreingenommen, wie gut das ausgewählte Modell auf neuen Daten abschneidet. Wird nach dem Testergebnis weiter nachjustiert, wird der Test faktisch zur Validierung, und sein Ergebnis ist zu optimistisch. Nicht zu verwechseln mit dem Test (Staging) in der Bereitstellung: Dort wird eine Modellversion im Zusammenspiel mit den übrigen Systemen geprüft, bevor sie freigegeben wird.'},
  st5:{p:'Beobachte: Ein freigegebenes Modell bedient plötzlich viele Anfragen – grüne Prognosen strömen heraus. Wie heißt diese Station?',c:N.st5,w:[N.st4,N.st2,N.st6,'Penetrationstest'],why:'Beim Deployment geht das freigegebene Modell in den Betrieb und beantwortet laufend Anfragen. Es ist der Anfang des Modell-Lebens im Betrieb, nicht sein Ende.'},
- st6:{p:'Beobachte: Ein Drift-Alarm läuft über die gestrichelte Leitung zurück und startet das Retraining. Wie heißt diese Station?',c:N.st6,w:[N.st3,N.st5,N.st1,'Datenverschlüsselung'],why:'Im Betrieb entfernen sich Eingabedaten und Realität von den Trainingsdaten – Drift ist der Normalfall. Das Monitoring überwacht die Modellleistung (Model Drift), die Datenintegrität und den Input-Drift; über eine Feedback-Schleife wird automatisch oder nach menschlicher Prüfung nachtrainiert (Continuous Training).'},
+ st6:{p:'Beobachte: Ein Drift-Alarm läuft über die gestrichelte Leitung zurück und startet das Retraining. Wie heißt diese Station?',c:N.st6,w:[N.st3,N.st5,N.st1,'Datenverschlüsselung'],why:'Im Betrieb entfernen sich Eingabedaten und Realität von den Trainingsdaten – Drift ist der Normalfall. Das Monitoring überwacht die Modellleistung (Model Drift), die Datenintegrität und den Input- oder Datendrift; über eine Feedback-Schleife wird automatisch oder nach menschlicher Prüfung nachtrainiert (Continuous Training).'},
  da:{p:'Beobachte: Aus den Läden strömen einzelne Kassenbewegungen – mit Tagesrhythmus, aber ohne feste Termine. Welche Quelle ist das?',c:'Verkaufsdaten (Kassensystem)',w:['Bestandsveränderung (2 x täglich)','Regelmäßige Daten (extern) – automatisch','Interne Daten (manuell)','Archivdaten'],why:'Ereignisse, die laufend entstehen (Kassenbewegungen), werden einzeln als Strom übertragen (Streaming). Auf Google Cloud schreiben z. B. Pub/Sub-Abonnements eintreffende Nachrichten sofort in BigQuery. Das lohnt, wenn Aktualität wichtig ist.'},
  db:{p:'Beobachte: Nur um 12:00 und 18:00 Uhr schicken alle Läden gebündelt ihre Bestandsveränderungen. Welche Quelle ist das?',c:'Bestandsveränderung (2 x täglich)',w:['Verkaufsdaten (Kassensystem)','Interne Daten (manuell)','Regelmäßige Daten (extern) – automatisch','Archivdaten'],why:'Gebündelte Übertragung zu festen Zeiten (Batch): planbar und ressourcenschonend, wenn Aktualität im Stundenbereich genügt, etwa für das Bestellwesen. Google nennt dafür z. B. den BigQuery Data Transfer Service als automatisierten Bulk-Load.'},
  dc:{p:'Beobachte: Eine Fachabteilung liefert Listen (etwa die Schichtplanung) – erst nach einem Klick fließen sie. Welche Quelle ist das?',c:'Interne Daten (manuell)',w:['Externe Daten (manuell)','Bestandsveränderung (2 x täglich)','Verkaufsdaten (Kassensystem)','Archivdaten'],why:'Manuell eingespielte interne Listen sind unregelmäßig und fehleranfällig (Formate, Tippfehler, vergessene Lieferung). Hier lohnt es sich, Zuständigkeit, Rhythmus und eine Prüfung vor dem Einspielen festzulegen.'},
