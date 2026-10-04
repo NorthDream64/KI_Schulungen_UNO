@@ -1297,9 +1297,9 @@ const val=mkScene('scVal');val.g.classList.add('off');val.st={in:0};
     ecoRows[2].t2.textContent='2 € × '+(TP+FP)+' angeschriebene Kund:innen';ecoRows[2].v.textContent='− '+((TP+FP)*COST)+' €';
     ecoRows[3].t2.textContent='Umsatz abzüglich Kosten';ecoRows[3].v.textContent=eur(pNow);
     ecoB.textContent='Vergleich: niemanden 0 € · alle '+eur(pAll);
-    if(mode==='all')msg.set(['Alle werden angeschrieben: Die Trefferquote ist 100 %,','aber die Präzision nur '+pct(pre)+' – 90 Coupons gehen an','Menschen, die nicht kaufen. Das kostet mehr, als es bringt.']);
-    else if(mode==='none')msg.set(['Niemand wird angeschrieben: Die Genauigkeit sieht mit '+pct(acc),'gut aus, aber die Trefferquote ist 0 %. Alle Käufer:innen','werden verpasst. Die Präzision ist nicht definiert (0 ÷ 0).']);
-    else msg.set([(TP+FP)+' Kund:innen werden angeschrieben, '+TP+' davon kaufen','(Präzision '+pct(pre)+'). '+FN+' von '+(TP+FN)+' Käufer:innen werden verpasst','(Trefferquote '+pct(rec)+'). Regler nach links: Trefferquote','steigt, Präzision sinkt – und umgekehrt.']);
+    if(mode==='all')msg.set(['Alle werden angeschrieben: Die Trefferquote ist 100 %,','aber die Präzision nur '+pct(pre)+' – 90 Coupons gehen an','Menschen, die nicht kaufen. Das kostet mehr, als es bringt.','Der F1-Score bleibt mit '+pct(f1)+' niedrig: Eine perfekte Treffer-','quote gleicht die schwache Präzision nicht aus.']);
+    else if(mode==='none')msg.set(['Niemand wird angeschrieben: Die Genauigkeit sieht mit '+pct(acc),'gut aus, aber die Trefferquote ist 0 %. Alle Käufer:innen','werden verpasst. Die Präzision ist nicht definiert (0 ÷ 0),','und damit auch der F1-Score. Er entlarvt, was die','Genauigkeit verdeckt: Das Modell findet niemanden.']);
+    else msg.set([(TP+FP)+' Kund:innen werden angeschrieben, '+TP+' davon kaufen','(Präzision '+pct(pre)+'). '+FN+' von '+(TP+FN)+' Käufer:innen werden verpasst','(Trefferquote '+pct(rec)+'). Regler nach links: Trefferquote','steigt, Präzision sinkt – und umgekehrt.'].concat(f1===null?[]:Math.abs(pre-rec)>.25?['F1-Score '+pct(f1)+': Der schwächere der beiden Werte zieht','ihn nach unten – Präzision und Trefferquote sind unausgewogen.']:['F1-Score '+pct(f1)+': ein ausgewogener Kompromiss aus Präzision','und Trefferquote. Ob er sich rechnet, zeigt die Wirtschaftlichkeit.']));
   }
   const mv=e=>{const x=Math.max(SX0,Math.min(SX1,svgX(e)));thr=Math.round((.1+.8*(x-SX0)/(SX1-SX0))*100)/100;mode=null;upd();};
   let drag=false;
