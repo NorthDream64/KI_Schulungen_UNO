@@ -176,11 +176,11 @@ a: [
     opts: [
       'Konsistenz — wenn verschiedene Templates im Umlauf sind und die KI die Daten nicht automatisch vereinheitlichen kann',
       'Vollständigkeit — wenn ein erheblicher Teil der Datensätze relevante Pflichtfelder nicht enthält und die KI ohne diese nicht zuverlässig bewerten kann',
-      'Eindeutigkeit — weil Duplikate in den bisherigen Daten nachweislich noch nie aufgetreten sind',
-      'Aktualität — weil alle Eingangsdaten stets aus dem laufenden Jahr stammen und daher immer aktuell sind'
+      'Eindeutigkeit — weil Duplikate sich später im Prozess nicht mehr eliminieren lassen',
+      'Aktualität — weil nicht aktuelle Daten das Modell unbrauchbar machen'
     ],
     correct: [0,1],
-    exp: 'Konsistenz (verschiedene Templates, inkonsistente Datenformate) und Vollständigkeit (fehlende Pflichtfelder bei einem Teil der Einreichungen) sind die kritischsten Probleme bei heterogenen Eingangsdaten. Eindeutigkeit ist kein akutes Problem, wenn Duplikate bisher nicht nachgewiesen wurden. Aktualität betrifft vor allem Marktdaten in den Dokumenten — nicht die Eingangsdokumente selbst.',
+    exp: 'Konsistenz (verschiedene Templates, inkonsistente Datenformate) und Vollständigkeit (fehlende Pflichtfelder bei einem Teil der Einreichungen) sind die kritischsten Probleme bei heterogenen Eingangsdaten. Eindeutigkeit ist kein akutes Problem, wenn Duplikate in der Phase "Transform" beseitigt werden können. Aktualität ist ein Faktor, der möglicherweise für das Modell eine Rolle spielt und im Zuge der "Selektion" ausgewählt wird; bei den Eingangsdaten ist jedocg weniger die Aktualität entscheidend als eine klare zeitliche Zuordnung des Datensatzes.',
     src: 'DAMA International – DMBOK · dama.org/cpages/body-of-knowledge · ISO/IEC 42001:2023, Kl. 8.4 · iso.org/standard/81230.html'
   },
   {
@@ -200,13 +200,13 @@ a: [
     sc: 'Das Team fragt die KI-Managerin, womit der Aufbau der Datenpipeline beginnen soll. Sie erklärt den ETL-Prozess.',
     q: 'Welche Aussage(n) zum korrekten ersten Schritt in einem ETL-Prozess ist oder sind korrekt?',
     opts: [
-      'Extract — Daten aus allen Quellen einsammeln, bevor Bereinigung oder Transformation beginnt',
-      'Transform — zuerst alle Dokumente in ein einheitliches Format bringen, dann erst einsammeln',
-      'Load — zuerst die Zieldatenbank aufsetzen, in die später geladen wird',
-      'Validate — zuerst alle Qualitätsprobleme dokumentieren, bevor überhaupt Daten bewegt werden'
+      'Extract — Daten aus allen Quellen einsammeln, bevor Bereinigung oder Standardisierung beginnt',
+      'Eradicate — zuerst alle fehlerhaften Datensätze beseitigen, dann erst einen Upload in den Rohdatenspeicher durchführen',
+      'Enable — zuerst die Zieldatenbank aufsetzen, in die später geladen wird',
+      'Enhance — zuerst alle Qualitätsprobleme dokumentieren, bevor überhaupt Daten bewegt werden'
     ],
     correct: [0],
-    exp: 'ETL beginnt mit Extract: alle Daten aus den Quellen einsammeln, ohne sie vorher zu verändern. Erst dann folgt Transform (Bereinigung und Normalisierung) und schließlich Load (Ablage in der Zieldatenbank). In der modernen ELT-Variante wird zuerst geladen, dann in der Zielumgebung transformiert — aber auch hier kommt Extract an erster Stelle.',
+    exp: 'ELT beginnt mit Extract: alle Daten aus den Quellen einsammeln, ohne sie vorher zu verändern. Dann folgt Load (Ablage in der Zieldatenbank, dem Rohdatenspeicher)m danach die Datenaufbereitung in "Transform" (Bereinigung und Standardisierung). In ETL-Variante werden die Daten vor dem Laden in die Zielumgebung transformiert — aber auch hier kommt Extract an erster Stelle. Alle übrigen genannten Interpretation des Buchstaben "E" sind Distraktoren.',
     src: 'PMI – Business Analysis Standard · pmi.org/pmbok-guide-standards/foundational/business-analysis · Azure Data Architecture Guide · learn.microsoft.com/de-de/azure/architecture/data-guide/'
   },
   {
@@ -228,11 +228,11 @@ a: [
     opts: [
       'Nach der Extraktion muss geprüft werden, ob alle erwarteten Pflichtfelder vorhanden sind — fehlt ein Pflichtdokument, stoppt die Pipeline und meldet den Fehler',
       'Nach der Transformation muss geprüft werden, ob Datumsformate und Einheiten normiert wurden — ein unbereinigter Datensatz darf nicht ins Modell',
-      'Das Scoring-Ergebnis muss protokolliert werden, damit die verantwortliche Person nachvollziehen kann, welche Daten in die Bewertung eingeflossen sind',
+      'Die Kriterien für die Datenrepräsentativität müssen protokolliert werden, damit die verantwortliche Person nachvollziehen kann, welche Daten in die Bewertung eingeflossen sind',
       'Qualitäts-Gates sind optional, wenn das Modell ausreichend Trainingsdaten hat — dann gleicht es schlechte Eingaben selbst aus'
     ],
     correct: [0,1,2],
-    exp: 'Gate nach Extract (Vollständigkeit), Gate nach Transform (Normierung) und Protokollierung des Scorings (Nachvollziehbarkeit) sind alle korrekt. Das Modell gleicht schlechte Daten nicht selbst aus — im Gegenteil: „Garbage in, garbage out" gilt auch bei großen Trainingsdatensätzen.',
+    exp: 'Gate nach Extract (Vollständigkeit), Gate nach Transform (Normierung) und Protokollierung des Datenrepräsentativität (zwecks Nachvollziehbarkeit) sind alle korrekt. Das Modell gleicht schlechte Daten nicht selbst aus — im Gegenteil: „Garbage in, garbage out" gilt auch bei großen Trainingsdatensätzen.',
     src: 'ISO/IEC 42001:2023, Kl. 8 (Betrieb) · iso.org/standard/81230.html · DSGVO Art. 22 · gdpr-info.eu/art-22-gdpr/'
   }
 ],
@@ -246,7 +246,7 @@ b: [
       'Aktualität: Marktdaten von 2021 sind für eine aktuelle Bewertungsentscheidung möglicherweise nicht repräsentativ',
       'Konsistenz: Das Financial Model verwendet ein Template, das nicht dem internen Standard entspricht',
       'Eindeutigkeit: Das Dokument ist auf Englisch verfasst — bei der Übersetzung ins Deutsche gehen Nuancen verloren',
-      'Vollständigkeit: Bei Dokumenten, die Alexander erstellt hat, fehlt meist irgendetwas'
+      'Vollständigkeit: Bei Dokumenten, die Hilmar erstellt hat, fehlen häufig die Fußnoten'
     ],
     correct: [0,1],
     exp: 'Aktualität (Marktdaten aus 2021) und Konsistenz (abweichendes Template) sind die erkennbaren Qualitätsprobleme. Sprache ist kein Eindeutigkeitsmerkmal — ein englischsprachiges Dokument bedeutet z.B. nicht, dass es sich um ein Duplikat handelt. Die Übersetzung des Dokuments in eine andere Sprache wäre ein Schritt, der freiwillig und ohne Not mögliche Fehler in den Prozess einbaut. Vollständigkeit bezieht sich auf fehlende Pflichtfelder, nicht auf die Autoren oder die Sprache.',
@@ -258,11 +258,11 @@ b: [
     opts: [
       'Ein standardisiertes Einreichungs-Template einführen: Pflichtfelder für relevante Kerndaten wie Umsatz, Team-Größe, Gründungsjahr und Branche',
       'Ein Online-Einreichungsformular mit Validierung: verhindert inkonsistente Formate bereits bei der Eingabe',
-      'Ausschließlich eine Sprache für alle Einreichungen zulassen: Sprachstandardisierung reduziert den NLP-Aufwand erheblich',
+      'Ausschließlich eine Sprache unternehmensweit für alle Einreichungen zulassen: Sprachstandardisierung reduziert den späteren Datenverarbeitungsaufwand erheblich',
       'Eingaben automatisch mit einer externen Datenbank abgleichen: ermöglicht die Validierung von Marktdaten gegen aktuelle Quellen'
     ],
     correct: [0,1,3],
-    exp: 'Standardisiertes Template, Online-Formular mit Validierung und automatischer Abgleich mit externen Quellen sind sinnvolle Maßnahmen. Eine Sprachbeschränkung schließt internationale Einreichungen aus — das ist eine strategische Einschränkung, keine Qualitätsmaßnahme.',
+    exp: 'Standardisiertes Template, Online-Formular mit Validierung und automatischer Abgleich mit externen Quellen sind sinnvolle Maßnahmen. Eine Sprachbeschränkung schließt internationale Einreichungen aus — das ist eine strategische Einschränkung, keine Qualitätsmaßnahme. Schlüsselbegriffe, die in ihrer Bedeutung Einheitlichkeit verlangen lassen sich unternehmensweit beispielsweise durch eine Drop-Down-Auswahl festlegen.',
     src: 'DAMA International – DMBOK · dama.org/cpages/body-of-knowledge · ISO/IEC 42001:2023, Kl. 8.4 · iso.org/standard/81230.html'
   },
   {
@@ -283,7 +283,7 @@ b: [
     q: 'Welche Aussage(n) erklärt, warum das Modell und deine Einschätzung zu unterschiedlichen Bewertungen kommen können?',
     opts: [
       'Das Modell lernt aus historischen Daten — wenn vergangene Entscheidungen bestimmte Kategorien systematisch benachteiligt haben, reproduziert es diesen Bias',
-      'Die Datenvorbereitung nimmt bis zu 80 % des ML-Projektaufwands in Anspruch — ein Fehler bei der Feature-Extraktion verfälscht den Score',
+      'Die Datenaufbereitung nimmt bis zu 80 % des ML-Projektaufwands in Anspruch — ein Fehler bei der Feature-Selektion verfälscht den Score',
       'Das Modell ist per Definition objektiver als ein Mensch — KI-Scores sind zuverlässiger als menschliche Urteile',
       'Ein niedriger Score bedeutet, dass die Einreichung regulatorisch nicht förderfähig ist — das ist eine Compliance-Grenze'
     ],
