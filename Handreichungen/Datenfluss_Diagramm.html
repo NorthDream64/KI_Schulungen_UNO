@@ -726,6 +726,7 @@ fab.hints=[];
   el('text',{x:1445,y:698,class:'tk2'},U).textContent='geht nicht ins Training';
   tank(fab,'ta',740,560,160,76,'Quarantäne','#c0843f');
   infoI(fab,916,574,()=>TIP_QUAR,true);
+  (()=>{const x=1290,y=56,w=270,g=el('g',{style:'cursor:pointer'},U);el('rect',{class:'ipill',x,y,width:w,height:26,rx:13},g);el('text',{x:x+w/2,y:y+18,class:'tk'},g).textContent='ⓘ Data Observability: fünf Signale';const h=el('rect',{class:'vhit',x,y,width:w,height:26,rx:13,fill:'transparent'},g);const sh=()=>showTip(1100,86,TIP_OBS,false);h.addEventListener('mouseenter',sh);h.addEventListener('mouseleave',hideTipSoon);h.addEventListener('click',e=>{e.stopPropagation();sh();});})();
   tank(fab,'tc',1080,560,160,76,'Dubletten (verworfen)','#c0843f');
   const ip=el('g',null,U);
   el('rect',{class:'ipill',x:30,y:56,width:136,height:26,rx:13},ip);
@@ -822,6 +823,17 @@ const TIP_ETL='<p><b>ETL oder ELT – der Unterschied in Kürze</b></p>'
  +'<p><b>ELT</b> (Extract → Load → Transform): Die Rohdaten werden <i>zuerst</i> ins Zielsystem geladen (hier: Rohdatenspeicher / Raw Layer) und erst dort aufbereitet. Die Rohdaten bleiben erhalten und können später neu ausgewertet werden.</p>'
  +'<p>Dieses Diagramm folgt <b>ELT</b>. Ausnahme: Personenbezogene Stechuhr-Daten werden schon vor dem Load anonymisiert (Datenminimierung).</p>'
  +'<small>Quellen: <a href="https://aws.amazon.com/compare/the-difference-between-etl-and-elt/" target="_blank" rel="noopener">AWS: ETL vs. ELT</a> · <a href="https://www.ibm.com/think/topics/etl" target="_blank" rel="noopener">IBM: Was ist ETL?</a> · <a href="https://docs.aws.amazon.com/prescriptive-guidance/latest/defining-bucket-names-data-lakes/introduction.html" target="_blank" rel="noopener">AWS Prescriptive Guidance: Data-Lake-Schichten</a></small>';
+const TIP_OBS='<p><b>Data Observability – merkt die Pipeline, wenn sie falsche Daten liefert?</b></p>'
+ +'<p>Eine Pipeline kann technisch fehlerfrei laufen und trotzdem falsche Daten liefern: Eine Quelle ändert ihr Format, eine Lieferung bleibt aus, ein Fehler passiert unbemerkt. Data Observability beobachtet deshalb laufend fünf Signale. Das Mindestprogramm sind Frische und Datenmenge – ein einfaches Dashboard, das täglich zeigt, ob und wie viele Daten geflossen sind.</p>'
+ +'<table><tr><th>Signal</th><th>Leitfrage</th><th>Im Diagramm</th></tr>'
+ +'<tr><td>Frische</td><td>Sind die Daten so aktuell wie vereinbart?</td><td>Kommen die Bestandsmeldungen wirklich um 12 und 18 Uhr? (Zeitleiste auf der Extract-Seite; Gate 2: Aktualität)</td></tr>'
+ +'<tr><td>Datenmenge</td><td>Kommen ungefähr so viele Datensätze wie üblich?</td><td>Liefern alle zehn Filialen? (technische Prüfung: Zeilenzahl)</td></tr>'
+ +'<tr><td>Struktur (Schema)</td><td>Haben sich Felder oder Datentypen geändert?</td><td>technische Prüfung und Maskierung</td></tr>'
+ +'<tr><td>Verteilung</td><td>Liegen die Werte im üblichen Bereich?</td><td>Quarantänequote; in der Modellüberwachung: Input- oder Datendrift</td></tr>'
+ +'<tr><td>Herkunft (Lineage)</td><td>Woher stammen die Daten, welche Stufen haben sie durchlaufen?</td><td>Rohdatenspeicher und Fehlergrund in der Quarantäne machen den Weg nachvollziehbar.</td></tr></table>'
+ +'<p><b>Abgrenzung:</b> Datenmenge meint den Mengenfluss einer Lieferung, nicht die Datenqualitätsdimension Vollständigkeit (sind Pflichtfelder gefüllt?). Und Data Observability beobachtet die <b>Pipeline</b>, die Modellüberwachung das <b>Modell</b> – beides ergänzt sich.</p>'
+ +'<p>Das Raster stammt vom Software-Anbieter Monte Carlo; dessen Mitgründerin Barr Moses hat den Begriff 2019 geprägt. Die Verteilung heißt dort inzwischen „Quality“ (z. B. Anteil leerer Werte, Werte im zulässigen Bereich).</p>'
+ +'<small>Quellen: <a href="https://montecarlo.ai/blog-what-is-data-observability" target="_blank" rel="noopener">Monte Carlo: What Is Data Observability? (Herstellerquelle)</a> · <a href="https://developers.google.com/machine-learning/crash-course/production-ml-systems/monitoring" target="_blank" rel="noopener">Google: Monitoring pipelines</a></small>';
 const TIP_QUAR='<p><b>Quarantäne – und warum ihre Quote zählt</b></p>'
  +'<p><b>Nicht löschen, sondern ablegen:</b> Was bei der Bereinigung auffällt, wird mit Fehlergrund in die Quarantäne gelegt. Grund ist die Nachvollziehbarkeit: Wer später erklären muss, warum Daten im Training fehlen, braucht die Aussonderung als dokumentierten Vorgang und nicht als Lücke. Ob ein unplausibler Wert ein Fehler oder ein echter Sonderfall ist, klärt der Fachbereich.</p>'
  +'<p><b>Quarantänequote als Frühkennzahl:</b> Der Anteil ausgesonderter Datensätze steigt oft, bevor die Modellgüte fällt – etwa wenn ein Vorsystem sein Lieferformat ändert. Deshalb wird die Quote laufend beobachtet und mit einem Schwellenwert versehen (z.B. höchstens 2 % aller standardisierten Datensätze aus der Quelle X).</p>'
