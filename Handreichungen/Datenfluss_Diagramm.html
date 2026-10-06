@@ -726,6 +726,7 @@ fab.hints=[];
   el('text',{x:1445,y:698,class:'tk2'},U).textContent='geht nicht ins Training';
   tank(fab,'ta',740,560,160,76,'Quarantäne','#c0843f');
   infoI(fab,916,574,()=>TIP_QUAR,true);
+  (()=>{const x=1290,y=56,w=270,g=el('g',{style:'cursor:pointer'},U);el('rect',{class:'ipill',x,y,width:w,height:26,rx:13},g);el('text',{x:x+w/2,y:y+18,class:'tk'},g).textContent='ⓘ Feature Engineering: drei Tätigkeiten';const h=el('rect',{class:'vhit',x,y,width:w,height:26,rx:13,fill:'transparent'},g);const sh=()=>showTip(1000,86,TIP_FE,false);h.addEventListener('mouseenter',sh);h.addEventListener('mouseleave',hideTipSoon);h.addEventListener('click',e=>{e.stopPropagation();sh();});})();
   tank(fab,'tc',1080,560,160,76,'Dubletten (verworfen)','#c0843f');
   const ip=el('g',null,U);
   el('rect',{class:'ipill',x:30,y:56,width:136,height:26,rx:13},ip);
@@ -822,6 +823,14 @@ const TIP_ETL='<p><b>ETL oder ELT – der Unterschied in Kürze</b></p>'
  +'<p><b>ELT</b> (Extract → Load → Transform): Die Rohdaten werden <i>zuerst</i> ins Zielsystem geladen (hier: Rohdatenspeicher / Raw Layer) und erst dort aufbereitet. Die Rohdaten bleiben erhalten und können später neu ausgewertet werden.</p>'
  +'<p>Dieses Diagramm folgt <b>ELT</b>. Ausnahme: Personenbezogene Stechuhr-Daten werden schon vor dem Load anonymisiert (Datenminimierung).</p>'
  +'<small>Quellen: <a href="https://aws.amazon.com/compare/the-difference-between-etl-and-elt/" target="_blank" rel="noopener">AWS: ETL vs. ELT</a> · <a href="https://www.ibm.com/think/topics/etl" target="_blank" rel="noopener">IBM: Was ist ETL?</a> · <a href="https://docs.aws.amazon.com/prescriptive-guidance/latest/defining-bucket-names-data-lakes/introduction.html" target="_blank" rel="noopener">AWS Prescriptive Guidance: Data-Lake-Schichten</a></small>';
+const TIP_FE='<p><b>Feature Engineering – drei Tätigkeiten an drei Stellen</b></p>'
+ +'<p>Feature Engineering ist keine eigene Phase zwischen Daten und Training, sondern der Sammelbegriff für alles, was aus Daten die Merkmale macht, mit denen ein Modell rechnet. Das geschieht an unterschiedlichen Stellen des Datenflusses.</p>'
+ +'<table><tr><th>Tätigkeit</th><th>Was geschieht</th><th>Wo im Diagramm</th><th>Beispiel</th></tr>'
+ +'<tr><td>Feature Extraction</td><td>Aus Rohdaten, die keine Tabelle sind – Texte, Bilder, Audio –, werden überhaupt erst rechenbare Merkmale gewonnen.</td><td>Datenstrang, bei unstrukturierten Quellen (Transform)</td><td>Aus „Stadtfest am Samstag, 20.000 Gäste erwartet“ wird: Großveranstaltung in der Nähe: ja · erwartete Besucher: 20.000</td></tr>'
+ +'<tr><td>Merkmale bilden (Transformation)</td><td>Aus vorhandenen Feldern werden abgeleitete Größen berechnet.</td><td>Modellstrang (Modellentwicklung, Station 4)</td><td>„Absatz der letzten 7 Tage“ aus den täglichen Verkaufszahlen</td></tr>'
+ +'<tr><td>Feature Selection</td><td>Unter den vorhandenen Merkmalen werden die ausgewählt, die ins Training gehen; der Rest zweigt ab und bleibt gespeichert.</td><td>Station Selektion, am Ende des Datenstrangs</td><td>Irrelevante und doppelt aussagende Merkmale fallen heraus; zugleich wird geprüft, ob alle Filialen repräsentativ abgebildet sind.</td></tr></table>'
+ +'<p>Microsoft fasst Feature Engineering in seinem Ablauf für ML-Projekte genauso: Merkmale werden <b>gewonnen und ausgewählt</b>. Wichtig für alle drei Tätigkeiten: Nur Informationen verwenden, die zum Zeitpunkt der Vorhersage vorliegen – sonst entsteht ein Datenleck.</p>'
+ +'<small>Quellen: <a href="https://www.microsoft.com/en-us/research/wp-content/uploads/2019/03/amershi-icse-2019_Software_Engineering_for_Machine_Learning.pdf" target="_blank" rel="noopener">Microsoft Research: Software Engineering for Machine Learning</a> · <a href="https://scikit-learn.org/stable/modules/feature_extraction.html" target="_blank" rel="noopener">scikit-learn: Feature extraction</a> · <a href="https://scikit-learn.org/stable/modules/feature_selection.html" target="_blank" rel="noopener">scikit-learn: Feature selection</a></small>';
 const TIP_OBS='<p><b>Data Observability – merkt die Pipeline, wenn sie falsche Daten liefert?</b></p>'
  +'<p>Eine Pipeline kann technisch fehlerfrei laufen und trotzdem falsche Daten liefern: Eine Quelle ändert ihr Format, eine Lieferung bleibt aus, ein Fehler passiert unbemerkt. Data Observability beobachtet deshalb laufend fünf Signale. Das Mindestprogramm sind Frische und Datenmenge – ein einfaches Dashboard, das täglich zeigt, ob und wie viele Daten geflossen sind.</p>'
  +'<table><tr><th>Signal</th><th>Leitfrage</th><th>Im Diagramm</th></tr>'
@@ -874,7 +883,7 @@ const TIP_PREP='<p><b>Datenvorbereitung: Bereinigung, Transformation, Selektion<
  +'<table><tr><th>Hürde</th><th>Was das bedeutet</th></tr>'
  +'<tr><td>Rechenaufwand</td><td>Große Mengen an Texten oder Bildern zu verarbeiten braucht spürbar mehr Rechenleistung und Speicher als Tabellen.</td></tr>'
  +'<tr><td>Einheitliches Format</td><td>Die Inhalte müssen erst in eine gemeinsame, tabellarische Form gebracht werden, bevor sie sich mit Kassen- und Bestandsdaten zusammenführen lassen.</td></tr>'
- +'<tr><td>Feature Extraction</td><td>Eigene Verfahren – z. B. Texterkennung oder Sprachmodelle – gewinnen aus den Rohinhalten Merkmale, mit denen ein Modell rechnen kann. Aus der Meldung „Stadtfest am Samstag, 20 000 Gäste erwartet“ wird z. B. „Großveranstaltung nahe F3: ja; erwartete Besucher: 20 000“.</td></tr></table>'
+ +'<tr><td>Feature Extraction</td><td>Eigene Verfahren – z. B. Texterkennung oder Sprachmodelle – gewinnen aus den Rohinhalten Merkmale, mit denen ein Modell rechnen kann. Aus der Meldung „Stadtfest am Samstag, 20.000 Gäste erwartet“ wird z. B. „Großveranstaltung nahe F3: ja; erwartete Besucher: 20.000“.</td></tr></table>'
  +'<p>Vollautomatisch klappt das selten: Unsichere Ergebnisse prüft ein Mensch, und seine Korrekturen verbessern das Verfahren beim nächsten Durchlauf.</p>'
  +'<small>Quellen: <a href="https://www.tensorflow.org/tfx/guide/tft_bestpractices" target="_blank" rel="noopener">Google/TensorFlow: Data preprocessing for ML</a> · <a href="https://cloud.google.com/blog/products/gcp/preparing-and-curating-your-data-for-machine-learning" target="_blank" rel="noopener">Google Cloud: Preparing and curating your data for ML</a> · <a href="https://cloud.google.com/discover/unstructured-data" target="_blank" rel="noopener">Google Cloud: What is unstructured data?</a> · <a href="https://scikit-learn.org/stable/modules/feature_extraction.html" target="_blank" rel="noopener">scikit-learn: Feature extraction</a></small>';
 const TIP_INT='<p><b>Datenintegration – die Brücke zum Modell</b></p>'
@@ -959,7 +968,7 @@ const TIP_TERMS='<p><b>Fachbegriffe der Modellentwicklung</b></p>'
  +'<table><tr><th>Begriff</th><th>Bedeutung</th></tr>'
  +'<tr><td>Zielvariable (Label)</td><td>das Ergebnis, das das Modell vorhersagen soll – z. B. „kauft Grillkohle: ja/nein“.</td></tr>'
  +'<tr><td>Merkmal (Feature)</td><td>eine Eingangsgröße, aus der das Modell seine Vorhersage ableitet – z. B. Wochentag oder Wetterprognose.</td></tr>'
- +'<tr><td>Feature Engineering</td><td>aus Rohdaten und Vermutungen messbare Merkmale bilden – z. B. „Absatz der letzten 7 Tage“.</td></tr>'
+ +'<tr><td>Feature Engineering</td><td>Sammelbegriff für drei Tätigkeiten: Merkmale gewinnen (Feature Extraction), ableiten (Merkmale bilden, z. B. „Absatz der letzten 7 Tage“) und auswählen (Feature Selection).</td></tr>'
  +'<tr><td>Feature Extraction vs. Feature Selection</td><td><b>Extraction</b> gewinnt aus Rohdaten wie Texten oder Bildern erst Merkmale, mit denen ein Modell rechnen kann. <b>Selection</b> wählt unter vorhandenen Merkmalen die aus, die ins Training gehen (im Diagramm: Station Selektion). Beide gehören zum Feature Engineering.</td></tr>'
  +'<tr><td>Datenleck (Data Leakage)</td><td>das Modell nutzt beim Lernen Informationen, die zum Zeitpunkt der Vorhersage noch nicht vorliegen. Im Test glänzt es, im Betrieb versagt es.</td></tr>'
  +'<tr><td>Baseline</td><td>eine einfache Vergleichsregel als Messlatte – z. B. „wie am gleichen Wochentag letzte Woche“.</td></tr>'
@@ -1203,6 +1212,7 @@ trn.sources=[{pipe:'tIn',rate:4,col:COL.clean}];
     para(U,x+11,y+54,15,'font-size:11.5px').set(s[1]);
     if(s[2]){TX(U,x+11,y+172,'Beispiel','tk2','text-anchor:start;fill:#4cc9f0;font-size:11px');para(U,x+11,y+188,14,'font-size:11px;fill:#9fb3c8').set(s[2]);}
     if(s[3])btn(trn,x+10,y+214,W-20,26,s[3][0],()=>setView(s[3][1]));
+    if(i===3)infoI(trn,x+W-14,y+22,()=>TIP_FE,true,800,420);
   });
   TX(U,24,706,'Merksatz: Der Testbestand wird früh beiseitegelegt und genau einmal genutzt – und ein Modell muss eine einfache Baseline schlagen.','sub','text-anchor:start;font-size:13px;fill:#fde047');
 })();
