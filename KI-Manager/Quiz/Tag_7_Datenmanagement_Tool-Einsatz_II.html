@@ -215,7 +215,7 @@ a: [
     opts: [
       'Frische — sind die Scoring-Ergebnisse von heute oder bereits mehrere Tage alt?',
       'Vollständigkeit — kommen so viele Datensätze an wie erwartet, oder fehlen plötzlich große Anteile der Uploads?',
-      'Acceptance — wie angenehm empfinden die Nutzer:innen die Datenoberfläche im Alltag?',
+      'Acceptance — als wie angenehm empfinden die Nutzer:innen die Datenoberfläche im Alltag?',
       'Originalität — enthält die Pipeline Daten, die noch nirgendwo sonst verwendet wurden?'
     ],
     correct: [0,1],
@@ -246,7 +246,7 @@ b: [
       'Eindeutigkeit — doppelte Einträge erschweren die KI-gestützte Zuordnung von Proposals zu Personen',
       'Konsistenz — Daten aus unterschiedlichen Export-Generationen folgen vermutlich unterschiedlichen Schemata',
       'Vollständigkeit — fehlende Verknüpfung zu den Proposal-Daten bedeutet, dass relevante Informationen für das Screening nicht zusammengeführt werden können',
-      'Aktualität — jedes CRM-System ist nach spätestens einem Jahr automatisch veraltet, unabhängig vom Pflegeaufwand'
+      'Aktualität — jedes CRM-System ist nach spätestens einem Jahr veraltet, unabhängig vom Pflegeaufwand'
     ],
     correct: [0,1,2],
     exp: 'Eindeutigkeit (doppelte Einträge) ✓, Konsistenz (unterschiedliche Export-Schemata) ✓ und Vollständigkeit (fehlende Verknüpfung relevanter Datenquellen) ✓ sind die direkt erkennbaren DAMA-Probleme. Aktualität ist keine pauschale Funktion der Zeit — ein gut gepflegtes CRM kann auch nach Jahren aktuell sein, ein vernachlässigtes nach Wochen veraltet.',
@@ -262,7 +262,7 @@ b: [
       'Währungsunterschiede sind in der Praxis vernachlässigbar und können bei Bedarf in der Applikation selbst ausgeglichen werden'
     ],
     correct: [0,1],
-    exp: 'ETL ist hier sinnvoll, weil die Rohdaten (unterschiedliche Begriffe, Währungen) im Zielsystem sonst unbrauchbar wären ✓ — eine Mapping-Tabelle reduziert das Risiko von Fehlinterpretationen im Scoring deutlich ✓. Die KI „lernt" nicht automatisch korrekte Vereinheitlichung — uneinheitliche Eingaben führen zu „Garbage in, garbage out". Währungsunterschiede sind keineswegs vernachlässigbar — ein Vergleich von USD- und EUR-Werten ohne Umrechnung verfälscht jedes Scoring-Ergebnis. Sie sind auch nicht leicht in der Applikation, also am Ende der Data Pipeline zu normalisieren.',
+    exp: 'ETL ist hier sinnvoll, weil die Rohdaten (unterschiedliche Begriffe, Währungen) im Zielsystem sonst unbrauchbar wären. Allerdings stehen die ursprünglichen Daten dann auch nicht mehr für das Modelltraining zur Verfügung ✓ — eine Mapping-Tabelle reduziert das Risiko von Fehlinterpretationen im Scoring deutlich ✓. Die KI „lernt" nicht automatisch korrekte Vereinheitlichung — uneinheitliche Eingaben führen zu „Garbage in, garbage out". Währungsunterschiede sind keineswegs vernachlässigbar — ein Vergleich von USD- und EUR-Werten ohne Umrechnung verfälscht jedes Scoring-Ergebnis. Sie sind auch nicht leicht in der Applikation, also am Ende der Data Pipeline zu normalisieren.',
     src: 'Google Cloud Dataflow · cloud.google.com/dataflow/docs/overview · DAMA — DMBOK · dama.org/cpages/body-of-knowledge'
   },
   {
@@ -287,8 +287,8 @@ b: [
       'Verteilung — liegen die eintreffenden Werte noch im erwarteten Wertebereich, oder häufen sich plötzlich leere oder untypische Einträge?',
       'Beliebtheit — wie oft wird ein Datensatz von den Nutzer:innen angeklickt?'
     ],
-    correct: [0,1,2],
-    exp: 'Struktur (Format-/Feldänderungen erkennen) ✓, Herkunft (Fehlerquelle lokalisieren) ✓ und Verteilung (Werte im Normalbereich?) ✓ sind drei der fünf etablierten Data-Observability-Signale — genau die, die bei einer stillen Feldumbenennung greifen. „Beliebtheit" ist kein Data-Observability-Signal; die tatsächlichen weiteren Signale sind Frische und Vollständigkeit.',
+    correct: [0,1],
+    exp: 'Struktur (Format-/Feldänderungen erkennen) ✓, Herkunft (Fehlerquelle lokalisieren) ✓ sind zwei der fünf etablierten Data-Observability-Signale — genau die, die bei einer stillen Feldumbenennung greifen. Verteilung (Werte im Normalbereich?) würde dagegen in aller Regel nicht von einer Umbenennung einer Spalte in den Quelldaten beeinflusst werden. „Beliebtheit" ist kein Data-Observability-Signal; die tatsächlichen weiteren Signale sind Frische und Vollständigkeit.',
     src: 'Monte Carlo Data — What is Data Observability? (2026) · montecarlo.ai/blog-what-is-data-observability/'
   },
   {
