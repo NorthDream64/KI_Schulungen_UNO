@@ -198,7 +198,7 @@ a: [
   },
   {
     sc: 'Ein Teammitglied schlägt vor, die Vorprüfung eingehender Unterlagen per Regelwerk zu automatisieren: feste Formularfelder, klar definierte Schwellenwerte, immer dasselbe Format.',
-    q: 'Welche Aussage(n) zur Abgrenzung von RPA und KI-Automatisierung ist oder sind korrekt?',
+    q: 'Welche Aussage(n) zur Abgrenzung von RPA (Robotic Process Automation) und KI-Automatisierung ist oder sind korrekt?',
     opts: [
       'Wenn die Aufgabe regelbasiert ist und ein Mensch sie anhand einer festen Schritt-für-Schritt-Anleitung erledigen könnte, ist RPA die naheliegende Wahl — sie arbeitet präzise mit strukturierten, formal konstanten Daten',
       'RPA lernt nicht aus neuen Beispielen und erkennt keine Muster in unstrukturierten Daten — ändert sich das Antragsformat grundlegend, muss das Regelwerk manuell angepasst werden',
@@ -213,13 +213,13 @@ a: [
     sc: 'Vor dem Go-Live diskutiert das Team, wie der Wechsel vom alten zum neuen Modell ablaufen soll — und wie viel davon schiefgehen darf.',
     q: 'Welche Aussage(n) zu den Test-Strategien Shadow Mode, Canary Release und Blue-Green ist oder sind korrekt?',
     opts: [
-      'Im Shadow Mode läuft das neue Modell parallel mit, seine Ausgaben werden aber nicht verwendet — das Risiko ist null, weil ausschließlich beobachtet wird',
+      'Im Shadow Mode läuft das neue Modell parallel mit, seine Ausgaben werden aber nicht verwendet — das Risiko ist praktisch null, weil ausschließlich beobachtet wird',
       'Bei einem Canary Release erhält zunächst nur ein kleiner Anteil der Anfragen das neue Modell, der Anteil wird schrittweise erhöht — ein Rollback bedeutet lediglich, den Anteil wieder auf null zu setzen',
       'Bei Blue-Green laufen zwei vollständige Umgebungen parallel, und es wird sofort vollständig auf die neue Umgebung umgeschaltet — das senkt zwar die Übergangszeit, gilt aber als Strategie mit mittlerem Risiko und höheren Infrastrukturkosten',
       'Die Wahl der Test-Strategie ist vor allem eine technische Entscheidung — das Risikoprofil des jeweiligen Anwendungsfalls leitet sich aus dem technisch Machbaren ab'
     ],
     correct: [0,1,2],
-    exp: 'Shadow Mode beobachtet risikofrei, weil die Ausgaben des neuen Modells nicht verwendet werden. Ein Canary Release startet mit einem kleinen Traffic-Anteil, der schrittweise erhöht wird — ein Rollback bedeutet, diesen Anteil wieder auf null zu setzen, was technisch einfach ist. Blue-Green schaltet zwischen zwei vollständigen Umgebungen sofort und vollständig um — das spart Übergangszeit, bringt aber ein mittleres Risiko und höhere Infrastrukturkosten. Die Wahl der Strategie ist keine rein technische Frage, sondern hängt im Gegenteil vom Risikoprofil des Anwendungsfalls ab.',
+    exp: 'Shadow Mode beobachtet weitgehend risikofrei, weil die Ausgaben des neuen Modells nicht verwendet werden. Ein Canary Release startet mit einem kleinen Traffic-Anteil, der schrittweise erhöht wird — ein Rollback bedeutet, diesen Anteil wieder auf null zu setzen, was technisch einfach ist. Blue-Green schaltet zwischen zwei vollständigen Umgebungen sofort und vollständig um — das spart Übergangszeit, bringt aber ein mittleres Risiko und höhere Infrastrukturkosten. Die Wahl der Strategie ist keine rein technische Frage, sondern hängt im Gegenteil vom Risikoprofil des Anwendungsfalls ab.',
     src: 'Microsoft — MLOps Maturity Model · learn.microsoft.com/en-us/azure/architecture/ai-ml/guide/mlops-maturity-model · Google Cloud — MLOps: Continuous Delivery and Automation · cloud.google.com/architecture/mlops-continuous-delivery-and-automation-pipelines-in-machine-learning'
   },
   {
@@ -229,7 +229,7 @@ a: [
       'Eine Modell-Dokumentation im Model Registry oder auf einer Model Card — mit Version, Datenbasis und Performance-Kennzahlen',
       'Eine definierte Performance-Baseline mit der Frage, ab welcher Abweichung automatisch ein Alert ausgelöst wird',
       'Ein Rollback-Plan, der festlegt, wer in welcher Zeit auf welches Vorgängermodell zurückschaltet',
-      'Eine Zusage des Anbeiters, dass das Modell ab dem Go-Live keine Model Drift mehr erleben wird'
+      'Eine Zusage des Anbieters, dass das Modell ab dem Go-Live keine Model Drift mehr zulassen wird und Data Drift technisch ausgeschlossen wurde'
     ],
     correct: [0,1,2],
     exp: 'Modell-Dokumentation, Performance-Baseline und Rollback-Plan sind Mindestpunkte, die vor jedem Go-Live geklärt sein sollten — ohne sie fehlt die Grundlage, um Abweichungen zu erkennen und im Ernstfall geordnet zurückzuschalten. Die Vorstellung, ein Modell könne ab dem Go-Live fehlerfrei arbeiten, widerspricht der Grunderkenntnis, dass 100-%-Genauigkeit in der KI-Praxis nicht existiert — die eigentliche Frage ist, ob die verbleibenden Fehler beherrschbar sind und z. B. durch Human-in-the-Loop aufgefangen werden, nicht, ob sie vollständig ausgeschlossen werden können.',
@@ -257,9 +257,9 @@ b: [
     q: 'Welche Aussage(n) zu einer prüffähigen Modell-Dokumentation ist oder sind korrekt?',
     opts: [
       'Angaben zu Modellversion, verwendeter Datenbasis, Trainingsdatum und Performance-Kennzahlen — eingetragen in einem nachvollziehbaren Model Registry oder einer Model Card',
-      'Eine allgemeine Beschreibung der Unternehmensvision sowie ein Organigramm der beteiligten Abteilungen — technische Details sind für ein Audit nicht relevant',
-      'Eine Liste aller Mitarbeitenden, die jemals Zugriff auf das Modell hatten, unabhängig davon, ob sie es tatsächlich genutzt haben',
-      'Es genügt die mündliche Zusicherung der KI-Managerin, dass das Modell „gut funktioniert" — eine schriftliche Dokumentation ist für interne Systeme nicht erforderlich'
+      'Wichtig sind eine allgemeine Beschreibung der Unternehmensvision sowie ein Organigramm der beteiligten Abteilungen — technische Details sind für ein Audit nicht relevant',
+      'Zentral für die Auditierung ist eine Liste aller Mitarbeitenden, die jemals Zugriff auf das Modell hatten, unabhängig davon, ob sie es tatsächlich genutzt haben',
+      'Es genügt die mündliche Zusicherung der KI-Managerin, dass das Modell „gut funktioniert" — eine schriftliche Dokumentation ist für Systeme nicht erforderlich, so lange sie lediglich interne Aufgaben verrichten'
     ],
     correct: [0],
     exp: 'Eine prüffähige Modell-Dokumentation muss konkrete, nachvollziehbare Angaben enthalten — Version, Datenbasis, Trainingsdatum und Performance-Kennzahlen, eingetragen in einem Model Registry oder auf einer Model Card, das diese Informationen über die Zeit zugänglich hält. Eine allgemeine Unternehmensbeschreibung oder ein Organigramm liefern Kontext, ersetzen aber nicht die technische Nachvollziehbarkeit. Eine vollständige Liste aller Zugriffsberechtigten ohne Bezug zur tatsächlichen Nutzung liefert keine Aussage über die Qualität des Modells. Und eine mündliche Zusicherung ersetzt keine Dokumentation.',
@@ -267,9 +267,9 @@ b: [
   },
   {
     sc: 'Die Auditorin möchte wissen, was passiert, wenn das Scoring-Modell sich bei einem Fall „unsicher" ist — etwa weil die Bewertung knapp zwischen zwei Kategorien liegt.',
-    q: 'Welche Aussage(n) zum Human-Review-Prozess aus Prüf-Sicht ist oder sind korrekt?',
+    q: 'Welche Aussage(n) zum Human-Review-Prozess ist oder sind korrekt?',
     opts: [
-      'Ein dokumentierter Human-Review-Prozess legt fest, wer Low-Confidence-Fälle übernimmt — und ist damit ein zentraler Baustein der Produktivsetzungs-Checkliste',
+      'Ein dokumentierter Prozess für die menschliche Aufsicht (Human Review) legt fest, wer Low-Confidence-Fälle übernimmt — und ist damit ein zentraler Baustein der Produktivsetzungs-Checkliste',
       'Human-in-the-Loop oder Human-on-the-Loop bedeutet, dass Mitarbeitende die Rolle von Supervisor:innen der KI einnehmen — eine strukturelle Antwort auf die Tatsache, dass auch ein gut funktionierendes Modell nicht zu 100 % korrekt urteilt',
       'Ein Human-Review-Prozess ist überflüssig, sobald ein Modell in der Evaluierung eine Trefferquote von über 90 % erreicht hat',
       'Human-Review-Prozesse dienen in erster Linie dazu, den Mitarbeitenden das Gefühl zu geben, gebraucht zu werden — einen fachlichen Mehrwert haben sie nicht'
