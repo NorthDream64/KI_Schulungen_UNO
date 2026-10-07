@@ -42,7 +42,7 @@ wenn das betreffende Merkmal weggelassen wird.
 
 ## 4 · Umfang und Struktur
 
-**2.000 Zeilen**, davon 800 im Testteil. Der Anteil positiver Entscheidungen liegt bei
+**2.000 Zeilen**, davon 800 im Validierungsteil (Wahl von Schwelle und Einstellungen; ein unangetasteter Testteil für die abschließende Messung ist im Lab weggelassen). Der Anteil positiver Entscheidungen liegt bei
 rund **36 %**.
 
 | Feld | Bedeutung | Wertebereich |
