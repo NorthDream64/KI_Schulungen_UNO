@@ -58,6 +58,9 @@ text{pointer-events:none}
 .card-bg{fill:#13202e;fill-opacity:.85;stroke:#35506b;stroke-width:1.5}
 .card.named .card-bg{stroke:var(--ok)}
 .card.ask .card-bg{stroke:var(--warn);stroke-dasharray:6 5;animation:dash 1.4s linear infinite}
+.blk.ask .bg{stroke:var(--warn);stroke-dasharray:6 5;animation:dash 1.4s linear infinite}
+.blk.named .bg{stroke:var(--ok)}
+.btxt.q{fill:var(--warn)}
 .hit{fill:transparent}
 .practice .hit.act{cursor:pointer}
 .pill{fill:#0f2a3a;stroke:#2f6f8f;cursor:pointer}
@@ -336,17 +339,18 @@ function refreshLabels(){
     if(l.fs0===undefined)l.fs0=l.t.style.fontSize||'';
     l.t.textContent=hide?'?':l.short;
     l.t.style.fontSize=hide?(l.fs0?'26px':'36px'):l.fs0;
-    l.t.setAttribute('class','lbl'+(hide?' q':'')+(l.pq?' pq':''));
+    l.t.setAttribute('class',(l.cls||'lbl')+(hide?' q':'')+(l.pq?' pq':''));
+    if(l.sub)l.sub.textContent=hide?'':l.subShort;
     l.g.classList.toggle('ask',hide);
     l.g.classList.toggle('named',state.practice&&!hide&&!NOQUIZ.has(l.key));
     l.hit.classList.toggle('act',hide);
   }
-  for(const sc of [fab,src,main,trn])if(sc.hints)sc.hints.forEach(h=>h.t.style.opacity=(state.practice&&!state.unlocked.has(h.key))?0:1);
+  for(const sc of [fab,src,main,trn,top])if(sc.hints)sc.hints.forEach(h=>{const ks=h.keys||[h.key];h.t.style.opacity=(state.practice&&!ks.every(k=>state.unlocked.has(k)))?0:1;});
   const cnt=a=>a.filter(k=>state.unlocked.has(k)).length;
-  const v=state.view,K={src:['ext','sens','anon'],fab:['ka','kb','kc','ks','raw','st2'],trn:['st3','st4','ttest'],dep:['dreg','dtest','dfrei','dprod']};
+  const v=state.view,K={src:['ext','sens','anon'],fab:['ka','kb','kc','ks','raw','st2'],trn:['st3','st4','ttest'],top:['b0','b1','b2','b3','b4'],dep:['dreg','dtest','dfrei','dprod']};
   const AWS='<a href="https://docs.aws.amazon.com/wellarchitected/latest/machine-learning-lens/machine-learning-lifecycle.html" target="_blank" rel="noopener">AWS Well-Architected Machine Learning Lens</a>';
   let h;
-  if(v==='top')h=state.practice?'Wähle einen Block. Die Fragen findest Du in den Detailseiten (Extract, Load &amp; Transform, Modellentwicklung).':'Klicke auf einen Block, um die Detailseite zu öffnen. Fahre mit der Maus über „Datenverarbeitung“ (oder das ⓘ): Dort steht der Unterschied zwischen ETL und ELT. Die Begriffe der Blöcke folgen der '+AWS+'.';
+  if(v==='top')h=state.practice?'Übungsmodus: '+cnt(K.top)+'/5 Stufen benannt. Tippe auf ein Fragezeichen und wähle den passenden Begriff. Benannte Blöcke öffnen per Klick ihre Detailseite – dort warten weitere Fragen.':'Klicke auf einen Block, um die Detailseite zu öffnen. Fahre mit der Maus über „Datenverarbeitung“ (oder das ⓘ): Dort steht der Unterschied zwischen ETL und ELT. Die Begriffe der Blöcke folgen der '+AWS+'.';
   else if(state.practice&&K[v])h='Übungsmodus: '+cnt(K[v])+'/'+K[v].length+' benannt. Tippe auf ein gelb gestricheltes Fragezeichen und wähle den passenden Begriff – erst dann fließt der Strom weiter.';
   else if(state.practice)h='Übungsmodus: Auf dieser Seite gibt es keine Fragen.';
   else h={src:'Tipp: Mit den Wasserhähnen spielst Du manuelle Lieferungen ein. Alle Quellen fließen über den Datenspiegel (Extract) in den Rohdatenspeicher.',fab:'Tipp: Die gespiegelten Rohdaten werden im Rohdatenspeicher abgelegt (Load) und dann in der Fabrik aufbereitet (Transform).',trn:'Tipp: Oben läuft der Entwicklungsprozess, unten stehen die Arbeitsschritte eines Data Scientists. „Details ⊕“ an der Validierung öffnet die Kennzahlen am Beispiel einer Werbekampagne.',val:'Tipp: Verschiebe den Regler und beobachte, wie Precision, Recall und das Ergebnis der Kampagne reagieren. Finde selbst heraus, wo sich die Kampagne am meisten lohnt – und vergleiche mit den Benchmarks „Niemanden“ und „Alle anschreiben“.',dep:'Tipp: Das Modell durchläuft den Test, das Thermometer zeigt die Modellqualität. Erst ab dem Mindestwert wird die Freigabe aktiv, und erst nach „Ja“ beantwortet das Modell die wartenden Anfragen. Grün sind Bestellprognosen, orange Kapazitätsprognosen; die Zahlen an den Filialen oben zählen beide.',mon:'Tipp: Löse ein Ereignis aus und beobachte die Monitoring-Signale rechts. Nicht jede Veränderung ist Drift.'}[v];
@@ -1033,23 +1037,24 @@ const top=mkScene('scTop');top.st={in:0};
     ['Modellentwicklung','Model Development','trn','Training · Validierung'],
     ['Modellbereitstellung','Model Deployment','dep','Prognosen im Betrieb'],
     ['Modellüberwachung','Model Monitoring','mon','Drift erkennen → Retraining']];
-  const bl=[];
+  const bl=[],bt=[];top.hints=[];
   defs.forEach((d,i)=>{
     const x=BX(i),cx=x+BW/2,g=el('g',{class:'blk'},D);
     el('rect',{class:'bg',x,y:BY,width:BW,height:BH,rx:16},g);
-    el('text',{x:cx,y:BY+36,class:'btxt'},U).textContent=d[0];
-    el('text',{x:cx,y:BY+56,class:'ben'},U).textContent=d[1];
-    el('text',{x:cx,y:BY+BH-14,class:'tk2',style:'font-size:12px'},U).textContent=d[3];
-    bl.push(g);
+    const tt=el('text',{x:cx,y:BY+36,class:'btxt'},U);tt.textContent=d[0];
+    const ts=el('text',{x:cx,y:BY+56,class:'ben'},U);ts.textContent=d[1];
+    const tb=el('text',{x:cx,y:BY+BH-14,class:'tk2',style:'font-size:12px'},U);tb.textContent=d[3];
+    top.hints.push({key:'b'+i,t:tb});
+    bl.push(g);bt.push({tt,ts});
   });
   // Icons
   const SRCKEYS=['kasse','bestand','intern','wetter','lokal','zeit'];
   SRCKEYS.forEach((k,i)=>el('circle',{cx:BX(0)+45+i*32,cy:430,r:9,fill:SRC[k]},D));
-  el('rect',{class:'ipill',x:BX(0)+94,y:458,width:62,height:24,rx:12},D);el('text',{x:BX(0)+125,y:474,class:'tk',style:'font-size:11.5px'},U).textContent='Extract';
+  top.hints.push({key:'b0',t:el('rect',{class:'ipill',x:BX(0)+94,y:458,width:62,height:24,rx:12},D)});(()=>{const e=el('text',{x:BX(0)+125,y:474,class:'tk',style:'font-size:11.5px'},U);e.textContent='Extract';top.hints.push({key:'b0',t:e});})();
   [['Load',30,64],['Transform',120,100]].forEach((t,i)=>{
-    el('rect',{class:'ipill',x:BX(1)+t[1],y:430,width:t[2],height:24,rx:12},D);
-    el('text',{x:BX(1)+t[1]+t[2]/2,y:446,class:'tk',style:'font-size:11.5px'},U).textContent=t[0];
-    if(i<1)el('text',{x:BX(1)+t[1]+t[2]+13,y:447,class:'tk2',style:'font-size:14px'},U).textContent='→';
+    top.hints.push({key:'b1',t:el('rect',{class:'ipill',x:BX(1)+t[1],y:430,width:t[2],height:24,rx:12},D)});
+    const e=el('text',{x:BX(1)+t[1]+t[2]/2,y:446,class:'tk',style:'font-size:11.5px'},U);e.textContent=t[0];top.hints.push({key:'b1',t:e});
+    if(i<1){const a=el('text',{x:BX(1)+t[1]+t[2]+13,y:447,class:'tk2',style:'font-size:14px'},U);a.textContent='→';top.hints.push({key:'b1',t:a});}
   });
   // Zahnrad
   const gcx=BX(2)+BW/2,gcy=455,R=30;
@@ -1068,7 +1073,7 @@ const top=mkScene('scTop');top.st={in:0};
   // Klammern
   const brk=(x1,x2,txt,view)=>{
     el('path',{d:'M'+x1+',232 v-10 H'+x2+' v10',fill:'none',stroke:'#4ade80','stroke-width':2},D);
-    el('text',{x:(x1+x2)/2,y:208,class:'tag'},U).textContent=txt;
+    const e=el('text',{x:(x1+x2)/2,y:208,class:'tag'},U);e.textContent=txt;top.hints.push({keys:view==='etl'?['b0','b1']:['b2','b3','b4'],t:e});
   };
   brk(BX(0),BX(1)+BW,'Data Processing','etl');
   brk(BX(2),A,'Modell: Entwicklung · Bereitstellung · Überwachung','mlops');
@@ -1083,11 +1088,12 @@ const top=mkScene('scTop');top.st={in:0};
   // Klickflächen
   defs.forEach((d,i)=>{
     const h=el('rect',{class:'hit',x:BX(i),y:BY,width:BW,height:BH,rx:16},U);
-    h.addEventListener('mouseenter',()=>{bl[i].classList.add('hov');if(i===1)showTip(BX(1)+BW/2,BY+BH+4);});
+    h.addEventListener('mouseenter',()=>{bl[i].classList.add('hov');if(i===1&&!locked('b1'))showTip(BX(1)+BW/2,BY+BH+4);});
     h.addEventListener('mouseleave',()=>{bl[i].classList.remove('hov');if(i===1)hideTipSoon();});
-    h.addEventListener('click',()=>setView(d[2]));
+    h.addEventListener('click',()=>{if(state.practice&&locked('b'+i)){openQuiz('b'+i);return;}setView(d[2]);});
+    top.labels.push({key:'b'+i,t:bt[i].tt,short:d[0],cls:'btxt',sub:bt[i].ts,subShort:d[1],g:bl[i],hit:h});
   });
-  const ii=el('g',null,U);
+  const ii=el('g',null,U);top.hints.push({key:'b1',t:ii});
   el('circle',{cx:BX(1)+BW-22,cy:BY+24,r:11,fill:'#0f2a3a',stroke:'#4cc9f0'},ii);
   el('text',{x:BX(1)+BW-22,y:BY+29,class:'tk',style:'font-size:14px'},ii).textContent='i';
   const ih=el('circle',{class:'hit',cx:BX(1)+BW-22,cy:BY+24,r:14},ii);
@@ -1683,6 +1689,11 @@ const QUIZ={
  dz:{p:'Beobachte: Mitarbeiterinnen und Mitarbeiter stempeln in den Läden selbst ein und aus, auch Pausen werden erfasst. Die Einträge fließen laufend, mit Spitzen zu Schichtbeginn und Schichtende. Welche Quelle ist das?',c:'Registrierte Arbeitszeiten (Stechuhr)',w:['Verkaufsdaten (Kassensystem)','Interne Daten (manuell)','Externe Daten (manuell)','Bestandsveränderung (2 x täglich)'],why:'Stechuhr-Daten sind Beschäftigtendaten und damit personenbezogen. Dieselbe Quelle dient zwei Zwecken: Für die Gehaltsabrechnung wird der Personenbezug gebraucht, für die Kapazitätsplanung gegenüber der Nachfrage genügen anonymisierte oder zusammengefasste Werte. Deshalb werden anonymisierte Kopien abgezweigt, während die vollständigen Daten zur Lohnbuchhaltung weiterlaufen.'},
  anon:{p:'Beobachte: Am roten Sperrschild werden von den Stechuhr-Daten Kopien in eine Hülle gesteckt und abgezweigt, während die vollständigen Einträge weiter zur Lohnbuchhaltung laufen. Nur die umhüllten, zusammengefassten Werte ohne Personenbezug fließen in Richtung Modell. Wie heißt dieser Schritt?',c:'Anonymisierung',w:['Dublettenprüfung','Deployment (Bereitstellung)','Hyperparameter-Tuning','Datenspiegel'],why:'Für die Kapazitätsplanung braucht das Modell keine Personen, sondern zum Beispiel Stunden je Laden und Schicht (Datenminimierung). Wird vor dem Speichern anonymisiert, liegen keine personenbezogenen Stempeldaten im Rohdatenspeicher. Für die Gehaltsabrechnung bleiben die vollständigen Daten im operativen System. Echt anonym sind Daten nur, wenn sich Personen auch mit Zusatzwissen nicht mehr bestimmen lassen; bloße Pseudonymisierung genügt dafür nicht (EDPB-Leitlinien 01/2025, Erwägungsgrund 26 DSGVO). Die Anonymisierung ist selbst eine Verarbeitung und braucht eine Rechtsgrundlage (BfDI).'},
  sens:{p:'Beobachte: Eingehende Lieferungen werden vor dem Speichern auf Vollständigkeit und das vereinbarte Format geprüft, Auffälligkeiten werden nur markiert. Zugleich werden sensible Angaben – etwa zu Beschäftigten oder Ansprechpartnern bei Lieferanten – erkannt und geschützt, zum Beispiel durch Pseudonymisierung. Wie heißt dieser Schritt?',c:'Technische Prüfung und Maskierung der Daten',w:['Bereinigung mit Quarantäne','Dubletten auflösen','Hyperparameter-Tuning','Modellregistrierung'],why:'In einer Zwischenzone (Landing Zone) wird zuerst technisch geprüft: Ist die Lieferung vollständig, passt das Schema? Diese Prüfung markiert nur und sortiert nichts aus, denn der Rohdatenspeicher soll die Daten so halten, wie sie ankommen. Inhaltliche Fehler landen erst in Transform in der Quarantäne. Zugleich werden sensible Felder maskiert, wie AWS es für teilsensible Datensätze empfiehlt. Wichtig: Pseudonymisierte Daten gelten nach der DSGVO weiterhin als personenbezogen, die Zuordnungsinformation muss getrennt und geschützt aufbewahrt werden. Erst echt anonyme Daten fallen nicht mehr unter die DSGVO.'},
+ b0:{p:'Beobachte: Hier beginnt der Weg. Bunte Datensätze aus ganz unterschiedlichen Systemen – Kassen, Bestandsmeldungen, Stechuhren, externe Lieferungen – betreten den Fluss. Wie heißt diese Stufe?',c:'Datenherkunft/-sammlung (Extract)',w:['Datenverarbeitung (Load & Transform)','Modellentwicklung (Model Development)','Modellbereitstellung (Model Deployment)'],why:'Die erste Stufe: Daten werden in den Quellsystemen gefunden, gesammelt und als Kopie entnommen (Extract). Die Quellsysteme selbst bleiben unverändert. Schon hier entscheidet sich, ob die Daten für die Fragestellung überhaupt taugen (Dateninventur). Die Namen der Stufen folgen dem ML-Lebenszyklus von AWS.'},
+ b1:{p:'Beobachte: Die bunten, teils fehlerhaften Datensätze werden zuerst unverändert abgelegt und danach aufbereitet. Fehlerhaftes verschwindet, einheitliche Datensätze laufen weiter. Wie heißt diese Stufe?',c:'Datenverarbeitung (Load & Transform)',w:['Datenherkunft/-sammlung (Extract)','Modellentwicklung (Model Development)','Modellbereitstellung (Model Deployment)'],why:'Die Rohdaten werden zuerst unverändert gespeichert (Load) und danach vereinheitlicht, bereinigt, von Dubletten befreit und ausgewählt (Transform). Diese Reihenfolge heißt ELT: Die Originale bleiben erhalten, die Aufbereitung lässt sich wiederholen. Die Namen der Stufen folgen dem ML-Lebenszyklus von AWS.'},
+ b2:{p:'Beobachte: Aus dem aufbereiteten Datenstrom entstehen im Zahnrad nur wenige gelbe Modellkandidaten. Wie heißt diese Stufe?',c:'Modellentwicklung (Model Development)',w:['Datenherkunft/-sammlung (Extract)','Datenverarbeitung (Load & Transform)','Modellbereitstellung (Model Deployment)'],why:'Aus den aufbereiteten Daten lernt das Modell (Training). Validierungsdaten dienen der Feinabstimmung, der unangetastete Testdatensatz prüft am Ende einmalig. Nur ein Modell, das besteht, wandert ins Modellregister. Die Namen der Stufen folgen dem ML-Lebenszyklus von AWS.'},
+ b3:{p:'Beobachte: Ein fertiges Modell läuft auf Servern und liefert laufend grüne Prognosen. Wie heißt diese Stufe?',c:'Modellbereitstellung (Model Deployment)',w:['Modellentwicklung (Model Development)','Modellüberwachung (Model Monitoring)','Datenverarbeitung (Load & Transform)'],why:'Das freigegebene Modell geht in Betrieb: nach einem Test in einer betriebsnahen Umgebung (Staging) und der menschlichen Freigabe. Danach beantwortet es echte Anfragen; jede Prognose wird mit Zeitpunkt und Modellversion protokolliert. Die Namen der Stufen folgen dem ML-Lebenszyklus von AWS.'},
+ b4:{p:'Beobachte: Ein Messgerät zeigt, ob das Modell noch zur Realität passt. Schlägt es aus, läuft ein Signal über die gestrichelte Leitung zurück. Wie heißt diese Stufe?',c:'Modellüberwachung (Model Monitoring)',w:['Datenherkunft/-sammlung (Extract)','Datenverarbeitung (Load & Transform)','Modellbereitstellung (Model Deployment)'],why:'Im Betrieb wird laufend geprüft, ob das Modell noch passt: Prognosegüte, Input- oder Datendrift und Bias. Lässt die Leistung nach, wird nachtrainiert (Retraining) – der Kreislauf beginnt erneut. Die Namen der Stufen folgen dem ML-Lebenszyklus von AWS.'},
  ext:{p:'Beobachte: Aus den Quellsystemen werden Daten herausgelesen und als Kopie auf den Weg in den Speicher geschickt – die Quellen selbst bleiben unverändert. Wie heißt dieser Schritt?',c:'Extract (Daten aus den Quellen entnehmen)',w:['Transform (Daten umformen)','Drift-Erkennung','Deployment (Bereitstellung)','Modelltraining'],why:'Extract ist der erste Schritt im ETL- wie im ELT-Muster: Rohdaten werden aus den Quellsystemen (Datenbanken, Dateien, Anwendungen, Sensoren u. a.) entnommen und in einen Speicher- oder Staging-Bereich kopiert. Ausgelöst wird er je nach Quelle zeitgesteuert (Batch), ereignisgesteuert oder fortlaufend (Streaming).'},
  raw:{p:'Beobachte: Alles, was eingeht, wird unverändert in einen Speicher geladen und dort abgelegt. Der Bestand wächst nur, gelesen wird eine Kopie. Wie heißt dieser Schritt?',c:N.raw,w:['Data Mart (Auswertungsschicht)','Operatives Kassensystem','Modellregister','Lastverteilung'],why:'Load heißt: Die entnommenen Daten werden in das Zielsystem geladen. Hier ist das die Rohdatenschicht, die die Originale hält – AWS empfiehlt dafür das Originalformat und aktivierte Versionierung. Bereinigt wird erst danach in einer eigenen Stufe (Transform, im ELT-Muster nach dem Laden). So bleiben die Betriebssysteme unberührt, und bei einem Fehler in der Aufbereitung lässt sich neu rechnen.'},
  st2:{p:'Beobachte: Eine Fabrik vereinheitlicht, bereinigt, löst Dubletten auf und wählt aus – Ausschuss und Kopien fallen heraus, der Rest läuft einheitlich weiter. Wie heißt diese Station?',c:N.st2,w:[N.st4,'Lieferantenaudit','Datenverschlüsselung',N.st5],why:'Rohdaten sind selten modelltauglich. Hier werden Fehlerhaftes aussortiert, Formate vereinheitlicht und Dubletten entfernt. Bei AWS entspricht das der Stage-Schicht (Validierung, Format-Konvertierung, Transformation), im ELT-Muster von Google dem Transform-Schritt nach dem Laden.'},
