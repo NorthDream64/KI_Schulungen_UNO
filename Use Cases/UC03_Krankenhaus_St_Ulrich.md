@@ -222,7 +222,7 @@ Für rein administrative KI-Systeme, die weder Medizinprodukt noch Sicherheitsba
 
 Das ist für St. Ulrich keine theoretische Konstellation, sondern die naheliegendste nächste Handlung. Der Satz „Wir trainieren das Diagnosesystem mit unseren eigenen Fällen nach, dann wird es besser" klingt nach einer technischen Verbesserung. Er ist ein **Rollenwechsel mit vollen Herstellerpflichten**: Zertifizierungserfordernis, Aufbau eigener Risiko- und Qualitätsmanagementsysteme, behördliche Meldepflichten.
 
-> **Übung — Rollenspiel.** Dr. Weiss möchte das Diagnosesystem (A 4) mit den eigenen CT-Befunden der letzten drei Jahre nachtrainieren, weil die Trefferquote bei der hiesigen Patientenstruktur schlechter ist als beim Anbieter versprochen. Fachlich ein guter Gedanke. **Was antwortest Du als KI-Beauftragte:r — und was schlägst Du stattdessen vor?**
+> **Übung — Rollenspiel.** Dr. Weiss möchte das Diagnosesystem (A 4) mit den eigenen CT-Befunden der letzten drei Jahre nachtrainieren, weil die Genauigkeit bei der hiesigen Patientenstruktur schlechter ist als beim Anbieter versprochen. Fachlich ein guter Gedanke. **Was antwortest Du als KI-Beauftragte:r — und was schlägst Du stattdessen vor?**
 
 ### Der legale Gegenweg: Eigenherstellung
 
