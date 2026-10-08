@@ -185,6 +185,21 @@ table.gloss td:first-child{font-weight:600;white-space:nowrap;width:150px;}
 .einl-ref b{color:#1a1a18;}
 .proxybar{margin-bottom:.7rem;}
 .proxybar .h{display:flex;justify-content:space-between;font-size:12.5px;margin-bottom:.2rem;}
+
+.tab-leiste{display:flex;flex-wrap:wrap;gap:.3rem;border-bottom:2px solid var(--ink);margin:0 0 1.3rem;}
+.tab-btn{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1.3px;text-transform:uppercase;background:transparent;border:1px solid var(--rule);border-bottom:none;border-radius:6px 6px 0 0;padding:.55rem .8rem;color:var(--muted);cursor:pointer;}
+.tab-btn:hover{color:var(--accent);}
+.tab-btn.aktiv{background:var(--card);color:var(--ink);font-weight:700;border-color:var(--ink);}
+.tab-panel{display:none;}
+.tab-panel.aktiv{display:block;}
+.weiter{display:flex;justify-content:flex-end;margin:-.4rem 0 1.3rem;}
+.weiter a{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1.2px;text-transform:uppercase;color:var(--teal);text-decoration:none;border:1px solid var(--rule);border-radius:100px;padding:.35rem .8rem;background:var(--card);}
+.weiter a:hover{color:var(--accent);border-color:var(--accent);}
+.fnref{text-decoration:none;color:var(--accent);}
+.qv{margin:0;padding-left:1.1rem;font-size:12.5px;line-height:1.55;}
+.qv li{margin-bottom:.3rem;}
+@media(max-width:600px){.tab-btn{flex:1 1 45%;text-align:center;border-bottom:1px solid var(--rule);border-radius:6px;}}
+@media print{.tab-panel{display:block!important;}.tab-leiste,.weiter,.no-print{display:none!important;}}
 </style>
 </head>
 <body>
@@ -193,7 +208,19 @@ table.gloss td:first-child{font-weight:600;white-space:nowrap;width:150px;}
 <div class="head">
  <div class="eyebrow">Lab — Modellvalidierung</div>
  <h1>Wie gut ist ein Modell — <em>und für wen?</em></h1>
- <p class="lead">Dein Unternehmen hat eine KI-Anwendung eingeführt, die aus einer großen Zahl von Bewerbungen diejenigen Personen vorschlägt, die zum Gespräch eingeladen werden sollen. Die Anwendung wurde — in diesem Beispiel — mit <strong>synthetischen</strong> Daten trainiert: 2.000 erfundene Bewerbungen, alle Personen und Zahlen ausgedacht. Der Leitgedanke dabei: Die Merkmale derjenigen, die in der Vergangenheit im Sinne des Unternehmens „erfolgreich" wurden, sollen als Kriterien für die Vorauswahl dienen. Welche Merkmale das sind, steht im Datenwörterbuch (Abschnitt 0).</p>
+</div>
+
+<nav class="tab-leiste no-print" aria-label="Reiter">
+ <button class="tab-btn aktiv" data-ziel="reiter-ausgang">Ausgangssituation</button>
+ <button class="tab-btn" data-ziel="reiter-matrix">Confusion Matrix</button>
+ <button class="tab-btn" data-ziel="reiter-massnahmen">Mögliche Maßnahmen</button>
+ <button class="tab-btn" data-ziel="reiter-generalisierung">Generalisierung</button>
+ <button class="tab-btn" data-ziel="reiter-quellen">Quellen</button>
+</nav>
+<section class="tab-panel aktiv" id="reiter-ausgang">
+<div class="sec">
+ <div class="sec-t">Ausgangssituation</div>
+ <p class="lead" style="margin-top:0;color:var(--ink);">Dein Unternehmen hat eine KI-Anwendung eingeführt, die aus einer großen Zahl von Bewerbungen diejenigen Personen vorschlägt, die zum Gespräch eingeladen werden sollen. Die Anwendung wurde — in diesem Beispiel — mit <strong>synthetischen</strong> Daten trainiert: 2.000 erfundene Bewerbungen, alle Personen und Zahlen ausgedacht. Der Leitgedanke dabei: Die Merkmale derjenigen, die in der Vergangenheit im Sinne des Unternehmens „erfolgreich" wurden, sollen als Kriterien für die Vorauswahl dienen. Welche Merkmale das sind, steht im <a href="#dwb">Datenwörterbuch</a> (Reiter Quellen).</p>
  <details class="klapp" id="echt">
   <summary>Zum Vergleich · Wie echte Auswahlsysteme gebaut sind</summary>
   <div class="kl-body">
@@ -204,12 +231,11 @@ table.gloss td:first-child{font-weight:600;white-space:nowrap;width:150px;}
     <tr><td>Sprachmodelle</td><td>Eine Studie der University of Washington ließ drei Sprachmodelle mit je rund <b>7 Milliarden Parametern</b> 554 Lebensläufe zu 571 Stellenanzeigen sortieren. Lebensläufe mit weiß konnotierten Namen wurden in 85 % der Tests bevorzugt, solche mit weiblichen Namen in 11 %.</td></tr>
    </table>
    <p>Wie groß die Modelle in kommerziellen Produkten sind und womit sie trainiert wurden, legen die Anbieter in der Regel <b>nicht offen</b>.</p>
-   <p><b>Und die demografischen Merkmale?</b> In Deutschland verbietet das Allgemeine Gleichbehandlungsgesetz (AGG), Bewerbende wegen Geschlecht, Alter oder ethnischer Herkunft zu benachteiligen; die Anbieter erklären deshalb, solche Merkmale nicht zu verwenden. Hinein gelangen sie trotzdem — über Stellvertreter wie Namen, Hochschulen oder Lücken im Lebenslauf. Abschnitt 3 zeigt, wie. Für die Prüfung auf Benachteiligung braucht man sie dagegen ausdrücklich: New York City verlangt seit Juli 2023 unabhängige Bias-Audits mit Auswertung nach Geschlecht und ethnischer Zugehörigkeit. Das Lab nimmt das Geschlecht bewusst als Merkmal hinein — um sichtbar zu machen, was dann passiert.</p>
+   <p><b>Und die demografischen Merkmale?</b> In Deutschland verbietet das Allgemeine Gleichbehandlungsgesetz (AGG), Bewerbende wegen Geschlecht, Alter oder ethnischer Herkunft zu benachteiligen; die Anbieter erklären deshalb, solche Merkmale nicht zu verwenden. Hinein gelangen sie trotzdem — über Stellvertreter wie Namen, Hochschulen oder Lücken im Lebenslauf. Der Reiter <a href="#reiter-massnahmen">Mögliche Maßnahmen</a> zeigt, wie. Für die Prüfung auf Benachteiligung braucht man sie dagegen ausdrücklich: New York City verlangt seit Juli 2023 unabhängige Bias-Audits mit Auswertung nach Geschlecht und ethnischer Zugehörigkeit. Das Lab nimmt das Geschlecht bewusst als Merkmal hinein — um sichtbar zu machen, was dann passiert.</p>
    <p style="font-size:12px;color:#6b6b60;">Quellen: <a href="https://www.cnbc.com/2018/10/10/amazon-scraps-a-secret-ai-recruiting-tool-that-showed-bias-against-women.html" target="_blank">Reuters über CNBC (10.10.2018)</a> · <a href="https://www.findlaw.com/legalblogs/courtside/proposed-class-action-lawsuit-targets-eightfolds-ai-hiring-platform/" target="_blank">FindLaw zur Klage gegen Eightfold (2026)</a> · <a href="https://ojs.aaai.org/index.php/AIES/article/view/31748" target="_blank">Wilson &amp; Caliskan, AIES 2024</a> · <a href="https://www.deloitte.com/us/en/services/audit/articles/nyc-local-law-144-algorithmic-bias.html" target="_blank">Deloitte zu NYC Local Law 144</a></p>
   </div>
  </details>
 </div>
-
 <!-- EINSTIEG: WAS HEISST OPTIMAL -->
 <div class="sec">
  <details class="klapp sec-klapp" id="einstieg" open>
@@ -230,8 +256,8 @@ table.gloss td:first-child{font-weight:600;white-space:nowrap;width:150px;}
     </div>
     <div class="stake-k">
      <span class="det-t">Geschäftsführung</span>
-     <b>„Was kostet uns eine Stelle?"</b> Sie möchte den Bewerbungsprozess außerdem wirtschaftlich optimiert wissen.
-     <span class="stake-m">Ihre Kennzahl: Kosten je Stelle</span>
+     <b>„Beide Seiten — und bezahlbar."</b> Sie möchte die Anliegen der Personalabteilung und der Fachbereiche ausgewogen berücksichtigen und den Bewerbungsprozess außerdem wirtschaftlich optimiert wissen.
+     <span class="stake-m">Ihre Kennzahlen: F1-Score und Kosten je Stelle</span>
     </div>
    </div>
 
@@ -269,82 +295,45 @@ table.gloss td:first-child{font-weight:600;white-space:nowrap;width:150px;}
    <p>Der Grund steckt im Wort <em>richtig</em>. Die meisten Bewerbungen sind offensichtlich unpassend — sie abzulehnen ist keine Leistung, sondern selbstverständlich. Die eigentliche Arbeit liegt bei den <b>Grenzfällen</b>: Nur dort muss das Modell wirklich entscheiden, und nur dort entstehen Fehlalarme und Übersehenes. Die Genauigkeit verrechnet beides miteinander und verwässert damit genau das, worauf es ankommt.</p>
    <p style="font-size:12px;color:#6b6b60;">Deshalb kommen die richtig Abgelehnten in Precision und Recall <em>gar nicht vor</em>. Beide Kennzahlen blicken nur auf die Einladungsliste und auf die Geeigneten im Stapel der Abgelehnten.</p>
 
-   <p><b>Die Frage, die alles steuert.</b> Wie sicher muss das Modell sein, bevor es „einladen" sagt? Das ist die <b>Einladungsschwelle</b> in Abschnitt 1. Ist sie niedrig, wird die Liste lang: Die Fachbereiche freuen sich, die Personalabteilung nicht. Ist sie hoch, wird die Liste kurz und treffsicher — aber Geeignete bleiben im Stapel. Und die Geschäftsführung zahlt für jede Person auf der Liste eine Detailprüfung.</p>
-   <div class="callout"><b>Deine Aufgabe in Abschnitt 1:</b> Finde die Schwelle, die Du dem Management empfehlen würdest — und begründe, wessen Ziel Du dabei wie stark gewichtest.</div>
+   <p><b>Die Frage, die alles steuert.</b> Wie sicher muss das Modell sein, bevor es „einladen" sagt? Das ist die <b>Einladungsschwelle</b> im Reiter <a href="#reiter-matrix">Confusion Matrix</a>. Ist sie niedrig, wird die Liste lang: Die Fachbereiche freuen sich, die Personalabteilung nicht. Ist sie hoch, wird die Liste kurz und treffsicher — aber Geeignete bleiben im Stapel. Und die Geschäftsführung zahlt für jede Person auf der Liste eine Detailprüfung.</p>
+   <div class="callout"><b>Deine Aufgabe im Reiter <a href="#reiter-matrix">Confusion Matrix</a>:</b> Finde die Schwelle, die Du dem Management empfehlen würdest — und begründe, wessen Ziel Du dabei wie stark gewichtest.</div>
   </div>
  </details>
 </div>
 
-<!-- DATENWÖRTERBUCH -->
-<div class="sec">
- <details class="klapp sec-klapp" id="dwb">
-  <summary>0 · Datenwörterbuch — was die Merkmale bedeuten</summary>
-  <div class="kl-body">
-   <table class="gloss">
-  <tr><td>Fachscore / Interview</td><td>Punktzahl 0–100, im Datensatz <strong>unabhängig</strong> von Geschlecht und Alter simuliert. „Fachscore" bildet ab, was eine KI aus den Bewerbungsunterlagen (Lebenslauf, Zeugnisse, Anschreiben, freigegebenes LinkedIn-Profil) an fachlicher Passung extrahieren könnte. „Interview" steht für „Teamfähigkeit" — hier wird versucht, diesen schwer quantifizierbaren ("Nasen"-)Faktor aus historischen Daten abzuleiten (Kundenfeedback, Jahresgespräche, Beförderungen seit 2009).<br><br>Dieses „Passt ins Team" soll hier als Kontrollgröße für fachliche Eignung usw. wirken. Für bestimmte Positionen ist die fachliche Eignung ein untergeordneter Punkt gegenüber Team- oder Führungsfähigkeit. Der persönliche Auswahlprozess (Stufe 2) ist so ausgelegt, die Führungs- und Teamfähigkeit strukturiert zu erfassen. Die Daten aus diesem Prozessschritt werden (auch für Kandidatinnen oder Kandidaten, die es nicht "geschafft" haben) benutzt, um das Modell weiter zu trainieren und seine Fähigkeit zu verbessern, "weiche Faktoren" zu bewerten.</td></tr>
-  <tr><td>Geschlecht</td><td><strong>1 = männlich, 0 = weiblich</strong> — binäre Vereinfachung für dieses Lab, keine Aussage über reale Erfassungspraxis.</td></tr>
-  <tr><td>Alter</td><td><strong>Lebensalter in Monaten</strong>, kontinuierlich erfasst (240–780 Monate ≈ 20–65 Jahre).</td></tr>
-  <tr><td>Berufserfahrung</td><td>Jahre im Beruf laut Lebenslauf, realistisch an das Lebensalter gekoppelt (mehr Lebensjahre → im Schnitt mehr Erfahrung, mit Streuung) — keine Wertung der Positionen oder Inhalte der Tätigkeit.</td></tr>
-  <tr><td>Karrierelücke</td><td>Monate <strong>ohne Erwerbstätigkeit</strong> laut Lebenslauf (z. B. Eltern- oder Pflegezeit) — keine „fehlenden Jahre", sondern eine in Monaten gemessene Unterbrechung. Laut Destatis beziehen Mütter im Schnitt rund 10–12 Monate Elterngeld, Väter dagegen nur rund 3–4 Monate (<a href="https://www.destatis.de/DE/Themen/Gesellschaft-Umwelt/Soziales/Elterngeld/geburten.html" target="_blank" rel="noopener">Destatis 2024/2025</a>); auch OECD-weit nehmen Frauen häufiger und längere familienbedingte Erwerbsunterbrechungen als Männer (<a href="https://www.oecd.org/en/publications/gender-gaps-in-paid-and-unpaid-work-persist_25a6c5dc-en/full-report.html" target="_blank" rel="noopener">OECD 2025</a>).</td></tr>
- </table>
-  </div>
- </details>
-</div>
 
-<!-- DATA CARD -->
-<div class="sec">
- <div class="sec-t">0b · Data Card — was wir über diesen Datenbestand wissen</div>
- <p>Das Datenwörterbuch oben beschreibt die <em>Merkmale</em>. Eine <strong>Data Card</strong> beschreibt den <em>Bestand als Ganzes</em>: Herkunft, Entstehung, Abdeckung, Grenzen. Bei diesem Lab lässt sie sich ausnahmsweise <strong>lückenlos</strong> ausfüllen — weil wir den Bestand selbst erzeugt haben und jede eingebaute Eigenschaft kennen. Genau das ist der Maßstab, an dem sich fremde Datenbestände messen lassen.</p>
-
- <details class="dc">
-  <summary>Data Card aufklappen</summary>
-  <div class="dc-body">
-
-   <h4>Zweck — und ausdrücklich nicht</h4>
-   <p>Zeigen, wie Schwellenwert, Precision und Recall zusammenhängen und wie ein Modell eine Voreingenommenheit aus historischen Entscheidungen übernimmt. <strong>Nicht</strong> geeignet als Beleg für reale Einstellungspraxis, nicht als Vorlage für ein produktives Auswahlmodell — Personalauswahl ist nach EU AI Act, Anhang III Nr. 4 ein Hochrisiko-Bereich.</p>
-
-   <h4>Herkunft</h4>
-   <p>Erzeugt durch das Skript <code>01_dataset_und_kennzahlen.py</code> in diesem Ordner, mit festem Startwert für den Zufallszahlengenerator. Der Bestand ist damit <strong>exakt reproduzierbar</strong>. Keine personenbezogenen Daten, folglich keine Rechtsgrundlage erforderlich.</p>
-
-   <h4>Umfang</h4>
-   <p>2.000 Bewerbungen, davon 800 im Validierungsteil, an dem Schwelle und Einstellungen gewählt werden. Ein dritter, unangetasteter Testteil würde im echten Projekt erst ganz am Schluss genau einmal gemessen; im Lab ist er weggelassen. Anteil positiver Entscheidungen rund 36 %. Sechs Merkmale plus die Zielgröße <code>eingestellt</code>.</p>
-
-   <h4>Erhebung und Beschriftung</h4>
-   <p>Es gab keine Erhebung. Alle Merkmale sind gezogene Zufallswerte; die Zielgröße folgt einer festgelegten Formel, in der die tatsächliche Eignung mit drei Verzerrungen kombiniert wird. Fachscore und Interview sind <strong>unabhängig</strong> von Geschlecht und Alter gezogen — der Unterschied entsteht ausschließlich in der historischen Entscheidung.</p>
-
-   <h4>Abdeckung und Lücken — die eingebauten Verzerrungen</h4>
-   <ul>
-    <li><strong>Bevorzugung von Männern:</strong> fester Bonus in der historischen Entscheidung, unabhängig von der Eignung.</li>
-    <li><strong>Schleichender Alterseffekt:</strong> kleiner linearer Auf- oder Abschlag je Lebensjahr, kein harter Schnitt bei 40 — so wirkt Altersdiskriminierung in der Praxis.</li>
-    <li><strong>Überzogene Bestrafung der Karrierelücke:</strong> stärker, als es durch tatsächlich fehlende Erfahrung erklärbar wäre.</li>
-    <li><strong>Die Karrierelücke als Stellvertreter:</strong> bei Frauen im Mittel rund zwölf Monate größer angesetzt. Dadurch gelangt das Geschlecht zurück ins Modell, <strong>auch wenn man die Spalte entfernt</strong> — der Kern von Abschnitt 3.</li>
-   </ul>
-   <p><strong>Nicht abgebildet:</strong> Geschlecht jenseits binärer Erfassung · Branche, Region, Position · Bewerbungen, die vor der Erfassung ausgesiebt wurden.</p>
-
-   <h4>Bekannte Einschränkungen</h4>
-   <ul>
-    <li>Die Zusammenhänge sind einfacher als in der Wirklichkeit — gut zum Verstehen von Mechanismen, untauglich zum Abschätzen realer Effektstärken.</li>
-    <li>Keine fehlenden Werte, keine Erfassungsfehler, keine Dubletten. Wer nur damit arbeitet, unterschätzt den Aufbereitungsaufwand realer Bestände.</li>
-    <li>Der Bestand ist statisch — Drift lässt sich daran nicht zeigen. Dafür gibt es <code>tankstelle_umsatz.csv</code>.</li>
-   </ul>
-
-   <h4>Verantwortung und Pflege</h4>
-   <p>Verantwortlich ist der Kursdozent. Änderungen erfolgen über das Erzeugungsskript, nie an der CSV-Datei. Wiedervorlage mit jedem Kursdurchlauf.</p>
-
-   <p style="margin-top:.8rem;font-size:12.5px;">Vollständige Fassung als eigene Datei: <a href="https://github.com/NorthDream64/KI_Schulungen_UNO/blob/main/Modellvalidierung/DATA_CARD.md" target="_blank" rel="noopener">DATA_CARD.md auf GitHub</a> — Aufbau angelehnt an den <a href="https://sites.research.google/datacardsplaybook/" target="_blank" rel="noopener">Data Cards Playbook</a> von Google PAIR.</p>
-  </div>
- </details>
-</div>
-
+<div class="weiter no-print"><a href="#reiter-matrix">Weiter: Confusion Matrix →</a></div>
+</section>
+<section class="tab-panel" id="reiter-matrix">
 <!-- METRIKEN -->
 <div class="sec">
- <div class="sec-t">1 · Schwellenwert, Konfusionsmatrix &amp; <b>Precision / Recall / F1-Score</b></div>
+ <div class="sec-t">Schwellenwert, Konfusionsmatrix &amp; <b>Precision / Recall / F1-Score</b></div>
  <div class="ctrl">
   <label>Einladungsschwelle</label>
   <input type="range" id="thr" min="0" max="18" value="9" step="1">
   <span class="pill" id="thrVal">0.50</span>
  </div>
- <p class="note" style="margin-top:0;margin-bottom:.8rem;">Der Regler bestimmt, ab welcher „Eignungs‑Wahrscheinlichkeit" das Modell jemanden <strong>empfiehlt</strong>. Niedriger Wert = großzügig (mehr Treffer, mehr Fehlalarme). Hoher Wert = streng. Wie diese Wahrscheinlichkeit technisch zustande kommt, steht in der Fußnote.¹ Warum die Skala bei 0,95 endet und nicht bei 0,995, steht ebenfalls dort.²</p>
+ <p class="note" style="margin-top:0;margin-bottom:.8rem;">Der Regler bestimmt, ab welcher „Eignungs‑Wahrscheinlichkeit" das Modell jemanden <strong>empfiehlt</strong>. Niedriger Wert = großzügig (mehr Treffer, mehr Fehlalarme). Hoher Wert = streng. Wie diese Wahrscheinlichkeit technisch zustande kommt, steht in <a href="#fn-cm-1">Fußnote ¹</a>, warum die Skala bei 0,95 endet und nicht bei 0,995, in <a href="#fn-cm-2">Fußnote ²</a> — beide im Reiter Quellen.</p>
+ <details class="klapp" id="regler-echt" style="margin-top:0;">
+  <summary>In der Wirklichkeit · Wo sitzt dieser Regler?</summary>
+  <div class="kl-body">
+   <p><b>Beim eigenen Modell</b> ist der Regler ein Konfigurationswert im Betrieb — eine Zahl in der Einstellung des Modells. Technisch setzt ihn das Daten- oder IT-Team. <b>Entscheiden</b> muss ihn aber die fachlich verantwortliche Person, und er gehört in die Spezifikation des Systems. Jede spätere Änderung ist eine neue Freigabe: Die Fälle knapp unter, auf und über der neuen Schwelle werden geprüft, und der Fachbereich nimmt das Ergebnis ab.</p>
+   <p><b>Beim gekauften System</b> sieht man selten eine Wahrscheinlichkeit. Der Regler steckt dort typischerweise in einer von drei Formen:</p>
+   <table class="det-tab">
+    <tr><td>Score-Filter</td><td>„Nur Bewerbende ab 4 von 5 anzeigen." Eightfold AI etwa bewertet Bewerbende auf einer Skala von 0 bis 5 — wer ab welchem Wert angezeigt wird, ist die Schwelle.</td></tr>
+    <tr><td>Rangliste</td><td>„Die besten 50 anzeigen." Hier ist die Schwelle keine Zahl, sondern eine Menge — und sie verschiebt sich mit jeder Bewerbung, die neu dazukommt.</td></tr>
+    <tr><td>K.-o.-Fragen</td><td>„Führerschein Klasse C vorhanden?" Feste Regeln vor dem Modell, die ebenfalls aussortieren — oft ohne dass jemand sie als Teil der Auswahl mitzählt.</td></tr>
+   </table>
+   <p>Häufig stellt eine Recruiterin oder ein Recruiter diesen Regler im Tagesgeschäft per Filter ein. Dann gibt es ihn zwar, aber niemand hat ihn als <b>Entscheidung</b> behandelt — mit Begründung, Verantwortlichen und Datum. Das ist eine Einschätzung aus der Praxis, keine Marktstudie.</p>
+   <p><b>Vier Fragen für die Beschaffung:</b></p>
+   <ol style="margin:.2rem 0 .3rem 1.1rem;">
+    <li>Wo genau sitzt die Schwelle — und in welcher Form?</li>
+    <li>Wer darf sie ändern, und wird jede Änderung protokolliert?</li>
+    <li>Lässt sie sich je Stelle unterschiedlich einstellen?</li>
+    <li>Liefert der Anbieter Precision, Recall und Auswahlquoten je Schwelle — auf <em>unseren</em> Daten, nicht auf seinen Referenzdaten?</li>
+   </ol>
+  </div>
+ </details>
  <div class="szenario"><b>Fallbeispiel:</b> Euer Unternehmen erhält auf eine offene Stelle <strong>800 Bewerbungen</strong> — genau die Zahl, mit der die Konfusionsmatrix rechnet. Die Personalabteilung möchte nur wenige Personen zum Gespräch einladen. Schiebst Du die Einladungsschwelle auf das Maximum (0,95), empfiehlt das Modell noch <strong>24 Personen, davon 21 tatsächlich geeignete</strong>. Für die Personalabteilung ist das hocheffizient. Zugleich sind unter den 800 Bewerbungen aber <strong>289 geeignete</strong> — das Modell übersieht also 268 davon (Recall 7&nbsp;%). Die Schwelle bestimmt nicht, wie gut das Modell ist, sondern <strong>welchen der beiden Fehler ihr in Kauf nehmt</strong>.</div>
  <div class="grid2">
   <div>
@@ -380,32 +369,22 @@ table.gloss td:first-child{font-weight:600;white-space:nowrap;width:150px;}
    </div>
   </div>
  </div>
- <p class="note"><strong>Merksatz fürs Management:</strong> Es gibt kein „genau" — es gibt eine <em>Abwägung</em>. Hoher <strong>Recall</strong> zählt, wenn ein Übersehen teuer ist (Betrug, Krankheit, verpasste Talente). Hohe <strong>Precision</strong> zählt, wenn ein Fehlalarm teuer ist (wichtige Mail im Spam). <strong>Der F1-Score</strong> presst beide in <em>eine</em> Zahl — nicht, um die Abwägung zu ersetzen, sondern um Modelle und Einstellungen auf einer einzigen Skala vergleichbar zu machen. Er gewichtet beides gleich; seine Variante F2 gewichtet Recall doppelt. <strong>Achtung:</strong> Der F1-Score ist <em>kein</em> Mittelwert im üblichen Sinn — er wird vom schlechteren der beiden Werte nach unten gezogen.³</p>
- <details class="klapp">
-  <summary>Fußnote — Technik &amp; Fachbegriffe</summary>
-  <div class="kl-body">
-  <p>¹ Rohwerte lassen sich nicht einfach addieren — 100 Punkte Fachscore plus ein Ja/Nein-Merkmal plus Alter in Monaten wären gar nicht vergleichbar. Jedes Merkmal wird deshalb zunächst <strong>standardisiert</strong>: Es zählt nicht der absolute Wert, sondern die Abweichung vom Durchschnitt aller Bewerbenden. Bei Fachscore ist das ein Spektrum („5 Punkte über dem Mittel"); bei einem Ja/Nein-Merkmal gibt es trotzdem einen Durchschnitt (z. B. „60 % Ja"), aber nur zwei mögliche Abweichungen. Das Modell multipliziert jede Abweichung mit einem <strong>gelernten Gewicht</strong> — woher diese Gewichte kommen und wo dabei Diskriminierung entstehen kann, zeigt Abschnitt 2. Alle gewichteten Abweichungen zusammen ergeben eine Zahl, die über eine mathematische Kurve in eine Wahrscheinlichkeit zwischen 0 % und 100 % übersetzt wird — und genau darauf schneidet die Einladungsschwelle.</p>
-  <p style="margin-top:.5rem;">² <strong>Warum endet die Skala bei 0,95?</strong> Die Stufen sind ein bewusst gewähltes Fünf-Prozent-Raster — technisch spricht nichts gegen 0,99. Es lohnt sich trotzdem nicht: Die höchste Eignungswahrscheinlichkeit, die das Modell im Validierungsteil überhaupt vergibt, liegt bei <strong>0,991</strong>. Bei einer Schwelle von 0,995 bliebe <em>niemand</em> übrig — die Precision wäre nicht null, sondern <em>nicht berechenbar</em> (null von null).</p>
-  <p style="margin-top:.4rem;">Interessanter ist, was schon davor passiert. Bei 0,90 werden 58 Personen empfohlen, bei 0,95 nur noch 24, bei 0,98 wären es 8 und bei 0,99 genau 2. Und die Precision <em>fällt</em> von 0,914 auf 0,875, obwohl die Schwelle strenger wird — nicht weil das Modell schlechter würde, sondern weil eine einzige Fehlentscheidung bei 24 Fällen stärker durchschlägt als bei 58. <strong>Kennzahlen aus sehr kleinen Gruppen sind nicht belastbar.</strong> Wer im Beschaffungsgespräch eine Precision von 100 % hört, sollte deshalb immer zuerst fragen: <em>aus wie vielen Fällen?</em></p>
-  <p style="margin-top:.5rem;">³ <strong>Warum der F1-Score kein gewöhnlicher Mittelwert ist.</strong> Er ist das <em>harmonische</em> Mittel von Precision und Recall. Das klingt technisch, hat aber eine sehr praktische Folge: Er orientiert sich immer am <strong>schlechteren</strong> der beiden Werte. Schiebst Du oben auf 0,95, liegt die Precision bei 0,875 und der Recall bei 0,073 — der gewöhnliche Durchschnitt wäre 0,474 und sähe passabel aus, der F1-Score beträgt aber nur <strong>0,135</strong>. Genau das ist gewollt: Ein Modell, das fast nichts findet, dafür aber selten irrt, ist kein gutes Modell.</p>
-  <p style="margin-top:.4rem;">Deshalb taugt der F1-Score als <strong>Vergleichsmaß</strong>: Über alle Schwellen hinweg erreicht dieses Modell sein bestes F1 von <strong>0,733 bei Schwelle 0,30</strong> — eine einzige Zahl, mit der sich zwei Modelle oder zwei Einstellungen nebeneinanderlegen lassen. <strong>Kann der F1-Score 100 % erreichen?</strong> Rechnerisch ja — genau dann, wenn Precision und Recall beide bei 1 liegen, das Modell also keinen einzigen Fehlalarm und keinen einzigen übersehenen Fall produziert. In der Praxis kommt das bei echten Daten nicht vor. Taucht es doch auf, ist es <em>kein</em> Grund zur Freude, sondern ein Prüfauftrag: zu kleiner Testbestand, eine triviale Aufgabe — oder Testdaten, die ins Training gelangt sind.</p>
-  <p style="margin-top:.4rem;">Eine Grenze noch: Der F1-Score kennt die <strong>richtig abgelehnten Fälle (TN) nicht</strong> — er blickt nur auf das, was empfohlen wurde, und auf das, was übersehen wurde. Zwei F1-Scores aus <em>verschiedenen</em> Datenbeständen mit unterschiedlichem Anteil geeigneter Bewerbungen sind deshalb nicht vergleichbar. Innerhalb eines Bestands sind sie es.</p>
-  <p style="margin-top:.5rem;">Fachbegriffe in diesem Abschnitt:</p>
-  <dl>
-   <div class="fn-item"><dt>Accuracy (Genauigkeit) —</dt> <dd>Anteil aller korrekt beurteilten Bewerbungen (richtig empfohlen + richtig abgelehnt) an allen Bewerbungen. Wird hier nicht separat angezeigt, ist aber z. B. das, was in Abschnitt 4 als „Training"/„neue Daten" auf der Lernkurve steht.</dd></div>
-   <div class="fn-item"><dt>Precision (Präzision) —</dt> <dd>Anteil der tatsächlich Geeigneten unter allen vom Modell Empfohlenen. Hoch = wenige Fehlalarme.</dd></div>
-   <div class="fn-item"><dt>Recall (Sensitivität) —</dt> <dd>Anteil der tatsächlich Geeigneten, die das Modell auch findet statt sie zu übersehen. Hoch = wenige verpasste Talente.</dd></div>
-   <div class="fn-item"><dt>F1 —</dt> <dd>Fasst Precision und Recall in einer Zahl zusammen, beide gleich gewichtet — als harmonisches Mittel, das sich am schlechteren der beiden Werte orientiert. Dient dem Vergleich von Modellen und Einstellungen auf einer Skala.</dd></div>
-   <div class="fn-item"><dt>F2 —</dt> <dd>Wie F1, aber Recall zählt doppelt so stark wie Precision — sinnvoll, wenn ein übersehener geeigneter Kandidat teurer ist als ein Fehlalarm.</dd></div>
-  </dl>
- </div>
- </details>
+ <p class="note"><strong>Merksatz fürs Management:</strong> Es gibt kein „genau" — es gibt eine <em>Abwägung</em>. Hoher <strong>Recall</strong> zählt, wenn ein Übersehen teuer ist (Betrug, Krankheit, verpasste Talente). Hohe <strong>Precision</strong> zählt, wenn ein Fehlalarm teuer ist (wichtige Mail im Spam). <strong>Der F1-Score</strong> presst beide in <em>eine</em> Zahl — nicht, um die Abwägung zu ersetzen, sondern um Modelle und Einstellungen auf einer einzigen Skala vergleichbar zu machen. Er gewichtet beides gleich; seine Variante F2 gewichtet Recall doppelt. <strong>Achtung:</strong> Der F1-Score ist <em>kein</em> Mittelwert im üblichen Sinn — er wird vom schlechteren der beiden Werte nach unten gezogen.<a href="#fn-cm-3" class="fnref">³</a></p>
+ 
 </div>
 
+
+<div class="weiter no-print"><a href="#reiter-massnahmen">Weiter: Mögliche Maßnahmen →</a></div>
+</section>
+<section class="tab-panel" id="reiter-massnahmen">
+<div class="sec">
+ <div class="sec-t">Mögliche Maßnahmen — <b>Bias, Proxy, synthetische Daten</b></div>
+ <p style="font-size:13px;">Das Modell bevorzugt Männer. Naheliegende Gegenmittel gibt es drei: das Merkmal „Geschlecht" weglassen, mit synthetischen Spiegelprofilen ausgleichen oder den Stellvertreter bereinigen, über den das Geschlecht trotzdem ins Modell gelangt. Erst wird die Verzerrung <b>gemessen</b> (Bias), dann wird geprüft, welche Maßnahme sie tatsächlich <b>beseitigt</b> (Proxy-Falle). Die Einladungsschwelle ist mit dem Regler im Reiter Confusion Matrix verbunden.</p>
+</div>
 <!-- BIAS -->
 <div class="sec">
- <details class="klapp sec-klapp" id="bias">
-  <summary>2 · Bias — dasselbe Modell, zwei Gruppen</summary>
+ <details class="klapp sec-klapp" id="bias" open>
+  <summary>Bias — dasselbe Modell, zwei Gruppen</summary>
   <div class="kl-body">
 
  <div class="szenario"><b>Szenario:</b> Du hörst als KI‑Manager:in zufällig, dass das KI-gestützte Auswahlsystem überproportional viele Frauen aussortiert. Es bewerben sich etwa gleich viele Frauen wie Männer — aber es werden signifikant mehr Männer ausgewählt. Stichwort: historischer Bias.</div>
@@ -461,8 +440,8 @@ table.gloss td:first-child{font-weight:600;white-space:nowrap;width:150px;}
 
 <!-- PROXY -->
 <div class="sec">
- <details class="klapp sec-klapp" id="proxy">
-  <summary>3 · Proxy-Falle — reicht es, „Geschlecht“ wegzulassen?</summary>
+ <details class="klapp sec-klapp" id="proxy" open>
+  <summary>Proxy-Falle — reicht es, „Geschlecht“ wegzulassen?</summary>
   <div class="kl-body">
 
  <p class="note" style="margin-top:0;margin-bottom:.9rem;">Drei naheliegende Reflexe: das Merkmal „Geschlecht“ entfernen · für jedes männliche Profil ein gespiegeltes weibliches erzeugen · das verdächtige Merkmal ganz streichen. Wir haben das Modell <strong>fünfmal</strong> trainiert — immer gegen denselben Validierungsteil — und die Auswahlraten-Lücke gemessen:</p>
@@ -494,10 +473,14 @@ table.gloss td:first-child{font-weight:600;white-space:nowrap;width:150px;}
  </details>
 </div>
 
+
+<div class="weiter no-print"><a href="#reiter-generalisierung">Weiter: Generalisierung →</a></div>
+</section>
+<section class="tab-panel" id="reiter-generalisierung">
 <!-- OVERFITTING -->
 <div class="sec">
- <div class="sec-t">4 · <b>Overfitting vs. Underfitting</b> — auswendig lernen statt verstehen</div>
- <div class="szenario"><b>Fallbeispiel:</b> Ein Modell soll für eine Tankstellenkette in Luxemburg vorhersagen, ob ein Tag <strong>überdurchschnittlichen Umsatz</strong> bei Sandwiches &amp; Getränken bringt.¹ Haupttreiber: die Nähe zum Ferienbeginn in Frankreich, Belgien, Deutschland und den Niederlanden — grenznaher Pendler- und Reiseverkehr. Diese Termine verschieben sich aber <strong>jedes Jahr</strong>. Die Tankstellenkette möchte die Nachfrage möglichst genau vorhersagen, um entsprechende Bestellungen aufgeben zu können. Bei leicht verderblichen Waren ist es teuer, Zutaten und Produkte zu kaufen, die dann „Ladenhüter" sind und liegen bleiben. Trainiert wird mit den Jahren 1–3, geprüft am noch ungesehenen Jahr 4 (Validierungsjahr) — nicht zufällig gemischt, sondern bewusst zeitlich getrennt.</div>
+ <div class="sec-t"><b>Overfitting vs. Underfitting</b> — auswendig lernen statt verstehen</div>
+ <div class="szenario"><b>Fallbeispiel:</b> Ein Modell soll für eine Tankstellenkette in Luxemburg vorhersagen, ob ein Tag <strong>überdurchschnittlichen Umsatz</strong> bei Sandwiches &amp; Getränken bringt.<a href="#fn-gen-1" class="fnref">¹</a> Haupttreiber: die Nähe zum Ferienbeginn in Frankreich, Belgien, Deutschland und den Niederlanden — grenznaher Pendler- und Reiseverkehr. Diese Termine verschieben sich aber <strong>jedes Jahr</strong>. Die Tankstellenkette möchte die Nachfrage möglichst genau vorhersagen, um entsprechende Bestellungen aufgeben zu können. Bei leicht verderblichen Waren ist es teuer, Zutaten und Produkte zu kaufen, die dann „Ladenhüter" sind und liegen bleiben. Trainiert wird mit den Jahren 1–3, geprüft am noch ungesehenen Jahr 4 (Validierungsjahr) — nicht zufällig gemischt, sondern bewusst zeitlich getrennt.</div>
   <details class="klapp">
   <summary>Was ist die „Baumtiefe“ — und was steuert sie wirklich?</summary>
   <div class="kl-body">
@@ -552,17 +535,12 @@ table.gloss td:first-child{font-weight:600;white-space:nowrap;width:150px;}
  <div class="legend"><span><i style="background:#8a2a2a"></i>Trainingsjahre 1–3 (auswendig)</span><span><i style="background:#0a6b6b"></i>Validierungsjahr 4 (was zählt)</span></div>
  <div class="callout" id="ofText"></div>
 
- <details class="klapp">
-  <summary>Fußnote — Vereinfachung</summary>
-  <div class="kl-body">
-  <p>¹ Der tatsächliche Tagesumsatz ist eine Zahl in Euro (eine sogenannte Regression). Hier vereinfacht als Ja/Nein-Frage dargestellt („überdurchschnittlicher Umsatztag?"), damit dieselbe Trainings-/Validierungs-Grafik wie beim Bewerbungsmodell in Abschnitt 1 genutzt werden kann. In der Praxis würde man eine echte Fehlerkennzahl verwenden (z. B. „im Schnitt X € daneben"), nicht nur richtig/falsch.</p>
  </div>
- </details></div>
 
 <!-- EINKAUFSPERSPEKTIVE -->
  <div class="sec">
  <details class="uebung sec-klapp" id="sec5">
-  <summary><span class="ue-nr">5</span><span class="ue-t"><b>Praxisarbeit</b> — der Einkäufer fragt euch um Rat</span><span class="ue-hint">aufklappen</span></summary>
+  <summary><span class="ue-nr">✎</span><span class="ue-t"><b>Praxisarbeit</b> — der Einkäufer fragt euch um Rat</span><span class="ue-hint">aufklappen</span></summary>
   <div class="ue-body">
 
  <div class="aufg">
@@ -593,7 +571,7 @@ table.gloss td:first-child{font-weight:600;white-space:nowrap;width:150px;}
    <li><strong>Die Modellzahl als eine Information behandeln</strong>, nicht als Bestellvorschlag.</li>
    <li><strong>Den Vergleichsfall wechseln.</strong> Nicht die Augustwochen der Vorjahre heranziehen, sondern vergleichbare Wochen <em>ohne</em> Ferienüberlappung — etwa Wochen im Juni oder September mit ähnlichem Wochentagsmuster. Das ist kein Modellieren, sondern Nachschlagen in den eigenen Zahlen.</li>
    <li><strong>Die Bestellung teilen.</strong> Eine Grundmenge, die auch ohne Reiseverkehr abverkauft wird, fest bestellen; den ferienabhängigen Anteil als Nachbestellung offenhalten, soweit die Lieferzeit das zulässt.</li>
-   <li><strong>Die Fehlerrichtung ausrechnen, nicht fühlen.</strong> Abschreibungskosten je Einheit gegen Deckungsbeitrag je entgangener Einheit — daraus folgt, ob ein Vorsichtsabschlag oder ein Aufschlag die günstigere Richtung ist. Dieselbe Abwägung wie Precision gegen Recall in Abschnitt 1.</li>
+   <li><strong>Die Fehlerrichtung ausrechnen, nicht fühlen.</strong> Abschreibungskosten je Einheit gegen Deckungsbeitrag je entgangener Einheit — daraus folgt, ob ein Vorsichtsabschlag oder ein Aufschlag die günstigere Richtung ist. Dieselbe Abwägung wie Precision gegen Recall im Reiter <a href="#reiter-matrix">Confusion Matrix</a>.</li>
    <li><strong>Die Abweichung schriftlich begründen</strong>, damit im nächsten Jahr nachvollziehbar ist, warum von der Modellzahl abgewichen wurde.</li>
   </ul>
  </div>
@@ -602,7 +580,7 @@ table.gloss td:first-child{font-weight:600;white-space:nowrap;width:150px;}
   <div class="antw-f"><span>&#9314;</span>Vorher erkennbar: an der Abdeckung, nicht an der Vorhersage</div>
   <p><strong>Merkmalsabdeckung prüfen.</strong> Vor der Vorhersage nachsehen, ob es in den Trainingsdaten überhaupt vergleichbare Fälle gibt. Hier lautet die Antwort: keinen einzigen. Das ist eine simple Abfrage der eigenen Daten und braucht keine KI.</p>
   <p><strong>Uneinigkeit mehrerer Modellvarianten.</strong> Wo verschiedene Einstellungen dasselbe sagen, steht man auf festem Grund; wo sie auseinanderlaufen, ist man außerhalb der Daten.</p>
-  <p><strong>Breite Unsicherheitsangabe.</strong> Liefert das Modell neben der Punktschätzung ein Konfidenzintervall² oder eine Wahrscheinlichkeit³, ist eine ungewöhnlich breite Bandbreite das Warnsignal.</p>
+  <p><strong>Breite Unsicherheitsangabe.</strong> Liefert das Modell neben der Punktschätzung ein Konfidenzintervall<a href="#fn-gen-2" class="fnref">²</a> oder eine Wahrscheinlichkeit<a href="#fn-gen-3" class="fnref">³</a>, ist eine ungewöhnlich breite Bandbreite das Warnsignal.</p>
   <p><strong>Fachliche Plausibilitätsprüfung.</strong> Jemand mit Marktkenntnis prüft, ob die Prämisse — Reiseverkehr durch Ferienüberlappung — in diesem Jahr überhaupt noch gilt.</p>
  </div>
 
@@ -628,28 +606,119 @@ table.gloss td:first-child{font-weight:600;white-space:nowrap;width:150px;}
   <p style="margin-top:.4rem;"><strong>Trotzdem ist die Zahl keine Zusage.</strong> Für diese Konstellation gibt es keinen Prüffall — die 0,43 wurde nie gegen die Wirklichkeit gemessen und kann es auch nicht werden. <em>Der Fehler wäre nicht, dass die Zahl falsch ist. Der Fehler wäre, sie für geprüft zu halten.</em> Und die drei Varianten sind sich uneinig — genau das ist der Hinweis aus ③, hier in Zahlen.</p>
  </div>
  </details>
- <details class="klapp">
-  <summary>Fußnote — für Interessierte</summary>
-  <div class="kl-body">
-  <dl>
-   <div class="fn-item"><dt>² Konfidenzintervall —</dt> <dd>Ein Wertebereich um eine Schätzung, der angibt, wie sicher diese Schätzung ist. Ein enges Intervall (z. B. „450–470 Sandwiches") bedeutet hohe Sicherheit; ein weites Intervall (z. B. „200–800 Sandwiches") bedeutet, dass die Datenlage keine präzise Aussage zulässt — genau das Warnsignal, das bei einer Extrapolation zu erwarten ist. Ausführliche Herleitung: <a href="https://www.itl.nist.gov/div898/handbook/eda/section3/eda352.htm" target="_blank" rel="noopener">NIST/SEMATECH e-Handbook of Statistical Methods — Confidence Limits for the Mean</a>.</dd></div>
-   <div class="fn-item"><dt>³ Wahrscheinlichkeit —</dt> <dd>Die vom Modell ausgegebene Zahl zwischen 0 und 100 % ist zunächst nur ein Rechenergebnis, keine automatisch „richtige" Wahrscheinlichkeit. Ob sie das tatsächlich ist (man spricht von „kalibriert"), hängt vom Lernverfahren ab und muss gesondert geprüft werden. Grundlegend hierzu: <a href="https://www.cs.cornell.edu/~alexn/papers/calibration.icml05.crc.rev3.pdf" target="_blank" rel="noopener">Niculescu-Mizil &amp; Caruana (2005), „Predicting Good Probabilities With Supervised Learning", ICML</a>.</dd></div>
-  </dl>
- </div>
- </details>
+ 
 
  <div class="callout" style="margin-top:.9rem;">
- <b>Wo werden die Faktoren eigentlich dokumentiert?</b> Bei diesem Lab reicht der Blick nach oben in Abschnitt 0 — das Datenwörterbuch listet bereits alle Merkmale, mit denen das Bewerbungsmodell arbeitet. Reale Modelle laufen aber oft mit Dutzenden Merkmalen (Ferienbeginn und -ende je Land, Wettertrends, Feiertage, Wochentag, Vorjahresumsatz …). Der Fachstandard dafür ist die <strong>Model Card</strong> — ein strukturiertes Dokument je Modell mit Merkmalen, Trainingsdaten, Einsatzgrenzen und Messwerten (<a href="https://arxiv.org/abs/1810.03993" target="_blank" rel="noopener">Mitchell et al. 2019, „Model Cards for Model Reporting", ACM FAT*</a>), ergänzt um ein <strong>Datasheet</strong> je Datensatz, das Herkunft, Erhebung und Zusammensetzung der Trainingsdaten dokumentiert (<a href="https://arxiv.org/abs/1803.09010" target="_blank" rel="noopener">Gebru et al. 2018, „Datasheets for Datasets"</a>). Für Hochrisiko-KI-Systeme ist das keine Kür, sondern Pflicht: Der EU AI Act verlangt genau diese technische Dokumentation (<a href="https://artificialintelligenceact.eu/de/annex/4/" target="_blank" rel="noopener">VO (EU) 2024/1689, Anhang IV</a>).
+ <b>Wo werden die Faktoren eigentlich dokumentiert?</b> Bei diesem Lab reicht der Blick in das <a href="#dwb">Datenwörterbuch</a> im Reiter Quellen — es listet bereits alle Merkmale, mit denen das Bewerbungsmodell arbeitet. Reale Modelle laufen aber oft mit Dutzenden Merkmalen (Ferienbeginn und -ende je Land, Wettertrends, Feiertage, Wochentag, Vorjahresumsatz …). Der Fachstandard dafür ist die <strong>Model Card</strong> — ein strukturiertes Dokument je Modell mit Merkmalen, Trainingsdaten, Einsatzgrenzen und Messwerten (<a href="https://arxiv.org/abs/1810.03993" target="_blank" rel="noopener">Mitchell et al. 2019, „Model Cards for Model Reporting", ACM FAT*</a>), ergänzt um ein <strong>Datasheet</strong> je Datensatz, das Herkunft, Erhebung und Zusammensetzung der Trainingsdaten dokumentiert (<a href="https://arxiv.org/abs/1803.09010" target="_blank" rel="noopener">Gebru et al. 2018, „Datasheets for Datasets"</a>). Für Hochrisiko-KI-Systeme ist das keine Kür, sondern Pflicht: Der EU AI Act verlangt genau diese technische Dokumentation (<a href="https://eur-lex.europa.eu/legal-content/DE/TXT/?uri=OJ:L_202401689" target="_blank" rel="noopener">VO (EU) 2024/1689, Anhang IV (EUR-Lex)</a>).
  </div>
   </div>
  </details>
  </div>
 
+
+<div class="weiter no-print"><a href="#reiter-quellen">Weiter: Quellen →</a></div>
+</section>
+<section class="tab-panel" id="reiter-quellen">
+<!-- DATENWÖRTERBUCH -->
+<div class="sec">
+ <details class="klapp sec-klapp" id="dwb" open>
+  <summary>Datenwörterbuch — was die Merkmale bedeuten</summary>
+  <div class="kl-body">
+   <table class="gloss">
+  <tr><td>Fachscore / Interview</td><td>Punktzahl 0–100, im Datensatz <strong>unabhängig</strong> von Geschlecht und Alter simuliert. „Fachscore" bildet ab, was eine KI aus den Bewerbungsunterlagen (Lebenslauf, Zeugnisse, Anschreiben, freigegebenes LinkedIn-Profil) an fachlicher Passung extrahieren könnte. „Interview" steht für „Teamfähigkeit" — hier wird versucht, diesen schwer quantifizierbaren ("Nasen"-)Faktor aus historischen Daten abzuleiten (Kundenfeedback, Jahresgespräche, Beförderungen seit 2009).<br><br>Dieses „Passt ins Team" soll hier als Kontrollgröße für fachliche Eignung usw. wirken. Für bestimmte Positionen ist die fachliche Eignung ein untergeordneter Punkt gegenüber Team- oder Führungsfähigkeit. Der persönliche Auswahlprozess (Stufe 2) ist so ausgelegt, die Führungs- und Teamfähigkeit strukturiert zu erfassen. Die Daten aus diesem Prozessschritt werden (auch für Kandidatinnen oder Kandidaten, die es nicht "geschafft" haben) benutzt, um das Modell weiter zu trainieren und seine Fähigkeit zu verbessern, "weiche Faktoren" zu bewerten.</td></tr>
+  <tr><td>Geschlecht</td><td><strong>1 = männlich, 0 = weiblich</strong> — binäre Vereinfachung für dieses Lab, keine Aussage über reale Erfassungspraxis.</td></tr>
+  <tr><td>Alter</td><td><strong>Lebensalter in Monaten</strong>, kontinuierlich erfasst (240–780 Monate ≈ 20–65 Jahre).</td></tr>
+  <tr><td>Berufserfahrung</td><td>Jahre im Beruf laut Lebenslauf, realistisch an das Lebensalter gekoppelt (mehr Lebensjahre → im Schnitt mehr Erfahrung, mit Streuung) — keine Wertung der Positionen oder Inhalte der Tätigkeit.</td></tr>
+  <tr><td>Karrierelücke</td><td>Monate <strong>ohne Erwerbstätigkeit</strong> laut Lebenslauf (z. B. Eltern- oder Pflegezeit) — keine „fehlenden Jahre", sondern eine in Monaten gemessene Unterbrechung. Laut Destatis beziehen Mütter im Schnitt rund 10–12 Monate Elterngeld, Väter dagegen nur rund 3–4 Monate (<a href="https://www.destatis.de/DE/Themen/Gesellschaft-Umwelt/Soziales/Elterngeld/geburten.html" target="_blank" rel="noopener">Destatis 2024/2025</a>); auch OECD-weit nehmen Frauen häufiger und längere familienbedingte Erwerbsunterbrechungen als Männer (<a href="https://www.oecd.org/en/publications/gender-gaps-in-paid-and-unpaid-work-persist_25a6c5dc-en/full-report.html" target="_blank" rel="noopener">OECD 2025</a>).</td></tr>
+ </table>
+  </div>
+ </details>
+</div>
+
+<!-- DATA CARD -->
+<div class="sec">
+ <div class="sec-t" id="datacard">Data Card — was wir über diesen Datenbestand wissen</div>
+ <p>Das Datenwörterbuch oben beschreibt die <em>Merkmale</em>. Eine <strong>Data Card</strong> beschreibt den <em>Bestand als Ganzes</em>: Herkunft, Entstehung, Abdeckung, Grenzen. Bei diesem Lab lässt sie sich ausnahmsweise <strong>lückenlos</strong> ausfüllen — weil wir den Bestand selbst erzeugt haben und jede eingebaute Eigenschaft kennen. Genau das ist der Maßstab, an dem sich fremde Datenbestände messen lassen.</p>
+
+ <details class="dc">
+  <summary>Data Card aufklappen</summary>
+  <div class="dc-body">
+
+   <h4>Zweck — und ausdrücklich nicht</h4>
+   <p>Zeigen, wie Schwellenwert, Precision und Recall zusammenhängen und wie ein Modell eine Voreingenommenheit aus historischen Entscheidungen übernimmt. <strong>Nicht</strong> geeignet als Beleg für reale Einstellungspraxis, nicht als Vorlage für ein produktives Auswahlmodell — Personalauswahl ist nach EU AI Act, Anhang III Nr. 4 ein Hochrisiko-Bereich.</p>
+
+   <h4>Herkunft</h4>
+   <p>Erzeugt durch das Skript <code>01_dataset_und_kennzahlen.py</code> in diesem Ordner, mit festem Startwert für den Zufallszahlengenerator. Der Bestand ist damit <strong>exakt reproduzierbar</strong>. Keine personenbezogenen Daten, folglich keine Rechtsgrundlage erforderlich.</p>
+
+   <h4>Umfang</h4>
+   <p>2.000 Bewerbungen, davon 800 im Validierungsteil, an dem Schwelle und Einstellungen gewählt werden. Ein dritter, unangetasteter Testteil würde im echten Projekt erst ganz am Schluss genau einmal gemessen; im Lab ist er weggelassen. Anteil positiver Entscheidungen rund 36 %. Sechs Merkmale plus die Zielgröße <code>eingestellt</code>.</p>
+
+   <h4>Erhebung und Beschriftung</h4>
+   <p>Es gab keine Erhebung. Alle Merkmale sind gezogene Zufallswerte; die Zielgröße folgt einer festgelegten Formel, in der die tatsächliche Eignung mit drei Verzerrungen kombiniert wird. Fachscore und Interview sind <strong>unabhängig</strong> von Geschlecht und Alter gezogen — der Unterschied entsteht ausschließlich in der historischen Entscheidung.</p>
+
+   <h4>Abdeckung und Lücken — die eingebauten Verzerrungen</h4>
+   <ul>
+    <li><strong>Bevorzugung von Männern:</strong> fester Bonus in der historischen Entscheidung, unabhängig von der Eignung.</li>
+    <li><strong>Schleichender Alterseffekt:</strong> kleiner linearer Auf- oder Abschlag je Lebensjahr, kein harter Schnitt bei 40 — so wirkt Altersdiskriminierung in der Praxis.</li>
+    <li><strong>Überzogene Bestrafung der Karrierelücke:</strong> stärker, als es durch tatsächlich fehlende Erfahrung erklärbar wäre.</li>
+    <li><strong>Die Karrierelücke als Stellvertreter:</strong> bei Frauen im Mittel rund zwölf Monate größer angesetzt. Dadurch gelangt das Geschlecht zurück ins Modell, <strong>auch wenn man die Spalte entfernt</strong> — der Kern der Proxy-Falle im Reiter <a href="#reiter-massnahmen">Mögliche Maßnahmen</a>.</li>
+   </ul>
+   <p><strong>Nicht abgebildet:</strong> Geschlecht jenseits binärer Erfassung · Branche, Region, Position · Bewerbungen, die vor der Erfassung ausgesiebt wurden.</p>
+
+   <h4>Bekannte Einschränkungen</h4>
+   <ul>
+    <li>Die Zusammenhänge sind einfacher als in der Wirklichkeit — gut zum Verstehen von Mechanismen, untauglich zum Abschätzen realer Effektstärken.</li>
+    <li>Keine fehlenden Werte, keine Erfassungsfehler, keine Dubletten. Wer nur damit arbeitet, unterschätzt den Aufbereitungsaufwand realer Bestände.</li>
+    <li>Der Bestand ist statisch — Drift lässt sich daran nicht zeigen. Dafür gibt es <code>tankstelle_umsatz.csv</code>.</li>
+   </ul>
+
+   <h4>Verantwortung und Pflege</h4>
+   <p>Verantwortlich ist der Kursdozent. Änderungen erfolgen über das Erzeugungsskript, nie an der CSV-Datei. Wiedervorlage mit jedem Kursdurchlauf.</p>
+
+   <p style="margin-top:.8rem;font-size:12.5px;">Vollständige Fassung als eigene Datei: <a href="https://github.com/NorthDream64/KI_Schulungen_UNO/blob/main/Modellvalidierung/DATA_CARD.md" target="_blank" rel="noopener">DATA_CARD.md auf GitHub</a> — Aufbau angelehnt an den <a href="https://sites.research.google/datacardsplaybook/" target="_blank" rel="noopener">Data Cards Playbook</a> von Google PAIR.</p>
+  </div>
+ </details>
+</div>
+
+<!-- FUSSNOTEN -->
+<div class="sec">
+ <div class="sec-t">Fußnoten</div>
+ <details class="klapp" id="fn-cm">
+  <summary>Zum Reiter Confusion Matrix — Technik &amp; Fachbegriffe</summary>
+  <div class="kl-body">
+  <p id="fn-cm-1">¹ Rohwerte lassen sich nicht einfach addieren — 100 Punkte Fachscore plus ein Ja/Nein-Merkmal plus Alter in Monaten wären gar nicht vergleichbar. Jedes Merkmal wird deshalb zunächst <strong>standardisiert</strong>: Es zählt nicht der absolute Wert, sondern die Abweichung vom Durchschnitt aller Bewerbenden. Bei Fachscore ist das ein Spektrum („5 Punkte über dem Mittel"); bei einem Ja/Nein-Merkmal gibt es trotzdem einen Durchschnitt (z. B. „60 % Ja"), aber nur zwei mögliche Abweichungen. Das Modell multipliziert jede Abweichung mit einem <strong>gelernten Gewicht</strong> — woher diese Gewichte kommen und wo dabei Diskriminierung entstehen kann, zeigt der Reiter <a href="#reiter-massnahmen">Mögliche Maßnahmen</a>. Alle gewichteten Abweichungen zusammen ergeben eine Zahl, die über eine mathematische Kurve in eine Wahrscheinlichkeit zwischen 0 % und 100 % übersetzt wird — und genau darauf schneidet die Einladungsschwelle.</p>
+  <p id="fn-cm-2" style="margin-top:.5rem;">² <strong>Warum endet die Skala bei 0,95?</strong> Die Stufen sind ein bewusst gewähltes Fünf-Prozent-Raster — technisch spricht nichts gegen 0,99. Es lohnt sich trotzdem nicht: Die höchste Eignungswahrscheinlichkeit, die das Modell im Validierungsteil überhaupt vergibt, liegt bei <strong>0,991</strong>. Bei einer Schwelle von 0,995 bliebe <em>niemand</em> übrig — die Precision wäre nicht null, sondern <em>nicht berechenbar</em> (null von null).</p>
+  <p style="margin-top:.4rem;">Interessanter ist, was schon davor passiert. Bei 0,90 werden 58 Personen empfohlen, bei 0,95 nur noch 24, bei 0,98 wären es 8 und bei 0,99 genau 2. Und die Precision <em>fällt</em> von 0,914 auf 0,875, obwohl die Schwelle strenger wird — nicht weil das Modell schlechter würde, sondern weil eine einzige Fehlentscheidung bei 24 Fällen stärker durchschlägt als bei 58. <strong>Kennzahlen aus sehr kleinen Gruppen sind nicht belastbar.</strong> Wer im Beschaffungsgespräch eine Precision von 100 % hört, sollte deshalb immer zuerst fragen: <em>aus wie vielen Fällen?</em></p>
+  <p id="fn-cm-3" style="margin-top:.5rem;">³ <strong>Warum der F1-Score kein gewöhnlicher Mittelwert ist.</strong> Er ist das <em>harmonische</em> Mittel von Precision und Recall. Das klingt technisch, hat aber eine sehr praktische Folge: Er orientiert sich immer am <strong>schlechteren</strong> der beiden Werte. Schiebst Du oben auf 0,95, liegt die Precision bei 0,875 und der Recall bei 0,073 — der gewöhnliche Durchschnitt wäre 0,474 und sähe passabel aus, der F1-Score beträgt aber nur <strong>0,135</strong>. Genau das ist gewollt: Ein Modell, das fast nichts findet, dafür aber selten irrt, ist kein gutes Modell.</p>
+  <p style="margin-top:.4rem;">Deshalb taugt der F1-Score als <strong>Vergleichsmaß</strong>: Über alle Schwellen hinweg erreicht dieses Modell sein bestes F1 von <strong>0,733 bei Schwelle 0,30</strong> — eine einzige Zahl, mit der sich zwei Modelle oder zwei Einstellungen nebeneinanderlegen lassen. <strong>Kann der F1-Score 100 % erreichen?</strong> Rechnerisch ja — genau dann, wenn Precision und Recall beide bei 1 liegen, das Modell also keinen einzigen Fehlalarm und keinen einzigen übersehenen Fall produziert. In der Praxis kommt das bei echten Daten nicht vor. Taucht es doch auf, ist es <em>kein</em> Grund zur Freude, sondern ein Prüfauftrag: zu kleiner Testbestand, eine triviale Aufgabe — oder Testdaten, die ins Training gelangt sind.</p>
+  <p style="margin-top:.4rem;">Eine Grenze noch: Der F1-Score kennt die <strong>richtig abgelehnten Fälle (TN) nicht</strong> — er blickt nur auf das, was empfohlen wurde, und auf das, was übersehen wurde. Zwei F1-Scores aus <em>verschiedenen</em> Datenbeständen mit unterschiedlichem Anteil geeigneter Bewerbungen sind deshalb nicht vergleichbar. Innerhalb eines Bestands sind sie es.</p>
+  <p style="margin-top:.5rem;">Fachbegriffe zur Confusion Matrix:</p>
+  <dl>
+   <div class="fn-item"><dt>Accuracy (Genauigkeit) —</dt> <dd>Anteil aller korrekt beurteilten Bewerbungen (richtig empfohlen + richtig abgelehnt) an allen Bewerbungen. Wird hier nicht separat angezeigt, ist aber z. B. das, was im Reiter <a href="#reiter-generalisierung">Generalisierung</a> als „Training"/„neue Daten" auf der Lernkurve steht.</dd></div>
+   <div class="fn-item"><dt>Precision (Präzision) —</dt> <dd>Anteil der tatsächlich Geeigneten unter allen vom Modell Empfohlenen. Hoch = wenige Fehlalarme.</dd></div>
+   <div class="fn-item"><dt>Recall (Sensitivität) —</dt> <dd>Anteil der tatsächlich Geeigneten, die das Modell auch findet statt sie zu übersehen. Hoch = wenige verpasste Talente.</dd></div>
+   <div class="fn-item"><dt>F1 —</dt> <dd>Fasst Precision und Recall in einer Zahl zusammen, beide gleich gewichtet — als harmonisches Mittel, das sich am schlechteren der beiden Werte orientiert. Dient dem Vergleich von Modellen und Einstellungen auf einer Skala.</dd></div>
+   <div class="fn-item"><dt>F2 —</dt> <dd>Wie F1, aber Recall zählt doppelt so stark wie Precision — sinnvoll, wenn ein übersehener geeigneter Kandidat teurer ist als ein Fehlalarm.</dd></div>
+  </dl>
+ </div>
+ </details>
+ <details class="klapp" id="fn-gen">
+  <summary>Zum Reiter Generalisierung — Vereinfachung, Konfidenzintervall, Wahrscheinlichkeit</summary>
+  <div class="kl-body">
+  <p id="fn-gen-1">¹ Der tatsächliche Tagesumsatz ist eine Zahl in Euro (eine sogenannte Regression). Hier vereinfacht als Ja/Nein-Frage dargestellt („überdurchschnittlicher Umsatztag?"), damit dieselbe Trainings-/Validierungs-Grafik wie beim Bewerbungsmodell im Reiter <a href="#reiter-matrix">Confusion Matrix</a> genutzt werden kann. In der Praxis würde man eine echte Fehlerkennzahl verwenden (z. B. „im Schnitt X € daneben"), nicht nur richtig/falsch.</p>
+ 
+  <dl>
+   <div class="fn-item" id="fn-gen-2"><dt>² Konfidenzintervall —</dt> <dd>Ein Wertebereich um eine Schätzung, der angibt, wie sicher diese Schätzung ist. Ein enges Intervall (z. B. „450–470 Sandwiches") bedeutet hohe Sicherheit; ein weites Intervall (z. B. „200–800 Sandwiches") bedeutet, dass die Datenlage keine präzise Aussage zulässt — genau das Warnsignal, das bei einer Extrapolation zu erwarten ist. Ausführliche Herleitung: <a href="https://www.itl.nist.gov/div898/handbook/eda/section3/eda352.htm" target="_blank" rel="noopener">NIST/SEMATECH e-Handbook of Statistical Methods — Confidence Limits for the Mean</a>.</dd></div>
+   <div class="fn-item" id="fn-gen-3"><dt>³ Wahrscheinlichkeit —</dt> <dd>Die vom Modell ausgegebene Zahl zwischen 0 und 100 % ist zunächst nur ein Rechenergebnis, keine automatisch „richtige" Wahrscheinlichkeit. Ob sie das tatsächlich ist (man spricht von „kalibriert"), hängt vom Lernverfahren ab und muss gesondert geprüft werden. Grundlegend hierzu: <a href="https://www.cs.cornell.edu/~alexn/papers/calibration.icml05.crc.rev3.pdf" target="_blank" rel="noopener">Niculescu-Mizil &amp; Caruana (2005), „Predicting Good Probabilities With Supervised Learning", ICML</a>.</dd></div>
+  </dl>
+ </div>
+ </details>
+</div>
 <div class="sec">
  <details class="uebung sec-klapp" id="sec6">
-  <summary><span class="ue-nr">6</span><span class="ue-t"><b>Wer es einmal selbst probieren möchte</b></span><span class="ue-hint">aufklappen</span></summary>
+  <summary><span class="ue-nr">✎</span><span class="ue-t"><b>Wer es einmal selbst probieren möchte</b></span><span class="ue-hint">aufklappen</span></summary>
   <div class="ue-body">
- <p>Alles, was Du bis hier gesehen hast, beruhte auf einem Bestand, dessen Entstehung wir vollständig kennen (Abschnitt 0b). <strong>Das ist der Ausnahmefall.</strong> Im Alltag bekommst Du Daten, deren Herkunft niemand mehr rekonstruieren kann — und dieselben Kennzahlen lassen sich trotzdem ausrechnen. Sie sehen genauso überzeugend aus.</p>
+ <p>Alles, was Du bis hier gesehen hast, beruhte auf einem Bestand, dessen Entstehung wir vollständig kennen (<a href="#datacard">Data Card</a>, oben in diesem Reiter). <strong>Das ist der Ausnahmefall.</strong> Im Alltag bekommst Du Daten, deren Herkunft niemand mehr rekonstruieren kann — und dieselben Kennzahlen lassen sich trotzdem ausrechnen. Sie sehen genauso überzeugend aus.</p>
 
  <div class="callout" style="margin-top:.8rem;">
   <b>Selbstversuch.</b> Öffne <a href="https://www.kaggle.com/datasets" target="_blank" rel="noopener">Kaggle Datasets</a>, such Dir einen Bestand zu einem Thema, das Dich interessiert, und beantworte drei Fragen:
@@ -663,7 +732,7 @@ table.gloss td:first-child{font-weight:600;white-space:nowrap;width:150px;}
 
  <div class="callout" style="margin-top:.9rem;">
   <b>Die Fußangel: die Usability-Bewertung.</b> Kaggle zeigt je Bestand eine Bewertung auf einer Skala bis 10; ab 8,0 gilt ein Bestand als gut dokumentiert. Nützlich — aber sie misst, ob die <em>Felder ausgefüllt</em> sind, nicht ob die <em>Angaben stimmen</em>. Ein Bestand mit 9,4 kann eine falsche Lizenzangabe tragen und eine Weiterveröffentlichung ohne nachvollziehbare Herkunft sein.
-  <p style="margin-top:.6rem;">Das ist derselbe Denkfehler wie bei den Kennzahlen aus Abschnitt 1: <strong>Eine hohe Zahl ist keine Aussage darüber, ob die richtige Sache gemessen wurde.</strong> Eine Genauigkeit von 94 % kann in einer Teilgruppe bei 60 % liegen; eine Dokumentationsbewertung von 9,4 kann auf erfundenen Angaben beruhen.</p>
+  <p style="margin-top:.6rem;">Das ist derselbe Denkfehler wie bei den Kennzahlen im Reiter <a href="#reiter-matrix">Confusion Matrix</a>: <strong>Eine hohe Zahl ist keine Aussage darüber, ob die richtige Sache gemessen wurde.</strong> Eine Genauigkeit von 94 % kann in einer Teilgruppe bei 60 % liegen; eine Dokumentationsbewertung von 9,4 kann auf erfundenen Angaben beruhen.</p>
  </div>
 
  <p style="margin-top:.9rem;"><strong>Für die Beschaffung heißt das:</strong> Ein Datenbestand aus einer öffentlichen Quelle ist ein Kandidat, kein Ergebnis. Bevor er in ein Vorhaben geht, braucht er dieselbe Prüfung, die Du hier an einem bekannten Bestand geübt hast — Herkunft, Abdeckung, Lücken, Rechtsgrundlage. Wer das überspringt, importiert ein Rechtsrisiko und eine Verzerrung, die erst im Betrieb sichtbar wird.</p>
@@ -680,6 +749,29 @@ table.gloss td:first-child{font-weight:600;white-space:nowrap;width:150px;}
  </details>
  </div>
 
+<!-- QUELLENVERZEICHNIS -->
+<div class="sec">
+ <div class="sec-t">Quellenverzeichnis — alle im Lab verlinkten Belege</div>
+ <ul class="qv">
+  <li><a href="https://www.cnbc.com/2018/10/10/amazon-scraps-a-secret-ai-recruiting-tool-that-showed-bias-against-women.html" target="_blank" rel="noopener">Reuters über CNBC (10.10.2018)</a></li>
+  <li><a href="https://www.findlaw.com/legalblogs/courtside/proposed-class-action-lawsuit-targets-eightfolds-ai-hiring-platform/" target="_blank" rel="noopener">FindLaw zur Klage gegen Eightfold (2026)</a></li>
+  <li><a href="https://ojs.aaai.org/index.php/AIES/article/view/31748" target="_blank" rel="noopener">Wilson &amp; Caliskan, AIES 2024</a></li>
+  <li><a href="https://www.deloitte.com/us/en/services/audit/articles/nyc-local-law-144-algorithmic-bias.html" target="_blank" rel="noopener">Deloitte zu NYC Local Law 144</a></li>
+  <li><a href="https://www.eweek.com/news/ai-job-applications-linkedin/" target="_blank" rel="noopener">eWeek, nach der New York Times</a></li>
+  <li><a href="https://www.destatis.de/DE/Themen/Gesellschaft-Umwelt/Soziales/Elterngeld/geburten.html" target="_blank" rel="noopener">Destatis 2024/2025</a></li>
+  <li><a href="https://www.oecd.org/en/publications/gender-gaps-in-paid-and-unpaid-work-persist_25a6c5dc-en/full-report.html" target="_blank" rel="noopener">OECD 2025</a></li>
+  <li><a href="https://github.com/NorthDream64/KI_Schulungen_UNO/blob/main/Modellvalidierung/DATA_CARD.md" target="_blank" rel="noopener">DATA_CARD.md auf GitHub</a></li>
+  <li><a href="https://sites.research.google/datacardsplaybook/" target="_blank" rel="noopener">Data Cards Playbook</a></li>
+  <li><a href="https://arxiv.org/abs/1810.03993" target="_blank" rel="noopener">Mitchell et al. 2019, „Model Cards for Model Reporting", ACM FAT*</a></li>
+  <li><a href="https://arxiv.org/abs/1803.09010" target="_blank" rel="noopener">Gebru et al. 2018, „Datasheets for Datasets"</a></li>
+  <li><a href="https://eur-lex.europa.eu/legal-content/DE/TXT/?uri=OJ:L_202401689" target="_blank" rel="noopener">VO (EU) 2024/1689, Anhang IV (EUR-Lex)</a></li>
+  <li><a href="https://www.kaggle.com/datasets" target="_blank" rel="noopener">Kaggle Datasets</a></li>
+  <li><a href="https://arxiv.org/pdf/2310.16787" target="_blank" rel="noopener">Data Provenance Initiative</a></li>
+  <li><a href="https://www.itl.nist.gov/div898/handbook/eda/section3/eda352.htm" target="_blank" rel="noopener">NIST/SEMATECH e-Handbook of Statistical Methods — Confidence Limits for the Mean</a></li>
+  <li><a href="https://www.cs.cornell.edu/~alexn/papers/calibration.icml05.crc.rev3.pdf" target="_blank" rel="noopener">Niculescu-Mizil &amp; Caruana (2005), „Predicting Good Probabilities With Supervised Learning", ICML</a></li>
+ </ul>
+</div>
+</section>
 <div class="foot">Synthetischer Datensatz (n=2000, Validierung n=800) · alle Personen und Zahlen erfunden · Kennzahlen mit scikit-learn berechnet · Lab „Modellvalidierung &amp; Bias" · KI-Manager:in · <span title="Zum Abgleich, ob der Browser die aktuelle Fassung geladen hat">Stand 08.10.2026 · Fassung 10</span></div>
 
 </div>
@@ -829,6 +921,31 @@ renderMetrics(); renderProxy(); renderOverfit();
     d.addEventListener('toggle', setz); setz();
     window.addEventListener('beforeprint', function(){ d.open = true; });
   });
+})();
+
+// Reiter
+(function(){
+ const btns=[...document.querySelectorAll('.tab-btn')];
+ const panels=[...document.querySelectorAll('.tab-panel')];
+ function zeige(id,scroll){
+  btns.forEach(b=>b.classList.toggle('aktiv',b.dataset.ziel===id));
+  panels.forEach(p=>p.classList.toggle('aktiv',p.id===id));
+  try{history.replaceState(null,'','#'+id);}catch(e){}
+  if(scroll){document.querySelector('.tab-leiste').scrollIntoView({behavior:'smooth',block:'start'});}
+ }
+ btns.forEach(b=>b.addEventListener('click',()=>zeige(b.dataset.ziel,false)));
+ document.addEventListener('click',function(e){
+  const a=e.target.closest('a[href^="#"]'); if(!a) return;
+  const t=document.getElementById(a.getAttribute('href').slice(1)); if(!t) return;
+  e.preventDefault();
+  if(t.classList.contains('tab-panel')){zeige(t.id,true);return;}
+  const p=t.closest('.tab-panel'); if(p&&!p.classList.contains('aktiv')) zeige(p.id,false);
+  let d=t.tagName==='DETAILS'?t:t.closest('details');
+  while(d){d.open=true; d=d.parentElement?d.parentElement.closest('details'):null;}
+  setTimeout(()=>t.scrollIntoView({behavior:'smooth',block:'start'}),40);
+ });
+ const h=location.hash.slice(1);
+ if(h){const t=document.getElementById(h); if(t){const p=t.classList.contains('tab-panel')?t:t.closest('.tab-panel'); if(p) zeige(p.id,false);}}
 })();
 </script>
 </body>
