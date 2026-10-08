@@ -364,21 +364,21 @@ table.gloss td:first-child{font-weight:600;white-space:nowrap;width:150px;}
    <div class="metrics">
     <div class="met"><div class="v" id="mPrec">0</div><div class="k">Precision</div><div class="d">Von den <em>Empfohlenen</em> wirklich geeignet</div><div class="s">Sicht der Personalabteilung</div></div>
     <div class="met"><div class="v" id="mRec">0</div><div class="k">Recall</div><div class="d">Von den <em>Geeigneten</em> gefunden</div><div class="s">Sicht der Fachbereiche</div></div>
-    <div class="met"><div class="v" id="mF">0</div><div class="k" id="mFk">F1</div><div class="d" id="mFd">Eine Zahl zum Vergleichen</div><div class="s" id="mFs">Sicht der Geschäftsführung</div></div>
+    <div class="met"><div class="v" id="mF">0</div><div class="k" id="mFk">F1</div><div class="d" id="mFd">Eine Zahl, die beide Aspekte berücksichtigt</div><div class="s" id="mFs">Sicht der Geschäftsführung</div></div>
    </div>
    <div class="callout" id="tradeoff"></div>
    <div class="kosten">
     <div class="kosten-t">Die Rechnung der Geschäftsführung · je Stelle</div>
     <table>
-     <tr><td>Kosten der KI-Anwendung (<span id="kN">800</span>&nbsp;×&nbsp;0,25&nbsp;€)</td><td id="kKI">–</td></tr>
+     <tr><td>Kosten der KI-Anwendung (<span id="kN">800</span> × 0,25 €)</td><td id="kKI">–</td></tr>
      <tr class="unter"><td>Detailprüfungen (eingeladen = TP + FP)</td><td id="kInv">–</td></tr>
-     <tr><td>Kosten der Detailprüfung (×&nbsp;100&nbsp;€)</td><td id="kCost">–</td></tr>
+     <tr><td>Kosten der Detailprüfung (× 100 €)</td><td id="kCost">–</td></tr>
      <tr class="unter"><td>Übersehene geeignete Bewerbende (FN)</td><td id="kFN">–</td></tr>
-     <tr><td>Kosten der übersehenen Geeigneten (×&nbsp;25&nbsp;€)</td><td id="kFNc">–</td></tr>
+     <tr><td>Kosten der übersehenen Geeigneten (× 25 €)</td><td id="kFNc">–</td></tr>
      <tr class="summe"><td>Summe je Stelle</td><td id="kSum">–</td></tr>
      <tr class="unter"><td>Zum Vergleich: alles von Hand</td><td>66.000 €</td></tr>
     </table>
-    <p class="note" style="margin-top:.4rem;"><b>Kosten der KI-Anwendung:</b> 0,25&nbsp;€ je Bewerbung bei unter 10.000 Bewerbungen insgesamt im Jahr.<br><b>Kosten pro entgangene geeignete Bewerbung:</b> Die Geschäftsführung möchte verhindern, dass hier falsche Anreize gesetzt werden, und hat die Kosten mit 25&nbsp;€ angesetzt.</p>
+    <p class="note" style="margin-top:.4rem;"><b>Kosten der KI-Anwendung:</b> 0,25 € je Bewerbung bei unter 10.000 Bewerbungen insgesamt im Jahr.<br><b>Kosten pro entgangene geeignete Bewerbung:</b> Die Geschäftsführung möchte verhindern, dass hier falsche Anreize gesetzt werden, und hat die Kosten mit 25 € angesetzt.</p>
    </div>
   </div>
  </div>
@@ -728,13 +728,7 @@ function renderMetrics(){
  $('tp').textContent=s.tp; $('fp').textContent=s.fp; $('fn').textContent=s.fn; $('tn').textContent=s.tn;
  $('mPrec').textContent=pct(s.precision); $('mRec').textContent=pct(s.recall);
  const f=fbeta(s.precision,s.recall,beta);
- $('mF').textContent=pct(f); $('mFk').textContent='F'+beta; $('mFd').textContent = beta===1?'Eine Zahl zum Vergleichen':'Eine Zahl, Recall zählt doppelt'; $('mFs').textContent = beta===1?'Sicht der Geschäftsführung':'Fachbereiche zählen doppelt';
- // trade-off text
- let msg;
- if(s.recall>=0.9) msg='<b>Sehr großzügig.</b> Fast alle Geeigneten werden gefunden (hoher Recall) — aber viele Fehlalarme (niedrige Precision).';
- else if(s.precision>=0.9) msg='<b>Sehr streng.</b> Wer empfohlen wird, ist fast sicher geeignet (hohe Precision) — aber viele Geeignete werden übersehen (niedriger Recall).';
- else msg='<b>Mittlerer Bereich.</b> Precision und Recall halten sich die Waage — welche Seite wichtiger ist, entscheidet der Geschäftsfall, nicht die Technik.';
- $('tradeoff').innerHTML=msg;
+ $('mF').textContent=pct(f); $('mFk').textContent='F'+beta; $('mFd').textContent = beta===1?'Eine Zahl, die beide Aspekte berücksichtigt':'Eine Zahl, Recall zählt doppelt'; $('mFs').textContent = beta===1?'Sicht der Geschäftsführung':'Fachbereiche zählen doppelt';
  // Kosten je Stelle
  const inv=s.tp+s.fp;
  $('kInv').textContent=inv.toLocaleString('de-DE');
