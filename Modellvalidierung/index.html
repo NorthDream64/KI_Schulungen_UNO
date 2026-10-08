@@ -377,7 +377,7 @@ table.gloss td:first-child{font-weight:600;white-space:nowrap;width:150px;}
      <tr class="summe"><td>Summe je Stelle</td><td id="kSum">–</td></tr>
      <tr class="unter"><td>Zum Vergleich: alles von Hand</td><td>66.000 €</td></tr>
     </table>
-    <p class="note" style="margin-top:.4rem;"><b>Kosten der KI-Anwendung:</b> 0,25&nbsp;€ je Bewerbung bei unter 10.000 Bewerbungen insgesamt im Jahr.<br><b>Kosten pro entgangene geeignete Bewerbung:</b> Die Geschäftsführung möchte verhindern, dass hier falsche Anreize gesetzt werden, und hat die Kosten mit 100&nbsp;€ angesetzt.</p>
+    <p class="note" style="margin-top:.4rem;"><b>Kosten der KI-Anwendung:</b> 0,25&nbsp;€ je Bewerbung bei unter 10.000 Bewerbungen insgesamt im Jahr.<br><b>Kosten pro entgangene geeignete Bewerbung:</b> Die Geschäftsführung möchte verhindern, dass hier ausschließlich falsche Anreize gesetzt werden, und hat die Kosten mit 100&nbsp;€ angesetzt.</p>
    </div>
   </div>
  </div>
@@ -500,8 +500,7 @@ table.gloss td:first-child{font-weight:600;white-space:nowrap;width:150px;}
 
  <p><b>Bei der Arbeit mit dem Modell gibt es einige Auffälligkeiten:</b></p>
  <ol class="auff">
-  <li>Das Modell sagt die Nachfrage <b>auf Monatsbasis</b> sehr gut voraus.</li>
-  <li><b>Auf Wochenbasis</b> sinkt die Vorhersagequalität beträchtlich.</li>
+  <li>Das Modell sagt die Nachfrage <b>auf Monatsbasis</b> sehr gut voraus. <b>Auf Wochenbasis</b> sinkt die Vorhersagequalität beträchtlich.</li>
   <li>Das Modell kann die Nachfrage nach einzelnen <b>Produktgruppen</b> gut prognostizieren (Sandwiches, kohlensäurehaltige Getränke, Bier, Süßwaren), ist aber deutlich schlechter bei einer Anfrage wie: „Wie viele 250-g-Packungen des Schokoladenriegels ‚Joyeux' werden am Mittwochnachmittag der kommenden Woche verkauft?"</li>
   <li>Das Modell versagte völlig, als es darum ging, die <b>letzte Augustwoche</b> vorherzusagen.</li>
  </ol>
@@ -509,9 +508,9 @@ table.gloss td:first-child{font-weight:600;white-space:nowrap;width:150px;}
  <details class="klapp" id="auff-loesung">
   <summary>Auflösung</summary>
   <div class="kl-body">
-   <p><b>① und ② gehören zusammen — die Prüfebene.</b> Ferien, Brücken- und Feiertage liegen oft genug im selben Monat. Auf Monatsbasis muss das Modell deshalb nur den Monat treffen, nicht den Tag — und Fehler innerhalb eines Monats gleichen sich aus. Auf Wochenbasis müssten die wandernden Termine genau sitzen; dafür ist das Modell <b>zu grob</b>. Im Datensatz dieses Labs liegt der vorhergesagte Anteil guter Umsatztage im Testjahr je Monat im Schnitt 9,5 Prozentpunkte daneben, je Woche 16,4. <b>Die Lehre:</b> Ein Modell wird auf der Ebene geprüft, auf der entschieden wird — und bestellt wird wöchentlich.</p>
-   <p><b>③ Overfitting — zu fein.</b> Für den Riegel „Joyeux" am Mittwochnachmittag sind die Zahlen klein: Es gehen nur wenige Packungen über den Tresen, und dieselbe Konstellation — Mittwochnachmittag, Ferienbeginn, Baustelle — kam in fünf Jahren nur eine Handvoll Mal vor. Ein Modell, das so fein unterscheiden darf, lernt die Zufälle dieser wenigen Fälle auswendig, statt ein Muster zu erkennen. Bei Entscheidungsbäumen heißt das: zu große Baumtiefe. Für Produktgruppen gibt es genug Fälle, für einen einzelnen Artikel je Halbtag nicht. Der Regler unten zeigt den Mechanismus.</p>
-   <p><b>④ Weder noch — die Anfrage liegt außerhalb der Daten.</b> In allen sechs Jahren des Datensatzes endeten in der letzten Augustwoche die Sommerferien in Frankreich und in einigen deutschen Bundesländern; der Rückreiseverkehr ließ den Umsatz steigen. Diese Woche war an 98&nbsp;% der Tage überdurchschnittlich — ein Muster ohne ein einziges Gegenbeispiel. Im Jahr, für das die Vorhersage gebraucht wurde, endeten die Ferien später. Für diese Konstellation gibt es keinen Prüffall, und keine Einstellung des Modells hilft dagegen: Das Problem liegt in der Anfrage, nicht im Modell. Fachbegriffe dafür: <b>Extrapolation</b> oder <b>out-of-distribution</b>. Das Modell liefert trotzdem eine Zahl — es verweigert nie eine Antwort. Das Gegenmittel ist eine <b>Abdeckungsprüfung</b>: Vor jeder Vorhersage wird geprüft, ob es in den Trainingsdaten vergleichbare Fälle gibt, und die Vorhersage wird markiert, wenn nicht.</p>
+   <p><b>① — die Prüfebene.</b> Ferien, Brücken- und Feiertage liegen oft genug im selben Monat. Auf Monatsbasis muss das Modell deshalb nur den Monat treffen, nicht den Tag — und Fehler innerhalb eines Monats gleichen sich aus. Auf Wochenbasis müssten die wandernden Termine genau sitzen; dafür ist das Modell <b>zu grob</b>. Im Datensatz dieses Labs liegt der vorhergesagte Anteil guter Umsatztage im Testjahr je Monat im Schnitt 9,5 Prozentpunkte daneben, je Woche 16,4. <b>Die Lehre:</b> Ein Modell wird auf der Ebene geprüft, auf der entschieden wird — und bestellt wird wöchentlich.</p>
+   <p><b>② Overfitting — zu fein.</b> Für den Riegel „Joyeux" am Mittwochnachmittag sind die Zahlen klein: Es gehen nur wenige Packungen über den Tresen, und dieselbe Konstellation — Mittwochnachmittag, Ferienbeginn, Baustelle — kam in fünf Jahren nur eine Handvoll Mal vor. Ein Modell, das so fein unterscheiden darf, lernt die Zufälle dieser wenigen Fälle auswendig, statt ein Muster zu erkennen. Bei Entscheidungsbäumen heißt das: zu große Baumtiefe. Für Produktgruppen gibt es genug Fälle, für einen einzelnen Artikel je Halbtag nicht. Der Regler unten zeigt den Mechanismus.</p>
+   <p><b>③ Weder noch — die Anfrage liegt außerhalb der Daten.</b> In allen sechs Jahren des Datensatzes endeten in der letzten Augustwoche die Sommerferien in Frankreich und in einigen deutschen Bundesländern; der Rückreiseverkehr ließ den Umsatz steigen. Diese Woche war an 98&nbsp;% der Tage überdurchschnittlich — ein Muster ohne ein einziges Gegenbeispiel. Im Jahr, für das die Vorhersage gebraucht wurde, endeten die Ferien später. Für diese Konstellation gibt es keinen Prüffall, und keine Einstellung des Modells hilft dagegen: Das Problem liegt in der Anfrage, nicht im Modell. Fachbegriffe dafür: <b>Extrapolation</b> oder <b>out-of-distribution</b>. Das Modell liefert trotzdem eine Zahl — es verweigert nie eine Antwort. Das Gegenmittel ist eine <b>Abdeckungsprüfung</b>: Vor jeder Vorhersage wird geprüft, ob es in den Trainingsdaten vergleichbare Fälle gibt, und die Vorhersage wird markiert, wenn nicht.</p>
   </div>
  </details>
 
