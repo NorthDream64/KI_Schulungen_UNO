@@ -38,7 +38,7 @@ wenn das betreffende Merkmal weggelassen wird.
 | **Verfahren** | Zufallszahlen mit festem Startwert (`default_rng(42)`) — der Bestand ist damit exakt reproduzierbar |
 | **Bibliotheken** | numpy, pandas, scikit-learn |
 | **Rechtsgrundlage** | entfällt — keine personenbezogenen Daten |
-| **Lizenz** | wie das Repository (siehe `LICENSE`) |
+| **Lizenz** | © 2026 Ulrich Nord · Alle Rechte vorbehalten; Nutzung durch Teilnehmende siehe `LICENSE` in diesem Ordner |
 
 ## 4 · Umfang und Struktur
 

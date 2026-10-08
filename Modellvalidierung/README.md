@@ -42,7 +42,7 @@ Wochenumsätze von acht Tankstellen einer luxemburgischen Kette, nach Warengrupp
 
 ## Lizenz
 
-Code unter **MIT**, Lehr-Inhalte zusätzlich unter **CC BY 4.0** (Namensnennung: Ulrich Nord). Siehe `LICENSE`.
+© 2026 Ulrich Nord · Alle Rechte vorbehalten. Teilnehmerinnen und Teilnehmer dürfen dieses Material für die eigene berufliche Nutzung sowie innerhalb ihres Unternehmens verwenden, speichern, ausdrucken und weitergeben. Veröffentlichung und Verwendung in eigenen Schulungs- oder Beratungsangeboten bedürfen der schriftlichen Zustimmung. Siehe `LICENSE`.
 
 ## Hinweis
 
