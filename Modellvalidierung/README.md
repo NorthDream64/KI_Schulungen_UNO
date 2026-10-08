@@ -21,7 +21,7 @@ Wochenumsätze von acht Tankstellen einer luxemburgischen Kette, nach Warengrupp
 | Datei | Zweck | Für wen |
 |---|---|---|
 | **DATA_CARD.md** | Beschreibung des Datenbestands nach dem Muster einer Data Card: Herkunft, Erzeugung, Abdeckung und **die absichtlich eingebauten Verzerrungen**. | Alle — Grundlage für den Reiter *Quellen* im Werkzeug |
-| **index.html** | Im Browser öffnen. Fünf Reiter: *Ausgangssituation*, *Confusion Matrix* (Schwelle, Precision, Recall, F1-Score, Kosten), *Mögliche Maßnahmen* (Bias je Gruppe, Proxy-Falle), *Generalisierung* (Tankstellen-Fall, vier Fragen von grob bis fein, Over-/Underfitting, Extrapolation), *Quellen*. **Kein Setup.** | Teilnehmende (Haupt-Werkzeug) |
+| **index.html** | Im Browser öffnen. Fünf Reiter: *Ausgangssituation*, *Confusion Matrix* (Schwelle, Precision, Recall, F1-Score, Kosten), *Mögliche Maßnahmen* (Bias je Gruppe, Proxy-Falle), *Generalisierung* (Tankstellen-Fall, drei Modelle im Vergleich: zu grob, passend, zu fein; Extrapolation), *Quellen*. **Kein Setup.** | Teilnehmende (Haupt-Werkzeug) |
 | **02_demo_erklaert.py** | Zum Live-Vorführen: lädt den Datensatz und erklärt alles in einfacher Sprache im Terminal. | Dozent / Neugierige |
 | **01_dataset_und_kennzahlen.py** | Erzeugt den Datensatz neu und berechnet alle Kennzahlen. | zum Nachbauen/Anpassen |
 | **bewerber_screening.csv** | Der Datensatz (2000 Zeilen). | — |
@@ -38,7 +38,7 @@ Wochenumsätze von acht Tankstellen einer luxemburgischen Kette, nach Warengrupp
 1. **Schwelle & Trade-off** — es gibt kein „genau", nur die Abwägung Precision ↔ Recall.
 2. **Bias** — dieselbe Regel, ungleiche Wirkung, weil das Modell die Vergangenheit gelernt hat.
 3. **Proxy-Falle** — „Geschlecht" wegzulassen behebt Bias *nicht* (die Karrierelücke verrät es weiter).
-4. **Generalisierung** — Auswendiglernen (Training top, neue Daten schlecht) ≠ Verstehen; welche Modellstufe passt, hängt an der Frage; und eine Anfrage außerhalb der Daten beantwortet kein Modell verlässlich.
+4. **Generalisierung** — Auswendiglernen (Training top, neue Daten schlecht) ≠ Verstehen; wie fein ein Modell sein darf, hängt an der Frage und an den Daten; und eine Anfrage außerhalb der Daten beantwortet kein Modell verlässlich.
 
 ## Lizenz
 

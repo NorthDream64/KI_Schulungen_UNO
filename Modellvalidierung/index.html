@@ -156,18 +156,18 @@ input[type=range]{flex:1;min-width:220px;accent-color:var(--teal);}
 .v-good{background:#eaf5ea;color:var(--green);border:1px solid var(--green);}
 .v-over{background:#f8ecec;color:var(--red);border:1px solid var(--red);}
 svg{width:100%;height:auto;display:block;}
-.frage-box{background:var(--phase);border:1px solid var(--rule);border-left:4px solid var(--teal);border-radius:0 8px 8px 0;padding:.6rem .85rem;margin:-.3rem 0 1rem;font-size:13.5px;line-height:1.5;}
-.frage-box .fu{display:block;font-family:'DM Mono',monospace;font-size:10.5px;color:var(--muted);margin-top:.35rem;letter-spacing:.4px;}
-.toggle.fragen button{padding:5px 13px;}
-.stufe-d{margin-top:-.5rem;margin-bottom:.6rem;}
-.chart-t{font-family:'DM Mono',monospace;font-size:10.5px;color:var(--muted);letter-spacing:.4px;margin:.2rem 0;}
-.leiter{width:100%;border-collapse:collapse;font-size:12.5px;margin-top:.4rem;}
-.leiter th{text-align:left;font-family:'DM Mono',monospace;font-size:9.5px;letter-spacing:.8px;text-transform:uppercase;color:var(--muted);font-weight:600;border-bottom:2px solid var(--rule);padding:.35rem .45rem;}
-.leiter td{padding:.4rem .45rem;border-bottom:1px solid var(--rule);vertical-align:top;}
-.leiter .z{text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums;}
-.leiter tbody tr{cursor:pointer;}
-.leiter tr.sel td{background:#eef6f6;font-weight:600;}
-@media(max-width:700px){.leiter-wrap,.chart-wrap{overflow-x:auto;}#ofChart{min-width:540px;}}
+.drei{display:grid;grid-template-columns:repeat(3,1fr);gap:.8rem;margin:.4rem 0 1rem;}
+@media(max-width:820px){.drei{grid-template-columns:1fr;}}
+.dk{background:var(--card);border:1px solid var(--rule);border-top:4px solid var(--rule);border-radius:8px;padding:.75rem .85rem;display:flex;flex-direction:column;gap:.5rem;}
+.dk-grob{border-top-color:var(--blue);}
+.dk-gut{border-top-color:var(--green);}
+.dk-fein{border-top-color:var(--red);}
+.dk-f{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.3px;line-height:1.45;color:var(--muted);}
+.dk-m{font-size:13px;line-height:1.5;}
+.dk-z{display:flex;gap:.5rem;}
+.dk-z div{flex:1;background:var(--phase);border-radius:6px;padding:.4rem .5rem;text-align:center;font-family:'DM Mono',monospace;font-size:9.5px;letter-spacing:.6px;text-transform:uppercase;color:var(--muted);}
+.dk-z span{display:block;font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:700;color:var(--ink);letter-spacing:0;text-transform:none;line-height:1.2;}
+.dk p{margin:0;font-size:12.3px;line-height:1.5;color:#4a4a42;}
 .legend{display:flex;gap:1.2rem;font-size:11.5px;color:var(--muted);margin-top:.4rem;font-family:'DM Mono',monospace;}
 .legend i{display:inline-block;width:14px;height:3px;vertical-align:middle;margin-right:5px;}
 .toggle{display:inline-flex;border:1px solid var(--rule);border-radius:100px;overflow:hidden;font-family:'DM Mono',monospace;font-size:11px;}
@@ -178,6 +178,7 @@ table.gloss td{border-bottom:1px solid var(--rule);padding:.45rem .5rem;vertical
 table.gloss tr:last-child td{border-bottom:none;}
 table.gloss td:first-child{font-weight:600;white-space:nowrap;width:150px;}
 .foot{margin-top:1.5rem;font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);border-top:1px solid var(--rule);padding-top:.8rem;}
+.rechtevermerk{display:block;margin-top:.6rem;padding-top:.5rem;border-top:1px solid var(--rule);font-family:'DM Sans',system-ui,sans-serif;font-size:10px;line-height:1.5;color:var(--muted);}
 .ausgang{display:grid;grid-template-columns:1fr 1fr;gap:.7rem;margin:.2rem 0 1rem;}
 @media(max-width:700px){.ausgang{grid-template-columns:1fr;}}
 .ag-k{border:1px solid #d5d0c5;border-radius:8px;padding:.6rem .8rem;background:#fff;}
@@ -518,39 +519,38 @@ table.gloss td:first-child{font-weight:600;white-space:nowrap;width:150px;}
  <details class="klapp" id="auff-loesung">
   <summary>Auflösung</summary>
   <div class="kl-body">
-   <p><b>① — die Prüfebene.</b> Ferien, Brücken- und Feiertage liegen oft genug im selben Monat. Auf Monatsbasis muss das Modell deshalb nur den Monat treffen, nicht den Tag — und Fehler innerhalb eines Monats gleichen sich aus. Auf Wochenbasis müssten die wandernden Termine genau sitzen; dafür ist das Modell <b>zu grob</b>. Im Datensatz dieses Labs liegt ein Modell, das nur die Jahreszeit kennt (Stufe 2 in der Grafik unten), im Testjahr beim Monatsumsatz von Tankstelle A im Schnitt 5,2&nbsp;% daneben, beim Wochenumsatz 14,8&nbsp;%. <b>Die Lehre:</b> Ein Modell wird auf der Ebene geprüft, auf der entschieden wird — und bestellt wird wöchentlich.</p>
-   <p><b>② Overfitting — zu fein.</b> Für den Riegel „Joyeux" am Mittwochnachmittag sind die Zahlen klein: Es gehen nur wenige Packungen über den Tresen, und dieselbe Konstellation — Mittwochnachmittag, Ferienbeginn, Baustelle — kam in fünf Jahren nur eine Handvoll Mal vor. Ein Modell, das so fein unterscheiden darf, lernt die Zufälle dieser wenigen Fälle auswendig, statt ein Muster zu erkennen. Bei Entscheidungsbäumen heißt das: zu große Baumtiefe. Für Produktgruppen gibt es genug Fälle, für einen einzelnen Artikel je Halbtag nicht. Die Grafik unten zeigt den Mechanismus an vier Fragen der Verkaufsleitung.</p>
-   <p><b>③ Weder noch — die Anfrage liegt außerhalb der Daten.</b> In allen sechs Jahren des Datensatzes endeten in der letzten Augustwoche die Sommerferien in Frankreich und in einigen deutschen Bundesländern; der Rückreiseverkehr ließ den Umsatz steigen. In jedem dieser Jahre lag der Umsatz von Tankstelle A in dieser Woche weit über dem Jahresdurchschnitt, mindestens 32&nbsp;%, im Schnitt 53&nbsp;% — ein Muster ohne ein einziges Gegenbeispiel. Im Jahr, für das die Vorhersage gebraucht wurde, endeten die Ferien später. Für diese Konstellation gibt es keinen Prüffall, und keine Einstellung des Modells hilft dagegen: Das Problem liegt in der Anfrage, nicht im Modell. Fachbegriffe dafür: <b>Extrapolation</b> oder <b>out-of-distribution</b>. Das Modell liefert trotzdem eine Zahl — es verweigert nie eine Antwort. Das Gegenmittel ist eine <b>Abdeckungsprüfung</b>: Vor jeder Vorhersage wird geprüft, ob es in den Trainingsdaten vergleichbare Fälle gibt, und die Vorhersage wird markiert, wenn nicht.</p>
+   <p><b>① — die Prüfebene.</b> Ferien, Brücken- und Feiertage liegen oft genug im selben Monat. Auf Monatsbasis muss das Modell deshalb nur den Monat treffen, nicht den Tag — und Fehler innerhalb eines Monats gleichen sich aus. Auf Wochenbasis müssten die wandernden Termine genau sitzen; dafür ist das Modell <b>zu grob</b>. Im Datensatz dieses Labs liegt ein Modell, das nur die Jahreszeit kennt, im Testjahr beim Monatsumsatz von Tankstelle A im Schnitt 7,7&nbsp;% daneben, beim Wochenumsatz 17,1&nbsp;%. <b>Die Lehre:</b> Ein Modell wird auf der Ebene geprüft, auf der entschieden wird — und bestellt wird wöchentlich.</p>
+   <p><b>② Overfitting — zu fein.</b> Für den Riegel „Joyeux" am Mittwochnachmittag sind die Zahlen klein: Es gehen nur wenige Packungen über den Tresen, und dieselbe Konstellation — Mittwochnachmittag, Ferienbeginn, Baustelle — kam in fünf Jahren nur eine Handvoll Mal vor. Ein Modell, das so fein unterscheiden darf, lernt die Zufälle dieser wenigen Fälle auswendig, statt ein Muster zu erkennen. Bei Entscheidungsbäumen heißt das: zu große Baumtiefe. Für Produktgruppen gibt es genug Fälle, für einen einzelnen Artikel je Halbtag nicht. Die drei Modelle unten zeigen den Mechanismus.</p>
+   <p><b>③ Weder noch — die Anfrage liegt außerhalb der Daten.</b> In allen sechs Jahren des Datensatzes endeten in der letzten Augustwoche die Sommerferien in Frankreich und in einigen deutschen Bundesländern; der Rückreiseverkehr ließ den Umsatz steigen. In jedem dieser Jahre lag der Umsatz von Tankstelle A in dieser Woche weit über dem Jahresdurchschnitt, mindestens 46&nbsp;%, im Schnitt 70&nbsp;% — ein Muster ohne ein einziges Gegenbeispiel. Im Jahr, für das die Vorhersage gebraucht wurde, endeten die Ferien später. Für diese Konstellation gibt es keinen Prüffall, und keine Einstellung des Modells hilft dagegen: Das Problem liegt in der Anfrage, nicht im Modell. Fachbegriffe dafür: <b>Extrapolation</b> oder <b>out-of-distribution</b>. Das Modell liefert trotzdem eine Zahl — es verweigert nie eine Antwort. Das Gegenmittel ist eine <b>Abdeckungsprüfung</b>: Vor jeder Vorhersage wird geprüft, ob es in den Trainingsdaten vergleichbare Fälle gibt, und die Vorhersage wird markiert, wenn nicht.</p>
   </div>
  </details>
 
- <p style="margin-top:1rem;"><b>Zum Ausprobieren: der Mechanismus hinter Auffälligkeit ② — wie fein darf die Frage sein?</b> Die Verkaufsleitung stellt dem Modell vier Fragen, von grob nach fein. Wähle eine Frage und stelle dann ein, wie viel das Modell kennen und sich merken darf.<a href="#fn-gen-1" class="fnref">¹</a></p>
- <p class="note" style="margin-top:0;margin-bottom:.9rem;"><strong>Deshalb braucht man immer zwei Zahlen.</strong> An einem einzelnen Wert lassen sich die beiden Fehler nicht unterscheiden — erst der Abstand zwischen Trainings- und Validierungsergebnis verrät, in welche Richtung das Modell danebenliegt. Der Regler bestimmt, wie viel das Modell kennen und sich merken darf — links sehr wenig, rechts sehr viel.</p>
+ <p style="margin-top:1rem;"><b>Der Mechanismus hinter Auffälligkeit ②: drei Modelle, je zwei Zahlen.</b> Jedes Modell wurde mit den Trainingsjahren 1–4 gebaut und danach an Jahr 5 geprüft, das es nicht kannte. Die Zahlen geben an, um wie viel Prozent die Prognose im Schnitt vom tatsächlichen Wochenumsatz abweicht.<a href="#fn-gen-1" class="fnref">¹</a></p>
+ <p class="note" style="margin-top:0;margin-bottom:.9rem;"><strong>Deshalb braucht man immer zwei Zahlen.</strong> An einem einzelnen Wert lassen sich die beiden Fehler nicht unterscheiden — erst der Vergleich von Trainingsjahren und neuem Jahr verrät, in welche Richtung das Modell danebenliegt.</p>
 
- <div class="ctrl">
-  <label>Frage</label>
-  <span class="toggle fragen" id="qBtns"><button data-q="0" class="on">Frage 1</button><button data-q="1">Frage 2</button><button data-q="2">Frage 3</button><button data-q="3">Frage 4</button></span>
+ <div class="drei">
+  <div class="dk dk-grob">
+   <div class="dk-f">Frage: Umsatz von Tankstelle A in der kommenden Woche</div>
+   <div class="dk-m">Das Modell kennt nur den <b>durchschnittlichen Wochenumsatz</b> der Vorjahre.</div>
+   <div class="dk-z"><div><span>19&nbsp;%</span>Trainingsjahre</div><div><span>20&nbsp;%</span>neues Jahr</div></div>
+   <div><span class="verdict v-under">Zu grob</span></div>
+   <p>Beide Zahlen sind schlecht. Das Modell sagt jede Woche dasselbe voraus und weiß nichts von Ferien, Feiertagen oder Baustellen.</p>
+  </div>
+  <div class="dk dk-gut">
+   <div class="dk-f">Frage: Umsatz von Tankstelle A in der kommenden Woche</div>
+   <div class="dk-m">Das Modell kennt zusätzlich <b>Kalender und Ereignisse</b>: Monat, Ferien je Land, Feier- und Brückentage, Baustellen.</div>
+   <div class="dk-z"><div><span>6&nbsp;%</span>Trainingsjahre</div><div><span>6&nbsp;%</span>neues Jahr</div></div>
+   <div><span class="verdict v-good">Passt</span></div>
+   <p>Beide Zahlen sind gut und liegen nah beieinander. Das Modell hat das Muster verstanden.</p>
+  </div>
+  <div class="dk dk-fein">
+   <div class="dk-f">Frage: Umsatz von Tankstelle A in der Woche 04.–11. Oktober 2026 mit kohlensäurehaltigen Getränken der Preisspanne 1,99&nbsp;€ bis 2,59&nbsp;€</div>
+   <div class="dk-m">Für diese feine Frage soll das Modell so fein unterscheiden, dass es sich <b>jede einzelne Woche dieser Preisspanne</b> merkt.</div>
+   <div class="dk-z"><div><span>0&nbsp;%</span>Trainingsjahre</div><div><span>39&nbsp;%</span>neues Jahr</div></div>
+   <div><span class="verdict v-over">Zu fein</span></div>
+   <p>In den Trainingsjahren perfekt, im neuen Jahr weit daneben. Bei einer einzelnen Preisspanne springt der Umsatz von Woche zu Woche (Aktionen, Lieferengpässe, Ausweichen auf die Nachbar-Preisspanne). Das Modell stützt jede Prognose auf eine einzige ähnliche Vorjahreswoche — und übernimmt deren Zufall. Ein passendes Modell käme auf 26&nbsp;%: Die Frage ist feiner, als die Daten tragen.</p>
+  </div>
  </div>
- <div class="frage-box" id="qText"></div>
-
- <div class="ctrl">
-  <label>Was das Modell kennt</label>
-  <input type="range" id="dep" min="1" max="5" value="1" step="1">
-  <span class="pill" id="depVal">Stufe 1</span>
-  <span class="verdict" id="ofVerdict">—</span>
- </div>
- <p class="note stufe-d" id="depDesc"></p>
- <div class="chart-t">Abweichung vom tatsächlichen Wochenumsatz · weniger ist besser</div>
- <div class="chart-wrap"><svg id="ofChart" viewBox="0 0 580 250" role="img" aria-label="Abweichung je Modellstufe in den Trainingsjahren und im Validierungsjahr"></svg></div>
- <div class="legend"><span><i style="background:#8a2a2a"></i>Trainingsjahre 1–4</span><span><i style="background:#0a6b6b"></i>Validierungsjahr 5 (was zählt)</span></div>
- <div class="callout" id="ofText"></div>
-
- <p style="margin-top:1.1rem;"><b>Alle vier Fragen im Überblick</b></p>
- <div class="leiter-wrap"><table class="leiter">
-  <thead><tr><th>Frage</th><th class="z">Ø Wochenumsatz</th><th>Beste Stufe</th><th class="z">Validierungsjahr 5</th><th class="z">Testjahr 6</th></tr></thead>
-  <tbody id="leiterBody"></tbody>
- </table></div>
- <p class="note" style="margin-top:.4rem;">Die Stufe wird am Validierungsjahr gewählt. Erst danach wird das Modell — neu trainiert auf den Jahren 1–5 — ein einziges Mal am isoliert belassenen Jahr 6 gemessen.</p>
 
  </div>
 
@@ -643,7 +643,7 @@ table.gloss td:first-child{font-weight:600;white-space:nowrap;width:150px;}
  <details class="klapp" id="fn-gen">
   <summary>Zum Reiter Generalisierung — Vereinfachung</summary>
   <div class="kl-body">
-  <p id="fn-gen-1">¹ Vereinfachung: synthetische Wochenumsätze von acht Tankstellen in vier Warengruppen mit je drei Preisgruppen über sechs Jahre (Datei <code>tankstelle_umsatz.csv</code>, erzeugt mit <code>03_umsatz_dataset.py</code>). Jede Stufe ist eine lineare Regression auf dem Logarithmus des Wochenumsatzes und enthält alle Merkmale der vorigen Stufe. „Abweichung" ist die Summe der absoluten Abweichungen zwischen Prognose und Ist, geteilt durch den gesamten Ist-Umsatz (englisch: weighted absolute percentage error, WAPE). In der Praxis sagt man sehr feine Ebenen oft gar nicht direkt voraus, sondern verteilt die Prognose einer gröberen Ebene nach historischen Anteilen („top-down"). Das ist einfach und bei kleinen Stückzahlen brauchbar, verliert aber die Eigenheiten der einzelnen Reihe (<a href="https://otexts.com/fpp3/single-level.html" target="_blank" rel="noopener">Hyndman &amp; Athanasopoulos: Forecasting — Principles and Practice, 3. Aufl., Kap. 11.2</a>). In diesem Datensatz kommt top-down für Frage 4 im Testjahr auf 20,4&nbsp;% Abweichung, das eigene Modell auf 21,4&nbsp;% — mit einem Modell weniger also sogar etwas besser.</p>
+  <p id="fn-gen-1">¹ Vereinfachung: synthetische Wochenumsätze von acht Tankstellen in vier Warengruppen mit je drei Preisspannen über sechs Jahre (Datei <code>tankstelle_umsatz.csv</code>, erzeugt mit <code>03_umsatz_dataset.py</code>). Das zu grobe und das passende Modell sind lineare Regressionen auf dem Logarithmus des Wochenumsatzes. Das zu feine Modell speichert jede Trainingswoche mit ihren Merkmalen und übernimmt für eine neue Woche den Umsatz der ähnlichsten (sogenannter nächster Nachbar); in den Trainingsjahren liegt es deshalb bei 0&nbsp;%. „Abweichung" ist die Summe der absoluten Abweichungen zwischen Prognose und Ist, geteilt durch den gesamten Ist-Umsatz (englisch: weighted absolute percentage error, WAPE). In der Praxis sagt man sehr feine Ebenen oft gar nicht direkt voraus, sondern verteilt die Prognose einer gröberen Ebene nach historischen Anteilen („top-down"). Das ist einfach und bei kleinen Stückzahlen brauchbar, verliert aber die Eigenheiten der einzelnen Reihe (<a href="https://otexts.com/fpp3/single-level.html" target="_blank" rel="noopener">Hyndman &amp; Athanasopoulos: Forecasting — Principles and Practice, 3. Aufl., Kap. 11.2</a>). In diesem Datensatz kommt top-down für die Preisspanne im Testjahr 6 auf 24,0&nbsp;% Abweichung, ein eigenes passendes Modell auf 25,4&nbsp;%.</p>
  
   
  </div>
@@ -702,7 +702,7 @@ table.gloss td:first-child{font-weight:600;white-space:nowrap;width:150px;}
  </ul>
 </div>
 </section>
-<div class="foot">Synthetischer Datensatz (n=2000, Validierung n=800) · alle Personen und Zahlen erfunden · Kennzahlen mit scikit-learn berechnet · Lab „Modellvalidierung &amp; Bias" · KI-Manager:in · <span title="Zum Abgleich, ob der Browser die aktuelle Fassung geladen hat">Stand 08.10.2026 · Fassung 10</span></div>
+<div class="foot"><span>KI-Manager:in &middot; Lab „Modellvalidierung &amp; Bias" &middot; <span title="Zum Abgleich, ob der Browser die aktuelle Fassung geladen hat">Stand 08.10.2026 &middot; Fassung 11</span></span><span class="rechtevermerk">&copy; 2026 Ulrich Nord &middot; Alle Rechte vorbehalten. Teilnehmerinnen und Teilnehmer d&uuml;rfen dieses Material f&uuml;r die eigene berufliche Nutzung sowie innerhalb ihres Unternehmens verwenden, speichern, ausdrucken und weitergeben. Ver&ouml;ffentlichung und Verwendung in eigenen Schulungs- oder Beratungsangeboten bed&uuml;rfen der schriftlichen Zustimmung.</span></div>
 
 </div>
 
@@ -731,27 +731,12 @@ const DATA = {
   {t:0.90,tp:53,fp:5,fn:236,tn:506,precision:0.914,recall:0.183,sel_w:0.030,sel_m:0.114,rec_w:0.092,rec_m:0.247,nw:12,nm:46},
   {t:0.95,tp:21,fp:3,fn:268,tn:508,precision:0.875,recall:0.073,sel_w:0.013,sel_m:0.047,rec_w:0.034,rec_m:0.100,nw:5,nm:19}
  ],
- gen:{
-  stufen:[
-   {n:'Durchschnitt',d:'Sagt jede Woche dasselbe voraus: den Durchschnitt der Trainingsjahre.'},
-   {n:'Jahreszeit',d:'Kennt zusätzlich den Monat — Sommer- und Wintermonate, Weihnachtszeit.'},
-   {n:'Ereignisse',d:'Kennt zusätzlich Ferienbeginn und -ende je Land, Feier- und Brückentage und Umleitungen wegen Baustellen.'},
-   {n:'Kalenderwoche',d:'Merkt sich zusätzlich jede einzelne Kalenderwoche der Vorjahre.'},
-   {n:'Ereignis je Quartal',d:'Merkt sich zusätzlich, wie jedes Ereignis in jedem Quartal gewirkt hat.'}],
-  fragen:[
-   {k:'Alle Tankstellen',t:'„Welchen Umsatz werden alle Tankstellen in der kommenden Woche erzielen?"',u:473444,train:[0.128, 0.082, 0.032, 0.023, 0.022],val:[0.126, 0.083, 0.038, 0.036, 0.037],beste:4,test:0.04},
-   {k:'Tankstelle A',t:'„Welchen Umsatz wird Tankstelle A kommende Woche erzielen?"',u:90810,train:[0.192, 0.148, 0.051, 0.042, 0.039],val:[0.181, 0.131, 0.06, 0.067, 0.078],beste:3,test:0.064},
-   {k:'Tankstelle A · Getränke',t:'„Welchen Umsatz erzielt Tankstelle A in der Woche 04.–11. Oktober 2026 mit kohlensäurehaltigen Getränken?"',u:28348,train:[0.204, 0.161, 0.065, 0.05, 0.048],val:[0.19, 0.14, 0.064, 0.078, 0.079],beste:3,test:0.072},
-   {k:'Tankstelle A · Getränke 1,99–2,59 €',t:'„Welchen Umsatz erzielt Tankstelle A in der Woche 04.–11. Oktober 2026 mit kohlensäurehaltigen Getränken in der Preisgruppe 1,99 € bis 2,59 €?"',u:10282,train:[0.275, 0.249, 0.201, 0.181, 0.17],val:[0.259, 0.222, 0.189, 0.239, 0.287],beste:3,test:0.214}]},
  proxy:{mit_geschlecht:[0.232,0.423,0.191],ohne_geschlecht:[0.184,0.4,0.216],spiegelprofile:[0.184,0.4,0.216],ohne_gpluslucke:[-0.018,0.306,0.324],luecke_zentriert:[-0.016,0.303,0.319]}
 };
 
 let beta = 1;
 const $ = id => document.getElementById(id);
 const pct = x => Math.round(x*100)+'%';
-const pz = x => (x*100).toFixed(1).replace('.',',')+' %';
-const eur0 = x => (Math.round(x/100)*100).toLocaleString('de-DE')+' €';
-let frage = 0;
 
 function fbeta(p,r,b){const d=b*b*p+r; return d? (1+b*b)*p*r/d : 0;}
 
@@ -811,66 +796,11 @@ function renderProxy(){
    <div class="bar-track"><div class="bar-fill" style="width:${w}%;background:${col}"></div></div></div>`;
  }).join('');
 }
-
-function renderOverfit(){
- const G=DATA.gen, F=G.fragen[frage], s=+$('dep').value, i=s-1;
- const tr=F.train[i], va=F.val[i], b=F.beste, bv=F.val[b-1], r=va/bv, st=G.stufen[i];
- $('depVal').textContent='Stufe '+s;
- $('depDesc').innerHTML='<b>'+st.n+':</b> '+st.d;
- $('qText').innerHTML=F.t+'<span class="fu">Ø Wochenumsatz in den Daten: rund '+eur0(F.u)+'</span>';
- let cls,label,txt;
- if(s===b){cls='v-good';label='Beste Stufe';
-  txt=`Stufe ${s} trifft das Validierungsjahr bei dieser Frage am besten: im Schnitt ${pz(va)} daneben.`;
-  if(b>=4) txt+=' Bei der groben Frage darf das Modell feiner sein: In der Summe über acht Tankstellen gleicht sich der Zufall weitgehend aus.';
-  if(va>=0.15) txt+=' Besser geht es nicht — gut ist es trotzdem nicht. Die Frage ist feiner, als die Daten tragen: Aktionen, Lieferengpässe und das Ausweichen auf die Nachbar-Preisgruppe verschieben den Umsatz von Woche zu Woche. Diesen Zufall kann kein Modell vorhersagen.';
- } else if(r<1.10){cls='v-good';label='Fast gleich gut';
-  txt=`Stufe ${s} liegt mit ${pz(va)} nur knapp hinter der besten Stufe ${b} (${pz(bv)}).`+(s>b?' Bei dieser Frage schadet die zusätzliche Feinheit kaum: In den Zahlen steckt wenig Zufall, den das Modell auswendig lernen könnte.':' Was die feinere Stufe zusätzlich kennt, bringt hier nur noch wenig.');
- } else if(s<b){cls='v-under';label='Underfitting';
-  txt=`Stufe ${s} ist für diese Frage <b>zu grob</b>: Das Modell liegt schon in den Trainingsjahren um ${pz(tr)} daneben, im Validierungsjahr um ${pz(va)}. `+(s===1?'Es kennt weder die Jahreszeit noch die Ereignisse.':s===2?'Es kennt die Jahreszeit, aber weder Ferientermine noch Feiertage oder Umleitungen — und gerade die bestimmen, wie gut eine einzelne Woche läuft.':'Es kennt noch nicht alles, was den Umsatz bestimmt.');
- } else {cls='v-over';label='Overfitting';
-  txt=`Stufe ${s} ist für diese Frage <b>zu fein</b>: Das Modell trifft die Trainingsjahre besser denn je (${pz(tr)}), das Validierungsjahr aber schlechter (${pz(va)} statt ${pz(bv)} auf Stufe ${b}). Es hat den Zufall der Trainingsjahre auswendig gelernt — und je feiner die Frage, desto mehr Zufall steckt in den Zahlen.`;}
- const v=$('ofVerdict'); v.className='verdict '+cls; v.textContent=label;
- $('ofText').innerHTML=txt;
- document.querySelectorAll('#leiterBody tr').forEach((row,k)=>row.classList.toggle('sel',k===frage));
- drawChart(i);
-}
-
-function waehleFrage(k){
- frage=k;
- document.querySelectorAll('#qBtns button').forEach(x=>x.classList.toggle('on',+x.dataset.q===k));
- renderOverfit();
-}
-
-function renderLeiter(){
- const G=DATA.gen;
- $('leiterBody').innerHTML=G.fragen.map((F,k)=>`<tr><td>${k+1} · ${F.k}</td><td class="z">${eur0(F.u)}</td><td>${F.beste} · ${G.stufen[F.beste-1].n}</td><td class="z">${pz(F.val[F.beste-1])}</td><td class="z">${pz(F.test)}</td></tr>`).join('');
- document.querySelectorAll('#leiterBody tr').forEach((row,k)=>row.addEventListener('click',()=>waehleFrage(k)));
-}
-
-function drawChart(sel){
- const W=580,H=250,mL=46,mR=56,mT=16,mB=44, F=DATA.gen.fragen[frage], S=DATA.gen.stufen, n=S.length, yMax=0.30;
- const x=k=>mL+(W-mL-mR)*k/(n-1);
- const y=v=>mT+(H-mT-mB)*(1-Math.min(v,yMax)/yMax);
- const line=a=>a.map((v,k)=>`${x(k).toFixed(1)},${y(v).toFixed(1)}`).join(' ');
- let g='';
- [0,0.05,0.10,0.15,0.20,0.25,0.30].forEach(v=>{g+=`<line x1="${mL}" y1="${y(v)}" x2="${W-mR}" y2="${y(v)}" stroke="#e5e0d6"/><text x="${mL-6}" y="${y(v)+3}" text-anchor="end" font-size="10" fill="#6b6b60" font-family="monospace">${Math.round(v*100)} %</text>`;});
- S.forEach((st,k)=>{g+=`<text x="${x(k)}" y="${H-mB+16}" text-anchor="middle" font-size="10" fill="${k===sel?'#1a1a18':'#6b6b60'}" font-weight="${k===sel?700:400}" font-family="monospace">Stufe ${k+1}</text><text x="${x(k)}" y="${H-mB+30}" text-anchor="middle" font-size="9.5" fill="#6b6b60" font-family="monospace">${st.n}</text>`;});
- g+=`<line x1="${x(sel)}" y1="${mT}" x2="${x(sel)}" y2="${H-mB}" stroke="#1a1a18" stroke-dasharray="3 3" opacity="0.5"/>`;
- g+=`<polyline points="${line(F.train)}" fill="none" stroke="#8a2a2a" stroke-width="2.5"/>`;
- g+=`<polyline points="${line(F.val)}" fill="none" stroke="#0a6b6b" stroke-width="2.5"/>`;
- const b=F.beste-1;
- g+=`<circle cx="${x(b)}" cy="${y(F.val[b])}" r="8.5" fill="none" stroke="#0a6b6b" stroke-width="1.5"/><text x="${x(b)}" y="${y(F.val[b])-13}" text-anchor="middle" font-size="9.5" fill="#0a6b6b" font-family="monospace">beste Stufe</text>`;
- g+=`<circle cx="${x(sel)}" cy="${y(F.train[sel])}" r="4.5" fill="#8a2a2a"/><circle cx="${x(sel)}" cy="${y(F.val[sel])}" r="4.5" fill="#0a6b6b"/>`;
- $('ofChart').innerHTML=g;
-}
-
 $('thr').addEventListener('input',()=>{$('thrBias').value=$('thr').value;renderMetrics();});
 $('thrBias').addEventListener('input',()=>{$('thr').value=$('thrBias').value;renderMetrics();});
-$('dep').addEventListener('input',renderOverfit);
-document.querySelectorAll('#qBtns button').forEach(bt=>bt.addEventListener('click',()=>waehleFrage(+bt.dataset.q)));
 $('b1').addEventListener('click',()=>{beta=1;$('b1').classList.add('on');$('b2').classList.remove('on');renderMetrics();});
 $('b2').addEventListener('click',()=>{beta=2;$('b2').classList.add('on');$('b1').classList.remove('on');renderMetrics();});
-renderMetrics(); renderProxy(); renderLeiter(); renderOverfit();
+renderMetrics(); renderProxy();
 
 // Abschnitt 5 wird als Übung genutzt: Beschriftung des Hinweises umschalten
 (function(){

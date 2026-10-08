@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 Lab Modellvalidierung & Bias — Datensatz für den Reiter „Generalisierung"
-Kurs: KI-Manager:in (KIM) · Fassung 3.1 (08.10.2026)
+Kurs: KI-Manager:in (KIM) · Fassung 4 (08.10.2026)
 
 Domäne: Shop-Umsätze einer luxemburgischen Tankstellenkette (24/7-Betrieb). Alle Zahlen sind
 synthetisch.
@@ -16,29 +16,34 @@ Treiber der Nachfrage (auf Tagesebene erzeugt, dann zu Wochen summiert):
   Niederlanden (Ostern, Sommer, Herbst). Die Termine verschieben sich JEDES JAHR.
 - Feier- und Brückentage (feste und bewegliche, Luxemburg).
 - Umleitungen wegen Baustellen — je Tankstelle verschieden, vor allem Lkw-Verkehr.
-- Zufall: Wetter (kettenweit), örtliche Schwankungen (je Tankstelle), Aktionen und Lieferengpässe
+- Zufall, den kein Modell kennt: Wetter (kettenweit), örtliche Schwankungen (je Tankstelle),
+  Schwankungen je Warengruppe (Getränke hängen stark am Wetter), Aktionen und Lieferengpässe
   (je Preisgruppe; Kundschaft weicht teils auf die Nachbar-Preisgruppe aus).
 
 Aufteilung — bewusst zeitlich, nicht zufällig:
 - Jahre 1–4 = Training · Jahr 5 = Validierung (Wahl der Modellstufe) · Jahr 6 = Test (einmal).
 
-Vier Fragen der Verkaufsleitung, von grob nach fein:
-  F1 alle Tankstellen · F2 Tankstelle A · F3 A, kohlensäurehaltige Getränke ·
-  F4 A, kohlensäurehaltige Getränke, Preisgruppe 1,99–2,59 €
+Drei Fragen der Verkaufsleitung, von grob nach fein:
+  F1 Tankstelle A · F2 A, kohlensäurehaltige Getränke · F3 A, kohlensäurehaltige Getränke,
+  Preisgruppe 1,99–2,59 €
 
-Fünf Modellstufen (lineare Regression auf dem Logarithmus des Wochenumsatzes):
-  S1 nur der Durchschnitt · S2 + Jahreszeit (Monat) · S3 + Ereignisse (Reiseverkehr je Land,
-  Feier-, Brückentage, Umleitungstage) · S4 + jede Kalenderwoche einzeln ·
-  S5 + jedes Ereignis in jedem Quartal einzeln
+Fünf Modellstufen:
+  S1 durchschnittlicher Wochenumsatz · S2 + Jahreszeit (Monat) · S3 + Ereignisse (Reiseverkehr
+  je Land, Feier-, Brückentage, Umleitungstage) · S4 + jede Kalenderwoche einzeln
+  (S1–S4: lineare Regression auf dem Logarithmus des Wochenumsatzes, jede Stufe enthält die vorige)
+  S5 + jede einzelne Woche: speichert jede Trainingswoche und übernimmt für eine neue Woche den
+  Umsatz der ähnlichsten (nächster Nachbar) — in den Trainingsjahren daher 0 % Abweichung.
 Abweichung = gewichtete mittlere absolute Abweichung (WAPE): Summe |Prognose − Ist| / Summe Ist.
-Zum Vergleich wird für F4 auch die Top-down-Variante berechnet (F3 vorhersagen und mit dem
+Im Lab gezeigt (drei Karten): F1 mit S1 (zu grob) und S3 (passt), F3 mit S5 (zu fein).
+Zum Vergleich wird für F3 auch die Top-down-Variante berechnet (F2 vorhersagen und mit dem
 historischen Anteil der Preisgruppe verteilen).
 
 Für Auffälligkeit 3 im Lab: In allen sechs Jahren endeten in der letzten Augustwoche (KW 35)
 die Sommerferien in Frankreich und in einigen deutschen Bundesländern.
 
-Zufallsstartwert: 1. Er ist so gewählt, dass die Kennzahlen dem Muster entsprechen, das sich über
-mehrere Startwerte zeigt (beste Stufe meist 4 für F1 und 3 für F2–F4); einzelne Startwerte weichen ab.
+Zufallsstartwert: 23. Er ist so gewählt, dass die Kennzahlen dem Muster entsprechen, das sich über
+30 Startwerte zeigt (beste Stufe 3 bei F1 in 22, bei F2 in 25, bei F3 in 20 von 30 Läufen; Stufe 5
+in allen 30 Läufen schlechter als Stufe 3); einzelne Startwerte weichen ab.
 
 Abhängigkeiten: numpy, pandas
 """
@@ -46,7 +51,7 @@ import json
 import numpy as np
 import pandas as pd
 
-rng = np.random.default_rng(1)
+rng = np.random.default_rng(23)
 JAHRE = [1, 2, 3, 4, 5, 6]
 TAGE = 364
 PEAK = 6                                            # Breite eines Reisepeaks in Tagen
@@ -70,6 +75,9 @@ PREISE = {  # (Bezeichnung, Durchschnittspreis €, Anteil an der Stückzahl)
     "Süßwaren":                   [("bis 0,99 €", 0.79, 0.30), ("1,00–1,99 €", 1.49, 0.50), ("ab 2,00 €", 2.49, 0.20)],
 }
 GEWICHT = {"fr": 0.40, "be": 0.20, "de": 0.25, "nl": 0.15}
+# Zufall je Woche, den kein Modell kennt: Warengruppe (Getränke hängen stark am Wetter) und Preisgruppe
+GRP_SIGMA = {"Sandwiches": 0.06, "kohlensäurehaltige Getränke": 0.12, "Bier": 0.08, "Süßwaren": 0.05}
+BAND_SIGMA = 0.35
 
 def j(a, b):
     return int(rng.integers(a, b + 1))
@@ -112,9 +120,9 @@ for jahr in JAHRE:
         ist_uml = np.isin(tag, list(uml[s]))
         ort_woche = np.exp(rng.normal(0, 0.04, 52))
         for g, gp in GRUPPEN.items():
-            grp_woche = np.exp(rng.normal(0, 0.05, 52))
+            grp_woche = np.exp(rng.normal(0, GRP_SIGMA[g], 52))
             # Aktionen / Lieferengpässe je Preisgruppe; teilweise Ausweichen auf Nachbargruppen
-            roh = np.exp(rng.normal(0, 0.30, (52, 3)))
+            roh = np.exp(rng.normal(0, BAND_SIGMA, (52, 3)))
             band_woche = roh / (roh.mean(axis=1, keepdims=True) ** 0.8)
             lam_tag = (gp["stueck"] * GROESSE[s] * saison * wt
                        * (1 + REISE_EMPF[s] * gp["reise"] * 1.3 * reise_eff)
@@ -137,7 +145,7 @@ for jahr in JAHRE:
 df = pd.DataFrame(zeilen)
 df.to_csv("tankstelle_umsatz.csv", index=False)
 
-# ------------------------------------------------------------------ die vier Fragen
+# ------------------------------------------------------------------ die drei Fragen
 EREIG = ["reise_fr", "reise_be", "reise_de", "reise_nl", "feiertage", "brueckentage", "umleitung_tage"]
 
 def reihe(maske):
@@ -148,15 +156,11 @@ def reihe(maske):
     return x.assign(y=y).reset_index()
 
 FRAGEN = {
-    "F1": reihe(df.tankstelle.notna()),
-    "F2": reihe(df.tankstelle == "A"),
-    "F3": reihe((df.tankstelle == "A") & (df.warengruppe == "kohlensäurehaltige Getränke")),
-    "F4": reihe((df.tankstelle == "A") & (df.warengruppe == "kohlensäurehaltige Getränke")
+    "F1": reihe(df.tankstelle == "A"),
+    "F2": reihe((df.tankstelle == "A") & (df.warengruppe == "kohlensäurehaltige Getränke")),
+    "F3": reihe((df.tankstelle == "A") & (df.warengruppe == "kohlensäurehaltige Getränke")
                 & (df.preisgruppe == "1,99–2,59 €")),
 }
-# F1: Umleitungstage als Durchschnitt über die acht Tankstellen
-f1u = df.groupby(["jahr", "kw", "tankstelle"]).umleitung_tage.first().groupby(["jahr", "kw"]).mean().values
-FRAGEN["F1"]["umleitung_tage"] = f1u
 
 def matrix(d, stufe):
     spalten = [np.ones(len(d))]
@@ -166,12 +170,15 @@ def matrix(d, stufe):
         spalten += [d[e].values.astype(float) for e in EREIG]
     if stufe >= 4:
         spalten += [(d.kw == k).astype(float).values for k in range(2, 53)]
-    if stufe >= 5:
-        q = (d.monat.values - 1) // 3
-        spalten += [d[e].values * (q == k) for e in EREIG for k in range(1, 4)]
     return np.column_stack(spalten)
 
+NN_MERKMALE = ["monat", "kw"] + EREIG
+
 def fit(d, stufe):
+    if stufe == 5:   # Stufe 5: merkt sich jede einzelne Woche (nächster Nachbar)
+        x = d[NN_MERKMALE].values.astype(float)
+        mu, sd = x.mean(axis=0), x.std(axis=0) + 1e-9
+        return ("nn", (x - mu) / sd, d.y.values, mu, sd)
     b, *_ = np.linalg.lstsq(matrix(d, stufe), np.log(d.y.values), rcond=None)
     return b
 
@@ -179,6 +186,13 @@ def wape(y, p):
     return float(np.abs(p - y).sum() / y.sum())
 
 def prog(d, b, stufe):
+    if stufe == 5:
+        _, xs, ys, mu, sd = b
+        x = (d[NN_MERKMALE].values.astype(float) - mu) / sd
+        dist = ((x[:, None, :] - xs[None, :, :]) ** 2).sum(axis=2)
+        if len(x) == len(xs) and np.allclose(x, xs):   # Trainingsdaten: jede Woche kennt sich selbst
+            np.fill_diagonal(dist, -1.0)
+        return ys[dist.argmin(axis=1)]
     return np.exp(matrix(d, stufe) @ b)
 
 STUFEN = [1, 2, 3, 4, 5]
@@ -197,14 +211,14 @@ for f, d in FRAGEN.items():
     erg[f] = dict(train=k["train"], val=k["val"], beste=beste, test=test, test_s5=test5,
                   wochenumsatz=round(float(d.y.mean()), 0))
 
-# Top-down für F4: F3 vorhersagen (beste Stufe) und mit dem Anteil der Preisgruppe in den Jahren 1–5 verteilen
-d3, d4 = FRAGEN["F3"], FRAGEN["F4"]
-b3 = fit(d3[d3.jahr <= 5], erg["F3"]["beste"])
+# Top-down für F3: F2 vorhersagen (beste Stufe) und mit dem Anteil der Preisgruppe in den Jahren 1–5 verteilen
+d3, d4 = FRAGEN["F2"], FRAGEN["F3"]
+b3 = fit(d3[d3.jahr <= 5], erg["F2"]["beste"])
 anteil = d4[d4.jahr <= 5].y.sum() / d3[d3.jahr <= 5].y.sum()
-td = round(wape(d4[d4.jahr == 6].y.values, anteil * prog(d3[d3.jahr == 6], b3, erg["F3"]["beste"])), 3)
+td = round(wape(d4[d4.jahr == 6].y.values, anteil * prog(d3[d3.jahr == 6], b3, erg["F2"]["beste"])), 3)
 
 # Auffälligkeit 1: Modell, das nur die Jahreszeit kennt (S2), Tankstelle A, Testjahr — Monat vs. Woche
-d2 = FRAGEN["F2"]; t2 = d2[d2.jahr == 6].copy()
+d2 = FRAGEN["F1"]; t2 = d2[d2.jahr == 6].copy()
 t2["p"] = prog(t2, fit(d2[d2.jahr <= 5], 2), 2)
 mon = t2.groupby("monat")[["y", "p"]].sum()
 ebenen = {"wape_monat": round(wape(mon.y.values, mon.p.values), 3), "wape_woche": round(wape(t2.y.values, t2.p.values), 3)}
@@ -216,14 +230,14 @@ for jahr in JAHRE:
     la.append(float(dj[dj.kw == LETZTE_AUG_KW].y.iloc[0] / dj.y.mean() - 1))
 letzte_aug = {"plus_je_jahr": [round(x, 3) for x in la], "min": round(min(la), 3), "mittel": round(float(np.mean(la)), 3)}
 
-out = {"fragen": erg, "stufen": STUFEN, "topdown_f4_test": td, "anteil_preisgruppe": round(float(anteil), 3),
-       "ebenen_f2_s2": ebenen, "letzte_aug_f2": letzte_aug, "zeilen": len(df)}
+out = {"fragen": erg, "stufen": STUFEN, "topdown_f3_test": td, "anteil_preisgruppe": round(float(anteil), 3),
+       "ebenen_f1_s2": ebenen, "letzte_aug_f1": letzte_aug, "zeilen": len(df)}
 with open("umsatz_kennzahlen.json", "w", encoding="utf-8") as fh:
     json.dump(out, fh, indent=1, ensure_ascii=False)
 
 for f, e in erg.items():
     print(f, "Ø Wochenumsatz", e["wochenumsatz"], "| Training", e["train"], "| Validierung", e["val"],
           "| beste", e["beste"], "| Test", e["test"], "| Test S5", e["test_s5"])
-print("Top-down F4 (Test):", td, "· Anteil Preisgruppe:", out["anteil_preisgruppe"])
-print("Auffälligkeit 1 (F2, Stufe 2, Testjahr):", ebenen)
-print("Letzte Augustwoche (F2):", letzte_aug)
+print("Top-down F3 (Test):", td, "· Anteil Preisgruppe:", out["anteil_preisgruppe"])
+print("Auffälligkeit 1 (F1, Stufe 2, Testjahr):", ebenen)
+print("Letzte Augustwoche (F1):", letzte_aug)
