@@ -158,6 +158,31 @@
   }
 
 footer .rechtevermerk{display:block;margin-top:.7rem;padding-top:.6rem;border-top:1px solid #d5d0c5;font-size:.72rem;line-height:1.55;letter-spacing:0;text-transform:none;color:#777;}
+
+/* ---- Druckausgabe ----
+   Die Vorlage wird ausgedruckt und ausgefüllt. Beim Drucken stören:
+   die Kopierschaltflächen (ohne Funktion auf Papier), der Entwurfshinweis,
+   der dunkle Hintergrund der Codekarten (Tonerfresser, schlechter Kontrast
+   bei Graustufendruck) und Kartenumbrüche mitten im Satz. Zugeklappte
+   <details> werden aufgeklappt, sonst fehlt beim Ausdruck Inhalt. */
+@media print {
+  @page { margin: 16mm; }
+  body { background: #fff; color: #000; font-size: 10.5pt; line-height: 1.4; }
+  .wrap { max-width: 100%; padding: 0; }
+  .copy-btn, .draft-banner { display: none !important; }
+  details { display: block !important; }
+  details > summary { list-style: none; font-weight: 700; }
+  .details-body { display: block !important; }
+  .code-card {
+    background: #f4f2ec !important; color: #000 !important;
+    border: 1px solid #999; overflow-x: visible; white-space: pre-wrap;
+    word-break: break-word;
+  }
+  .pcard, .callout, .trap, .link-card, .code-card { break-inside: avoid; page-break-inside: avoid; }
+  h2 { break-after: avoid; page-break-after: avoid; }
+  a { color: #000; text-decoration: underline; }
+  .links a[href^="http"]::after { content: " (" attr(href) ")"; font-size: 8.5pt; word-break: break-all; }
+}
 </style>
 </head>
 <body>
