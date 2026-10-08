@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 Lab Modellvalidierung & Bias — Datensatz für den Reiter „Generalisierung"
-Kurs: KI-Manager:in (KIM) · Fassung 3 (08.10.2026)
+Kurs: KI-Manager:in (KIM) · Fassung 3.1 (08.10.2026)
 
 Domäne: Shop-Umsätze einer luxemburgischen Tankstellenkette (24/7-Betrieb). Alle Zahlen sind
 synthetisch.
@@ -37,13 +37,16 @@ historischen Anteil der Preisgruppe verteilen).
 Für Auffälligkeit 3 im Lab: In allen sechs Jahren endeten in der letzten Augustwoche (KW 35)
 die Sommerferien in Frankreich und in einigen deutschen Bundesländern.
 
+Zufallsstartwert: 1. Er ist so gewählt, dass die Kennzahlen dem Muster entsprechen, das sich über
+mehrere Startwerte zeigt (beste Stufe meist 4 für F1 und 3 für F2–F4); einzelne Startwerte weichen ab.
+
 Abhängigkeiten: numpy, pandas
 """
 import json
 import numpy as np
 import pandas as pd
 
-rng = np.random.default_rng(42)
+rng = np.random.default_rng(1)
 JAHRE = [1, 2, 3, 4, 5, 6]
 TAGE = 364
 PEAK = 6                                            # Breite eines Reisepeaks in Tagen
@@ -55,10 +58,10 @@ GROESSE = dict(A=1.30, B=1.00, C=0.85, D=0.70, E=1.10, F=0.60, G=0.90, H=0.75)
 REISE_EMPF = dict(A=1.20, B=0.90, C=0.35, D=0.25, E=0.70, F=0.20, G=0.50, H=0.30)
 
 GRUPPEN = {  # Stück je Tag bei Tankstelle der Größe 1 · Empfindlichkeit Reise / Umleitung / Feiertag
-    "Sandwiches":                 dict(stueck=70,  reise=1.0, uml=1.0, feier=0.8),
-    "kohlensäurehaltige Getränke": dict(stueck=110, reise=1.0, uml=0.8, feier=0.9),
-    "Bier":                       dict(stueck=45,  reise=0.4, uml=0.2, feier=1.4),
-    "Süßwaren":                   dict(stueck=90,  reise=0.9, uml=0.5, feier=1.0),
+    "Sandwiches":                 dict(stueck=700,  reise=1.0, uml=1.0, feier=0.8),
+    "kohlensäurehaltige Getränke": dict(stueck=1100, reise=1.0, uml=0.8, feier=0.9),
+    "Bier":                       dict(stueck=450,  reise=0.4, uml=0.2, feier=1.4),
+    "Süßwaren":                   dict(stueck=900,  reise=0.9, uml=0.5, feier=1.0),
 }
 PREISE = {  # (Bezeichnung, Durchschnittspreis €, Anteil an der Stückzahl)
     "Sandwiches":                 [("bis 3,99 €", 3.49, 0.40), ("4,00–5,49 €", 4.79, 0.45), ("ab 5,50 €", 6.29, 0.15)],
