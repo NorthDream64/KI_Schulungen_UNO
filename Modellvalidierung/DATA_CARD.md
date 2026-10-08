@@ -84,7 +84,7 @@ vollständig füllen, weil die Verzerrung **absichtlich gesetzt** wurde:
   tatsächlich fehlende Erfahrung erklärbar wäre.
 - **Die Karrierelücke ist der Stellvertreter.** Sie ist bei Frauen im Mittel um rund zwölf
   Monate größer angesetzt. Dadurch gelangt das Geschlecht zurück ins Modell, **auch wenn man
-  die Spalte `geschlecht` entfernt** — das ist der Kern von Abschnitt 3 im Lab.
+  die Spalte `geschlecht` entfernt** — das ist der Kern des Reiters *Mögliche Maßnahmen* im Lab.
   Der Größenunterschied ist an reale Größenordnungen angelehnt: Nach Angaben des Statistischen
   Bundesamts beziehen Mütter im Schnitt rund 10–12 Monate Elterngeld, Väter rund 3–4 Monate.
 
@@ -98,8 +98,9 @@ Auswahlprozesse sonst noch beeinflusst.
   Verstehen von Mechanismen, nicht zum Abschätzen realer Effektstärken.
 - Es gibt keine fehlenden Werte, keine Erfassungsfehler und keine Dubletten — reale Bestände
   haben all das. Wer nur mit diesem Datensatz arbeitet, unterschätzt den Aufbereitungsaufwand.
-- Der Bestand ist **statisch**. Drift lässt sich daran nicht zeigen; dafür gibt es im selben
-  Ordner `tankstelle_umsatz.csv`.
+- Der Bestand ist **statisch**. Wie gut ein Modell auf spätere Zeiträume übertragbar ist, lässt
+  sich daran nicht zeigen; dafür gibt es im selben Ordner `tankstelle_umsatz.csv` (sechs Jahre,
+  zeitlich getrennt in Training, Validierung und Test).
 
 ## 8 · Verantwortung und Pflege
 

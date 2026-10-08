@@ -1,117 +1,151 @@
 # -*- coding: utf-8 -*-
 """
-Lab Modellvalidierung & Bias — Zweiter Datensatz für Abschnitt 4 (Overfitting vs. Underfitting)
-Kurs: KI-Manager:in (KIM)
+Lab Modellvalidierung & Bias — Zweiter Datensatz für den Reiter „Generalisierung"
+Kurs: KI-Manager:in (KIM) · Fassung 2 (08.10.2026)
 
-Anderes Beispiel als der Bewerber-Datensatz (01_dataset_und_kennzahlen.py), bewusst aus einer
-anderen Domäne: Tagesumsatz (Sandwiches & Getränke) einer Tankstellenkette in Luxemburg.
+Domäne: Tagesumsatz (Shop, 24/7-Betrieb) einer luxemburgischen Tankstellenkette.
+Alle Zahlen sind synthetisch.
 
-Warum dieses Beispiel Overfitting besonders gut zeigt:
-- Der Haupttreiber ist die Nähe zum Ferienbeginn in Frankreich, Belgien, Deutschland und den
-  Niederlanden (grenznahe Reise-/Pendlertankstellen). Diese Termine verschieben sich JEDES JAHR.
-- Ein zu komplexes Modell kann sich exakte Kalendertage aus den Trainingsjahren merken, statt das
-  robuste Muster "Nähe zum Ferienbeginn" zu lernen — und scheitert dann im Testjahr, weil dort die
-  Ferien auf andere Tage fallen.
-- Trainings-/Test-Split ist deshalb bewusst NICHT zufällig, sondern nach Jahren getrennt
-  (Jahre 1-3 = Training, Jahr 4 = Test) — nur so wird der Effekt sichtbar.
+Treiber der Nachfrage:
+- Reiseverkehr zu Ferienbeginn und Ferienende in Frankreich, Belgien, Deutschland und den
+  Niederlanden. Die Termine verschieben sich JEDES JAHR.
+- Feier- und Brückentage (feste und bewegliche).
+- Umleitungen wegen Baustellen im Umkreis, die vor allem den Lkw-Verkehr an der Station vorbeiführen.
+- Wochentag, Regen.
 
-Zusätzlich: ein zweites, unabhängiges Beispiel für MODEL DRIFT (nicht Overfitting!) — drei neue
-Snack-Trends, die es in den Trainingsjahren noch gar nicht gab. Keine Baumtiefe kann das lösen,
-weil dem Modell dafür schlicht das Merkmal fehlt.
+Aufteilung — bewusst zeitlich, nicht zufällig:
+- Jahre 1–4  = Trainingsdaten
+- Jahr 5     = Validierungsdaten (hier wird die Modell-Komplexität gewählt)
+- Jahr 6     = Testdaten (isoliert belassen, genau EINMAL am Schluss gemessen)
 
-Zielgröße vereinfacht als Ja/Nein ("überdurchschnittlicher Umsatztag?"), damit dieselbe
-Trainings-/Test-Grafik wie beim Bewerbermodell genutzt werden kann. Alle Zahlen synthetisch.
+Die „Overfitting-Falle" ist das Merkmal tag_im_jahr: Ein zu fein eingestelltes Modell merkt sich
+exakte Kalendertage der Trainingsjahre statt der wandernden Ereignisse.
+
+Für Auffälligkeit 4 im Lab: In allen sechs Jahren endeten in der letzten Augustwoche die
+Sommerferien in Frankreich und in einigen deutschen Bundesländern (Rückreiseverkehr). Ein Jahr, in
+dem das nicht so ist, kommt in den Daten nicht vor.
+
+Zielgröße vereinfacht als Ja/Nein („überdurchschnittlicher Umsatztag?"), damit dieselbe Art von
+Trainings-/Validierungsgrafik wie beim Bewerbermodell genutzt werden kann.
 
 Abhängigkeiten: numpy, pandas, scikit-learn
 """
-import numpy as np, pandas as pd, json
+import json
+import numpy as np
+import pandas as pd
 from sklearn.tree import DecisionTreeClassifier
 
 rng = np.random.default_rng(7)
-JITTER = 14          # Tage, um die der Ferienbeginn jährlich schwankt
-HOL_EFFECT = 1.3      # Stärke des Ferien-Effekts auf den Umsatz-Score
-NOISE = 0.25
+JAHRE = [1, 2, 3, 4, 5, 6]
+NOISE = 0.30
+PEAK = 6            # Tage: Breite des Reisepeaks um Ferienbeginn/-ende
+LETZTE_AUG = list(range(237, 244))   # 25.–31. August (Nicht-Schaltjahr)
+MONAT = [int((pd.Timestamp(2023, 1, 1) + pd.Timedelta(days=i)).month) for i in range(365)]
 
-# --- 1. Ferienbeginn je Land und Jahr (mit jährlichem Jitter) ---
-base_start = {"fr": 195, "be": 200, "de": 205, "nl": 198}  # ungefährer Tag im Jahr (Mitte/Ende Juli)
-hol_len = 40
-weights = {"fr": 0.45, "be": 0.20, "de": 0.20, "nl": 0.15}  # Anteil am grenznahen Reiseverkehr
-starts_by_year = {jahr: {l: base_start[l] + int(rng.integers(-JITTER, JITTER + 1)) for l in base_start}
-                   for jahr in [1, 2, 3, 4]}
+# Ferientermine je Land und Jahr (Tag im Jahr), mit jährlicher Verschiebung
+def ferien(jahr):
+    j = lambda a, b: int(rng.integers(a, b + 1))
+    t = {
+        "fr": (j(186, 192), j(237, 243)),   # Anfang Juli · Rentrée Ende August
+        "be": (j(181, 186), j(229, 240)),
+        "de": (j(176, 214), j(236, 243)),   # Bundesländer gestaffelt; einige enden Ende August
+        "nl": (j(188, 206), j(224, 245)),
+    }
+    return t
 
-# --- 2. Tagesdaten erzeugen (4 Jahre à 365 Tage) ---
-rows = []
-for jahr in [1, 2, 3, 4]:
+GEWICHT = {"fr": 0.40, "be": 0.20, "de": 0.25, "nl": 0.15}
+
+def peak(tag, mitte):
+    return max(0.0, 1 - abs(tag - mitte) / PEAK)
+
+def feiertage(jahr):
+    ostern = int(rng.integers(82, 116))          # bewegliches Osterdatum
+    fest = {1, 121, 174, 227, 305, 359, 360}     # 1.1., 1.5., 23.6. (LU), 15.8., 1.11., 25./26.12.
+    beweglich = {ostern + 1, ostern + 39, ostern + 50}   # Ostermontag, Himmelfahrt, Pfingstmontag
+    bruecke = {ostern + 40}                      # Freitag nach Himmelfahrt
+    return fest | beweglich, bruecke
+
+def umleitungen():
+    tage = set()
+    for _ in range(int(rng.integers(2, 4))):
+        a = int(rng.integers(20, 340)); tage |= set(range(a, a + int(rng.integers(10, 22))))
+    return tage
+
+def wd_effekt(wochentag):
+    return 0.18 if wochentag in (4, 6) else (0.10 if wochentag == 5 else -0.05)
+
+zeilen = []
+tag_global = 0
+for jahr in JAHRE:
+    fe = ferien(jahr); ft, br = feiertage(jahr); um = umleitungen()
     for tag in range(1, 366):
-        wochentag = (tag - 1) % 7  # 0=Mo ... 6=So
-        wd_effekt = 0.15 if wochentag in (4, 5, 6) else -0.05  # Fr/Sa/So stärker
-        naehe = {}
-        for l in base_start:
-            start = starts_by_year[jahr][l]
-            dist = abs(tag - (start + hol_len / 2))
-            naehe[l] = max(0.0, 1 - dist / (hol_len / 2 + 10))  # dreieckige Nähe-Kurve, 0-1
-        hol_effekt = sum(weights[l] * naehe[l] for l in base_start) * HOL_EFFECT
+        wochentag = tag_global % 7; tag_global += 1
+        monat = MONAT[tag - 1]
+        reise = {l: max(peak(tag, a), peak(tag, e)) for l, (a, e) in fe.items()}
+        reise_eff = sum(GEWICHT[l] * reise[l] for l in reise) * 1.6
+        wd_eff = wd_effekt(wochentag)
+        f_eff = 0.35 if tag in ft else 0.0
+        b_eff = 0.30 if tag in br else 0.0
+        u_eff = 0.25 if tag in um else 0.0
         regen = rng.random() < 0.3
-        regen_effekt = -0.08 if regen else 0.0
-        score = 0.3 + wd_effekt + hol_effekt + regen_effekt + rng.normal(0, NOISE)
-        rows.append(dict(jahr=jahr, tag_im_jahr=tag, wochentag=wochentag,
-                          naehe_ferien_fr=round(naehe["fr"], 3), naehe_ferien_be=round(naehe["be"], 3),
-                          naehe_ferien_de=round(naehe["de"], 3), naehe_ferien_nl=round(naehe["nl"], 3),
-                          regen=int(regen), score=score))
+        score = 0.30 + wd_eff + reise_eff + f_eff + b_eff + u_eff - (0.08 if regen else 0) \
+            + rng.normal(0, NOISE)
+        zeilen.append(dict(jahr=jahr, tag_im_jahr=tag, monat=monat, wochentag=wochentag,
+                           reise_fr=round(reise["fr"], 3), reise_be=round(reise["be"], 3),
+                           reise_de=round(reise["de"], 3), reise_nl=round(reise["nl"], 3),
+                           feiertag=int(tag in ft), brueckentag=int(tag in br),
+                           umleitung=int(tag in um), regen=int(regen), score=score))
 
-df = pd.DataFrame(rows)
-# Schwelle NUR aus den Trainingsjahren bestimmen (nicht aus dem Testjahr!)
-schwelle = df[df.jahr <= 3].score.median()
+df = pd.DataFrame(zeilen)
+schwelle = df[df.jahr <= 4].score.median()           # Schwelle nur aus den Trainingsjahren
 df["ueberdurchschnittlich"] = (df.score > schwelle).astype(int)
 df.drop(columns=["score"]).to_csv("tankstelle_umsatz.csv", index=False)
 
-# --- 3. Overfitting-Kurve: Training = Jahre 1-3, Test = Jahr 4 (NICHT zufällig gesplittet!) ---
-feat = ["wochentag", "naehe_ferien_fr", "naehe_ferien_be", "naehe_ferien_de", "naehe_ferien_nl",
-        "regen", "tag_im_jahr"]  # tag_im_jahr ist die "Overfitting-Falle": exaktes Kalenderdatum
-tr = df[df.jahr <= 3]; te = df[df.jahr == 4]
-Xtr, ytr = tr[feat].values, tr.ueberdurchschnittlich.values
-Xte, yte = te[feat].values, te.ueberdurchschnittlich.values
+FEAT = ["wochentag", "monat", "tag_im_jahr", "reise_fr", "reise_be", "reise_de", "reise_nl",
+        "feiertag", "brueckentag", "umleitung", "regen"]
+tr, va, te = df[df.jahr <= 4], df[df.jahr == 5], df[df.jahr == 6]
+X = lambda d: d[FEAT].values
+y = lambda d: d.ueberdurchschnittlich.values
 
-overfit = {"depth": [], "train": [], "test": []}
+kurve = {"depth": [], "train": [], "val": []}
+modelle = {}
 for d in range(1, 16):
-    t = DecisionTreeClassifier(max_depth=d, random_state=1).fit(Xtr, ytr)
-    overfit["depth"].append(d)
-    overfit["train"].append(round(t.score(Xtr, ytr), 3))
-    overfit["test"].append(round(t.score(Xte, yte), 3))
+    m = DecisionTreeClassifier(max_depth=d, random_state=1).fit(X(tr), y(tr))
+    modelle[d] = m
+    kurve["depth"].append(d)
+    kurve["train"].append(round(m.score(X(tr), y(tr)), 3))
+    kurve["val"].append(round(m.score(X(va), y(va)), 3))
 
-# --- 4. Model Drift (eigenständiges Beispiel, unabhängig von Overfitting) ---
-# Drei neue Snack-Trends, die es NUR in Jahr 4 gibt und im Training nicht vorkamen.
-rng2 = np.random.default_rng(11)
-te2 = te.copy()
-def trend_share(naehe_col, peak):
-    return np.where(te2[naehe_col] > 0.5, te2[naehe_col] * peak * rng2.uniform(0.7, 1.0, len(te2)), 0.0)
-te2["anteil_matjespizza"] = trend_share("naehe_ferien_nl", 0.14)      # Niederlande
-te2["anteil_pommespizza"] = trend_share("naehe_ferien_be", 0.10)      # Belgien
-te2["anteil_pizza_tricolore"] = trend_share("naehe_ferien_fr", 0.16)  # Frankreich
-te2["anteil_trend_gesamt"] = (te2["anteil_matjespizza"] + te2["anteil_pommespizza"]
-                               + te2["anteil_pizza_tricolore"])
-betroffene_tage = te2[te2["anteil_trend_gesamt"] > 0]
+beste = kurve["depth"][int(np.argmax(kurve["val"]))]
+# Erst nach der Wahl: Training auf 1–5, EINMAL am Testjahr 6 messen
+tr5 = df[df.jahr <= 5]
+final = DecisionTreeClassifier(max_depth=beste, random_state=1).fit(X(tr5), y(tr5))
+test_acc = round(final.score(X(te), y(te)), 3)
+test_acc_tief = round(DecisionTreeClassifier(max_depth=15, random_state=1)
+                      .fit(X(tr5), y(tr5)).score(X(te), y(te)), 3)
 
-drift = {
-    "jahresdurchschnitt": round(float(te2["anteil_trend_gesamt"].mean() * 100), 1),
-    "spitzendurchschnitt": round(float(betroffene_tage["anteil_trend_gesamt"].mean() * 100), 1),
-    "spitzenmax": round(float(te2["anteil_trend_gesamt"].max() * 100), 1),
-    "n_tage_betroffen": int((te2["anteil_trend_gesamt"] > 0).sum()),
-    "n_tage_gesamt": int(len(te2)),
-}
+# --- Auffälligkeit 1/2: dieselbe Vorhersage, verschiedene Prüfebenen (Testjahr 6) ---
+te_ = te.assign(pred=final.predict(X(te)), woche=(te.tag_im_jahr - 1) // 7)
+mae_monat = float((te_.groupby("monat").pred.mean() - te_.groupby("monat").ueberdurchschnittlich.mean()).abs().mean())
+mae_woche = float((te_.groupby("woche").pred.mean() - te_.groupby("woche").ueberdurchschnittlich.mean()).abs().mean())
+ebenen = {"mae_monat_pp": round(mae_monat * 100, 1), "mae_woche_pp": round(mae_woche * 100, 1),
+          "tag_falsch_pct": round((1 - test_acc) * 100, 1)}
 
-out = {"overfit": overfit,
-       "base_rate_train": round(float(ytr.mean()), 3), "base_rate_test": round(float(yte.mean()), 3),
-       "drift": drift}
+# --- Auffälligkeit 4: die letzte Augustwoche (25.–31.8.) in den sechs Datenjahren ---
+hist = df[df.tag_im_jahr.isin(LETZTE_AUG)]
+letzte_aug = {"anteil_hoch": round(float(hist.ueberdurchschnittlich.mean()), 3),
+              "rueckreise_jedes_jahr": bool((hist.groupby("jahr")[["reise_fr", "reise_de"]].max().max(axis=1) > 0).all())}
+
+out = {"overfit": kurve, "beste_tiefe": beste, "test_acc": test_acc, "test_acc_tief15": test_acc_tief,
+       "base_rate_train": round(float(y(tr).mean()), 3), "base_rate_val": round(float(y(va).mean()), 3),
+       "base_rate_test": round(float(y(te).mean()), 3), "letzte_aug": letzte_aug, "ebenen": ebenen,
+       "n": {"train": len(tr), "val": len(va), "test": len(te)}}
 with open("umsatz_kennzahlen.json", "w") as f:
-    json.dump(out, f, indent=1)
+    json.dump(out, f, indent=1, ensure_ascii=False)
 
-# --- Sanity-Ausgabe ---
-print("Basisrate 'überdurchschnittlich' Training/Test:", out["base_rate_train"], "/", out["base_rate_test"])
-print("Overfitting-Kurve (Tiefe: train/test):")
-for d, trv, tev in zip(overfit["depth"], overfit["train"], overfit["test"]):
-    print(f"  {d:2d}: {trv:.3f} / {tev:.3f}  (Lücke {trv-tev:+.3f})")
-print("\nDrift (Jahr 4, synthetisch):")
-print(f"  Jahresdurchschnitt Trend-Anteil: {drift['jahresdurchschnitt']}%")
-print(f"  Ø an betroffenen Tagen ({drift['n_tage_betroffen']}/{drift['n_tage_gesamt']}): {drift['spitzendurchschnitt']}%")
-print(f"  Spitzenwert: {drift['spitzenmax']}%")
+print("Basisraten Train/Val/Test:", out["base_rate_train"], out["base_rate_val"], out["base_rate_test"])
+for d, a, b in zip(kurve["depth"], kurve["train"], kurve["val"]):
+    print(f"  Tiefe {d:2d}: Training {a:.3f} · Validierung {b:.3f} · Lücke {a-b:+.3f}")
+print("Beste Tiefe (Validierung):", beste, "· Test (einmalig):", test_acc, "· Test bei Tiefe 15:", test_acc_tief)
+print("Prüfebenen Testjahr:", ebenen)
+print("Letzte Augustwoche (Jahre 1–6):", letzte_aug)
