@@ -18,7 +18,7 @@ um ein Lehrbeispiel zu haben, dessen Eigenschaften vollständig bekannt sind.
 
 ## 2 · Zweck — und ausdrücklich nicht
 
-**Wofür:** Zeigen, wie sich Schwellenwert, Precision, Recall und F-Wert gegenseitig bedingen —
+**Wofür:** Zeigen, wie sich Schwellenwert, Precision, Recall und F1-Score gegenseitig bedingen —
 und wie ein Modell eine Voreingenommenheit aus historischen Entscheidungen übernimmt, auch
 wenn das betreffende Merkmal weggelassen wird.
 
