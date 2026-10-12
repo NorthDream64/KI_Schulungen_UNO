@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Praxisbeispiel KI-Agentenbau · KI-Manager:in</title>
+<style>
+:root{--ink:#1a1a18;--paper:#f8f6f1;--card:#ffffff;--rule:#d5d0c5;--muted:#6b6b60;--accent:#0a4a7a;--teal:#0a6b6b;--green:#2a5c3f;--amber:#7a4a00;--red:#6a1a1a;--blue:#1a3a7a;--purple:#5a3a7a;--phase:#f2f0eb;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'DM Sans',system-ui,sans-serif;background:var(--paper);color:var(--ink);font-size:14px;line-height:1.65;}
+.page{max-width:860px;margin:0 auto;padding:2.5rem 2rem 5rem;}
+
+.ho-header{border-bottom:3px solid var(--ink);padding-bottom:1.3rem;margin-bottom:1.6rem;display:grid;grid-template-columns:1fr auto;gap:1rem;align-items:end;}
+.ho-eyebrow{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-bottom:.5rem;}
+.ho-title{font-family:'Playfair Display',Georgia,serif;font-size:clamp(1.6rem,4.5vw,2.3rem);line-height:1.12;}
+.ho-title em{font-style:italic;color:var(--teal);}
+.print-btn{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1px;text-transform:uppercase;padding:6px 14px;border:1px solid var(--rule);border-radius:4px;background:none;color:var(--muted);cursor:pointer;}
+.print-btn:hover{border-color:var(--accent);color:var(--accent);}
+
+.section{margin-bottom:1.6rem;}
+.section-title{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--rule);padding-bottom:.4rem;margin-bottom:.9rem;}
+
+.auftrag{background:var(--card);border:1px solid var(--rule);border-left:4px solid var(--teal);border-radius:0 8px 8px 0;padding:1rem 1.2rem;margin-bottom:1.2rem;}
+.auftrag-label{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--teal);margin-bottom:.35rem;font-weight:600;}
+.auftrag p{font-size:13.5px;margin-bottom:.5rem;}
+.auftrag p:last-child{margin-bottom:0;}
+
+.meta-row{display:grid;grid-template-columns:1fr 1fr;gap:.8rem;margin-bottom:1.2rem;}
+@media(max-width:640px){.meta-row{grid-template-columns:1fr;}}
+.meta-f{border:1px solid var(--rule);border-radius:8px;background:var(--card);padding:.6rem .85rem;}
+.meta-l{font-family:'DM Mono',monospace;font-size:8.5px;letter-spacing:1.6px;text-transform:uppercase;color:var(--muted);margin-bottom:.2rem;}
+
+.tbl{width:100%;border-collapse:collapse;font-size:12.5px;margin:.5rem 0 .8rem;background:var(--card);}
+.tbl th{font-family:'DM Mono',monospace;font-size:8.5px;letter-spacing:1.4px;text-transform:uppercase;background:var(--phase);padding:.45rem .6rem;text-align:left;border:1px solid var(--rule);color:var(--muted);}
+.tbl td{padding:.45rem .6rem;border:1px solid var(--rule);vertical-align:top;line-height:1.5;}
+
+.hilfe{background:var(--phase);border-radius:8px;padding:.85rem 1.05rem;margin-bottom:1rem;font-size:12.5px;line-height:1.6;}
+.hilfe-t{font-family:'DM Mono',monospace;font-size:8.5px;letter-spacing:1.6px;text-transform:uppercase;color:var(--muted);margin-bottom:.35rem;font-weight:600;}
+
+.gate{border:1px solid var(--rule);border-left:5px solid var(--rule);border-radius:0 8px 8px 0;background:var(--card);padding:.9rem 1.1rem;margin-bottom:.9rem;break-inside:avoid;}
+.gate.g0{border-left-color:var(--purple);}
+.gate.g1{border-left-color:var(--blue);}
+.gate.g2{border-left-color:var(--amber);}
+.gate.g3{border-left-color:var(--green);}
+.gate-h{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1.6px;text-transform:uppercase;font-weight:700;margin-bottom:.2rem;}
+.gate.g0 .gate-h{color:var(--purple);}
+.gate.g1 .gate-h{color:var(--blue);}
+.gate.g2 .gate-h{color:var(--amber);}
+.gate.g3 .gate-h{color:var(--green);}
+.gate-t{font-family:'Playfair Display',Georgia,serif;font-weight:600;font-size:15px;margin-bottom:.15rem;}
+.gate-sub{font-size:12px;color:var(--muted);margin-bottom:.7rem;}
+
+.krit{border:1px dashed var(--rule);border-radius:7px;padding:.6rem .75rem;margin-bottom:.6rem;}
+.krit:last-child{margin-bottom:0;}
+.krit-n{font-family:'DM Mono',monospace;font-size:8.5px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:.4rem;font-weight:600;}
+.f{margin-bottom:.45rem;}
+.f:last-child{margin-bottom:0;}
+.f-l{font-family:'DM Mono',monospace;font-size:8.5px;letter-spacing:1.2px;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:.1rem;}
+.f-row{display:grid;grid-template-columns:1fr 1fr;gap:.5rem;}
+@media(max-width:640px){.f-row{grid-template-columns:1fr;}}
+
+textarea,input[type=text]{width:100%;font-family:'DM Sans',system-ui,sans-serif;font-size:12.5px;line-height:1.5;color:var(--ink);background:#fdfdfb;border:none;border-bottom:1px solid var(--rule);padding:.25rem .1rem;resize:none;overflow:hidden;}
+textarea:focus,input[type=text]:focus{outline:none;border-bottom-color:var(--teal);background:#fff;}
+textarea{min-height:2.4rem;}
+
+.f.grau .f-l{color:#b3aea2;}
+.f.grau textarea{background:#f4f2ed;border-bottom-color:#e3ded4;color:#b3aea2;cursor:not-allowed;}
+.grau-hint{font-family:'DM Mono',monospace;font-size:8.5px;letter-spacing:.8px;color:#b3aea2;text-transform:uppercase;margin-top:.15rem;}.mehr .krit{margin-top:.5rem;}@media(max-width:720px){}
+.footer{margin-top:2.5rem;padding-top:.9rem;border-top:1px solid var(--rule);font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:.5px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:.5rem;}
+
+
+/* ── Priorisierung · Wirkungs-Machbarkeits-Matrix ─────── */
+.prio{border:1px solid var(--rule);border-left:5px solid var(--accent);border-radius:0 8px 8px 0;background:var(--card);padding:.9rem 1.1rem;margin-bottom:1rem;break-inside:avoid;}
+.prio-h{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1.6px;text-transform:uppercase;font-weight:700;color:var(--accent);margin-bottom:.2rem;}
+.prio-t{font-family:'Playfair Display',Georgia,serif;font-weight:600;font-size:15px;margin-bottom:.15rem;}
+.prio-sub{font-size:12px;color:var(--muted);margin-bottom:.7rem;}
+.prio-row{display:grid;grid-template-columns:1fr 1fr;gap:.7rem;margin-bottom:.55rem;}
+@media(max-width:640px){.prio-row{grid-template-columns:1fr;}}
+.prio-f{border:1px dashed var(--rule);border-radius:7px;padding:.55rem .7rem;}
+.prio-f .f-l{display:block;}
+.prio-skala{font-family:'DM Mono',monospace;font-size:8.5px;letter-spacing:.6px;color:var(--muted);text-transform:uppercase;margin-top:.15rem;}
+.prio-f input[type=number]{width:4.2rem;font-family:'DM Mono',monospace;font-size:15px;font-weight:700;color:var(--ink);background:#fdfdfb;border:none;border-bottom:1px solid var(--rule);padding:.2rem .1rem;text-align:center;}
+.prio-f input[type=number]:focus{outline:none;border-bottom-color:var(--accent);background:#fff;}
+
+/* ── Reiter ─────────────────────────────────────────── */
+.tab-leiste{display:flex;flex-wrap:wrap;gap:.3rem;margin:1.2rem 0 1.4rem;border-bottom:2px solid var(--rule);padding-bottom:0;}
+.tab-btn{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1px;text-transform:uppercase;padding:.5rem .8rem;border:1px solid var(--rule);border-bottom:none;border-radius:6px 6px 0 0;background:var(--paper);color:var(--muted);cursor:pointer;margin-bottom:-2px;line-height:1.3;}
+.tab-btn:hover{color:var(--accent);}
+.tab-btn.aktiv{background:var(--card);color:var(--ink);border-bottom:2px solid var(--card);font-weight:700;}
+.tab-btn .tb-nr{color:var(--teal);font-weight:700;margin-right:.3rem;}
+.tab-btn.aktiv .tb-nr{color:var(--teal);}
+.tab-panel{display:none;}
+.tab-panel.aktiv{display:block;}
+
+/* ── Fallkopf im Reiter ─────────────────────────────── */
+.fallkopf{background:var(--card);border:1px solid var(--rule);border-left:5px solid var(--teal);border-radius:0 8px 8px 0;padding:.9rem 1.1rem;margin-bottom:1.1rem;}
+.fallkopf-nr{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--teal);font-weight:700;margin-bottom:.25rem;}
+.fallkopf-t{font-family:'Playfair Display',Georgia,serif;font-weight:600;font-size:17px;line-height:1.2;margin-bottom:.4rem;}
+.fallkopf-txt{font-size:12.8px;line-height:1.6;color:var(--muted);}
+.fallkopf-txt a{color:var(--accent);}
+
+/* ── Gates: Kriterien ausklappbar ───────────────────── */
+.gate-det{margin-top:.6rem;}
+.gate-det>summary{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);cursor:pointer;list-style:none;padding:.35rem .6rem;border:1px dashed var(--rule);border-radius:6px;background:var(--phase);}
+.gate-det>summary::-webkit-details-marker{display:none;}
+.gate-det>summary::before{content:"+ ";font-weight:700;}
+.gate-det[open]>summary::before{content:"\2212 ";}
+.gate-det>summary:hover{color:var(--teal);border-color:var(--teal);}
+.gate-det .krit{margin-top:.6rem;}
+
+.rechtevermerk{flex-basis:100%;order:99;margin-top:.7rem;padding-top:.6rem;border-top:1px solid var(--rule);font-family:'DM Sans',sans-serif;font-size:10px;line-height:1.5;letter-spacing:0;text-transform:none;color:var(--muted);}
+
+@media print{
+ body{background:#fff;font-size:10.5pt;}
+ .page{padding:0;max-width:none;}
+ .no-print{display:none!important;}
+ .page-break{page-break-before:always;}
+ textarea,input[type=text]{background:#fff;border-bottom:1px solid #bbb;}
+ .gate,.krit,.fallkopf,.prio{break-inside:avoid;}
+ .tab-leiste{display:none!important;}
+ .tab-panel{display:none;}
+ .tab-panel.aktiv{display:block;}
+}
+/* ── Ergaenzungen fuer dieses Praxisbeispiel ──────────── */
+.wo{font-family:'DM Mono',monospace;font-size:8.5px;letter-spacing:1.2px;text-transform:uppercase;color:var(--teal);background:var(--phase);border-radius:5px;padding:.25rem .55rem;display:inline-block;margin-bottom:.5rem;line-height:1.4;}
+.warn{background:#fdf7f6;border:1px solid var(--rule);border-left:4px solid var(--red);border-radius:0 8px 8px 0;padding:.8rem 1rem;margin-bottom:1rem;font-size:12.5px;line-height:1.6;}
+.warn-t{font-family:'DM Mono',monospace;font-size:8.5px;letter-spacing:1.6px;text-transform:uppercase;color:var(--red);font-weight:700;margin-bottom:.3rem;}
+.tipp-grid{display:grid;grid-template-columns:1fr 1fr;gap:.6rem;margin-top:.6rem;}
+@media(max-width:640px){.tipp-grid{grid-template-columns:1fr;}}
+.tipp{border:1px dashed var(--rule);border-radius:7px;padding:.55rem .7rem;font-size:12.2px;line-height:1.55;break-inside:avoid;}
+.tipp b{display:block;font-size:12.6px;margin-bottom:.12rem;}
+.src-row{display:flex;flex-wrap:wrap;gap:.4rem;margin:.55rem 0 .2rem;}
+.src-chip{font-size:11.5px;border:1px solid var(--rule);border-radius:5px;padding:.3rem .55rem;background:var(--card);line-height:1.45;}
+.src-chip a{color:var(--accent);}
+.merksatz{border-left:3px solid var(--teal);padding:.2rem 0 .2rem .8rem;margin:.7rem 0;font-family:'Playfair Display',Georgia,serif;font-style:italic;font-size:14px;line-height:1.5;}
+.tbl input[type=text]{font-size:12px;}
+.tbl td.nr{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);text-align:center;width:2.2rem;}
+.zeit{font-family:'DM Mono',monospace;font-size:10px;color:var(--teal);font-weight:700;white-space:nowrap;}
+
+/* ── Werkzeug Startprompt-Generator (aus Management von KI-Agenten) ── */
+.werkbank-panel .checkliste{background:var(--card);}
+.werkbank{background:var(--card);border:1px solid var(--rule);border-radius:8px;padding:1.3rem 1.4rem;margin:1rem 0 1.4rem;}
+.werkbank h2{font-family:'Playfair Display',Georgia,serif;font-size:clamp(1.25rem,3vw,1.55rem);font-weight:400;line-height:1.2;margin-bottom:.35rem;}
+.werkbank-intro{color:var(--muted);font-size:13px;margin-bottom:.9rem;}
+.werkbank-panel{border:1px solid var(--rule);border-radius:6px;padding:1rem 1.1rem;background:var(--paper);}
+.werkbank-panel+.werkbank-panel{margin-top:.9rem;}
+.feld-gruppe{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--teal);margin:.1rem 0 .6rem;}
+.feld-gitter{display:grid;gap:.7rem;}
+.feld-gitter.zwei{grid-template-columns:1fr 1fr;}
+.feld-gitter.drei{grid-template-columns:repeat(3,1fr);}
+.werkbank label{display:block;margin-bottom:.7rem;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--teal);}
+.werkbank label span{display:block;margin:2px 0 4px;font-family:'DM Sans',sans-serif;font-size:12px;letter-spacing:0;text-transform:none;color:var(--muted);}
+.werkbank input[type=text],.werkbank textarea{width:100%;margin-top:3px;padding:.5rem .6rem;border:1px solid var(--rule);border-radius:4px;background:var(--card);color:var(--ink);font-family:'DM Sans',sans-serif;font-size:13px;line-height:1.45;resize:vertical;}
+.werkbank input:focus,.werkbank textarea:focus{outline:2px solid var(--accent);outline-offset:1px;}
+.knopf-reihe{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.6rem;}
+.knopf-reihe button{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1px;text-transform:uppercase;padding:.5rem .8rem;border:1px solid var(--rule);border-radius:4px;background:var(--card);color:var(--ink);cursor:pointer;}
+.knopf-reihe button:hover{border-color:var(--teal);color:var(--teal);}
+.knopf-reihe button.haupt{background:var(--teal);border-color:var(--teal);color:#fff;}
+.knopf-reihe button.haupt:hover{color:#fff;opacity:.9;}
+.werkbank textarea.ausgabe{display:block;width:100%;min-height:260px;margin-top:.6rem;background:#17211d;color:#eef2ef;border:0;border-radius:4px;padding:.9rem 1rem;font-family:'DM Mono',ui-monospace,Menlo,monospace;font-size:12px;line-height:1.5;white-space:pre-wrap;resize:vertical;}
+.status{display:none;font-size:12px;color:var(--teal);margin-top:.4rem;}
+.werkbank-hinweis{margin-top:.8rem;padding:.6rem .85rem;border-left:4px solid var(--amber);background:var(--phase);border-radius:0 4px 4px 0;font-size:12.5px;color:var(--muted);}
+.prompt-karte{background:var(--phase);border-left:5px solid var(--teal);border-radius:0 6px 6px 0;padding:.9rem 1rem;font-size:13px;line-height:1.6;margin:.5rem 0;}
+/* ── Checklisten ── */
+.cl{list-style:none;padding:0;margin:.15rem 0 .4rem;}
+.cl li{border-top:1px solid var(--rule);padding:.42rem 0;}
+.cl li:first-child{border-top:none;}
+.cl label{display:flex;gap:.6rem;align-items:flex-start;font-size:13px;line-height:1.5;cursor:pointer;}
+.cl input[type=checkbox]{flex:none;width:15px;height:15px;margin-top:.22rem;accent-color:var(--teal);}
+.cl.zwei{columns:2;column-gap:1.6rem;}
+.cl.zwei li{break-inside:avoid;border-top:none;border-bottom:1px solid var(--rule);}
+.hinweis{font-size:12.2px;line-height:1.55;color:var(--muted);border-left:3px solid var(--rule);padding:.15rem 0 .15rem .7rem;margin:.55rem 0 0;}
+@media(max-width:640px){.cl.zwei{columns:1;}.feld-gitter.zwei,.feld-gitter.drei{grid-template-columns:1fr;}}
+@media print{.knopf-reihe,.status{display:none!important;}.cl li,.hinweis{break-inside:avoid;}}
+</style>
+</head>
+<body>
+<div class="page">
+
+ <div class="ho-header">
+  <div>
+   <div class="ho-eyebrow">KI-Manager:in &middot; Praxisbeispiel</div>
+   <h1 class="ho-title">Praxisbeispiel<br><em>KI-Agentenbau</em></h1>
+  </div>
+  <button class="print-btn no-print" onclick="window.print()">Drucken</button>
+ </div>
+
+ <nav class="tab-leiste no-print">
+  <button class="tab-btn aktiv" data-ziel="tab-ablauf">Ablauf</button>
+  <button class="tab-btn" data-ziel="tab-szenario"><span class="tb-nr">01</span>Szenario</button>
+  <button class="tab-btn" data-ziel="tab-vorlage"><span class="tb-nr">02</span>Bauvorlage</button>
+  <button class="tab-btn" data-ziel="tab-pruefbestand"><span class="tb-nr">03</span>Pr&uuml;fbestand</button>
+  <button class="tab-btn" data-ziel="tab-pruefung"><span class="tb-nr">04</span>Pr&uuml;fung</button>
+  <button class="tab-btn" data-ziel="tab-abnahme"><span class="tb-nr">05</span>Abnahme</button>
+  <button class="tab-btn" data-ziel="tab-quellen">Quellen</button>
+ </nav>
+
+<!-- ══════════════ ABLAUF ══════════════ -->
+<section class="tab-panel aktiv" id="tab-ablauf">
+
+ <div class="auftrag">
+  <div class="auftrag-label">So liest Du dieses Praxisbeispiel</div>
+  <p>&Ouml;ffne es neben dem Werkzeug, in dem Du den Agenten anlegst &mdash; zum Beispiel einem Workspace Agent in ChatGPT. Jeder Reiter ist ein Arbeitsschritt: <strong>abhaken, was erledigt ist</strong>. Geschrieben wird nur in den Tabellen f&uuml;r Pr&uuml;fbestand und Pr&uuml;fung.</p>
+  <p>Die Zeile &bdquo;Im Werkzeug&ldquo; nennt, wo eine Entscheidung im Produkt gesetzt wird. Die acht Angaben aus der Bauvorlage sind der Leitfaden. Das Werkzeug ist austauschbar; die Angaben sind es nicht.</p>
+ </div>
+
+ <div class="warn">
+  <div class="warn-t">Zwei Bedingungen, bevor es losgeht</div>
+  <p style="margin-bottom:.4rem;"><strong>Keine echten Unternehmensdaten.</strong> Gearbeitet wird mit erfundenen oder vollst&auml;ndig anonymisierten F&auml;llen. Grund: Die Konfiguration eines geteilten Agenten ist f&uuml;r alle einsehbar, die Zugriff haben, und eine agenteneigene Verbindung kann von jeder Person genutzt werden, die den Agenten startet.</p>
+  <p><strong>Zugang vorab kl&auml;ren.</strong> Der Agentenbau ist &uuml;ber Rollenrechte gesteuert. Ohne das Recht zum Bauen l&auml;sst sich nichts anlegen &mdash; das kl&auml;rt die Administration vorab.</p>
+ </div>
+
+ <div class="section">
+  <div class="section-title">Zeitrahmen f&uuml;r einen ersten Agenten (Orientierung)</div>
+  <table class="tbl">
+   <thead><tr><th style="width:15%;">Zeit</th><th style="width:28%;">Schritt</th><th>Ergebnis am Ende des Schritts</th></tr></thead>
+   <tbody>
+    <tr><td><span class="zeit">00&ndash;15</span></td><td><strong>Szenario</strong></td><td>Ein Vorgang ist gew&auml;hlt, das Ziel steht in einem Satz ohne &bdquo;und&ldquo;, die Umkehrbarkeit ist gepr&uuml;ft</td></tr>
+    <tr><td><span class="zeit">15&ndash;35</span></td><td><strong>Bauvorlage</strong></td><td>Alle acht Angaben sind festgelegt &mdash; schriftlich, vor dem Bau</td></tr>
+    <tr><td><span class="zeit">35&ndash;50</span></td><td><strong>Pr&uuml;fbestand</strong></td><td>Mindestens zehn F&auml;lle mit bekanntem richtigem Ergebnis liegen vor</td></tr>
+    <tr><td><span class="zeit">50&ndash;85</span></td><td><strong>Bau</strong></td><td>Der Agent l&auml;uft. Werkzeuge einzeln freigegeben, Freigabepflicht gesetzt</td></tr>
+    <tr><td><span class="zeit">85&ndash;100</span></td><td><strong>Pr&uuml;fung</strong></td><td>Der Pr&uuml;fbestand ist durchgelaufen, Abweichungen sind notiert</td></tr>
+    <tr><td><span class="zeit">100&ndash;120</span></td><td><strong>Abnahme</strong></td><td>Was im eigenen Unternehmen zus&auml;tzlich n&ouml;tig w&auml;re, ist benannt</td></tr>
+   </tbody>
+  </table>
+  <div class="merksatz">Der Bau dauert oft nur eine halbe Stunde. Die Entscheidungen und Gedanken davor dauern l&auml;nger &mdash; hier "zu schnell" sein zu wollen, ist oft der Grund f&uuml;r das Scheitern.</div>
+ </div>
+
+ <div class="section">
+  <div class="section-title">Sieben Regeln beim Bau</div>
+  <ul class="cl">
+   <li><label><input type="checkbox"> <span><strong>Werkzeuge einzeln freigeben, Lesezugriff zuerst.</strong> Jedes Werkzeug und jedes Schreibrecht wird einzeln begr&uuml;ndet. &bdquo;Der Agent hat Zugriff auf das Kundensystem&ldquo; ist keine Freigabe, sondern eine Blankovollmacht.</span></label></li>
+   <li><label><input type="checkbox"> <span><strong>Abbruchbedingung vor F&auml;higkeit.</strong> Weitermachen, abbrechen oder &uuml;bergeben, wenn ein Werkzeug versagt? Ohne Antwort macht der Agent im Zweifel weiter.</span></label></li>
+   <li><label><input type="checkbox"> <span><strong>Grenzen au&szlig;erhalb des Agenten.</strong> Laufzeitgrenzen, Freigabepflicht und Protokolle, die er nicht &auml;ndern kann. Ein Satz im Anweisungstext ist keine Grenze.</span></label></li>
+   <li><label><input type="checkbox"> <span><strong>Eigene Identit&auml;t je Agent.</strong> Budget- und Laufzeitgrenzen gelten auch f&uuml;r Agenten, die er selbst startet.</span></label></li>
+   <li><label><input type="checkbox"> <span><strong>Autonomie wird verdient.</strong> Eine Stufe unter dem technisch M&ouml;glichen starten.</span></label></li>
+   <li><label><input type="checkbox"> <span><strong>Kosten je Vorgang messen &mdash; von Anfang an.</strong> Ein Agent erledigt eine Aufgabe mit einer Kette von Aufrufen. Wer erst nach der ersten Rechnung hinsieht, hat ein Quartal verloren.</span></label></li>
+   <li><label><input type="checkbox"> <span><strong>Die Kette protokollieren, nicht nur das Ergebnis.</strong> Welches Werkzeug, mit welchen Parametern, in welcher Reihenfolge. Ohne diese Spur l&auml;sst sich kein Vorfall rekonstruieren.</span></label></li>
+  </ul>
+ </div>
+
+</section>
+
+<!-- ══════════════ 01 SZENARIO ══════════════ -->
+<section class="tab-panel" id="tab-szenario">
+
+ <div class="fallkopf">
+  <div class="fallkopf-nr">Schritt 01 &middot; 0&ndash;15 Minuten</div>
+  <div class="fallkopf-t">Szenario und Ziel</div>
+  <div class="fallkopf-txt">W&auml;hle einen wiederkehrenden Vorgang aus Deinem Arbeitsalltag &mdash; oder einen der f&uuml;nf Auftr&auml;ge aus den Agenten-Szenarien (Ordner <em>Use Cases</em>). Arbeite mit erfundenen oder anonymisierten Daten.</div>
+ </div>
+
+ <div class="gate g0">
+  <div class="gate-h">A &middot; Der Vorgang</div>
+  <div class="gate-t">Was wird heute von Hand gemacht?</div>
+  <ul class="cl">
+   <li><label><input type="checkbox"> <span>Ist-Zustand in zwei bis drei S&auml;tzen beschrieben: wer, wie oft, womit</span></label></li>
+   <li><label><input type="checkbox"> <span>H&auml;ufigkeit und heutige Dauer je Fall gesch&auml;tzt &mdash; lohnt sich die Automatisierung?</span></label></li>
+  </ul>
+ </div>
+
+ <div class="gate g1">
+  <div class="gate-h">B &middot; Das Ziel</div>
+  <div class="gate-t">Ein Satz, kein &bdquo;und&ldquo;</div>
+  <ul class="cl">
+   <li><label><input type="checkbox"> <span>Ziel des Agenten in einem Satz formuliert</span></label></li>
+   <li><label><input type="checkbox"> <span>Probe bestanden: kein &bdquo;und&ldquo; im Satz. Sonst sind es zwei Agenten &mdash; den zweiten Teil auf sp&auml;ter verschieben</span></label></li>
+  </ul>
+ </div>
+
+ <div class="gate g2">
+  <div class="gate-h">C &middot; Erfolg</div>
+  <div class="gate-t">Was ist ein erfolgreich erledigter Vorgang?</div>
+  <ul class="cl">
+   <li><label><input type="checkbox"> <span>Festgelegt: Ein Vorgang gilt als erfolgreich erledigt, wenn &hellip;</span></label></li>
+   <li><label><input type="checkbox"> <span>Gekl&auml;rt, wer das entscheidet (Rolle) &mdash; das ist Arbeit des Fachbereichs, nicht der IT</span></label></li>
+  </ul>
+  <p class="hinweis">Ohne diese Festlegung ist jede sp&auml;tere Erfolgsquote eine Zahl ohne Bezugsgr&ouml;&szlig;e.</p>
+ </div>
+
+ <div class="gate g3">
+  <div class="gate-h">D &middot; Umkehrbarkeit und Risiko</div>
+  <div class="gate-t">Was passiert im Fehlerfall?</div>
+  <ul class="cl">
+   <li><label><input type="checkbox"> <span>Wahrscheinlichster Fehler benannt &mdash; und woran er sich zeigt</span></label></li>
+   <li><label><input type="checkbox"> <span>Gekl&auml;rt, wie lange er unbemerkt bliebe und wer ihn korrigiert</span></label></li>
+   <li><label><input type="checkbox"> <span>Ein Fehler l&auml;sst sich innerhalb eines Tages folgenlos korrigieren. Falls nicht: einen anderen ersten Agenten w&auml;hlen</span></label></li>
+  </ul>
+  <p class="hinweis">Nicht die Wichtigkeit entscheidet, ob ein Agent in Frage kommt, sondern Schwere und Umkehrbarkeit des Fehlers.</p>
+ </div>
+
+</section>
+
+<!-- ══════════════ 02 BAUVORLAGE ══════════════ -->
+<section class="tab-panel" id="tab-vorlage">
+
+ <div class="fallkopf">
+  <div class="fallkopf-nr">Schritt 02 &middot; 15&ndash;35 Minuten</div>
+  <div class="fallkopf-t">Die acht Angaben</div>
+  <div class="fallkopf-txt">Keine davon ist ein technisches Detail. Jede ist eine Entscheidung &mdash; und jede hat im Werkzeug einen Ort, an dem sie gesetzt wird. Die Zeile &bdquo;Im Werkzeug&ldquo; nennt ihn.</div>
+ </div>
+
+ <div class="gate g0">
+  <div class="gate-h">Angabe 1</div>
+  <div class="gate-t">Quellen</div>
+  <div class="gate-sub">Welche Datenquellen darf der Agent lesen &mdash; und welche ausdr&uuml;cklich nicht? Jede Quelle bringt ihre eigene Rechtslage mit.</div>
+  <div class="wo">Im Werkzeug: Abschnitt Werkzeuge &middot; Apps und Konnektoren, eigene MCP-Verbindungen, hochgeladene Dateien</div>
+  <ul class="cl">
+   <li><label><input type="checkbox"> <span>Zugelassene Quellen einzeln aufgez&auml;hlt</span></label></li>
+   <li><label><input type="checkbox"> <span>Ausdr&uuml;cklich ausgeschlossene Quellen benannt</span></label></li>
+   <li><label><input type="checkbox"> <span>Je Verbindung entschieden: Konto der nutzenden Person oder agenteneigenes Konto &mdash; bei agenteneigenem Konto: welches Dienstkonto, mit welchem Rechteumfang?</span></label></li>
+  </ul>
+  <p class="hinweis">Bei einem agenteneigenen Konto handelt jede Person, die den Agenten startet, mit dessen Rechten. Ein pers&ouml;nliches Konto an dieser Stelle macht die eigenen Zugriffsrechte f&uuml;r alle nutzbar. Der Hersteller empfiehlt ein Dienstkonto mit eng geschnittenen Rechten.</p>
+ </div>
+
+ <div class="gate g1">
+  <div class="gate-h">Angabe 2</div>
+  <div class="gate-t">Pr&uuml;fintervall</div>
+  <div class="gate-sub">Wie oft l&auml;uft er? Der Takt bestimmt Kosten und Aktualit&auml;t &mdash; und ob ein Fehler Stunden oder Wochen unbemerkt bleibt.</div>
+  <div class="wo">Im Werkzeug: Kan&auml;le &middot; Zeitplan (Takt) oder ereignisgesteuert &uuml;ber Chat, Chatdienst und Programmierschnittstelle</div>
+  <ul class="cl">
+   <li><label><input type="checkbox"> <span>Takt festgelegt (z.&nbsp;B. t&auml;glich 07:00, w&ouml;chentlich, bei Eingang) &mdash; und fachlich begr&uuml;ndet</span></label></li>
+   <li><label><input type="checkbox"> <span>Gekl&auml;rt, wer merkt, wenn ein Lauf ausf&auml;llt</span></label></li>
+  </ul>
+ </div>
+
+ <div class="gate g2">
+  <div class="gate-h">Angabe 3</div>
+  <div class="gate-t">Bewertungsmodell</div>
+  <div class="gate-sub">Nach welchen Kriterien gewichtet er? Hier steckt die eigentliche Fachlichkeit &mdash; und der Ort, an dem sich Verzerrung einnistet.</div>
+  <div class="wo">Im Werkzeug: Anweisungstext, erg&auml;nzende Arbeitsanweisungen, Wahl von Modell und Denkaufwand</div>
+  <ul class="cl">
+   <li><label><input type="checkbox"> <span>Kriterien und ihre Gewichtung aufgeschrieben</span></label></li>
+   <li><label><input type="checkbox"> <span>Gepr&uuml;ft, welche Gruppe von F&auml;llen dadurch systematisch benachteiligt werden k&ouml;nnte</span></label></li>
+  </ul>
+ </div>
+
+ <div class="gate g3">
+  <div class="gate-h">Angabe 4</div>
+  <div class="gate-t">Schwellenwert</div>
+  <div class="gate-sub">Ab wann meldet er sich? Zu niedrig erzeugt Alarmm&uuml;digkeit, zu hoch &uuml;bersieht F&auml;lle. Dieselbe Logik wie beim Regler zwischen Precision (Pr&auml;zision) und Recall (Sensitivit&auml;t).</div>
+  <div class="wo">Im Werkzeug: Anweisungstext &middot; und als harte Grenze die Freigabepflicht f&uuml;r schreibende Aktionen</div>
+  <ul class="cl">
+   <li><label><input type="checkbox"> <span>Schwellenwert mit Einheit festgelegt</span></label></li>
+   <li><label><input type="checkbox"> <span>Entschieden, welcher Fehler teurer ist: falscher Alarm oder &uuml;bersehener Fall</span></label></li>
+   <li><label><input type="checkbox"> <span>Zumutbare Zahl von Meldungen je Woche festgelegt &mdash; dar&uuml;ber sieht niemand mehr hin</span></label></li>
+  </ul>
+ </div>
+
+ <div class="gate g0">
+  <div class="gate-h">Angabe 5</div>
+  <div class="gate-t">Ausgabeformat</div>
+  <div class="gate-sub">Was liefert er ab und an wen? Ein Bericht, der niemanden erreicht, ist keine Automatisierung.</div>
+  <div class="wo">Im Werkzeug: Anweisungstext und Kanal &middot; Chat, Chatdienst oder Programmierschnittstelle</div>
+  <ul class="cl">
+   <li><label><input type="checkbox"> <span>Form der Ausgabe festgelegt, mit Pflichtfeldern: Ergebnis, Begr&uuml;ndung, Quellen, ausgel&ouml;ste Aktionen, Zeitstempel, Version</span></label></li>
+   <li><label><input type="checkbox"> <span>Empf&auml;nger als Rolle benannt, nicht als Person</span></label></li>
+  </ul>
+ </div>
+
+ <div class="gate g1">
+  <div class="gate-h">Angabe 6</div>
+  <div class="gate-t">Zul&auml;ssige Aktionen</div>
+  <div class="gate-sub">Was darf er selbst tun, was nur vorbereiten? Die Trennlinie ist Umkehrbarkeit, nicht Wichtigkeit.</div>
+  <div class="wo">Im Werkzeug: Freigabe schreibender Aktionen (immer fragen / nie fragen / fallweise) und Einschr&auml;nkungen je Konnektoraktion</div>
+  <ul class="cl">
+   <li><label><input type="checkbox"> <span>Aktionen aufgez&auml;hlt, die der Agent selbst ausf&uuml;hren darf</span></label></li>
+   <li><label><input type="checkbox"> <span>Aktionen aufgez&auml;hlt, die er nur vorbereiten darf &mdash; mit Freigabe durch wen?</span></label></li>
+   <li><label><input type="checkbox"> <span>Einschr&auml;nkungen je Aktion gesetzt (z.&nbsp;B. Versand nur an eine Domain, Lesen nur aus einem bestimmten Dokument)</span></label></li>
+   <li><label><input type="checkbox"> <span>Gepr&uuml;ft, welche Daten &uuml;ber eine <em>erlaubte</em> Aktion zur&uuml;ckkommen k&ouml;nnten, obwohl sie nicht gewollt sind</span></label></li>
+  </ul>
+ </div>
+
+ <div class="gate g2">
+  <div class="gate-h">Angabe 7</div>
+  <div class="gate-t">Pr&uuml;fbestand</div>
+  <div class="gate-sub">Woran messt Ihr, dass er richtig arbeitet? Zwanzig bis f&uuml;nfzig echte Vorg&auml;nge mit bekanntem richtigem Ergebnis &mdash; festgelegt, bevor gebaut wird.</div>
+  <div class="wo">Im Werkzeug nicht vorgesehen &mdash; der Pr&uuml;fbestand wird au&szlig;erhalb gef&uuml;hrt. Weiter im Reiter Pr&uuml;fbestand</div>
+  <ul class="cl">
+   <li><label><input type="checkbox"> <span>Gekl&auml;rt, woher die Pr&uuml;ff&auml;lle kommen und wer das richtige Ergebnis kennt &mdash; die Tabelle steht im Reiter Pr&uuml;fbestand</span></label></li>
+  </ul>
+ </div>
+
+ <div class="gate g3">
+  <div class="gate-h">Angabe 8</div>
+  <div class="gate-t">Ged&auml;chtnis</div>
+  <div class="gate-sub">Merkt er sich etwas zwischen den L&auml;ufen? Sobald er es tut, entsteht eine Datenhaltung mit allem, was daran h&auml;ngt: Zweckbindung, L&ouml;schfristen, Auskunftsrechte.</div>
+  <div class="wo">Im Werkzeug: einzeln einstellbar</div>
+  <ul class="cl">
+   <li><label><input type="checkbox"> <span>Entschieden, ob er sich zwischen den L&auml;ufen etwas merkt</span></label></li>
+   <li><label><input type="checkbox"> <span>Falls ja: festgelegt, was genau er sich merkt und wie lange</span></label></li>
+  </ul>
+ </div>
+
+ <details class="gate-det no-print">
+  <summary>Mit KI-Hilfe: Startprompt-Generator</summary>
+  <div class="werkbank" id="arbeitsbereich">
+  <div class="feld-gruppe">Werkzeug</div>
+  <h2>Startprompt-Generator — von der Idee zur Spezifikation</h2>
+  <p class="werkbank-intro">Für alle, die die acht Angaben lieber im Gespräch mit einer KI erarbeiten: Der Startprompt lässt die KI <em>Dich</em> zu Deinem Vorgang befragen. Am Ende steht die Spezifikation als Markdown-Datei &mdash; Grundlage für den Anweisungstext des Agenten und für die Besprechung mit der IT.</p>
+  <div class="werkbank-panel">
+   <div class="feld-gruppe">Vorbereitung</div>
+   <ul class="cl">
+    <li><label><input type="checkbox"> <span><strong>Vorgang beschreiben, nicht die Lösung</strong> — wer, womit, mit welchem Ergebnis?</span></label></li>
+    <li><label><input type="checkbox"> <span><strong>Drei echte Fälle:</strong> gewöhnlich, Grenzfall, schiefgegangen — Deine ersten Testfälle.</span></label></li>
+    <li><label><input type="checkbox"> <span><strong>Was er nicht tun soll</strong> — was hier fehlt, gilt später als erlaubt.</span></label></li>
+    <li><label><input type="checkbox"> <span><strong>Wo Du gefragt werden willst:</strong> Wenn [Bedingung], dann legt der Agent vor und wartet.</span></label></li>
+   </ul>
+  </div>
+  <div class="werkbank-panel">
+   <div class="feld-gruppe">Kern des Startprompts</div>
+   <div class="prompt-karte">Ich möchte einen KI-Agenten entwickeln. Die Idee ist: [Idee beschreiben]. <strong>Entwickle den Agenten noch nicht.</strong> Unterstütze mich zuerst dabei, die Anforderungen systematisch zu erarbeiten. <strong>Stelle pro Schritt nur die notwendigen Fragen. Triff keine Annahmen.</strong> Weise mich auf unpräzise, nicht prüfbare oder widersprüchliche Angaben hin. Erstelle am Ende <strong>nur aus bestätigten Ergebnissen</strong> die Spezifikation.</div>
+   <p style="font-size:12.5px;color:var(--muted);">Antworte ruhig „weiß ich nicht“ und prüfe das Ergebnis an Deinen drei Fällen: Hätte der Agent den missglückten bemerkt?</p>
+  </div>
+  <div class="werkbank-panel no-print">
+   <div class="feld-gruppe">A · Auftrag</div>
+   <div class="feld-gitter zwei">
+    <label>Arbeitstitel<span>Ein Arbeitstitel genügt.</span><input type="text" id="ag_name"></label>
+    <label>Version<span>Erste Arbeitsfassung.</span><input type="text" id="ag_version" value="0.1"></label>
+   </div>
+   <label>Idee und Problem<span>Welcher Vorgang, welches Problem?</span><textarea id="ag_idea" rows="2"></textarea></label>
+   <label>Zweck und Nutzen<span>Was soll nachweisbar besser werden?</span><textarea id="ag_purpose" rows="2"></textarea></label>
+   <div class="feld-gitter zwei">
+    <label>Ausdrücklich nicht<span>Eine Zeile je Punkt</span><textarea id="ag_outscope" rows="3"></textarea></label>
+    <label>Drei echte Fälle<span>Normalfall · Grenzfall · Fall, der schiefging</span><textarea id="ag_faelle" rows="3"></textarea></label>
+   </div>
+  </div>
+  <div class="werkbank-panel no-print">
+   <div class="feld-gruppe">B · Arbeitsweise</div>
+   <div class="feld-gitter zwei">
+    <label>Quellen und Daten<span>Was darf oder muss er verwenden?</span><textarea id="ag_sources" rows="2"></textarea></label>
+    <label>Werkzeuge und Aktionen<span>Was lesen, erzeugen, ändern, auslösen?</span><textarea id="ag_actions" rows="2"></textarea></label>
+   </div>
+   <div class="feld-gitter drei">
+    <label>Auslöser und Prüfintervall<span>Wann wird er aktiv?</span><input type="text" id="ag_interval"></label>
+    <label>Schwellenwert<span>Ab wann ist etwas relevant?</span><input type="text" id="ag_threshold"></label>
+    <label>Grenze für Aufwand<span>Kosten, Laufzeit, Token</span><input type="text" id="ag_tokens"></label>
+   </div>
+   <label>Bewertungsmodell<span>Nach welchen Kriterien und Gewichtungen entscheidet er?</span><textarea id="ag_model" rows="2"></textarea></label>
+  </div>
+  <div class="werkbank-panel no-print">
+   <div class="feld-gruppe">C · Kontrolle</div>
+   <div class="feld-gitter zwei">
+    <label>Wann muss ein Mensch ran?<span>Wenn … dann vorlegen und warten</span><textarea id="ag_oversight" rows="2"></textarea></label>
+    <label>Ausgabeformat<span>Wie soll das Ergebnis aussehen?</span><textarea id="ag_outputformat" rows="2"></textarea></label>
+    <label>Risiken<span>Was wäre bei einer Fehlentscheidung kritisch?</span><textarea id="ag_risks" rows="2"></textarea></label>
+    <label>Tests und Abnahme<span>Woran wird Zuverlässigkeit nachgewiesen?</span><textarea id="ag_tests" rows="2"></textarea></label>
+   </div>
+   <label>Überwachung im Betrieb<span>Was muss nach dem Start beobachtet werden?</span><textarea id="ag_monitoring" rows="2"></textarea></label>
+  </div>
+  <div class="knopf-reihe">
+   <button type="button" class="haupt" id="btnPrompt">Startprompt erzeugen</button>
+   <button type="button" class="haupt" id="btnMd">Spezifikation als Markdown</button>
+   <button type="button" id="btnCopy">Kopieren</button>
+   <button type="button" id="btnDl">Als .md speichern</button>
+   <button type="button" id="btnClear">Felder leeren</button>
+  </div>
+  <textarea class="ausgabe" id="agentResult" rows="12" readonly aria-label="Ausgabe des Generators"></textarea>
+  <div class="status" id="ab_status"></div>
+  <div class="werkbank-hinweis no-print">Leere Felder sind erlaubt — sie erscheinen im Startprompt als offene Punkte. Alles bleibt in diesem Browserfenster.</div>
+ </div>
+ </details>
+
+</section>
+
+<!-- ══════════════ 03 PRUEFBESTAND ══════════════ -->
+<section class="tab-panel" id="tab-pruefbestand">
+
+ <div class="fallkopf">
+  <div class="fallkopf-nr">Schritt 03 &middot; 35&ndash;50 Minuten</div>
+  <div class="fallkopf-t">Pr&uuml;fbestand anlegen</div>
+  <div class="fallkopf-txt">Ein Pr&uuml;fbestand ist keine Zielvorgabe an den Agenten, sondern ein Messinstrument: eine feste Sammlung echter Vorg&auml;nge, bei denen das richtige Ergebnis bekannt ist. Er l&auml;uft nach jeder &Auml;nderung durch.</div>
+ </div>
+
+ <div class="section">
+  <div class="section-title">Worauf es ankommt</div>
+  <ul class="cl">
+   <li><label><input type="checkbox"> <span><strong>Umfang:</strong> zehn F&auml;lle f&uuml;r den ersten Durchgang, zwanzig bis f&uuml;nfzig f&uuml;r den Ernstfall. Wer auf Hunderte wartet, f&auml;ngt nie an.</span></label></li>
+   <li><label><input type="checkbox"> <span><strong>Zeitpunkt:</strong> vor dem Bau festgelegt &mdash; sonst misst er das Gelieferte statt des Gewollten.</span></label></li>
+   <li><label><input type="checkbox"> <span><strong>Ebene:</strong> nicht nur Endergebnisse, auch Werkzeugwahl und Aufbereitung der Anfrage.</span></label></li>
+   <li><label><input type="checkbox"> <span><strong>Inhalt:</strong> Normal- und Grenzf&auml;lle, ung&uuml;ltige und manipulierte Eingaben, &Uuml;bergaben an Menschen, F&auml;lle ohne Handlungsbedarf, einige echte Zielkonflikte.</span></label></li>
+   <li><label><input type="checkbox"> <span><strong>Eigentum:</strong> Der Pr&uuml;fbestand geh&ouml;rt Dir. Bei einem eingekauften Agenten fragen: An welchen F&auml;llen habt Ihr gemessen &mdash; und bekommen wir diese F&auml;lle? Und: Wer f&uuml;hrt ihn im eigenen Haus?</span></label></li>
+  </ul>
+  <div class="merksatz">Der Pr&uuml;fbestand ist die Abnahmegrundlage. Er ist zugleich das, woran eine sp&auml;tere &Auml;nderung gemessen wird &mdash; und das, woran ein Dienstleister festgehalten wird.</div>
+ </div>
+
+ <div class="section">
+  <div class="section-title">Zehn F&auml;lle f&uuml;r den ersten Durchgang</div>
+  <table class="tbl">
+   <thead><tr><th style="width:4%;"></th><th style="width:40%;">Vorgang (Eingabe)</th><th style="width:40%;">Bekanntes richtiges Ergebnis</th><th style="width:16%;">Pr&uuml;febene</th></tr></thead>
+   <tbody>
+    <tr><td class="nr">01</td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
+    <tr><td class="nr">02</td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
+    <tr><td class="nr">03</td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
+    <tr><td class="nr">04</td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
+    <tr><td class="nr">05</td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
+    <tr><td class="nr">06</td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
+    <tr><td class="nr">07</td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
+    <tr><td class="nr">08</td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
+    <tr><td class="nr">09</td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
+    <tr><td class="nr">10</td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
+   </tbody>
+  </table>
+  <p style="font-size:12px;color:var(--muted);line-height:1.55;">Spalte <em>Pr&uuml;febene</em>: Endergebnis, Werkzeugwahl oder Aufbereitung der Anfrage. Mindestens zwei F&auml;lle sollten keine Endergebnis-F&auml;lle sein.</p>
+ </div>
+
+ <div class="gate g3">
+  <div class="gate-h">Randf&auml;lle</div>
+  <div class="gate-t">Drei F&auml;lle, bei denen der Agent nichts tun soll</div>
+  <ul class="cl">
+   <li><label><input type="checkbox"> <span>Ein Fall, bei dem die Datenlage zu d&uuml;nn ist</span></label></li>
+   <li><label><input type="checkbox"> <span>Ein Fall, der eine Ausnahme von der Regel ist</span></label></li>
+   <li><label><input type="checkbox"> <span>Ein Fall, der gar nicht in seine Zust&auml;ndigkeit f&auml;llt</span></label></li>
+  </ul>
+  <p class="hinweis">Alle drei geh&ouml;ren in die Tabelle. Ein Pr&uuml;fbestand, der nur gute F&auml;lle enth&auml;lt, misst nichts &mdash; die Enthaltung ist auch ein richtiges Ergebnis.</p>
+ </div>
+
+ <div class="section">
+  <div class="section-title">Zw&ouml;lf Testklassen &mdash; welche deckt Dein Pr&uuml;fbestand ab?</div>
+  <ul class="cl zwei">
+   <li><label><input type="checkbox"> <span><strong>Funktion</strong> &mdash; Erf&uuml;llt er die Aufgabe?</span></label></li>
+   <li><label><input type="checkbox"> <span><strong>Negativ</strong> &mdash; Reagiert er richtig auf ung&uuml;ltige Eingaben?</span></label></li>
+   <li><label><input type="checkbox"> <span><strong>Grenzwert</strong> &mdash; Greifen Schwellen exakt?</span></label></li>
+   <li><label><input type="checkbox"> <span><strong>Quelle</strong> &mdash; Nutzt er nur zul&auml;ssige Quellen?</span></label></li>
+   <li><label><input type="checkbox"> <span><strong>Erfindung</strong> &mdash; Erfindet er Fakten oder Belege?</span></label></li>
+   <li><label><input type="checkbox"> <span><strong>Konflikt</strong> &mdash; Erkennt er Widerspr&uuml;che?</span></label></li>
+   <li><label><input type="checkbox"> <span><strong>Berechtigung</strong> &mdash; Bleibt er in seinen Rechten?</span></label></li>
+   <li><label><input type="checkbox"> <span><strong>Manipulation</strong> &mdash; Befolgt er eingeschleuste Anweisungen?</span></label></li>
+   <li><label><input type="checkbox"> <span><strong>Werkzeugfehler</strong> &mdash; Reagiert er kontrolliert auf Ausf&auml;lle?</span></label></li>
+   <li><label><input type="checkbox"> <span><strong>Wiederholung</strong> &mdash; Ist das Verhalten stabil?</span></label></li>
+   <li><label><input type="checkbox"> <span><strong>Regression</strong> &mdash; H&auml;lt die Qualit&auml;t nach &Auml;nderungen?</span></label></li>
+   <li><label><input type="checkbox"> <span><strong>Abnahme</strong> &mdash; Erf&uuml;llt er den fachlichen Zweck?</span></label></li>
+  </ul>
+  <p class="hinweis">Im ersten Durchgang muss nicht jede Klasse einen Fall haben. Vor einem Echtbetrieb sollten alle zw&ouml;lf abgedeckt sein.</p>
+ </div>
+
+</section>
+
+<!-- ══════════════ 04 PRUEFUNG ══════════════ -->
+<section class="tab-panel" id="tab-pruefung">
+
+ <div class="fallkopf">
+  <div class="fallkopf-nr">Schritt 04 &middot; 85&ndash;100 Minuten</div>
+  <div class="fallkopf-t">Pr&uuml;fung gegen den Pr&uuml;fbestand</div>
+  <div class="fallkopf-txt">Die zehn F&auml;lle aus Schritt 03 laufen durch. Verglichen wird nicht der Eindruck, sondern das Ergebnis gegen das bekannte richtige Ergebnis.</div>
+ </div>
+
+ <div class="section">
+  <div class="section-title">Ergebnis je Fall</div>
+  <table class="tbl">
+   <thead><tr><th style="width:4%;"></th><th style="width:48%;">Ergebnis des Agenten &mdash; Abweichung in Stichworten</th><th style="width:14%;">Trifft zu</th><th style="width:34%;">Vermutete Ursache</th></tr></thead>
+   <tbody>
+    <tr><td class="nr">01</td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
+    <tr><td class="nr">02</td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
+    <tr><td class="nr">03</td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
+    <tr><td class="nr">04</td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
+    <tr><td class="nr">05</td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
+    <tr><td class="nr">06</td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
+    <tr><td class="nr">07</td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
+    <tr><td class="nr">08</td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
+    <tr><td class="nr">09</td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
+    <tr><td class="nr">10</td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
+   </tbody>
+  </table>
+  <ul class="cl">
+   <li><label><input type="checkbox"> <span>Treffer von zehn gez&auml;hlt</span></label></li>
+   <li><label><input type="checkbox"> <span>Entschieden, ob diese Quote f&uuml;r eine Abnahme gen&uuml;gen w&uuml;rde &mdash; mit Begr&uuml;ndung</span></label></li>
+  </ul>
+ </div>
+
+ <div class="gate g2">
+  <div class="gate-h">&Auml;nderungsprobe</div>
+  <div class="gate-t">Eine &Auml;nderung, dieselben zehn F&auml;lle</div>
+  <div class="gate-sub">&Auml;ndere <em>eine</em> Gr&ouml;&szlig;e &mdash; einen Satz im Anweisungstext, das Modell oder den Denkaufwand &mdash; und lass dieselben F&auml;lle erneut laufen. Genau daf&uuml;r ist ein Pr&uuml;fbestand da.</div>
+  <ul class="cl">
+   <li><label><input type="checkbox"> <span>Ge&auml;nderte Gr&ouml;&szlig;e notiert</span></label></li>
+   <li><label><input type="checkbox"> <span>Dieselben zehn F&auml;lle erneut gelaufen, Treffer verglichen</span></label></li>
+   <li><label><input type="checkbox"> <span>Notiert, welche F&auml;lle kippten &mdash; und in welche Richtung</span></label></li>
+   <li><label><input type="checkbox"> <span>Beantwortet: H&auml;tte man diese Verschiebung ohne Pr&uuml;fbestand bemerkt?</span></label></li>
+  </ul>
+  <p class="hinweis">Im Betrieb gilt dasselbe: Nach jeder &Auml;nderung an Anweisung, Modell, Werkzeugen, Rechten, Quellen, Schwellenwert oder Ausgabeformat l&auml;uft der Pr&uuml;fbestand erneut &mdash; nach einem Modellwechsel vollst&auml;ndig, auch wenn der Wechsel vom Anbieter kommt.</p>
+ </div>
+
+ <div class="gate g1">
+  <div class="gate-h">Kosten</div>
+  <div class="gate-t">Kosten je Vorgang</div>
+  <div class="gate-sub">Ein Agent erledigt eine Aufgabe nicht mit einem Modellaufruf, sondern mit einer Kette. Der Verbrauch liegt entsprechend h&ouml;her als bei einem Chat. Der Betrieb geteilter Agenten wird beim Anbieter &uuml;ber ein Guthabenmodell abgerechnet, seit 6.&nbsp;Mai 2026.</div>
+  <ul class="cl">
+   <li><label><input type="checkbox"> <span>Dauer bzw. Schrittzahl je Lauf beobachtet</span></label></li>
+   <li><label><input type="checkbox"> <span>L&auml;ufe pro Monat im Echtbetrieb gesch&auml;tzt</span></label></li>
+   <li><label><input type="checkbox"> <span>Gekl&auml;rt, wer die Rechnung bekommt und den Verbrauch monatlich ansieht</span></label></li>
+  </ul>
+ </div>
+
+ <div class="warn">
+  <div class="warn-t">Was die eingebaute Auswertung zeigt &mdash; und was nicht</div>
+  <p>Die Nutzungsauswertung des Anbieters nennt die Zahl der L&auml;ufe und die Zahl der Personen, die den Agenten aufgerufen haben. Beides sind Nutzungszahlen. <strong>Keine Kennzahl darin sagt etwas &uuml;ber die Richtigkeit der Ergebnisse</strong> &mdash; und keine darin z&auml;hlt, wie oft ein Mensch eine Freigabe verweigert oder einen Vorschlag korrigiert hat. Wer wissen will, ob der Agent gut arbeitet, braucht den eigenen Pr&uuml;fbestand. Dieselbe L&uuml;cke findet sich bei den anderen gro&szlig;en Anbietern.</p>
+ </div>
+  <ul class="cl">
+   <li><label><input type="checkbox"> <span>Eine eigene Kennzahl f&uuml;r die Richtigkeit festgelegt &mdash; und gekl&auml;rt, woher die Zahlen daf&uuml;r kommen</span></label></li>
+  </ul>
+
+</section>
+
+<!-- ══════════════ 05 ABNAHME ══════════════ -->
+<section class="tab-panel" id="tab-abnahme">
+
+ <div class="fallkopf">
+  <div class="fallkopf-nr">Schritt 05 &middot; 100&ndash;120 Minuten</div>
+  <div class="fallkopf-t">Abnahme und &Uuml;bertrag</div>
+  <div class="fallkopf-txt">Ein Agent, der im Test l&auml;uft, ist noch kein Agent, der im Unternehmen laufen darf. Hier wird der Abstand benannt.</div>
+ </div>
+
+ <p class="hinweis" style="margin:0 0 1rem;">Anleitungen zum Agentenbau sind meist von Entwickelnden f&uuml;r Entwickelnde geschrieben. Drei Dinge fehlen darin regelm&auml;&szlig;ig: die Risikoeinstufung des Vorgangs, eine namentlich benannte Verantwortung und die Protokoll- und Aufsichtspflichten. Sie stehen hier.</p>
+
+ <div class="gate g0">
+  <div class="gate-h">A</div>
+  <div class="gate-t">Einstufung und Verantwortung</div>
+  <ul class="cl">
+   <li><label><input type="checkbox"> <span>Risikoeinstufung des Vorgangs festgehalten &mdash; und woraus sie sich ergibt</span></label></li>
+   <li><label><input type="checkbox"> <span>Verantwortlich f&uuml;r den Betrieb benannt (Rolle)</span></label></li>
+   <li><label><input type="checkbox"> <span>Verantwortlich im Vorfall benannt (Rolle)</span></label></li>
+   <li><label><input type="checkbox"> <span>Gekl&auml;rt, wer den Agenten abschalten darf &mdash; und wie schnell das geht</span></label></li>
+  </ul>
+  <p class="hinweis">Ein System kann nicht haften. Ohne benannte Person ist die Zust&auml;ndigkeit im Vorfall ungekl&auml;rt.</p>
+ </div>
+
+ <div class="gate g1">
+  <div class="gate-h">B</div>
+  <div class="gate-t">Protokollierung</div>
+  <div class="gate-sub">Bei einem Modell gen&uuml;gt die Ausgabe. Bei einem Agenten braucht es die Abfolge: welches Werkzeug, mit welchen Parametern, in welcher Reihenfolge.</div>
+  <ul class="cl">
+   <li><label><input type="checkbox"> <span>Festgelegt, was aufgezeichnet wird, wo es liegt und wie lange</span></label></li>
+   <li><label><input type="checkbox"> <span>Gepr&uuml;ft, welche Frage einer Aufsicht sich mit dieser Aufzeichnung <em>nicht</em> beantworten lie&szlig;e</span></label></li>
+  </ul>
+  <p class="hinweis">Bei Hochrisiko-Systemen sind Aufzeichnung und menschliche Aufsicht keine Empfehlung, sondern Vorgabe.</p>
+ </div>
+
+ <div class="gate g2">
+  <div class="gate-h">C</div>
+  <div class="gate-t">Was vor einem Echtbetrieb noch fehlt</div>
+  <div class="gate-sub">Konkrete Punkte mit einem Namen dahinter &mdash; keine Absichtserkl&auml;rungen.</div>
+  <ul class="cl">
+   <li><label><input type="checkbox"> <span>Drei offene Punkte benannt, jeweils mit verantwortlicher Person</span></label></li>
+   <li><label><input type="checkbox"> <span>Bewertungs-Check aus <em>Management von KI-Agenten</em> durchgegangen &mdash; kein Produktivgang, bevor alle acht Fragen beantwortet sind</span></label></li>
+  </ul>
+ </div>
+
+</section>
+
+<!-- ══════════════ QUELLEN ══════════════ -->
+<section class="tab-panel" id="tab-quellen">
+
+ <div class="section">
+  <div class="section-title">Produktangaben zum verwendeten Werkzeug</div>
+  <p style="font-size:12.5px;line-height:1.6;margin-bottom:.4rem;">Alle Angaben dieses Praxisbeispiels zu Einstellm&ouml;glichkeiten, Freigaben, Auswertung und Abrechnung stammen aus der Dokumentation des Anbieters. Stand der Pr&uuml;fung: 5.&nbsp;Oktober 2026. Produktoberfl&auml;chen &auml;ndern sich h&auml;ufiger als Methodik &mdash; die Bezeichnungen in diesem Blatt sind daher bewusst beschreibend und nicht als Men&uuml;pfad formuliert.</p>
+  <div class="src-row">
+   <div class="src-chip"><a href="https://openai.com/index/introducing-workspace-agents-in-chatgpt/" target="_blank" rel="noopener">OpenAI &mdash; Introducing workspace agents in ChatGPT</a> &middot; 22.&nbsp;April 2026 &middot; Ank&uuml;ndigung, Freigabe sensibler Schritte, Abrechnung ab 6.&nbsp;Mai 2026</div>
+   <div class="src-chip"><a href="https://help.openai.com/en/articles/20001143-chatgpt-workspace-agents-for-enterprise-and-business" target="_blank" rel="noopener">OpenAI Help Center &mdash; ChatGPT Workspace Agents for Enterprise and Business</a> &middot; Anlegen, Werkzeuge, Authentifizierung je Verbindung, Freigabe schreibender Aktionen, Einschr&auml;nkungen je Konnektoraktion, Zeitplan, Rollenrechte, Nutzungsauswertung</div>
+   <div class="src-chip"><a href="https://cdn.openai.com/business-guides-and-resources/workspace-agents-security-overview.pdf" target="_blank" rel="noopener">OpenAI &mdash; Workspace Agents Security Overview</a> &middot; Sicherheits- und Governance-&Uuml;bersicht des Anbieters</div>
+   <div class="src-chip"><a href="https://developers.openai.com/workspace-agents/trigger-runs" target="_blank" rel="noopener">OpenAI Developers &mdash; Trigger workspace agent runs</a> &middot; Einschr&auml;nkungen des Schnittstellenwegs</div>
+   <div class="src-chip"><a href="https://venturebeat.com/orchestration/openai-unveils-workspace-agents-a-successor-to-custom-gpts-for-enterprises-that-can-plug-directly-into-slack-salesforce-and-more" target="_blank" rel="noopener">VentureBeat &mdash; OpenAI unveils Workspace Agents</a> &middot; unabh&auml;ngige Berichterstattung zur Einf&uuml;hrung</div>
+  </div>
+ </div>
+
+ <div class="section">
+  <div class="section-title">Methodik</div>
+  <p style="font-size:12.5px;line-height:1.6;margin-bottom:.5rem;">Bewertung und Betrieb eines Agenten &mdash; Bewertungs-Check, Agentenkarte, Freigabe und &Uuml;berwachung &mdash; stehen in der Handreichung <em>Management von KI-Agenten</em> im selben Ordner.</p>
+  <p style="font-size:12.5px;line-height:1.6;">Die acht Angaben, der Pr&uuml;fbestand als Abnahmegrundlage und die Regeln beim Bau sind die Methodik dieses Praxisbeispiels. Sie gelten unabh&auml;ngig vom Werkzeug: Wechselt der Anbieter, bleiben die acht Entscheidungen dieselben &mdash; nur der Ort, an dem sie eingetragen werden, &auml;ndert sich.</p>
+  <div class="merksatz">Das Werkzeug ist eine kleine, austauschbare Komponente. Die Entscheidungen darum herum sind das eigentliche Vorhaben.</div>
+ </div>
+
+</section>
+
+ <div class="footer">
+  <span>Praxisbeispiel &middot; Kurs KI-Manager:in</span>
+  <span>Praxisbeispiel KI-Agentenbau</span>
+  <span class="rechtevermerk">&copy; 2026 Ulrich Nord &middot; Alle Rechte vorbehalten. Teilnehmerinnen und Teilnehmer d&uuml;rfen dieses Material f&uuml;r die eigene berufliche Nutzung sowie innerhalb ihres Unternehmens verwenden, speichern, ausf&uuml;llen, ausdrucken und weitergeben. Ver&ouml;ffentlichung und Verwendung in eigenen Schulungs- oder Beratungsangeboten bed&uuml;rfen der schriftlichen Zustimmung.</span>
+ </div>
+
+</div>
+
+<script>
+function autoGrow(el){el.style.height='auto';el.style.height=(el.scrollHeight)+'px';}
+document.querySelectorAll('textarea').forEach(function(t){
+  autoGrow(t);
+  t.addEventListener('input',function(){autoGrow(t);});
+});
+(function(){
+  document.querySelectorAll('.tab-btn').forEach(function(b){
+    b.addEventListener('click',function(){
+      document.querySelectorAll('.tab-btn').forEach(function(x){x.classList.remove('aktiv');});
+      document.querySelectorAll('.tab-panel').forEach(function(x){x.classList.remove('aktiv');});
+      b.classList.add('aktiv');
+      var z=document.getElementById(b.dataset.ziel); if(z){z.classList.add('aktiv');}
+      window.scrollTo({top:0,behavior:'smooth'});
+      document.querySelectorAll('.tab-panel.aktiv textarea').forEach(autoGrow);
+    });
+  });
+})();
+window.addEventListener('beforeprint',function(){
+  document.querySelectorAll('.tab-panel.aktiv details').forEach(function(d){d.dataset.wasOpen=d.open?'1':'0';d.open=true;});
+  document.querySelectorAll('.tab-panel.aktiv textarea').forEach(function(t){
+    t.style.height='auto';
+    t.style.height=Math.max(t.scrollHeight, t.rows*20)+'px';
+  });
+});
+window.addEventListener('afterprint',function(){
+  document.querySelectorAll('details').forEach(function(d){if(d.dataset.wasOpen!==undefined){d.open=(d.dataset.wasOpen==='1');}});
+  document.querySelectorAll('textarea').forEach(autoGrow);
+});
+
+/* Gemeinsame Helfer */
+var AV = {
+  wert: function (id) {
+    var el = document.getElementById(id);
+    return el ? String(el.value || '').trim() : '';
+  },
+  melden: function (id, txt) {
+    var s = document.getElementById(id);
+    if (s) { s.textContent = txt; s.style.display = txt ? 'block' : 'none'; }
+  },
+  kopieren: function (feldId, statusId) {
+    var r = document.getElementById(feldId);
+    if (!r || !r.value) { return; }
+    var fallback = function () { r.select(); AV.melden(statusId, 'Bitte mit Strg+C kopieren.'); };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(r.value).then(function () {
+        AV.melden(statusId, 'In die Zwischenablage kopiert.');
+      }, fallback);
+    } else { fallback(); }
+  },
+  speichern: function (feldId, statusId, name) {
+    var r = document.getElementById(feldId);
+    if (!r || !r.value) { return; }
+    var basis = (name || 'agent').toLowerCase()
+      .replace(/ä/g, 'ae').replace(/ö/g, 'oe').replace(/ü/g, 'ue').replace(/ß/g, 'ss')
+      .replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') || 'agent';
+    var blob = new Blob([r.value], { type: 'text/markdown;charset=utf-8' });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url; a.download = basis + '.md';
+    document.body.appendChild(a); a.click(); a.remove();
+    URL.revokeObjectURL(url);
+    AV.melden(statusId, 'Datei ' + basis + '.md gespeichert.');
+  },
+  binden: function (id, fn) {
+    var b = document.getElementById(id);
+    if (b) { b.addEventListener('click', fn); }
+  }
+};
+
+/* Startprompt-Generator */
+(function () {
+  var G = AV.wert;
+  var OFFEN = [
+    ['ag_purpose', 'Zweck und Nutzen'], ['ag_outscope', 'Was er ausdrücklich nicht tun soll'],
+    ['ag_faelle', 'Drei echte Fälle'], ['ag_sources', 'Quellen und Daten'],
+    ['ag_actions', 'Werkzeuge und Aktionen'], ['ag_interval', 'Auslöser und Prüfintervall'],
+    ['ag_threshold', 'Schwellenwert'], ['ag_model', 'Bewertungsmodell'],
+    ['ag_oversight', 'Wann ein Mensch ran muss'], ['ag_outputformat', 'Ausgabeformat'],
+    ['ag_risks', 'Risiken'], ['ag_tests', 'Tests und Abnahme'], ['ag_monitoring', 'Überwachung im Betrieb']
+  ];
+  var BEKANNT = [
+    ['ag_name', 'Arbeitstitel'], ['ag_purpose', 'Zweck'], ['ag_outscope', 'Nicht-Ziele'],
+    ['ag_faelle', 'Referenzfälle'], ['ag_sources', 'Quellen'], ['ag_actions', 'Werkzeuge und Aktionen'],
+    ['ag_interval', 'Auslöser'], ['ag_threshold', 'Schwellenwert'], ['ag_tokens', 'Aufwandsgrenze'],
+    ['ag_model', 'Bewertungsmodell'], ['ag_oversight', 'Menschliche Aufsicht'],
+    ['ag_outputformat', 'Ausgabeformat'], ['ag_risks', 'Risiken'], ['ag_tests', 'Tests'],
+    ['ag_monitoring', 'Überwachung']
+  ];
+  var HINWEIS = '1. Bekannte Angaben oben eintragen.\n2. Startprompt erzeugen und in die KI kopieren.\n'
+    + '3. Offene Anforderungen im Gespräch klären.\n4. Danach die Spezifikation als Markdown erzeugen und vervollständigen.';
+
+  function punkte(v) {
+    if (!v) { return '- [OFFEN - im Gespräch mit der KI klären]'; }
+    return v.split(/\n|;/).map(function (x) { return x.trim(); })
+      .filter(function (x) { return x.length > 0; })
+      .map(function (x) { return '- ' + x; }).join('\n');
+  }
+  function offeneListe() {
+    var o = OFFEN.filter(function (f) { return !G(f[0]); }).map(function (f) { return '- ' + f[1]; });
+    return o.length ? o.join('\n') : '- Kein Feld leer. Inhalte trotzdem fachlich prüfen.';
+  }
+  function bekannteListe() {
+    var b = BEKANNT.filter(function (f) { return G(f[0]); })
+      .map(function (f) { return '- **' + f[1] + ':** ' + G(f[0]).replace(/\n/g, ' / '); });
+    return b.length ? b.join('\n') : '- Noch nichts festgelegt.';
+  }
+  function setzen(text) {
+    var r = document.getElementById('agentResult');
+    if (!r) { return; }
+    r.value = text; AV.melden('ab_status', '');
+    r.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+  function startprompt() {
+    setzen('# Auftrag an die KI: Anforderungen an einen Agenten gemeinsam erarbeiten\n\n'
+      + 'Ich möchte einen KI-Agenten entwickeln. Entwickle ihn noch nicht.\n'
+      + 'Unterstütze mich zuerst dabei, die Anforderungen systematisch zu vervollständigen.\n\n'
+      + '## Ausgangsidee\n' + (G('ag_idea') || '[noch offen]') + '\n\n'
+      + '## Bereits bekannt\n' + bekannteListe() + '\n\n'
+      + '## Noch offen\n' + offeneListe() + '\n\n'
+      + '## Gehe nacheinander durch\n'
+      + '1. Zweck und messbarer Nutzen\n2. Umfang und Nicht-Ziele, dazu die Abbruchbedingungen\n'
+      + '3. Eingaben, Daten und zulässige Quellen\n4. Entscheidungslogik, Bewertung und Schwellenwerte\n'
+      + '5. Werkzeuge, Berechtigungen und zulässige Aktionen\n6. Menschliche Aufsicht und Eskalationsregeln\n'
+      + '7. Ausgabeformat mit Pflichtfeldern\n8. Risiken und Fehlerszenarien\n'
+      + '9. Tests und Abnahmekriterien\n10. Überwachung, Protokollierung und Änderungsregeln\n\n'
+      + '## Regeln für das Gespräch\n'
+      + '- Triff keine fachlichen Annahmen für fehlende Angaben.\n'
+      + '- Stelle je Schritt nur die notwendigen Fragen.\n'
+      + '- Hinterfrage unklare, widersprüchliche oder nicht prüfbare Angaben.\n'
+      + '- Weise mich darauf hin, wenn eine Anforderung nicht testbar formuliert ist.\n'
+      + '- Fasse jeden bestätigten Schritt kurz zusammen und markiere offene Punkte.\n'
+      + '- Erstelle erst am Ende eine konsolidierte Spezifikation in Markdown, nur aus bestätigten Ergebnissen.\n'
+      + '- Leite danach konkrete Testfälle und Go-/No-Go-Kriterien ab.\n\n'
+      + 'Beginne mit Schritt 1.');
+  }
+  function markdown() {
+    var name = G('ag_name') || '[Arbeitstitel]';
+    setzen('# Agentenspezifikation - ' + name + '\n\n> Status: Arbeitsentwurf\n\n'
+      + '## 1. Identifikation\n- **Arbeitstitel:** ' + name + '\n- **Version:** ' + (G('ag_version') || '0.1') + '\n\n'
+      + '## 2. Idee und Problem\n' + (G('ag_idea') || '[OFFEN]') + '\n\n'
+      + '## 3. Zweck und erwarteter Nutzen\n' + (G('ag_purpose') || '[OFFEN]') + '\n\n'
+      + '## 4. Ausdrücklich nicht\n' + punkte(G('ag_outscope')) + '\n\n'
+      + '## 5. Referenzfälle für die späteren Tests\n' + punkte(G('ag_faelle')) + '\n\n'
+      + '## 6. Quellen und Daten\n' + punkte(G('ag_sources')) + '\n\n'
+      + '## 7. Werkzeuge und zulässige Aktionen\n' + punkte(G('ag_actions')) + '\n\n'
+      + '## 8. Ausführung\n- **Auslöser und Prüfintervall:** ' + (G('ag_interval') || '[OFFEN]')
+      + '\n- **Schwellenwert:** ' + (G('ag_threshold') || '[OFFEN]')
+      + '\n- **Aufwands- und Kostengrenze:** ' + (G('ag_tokens') || '[OFFEN]') + '\n\n'
+      + '## 9. Bewertungs- und Entscheidungsmodell\n' + (G('ag_model') || '[OFFEN]') + '\n\n'
+      + '## 10. Menschliche Aufsicht und Eskalation\n' + (G('ag_oversight') || '[OFFEN]') + '\n\n'
+      + '## 11. Ausgabeformat\n' + (G('ag_outputformat') || '[OFFEN]')
+      + '\n\nPflichtfelder: Ergebnis, Begründung, verwendete Quellen, ausgelöste Aktionen, Zeitstempel, Agentenversion.\n\n'
+      + '## 12. Risiken und Fehlerszenarien\n' + punkte(G('ag_risks')) + '\n\n'
+      + '## 13. Tests und Abnahmekriterien\n' + punkte(G('ag_tests')) + '\n\n'
+      + '## 14. Überwachung im Betrieb\n' + punkte(G('ag_monitoring')) + '\n\n'
+      + '## 15. Noch zu klären\n' + offeneListe() + '\n\n'
+      + '## 16. Nächster Schritt\nDiese Arbeitsfassung im geführten Gespräch mit der KI vervollständigen. '
+      + 'Danach Prüfbestand anlegen, prüfen und abnehmen (Reiter 03 bis 05). '
+      + 'Vor dem Produktivgang den Bewertungs-Check in „Management von KI-Agenten“ durchgehen.');
+  }
+  function leeren() {
+    document.querySelectorAll('#arbeitsbereich input, #arbeitsbereich textarea').forEach(function (f) {
+      if (f.id === 'agentResult') { return; }
+      f.value = (f.id === 'ag_version') ? '0.1' : '';
+    });
+    setzen(HINWEIS);
+  }
+  document.addEventListener('DOMContentLoaded', function () {
+    AV.binden('btnPrompt', startprompt);
+    AV.binden('btnMd', markdown);
+    AV.binden('btnClear', leeren);
+    AV.binden('btnCopy', function () { AV.kopieren('agentResult', 'ab_status'); });
+    AV.binden('btnDl', function () { AV.speichern('agentResult', 'ab_status', G('ag_name') || 'agentenspezifikation'); });
+    var r = document.getElementById('agentResult');
+    if (r && !r.value) { r.value = HINWEIS; }
+  });
+})();
+</script>
+</body>
+</html>
