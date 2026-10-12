@@ -170,6 +170,9 @@ textarea{min-height:2.4rem;}
 .cl.zwei{columns:2;column-gap:1.6rem;}
 .cl.zwei li{break-inside:avoid;border-top:none;border-bottom:1px solid var(--rule);}
 .hinweis{font-size:12.2px;line-height:1.55;color:var(--muted);border-left:3px solid var(--rule);padding:.15rem 0 .15rem .7rem;margin:.55rem 0 0;}
+.werkbank .cl label{display:flex;margin-bottom:0;font-family:'DM Sans',system-ui,sans-serif;font-size:13px;letter-spacing:0;text-transform:none;color:var(--ink);}
+.werkbank .cl label span{display:inline;margin:0;font-family:inherit;font-size:13px;color:var(--ink);}
+.tab-leiste .tab-btn{padding:.5rem .62rem;letter-spacing:.7px;}
 @media(max-width:640px){.cl.zwei{columns:1;}.feld-gitter.zwei,.feld-gitter.drei{grid-template-columns:1fr;}}
 @media print{.knopf-reihe,.status{display:none!important;}.cl li,.hinweis{break-inside:avoid;}}
 </style>
@@ -192,6 +195,7 @@ textarea{min-height:2.4rem;}
   <button class="tab-btn" data-ziel="tab-pruefbestand"><span class="tb-nr">03</span>Pr&uuml;fbestand</button>
   <button class="tab-btn" data-ziel="tab-pruefung"><span class="tb-nr">04</span>Pr&uuml;fung</button>
   <button class="tab-btn" data-ziel="tab-abnahme"><span class="tb-nr">05</span>Abnahme</button>
+  <button class="tab-btn" data-ziel="tab-startprompt">Startprompt</button>
   <button class="tab-btn" data-ziel="tab-quellen">Quellen</button>
  </nav>
 
@@ -201,7 +205,7 @@ textarea{min-height:2.4rem;}
  <div class="auftrag">
   <div class="auftrag-label">So liest Du dieses Praxisbeispiel</div>
   <p>&Ouml;ffne es neben dem Werkzeug, in dem Du den Agenten anlegst &mdash; zum Beispiel einem Workspace Agent in ChatGPT. Jeder Reiter ist ein Arbeitsschritt: <strong>abhaken, was erledigt ist</strong>. Geschrieben wird nur in den Tabellen f&uuml;r Pr&uuml;fbestand und Pr&uuml;fung.</p>
-  <p>Die Zeile &bdquo;Im Werkzeug&ldquo; nennt, wo eine Entscheidung im Produkt gesetzt wird. Die acht Angaben aus der Bauvorlage sind der Leitfaden. Das Werkzeug ist austauschbar; die Angaben sind es nicht.</p>
+  <p>Die Zeile &bdquo;Im Werkzeug&ldquo; nennt, wo eine Entscheidung im Produkt gesetzt wird. Die acht Angaben aus der Bauvorlage sind der Leitfaden. Das Werkzeug ist austauschbar; die Angaben sind es nicht. Wer die Angaben lieber im Gespr&auml;ch mit einer KI erarbeitet, nutzt den Reiter <em>Startprompt</em>.</p>
  </div>
 
  <div class="warn">
@@ -392,74 +396,7 @@ textarea{min-height:2.4rem;}
   </ul>
  </div>
 
- <details class="gate-det no-print">
-  <summary>Mit KI-Hilfe: Startprompt-Generator</summary>
-  <div class="werkbank" id="arbeitsbereich">
-  <div class="feld-gruppe">Werkzeug</div>
-  <h2>Startprompt-Generator — von der Idee zur Spezifikation</h2>
-  <p class="werkbank-intro">Für alle, die die acht Angaben lieber im Gespräch mit einer KI erarbeiten: Der Startprompt lässt die KI <em>Dich</em> zu Deinem Vorgang befragen. Am Ende steht die Spezifikation als Markdown-Datei &mdash; Grundlage für den Anweisungstext des Agenten und für die Besprechung mit der IT.</p>
-  <div class="werkbank-panel">
-   <div class="feld-gruppe">Vorbereitung</div>
-   <ul class="cl">
-    <li><label><input type="checkbox"> <span><strong>Vorgang beschreiben, nicht die Lösung</strong> — wer, womit, mit welchem Ergebnis?</span></label></li>
-    <li><label><input type="checkbox"> <span><strong>Drei echte Fälle:</strong> gewöhnlich, Grenzfall, schiefgegangen — Deine ersten Testfälle.</span></label></li>
-    <li><label><input type="checkbox"> <span><strong>Was er nicht tun soll</strong> — was hier fehlt, gilt später als erlaubt.</span></label></li>
-    <li><label><input type="checkbox"> <span><strong>Wo Du gefragt werden willst:</strong> Wenn [Bedingung], dann legt der Agent vor und wartet.</span></label></li>
-   </ul>
-  </div>
-  <div class="werkbank-panel">
-   <div class="feld-gruppe">Kern des Startprompts</div>
-   <div class="prompt-karte">Ich möchte einen KI-Agenten entwickeln. Die Idee ist: [Idee beschreiben]. <strong>Entwickle den Agenten noch nicht.</strong> Unterstütze mich zuerst dabei, die Anforderungen systematisch zu erarbeiten. <strong>Stelle pro Schritt nur die notwendigen Fragen. Triff keine Annahmen.</strong> Weise mich auf unpräzise, nicht prüfbare oder widersprüchliche Angaben hin. Erstelle am Ende <strong>nur aus bestätigten Ergebnissen</strong> die Spezifikation.</div>
-   <p style="font-size:12.5px;color:var(--muted);">Antworte ruhig „weiß ich nicht“ und prüfe das Ergebnis an Deinen drei Fällen: Hätte der Agent den missglückten bemerkt?</p>
-  </div>
-  <div class="werkbank-panel no-print">
-   <div class="feld-gruppe">A · Auftrag</div>
-   <div class="feld-gitter zwei">
-    <label>Arbeitstitel<span>Ein Arbeitstitel genügt.</span><input type="text" id="ag_name"></label>
-    <label>Version<span>Erste Arbeitsfassung.</span><input type="text" id="ag_version" value="0.1"></label>
-   </div>
-   <label>Idee und Problem<span>Welcher Vorgang, welches Problem?</span><textarea id="ag_idea" rows="2"></textarea></label>
-   <label>Zweck und Nutzen<span>Was soll nachweisbar besser werden?</span><textarea id="ag_purpose" rows="2"></textarea></label>
-   <div class="feld-gitter zwei">
-    <label>Ausdrücklich nicht<span>Eine Zeile je Punkt</span><textarea id="ag_outscope" rows="3"></textarea></label>
-    <label>Drei echte Fälle<span>Normalfall · Grenzfall · Fall, der schiefging</span><textarea id="ag_faelle" rows="3"></textarea></label>
-   </div>
-  </div>
-  <div class="werkbank-panel no-print">
-   <div class="feld-gruppe">B · Arbeitsweise</div>
-   <div class="feld-gitter zwei">
-    <label>Quellen und Daten<span>Was darf oder muss er verwenden?</span><textarea id="ag_sources" rows="2"></textarea></label>
-    <label>Werkzeuge und Aktionen<span>Was lesen, erzeugen, ändern, auslösen?</span><textarea id="ag_actions" rows="2"></textarea></label>
-   </div>
-   <div class="feld-gitter drei">
-    <label>Auslöser und Prüfintervall<span>Wann wird er aktiv?</span><input type="text" id="ag_interval"></label>
-    <label>Schwellenwert<span>Ab wann ist etwas relevant?</span><input type="text" id="ag_threshold"></label>
-    <label>Grenze für Aufwand<span>Kosten, Laufzeit, Token</span><input type="text" id="ag_tokens"></label>
-   </div>
-   <label>Bewertungsmodell<span>Nach welchen Kriterien und Gewichtungen entscheidet er?</span><textarea id="ag_model" rows="2"></textarea></label>
-  </div>
-  <div class="werkbank-panel no-print">
-   <div class="feld-gruppe">C · Kontrolle</div>
-   <div class="feld-gitter zwei">
-    <label>Wann muss ein Mensch ran?<span>Wenn … dann vorlegen und warten</span><textarea id="ag_oversight" rows="2"></textarea></label>
-    <label>Ausgabeformat<span>Wie soll das Ergebnis aussehen?</span><textarea id="ag_outputformat" rows="2"></textarea></label>
-    <label>Risiken<span>Was wäre bei einer Fehlentscheidung kritisch?</span><textarea id="ag_risks" rows="2"></textarea></label>
-    <label>Tests und Abnahme<span>Woran wird Zuverlässigkeit nachgewiesen?</span><textarea id="ag_tests" rows="2"></textarea></label>
-   </div>
-   <label>Überwachung im Betrieb<span>Was muss nach dem Start beobachtet werden?</span><textarea id="ag_monitoring" rows="2"></textarea></label>
-  </div>
-  <div class="knopf-reihe">
-   <button type="button" class="haupt" id="btnPrompt">Startprompt erzeugen</button>
-   <button type="button" class="haupt" id="btnMd">Spezifikation als Markdown</button>
-   <button type="button" id="btnCopy">Kopieren</button>
-   <button type="button" id="btnDl">Als .md speichern</button>
-   <button type="button" id="btnClear">Felder leeren</button>
-  </div>
-  <textarea class="ausgabe" id="agentResult" rows="12" readonly aria-label="Ausgabe des Generators"></textarea>
-  <div class="status" id="ab_status"></div>
-  <div class="werkbank-hinweis no-print">Leere Felder sind erlaubt — sie erscheinen im Startprompt als offene Punkte. Alles bleibt in diesem Browserfenster.</div>
- </div>
- </details>
+ <p class="hinweis">Lieber im Gespr&auml;ch mit einer KI? Der Reiter <em>Startprompt</em> erzeugt einen Prompt, mit dem die KI Dich durch diese acht Angaben f&uuml;hrt.</p>
 
 </section>
 
@@ -644,6 +581,80 @@ textarea{min-height:2.4rem;}
    <li><label><input type="checkbox"> <span>Drei offene Punkte benannt, jeweils mit verantwortlicher Person</span></label></li>
    <li><label><input type="checkbox"> <span>Bewertungs-Check aus <em>Management von KI-Agenten</em> durchgegangen &mdash; kein Produktivgang, bevor alle acht Fragen beantwortet sind</span></label></li>
   </ul>
+ </div>
+
+</section>
+
+<!-- ══════════════ STARTPROMPT ══════════════ -->
+<section class="tab-panel" id="tab-startprompt">
+
+ <div class="fallkopf">
+  <div class="fallkopf-nr">Werkzeug &middot; zu Schritt 02 Bauvorlage</div>
+  <div class="fallkopf-t">Startprompt-Generator &mdash; von der Idee zur Spezifikation</div>
+  <div class="fallkopf-txt">Der Startprompt l&auml;sst eine KI <em>Dich</em> zu Deinem Vorgang befragen und die acht Angaben mit Dir erarbeiten. Am Ende steht die Spezifikation als Markdown-Datei &mdash; Grundlage f&uuml;r den Anweisungstext des Agenten und f&uuml;r die Besprechung mit der IT. Technisches Wissen ist daf&uuml;r nicht n&ouml;tig.</div>
+ </div>
+
+ <div class="werkbank" id="arbeitsbereich">
+  <div class="werkbank-panel">
+   <div class="feld-gruppe">Vorbereitung</div>
+   <ul class="cl">
+    <li><label><input type="checkbox"> <span><strong>Vorgang beschreiben, nicht die Lösung</strong> — wer, womit, mit welchem Ergebnis?</span></label></li>
+    <li><label><input type="checkbox"> <span><strong>Drei echte Fälle:</strong> gewöhnlich, Grenzfall, schiefgegangen — Deine ersten Testfälle.</span></label></li>
+    <li><label><input type="checkbox"> <span><strong>Was er nicht tun soll</strong> — was hier fehlt, gilt später als erlaubt.</span></label></li>
+    <li><label><input type="checkbox"> <span><strong>Wo Du gefragt werden willst:</strong> Wenn [Bedingung], dann legt der Agent vor und wartet.</span></label></li>
+   </ul>
+  </div>
+  <div class="werkbank-panel">
+   <div class="feld-gruppe">Kern des Startprompts</div>
+   <div class="prompt-karte">Ich möchte einen KI-Agenten entwickeln. Die Idee ist: [Idee beschreiben]. <strong>Entwickle den Agenten noch nicht.</strong> Unterstütze mich zuerst dabei, die Anforderungen systematisch zu erarbeiten. <strong>Stelle pro Schritt nur die notwendigen Fragen. Triff keine Annahmen.</strong> Weise mich auf unpräzise, nicht prüfbare oder widersprüchliche Angaben hin. Erstelle am Ende <strong>nur aus bestätigten Ergebnissen</strong> die Spezifikation.</div>
+   <p style="font-size:12.5px;color:var(--muted);">Antworte ruhig „weiß ich nicht“ und prüfe das Ergebnis an Deinen drei Fällen: Hätte der Agent den missglückten bemerkt?</p>
+  </div>
+  <div class="werkbank-panel no-print">
+   <div class="feld-gruppe">A · Auftrag</div>
+   <div class="feld-gitter zwei">
+    <label>Arbeitstitel<span>Ein Arbeitstitel genügt.</span><input type="text" id="ag_name"></label>
+    <label>Version<span>Erste Arbeitsfassung.</span><input type="text" id="ag_version" value="0.1"></label>
+   </div>
+   <label>Idee und Problem<span>Welcher Vorgang, welches Problem?</span><textarea id="ag_idea" rows="2"></textarea></label>
+   <label>Zweck und Nutzen<span>Was soll nachweisbar besser werden?</span><textarea id="ag_purpose" rows="2"></textarea></label>
+   <div class="feld-gitter zwei">
+    <label>Ausdrücklich nicht<span>Eine Zeile je Punkt</span><textarea id="ag_outscope" rows="3"></textarea></label>
+    <label>Drei echte Fälle<span>Normalfall · Grenzfall · Fall, der schiefging</span><textarea id="ag_faelle" rows="3"></textarea></label>
+   </div>
+  </div>
+  <div class="werkbank-panel no-print">
+   <div class="feld-gruppe">B · Arbeitsweise</div>
+   <div class="feld-gitter zwei">
+    <label>Quellen und Daten<span>Was darf oder muss er verwenden?</span><textarea id="ag_sources" rows="2"></textarea></label>
+    <label>Werkzeuge und Aktionen<span>Was lesen, erzeugen, ändern, auslösen?</span><textarea id="ag_actions" rows="2"></textarea></label>
+   </div>
+   <div class="feld-gitter drei">
+    <label>Auslöser und Prüfintervall<span>Wann wird er aktiv?</span><input type="text" id="ag_interval"></label>
+    <label>Schwellenwert<span>Ab wann ist etwas relevant?</span><input type="text" id="ag_threshold"></label>
+    <label>Grenze für Aufwand<span>Kosten, Laufzeit, Token</span><input type="text" id="ag_tokens"></label>
+   </div>
+   <label>Bewertungsmodell<span>Nach welchen Kriterien und Gewichtungen entscheidet er?</span><textarea id="ag_model" rows="2"></textarea></label>
+  </div>
+  <div class="werkbank-panel no-print">
+   <div class="feld-gruppe">C · Kontrolle</div>
+   <div class="feld-gitter zwei">
+    <label>Wann muss ein Mensch ran?<span>Wenn … dann vorlegen und warten</span><textarea id="ag_oversight" rows="2"></textarea></label>
+    <label>Ausgabeformat<span>Wie soll das Ergebnis aussehen?</span><textarea id="ag_outputformat" rows="2"></textarea></label>
+    <label>Risiken<span>Was wäre bei einer Fehlentscheidung kritisch?</span><textarea id="ag_risks" rows="2"></textarea></label>
+    <label>Tests und Abnahme<span>Woran wird Zuverlässigkeit nachgewiesen?</span><textarea id="ag_tests" rows="2"></textarea></label>
+   </div>
+   <label>Überwachung im Betrieb<span>Was muss nach dem Start beobachtet werden?</span><textarea id="ag_monitoring" rows="2"></textarea></label>
+  </div>
+  <div class="knopf-reihe">
+   <button type="button" class="haupt" id="btnPrompt">Startprompt erzeugen</button>
+   <button type="button" class="haupt" id="btnMd">Spezifikation als Markdown</button>
+   <button type="button" id="btnCopy">Kopieren</button>
+   <button type="button" id="btnDl">Als .md speichern</button>
+   <button type="button" id="btnClear">Felder leeren</button>
+  </div>
+  <textarea class="ausgabe" id="agentResult" rows="12" readonly aria-label="Ausgabe des Generators"></textarea>
+  <div class="status" id="ab_status"></div>
+  <div class="werkbank-hinweis no-print">Leere Felder sind erlaubt — sie erscheinen im Startprompt als offene Punkte. Alles bleibt in diesem Browserfenster.</div>
  </div>
 
 </section>
