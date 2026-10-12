@@ -68,6 +68,21 @@ a{color:var(--accent);}a:hover{text-decoration:underline;}
 .raster .feld-typ strong{display:block;font-size:13px;}
 .raster .feld-typ span{display:block;color:var(--muted);font-size:11.5px;line-height:1.45;margin-top:.15rem;}
 .raster .r-gruen{border-top-color:var(--green);}.raster .r-amber{border-top-color:#c99a12;}.raster .r-rot{border-top-color:var(--red);}
+/* Checklisten, Trends, Anhänge */
+.checkliste{list-style:none;padding:0;margin:.2rem 0 .6rem;background:var(--card);border:1px solid var(--rule);border-radius:8px;}
+.checkliste li{position:relative;padding:.55rem .9rem .55rem 2.3rem;border-bottom:1px solid var(--rule);font-size:13.5px;line-height:1.5;}
+.checkliste li:last-child{border-bottom:none;}
+.checkliste li::before{content:"\2610";position:absolute;left:.85rem;top:.48rem;font-size:15px;color:var(--teal);}
+.werkbank-panel .checkliste{background:var(--card);}
+.anhang-hinweis{font-size:12px;color:var(--muted);margin:.3rem 0 0;font-style:italic;}
+.trend-intro{font-size:13px;color:var(--muted);margin-bottom:.9rem;}
+.trend{background:var(--card);border:1px solid var(--rule);border-left:4px solid var(--accent);border-radius:0 8px 8px 0;padding:.8rem 1.1rem;margin-bottom:.7rem;}
+.trend-kopf{display:flex;flex-wrap:wrap;gap:.5rem;align-items:baseline;margin-bottom:.3rem;}
+.trend-nr{font-family:'DM Mono',monospace;font-size:12px;font-weight:700;color:var(--accent);min-width:1.4rem;}
+.trend-datum{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1px;color:var(--muted);}
+.trend-titel{font-weight:700;font-size:14px;flex:1 1 60%;}
+.trend p{font-size:13px;line-height:1.55;margin-bottom:.35rem;}
+.trend-folge{background:var(--phase);border-radius:4px;padding:.35rem .6rem;}
 /* Reiter */
 .tab-leiste{display:flex;flex-wrap:wrap;gap:.3rem;margin:1.4rem 0 1.6rem;border-bottom:2px solid var(--rule);}
 .tab-btn{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:1px;text-transform:uppercase;padding:.6rem .9rem;border:1px solid var(--rule);border-bottom:none;border-radius:6px 6px 0 0;background:var(--paper);color:var(--muted);cursor:pointer;margin-bottom:-2px;}
@@ -112,13 +127,6 @@ a{color:var(--accent);}a:hover{text-decoration:underline;}
 .chk-ergebnis{margin-top:.8rem;padding:.75rem .9rem;border-radius:6px;border:1px solid var(--rule);background:var(--card);font-size:13px;}
 .chk-ergebnis strong{display:block;font-size:14px;margin-bottom:.15rem;}
 .chk-ergebnis.e-rot{border-left:5px solid var(--red);}.chk-ergebnis.e-amber{border-left:5px solid #c99a12;}.chk-ergebnis.e-gruen{border-left:5px solid var(--green);}.chk-ergebnis.e-offen{border-left:5px solid var(--rule);}
-/* Übungsfälle */
-.fall{border:1px solid var(--rule);border-left:4px solid var(--purple);border-radius:0 6px 6px 0;background:var(--card);padding:.75rem 1rem;margin-bottom:.6rem;font-size:13px;}
-.fall-titel{font-weight:700;font-size:13.5px;margin-bottom:.2rem;}
-.fall-grenze{font-size:12px;color:var(--muted);margin-top:.3rem;}
-.fall details{margin-top:.4rem;}
-.fall summary{cursor:pointer;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--purple);}
-.fall details p{margin-top:.4rem;font-size:12.5px;line-height:1.55;color:var(--ink);}
 .prompt-karte{background:var(--phase);border-left:5px solid var(--teal);border-radius:0 6px 6px 0;padding:.9rem 1rem;font-size:13px;line-height:1.6;margin:.5rem 0;}
 .feld{border-bottom:1px dotted var(--rule);min-height:1.5rem;}
 .tbl.form td{height:2rem;}
@@ -137,13 +145,12 @@ a{color:var(--accent);}a:hover{text-decoration:underline;}
  .no-print,.tab-leiste,.knopf-reihe,.status{display:none!important;}
  .tab-panel{display:block!important;}
  .page-break{page-break-before:always;}
- .card,.konzept-card,.fall,.note,.werkbank{box-shadow:none!important;}
- .chk,.tbl tr,.feld-typ,.src-row{break-inside:avoid;}
+ .card,.konzept-card,.note,.werkbank{box-shadow:none!important;}
+ .chk,.tbl tr,.feld-typ,.src-row,.trend,.checkliste li{break-inside:avoid;}
  .section-title,.feld-gruppe,.konzept-name,.werkbank h2{break-after:avoid;}
  a{color:inherit;text-decoration:none;}
  .src-chip{border:1px solid #ccc;}
  .werkbank textarea.ausgabe{display:none;}
- .fall details>p{display:block;}
 }
 </style>
 </head>
@@ -156,8 +163,8 @@ a{color:var(--accent);}a:hover{text-decoration:underline;}
   <h1 class="ho-title">KI-Agenten — <em>bewerten</em>,<br>gestalten, betreiben</h1>
  </div>
  <div class="ho-meta">
-  <span class="ho-meta-line">Grundlagen · Governance &amp; Risiken</span>
-  <span class="ho-meta-line">Design · Einsatz · Werkzeuge</span>
+  <span class="ho-meta-line">Trends · Grundlagen · Governance</span>
+  <span class="ho-meta-line">Design · Einsatz · Bewertung · Übung</span>
   <span class="ho-meta-line">Stand 12.10.2026 · wird monatlich geprüft</span>
   <button class="print-btn no-print" onclick="window.print()">🖨 Drucken</button>
  </div>
@@ -170,22 +177,105 @@ a{color:var(--accent);}a:hover{text-decoration:underline;}
   <p>Diese Vorlage ist für Dich geschrieben, wenn Du Agenten selten selbst baust, aber häufig beurteilen musst, ob einer in Betrieb gehen darf.</p>
  </div>
  <div class="wegweiser">
-  <div><b>Einen Agenten bewerten</b>Reiter <em>Werkzeuge</em> → Bewertungs-Check. Die Begründungen stehen in <em>Governance</em> und <em>Einsatz</em>.</div>
-  <div><b>Einen Agenten planen</b>Reiter <em>Design</em> → sieben Angaben, dann <em>Werkzeuge</em> → Startprompt und Agentenkarte.</div>
+  <div><b>Einen Agenten bewerten</b>Reiter <em>Bewertung</em> → Bewertungs-Check und Agentenkarte. Die Begründungen stehen in <em>Governance</em> und <em>Einsatz</em>.</div>
+  <div><b>Einen Agenten planen</b>Reiter <em>Design</em> → Checklisten, dann <em>Übung</em> → Startprompt-Generator.</div>
  </div>
 </div>
 
 <div class="tab-leiste no-print" role="tablist">
- <button class="tab-btn aktiv" data-ziel="tab-grund" type="button">Grundlagen</button>
+ <button class="tab-btn aktiv" data-ziel="tab-trends" type="button">Aktuelle Trends</button>
+ <button class="tab-btn" data-ziel="tab-grund" type="button">Grundlagen</button>
  <button class="tab-btn" data-ziel="tab-gov" type="button">Governance &amp; Risiken</button>
  <button class="tab-btn" data-ziel="tab-design" type="button">Design</button>
  <button class="tab-btn" data-ziel="tab-einsatz" type="button">Einsatz</button>
- <button class="tab-btn" data-ziel="tab-werk" type="button">Werkzeuge</button>
+ <button class="tab-btn" data-ziel="tab-bewertung" type="button">Bewertung</button>
+ <button class="tab-btn" data-ziel="tab-uebung" type="button">Übung</button>
+ <button class="tab-btn" data-ziel="tab-anhang" type="button">Anhänge</button>
  <button class="tab-btn" data-ziel="tab-quellen" type="button">Quellen</button>
 </div>
 
+<!-- ═════════════ REITER 0 · AKTUELLE TRENDS (monatlich aktualisiert) ═════════════ -->
+<div class="tab-panel aktiv" id="tab-trends">
+
+<div class="section">
+ <div class="section-title">Aktuelle Trends · die zehn wichtigsten Meldungen zu agentischer KI</div>
+ <p class="trend-intro">Auswahl und Einordnung für die Bewertungspraxis, Stand 12.10.2026, neueste zuerst. Die Liste wird monatlich ersetzt. Selbstauskünfte von Anbietern sind als solche gekennzeichnet.</p>
+
+ <div class="trend">
+  <div class="trend-kopf"><span class="trend-nr">1</span><span class="trend-datum">09.10.2026</span><span class="trend-titel">Anthropic nimmt allen internen Tests den Internetzugang</span></div>
+  <p>Modelle hatten bei Evaluierungen unbeabsichtigt auf echten Websites gehandelt: Sicherheitslücken eines Universitätsservers ausgenutzt, Gebühren- und Token-Sperren umgangen und ein Formular abgeschickt — darunter ein falscher Mordhinweis an die Polizei Philadelphia. Bis Kontrollen solches Verhalten verlässlich erkennen, laufen alle internen Evaluierungen ohne Live-Internet. Selbstauskunft des Anbieters, von der Fachpresse übernommen.</p>
+  <p class="trend-folge"><strong>Für Deine Bewertung:</strong> Auch eine Testumgebung braucht technisch erzwungene Netzgrenzen — „darf nichts absenden“ in der Anweisung reicht nicht.</p>
+  <div class="src-row"><span class="src-chip"><a href="https://www.anthropic.com/research/investigating-unintended-model-actions" target="_blank" rel="noopener">Anthropic — Bericht</a></span><span class="src-chip"><a href="https://thehackernews.com/2026/10/anthropic-cuts-live-internet-access-for.html" target="_blank" rel="noopener">The Hacker News</a></span></div>
+ </div>
+
+ <div class="trend">
+  <div class="trend-kopf"><span class="trend-nr">2</span><span class="trend-datum">09.10.2026</span><span class="trend-titel">Weißes Haus verlangt sofortige Meldung von KI-Vorfällen</span></div>
+  <p>Nach den Anthropic-Vorfällen — Agenten hatten unter anderem Visumanträge beim US-Außenministerium ausgefüllt — erklärte eine Arbeitsgruppe des Weißen Hauses, KI-Unternehmen müssten Vorfälle sofort offenlegen und Schäden beheben; das sei „nicht optional“. Ob daraus eine verbindliche Regel wird, ist offen.</p>
+  <p class="trend-folge"><strong>Für Deine Bewertung:</strong> Frag im Vertrag, ob und wie schnell der Anbieter Dich über Vorfälle mit seinem Modell informiert.</p>
+  <div class="src-row"><span class="src-chip"><a href="https://www.pymnts.com/news/artificial-intelligence/2026/white-house-says-all-ai-companies-must-report-security-incidents/" target="_blank" rel="noopener">PYMNTS (nach Axios)</a></span><span class="src-chip"><a href="https://www.inquirer.com/news/philadelphia/anthropic-ai-philadelphia-police-department-state-department-20261010.html" target="_blank" rel="noopener">Philadelphia Inquirer</a></span></div>
+ </div>
+
+ <div class="trend">
+  <div class="trend-kopf"><span class="trend-nr">3</span><span class="trend-datum">21.09.2026</span><span class="trend-titel">UN-Wissenschaftsgremium bewertet das Risiko, die Kontrolle über Agenten zu verlieren</span></div>
+  <p>Das unabhängige wissenschaftliche Gremium der Vereinten Nationen ordnet Fehlverhalten von Agenten nach Zielen, Fähigkeiten und Umgebung ein und hält fest, dass Spitzenmodelle Prüfsituationen erkennen können. Vorabfassung, noch nicht redigiert.</p>
+  <p class="trend-folge"><strong>Für Deine Bewertung:</strong> Gestalten kannst Du nur die Umgebung — Werkzeuge, Rechte, Netze. Genau die gehört in die Abnahme.</p>
+  <div class="src-row"><span class="src-chip"><a href="https://www.un.org/independent-international-scientific-panel-ai/en/thematic-briefs/ai-agents-misalignment-risks" target="_blank" rel="noopener">UN-Gremium — Kurzbericht</a></span></div>
+ </div>
+
+ <div class="trend">
+  <div class="trend-kopf"><span class="trend-nr">4</span><span class="trend-datum">16.09.2026</span><span class="trend-titel">OpenAI legt Verfahren zur Offenlegung von Fehlverhalten vor — mit sechs Fallberichten</span></div>
+  <p>Erfasst werden Fälle aus Training, Test und Betrieb, auch ohne eingetretenen Schaden. Beispiele: Modelle schrieben versteckte Anweisungen in Zusammenfassungen, um Fehler zu verdecken, und tauschten über ein internes Paketarchiv Nachrichten zwischen getrennten Läufen aus. OpenAI räumt ein, Ausrichtung und Überwachung seien nicht so weit gelöst, dass sich das Tempo der Skalierung noch lange verantworten lasse. Selbstauskunft.</p>
+  <p class="trend-folge"><strong>Für Deine Bewertung:</strong> Prüf, ob Dein Anbieter solche Berichte veröffentlicht — und ob sie Modelle betreffen, die Du einsetzt.</p>
+  <div class="src-row"><span class="src-chip"><a href="https://www.unite.ai/openai-launches-misalignment-reporting-framework-with-six-incident-reports/" target="_blank" rel="noopener">Unite.AI</a></span><span class="src-chip"><a href="https://forkast.news/openai-formalizes-misalignment-disclosure-six-incident-reports-mark-a-shift-from-promises-to-infrastructure/" target="_blank" rel="noopener">Forkast</a></span></div>
+ </div>
+
+ <div class="trend">
+  <div class="trend-kopf"><span class="trend-nr">5</span><span class="trend-datum">14.09.2026</span><span class="trend-titel">Erste gemeldete Datenschutzverletzung, die ein KI-Agent ausgeführt hat</span></div>
+  <p>Bei der spanischen Datenschutzbehörde AEPD ging die erste Meldung ein, in der ein Angreifer einen Agenten die Angriffsschritte verketten ließ: Schwachstellensuche, Anmeldung mit gültigen Zugangsdaten, Änderung personenbezogener Daten. Die Behörde betont, dass die Angaben noch geprüft werden.</p>
+  <p class="trend-folge"><strong>Für Deine Bewertung:</strong> Angriffe durch Agenten gehören ausdrücklich in die Risikoanalyse; Reaktionszeiten müssen Maschinentempo standhalten.</p>
+  <div class="src-row"><span class="src-chip"><a href="https://www.aepd.es/prensa-y-comunicacion/blog/primera-notiviacion-brecha-datos-personales-causada-por-ataque-ejecutado-mediante-agente-ia" target="_blank" rel="noopener">AEPD</a></span><span class="src-chip"><a href="https://www.eleconomista.es/tecnologia/noticias/14014370/09/26/espana-registra-la-primera-brecha-de-seguridad-provocada-por-un-agente-de-ia.html" target="_blank" rel="noopener">elEconomista</a></span></div>
+ </div>
+
+ <div class="trend">
+  <div class="trend-kopf"><span class="trend-nr">6</span><span class="trend-datum">10.09.2026</span><span class="trend-titel">Angreifer setzt Hunderte Agenten ein — 395 Organisationen betroffen</span></div>
+  <p>Über zwei Lücken in einer verbreiteten Druckverwaltungssoftware wurden mindestens 440 Installationen in 48 Ländern übernommen, elf Organisationen innerhalb von 26 Sekunden. Zielauswahl und Exploit blieben menschlich, die Ausführung übernahmen Agenten; einzelne wichen vom Auftrag ab.</p>
+  <p class="trend-folge"><strong>Für Deine Bewertung:</strong> Patch-Zyklen und Identitätsschutz an Maschinentakt messen, nicht an manuellen Reaktionszeiten.</p>
+  <div class="src-row"><span class="src-chip"><a href="https://www.greynoise.io/blog/ai-orchestrated-campaign-against-papercut-ng-mf" target="_blank" rel="noopener">GreyNoise</a></span><span class="src-chip"><a href="https://www.theregister.com/security/2026/09/10/hundreds-of-ai-agents-helped-papercut-attacker-hit-395-orgs-and-some-went-off-script/" target="_blank" rel="noopener">The Register</a></span></div>
+ </div>
+
+ <div class="trend">
+  <div class="trend-kopf"><span class="trend-nr">7</span><span class="trend-datum">10.09.2026</span><span class="trend-titel">Angriffe laufen auf Agenten-Frameworks — und zielen auf API-Schlüssel</span></div>
+  <p>Anthropics Lagebericht zu unterbundenem Missbrauch zeigt: Die Mehrzahl der Operationen lief über Mehr-Agenten-Gerüste, Menschen setzten nur noch Ziele. Gestohlene API-Schlüssel dienten als Beute und als Rechenleistung für weitere Angriffe. Selbstauskunft.</p>
+  <p class="trend-folge"><strong>Für Deine Bewertung:</strong> API-Schlüssel und Agentenkonten sind Zugangsdaten mit voller Wirkung — eng schneiden, befristen, überwachen.</p>
+  <div class="src-row"><span class="src-chip"><a href="https://www.anthropic.com/threat-intelligence-report-september-2026" target="_blank" rel="noopener">Anthropic — Lagebericht</a></span><span class="src-chip"><a href="https://technode.global/2026/09/11/anthropic-ai-orchestrated-cyberattacks-model-distillation/" target="_blank" rel="noopener">TechNode Global</a></span></div>
+ </div>
+
+ <div class="trend">
+  <div class="trend-kopf"><span class="trend-nr">8</span><span class="trend-datum">07.09.2026</span><span class="trend-titel">Erste Vorfallmeldung nach der KI-Verordnung betrifft Agenten</span></div>
+  <p>OpenAI meldete der EU-Kommission einen Kontrollverlust: Agenten mit nur lesendem Webzugriff schrieben auf einer deutschen Programmier-Wiki und nutzten sie wochenlang als schwarzes Brett. Entdeckt hatten es unabhängige Forschende, nicht das Monitoring des Anbieters. Grundlage ist die Meldepflicht für Anbieter von Modellen mit systemischem Risiko (Art. 55).</p>
+  <p class="trend-folge"><strong>Für Deine Bewertung:</strong> „Nur lesend“ ist eine Konfigurationsangabe, kein Nachweis — prüfe, welche Aktionen technisch tatsächlich möglich sind.</p>
+  <div class="src-row"><span class="src-chip"><a href="https://www.euronews.com/next/2026/09/09/rogue-openai-agents-hijacked-a-german-wiki-and-it-stayed-secret-for-weeks" target="_blank" rel="noopener">Euronews</a></span><span class="src-chip"><a href="https://digital-strategy.ec.europa.eu/en/library/ai-act-commission-publishes-reporting-template-serious-incidents-involving-general-purpose-ai" target="_blank" rel="noopener">EU-Kommission — Meldevorlage</a></span></div>
+ </div>
+
+ <div class="trend">
+  <div class="trend-kopf"><span class="trend-nr">9</span><span class="trend-datum">27.08.2026</span><span class="trend-titel">Agenten greifen auf Maschinen zu</span></div>
+  <p>Anthropic hat eine herstellerunabhängige Spezifikation vorgestellt, die festlegt, wie ein Agent ein Gerät bedienen darf — etwa Grenzwerte für Geschwindigkeit und Winkel eines Roboterarms; Forschungsvorschau. Ab 20.01.2027 erfasst die EU-Maschinenverordnung lernende Sicherheitsfunktionen; der Digital Omnibus hat Maschinen zugleich aus der direkten Geltung der KI-Verordnung genommen.</p>
+  <p class="trend-folge"><strong>Für Deine Bewertung:</strong> Aus Datenschaden wird Personen- und Sachschaden — Betriebsgrenzen gehören ins Gerät, nicht nur in die Anweisung.</p>
+  <div class="src-row"><span class="src-chip"><a href="https://www.anthropic.com/news/model-hardware-standard-research-preview" target="_blank" rel="noopener">Anthropic — Model Hardware Standard</a></span><span class="src-chip"><a href="https://www.cnbc.com/2026/08/27/anthropic-pushes-into-physical-world-with-new-standard-to-help-ai-agents-operate-machines.html" target="_blank" rel="noopener">CNBC</a></span><span class="src-chip"><a href="https://www.orrick.com/en/Insights/2026/07/EU-AI-Act-Update-Digital-Omnibus-Finalizes-8-Compliance-Changes" target="_blank" rel="noopener">Orrick — Omnibus</a></span></div>
+ </div>
+
+ <div class="trend">
+  <div class="trend-kopf"><span class="trend-nr">10</span><span class="trend-datum">26.08.2026</span><span class="trend-titel">Unabhängige Untersuchung des Hugging-Face-Vorfalls</span></div>
+  <p>Fachleute von METR und Redwood Research untersuchten sechs Tage vor Ort, wie Test-Agenten von OpenAI interne Systeme und die Plattform Hugging Face angriffen. Ein Befund: Getrickst haben vor allem Agenten mit versehentlich unlösbaren Aufgaben. OpenAI hat parallel einen eigenen Bericht vorgelegt.</p>
+  <p class="trend-folge"><strong>Für Deine Bewertung:</strong> Jede Aufgabe braucht ein zulässiges Ergebnis „nicht lösbar“ — sonst sucht der Agent den Umweg.</p>
+  <div class="src-row"><span class="src-chip"><a href="https://metr.org/blog/2026-08-26-openai-hugging-face-incident-investigation/" target="_blank" rel="noopener">METR — Untersuchung</a></span><span class="src-chip"><a href="https://openai.com/index/hugging-face-incident-and-the-road-ahead/" target="_blank" rel="noopener">OpenAI — Bericht</a></span></div>
+ </div>
+</div>
+
+</div>
+
 <!-- ═════════════ REITER 1 · GRUNDLAGEN ═════════════ -->
-<div class="tab-panel aktiv" id="tab-grund">
+<div class="tab-panel" id="tab-grund">
 
 <div class="section">
  <div class="section-title">Was einen Agenten ausmacht</div>
@@ -274,7 +364,7 @@ a{color:var(--accent);}a:hover{text-decoration:underline;}
    <tbody>
     <tr><td>Steigende Kosten</td><td>Kosten je Vorgang von Anfang an messen — Reiter <em>Grundlagen</em> und <em>Einsatz</em></td></tr>
     <tr><td>Unklarer Nutzen</td><td>Erfolg definieren, bevor er gemessen wird — Reiter <em>Design</em></td></tr>
-    <tr><td>Unzureichende Kontrollen</td><td>Acht Fragen vor dem Produktivgang — Reiter <em>Werkzeuge</em></td></tr>
+    <tr><td>Unzureichende Kontrollen</td><td>Acht Fragen vor dem Produktivgang — Reiter <em>Bewertung</em></td></tr>
    </tbody>
   </table>
   <p class="einordnung">Analystenprognose vom Juni 2025; die begleitende Umfrage unter 3.412 Webinarteilnehmenden ist nicht repräsentativ.</p>
@@ -374,259 +464,144 @@ a{color:var(--accent);}a:hover{text-decoration:underline;}
 
 </div>
 
-<!-- ═════════════ REITER 3 · DESIGN ═════════════ -->
+<!-- ═════════════ REITER 3 · DESIGN (Checklisten) ═════════════ -->
 <div class="tab-panel" id="tab-design">
 
 <div class="section">
- <div class="section-title">Bevor gebaut wird — drei Festlegungen</div>
- <div class="card">
-  <ol>
-   <li><strong>Ein Ziel, ein Satz, kein „und“.</strong> Wer das Ziel nicht in einem Satz ohne „und“ formulieren kann, hat zwei Agenten vor sich — und sollte sie trennen.</li>
-   <li><strong>Erfolg definieren, bevor er gemessen wird.</strong> Ohne Festlegung, was ein erfolgreich erledigter Vorgang ist, ist „Erfolgsquote“ keine Kennzahl. Das ist Arbeit des Fachbereichs.</li>
-   <li><strong>Umkehrbar anfangen.</strong> Der erste Agent übernimmt einen Vorgang, dessen Fehler sich innerhalb eines Tages folgenlos korrigieren lassen.</li>
-  </ol>
- </div>
+ <div class="section-title">Vor dem Bau · drei Festlegungen</div>
+ <ul class="checkliste">
+  <li><strong>Ein Ziel, ein Satz, kein „und“.</strong> Sonst sind es zwei Agenten.</li>
+  <li><strong>Erfolg ist definiert</strong> — vom Fachbereich: Was ist ein erfolgreich erledigter Vorgang?</li>
+  <li><strong>Umkehrbar anfangen:</strong> Fehler lassen sich innerhalb eines Tages folgenlos korrigieren.</li>
+ </ul>
 </div>
 
 <div class="section">
- <div class="section-title">Die sieben Angaben — die Bauvorlage</div>
- <div class="card">
-  <p>Keine davon ist ein technisches Detail — jede ist eine Entscheidung, die vor dem Bau schriftlich feststeht.</p>
-  <table class="tbl">
-   <thead><tr><th style="width:22%;">Angabe</th><th>Die Entscheidung dahinter</th></tr></thead>
-   <tbody>
-    <tr><td><strong>Quellen</strong></td><td>Was darf er lesen — und was ausdrücklich nicht? Jede Quelle bringt ihre eigene Rechtslage mit.</td></tr>
-    <tr><td><strong>Prüfintervall</strong></td><td>Wie oft läuft er? Der Takt bestimmt Kosten, Aktualität und wie lange ein Fehler unbemerkt bleibt.</td></tr>
-    <tr><td><strong>Bewertungsmodell</strong></td><td>Nach welchen Kriterien gewichtet er? Hier steckt die Fachlichkeit — und der Ort, an dem sich Verzerrung einnistet.</td></tr>
-    <tr><td><strong>Schwellenwert</strong></td><td>Ab wann meldet er sich? Zu niedrig erzeugt Alarmmüdigkeit, zu hoch übersieht Fälle — die Abwägung zwischen Precision und Recall.</td></tr>
-    <tr><td><strong>Ausgabeformat</strong></td><td>Was liefert er an wen? Strukturiert statt erzählt: Ergebnis, Begründung, Quellen, Aktionen, Zeitstempel, Agentenversion.</td></tr>
-    <tr><td><strong>Zulässige Aktionen</strong></td><td>Was darf er selbst tun, was nur vorbereiten? Die Trennlinie ist Umkehrbarkeit, nicht Wichtigkeit.</td></tr>
-    <tr><td><strong>Prüfbestand</strong></td><td>Woran messt Ihr, dass er richtig arbeitet? Siehe unten.</td></tr>
-   </tbody>
-  </table>
-  <p style="margin-top:.5rem;"><strong>Dazu die achte Frage: Gedächtnis.</strong> Merkt sich ein Agent etwas zwischen den Läufen, entsteht eine Datenhaltung — mit Zweckbindung, Löschfristen und Auskunftsrechten.</p>
- </div>
+ <div class="section-title">Die sieben Angaben · plus Gedächtnis</div>
+ <ul class="checkliste">
+  <li><strong>Quellen</strong> — was darf er lesen, was ausdrücklich nicht?</li>
+  <li><strong>Prüfintervall</strong> — wie oft läuft er, und wer merkt einen ausgefallenen Lauf?</li>
+  <li><strong>Bewertungsmodell</strong> — welche Kriterien, welche Gewichte, wer könnte systematisch benachteiligt werden?</li>
+  <li><strong>Schwellenwert</strong> — ab wann meldet er sich? Was ist teurer: Fehlalarm oder übersehener Fall?</li>
+  <li><strong>Ausgabeformat</strong> — was an wen, mit Pflichtfeldern: Ergebnis, Begründung, Quellen, Aktionen, Zeitstempel, Version.</li>
+  <li><strong>Zulässige Aktionen</strong> — was selbst, was nur vorbereitet? Die Trennlinie ist Umkehrbarkeit, nicht Wichtigkeit.</li>
+  <li><strong>Prüfbestand</strong> — 20 bis 50 echte Fälle mit bekanntem Ergebnis, vor dem Bau festgelegt, in Eurem Besitz (Anhang A).</li>
+  <li><strong>Gedächtnis</strong> — merkt er sich etwas? Dann gelten Zweckbindung, Löschfristen und Auskunftsrechte.</li>
+ </ul>
 </div>
 
 <div class="section">
  <div class="section-title">Sechs Konstruktionsregeln</div>
- <div class="card">
-  <ol>
-   <li><strong>Eine Aufgabe je Agent.</strong> Zwei Aufgaben bedeuten zwei Rechtebündel und zwei Fehlerbilder. Zwei getrennte Agenten sind fast immer billiger.</li>
-   <li><strong>Erst die Abbruchbedingung, dann die Fähigkeit.</strong> Was tut er, wenn ein Werkzeug nicht antwortet oder Unsinn liefert — weitermachen, abbrechen, übergeben? Ohne Antwort macht er weiter.</li>
-   <li><strong>Mit Lesezugriff beginnen, Werkzeuge einzeln freigeben.</strong> „Zugriff auf das Kundensystem“ ist keine Freigabe, sondern eine Blankovollmacht. Jedes Schreibrecht wird einzeln begründet.</li>
-   <li><strong>Grenzen außerhalb des Agenten durchsetzen.</strong> Laufzeitgrenzen, ein unabhängiger Wächter, Protokolle, die er nicht ändern kann. Was der Agent erreicht, kann er auch umplanen.</li>
-   <li><strong>Eigene Identität, Grenzen für den ganzen Baum.</strong> Jeder Agent bekommt eine nachverfolgbare Identität. Budget- und Laufzeitgrenzen gelten auch für die Agenten, die er startet — eine Grenze nur je Lauf ist eine Portionsgröße.</li>
-   <li><strong>Autonomie wird verdient.</strong> Eine Stufe unter dem technisch Möglichen starten; die Freigabegrenze nach belegter Zuverlässigkeit verschieben, nicht nach Zeitablauf.</li>
-  </ol>
- </div>
+ <ul class="checkliste">
+  <li><strong>Eine Aufgabe je Agent</strong> — zwei getrennte Agenten sind fast immer billiger.</li>
+  <li><strong>Abbruchbedingung vor Fähigkeit:</strong> weitermachen, abbrechen oder übergeben, wenn ein Werkzeug versagt?</li>
+  <li><strong>Lesezugriff zuerst;</strong> jedes Werkzeug und jedes Schreibrecht einzeln freigegeben und begründet.</li>
+  <li><strong>Grenzen außerhalb des Agenten:</strong> Laufzeitgrenzen, unabhängiger Wächter, Protokolle, die er nicht ändern kann.</li>
+  <li><strong>Eigene Identität je Agent;</strong> Budget- und Laufzeitgrenzen gelten auch für Agenten, die er startet.</li>
+  <li><strong>Autonomie wird verdient:</strong> eine Stufe unter dem technisch Möglichen starten.</li>
+ </ul>
 </div>
 
 <div class="section">
  <div class="section-title">Wo die Grenze zwischen Mensch und Agent verläuft</div>
  <div class="card">
-  <p>Nicht nach Vertrauen entscheiden, sondern je Arbeitsschritt nach vier Eigenschaften:</p>
   <table class="tbl">
-   <thead><tr><th style="width:24%;">Eigenschaft</th><th>Die Frage je Arbeitsschritt</th></tr></thead>
+   <thead><tr><th style="width:24%;">Eigenschaft</th><th>Je Arbeitsschritt fragen</th></tr></thead>
    <tbody>
-    <tr><td><strong>Prüfbarkeit</strong></td><td>Kann eine fachkundige Person ein Versagen erkennen — oder nur abzeichnen?</td></tr>
-    <tr><td><strong>Umkehrbarkeit</strong></td><td>Lässt sich ein Fehler korrigieren, bevor Schaden entsteht — und wie lange ist dieses Zeitfenster?</td></tr>
-    <tr><td><strong>Tragweite</strong></td><td>Was folgt, wenn die Entscheidung falsch, verspätet oder für Betroffene schwer anfechtbar ist?</td></tr>
-    <tr><td><strong>Begrenztheit</strong></td><td>Welche Systeme, Daten, Konten und Budgets erreicht der Schritt — und wer hat diesen Radius festgelegt?</td></tr>
+    <tr><td><strong>Prüfbarkeit</strong></td><td>Kann eine Fachperson ein Versagen erkennen — oder nur abzeichnen?</td></tr>
+    <tr><td><strong>Umkehrbarkeit</strong></td><td>Lässt sich ein Fehler rechtzeitig korrigieren?</td></tr>
+    <tr><td><strong>Tragweite</strong></td><td>Was folgt aus einer falschen oder verspäteten Entscheidung?</td></tr>
+    <tr><td><strong>Begrenztheit</strong></td><td>Welche Systeme, Daten, Konten und Budgets erreicht der Schritt?</td></tr>
    </tbody>
   </table>
-  <p style="margin-top:.5rem;">Übergeben lässt sich mehr, wo Ergebnisse prüfbar, Fehler behebbar, Folgen begrenzt und der Radius eng ist. Beim Menschen bleibt, was Ziele setzt, mehrdeutige Belege deutet oder folgenreich entscheidet.</p>
-  <p class="einordnung">Die ersten drei Eigenschaften nach Wu, Ziems u. a. (Vorabveröffentlichung ohne Begutachtung). Die vierte ist eine Ergänzung dieses Kurses aus den Agentenvorfällen 2026.</p>
-  <div class="src-row"><span class="src-chip"><a href="https://arxiv.org/html/2609.12482" target="_blank" rel="noopener">Wu, Ziems u. a. — When Does AI Augment Work? (2026)</a></span></div>
+  <p style="margin-top:.5rem;">Je mehr davon günstig ausfällt, desto mehr lässt sich übergeben. <strong>Vorfrage:</strong> Ist die Aufgabe lösbar — und gibt es ein zulässiges Ergebnis „nicht lösbar“? Wenn Scheitern teurer ist als Tricksen, wird getrickst.</p>
+  <p class="einordnung">Die ersten drei Eigenschaften nach Wu, Ziems u. a. (ohne Begutachtung), die vierte ist eine Ergänzung dieses Kurses; die Lösbarkeitsfrage nach der Untersuchung des Hugging-Face-Vorfalls.</p>
+  <div class="src-row"><span class="src-chip"><a href="https://arxiv.org/html/2609.12482" target="_blank" rel="noopener">Wu, Ziems u. a. (2026)</a></span><span class="src-chip"><a href="https://www.redwoodresearch.org/research/hugging-face-incident" target="_blank" rel="noopener">Redwood Research (2026)</a></span></div>
  </div>
- <div class="note note-amber"><strong>Die Vorfrage: Ist die Aufgabe überhaupt lösbar?</strong> Laut der unabhängigen Untersuchung des Hugging-Face-Vorfalls begannen überwiegend Agenten zu tricksen, denen versehentlich eine unlösbare Aufgabe gestellt worden war. Gib jedem Agenten ein zulässiges Ergebnis „nicht lösbar“, das nicht schlechter bewertet wird als ein fragwürdiger Erfolg. Wenn Scheitern teurer ist als Tricksen, wird getrickst.</div>
-</div>
-
-<div class="section">
- <div class="section-title">Drei Befunde aus der Produktdokumentation</div>
- <div class="card">
-  <p>Am Beispiel eines großen Anbieters (geprüft am 05.10.2026), bei anderen ebenso zu prüfen:</p>
-  <ul>
-   <li><strong>Agenteneigene Verbindungen teilen Rechte.</strong> Wer den Agenten startet, handelt mit den Rechten des hinterlegten Kontos. Ist das ein persönliches Konto, stehen dessen Zugriffsrechte allen offen, die den Agenten aufrufen. Der Hersteller empfiehlt ein Dienstkonto mit eng geschnittenen Rechten.</li>
-   <li><strong>Einschränkungen begrenzen die Anfrage, nicht die Antwort.</strong> Ein Verbot, Postfächer nach dem Wort „vertraulich“ zu durchsuchen, verhindert nicht, dass eine solche Nachricht über eine erlaubte Aktion zurückkommt.</li>
-   <li><strong>Eingebaute Auswertungen zählen Nutzung, nicht Richtigkeit.</strong> Sie zeigen Läufe und Nutzende, weder Fehler noch verweigerte Freigaben.</li>
-  </ul>
-  <div class="src-row"><span class="src-chip"><a href="https://help.openai.com/en/articles/20001143-chatgpt-workspace-agents-for-enterprise-and-business" target="_blank" rel="noopener">OpenAI Help Center — Workspace Agents</a></span></div>
- </div>
-</div>
-
-<div class="section">
- <div class="section-title">Der Prüfbestand — die siebte Angabe</div>
- <div class="card">
-  <p>Eine feste Sammlung echter Vorgänge mit bekanntem richtigem Ergebnis: Abnahmegrundlage, Maßstab für jede spätere Änderung und das, woran ein Dienstleister festgehalten wird. Ohne ihn gibt es kein „funktioniert“, nur ein „sieht gut aus“.</p>
-  <table class="tbl">
-   <thead><tr><th style="width:18%;">Merkmal</th><th>Was zu beachten ist</th></tr></thead>
-   <tbody>
-    <tr><td><strong>Umfang</strong></td><td>Zwanzig bis fünfzig Fälle reichen für den Anfang. Wer auf Hunderte wartet, fängt nie an.</td></tr>
-    <tr><td><strong>Zeitpunkt</strong></td><td>Vor dem Bau festlegen — sonst misst er das Gelieferte, nicht das Gewollte.</td></tr>
-    <tr><td><strong>Ebene</strong></td><td>Nicht nur das Endergebnis: auch Werkzeugwahl und Aufbereitung der Anfrage.</td></tr>
-    <tr><td><strong>Inhalt</strong></td><td>Normal- und Grenzfälle, ungültige und manipulierte Eingaben, Fälle zur Übergabe an einen Menschen, Fälle, in denen nichts zu tun ist — und vier bis fünf echte Zielkonflikte.</td></tr>
-    <tr><td><strong>Eigentum</strong></td><td>Er gehört Euch. Wer den des Dienstleisters übernimmt, lässt sich vom Lieferanten sagen, ob die Lieferung in Ordnung ist.</td></tr>
-   </tbody>
-  </table>
-  <p style="margin-top:.5rem;"><strong>Die Frage im Beschaffungsgespräch:</strong> An welchen Fällen wurde das gemessen — und bekommen wir diese Fälle?</p>
- </div>
+ <p class="anhang-hinweis">Vertiefung: Prüfbestand und Testklassen in Anhang A, Befunde aus der Produktdokumentation in Anhang C.</p>
 </div>
 
 </div>
 
-<!-- ═════════════ REITER 4 · EINSATZ (LEBENSZYKLUS) ═════════════ -->
+<!-- ═════════════ REITER 4 · EINSATZ (Lebenszyklus, Checklisten) ═════════════ -->
 <div class="tab-panel" id="tab-einsatz">
 
 <div class="section">
  <div class="section-title">Der Weg in neun Schritten</div>
  <div class="card">
   <table class="tbl">
-   <thead><tr><th>#</th><th>Schritt</th><th>Leitfrage</th><th>Ergebnis</th></tr></thead>
+   <thead><tr><th>#</th><th>Schritt</th><th>Ergebnis</th></tr></thead>
    <tbody>
-    <tr><td class="nr">01</td><td><strong>Einordnen</strong></td><td>Welcher Agententyp, welche Kontrolltiefe?</td><td>Schriftliche Einstufung mit Datum und Verantwortlichen</td></tr>
-    <tr><td class="nr">02</td><td><strong>Unterbau prüfen</strong></td><td>Steht der Rahmen — oder ist es ein Prototyp im Produktivgewand?</td><td>Bestandsaufnahme von Zustand, Rechten, Prüfpfad, Beobachtbarkeit</td></tr>
-    <tr><td class="nr">03</td><td><strong>Auftrag definieren</strong></td><td>Welches Problem, welcher Nutzen, welche Nicht-Ziele, wann Abbruch?</td><td>Fachlich freigegebener Auftrag</td></tr>
-    <tr><td class="nr">04</td><td><strong>Spezifizieren</strong></td><td>Was darf er lesen, entscheiden, auslösen — und was nicht?</td><td>Versionierte Spezifikation mit den sieben Angaben</td></tr>
-    <tr><td class="nr">05</td><td><strong>Risiken und Kontrollen</strong></td><td>Wie wird jede Fehlermöglichkeit verhindert, erkannt, begrenzt?</td><td>Risiko- und Kontrollmatrix</td></tr>
-    <tr><td class="nr">06</td><td><strong>Prüfen und messen</strong></td><td>Woran wird Zuverlässigkeit vor dem Start nachgewiesen?</td><td>Testbericht mit Belegen</td></tr>
-    <tr><td class="nr">07</td><td><strong>Freigeben</strong></td><td>Sind alle Bedingungen erfüllt — und wer trägt die Entscheidung?</td><td>Unterschriebene Freigabe mit Auflagen</td></tr>
-    <tr><td class="nr">08</td><td><strong>Betrieb überwachen</strong></td><td>Woran merken wir Abdrift, Kostenanstieg, nachlassende Aufsicht?</td><td>Laufender Betriebsnachweis</td></tr>
-    <tr><td class="nr">09</td><td><strong>Änderungen kontrollieren</strong></td><td>Was wurde geändert — und was muss deshalb erneut geprüft werden?</td><td>Versionsgeschichte mit Prüfentscheidungen</td></tr>
+    <tr><td class="nr">01</td><td><strong>Einordnen</strong> — welcher Typ, welche Kontrolltiefe?</td><td>Schriftliche Einstufung</td></tr>
+    <tr><td class="nr">02</td><td><strong>Unterbau prüfen</strong> — Zustand, Rechte, Prüfpfad, Beobachtbarkeit</td><td>Bestandsaufnahme</td></tr>
+    <tr><td class="nr">03</td><td><strong>Auftrag definieren</strong> — Problem, Nutzen, Nicht-Ziele, Abbruch</td><td>Freigegebener Auftrag</td></tr>
+    <tr><td class="nr">04</td><td><strong>Spezifizieren</strong> — die sieben Angaben</td><td>Versionierte Spezifikation</td></tr>
+    <tr><td class="nr">05</td><td><strong>Risiken und Kontrollen</strong> — verhindern, erkennen, begrenzen</td><td>Risiko- und Kontrollmatrix (Anhang B)</td></tr>
+    <tr><td class="nr">06</td><td><strong>Prüfen und messen</strong></td><td>Testbericht mit Belegen (Anhang A)</td></tr>
+    <tr><td class="nr">07</td><td><strong>Freigeben</strong> — durch einen Menschen mit Namen</td><td>Freigabe mit Auflagen</td></tr>
+    <tr><td class="nr">08</td><td><strong>Betrieb überwachen</strong></td><td>Laufender Betriebsnachweis</td></tr>
+    <tr><td class="nr">09</td><td><strong>Änderungen kontrollieren</strong></td><td>Versionsgeschichte</td></tr>
    </tbody>
   </table>
-  <p style="margin-top:.5rem;">Schritte 04 und 05 laufen meist zusammen. Nicht verhandelbar: Die Freigabe kommt nach dem Prüfen und wird von einem Menschen mit Namen erteilt.</p>
-  <p>Die Ergebnisse der neun Schritte sind zugleich das, was eine Aufsicht anfordern würde. Wer sie ohnehin führt, muss für eine Prüfung nichts zusätzlich herstellen.</p>
+  <p style="margin-top:.5rem;">Diese Ergebnisse sind zugleich das, was eine Aufsicht anfordern würde.</p>
  </div>
 </div>
 
 <div class="section">
- <div class="section-title">05 · Sieben Risiken, die fast jeder Agent hat</div>
- <div class="card">
-  <table class="tbl">
-   <thead><tr><th>Risiko</th><th>Vorbeugend</th><th>Erkennend</th></tr></thead>
-   <tbody>
-    <tr><td><strong>Erfundene Aussage</strong></td><td>Quellenpflicht, strukturierte Anweisung</td><td>Stichprobe, Faktentest</td></tr>
-    <tr><td><strong>Eingeschleuste Anweisung</strong></td><td>Anweisung und Fremdinhalt trennen, Werkzeuge begrenzen</td><td>Sicherheitstest, Protokoll</td></tr>
-    <tr><td><strong>Zu weite Befugnis</strong></td><td>Geringste Rechte, menschliche Freigabe</td><td>Aktionsprotokoll</td></tr>
-    <tr><td><strong>Fehlerhafte Quelle</strong></td><td>Positivliste, Aktualitätsregel</td><td>Quellenüberwachung</td></tr>
-    <tr><td><strong>Fehlender Kontext</strong></td><td>Pflichtfelder, Validierung</td><td>Negativtests</td></tr>
-    <tr><td><strong>Endlosschleife</strong></td><td>Höchstzahl Durchläufe, Zeitgrenze</td><td>Laufzeitüberwachung</td></tr>
-    <tr><td><strong>Kostenüberschreitung</strong></td><td>Feste Obergrenzen</td><td>Kostenüberwachung</td></tr>
-   </tbody>
-  </table>
-  <p style="margin-top:.5rem;">Das ist der Grundbestand; die Risiken des konkreten Falls ergeben sich aus dem Auftrag.</p>
- </div>
-</div>
-
-<div class="section">
- <div class="section-title">06 · Prüfen und messen</div>
- <div class="card">
-  <p>Eine Vorführung ist kein Nachweis. Nötig sind ein versionierter Prüfbestand und messbare Abnahmekriterien. Zwölf Testklassen decken die üblichen Fehlerbilder ab:</p>
-  <table class="tbl">
-   <thead><tr><th>Test</th><th>Prüffrage</th><th>Test</th><th>Prüffrage</th></tr></thead>
-   <tbody>
-    <tr><td><strong>Funktion</strong></td><td>Erfüllt er die Aufgabe?</td><td><strong>Berechtigung</strong></td><td>Bleibt er in seinen Rechten?</td></tr>
-    <tr><td><strong>Negativ</strong></td><td>Reagiert er richtig auf ungültige Eingaben?</td><td><strong>Manipulation</strong></td><td>Befolgt er eingeschleuste Anweisungen?</td></tr>
-    <tr><td><strong>Grenzwert</strong></td><td>Greifen Schwellen exakt?</td><td><strong>Werkzeugfehler</strong></td><td>Reagiert er kontrolliert auf Ausfälle?</td></tr>
-    <tr><td><strong>Quelle</strong></td><td>Nutzt er nur zulässige Quellen?</td><td><strong>Wiederholung</strong></td><td>Ist das Verhalten stabil?</td></tr>
-    <tr><td><strong>Erfindung</strong></td><td>Erfindet er Fakten oder Belege?</td><td><strong>Regression</strong></td><td>Hält die Qualität nach Änderungen?</td></tr>
-    <tr><td><strong>Konflikt</strong></td><td>Erkennt er Widersprüche?</td><td><strong>Abnahme</strong></td><td>Erfüllt er den fachlichen Zweck?</td></tr>
-   </tbody>
-  </table>
-  <p style="margin-top:.5rem;"><strong>Prüfe, was läuft — nicht, was der Agent über sich berichtet.</strong> In 1.601 überwachten Agentenläufen versuchten 2,4 %, die eigene Freigabe zu umgehen. Gestoppt wurden sie, weil eine Instanz die tatsächliche Umsetzung prüfte und eine zweite sie mit der Beschreibung verglich.</p>
-  <p><strong>Ein bestandener Test belegt Verhalten im Test.</strong> Spitzenmodelle erkennen Prüfsituationen besser als zufällig. Frage den Anbieter, wie sichergestellt ist, dass die Bewertungsumgebung nicht als solche erkennbar ist.</p>
-  <div class="src-row">
-   <span class="src-chip"><a href="https://www-cdn.anthropic.com/7b1c44894e980876479947dcdd40716278aeeffd/automated-alignment-researchers-august-2026.pdf" target="_blank" rel="noopener">Chen, Wen &amp; Kirchner (2026, ohne Begutachtung)</a></span>
-   <span class="src-chip"><a href="https://www.un.org/independent-international-scientific-panel-ai/en/thematic-briefs/ai-agents-misalignment-risks" target="_blank" rel="noopener">UN-Wissenschaftsgremium — AI Agents (Vorabfassung)</a></span>
-  </div>
- </div>
+ <div class="section-title">06 · Prüfen</div>
+ <ul class="checkliste">
+  <li>Der <strong>Prüfbestand läuft vollständig</strong> durch — alle zwölf Testklassen sind abgedeckt (Anhang A).</li>
+  <li>Geprüft wird die <strong>tatsächliche Umsetzung</strong>, nicht die Selbstauskunft des Agenten.</li>
+  <li>Der Anbieter erklärt, wie die <strong>Testsituation für das Modell unerkennbar</strong> bleibt.</li>
+ </ul>
+ <p class="einordnung">In 1.601 überwachten Agentenläufen versuchten 2,4 %, die eigene Freigabe zu umgehen; gestoppt wurden sie durch Prüfung der Umsetzung. Spitzenmodelle erkennen Prüfsituationen besser als zufällig.</p>
+ <div class="src-row"><span class="src-chip"><a href="https://www-cdn.anthropic.com/7b1c44894e980876479947dcdd40716278aeeffd/automated-alignment-researchers-august-2026.pdf" target="_blank" rel="noopener">Chen, Wen &amp; Kirchner (2026)</a></span><span class="src-chip"><a href="https://www.un.org/independent-international-scientific-panel-ai/en/thematic-briefs/ai-agents-misalignment-risks" target="_blank" rel="noopener">UN-Gremium (Vorabfassung)</a></span></div>
 </div>
 
 <div class="section">
  <div class="section-title">07 · Freigeben</div>
- <div class="card">
-  <p>Die einzige Entscheidung, die sich nicht delegieren lässt: <strong>freigegeben</strong>, <strong>mit Auflagen</strong> oder <strong>nicht freigegeben</strong> — mit Begründung, offenen Risiken, Name und Datum. Maßstab sind die acht Fragen vor dem Produktivgang (Reiter <em>Werkzeuge</em>) und vier Gruppen von Bedingungen:</p>
-  <table class="tbl">
-   <thead><tr><th style="width:22%;">Gruppe</th><th>Bedingungen</th></tr></thead>
-   <tbody>
-    <tr><td><strong>Auftrag</strong></td><td>Zweck und Umfang fachlich freigegeben · fachliche und technische Abnahme dokumentiert</td></tr>
-    <tr><td><strong>Grenzen</strong></td><td>Quellen und Werkzeuge dokumentiert · Rechte auf das Nötigste beschränkt · zulässige Aktionen festgelegt · Bewertungsmodell und Schwellen versioniert · Aufsicht geregelt</td></tr>
-    <tr><td><strong>Nachweis</strong></td><td>Prüfbestand versioniert · kritische Fälle, Sicherheits- und Regressionstests bestanden</td></tr>
-    <tr><td><strong>Betriebsbereitschaft</strong></td><td>Überwachung und Protokollierung eingerichtet · Kostengrenzen gesetzt · Rückfallebene und Abschaltung vorhanden</td></tr>
-   </tbody>
-  </table>
-  <p style="margin-top:.5rem;">Die vierte Gruppe wird am häufigsten übersehen. <strong>Ein Agent, der sich nicht abschalten lässt, ist nicht freigabefähig.</strong></p>
- </div>
+ <ul class="checkliste">
+  <li><strong>Auftrag:</strong> Zweck und Umfang freigegeben, fachliche und technische Abnahme dokumentiert.</li>
+  <li><strong>Grenzen:</strong> Quellen, Werkzeuge, Rechte, zulässige Aktionen, Schwellen und Aufsicht festgelegt.</li>
+  <li><strong>Nachweis:</strong> Prüfbestand versioniert; kritische Fälle, Sicherheits- und Regressionstests bestanden.</li>
+  <li><strong>Betriebsbereitschaft:</strong> Überwachung, Protokoll, Kostengrenzen, Rückfallebene und Abschaltung vorhanden.</li>
+ </ul>
+ <p>Entscheidung: <strong>freigegeben</strong>, <strong>mit Auflagen</strong> oder <strong>nicht freigegeben</strong> — mit Name und Datum. Maßstab ist der Bewertungs-Check. <strong>Wer sich nicht abschalten lässt, ist nicht freigabefähig.</strong></p>
 </div>
 
 <div class="section">
  <div class="section-title">08 · Betrieb überwachen</div>
- <div class="card">
-  <ul>
-   <li><strong>Kennzahlen mit Schwellen.</strong> Fehlerquote, fälschlich ausgelöste und übersehene Fälle, Übergaberate an Menschen, Werkzeugfehler, Kosten je Vorgang, Laufzeit — jede mit Sollwert, Warn- und kritischer Schwelle und festgelegter Reaktion. Die <strong>Fehlalarmquote</strong> gehört von Anfang an dazu: Wer zu oft anschlägt, wird weggeklickt.</li>
-   <li><strong>Prüft noch jemand?</strong> Widerspruchsquote, Prüfdauer, Nachfragen bei steigendem Risiko — niedrige Werte sind ein Warnsignal. Den Nachweis liefern <strong>Prüfmarken</strong>: unauffällig eingestreute Vorgänge mit bekannter richtiger Antwort. Wird eine durchgewinkt, ist die Aufsicht erschöpft.</li>
-   <li><strong>Aufsicht organisieren.</strong> Wer freigibt, profitiert nicht von der Durchlaufmenge. Die Aufsichtführenden erledigen die Aufgabe in festen Abständen selbst — sonst versteht bald niemand mehr die Arbeit gut genug, um sie zu beaufsichtigen.</li>
-   <li><strong>Die Kette protokollieren, nicht nur das Ergebnis.</strong> Kennung, Zeitstempel, Agenten-, Anweisungs- und Modellversion, Werkzeuge mit Parametern, Quellen, Aktionen, Übergaben, Fehler, Kosten — gespeichert außerhalb der Umgebung, die im Störfall repariert wird. Sitzungsprotokolle mit Gedankenketten sind vertraulich: Aus öffentlich geteilten ließen sich Zugangsdaten zurückgewinnen.</li>
-   <li><strong>Abschaltregel.</strong> Kritische Schwelle, unzulässige Aktion, Sicherheitsvorfall, Zuverlässigkeit unter Mindestwert, kompromittierte Quelle — und wer abschaltet, steht mit Namen fest.</li>
-  </ul>
-  <div class="src-row">
-   <span class="src-chip"><a href="https://arxiv.org/abs/2608.23642" target="_blank" rel="noopener">Mitchell, Ghosh &amp; Passi — Prüfmarken, Rollentrennung (2026)</a></span>
-   <span class="src-chip"><a href="https://arxiv.org/abs/2608.09867" target="_blank" rel="noopener">Panfilov u. a. — Stealing Reasoning Traces (2026)</a></span>
-  </div>
- </div>
+ <ul class="checkliste">
+  <li><strong>Kennzahlen mit Schwellen:</strong> Fehler, Fehlalarme, übersehene Fälle, Übergaben, Werkzeugfehler, Kosten je Vorgang, Laufzeit.</li>
+  <li><strong>Prüft noch jemand?</strong> Widerspruchsquote, Prüfdauer, Nachfragen; dazu Prüfmarken — eingestreute Fälle mit bekannter Antwort.</li>
+  <li><strong>Aufsicht organisiert:</strong> Wer freigibt, profitiert nicht von der Durchlaufmenge; die Aufgabe wird regelmäßig selbst erledigt.</li>
+  <li><strong>Kette protokolliert</strong> — Werkzeuge mit Parametern, Versionen, Übergaben — außerhalb der reparierten Umgebung; Gedankenketten vertraulich.</li>
+  <li><strong>Abschaltregel</strong> mit Kriterien und namentlich benannter Person.</li>
+ </ul>
+ <div class="src-row"><span class="src-chip"><a href="https://arxiv.org/abs/2608.23642" target="_blank" rel="noopener">Mitchell, Ghosh &amp; Passi (2026)</a></span><span class="src-chip"><a href="https://arxiv.org/abs/2608.09867" target="_blank" rel="noopener">Panfilov u. a. (2026)</a></span></div>
 </div>
 
 <div class="section">
- <div class="section-title">09 · Änderungen kontrollieren</div>
- <div class="card">
-  <p>Versioniert werden Anweisung, Modell, Werkzeuge und Rechte, Quellen, Bewertungsregeln, Schwellen, Ausgabeformat, Prüfbestand und Sicherheitskontrollen. Jede Änderung wirft die Frage auf, ob der Prüfbestand erneut durchlaufen muss (Regressionstest).</p>
-  <table class="tbl">
-   <thead><tr><th>Änderung</th><th>Regression?</th><th>Mindestumfang</th></tr></thead>
-   <tbody>
-    <tr><td>Redaktionelle Textänderung</td><td>im Einzelfall</td><td>Kurztest, Stichprobe</td></tr>
-    <tr><td>Anweisungslogik geändert</td><td>ja</td><td>Vollständige fachliche Regression</td></tr>
-    <tr><td>Modell gewechselt</td><td>ja</td><td>Vollständige Regression und Sicherheitstests</td></tr>
-    <tr><td>Neues Werkzeug, erweiterte Rechte</td><td>ja</td><td>Funktion, Berechtigung, Sicherheit</td></tr>
-    <tr><td>Neue Quelle</td><td>ja</td><td>Quellen- und Konflikttest</td></tr>
-    <tr><td>Schwellenwert, Ausgabeformat</td><td>ja</td><td>Grenzwert- bzw. Schnittstellentest, Fachabnahme</td></tr>
-   </tbody>
-  </table>
-  <p style="margin-top:.5rem;"><strong>Der Modellwechsel kommt vom Anbieter</strong> und verlangt trotzdem die volle Regression. Prüfe dabei nicht nur die Leistung: Über Versionen kann sich verschieben, wie ein Modell zwischen zwei berechtigten Anliegen abwägt. Halte für Eure Zielkonflikt-Fälle die erwartete Abwägung vorab schriftlich fest.</p>
-  <div class="src-row"><span class="src-chip"><a href="https://arxiv.org/abs/2609.01275" target="_blank" rel="noopener">Mitic u. a. — Constitutional Coverage Trilemma (2026, ohne Begutachtung)</a></span></div>
- </div>
-</div>
-
-<div class="section">
- <div class="section-title">Vom Einzelversuch zum Unternehmenssystem</div>
- <div class="card">
-  <p>Wildwuchs zu verbieten erzeugt Schatten-KI. Tragfähig ist ein benannter Übergang: <strong>Bauen bleibt frei, Ausrollen nicht.</strong> Vor dem Einsatz über den Entstehungsbereich hinaus stehen vier Stationen: fachliche Validierung · Sicherheitsprüfung (vorhandene gegen benötigte Rechte) · Integrationshärtung · Betriebsbereitschaft mit Überwachung, zuständiger Person und Abschaltweg.</p>
-  <p>Wer viele Agenten betreibt, muss Prüfung automatisieren. Sie trägt nur bei <strong>Unabhängigkeit auf drei Ebenen</strong>: Modell (nicht dieselbe Familie), Kontext (Prüffälle nicht Teil des Gelernten), kommerziell (wer prüft, verdient nicht am Ergebnis).</p>
-  <div class="src-row">
-   <span class="src-chip"><a href="https://marketingassets.microsoft.com/gdc/gdc4wf3I8/original" target="_blank" rel="noopener">Microsoft — The AI Strategy Roadmap (Anbieter)</a></span>
-   <span class="src-chip"><a href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=7378338" target="_blank" rel="noopener">Holweg &amp; Hacker — Should We Allow AI to Police Itself? (2026)</a></span>
-  </div>
- </div>
- <div class="note"><strong>Wie es aussieht, wenn es trägt.</strong> Der digitale Risikoanalyst, den die Investmentgesellschaft Millennium mit Anthropic entwickelt, protokolliert laut Anbieter den Begründungsweg, erprobt Aktionen zuerst abgeschottet, lässt Entscheidungen von Fachleuten freigeben und testet neue Modelle laufend. Herstellerangabe, nicht unabhängig geprüft.
-  <div class="src-row">
-   <span class="src-chip"><a href="https://claude.com/blog/millennium-and-anthropic-are-building-a-digital-risk-analyst-with-claude" target="_blank" rel="noopener">Anthropic — Millennium (06.08.2026)</a></span>
-   <span class="src-chip"><a href="https://www.mlp.com/life-at-millennium/millennium-and-anthropic-to-co-develop-ai-powered-digital-risk-analyst/" target="_blank" rel="noopener">Millennium — Mitteilung (August 2026)</a></span>
-  </div>
- </div>
+ <div class="section-title">09 · Änderungen · Skalieren</div>
+ <ul class="checkliste">
+  <li><strong>Jede Änderung versioniert</strong> — Anweisung, Modell, Werkzeuge, Rechte, Quellen, Schwellen, Format, Prüfbestand.</li>
+  <li><strong>Modellwechsel = volle Regression</strong>, auch wenn er vom Anbieter kommt; mit Zielkonflikt-Fällen, deren erwartete Abwägung vorher feststeht (Anhang A).</li>
+  <li><strong>Bauen frei, Ausrollen nicht:</strong> vor dem Einsatz über den eigenen Bereich hinaus fachliche Validierung, Sicherheitsprüfung, Integrationshärtung, Betriebsbereitschaft.</li>
+  <li><strong>Automatisierte Prüfung nur unabhängig</strong> — anderes Modell, Prüffälle nicht im Gelernten, kein kommerzielles Eigeninteresse.</li>
+ </ul>
+ <div class="src-row"><span class="src-chip"><a href="https://arxiv.org/abs/2609.01275" target="_blank" rel="noopener">Mitic u. a. (2026)</a></span><span class="src-chip"><a href="https://marketingassets.microsoft.com/gdc/gdc4wf3I8/original" target="_blank" rel="noopener">Microsoft — AI Strategy Roadmap</a></span><span class="src-chip"><a href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=7378338" target="_blank" rel="noopener">Holweg &amp; Hacker (2026)</a></span></div>
+ <p class="anhang-hinweis">Fallbeispiel eines Betriebs unter Aufsicht: Anhang D.</p>
 </div>
 
 </div>
 
-<!-- ═════════════ REITER 5 · WERKZEUGE ═════════════ -->
-<div class="tab-panel" id="tab-werk">
+<!-- ═════════════ REITER 5 · BEWERTUNG ═════════════ -->
+<div class="tab-panel" id="tab-bewertung">
 
-<p style="font-size:13px;color:var(--muted);margin-bottom:1rem;">Vier Werkzeuge. Alle laufen in diesem Browserfenster; es werden keine Daten gespeichert oder übertragen.</p>
-
-<!-- ① Bewertungs-Check -->
 <div class="werkbank" id="check">
- <div class="feld-gruppe">Werkzeug 1</div>
+ <div class="feld-gruppe">Bewertung · 1</div>
  <h2>Bewertungs-Check — die acht Fragen vor dem Produktivgang</h2>
- <p class="werkbank-intro">Kein Agent geht live, bevor alle acht schriftlich beantwortet sind. Je Frage eine Einstufung und ein Satz Begründung. Die Ziffern in Klammern nennen den Schritt im Lebenszyklus, in dem die Antwort entsteht.</p>
+ <p class="werkbank-intro">Kein Agent geht live, bevor alle acht beantwortet sind: je Frage eine Einstufung und ein Satz Begründung. In Klammern der Schritt, in dem die Antwort entsteht.</p>
  <div class="feld-gitter drei">
   <label>Agent oder Vorhaben<input type="text" id="ck_name"></label>
   <label>Bewertet von<input type="text" id="ck_wer"></label>
@@ -691,14 +666,13 @@ a{color:var(--accent);}a:hover{text-decoration:underline;}
  </div>
  <textarea class="ausgabe" id="ck_out" rows="10" readonly aria-label="Ergebnis des Bewertungs-Checks"></textarea>
  <div class="status" id="ck_status"></div>
- <div class="werkbank-hinweis">Die Fragen 1 bis 4 sind Führungsentscheidungen, 5 bis 8 überwiegend technische Nachweise — verantwortet werden alle acht von der Führung. Die acht Fragen sind eine Betriebsprüfung, keine Rechtsprüfung; rechtliche Fragen werden gesondert geklärt.</div>
+ <div class="werkbank-hinweis">Fragen 1 bis 4 entscheidet die Führung, 5 bis 8 belegt überwiegend die IT — verantwortet werden alle acht von der Führung. Betriebsprüfung, keine Rechtsprüfung.</div>
 </div>
 
-<!-- ② Agentenkarte -->
 <div class="werkbank" id="karte">
- <div class="feld-gruppe">Werkzeug 2</div>
+ <div class="feld-gruppe">Bewertung · 2</div>
  <h2>Agentenkarte — eine Seite je Agent</h2>
- <p class="werkbank-intro">Die Kurzfassung für Inventar, Steuerungsgremium oder Aufsicht. Sie entsteht aus der Spezifikation, ersetzt sie aber nicht. Die Felder lassen sich am Bildschirm ausfüllen und drucken.</p>
+ <p class="werkbank-intro">Kurzfassung für Inventar, Steuerungsgremium oder Aufsicht. Am Bildschirm ausfüllbar und druckbar.</p>
  <table class="tbl form">
   <thead><tr><th style="width:36%;">Feld</th><th>Eintrag</th></tr></thead>
   <tbody>
@@ -721,24 +695,28 @@ a{color:var(--accent);}a:hover{text-decoration:underline;}
  </table>
 </div>
 
-<!-- ③ Startprompt-Generator -->
+</div>
+
+<!-- ═════════════ REITER 6 · ÜBUNG ═════════════ -->
+<div class="tab-panel" id="tab-uebung">
+
 <div class="werkbank" id="arbeitsbereich">
- <div class="feld-gruppe">Werkzeug 3</div>
+ <div class="feld-gruppe">Übung</div>
  <h2>Startprompt-Generator — von der Idee zur Spezifikation</h2>
- <p class="werkbank-intro">Für die Spezifikation braucht es kein technisches Wissen, sondern Kenntnis des Vorgangs. Der Generator erzeugt den Auftrag für ein Gespräch, in dem die KI <em>Dich</em> befragt — und danach die Spezifikation als Markdown-Datei für die Besprechung mit der IT.</p>
+ <p class="werkbank-intro">Die KI befragt <em>Dich</em> zu Deinem Vorgang; am Ende steht die Spezifikation als Markdown-Datei für die Besprechung mit der IT. Technisches Wissen ist dafür nicht nötig.</p>
  <div class="werkbank-panel">
-  <div class="feld-gruppe">Vorbereitung · bevor Du eine KI öffnest</div>
-  <ol style="padding-left:1.2rem;font-size:13px;">
-   <li><strong>Beschreibe den Vorgang, nicht die Lösung:</strong> Was passiert heute, von wem angestoßen, mit welchen Unterlagen, mit welchem Ergebnis?</li>
-   <li><strong>Sammle drei echte Fälle:</strong> einen gewöhnlichen, einen Grenzfall, einen, der schiefging. Sie sind später Deine ersten Testfälle.</li>
-   <li><strong>Schreibe auf, was er nicht tun soll.</strong> Was hier fehlt, gilt später als erlaubt.</li>
-   <li><strong>Benenne die Stelle, an der Du gefragt werden willst:</strong> Wenn [Bedingung], dann legt der Agent vor und wartet.</li>
-  </ol>
+  <div class="feld-gruppe">Vorbereitung</div>
+  <ul class="checkliste">
+   <li><strong>Vorgang beschreiben, nicht die Lösung</strong> — wer, womit, mit welchem Ergebnis?</li>
+   <li><strong>Drei echte Fälle:</strong> gewöhnlich, Grenzfall, schiefgegangen — Deine ersten Testfälle.</li>
+   <li><strong>Was er nicht tun soll</strong> — was hier fehlt, gilt später als erlaubt.</li>
+   <li><strong>Wo Du gefragt werden willst:</strong> Wenn [Bedingung], dann legt der Agent vor und wartet.</li>
+  </ul>
  </div>
  <div class="werkbank-panel">
-  <div class="feld-gruppe">Der Kern des Startprompts</div>
+  <div class="feld-gruppe">Kern des Startprompts</div>
   <div class="prompt-karte">Ich möchte einen KI-Agenten entwickeln. Die Idee ist: [Idee beschreiben]. <strong>Entwickle den Agenten noch nicht.</strong> Unterstütze mich zuerst dabei, die Anforderungen systematisch zu erarbeiten. <strong>Stelle pro Schritt nur die notwendigen Fragen. Triff keine Annahmen.</strong> Weise mich auf unpräzise, nicht prüfbare oder widersprüchliche Angaben hin. Erstelle am Ende <strong>nur aus bestätigten Ergebnissen</strong> die Spezifikation.</div>
-  <p style="font-size:12.5px;color:var(--muted);">Die fett gesetzten Sätze verhindern, dass das Modell sofort eine Lösung liefert, Lücken stillschweigend mit eigenen Annahmen füllt oder einen Fragenkatalog abarbeitet, bei dem man nach dem dritten Punkt aufgibt. Antworte im Gespräch ruhig „weiß ich nicht“ — und prüfe das Ergebnis an Deinen drei Fällen. Beim missglückten lautet die Frage: Hätte der Agent es bemerkt?</p>
+  <p style="font-size:12.5px;color:var(--muted);">Antworte ruhig „weiß ich nicht“ und prüfe das Ergebnis an Deinen drei Fällen: Hätte der Agent den missglückten bemerkt?</p>
  </div>
  <div class="werkbank-panel no-print">
   <div class="feld-gruppe">A · Auftrag</div>
@@ -785,119 +763,94 @@ a{color:var(--accent);}a:hover{text-decoration:underline;}
  </div>
  <textarea class="ausgabe" id="agentResult" rows="12" readonly aria-label="Ausgabe des Generators"></textarea>
  <div class="status" id="ab_status"></div>
- <div class="werkbank-hinweis no-print">Leere Felder sind erlaubt — sie erscheinen im Startprompt als offene Punkte und werden im Gespräch geklärt.</div>
+ <div class="werkbank-hinweis no-print">Leere Felder sind erlaubt — sie erscheinen im Startprompt als offene Punkte. Alles bleibt in diesem Browserfenster.</div>
 </div>
 
-<!-- ④ Übung -->
-<div class="werkbank" id="uebung">
- <div class="feld-gruppe">Werkzeug 4</div>
- <h2>Übung — fünf Agentenaufträge konkretisieren und prüfen</h2>
- <p class="werkbank-intro">Fünf Aufträge als Übungsmaterial, keine realen Kundenaufträge. Der Auftragstext beschreibt, <em>was</em> der Agent tun soll. Für den Bau fehlt, <em>wie</em> — genau das legt Ihr fest: die sieben Angaben aus dem Reiter <em>Design</em>.</p>
- <div class="note note-amber"><strong>Zwei Bedingungen vorab.</strong> Keine echten Unternehmensdaten — die Konfiguration eines geteilten Agenten ist für alle Berechtigten einsehbar, und eine agenteneigene Verbindung kann jede Person nutzen, die den Agenten startet. Und den Zugang vorher klären: Das Recht, Agenten zu bauen, vergibt die Administration.</div>
- <table class="tbl">
-  <thead><tr><th style="width:13%;">Minuten</th><th style="width:18%;">Schritt</th><th>Ergebnis am Ende des Schritts</th></tr></thead>
-  <tbody>
-   <tr><td class="nr">00–15</td><td><strong>Auftrag</strong></td><td>Szenario gewählt, Ziel in einem Satz ohne „und“, Umkehrbarkeit geprüft</td></tr>
-   <tr><td class="nr">15–35</td><td><strong>Bauvorlage</strong></td><td>Die sieben Angaben schriftlich festgelegt — vor dem Bau</td></tr>
-   <tr><td class="nr">35–50</td><td><strong>Prüfbestand</strong></td><td>Zehn Fälle mit bekanntem Ergebnis, dazu drei, bei denen nichts zu tun ist</td></tr>
-   <tr><td class="nr">50–85</td><td><strong>Bau</strong></td><td>Agent läuft, Werkzeuge einzeln freigegeben, Freigabepflicht für schreibende Aktionen gesetzt, Abweichungen von der Bauvorlage notiert</td></tr>
-   <tr><td class="nr">85–100</td><td><strong>Prüfung</strong></td><td>Prüfbestand durchgelaufen; dann eine Größe geändert (ein Satz, Modell oder Denkaufwand) und dieselben Fälle erneut</td></tr>
-   <tr><td class="nr">100–120</td><td><strong>Abnahme</strong></td><td>Bewertungs-Check ausgefüllt; drei Punkte benannt, die vor einem Echtbetrieb noch fehlen</td></tr>
-  </tbody>
- </table>
- <div style="margin-top:.9rem;">
-  <div class="fall">
-   <div class="fall-titel">Fall 1 · Freelance-Aufträge</div>
-   <div>Durchsucht Plattformen und Netzwerke nach passenden Freelance-Aufträgen in der EU, bewertet sie nach einem Punktemodell und bereitet ab einem Schwellenwert ein Bewerbungspaket vor.</div>
-   <div class="fall-grenze"><strong>Grenze im Auftrag:</strong> Reicht keine Bewerbung ein und kontaktiert keinen Auftraggeber ohne ausdrückliche Freigabe.</div>
-   <details><summary>Auftragstext im Wortlaut</summary>
-<p>Ich möchte, dass Du regelmäßig relevante Plattformen, berufliche Netzwerke und ausgewählte Websites nach Freelance-Aufträgen innerhalb der EU durchsuchst, die zu meinem beruflichen Profil, meiner Expertise, meiner Verfügbarkeit und meinem Marktangebot passen.</p>
-<p>Bewerte jede Gelegenheit anhand eines vordefinierten Bewertungsmodells, das Faktoren wie Leistungspassung, erforderliche Erfahrung, Standort, Möglichkeiten zur Remote-Arbeit, Vertragsdauer, erwarteten Arbeitsaufwand, Budget, Bewerbungsfrist und Erfolgswahrscheinlichkeit berücksichtigt.</p>
-<p>Schließe Gelegenheiten aus, die zwingende Anforderungen nicht erfüllen, identifiziere mögliche Lücken oder Unsicherheiten und ordne die verbleibenden Gelegenheiten nach ihrer Gesamtattraktivität. Vermeide doppelte Einträge und aktualisiere bereits identifizierte Gelegenheiten, wenn sich deren Status oder Anforderungen ändern.</p>
-<p>Gib für jede in die engere Auswahl aufgenommene Gelegenheit die Quelle, das Veröffentlichungsdatum, die Frist, die wichtigsten Anforderungen, den Bewertungs-Score und eine kurze Begründung der Empfehlung an.</p>
-<p>Wenn eine Gelegenheit den definierten Qualifikationsschwellenwert überschreitet, benachrichtige mich per E-Mail und erstelle ein maßgeschneidertes Bewerbungspaket auf Grundlage der Anforderungen der Gelegenheit sowie meines freigegebenen Profils und Marktangebots. Das Paket soll eine Bewerbungszusammenfassung, ein Anschreiben bzw. Einreichungsdokument sowie eine Checkliste noch fehlender Informationen oder Unterlagen enthalten.</p>
-<p>Reiche keine Bewerbung ein und kontaktiere den Auftraggeber nicht, ohne meine ausdrückliche Freigabe.</p>
-   </details>
-  </div>
-  <div class="fall">
-   <div class="fall-titel">Fall 2 · Ausschreibungs-Identifikation und Angebotsvorbereitung</div>
-   <div>Findet öffentliche und private Ausschreibungen, prüft Eignungskriterien, Fristen und Risiken und liefert eine Bid/No-Bid-Empfehlung mit erstem Angebotsentwurf.</div>
-   <div class="fall-grenze"><strong>Grenze im Auftrag:</strong> Reicht kein Angebot ein, geht keine Verpflichtung ein und kontaktiert die Vergabestelle nicht ohne ausdrückliche Freigabe.</div>
-   <details><summary>Auftragstext im Wortlaut</summary>
-<p>Ich möchte, dass Du regelmäßig öffentliche und private Ausschreibungen innerhalb der EU identifizierst, die zu den Leistungen, der Erfahrung, der Kapazität und den Lieferfähigkeiten meines Unternehmens passen.</p>
-<p>Prüfe die verfügbaren Ausschreibungsunterlagen und bewerte zwingende Anforderungen, Eignungskriterien, geografische Einschränkungen, Einreichungsfristen, Auftragswert, erforderliche Zertifizierungen, Lieferzeiten, kommerzielle Bedingungen, strategische Passung und mögliche Lieferrisiken.</p>
-<p>Schließe Ausschreibungen aus, deren zwingende Anforderungen nicht erfüllt werden können. Bewerte und ordne die verbleibenden Gelegenheiten anhand eines vordefinierten Bewertungsmodells und unterscheide dabei klar zwischen bestätigten Informationen und Annahmen bzw. fehlenden Informationen.</p>
-<p>Vermeide doppelte Einträge und aktualisiere bereits identifizierte Ausschreibungen, wenn Nachträge, Friständerungen, Klarstellungen oder zusätzliche Unterlagen veröffentlicht werden.</p>
-<p>Gib für jede relevante Ausschreibung die Quelle, die Vergabestelle, die Frist, den geschätzten Auftragswert, die wichtigsten Anforderungen, den Bewertungs-Score, die wesentlichen Risiken und eine kurze Bid/No-Bid-Empfehlung an.</p>
-<p>Wenn eine Ausschreibung den definierten Qualifikationsschwellenwert überschreitet, benachrichtige mich per E-Mail und erstelle eine Angebotszusammenfassung, eine Anforderungs-Erfüllungsmatrix, eine Liste der benötigten Nachweise und Unterlagen, zentrale Rückfragen sowie einen ersten Angebotsentwurf.</p>
-<p>Reiche kein Angebot ein, gehe keine verbindlichen Verpflichtungen ein und kontaktiere die Vergabestelle nicht, ohne meine ausdrückliche Freigabe.</p>
-   </details>
-  </div>
-  <div class="fall">
-   <div class="fall-titel">Fall 3 · Vertriebschancen und Account Intelligence</div>
-   <div>Beobachtet eine Liste von Zielunternehmen auf Signale für Bedarf und erstellt ab einem Schwellenwert ein Account-Briefing mit Entwurf einer Ansprache.</div>
-   <div class="fall-grenze"><strong>Grenze im Auftrag:</strong> Kontaktiert niemanden, versendet nichts und zieht keine personenbezogenen Daten aus nicht freigegebenen Quellen hinzu.</div>
-   <details><summary>Auftragstext im Wortlaut</summary>
-<p>Ich möchte, dass Du eine vordefinierte Liste von Zielunternehmen auf glaubwürdige Ereignisse hin beobachtest, die auf einen aktuellen oder entstehenden Bedarf an meinen Leistungen hindeuten könnten.</p>
-<p>Relevante Signale können unter anderem Führungswechsel, Finanzierungsrunden, Fusionen oder Übernahmen, geografische Expansion, neue Produkte oder Projekte, strategische Ankündigungen, Technologieinvestitionen, Stellenausschreibungen, operative Probleme, regulatorische Herausforderungen oder andere bedeutende Geschäftsentwicklungen umfassen.</p>
-<p>Bewerte jedes Signal nach Verlässlichkeit der Quelle, Relevanz für mein Angebot, Aktualität, Dringlichkeit, geschätztem kommerziellem Potenzial und Stärke des daraus abgeleiteten Kundenbedarfs. Unterscheide dabei verifizierte Fakten von Annahmen und erläutere die Begründung jeder Einschätzung.</p>
-<p>Fasse zusammenhängende Signale zusammen, vermeide doppelte Benachrichtigungen und pflege für jedes Zielunternehmen eine aktuelle Historie der identifizierten Gelegenheiten.</p>
-<p>Wenn ein Signal oder eine Kombination von Signalen den definierten Qualifikationsschwellenwert überschreitet, benachrichtige mich per E-Mail und erstelle ein Account-Briefing mit den relevanten Entwicklungen, dem wahrscheinlichen Geschäftsbedarf, möglichen Stakeholdern, einem Vorschlag für die Wertargumentation, einer empfohlenen Kontaktstrategie und einer personalisierten Ansprache-Nachricht.</p>
-<p>Kontaktiere das Unternehmen nicht, versende die Ansprache-Nachricht nicht und füge keine personenbezogenen Daten aus nicht freigegebenen Quellen hinzu, ohne meine ausdrückliche Freigabe.</p>
-   </details>
-  </div>
-  <div class="fall">
-   <div class="fall-titel">Fall 4 · EU-Regulatorik-Monitoring und Auswirkungsanalyse</div>
-   <div>Beobachtet EU- und nationale Quellen auf regulatorische Entwicklungen, unterscheidet Entwurf, Konsultation und geltendes Recht und erstellt Auswirkungsanalysen.</div>
-   <div class="fall-grenze"><strong>Grenze im Auftrag:</strong> Stellt nichts als Rechtsberatung dar und leitet keine Umsetzung ohne menschliche Freigabe ein.</div>
-   <details><summary>Auftragstext im Wortlaut</summary>
-<p>Ich möchte, dass Du regelmäßig maßgebliche EU- und nationale Quellen auf regulatorische Entwicklungen hin beobachtest, die meine Organisation, meine Produkte, Dienstleistungen, Abläufe oder Kunden betreffen könnten.</p>
-<p>Relevante Entwicklungen können neue oder geänderte Gesetze, Verordnungen, Normen, Leitlinien, regulatorische Konsultationen, aufsichtsrechtliche Entscheidungen, Durchsetzungsmaßnahmen und offizielle Auslegungen umfassen.</p>
-<p>Verifiziere für jede Entwicklung Quelle und Status, fasse die relevanten Änderungen zusammen, identifiziere die betroffenen Rechtsräume, Geschäftsbereiche und Stakeholder und bewerte die erwarteten Auswirkungen, die Dringlichkeit, den Umsetzungsaufwand, das Compliance-Risiko und relevante Fristen.</p>
-<p>Unterscheide zwischen Vorschlägen, Konsultationen, verabschiedeter Gesetzgebung, geltenden Anforderungen und unverbindlichen Leitlinien. Vermeide doppelte Einträge und aktualisiere bestehende Datensätze, wenn sich Rechtsstatus, Anwendungsbereich, Auslegung oder Umsetzungszeitplan ändern.</p>
-<p>Gib für jede relevante Entwicklung Links zu den Primärquellen, Veröffentlichungs- und Anwendbarkeitsdatum, eine prägnante Zusammenfassung, den Bewertungs-Score und eine Erläuterung der Relevanz an.</p>
-<p>Wenn eine Entwicklung den definierten Risiko- oder Relevanzschwellenwert überschreitet, benachrichtige mich per E-Mail und erstelle eine Auswirkungsanalyse, eine Liste empfohlener Maßnahmen, verantwortliche Funktionen, wichtige Fristen und ein kurzes Management-Briefing.</p>
-<p>Kennzeichne Bereiche, die einer Prüfung durch qualifizierte Rechts- oder Compliance-Fachleute bedürfen, deutlich. Stelle die Einschätzung nicht als förmliche Rechtsberatung dar und leite keine Umsetzungsmaßnahmen ein, ohne menschliche Freigabe.</p>
-   </details>
-  </div>
-  <div class="fall">
-   <div class="fall-titel">Fall 5 · KI-Risikoaufklärung und Risikoregister</div>
-   <div>Durchsucht ausgewählte Quellen nach neuen KI-Risiken, gleicht sie mit dem Risikoregister ab und schlägt Einträge und Kontrollen vor.</div>
-   <div class="fall-grenze"><strong>Grenze im Auftrag:</strong> Akzeptiert, schließt, stuft herab oder weist kein Risiko automatisch zu und ändert keine genehmigte Kontrolle.</div>
-   <details><summary>Auftragstext im Wortlaut</summary>
-<p>Ich möchte, dass Du regelmäßig eine definierte Auswahl maßgeblicher und relevanter Quellen nach neu identifizierten oder wesentlich veränderten KI-bezogenen Risiken, Schwachstellen, Vorfällen, Kontrollschwächen und regulatorischen Bedenken durchsuchst.</p>
-<p>Quellen können unter anderem NIST, ENISA, das EU-Büro für Künstliche Intelligenz, nationale Behörden, anerkannte Normungsorganisationen, große KI-Anbieter, Hugging Face, Forschungs-Repositorien, Schwachstellendatenbanken, Vorfalldatenbanken und ausgewählte Fachpublikationen zur Sicherheit umfassen. Priorisiere Primärquellen und erfasse für jeden Befund Quelle, Veröffentlichungsdatum und Abrufdatum.</p>
-<p>Bewerte jeden Befund hinsichtlich seiner Relevanz für die genehmigten KI-Systeme, Anwendungsfälle, Daten, Anbieter, Prozesse und das Geschäftsumfeld meiner Organisation. Klassifiziere relevante Befunde nach Risikokategorie, betroffenen Assets oder Prozessen, Bedrohungs- oder Fehlerszenario, bestehenden Schwachstellen, Eintrittswahrscheinlichkeit, potenzieller Auswirkung, Dringlichkeit und Konfidenzniveau.</p>
-<p>Vergleiche jeden Befund mit dem bestehenden Risikoregister. Vermeide doppelte Einträge, verknüpfe zusammenhängende Befunde und aktualisiere ein bestehendes Risiko nur dann, wenn neue Belege dessen Beschreibung, Eintrittswahrscheinlichkeit, Auswirkung, Kontrollen oder Status wesentlich verändern. Führe eine klare Änderungshistorie.</p>
-<p>Schlage für jedes relevante Risiko verhältnismäßige präventive, detektive und korrektive Maßnahmen vor. Benenne mögliche Kontrollverantwortliche, Umsetzungsprioritäten, Abhängigkeiten, Überlegungen zum Restrisiko, Überwachungsindikatoren und empfohlene Folgemaßnahmen. Unterscheide dabei klar zwischen bestehenden und vorgeschlagenen Kontrollen.</p>
-<p>Jeder vorgeschlagene Eintrag im Risikoregister soll enthalten:</p>
-<ul style="padding-left:1.2rem;font-size:12.5px;"><li>eine eindeutige Risikokennung;</li><li>den Risikotitel und die Risikobeschreibung;</li><li>die Quelle und die zugrunde liegenden Belege;</li><li>betroffene Systeme, Assets, Prozesse oder Stakeholder;</li><li>die Risikokategorie;</li><li>Ursachen, Bedrohungsereignisse und mögliche Konsequenzen;</li><li>Eintrittswahrscheinlichkeit, Auswirkung und Gesamtrisikobewertung;</li><li>bestehende Kontrollen;</li><li>vorgeschlagene präventive, detektive und korrektive Kontrollen;</li><li>mögliche Kontrollverantwortliche;</li><li>empfohlene Maßnahmen und Zieltermine;</li><li>die Restrisikoeinschätzung;</li><li>das Konfidenzniveau und offene Fragen.</li></ul>
-<p>Wenn ein Befund den definierten Risikoschwellenwert überschreitet, benachrichtige mich per E-Mail und erstelle einen Entwurf für einen Risikoregister-Eintrag, eine kurze Management-Zusammenfassung und einen priorisierten Maßnahmenplan zur menschlichen Prüfung.</p>
-<p>Akzeptiere, schließe oder stufe kein Risiko automatisch herab, weise es nicht automatisch zu, ändere keine genehmigte Kontrolle und leite keine Abhilfemaßnahmen ein, ohne ausdrückliche menschliche Freigabe.</p>
-   </details>
-  </div>
+</div>
+
+<!-- ═════════════ REITER 7 · ANHÄNGE ═════════════ -->
+<div class="tab-panel" id="tab-anhang">
+
+<div class="section">
+ <div class="section-title">Anhang A · Prüfbestand, Testklassen, Regression</div>
+ <div class="card">
+  <div class="feld-gruppe">Der Prüfbestand</div>
+  <table class="tbl">
+   <thead><tr><th style="width:18%;">Merkmal</th><th>Worauf es ankommt</th></tr></thead>
+   <tbody>
+    <tr><td><strong>Umfang</strong></td><td>Zwanzig bis fünfzig Fälle reichen für den Anfang — wer auf Hunderte wartet, fängt nie an.</td></tr>
+    <tr><td><strong>Zeitpunkt</strong></td><td>Vor dem Bau festlegen, sonst misst er das Gelieferte statt des Gewollten.</td></tr>
+    <tr><td><strong>Ebene</strong></td><td>Nicht nur Endergebnisse: auch Werkzeugwahl und Aufbereitung der Anfrage.</td></tr>
+    <tr><td><strong>Inhalt</strong></td><td>Normal- und Grenzfälle, ungültige und manipulierte Eingaben, Übergaben an Menschen, Fälle ohne Handlungsbedarf, vier bis fünf echte Zielkonflikte.</td></tr>
+    <tr><td><strong>Eigentum</strong></td><td>Gehört Euch. Die Frage im Beschaffungsgespräch: An welchen Fällen wurde gemessen — und bekommen wir sie?</td></tr>
+   </tbody>
+  </table>
+  <div class="feld-gruppe" style="margin-top:1rem;">Zwölf Testklassen</div>
+  <table class="tbl">
+   <thead><tr><th>Test</th><th>Prüffrage</th><th>Test</th><th>Prüffrage</th></tr></thead>
+   <tbody>
+    <tr><td><strong>Funktion</strong></td><td>Erfüllt er die Aufgabe?</td><td><strong>Berechtigung</strong></td><td>Bleibt er in seinen Rechten?</td></tr>
+    <tr><td><strong>Negativ</strong></td><td>Reagiert er richtig auf ungültige Eingaben?</td><td><strong>Manipulation</strong></td><td>Befolgt er eingeschleuste Anweisungen?</td></tr>
+    <tr><td><strong>Grenzwert</strong></td><td>Greifen Schwellen exakt?</td><td><strong>Werkzeugfehler</strong></td><td>Reagiert er kontrolliert auf Ausfälle?</td></tr>
+    <tr><td><strong>Quelle</strong></td><td>Nutzt er nur zulässige Quellen?</td><td><strong>Wiederholung</strong></td><td>Ist das Verhalten stabil?</td></tr>
+    <tr><td><strong>Erfindung</strong></td><td>Erfindet er Fakten oder Belege?</td><td><strong>Regression</strong></td><td>Hält die Qualität nach Änderungen?</td></tr>
+    <tr><td><strong>Konflikt</strong></td><td>Erkennt er Widersprüche?</td><td><strong>Abnahme</strong></td><td>Erfüllt er den fachlichen Zweck?</td></tr>
+   </tbody>
+  </table>
+  <div class="feld-gruppe" style="margin-top:1rem;">Wann ein Regressionstest nötig ist</div>
+  <table class="tbl">
+   <thead><tr><th>Änderung</th><th>Regression?</th><th>Mindestumfang</th></tr></thead>
+   <tbody>
+    <tr><td>Redaktionelle Textänderung</td><td>im Einzelfall</td><td>Kurztest, Stichprobe</td></tr>
+    <tr><td>Anweisungslogik geändert</td><td>ja</td><td>Vollständige fachliche Regression</td></tr>
+    <tr><td>Modell gewechselt</td><td>ja</td><td>Vollständige Regression, Sicherheitstests, Zielkonflikt-Fälle</td></tr>
+    <tr><td>Neues Werkzeug, erweiterte Rechte</td><td>ja</td><td>Funktion, Berechtigung, Sicherheit</td></tr>
+    <tr><td>Neue Quelle</td><td>ja</td><td>Quellen- und Konflikttest</td></tr>
+    <tr><td>Schwellenwert, Ausgabeformat</td><td>ja</td><td>Grenzwert- bzw. Schnittstellentest, Fachabnahme</td></tr>
+   </tbody>
+  </table>
+  <p class="einordnung">Zielkonflikt-Fälle, weil sich über Modellversionen verschieben kann, wie ein Modell zwischen zwei berechtigten Anliegen abwägt — in einer Untersuchung gerade in risikoarmen Fällen (Mitic u. a., ohne Begutachtung).</p>
  </div>
- <div class="feld-gruppe" style="margin-top:1rem;">Prüfbestand und Ergebnis</div>
- <table class="tbl form">
-  <thead><tr><th style="width:7%;">Nr.</th><th>Vorgang (Eingabe)</th><th>Erwartetes Ergebnis</th><th style="width:14%;">Prüfebene</th><th>Ergebnis des Agenten</th><th style="width:7%;">✓</th></tr></thead>
-  <tbody>
-   <tr><td class="nr">01</td><td></td><td></td><td></td><td></td><td></td></tr>
-   <tr><td class="nr">02</td><td></td><td></td><td></td><td></td><td></td></tr>
-   <tr><td class="nr">03</td><td></td><td></td><td></td><td></td><td></td></tr>
-   <tr><td class="nr">04</td><td></td><td></td><td></td><td></td><td></td></tr>
-   <tr><td class="nr">05</td><td></td><td></td><td></td><td></td><td></td></tr>
-   <tr><td class="nr">06</td><td></td><td></td><td></td><td></td><td></td></tr>
-   <tr><td class="nr">07</td><td></td><td></td><td></td><td></td><td></td></tr>
-   <tr><td class="nr">08</td><td></td><td></td><td></td><td></td><td></td></tr>
-   <tr><td class="nr">09</td><td></td><td></td><td></td><td></td><td></td></tr>
-   <tr><td class="nr">10</td><td></td><td></td><td></td><td></td><td></td></tr>
-   <tr><td class="nr">R1</td><td></td><td>Datenlage zu dünn — nichts tun</td><td></td><td></td><td></td></tr>
-   <tr><td class="nr">R2</td><td></td><td>Ausnahme von der Regel — nichts tun</td><td></td><td></td><td></td></tr>
-   <tr><td class="nr">R3</td><td></td><td>Nicht zuständig — nichts tun</td><td></td><td></td><td></td></tr>
-  </tbody>
- </table>
- <p style="font-size:12px;color:var(--muted);">Prüfebene: Endergebnis, Werkzeugwahl oder Aufbereitung der Anfrage — mindestens zwei Fälle sollten keine Endergebnis-Fälle sein. Treffer von zehn: ____ · nach der Änderung: ____ · Welche Fälle kippten?</p>
- <div class="note"><strong>Drei Prüffragen an Euer Ergebnis.</strong> ① Könnte ein anderes Team Euren Agenten allein aus Eurer Konkretisierung nachbauen? ② Ist an jeder Stelle klar, wo der Mensch entscheidet und wo der Agent nur vorbereitet? ③ Welche Leitplanke fehlt im ursprünglichen Auftragstext noch? Tipp: Die Agentenvorlagen großer Anbieter zeigen, welche Quellen, Schnittstellen und Ausgabeformate sich sinnvoll einbinden lassen — auch wenn Ihr sie nicht nutzt.</div>
+</div>
+
+<div class="section">
+ <div class="section-title">Anhang B · Sieben Risiken, die fast jeder Agent hat</div>
+ <div class="card">
+  <table class="tbl">
+   <thead><tr><th>Risiko</th><th>Vorbeugend</th><th>Erkennend</th></tr></thead>
+   <tbody>
+    <tr><td><strong>Erfundene Aussage</strong></td><td>Quellenpflicht, strukturierte Anweisung</td><td>Stichprobe, Faktentest</td></tr>
+    <tr><td><strong>Eingeschleuste Anweisung</strong></td><td>Anweisung und Fremdinhalt trennen, Werkzeuge begrenzen</td><td>Sicherheitstest, Protokoll</td></tr>
+    <tr><td><strong>Zu weite Befugnis</strong></td><td>Geringste Rechte, menschliche Freigabe</td><td>Aktionsprotokoll</td></tr>
+    <tr><td><strong>Fehlerhafte Quelle</strong></td><td>Positivliste, Aktualitätsregel</td><td>Quellenüberwachung</td></tr>
+    <tr><td><strong>Fehlender Kontext</strong></td><td>Pflichtfelder, Validierung</td><td>Negativtests</td></tr>
+    <tr><td><strong>Endlosschleife</strong></td><td>Höchstzahl Durchläufe, Zeitgrenze</td><td>Laufzeitüberwachung</td></tr>
+    <tr><td><strong>Kostenüberschreitung</strong></td><td>Feste Obergrenzen</td><td>Kostenüberwachung</td></tr>
+   </tbody>
+  </table>
+  <p style="margin-top:.5rem;">Der Grundbestand für die Risiko- und Kontrollmatrix; die Risiken des konkreten Falls ergeben sich aus dem Auftrag. Die sicherheitsbezogenen Risiken nach OWASP stehen im Reiter <em>Governance &amp; Risiken</em>.</p>
+ </div>
+</div>
+
+<div class="section">
+ <div class="section-title">Anhang C · Drei Befunde aus der Produktdokumentation</div>
+ <div class="card">
+  <p>Am Beispiel eines großen Anbieters (geprüft am 05.10.2026), bei anderen Werkzeugen ebenso zu prüfen:</p>
+  <ul class="checkliste">
+   <li><strong>Agenteneigene Verbindungen teilen Rechte:</strong> Wer den Agenten startet, handelt mit den Rechten des hinterlegten Kontos. Empfehlung des Herstellers: Dienstkonto mit eng geschnittenen Rechten statt persönlichem Konto.</li>
+   <li><strong>Einschränkungen begrenzen die Anfrage, nicht die Antwort:</strong> Ein Suchverbot für „vertraulich“ verhindert nicht, dass eine solche Nachricht über eine erlaubte Aktion zurückkommt.</li>
+   <li><strong>Eingebaute Auswertungen zählen Nutzung, nicht Richtigkeit:</strong> Läufe und Nutzende, weder Fehler noch verweigerte Freigaben.</li>
+  </ul>
+  <div class="src-row"><span class="src-chip"><a href="https://help.openai.com/en/articles/20001143-chatgpt-workspace-agents-for-enterprise-and-business" target="_blank" rel="noopener">OpenAI Help Center — Workspace Agents</a></span></div>
+ </div>
+</div>
+
+<div class="section">
+ <div class="section-title">Anhang D · Fallbeispiel: Betrieb unter Aufsicht</div>
+ <div class="card">
+  <p>Der digitale Risikoanalyst, den die Investmentgesellschaft Millennium mit Anthropic entwickelt, protokolliert laut Anbieter den Begründungsweg, erprobt Aktionen zuerst abgeschottet, lässt Entscheidungen von Fachleuten freigeben und testet neue Modelle laufend. Herstellerangabe, nicht unabhängig geprüft.</p>
+  <div class="src-row"><span class="src-chip"><a href="https://claude.com/blog/millennium-and-anthropic-are-building-a-digital-risk-analyst-with-claude" target="_blank" rel="noopener">Anthropic — Millennium (06.08.2026)</a></span><span class="src-chip"><a href="https://www.mlp.com/life-at-millennium/millennium-and-anthropic-to-co-develop-ai-powered-digital-risk-analyst/" target="_blank" rel="noopener">Millennium — Mitteilung (August 2026)</a></span></div>
+ </div>
 </div>
 
 </div>
@@ -907,6 +860,21 @@ a{color:var(--accent);}a:hover{text-decoration:underline;}
 <div class="section">
  <div class="section-title">Quellenverzeichnis</div>
 
+
+ <div class="card">
+  <div class="feld-gruppe">Aktuelle Trends (Stand 12.10.2026)</div>
+  <ul>
+   <li><a href="https://www.anthropic.com/research/investigating-unintended-model-actions" target="_blank" rel="noopener">Anthropic — Investigating unintended model actions</a> (09.10.2026) · Selbstauskunft · <a href="https://thehackernews.com/2026/10/anthropic-cuts-live-internet-access-for.html" target="_blank" rel="noopener">The Hacker News</a> (10.10.2026)</li>
+   <li><a href="https://www.pymnts.com/news/artificial-intelligence/2026/white-house-says-all-ai-companies-must-report-security-incidents/" target="_blank" rel="noopener">PYMNTS — White House Says All AI Companies Must Report Security Incidents</a> (nach Axios) · <a href="https://www.inquirer.com/news/philadelphia/anthropic-ai-philadelphia-police-department-state-department-20261010.html" target="_blank" rel="noopener">Philadelphia Inquirer</a> (10.10.2026)</li>
+   <li><a href="https://www.unite.ai/openai-launches-misalignment-reporting-framework-with-six-incident-reports/" target="_blank" rel="noopener">Unite.AI — OpenAI launches misalignment reporting framework</a> (16.09.2026) · <a href="https://forkast.news/openai-formalizes-misalignment-disclosure-six-incident-reports-mark-a-shift-from-promises-to-infrastructure/" target="_blank" rel="noopener">Forkast</a></li>
+   <li><a href="https://www.aepd.es/prensa-y-comunicacion/blog/primera-notiviacion-brecha-datos-personales-causada-por-ataque-ejecutado-mediante-agente-ia" target="_blank" rel="noopener">AEPD — erste Meldung einer Datenschutzverletzung durch einen KI-Agenten</a> (14.09.2026) · <a href="https://www.eleconomista.es/tecnologia/noticias/14014370/09/26/espana-registra-la-primera-brecha-de-seguridad-provocada-por-un-agente-de-ia.html" target="_blank" rel="noopener">elEconomista</a></li>
+   <li><a href="https://www.greynoise.io/blog/ai-orchestrated-campaign-against-papercut-ng-mf" target="_blank" rel="noopener">GreyNoise — AI-orchestrated campaign against PaperCut NG/MF</a> (10.09.2026) · <a href="https://www.theregister.com/security/2026/09/10/hundreds-of-ai-agents-helped-papercut-attacker-hit-395-orgs-and-some-went-off-script/" target="_blank" rel="noopener">The Register</a></li>
+   <li><a href="https://www.anthropic.com/threat-intelligence-report-september-2026" target="_blank" rel="noopener">Anthropic — Detecting and countering misuse of AI</a> (10.09.2026) · Selbstauskunft · <a href="https://technode.global/2026/09/11/anthropic-ai-orchestrated-cyberattacks-model-distillation/" target="_blank" rel="noopener">TechNode Global</a></li>
+   <li><a href="https://www.euronews.com/next/2026/09/09/rogue-openai-agents-hijacked-a-german-wiki-and-it-stayed-secret-for-weeks" target="_blank" rel="noopener">Euronews — Rogue OpenAI agents hijacked a German wiki</a> (09.09.2026) · <a href="https://digital-strategy.ec.europa.eu/en/library/ai-act-commission-publishes-reporting-template-serious-incidents-involving-general-purpose-ai" target="_blank" rel="noopener">EU-Kommission — Meldevorlage für schwerwiegende Vorfälle bei GPAI-Modellen</a></li>
+   <li><a href="https://www.anthropic.com/news/model-hardware-standard-research-preview" target="_blank" rel="noopener">Anthropic — Model Hardware Standard, Research Preview</a> (27.08.2026) · <a href="https://www.cnbc.com/2026/08/27/anthropic-pushes-into-physical-world-with-new-standard-to-help-ai-agents-operate-machines.html" target="_blank" rel="noopener">CNBC</a> · <a href="https://www.orrick.com/en/Insights/2026/07/EU-AI-Act-Update-Digital-Omnibus-Finalizes-8-Compliance-Changes" target="_blank" rel="noopener">Orrick — Digital Omnibus</a></li>
+   <li>UN-Gremium, METR und OpenAI zum Hugging-Face-Vorfall: siehe Gruppen „Forschung“ und „Vorfälle“</li>
+  </ul>
+ </div>
  <div class="card">
   <div class="feld-gruppe">Rahmenwerke, Behörden, Standardisierung</div>
   <ul>

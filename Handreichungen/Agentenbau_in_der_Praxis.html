@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agentenbau in der Praxis · Arbeitsblatt · KI-Manager:in</title>
+<style>
+:root{--ink:#1a1a18;--paper:#f8f6f1;--card:#ffffff;--rule:#d5d0c5;--muted:#6b6b60;--accent:#0a4a7a;--teal:#0a6b6b;--green:#2a5c3f;--amber:#7a4a00;--red:#6a1a1a;--blue:#1a3a7a;--purple:#5a3a7a;--phase:#f2f0eb;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'DM Sans',system-ui,sans-serif;background:var(--paper);color:var(--ink);font-size:14px;line-height:1.65;}
+.page{max-width:860px;margin:0 auto;padding:2.5rem 2rem 5rem;}
+
+.ho-header{border-bottom:3px solid var(--ink);padding-bottom:1.3rem;margin-bottom:1.6rem;display:grid;grid-template-columns:1fr auto;gap:1rem;align-items:end;}
+.ho-eyebrow{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-bottom:.5rem;}
+.ho-title{font-family:'Playfair Display',Georgia,serif;font-size:clamp(1.6rem,4.5vw,2.3rem);line-height:1.12;}
+.ho-title em{font-style:italic;color:var(--teal);}
+.print-btn{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1px;text-transform:uppercase;padding:6px 14px;border:1px solid var(--rule);border-radius:4px;background:none;color:var(--muted);cursor:pointer;}
+.print-btn:hover{border-color:var(--accent);color:var(--accent);}
+
+.section{margin-bottom:1.6rem;}
+.section-title{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--rule);padding-bottom:.4rem;margin-bottom:.9rem;}
+
+.auftrag{background:var(--card);border:1px solid var(--rule);border-left:4px solid var(--teal);border-radius:0 8px 8px 0;padding:1rem 1.2rem;margin-bottom:1.2rem;}
+.auftrag-label{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--teal);margin-bottom:.35rem;font-weight:600;}
+.auftrag p{font-size:13.5px;margin-bottom:.5rem;}
+.auftrag p:last-child{margin-bottom:0;}
+
+.meta-row{display:grid;grid-template-columns:1fr 1fr;gap:.8rem;margin-bottom:1.2rem;}
+@media(max-width:640px){.meta-row{grid-template-columns:1fr;}}
+.meta-f{border:1px solid var(--rule);border-radius:8px;background:var(--card);padding:.6rem .85rem;}
+.meta-l{font-family:'DM Mono',monospace;font-size:8.5px;letter-spacing:1.6px;text-transform:uppercase;color:var(--muted);margin-bottom:.2rem;}
+
+.tbl{width:100%;border-collapse:collapse;font-size:12.5px;margin:.5rem 0 .8rem;background:var(--card);}
+.tbl th{font-family:'DM Mono',monospace;font-size:8.5px;letter-spacing:1.4px;text-transform:uppercase;background:var(--phase);padding:.45rem .6rem;text-align:left;border:1px solid var(--rule);color:var(--muted);}
+.tbl td{padding:.45rem .6rem;border:1px solid var(--rule);vertical-align:top;line-height:1.5;}
+
+.hilfe{background:var(--phase);border-radius:8px;padding:.85rem 1.05rem;margin-bottom:1rem;font-size:12.5px;line-height:1.6;}
+.hilfe-t{font-family:'DM Mono',monospace;font-size:8.5px;letter-spacing:1.6px;text-transform:uppercase;color:var(--muted);margin-bottom:.35rem;font-weight:600;}
+
+.gate{border:1px solid var(--rule);border-left:5px solid var(--rule);border-radius:0 8px 8px 0;background:var(--card);padding:.9rem 1.1rem;margin-bottom:.9rem;break-inside:avoid;}
+.gate.g0{border-left-color:var(--purple);}
+.gate.g1{border-left-color:var(--blue);}
+.gate.g2{border-left-color:var(--amber);}
+.gate.g3{border-left-color:var(--green);}
+.gate-h{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1.6px;text-transform:uppercase;font-weight:700;margin-bottom:.2rem;}
+.gate.g0 .gate-h{color:var(--purple);}
+.gate.g1 .gate-h{color:var(--blue);}
+.gate.g2 .gate-h{color:var(--amber);}
+.gate.g3 .gate-h{color:var(--green);}
+.gate-t{font-family:'Playfair Display',Georgia,serif;font-weight:600;font-size:15px;margin-bottom:.15rem;}
+.gate-sub{font-size:12px;color:var(--muted);margin-bottom:.7rem;}
+
+.krit{border:1px dashed var(--rule);border-radius:7px;padding:.6rem .75rem;margin-bottom:.6rem;}
+.krit:last-child{margin-bottom:0;}
+.krit-n{font-family:'DM Mono',monospace;font-size:8.5px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:.4rem;font-weight:600;}
+.f{margin-bottom:.45rem;}
+.f:last-child{margin-bottom:0;}
+.f-l{font-family:'DM Mono',monospace;font-size:8.5px;letter-spacing:1.2px;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:.1rem;}
+.f-row{display:grid;grid-template-columns:1fr 1fr;gap:.5rem;}
+@media(max-width:640px){.f-row{grid-template-columns:1fr;}}
+
+textarea,input[type=text]{width:100%;font-family:'DM Sans',system-ui,sans-serif;font-size:12.5px;line-height:1.5;color:var(--ink);background:#fdfdfb;border:none;border-bottom:1px solid var(--rule);padding:.25rem .1rem;resize:none;overflow:hidden;}
+textarea:focus,input[type=text]:focus{outline:none;border-bottom-color:var(--teal);background:#fff;}
+textarea{min-height:2.4rem;}
+
+.f.grau .f-l{color:#b3aea2;}
+.f.grau textarea{background:#f4f2ed;border-bottom-color:#e3ded4;color:#b3aea2;cursor:not-allowed;}
+.grau-hint{font-family:'DM Mono',monospace;font-size:8.5px;letter-spacing:.8px;color:#b3aea2;text-transform:uppercase;margin-top:.15rem;}.mehr .krit{margin-top:.5rem;}@media(max-width:720px){}
+.footer{margin-top:2.5rem;padding-top:.9rem;border-top:1px solid var(--rule);font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:.5px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:.5rem;}
+
+
+/* ── Priorisierung · Wirkungs-Machbarkeits-Matrix ─────── */
+.prio{border:1px solid var(--rule);border-left:5px solid var(--accent);border-radius:0 8px 8px 0;background:var(--card);padding:.9rem 1.1rem;margin-bottom:1rem;break-inside:avoid;}
+.prio-h{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1.6px;text-transform:uppercase;font-weight:700;color:var(--accent);margin-bottom:.2rem;}
+.prio-t{font-family:'Playfair Display',Georgia,serif;font-weight:600;font-size:15px;margin-bottom:.15rem;}
+.prio-sub{font-size:12px;color:var(--muted);margin-bottom:.7rem;}
+.prio-row{display:grid;grid-template-columns:1fr 1fr;gap:.7rem;margin-bottom:.55rem;}
+@media(max-width:640px){.prio-row{grid-template-columns:1fr;}}
+.prio-f{border:1px dashed var(--rule);border-radius:7px;padding:.55rem .7rem;}
+.prio-f .f-l{display:block;}
+.prio-skala{font-family:'DM Mono',monospace;font-size:8.5px;letter-spacing:.6px;color:var(--muted);text-transform:uppercase;margin-top:.15rem;}
+.prio-f input[type=number]{width:4.2rem;font-family:'DM Mono',monospace;font-size:15px;font-weight:700;color:var(--ink);background:#fdfdfb;border:none;border-bottom:1px solid var(--rule);padding:.2rem .1rem;text-align:center;}
+.prio-f input[type=number]:focus{outline:none;border-bottom-color:var(--accent);background:#fff;}
+
+/* ── Reiter ─────────────────────────────────────────── */
+.tab-leiste{display:flex;flex-wrap:wrap;gap:.3rem;margin:1.2rem 0 1.4rem;border-bottom:2px solid var(--rule);padding-bottom:0;}
+.tab-btn{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1px;text-transform:uppercase;padding:.5rem .8rem;border:1px solid var(--rule);border-bottom:none;border-radius:6px 6px 0 0;background:var(--paper);color:var(--muted);cursor:pointer;margin-bottom:-2px;line-height:1.3;}
+.tab-btn:hover{color:var(--accent);}
+.tab-btn.aktiv{background:var(--card);color:var(--ink);border-bottom:2px solid var(--card);font-weight:700;}
+.tab-btn .tb-nr{color:var(--teal);font-weight:700;margin-right:.3rem;}
+.tab-btn.aktiv .tb-nr{color:var(--teal);}
+.tab-panel{display:none;}
+.tab-panel.aktiv{display:block;}
+
+/* ── Fallkopf im Reiter ─────────────────────────────── */
+.fallkopf{background:var(--card);border:1px solid var(--rule);border-left:5px solid var(--teal);border-radius:0 8px 8px 0;padding:.9rem 1.1rem;margin-bottom:1.1rem;}
+.fallkopf-nr{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--teal);font-weight:700;margin-bottom:.25rem;}
+.fallkopf-t{font-family:'Playfair Display',Georgia,serif;font-weight:600;font-size:17px;line-height:1.2;margin-bottom:.4rem;}
+.fallkopf-txt{font-size:12.8px;line-height:1.6;color:var(--muted);}
+.fallkopf-txt a{color:var(--accent);}
+
+/* ── Gates: Kriterien ausklappbar ───────────────────── */
+.gate-det{margin-top:.6rem;}
+.gate-det>summary{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);cursor:pointer;list-style:none;padding:.35rem .6rem;border:1px dashed var(--rule);border-radius:6px;background:var(--phase);}
+.gate-det>summary::-webkit-details-marker{display:none;}
+.gate-det>summary::before{content:"+ ";font-weight:700;}
+.gate-det[open]>summary::before{content:"\2212 ";}
+.gate-det>summary:hover{color:var(--teal);border-color:var(--teal);}
+.gate-det .krit{margin-top:.6rem;}
+
+.rechtevermerk{flex-basis:100%;order:99;margin-top:.7rem;padding-top:.6rem;border-top:1px solid var(--rule);font-family:'DM Sans',sans-serif;font-size:10px;line-height:1.5;letter-spacing:0;text-transform:none;color:var(--muted);}
+
+@media print{
+ body{background:#fff;font-size:10.5pt;}
+ .page{padding:0;max-width:none;}
+ .no-print{display:none!important;}
+ .page-break{page-break-before:always;}
+ textarea,input[type=text]{background:#fff;border-bottom:1px solid #bbb;}
+ .gate,.krit,.fallkopf,.prio{break-inside:avoid;}
+ .tab-leiste{display:none!important;}
+ .tab-panel{display:none;}
+ .tab-panel.aktiv{display:block;}
+}
+/* ── Ergaenzungen fuer dieses Arbeitsblatt ──────────── */
+.wo{font-family:'DM Mono',monospace;font-size:8.5px;letter-spacing:1.2px;text-transform:uppercase;color:var(--teal);background:var(--phase);border-radius:5px;padding:.25rem .55rem;display:inline-block;margin-bottom:.5rem;line-height:1.4;}
+.warn{background:#fdf7f6;border:1px solid var(--rule);border-left:4px solid var(--red);border-radius:0 8px 8px 0;padding:.8rem 1rem;margin-bottom:1rem;font-size:12.5px;line-height:1.6;}
+.warn-t{font-family:'DM Mono',monospace;font-size:8.5px;letter-spacing:1.6px;text-transform:uppercase;color:var(--red);font-weight:700;margin-bottom:.3rem;}
+.tipp-grid{display:grid;grid-template-columns:1fr 1fr;gap:.6rem;margin-top:.6rem;}
+@media(max-width:640px){.tipp-grid{grid-template-columns:1fr;}}
+.tipp{border:1px dashed var(--rule);border-radius:7px;padding:.55rem .7rem;font-size:12.2px;line-height:1.55;break-inside:avoid;}
+.tipp b{display:block;font-size:12.6px;margin-bottom:.12rem;}
+.src-row{display:flex;flex-wrap:wrap;gap:.4rem;margin:.55rem 0 .2rem;}
+.src-chip{font-size:11.5px;border:1px solid var(--rule);border-radius:5px;padding:.3rem .55rem;background:var(--card);line-height:1.45;}
+.src-chip a{color:var(--accent);}
+.merksatz{border-left:3px solid var(--teal);padding:.2rem 0 .2rem .8rem;margin:.7rem 0;font-family:'Playfair Display',Georgia,serif;font-style:italic;font-size:14px;line-height:1.5;}
+.tbl input[type=text]{font-size:12px;}
+.tbl td.nr{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);text-align:center;width:2.2rem;}
+.zeit{font-family:'DM Mono',monospace;font-size:10px;color:var(--teal);font-weight:700;white-space:nowrap;}
+
+</style>
+</head>
+<body>
+<div class="page">
+
+ <div class="ho-header">
+  <div>
+   <div class="ho-eyebrow">KI-Manager:in &middot; Arbeitsblatt &middot; Stand 12.10.2026</div>
+   <h1 class="ho-title">Agentenbau<br><em>in der Praxis</em></h1>
+  </div>
+  <button class="print-btn no-print" onclick="window.print()">Drucken</button>
+ </div>
+
+ <nav class="tab-leiste no-print">
+  <button class="tab-btn aktiv" data-ziel="tab-ablauf">Ablauf</button>
+  <button class="tab-btn" data-ziel="tab-szenario"><span class="tb-nr">01</span>Szenario</button>
+  <button class="tab-btn" data-ziel="tab-vorlage"><span class="tb-nr">02</span>Bauvorlage</button>
+  <button class="tab-btn" data-ziel="tab-pruefbestand"><span class="tb-nr">03</span>Pr&uuml;fbestand</button>
+  <button class="tab-btn" data-ziel="tab-bau"><span class="tb-nr">04</span>Bau</button>
+  <button class="tab-btn" data-ziel="tab-pruefung"><span class="tb-nr">05</span>Pr&uuml;fung</button>
+  <button class="tab-btn" data-ziel="tab-abnahme"><span class="tb-nr">06</span>Abnahme</button>
+  <button class="tab-btn" data-ziel="tab-quellen">Quellen</button>
+ </nav>
+
+<!-- ══════════════ ABLAUF ══════════════ -->
+<section class="tab-panel aktiv" id="tab-ablauf">
+
+ <div class="auftrag">
+  <div class="auftrag-label">Der Auftrag dieser Einheit</div>
+  <p>In den kommenden zwei Stunden baut Ihr einen Agenten &mdash; nicht, um ein Werkzeug zu lernen, sondern um zu erleben, <strong>welche Entscheidungen beim Bau tats&auml;chlich anfallen</strong> und welche davon auf dem Schreibtisch der Steuerungsebene landen.</p>
+  <p>Die sieben Angaben aus der Bauvorlage sind der Leitfaden. Das Werkzeug ist austauschbar; die Angaben sind es nicht.</p>
+ </div>
+
+ <div class="warn">
+  <div class="warn-t">Zwei Bedingungen, bevor es losgeht</div>
+  <p style="margin-bottom:.4rem;"><strong>Keine echten Unternehmensdaten.</strong> Gearbeitet wird mit erfundenen oder vollst&auml;ndig anonymisierten F&auml;llen. Grund: Die Konfiguration eines geteilten Agenten ist f&uuml;r alle einsehbar, die Zugriff haben, und eine agenteneigene Verbindung kann von jeder Person genutzt werden, die den Agenten startet.</p>
+  <p><strong>Zugang vorab kl&auml;ren.</strong> Der Agentenbau ist &uuml;ber Rollenrechte gesteuert. Ohne das Recht zum Bauen l&auml;sst sich nichts anlegen. Das ist eine Frage an die Administration, nicht an den Kurs.</p>
+ </div>
+
+ <div class="section">
+  <div class="section-title">Zeitplan</div>
+  <table class="tbl">
+   <thead><tr><th style="width:15%;">Zeit</th><th style="width:28%;">Schritt</th><th>Ergebnis am Ende des Schritts</th></tr></thead>
+   <tbody>
+    <tr><td><span class="zeit">00&ndash;15</span></td><td><strong>Szenario</strong></td><td>Ein Vorgang ist gew&auml;hlt, das Ziel steht in einem Satz ohne &bdquo;und&ldquo;, die Umkehrbarkeit ist gepr&uuml;ft</td></tr>
+    <tr><td><span class="zeit">15&ndash;35</span></td><td><strong>Bauvorlage</strong></td><td>Alle sieben Angaben sind festgelegt &mdash; schriftlich, vor dem Bau</td></tr>
+    <tr><td><span class="zeit">35&ndash;50</span></td><td><strong>Pr&uuml;fbestand</strong></td><td>Mindestens zehn F&auml;lle mit bekanntem richtigem Ergebnis liegen vor</td></tr>
+    <tr><td><span class="zeit">50&ndash;85</span></td><td><strong>Bau</strong></td><td>Der Agent l&auml;uft. Werkzeuge einzeln freigegeben, Freigabepflicht gesetzt</td></tr>
+    <tr><td><span class="zeit">85&ndash;100</span></td><td><strong>Pr&uuml;fung</strong></td><td>Der Pr&uuml;fbestand ist durchgelaufen, Abweichungen sind notiert</td></tr>
+    <tr><td><span class="zeit">100&ndash;120</span></td><td><strong>Abnahme</strong></td><td>Was im eigenen Unternehmen zus&auml;tzlich n&ouml;tig w&auml;re, ist benannt</td></tr>
+   </tbody>
+  </table>
+  <div class="merksatz">Der Bau dauert eine halbe Stunde. Die Entscheidungen davor dauern l&auml;nger &mdash; und sie sind der Grund, warum Vorhaben scheitern.</div>
+ </div>
+
+ <div class="section">
+  <div class="section-title">Acht Hinweise, die w&auml;hrend der Einheit gelten</div>
+  <div class="hilfe">
+   <div class="hilfe-t">Bevor gebaut wird &mdash; drei Festlegungen</div>
+   <div class="tipp-grid">
+    <div class="tipp"><b>&#9312; Ein Ziel, ein Satz, kein &bdquo;und&ldquo;.</b> Wer das Ziel nicht in einem Satz ohne &bdquo;und&ldquo; formulieren kann, hat zwei Agenten vor sich &mdash; und sollte sie trennen.</div>
+    <div class="tipp"><b>&#9313; Erfolg definieren, bevor er gemessen wird.</b> &bdquo;Erfolgsquote&ldquo; ist keine Kennzahl, solange nicht festgelegt ist, was ein erfolgreich erledigter Vorgang ist. Das ist Arbeit des Fachbereichs.</div>
+    <div class="tipp"><b>&#9314; Klein anfangen hei&szlig;t umkehrbar anfangen.</b> Der erste Agent &uuml;bernimmt einen Vorgang, dessen Fehler sich innerhalb eines Tages folgenlos korrigieren l&auml;sst.</div>
+   </div>
+  </div>
+  <div class="hilfe">
+   <div class="hilfe-t">Beim Beauftragen &mdash; drei Fragen</div>
+   <div class="tipp-grid">
+    <div class="tipp"><b>&#9315; Werkzeuge einzeln freigeben, nicht als Paket.</b> &bdquo;Der Agent hat Zugriff auf das Kundensystem&ldquo; ist keine Freigabe, sondern eine Blankovollmacht.</div>
+    <div class="tipp"><b>&#9316; Kl&auml;ren, was passiert, wenn etwas schiefgeht.</b> Weitermachen, abbrechen oder &uuml;bergeben? Wer das nicht beantworten kann, hat einen Agenten, der im Zweifel weitermacht.</div>
+    <div class="tipp"><b>&#9317; Ged&auml;chtnis ist eine Datenschutzfrage.</b> Was ein Agent sich merkt, wird gespeichert &mdash; mit Zweckbindung, L&ouml;schfristen, Auskunftsrechten.</div>
+   </div>
+  </div>
+  <div class="hilfe" style="margin-bottom:0;">
+   <div class="hilfe-t">Im Betrieb &mdash; zwei Dinge von Tag eins an</div>
+   <div class="tipp-grid">
+    <div class="tipp"><b>&#9318; Kosten je Vorgang messen.</b> Ein Agent erledigt eine Aufgabe nicht mit einem Modellaufruf, sondern mit einer Kette. Wer erst nach der ersten Rechnung hinsieht, hat ein Quartal verloren.</div>
+    <div class="tipp"><b>&#9319; Die Kette protokollieren, nicht das Ergebnis.</b> Welches Werkzeug, mit welchen Parametern, in welcher Reihenfolge. Ohne diese Spur l&auml;sst sich kein Vorfall rekonstruieren.</div>
+   </div>
+  </div>
+ </div>
+
+</section>
+<!-- ══════════════ 01 SZENARIO ══════════════ -->
+<section class="tab-panel" id="tab-szenario">
+
+ <div class="fallkopf">
+  <div class="fallkopf-nr">Schritt 01 &middot; 00&ndash;15 Minuten</div>
+  <div class="fallkopf-t">Szenario und Ziel</div>
+  <div class="fallkopf-txt">W&auml;hlt einen wiederkehrenden Vorgang aus Eurem Arbeitsalltag &mdash; einen, der oft genug vorkommt, dass sich Automatisierung lohnt, und dessen Fehler sich innerhalb eines Tages folgenlos korrigieren lassen &mdash; oder einen der f&uuml;nf Auftr&auml;ge aus den Agenten-Szenarien (Ordner <em>Use Cases</em>). Arbeitet mit erfundenen oder anonymisierten Daten.</div>
+ </div>
+
+ <div class="meta-row">
+  <div class="meta-f"><div class="meta-l">Gruppe / Name</div><input type="text"></div>
+  <div class="meta-f"><div class="meta-l">Datum</div><input type="text"></div>
+ </div>
+
+ <div class="gate g0">
+  <div class="gate-h">A &middot; Der Vorgang</div>
+  <div class="gate-t">Was wird heute von Hand gemacht?</div>
+  <div class="gate-sub">Beschreibt den Ist-Zustand in zwei bis drei S&auml;tzen: Wer macht es, wie oft, womit.</div>
+  <div class="f"><span class="f-l">Vorgang im Ist-Zustand</span><textarea rows="3"></textarea></div>
+  <div class="f-row">
+   <div class="f"><span class="f-l">Wie oft kommt der Vorgang vor?</span><textarea rows="1"></textarea></div>
+   <div class="f"><span class="f-l">Wie lange dauert er heute je Fall?</span><textarea rows="1"></textarea></div>
+  </div>
+ </div>
+
+ <div class="gate g1">
+  <div class="gate-h">B &middot; Das Ziel</div>
+  <div class="gate-t">Ein Satz, kein &bdquo;und&ldquo;</div>
+  <div class="gate-sub">Die Probe: Steht ein &bdquo;und&ldquo; im Satz, sind es zwei Agenten. Trennt sie.</div>
+  <div class="f"><span class="f-l">Ziel des Agenten &mdash; ein Satz</span><textarea rows="2"></textarea></div>
+  <div class="f"><span class="f-l">Probe bestanden? Falls nein: Welcher Teil wird abgespalten und auf sp&auml;ter verschoben?</span><textarea rows="2"></textarea></div>
+ </div>
+
+ <div class="gate g2">
+  <div class="gate-h">C &middot; Erfolg</div>
+  <div class="gate-t">Was ist ein erfolgreich erledigter Vorgang?</div>
+  <div class="gate-sub">Diese Festlegung ist Arbeit des Fachbereichs. Ohne sie ist jede sp&auml;tere Erfolgsquote eine Zahl ohne Bezugsgr&ouml;&szlig;e.</div>
+  <div class="f"><span class="f-l">Ein Vorgang gilt als erfolgreich erledigt, wenn &hellip;</span><textarea rows="2"></textarea></div>
+  <div class="f"><span class="f-l">Wer im Unternehmen entscheidet das &mdash; namentlich oder nach Rolle?</span><textarea rows="1"></textarea></div>
+ </div>
+
+ <div class="gate g3">
+  <div class="gate-h">D &middot; Umkehrbarkeit und Risiko</div>
+  <div class="gate-t">Was passiert im Fehlerfall?</div>
+  <div class="gate-sub">Nicht die Wichtigkeit entscheidet, ob ein Agent in Frage kommt, sondern Schwere und Umkehrbarkeit des Fehlers.</div>
+  <div class="f"><span class="f-l">Welcher Fehler ist der wahrscheinlichste &mdash; und wie zeigt er sich?</span><textarea rows="2"></textarea></div>
+  <div class="f-row">
+   <div class="f"><span class="f-l">Wie lange bleibt der Fehler unbemerkt?</span><textarea rows="1"></textarea></div>
+   <div class="f"><span class="f-l">Wie wird er korrigiert &mdash; und von wem?</span><textarea rows="1"></textarea></div>
+  </div>
+  <div class="f"><span class="f-l">Umkehrbar innerhalb eines Tages? Falls nein: Ist das noch der richtige erste Agent?</span><textarea rows="2"></textarea></div>
+ </div>
+
+</section>
+
+<!-- ══════════════ 02 BAUVORLAGE ══════════════ -->
+<section class="tab-panel" id="tab-vorlage">
+
+ <div class="fallkopf">
+  <div class="fallkopf-nr">Schritt 02 &middot; 15&ndash;35 Minuten</div>
+  <div class="fallkopf-t">Die sieben Angaben</div>
+  <div class="fallkopf-txt">Keine davon ist ein technisches Detail. Jede ist eine Entscheidung &mdash; und jede hat im Werkzeug einen Ort, an dem sie gesetzt wird. Der Hinweis in Gro&szlig;buchstaben nennt diesen Ort.</div>
+ </div>
+
+ <div class="gate g0">
+  <div class="gate-h">Angabe 1</div>
+  <div class="gate-t">Quellen</div>
+  <div class="gate-sub">Welche Datenquellen darf der Agent lesen &mdash; und welche ausdr&uuml;cklich nicht? Jede Quelle bringt ihre eigene Rechtslage mit.</div>
+  <div class="wo">Im Werkzeug: Abschnitt Werkzeuge &middot; Apps und Konnektoren, eigene MCP-Verbindungen, hochgeladene Dateien</div>
+  <div class="f"><span class="f-l">Zugelassene Quellen &mdash; einzeln aufz&auml;hlen</span><textarea rows="2"></textarea></div>
+  <div class="f"><span class="f-l">Ausdr&uuml;cklich ausgeschlossene Quellen</span><textarea rows="2"></textarea></div>
+  <div class="f"><span class="f-l">Authentifizierung je Verbindung: Konto der nutzenden Person oder agenteneigenes Konto? Bei agenteneigenem Konto &mdash; welches Dienstkonto, mit welchem Rechteumfang?</span><textarea rows="2"></textarea></div>
+  <div class="krit">
+   <div class="krit-n">Warum das eine Managemententscheidung ist</div>
+   <p style="font-size:12.3px;line-height:1.55;">Bei einem agenteneigenen Konto handelt jede Person, die den Agenten startet, mit den Rechten dieses Kontos. Ein pers&ouml;nliches Konto an dieser Stelle macht die eigenen Zugriffsrechte f&uuml;r alle nutzbar, die den Agenten aufrufen. Der Hersteller empfiehlt daf&uuml;r ein Dienstkonto mit eng geschnittenen Rechten.</p>
+  </div>
+ </div>
+
+ <div class="gate g1">
+  <div class="gate-h">Angabe 2</div>
+  <div class="gate-t">Pr&uuml;fintervall</div>
+  <div class="gate-sub">Wie oft l&auml;uft er? Der Takt bestimmt Kosten und Aktualit&auml;t &mdash; und ob ein Fehler Stunden oder Wochen unbemerkt bleibt.</div>
+  <div class="wo">Im Werkzeug: Kan&auml;le &middot; Zeitplan (Takt) oder ereignisgesteuert &uuml;ber Chat, Chatdienst und Programmierschnittstelle</div>
+  <div class="f-row">
+   <div class="f"><span class="f-l">Takt (z.&nbsp;B. t&auml;glich 07:00, w&ouml;chentlich, bei Eingang)</span><textarea rows="1"></textarea></div>
+   <div class="f"><span class="f-l">Wer merkt es, wenn ein Lauf ausf&auml;llt?</span><textarea rows="1"></textarea></div>
+  </div>
+  <div class="f"><span class="f-l">Begr&uuml;ndung des Takts &mdash; woraus ergibt er sich fachlich?</span><textarea rows="2"></textarea></div>
+ </div>
+
+ <div class="gate g2">
+  <div class="gate-h">Angabe 3</div>
+  <div class="gate-t">Bewertungsmodell</div>
+  <div class="gate-sub">Nach welchen Kriterien gewichtet er? Hier steckt die eigentliche Fachlichkeit &mdash; und der Ort, an dem sich Verzerrung einnistet.</div>
+  <div class="wo">Im Werkzeug: Anweisungstext, erg&auml;nzende Arbeitsanweisungen, Wahl von Modell und Denkaufwand</div>
+  <div class="f"><span class="f-l">Kriterien und ihre Gewichtung</span><textarea rows="3"></textarea></div>
+  <div class="f"><span class="f-l">Welche Gruppe von F&auml;llen k&ouml;nnte durch diese Kriterien systematisch benachteiligt werden?</span><textarea rows="2"></textarea></div>
+ </div>
+
+ <div class="gate g3">
+  <div class="gate-h">Angabe 4</div>
+  <div class="gate-t">Schwellenwert</div>
+  <div class="gate-sub">Ab wann meldet er sich? Zu niedrig erzeugt Alarmm&uuml;digkeit, zu hoch &uuml;bersieht F&auml;lle. Dieselbe Logik wie beim Regler zwischen Precision (Pr&auml;zision) und Recall (Sensitivit&auml;t).</div>
+  <div class="wo">Im Werkzeug: Anweisungstext &middot; und als harte Grenze die Freigabepflicht f&uuml;r schreibende Aktionen</div>
+  <div class="f"><span class="f-l">Schwellenwert und Einheit</span><textarea rows="1"></textarea></div>
+  <div class="f-row">
+   <div class="f"><span class="f-l">Welcher Fehler ist teurer &mdash; falscher Alarm oder &uuml;bersehener Fall?</span><textarea rows="2"></textarea></div>
+   <div class="f"><span class="f-l">Wie viele Meldungen pro Woche sind zumutbar, bevor niemand mehr hinsieht?</span><textarea rows="2"></textarea></div>
+  </div>
+ </div>
+
+ <div class="gate g0">
+  <div class="gate-h">Angabe 5</div>
+  <div class="gate-t">Ausgabeformat</div>
+  <div class="gate-sub">Was liefert er ab und an wen? Ein Bericht, der niemanden erreicht, ist keine Automatisierung.</div>
+  <div class="wo">Im Werkzeug: Anweisungstext und Kanal &middot; Chat, Chatdienst oder Programmierschnittstelle</div>
+  <div class="f"><span class="f-l">Form der Ausgabe</span><textarea rows="2"></textarea></div>
+  <div class="f"><span class="f-l">Empf&auml;nger &mdash; Rolle, nicht Person</span><textarea rows="1"></textarea></div>
+  <div class="krit">
+   <div class="krit-n">Einschr&auml;nkung, die vor der Planung zu kennen ist</div>
+   <p style="font-size:12.3px;line-height:1.55;">Wird der Agent &uuml;ber die Programmierschnittstelle angesto&szlig;en, nimmt diese den Lauf nur in die Warteschlange und best&auml;tigt die Annahme. Sie gibt keine Laufkennung zur&uuml;ck, und die Antwort des Agenten ist &uuml;ber diesen Weg derzeit nicht abrufbar. Wer die Ausgabe weiterverarbeiten will, braucht einen anderen Kanal.</p>
+  </div>
+ </div>
+
+ <div class="gate g1">
+  <div class="gate-h">Angabe 6</div>
+  <div class="gate-t">Zul&auml;ssige Aktionen</div>
+  <div class="gate-sub">Was darf er selbst tun, was nur vorbereiten? Die Trennlinie ist Umkehrbarkeit, nicht Wichtigkeit.</div>
+  <div class="wo">Im Werkzeug: Freigabe schreibender Aktionen (immer fragen / nie fragen / fallweise) und Einschr&auml;nkungen je Konnektoraktion</div>
+  <div class="f"><span class="f-l">Aktionen, die der Agent selbst ausf&uuml;hren darf</span><textarea rows="2"></textarea></div>
+  <div class="f"><span class="f-l">Aktionen, die er nur vorbereiten darf &mdash; Freigabe durch wen?</span><textarea rows="2"></textarea></div>
+  <div class="f"><span class="f-l">Einschr&auml;nkungen je Aktion (z.&nbsp;B. Versand nur an eine Domain, Lesen nur aus einem bestimmten Dokument)</span><textarea rows="2"></textarea></div>
+  <div class="krit">
+   <div class="krit-n">Die Grenze der Einschr&auml;nkung &mdash; und warum sie im Kurs wichtig ist</div>
+   <p style="font-size:12.3px;line-height:1.55;">Solche Einschr&auml;nkungen regeln, <strong>was der Agent von einer Verbindung verlangen darf</strong> &mdash; nicht, <strong>was die Verbindung zur&uuml;ckgibt</strong>. Der Hersteller nennt daf&uuml;r selbst ein Beispiel: Man kann einem Agenten verbieten, Postf&auml;cher nach dem Wort &bdquo;vertraulich&ldquo; zu durchsuchen; eine Nachricht, die dieses Wort enth&auml;lt, kann er &uuml;ber eine erlaubte Aktion dennoch erhalten. Die Einschr&auml;nkung ist eine Grenze f&uuml;r die Anfrage, kein Filter f&uuml;r die Antwort.</p>
+  </div>
+  <div class="f"><span class="f-l">Welche Daten k&ouml;nnten &uuml;ber eine <em>erlaubte</em> Aktion zur&uuml;ckkommen, obwohl sie nicht gewollt sind?</span><textarea rows="2"></textarea></div>
+ </div>
+
+ <div class="gate g2">
+  <div class="gate-h">Angabe 7</div>
+  <div class="gate-t">Pr&uuml;fbestand</div>
+  <div class="gate-sub">Woran messt Ihr, dass er richtig arbeitet? Zwanzig bis f&uuml;nfzig echte Vorg&auml;nge mit bekanntem richtigem Ergebnis &mdash; festgelegt, bevor gebaut wird.</div>
+  <div class="wo">Im Werkzeug nicht vorgesehen &mdash; der Pr&uuml;fbestand wird au&szlig;erhalb gef&uuml;hrt. Weiter im Reiter Pr&uuml;fbestand</div>
+  <div class="f"><span class="f-l">Kurzform: Woher kommen die Pr&uuml;ff&auml;lle, und wer kennt das richtige Ergebnis?</span><textarea rows="2"></textarea></div>
+ </div>
+
+ <div class="hilfe">
+  <div class="hilfe-t">Ged&auml;chtnis &mdash; die achte Frage, die keine der sieben Angaben abdeckt</div>
+  Ob ein Agent sich zwischen den L&auml;ufen etwas merkt, ist einzeln einstellbar. Sobald er es tut, entsteht eine Datenhaltung mit allem, was daran h&auml;ngt: Zweckbindung, L&ouml;schfristen, Auskunftsrechte.
+  <div class="f" style="margin-top:.5rem;"><span class="f-l">Ged&auml;chtnis eingeschaltet? Was genau soll er sich merken &mdash; und wie lange?</span><textarea rows="2"></textarea></div>
+ </div>
+
+</section>
+<!-- ══════════════ 03 PRUEFBESTAND ══════════════ -->
+<section class="tab-panel" id="tab-pruefbestand">
+
+ <div class="fallkopf">
+  <div class="fallkopf-nr">Schritt 03 &middot; 35&ndash;50 Minuten</div>
+  <div class="fallkopf-t">Pr&uuml;fbestand anlegen</div>
+  <div class="fallkopf-txt">Ein Pr&uuml;fbestand ist keine Zielvorgabe an den Agenten, sondern ein Messinstrument: eine feste Sammlung echter Vorg&auml;nge, bei denen das richtige Ergebnis bekannt ist. Er l&auml;uft nach jeder &Auml;nderung durch.</div>
+ </div>
+
+ <div class="hilfe">
+  <div class="hilfe-t">Vier Merkmale, an denen ein Pr&uuml;fbestand scheitert oder tr&auml;gt</div>
+  <table class="tbl" style="margin-bottom:0;">
+   <thead><tr><th style="width:18%;">Merkmal</th><th>Was zu beachten ist</th></tr></thead>
+   <tbody>
+    <tr><td><strong>Umfang</strong></td><td>Zwanzig bis f&uuml;nfzig F&auml;lle reichen f&uuml;r den Anfang. Der verbreitete Irrtum ist, man brauche Hunderte &mdash; dadurch wird gar nicht erst angefangen</td></tr>
+    <tr><td><strong>Zeitpunkt</strong></td><td>Vor dem Bau festlegen. Ein Pr&uuml;fbestand, der nach der Lieferung entsteht, misst das Gelieferte und nicht das Gewollte</td></tr>
+    <tr><td><strong>Ebene</strong></td><td>Nicht nur das Endergebnis. Bei einer Handlungskette braucht es F&auml;lle je Schritt &mdash; wurde das richtige Werkzeug gew&auml;hlt, die Anfrage richtig aufbereitet</td></tr>
+    <tr><td><strong>Eigentum</strong></td><td>Die entscheidende Frage. Wer den Pr&uuml;fbestand des Dienstleisters &uuml;bernimmt, l&auml;sst sich vom Lieferanten sagen, ob die Lieferung in Ordnung ist</td></tr>
+   </tbody>
+  </table>
+ </div>
+
+ <div class="merksatz">Der Pr&uuml;fbestand ist die Abnahmegrundlage. Er ist zugleich das, woran eine sp&auml;tere &Auml;nderung gemessen wird &mdash; und das, woran ein Dienstleister festgehalten wird.</div>
+
+ <div class="section">
+  <div class="section-title">Zehn F&auml;lle f&uuml;r heute &mdash; zwanzig bis f&uuml;nfzig f&uuml;r den Ernstfall</div>
+  <table class="tbl">
+   <thead><tr><th style="width:4%;"></th><th style="width:40%;">Vorgang (Eingabe)</th><th style="width:40%;">Bekanntes richtiges Ergebnis</th><th style="width:16%;">Pr&uuml;febene</th></tr></thead>
+   <tbody>
+    <tr><td class="nr">01</td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
+    <tr><td class="nr">02</td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
+    <tr><td class="nr">03</td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
+    <tr><td class="nr">04</td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
+    <tr><td class="nr">05</td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
+    <tr><td class="nr">06</td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
+    <tr><td class="nr">07</td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
+    <tr><td class="nr">08</td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
+    <tr><td class="nr">09</td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
+    <tr><td class="nr">10</td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
+   </tbody>
+  </table>
+  <p style="font-size:12px;color:var(--muted);line-height:1.55;">Spalte <em>Pr&uuml;febene</em>: Endergebnis, Werkzeugwahl oder Aufbereitung der Anfrage. Mindestens zwei F&auml;lle sollten keine Endergebnis-F&auml;lle sein.</p>
+ </div>
+
+ <div class="gate g3">
+  <div class="gate-h">Randf&auml;lle</div>
+  <div class="gate-t">Drei F&auml;lle, bei denen der Agent nichts tun soll</div>
+  <div class="gate-sub">Ein Pr&uuml;fbestand, der nur gute F&auml;lle enth&auml;lt, misst nichts. Die Enthaltung ist auch ein richtiges Ergebnis.</div>
+  <div class="f"><span class="f-l">Fall, bei dem die Datenlage zu d&uuml;nn ist</span><textarea rows="1"></textarea></div>
+  <div class="f"><span class="f-l">Fall, der eine Ausnahme von der Regel ist</span><textarea rows="1"></textarea></div>
+  <div class="f"><span class="f-l">Fall, der gar nicht in die Zust&auml;ndigkeit des Agenten f&auml;llt</span><textarea rows="1"></textarea></div>
+ </div>
+
+ <div class="gate g0">
+  <div class="gate-h">Eigentum</div>
+  <div class="gate-t">Die Frage im Beschaffungsgespr&auml;ch</div>
+  <div class="gate-sub">An welchen F&auml;llen habt Ihr das gemessen &mdash; und bekommen wir diese F&auml;lle?</div>
+  <div class="f"><span class="f-l">Wer f&uuml;hrt den Pr&uuml;fbestand im eigenen Haus, wenn der Agent eingekauft w&uuml;rde?</span><textarea rows="2"></textarea></div>
+ </div>
+
+</section>
+
+<!-- ══════════════ 04 BAU ══════════════ -->
+<section class="tab-panel" id="tab-bau">
+
+ <div class="fallkopf">
+  <div class="fallkopf-nr">Schritt 04 &middot; 50&ndash;85 Minuten</div>
+  <div class="fallkopf-t">Bau &mdash; und Protokoll des Gebauten</div>
+  <div class="fallkopf-txt">Gebaut wird im Werkzeug. Hier wird festgehalten, <em>was</em> gesetzt wurde &mdash; damit es sp&auml;ter nachvollziehbar ist und mit den sieben Angaben verglichen werden kann. Weicht etwas ab, geh&ouml;rt die Abweichung in die letzte Zeile.</div>
+ </div>
+
+ <div class="gate g0">
+  <div class="gate-h">Teil 1</div>
+  <div class="gate-t">Identit&auml;t und Anweisung</div>
+  <div class="f-row">
+   <div class="f"><span class="f-l">Name des Agenten</span><textarea rows="1"></textarea></div>
+   <div class="f"><span class="f-l">Gew&auml;hltes Modell und Denkaufwand</span><textarea rows="1"></textarea></div>
+  </div>
+  <div class="f"><span class="f-l">Anweisungstext &mdash; Kurzfassung der tats&auml;chlich eingetragenen Anweisung</span><textarea rows="4"></textarea></div>
+  <div class="f"><span class="f-l">Erg&auml;nzende Arbeitsanweisungen oder Dateien, die beigegeben wurden</span><textarea rows="2"></textarea></div>
+ </div>
+
+ <div class="gate g1">
+  <div class="gate-h">Teil 2</div>
+  <div class="gate-t">Werkzeuge &mdash; einzeln, mit Begr&uuml;ndung</div>
+  <div class="gate-sub">Eine Zeile je Werkzeug. Ein Werkzeug ohne Begr&uuml;ndung in der dritten Spalte wird wieder entfernt.</div>
+  <table class="tbl">
+   <thead><tr><th style="width:26%;">Werkzeug / App</th><th style="width:22%;">Authentifizierung</th><th style="width:34%;">Warum der Agent es braucht</th><th style="width:18%;">Schreibend?</th></tr></thead>
+   <tbody>
+    <tr><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
+    <tr><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
+    <tr><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
+    <tr><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
+    <tr><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
+   </tbody>
+  </table>
+  <div class="f"><span class="f-l">Welches Werkzeug habt Ihr <em>nicht</em> freigegeben, obwohl es naheliegend w&auml;re &mdash; und warum?</span><textarea rows="2"></textarea></div>
+ </div>
+
+ <div class="gate g2">
+  <div class="gate-h">Teil 3</div>
+  <div class="gate-t">Grenzen</div>
+  <div class="gate-sub">Die Voreinstellung f&uuml;r schreibende Aktionen ist &bdquo;immer fragen&ldquo;. Jede Abweichung davon ist eine bewusste Entscheidung &mdash; und begr&uuml;ndungspflichtig.</div>
+  <div class="f"><span class="f-l">Freigabepflicht f&uuml;r schreibende Aktionen: unver&auml;ndert gelassen oder ge&auml;ndert? Begr&uuml;ndung</span><textarea rows="2"></textarea></div>
+  <div class="f"><span class="f-l">Eingerichtete Einschr&auml;nkungen je Aktion &mdash; w&ouml;rtlich</span><textarea rows="2"></textarea></div>
+  <div class="f-row">
+   <div class="f"><span class="f-l">Ged&auml;chtnis ein oder aus?</span><textarea rows="1"></textarea></div>
+   <div class="f"><span class="f-l">Zeitplan eingerichtet? Welcher Takt?</span><textarea rows="1"></textarea></div>
+  </div>
+  <div class="f"><span class="f-l">Freigabe und Sichtbarkeit: privat, &uuml;ber Link, im Verzeichnis der Organisation?</span><textarea rows="1"></textarea></div>
+ </div>
+
+ <div class="gate g3">
+  <div class="gate-h">Teil 4</div>
+  <div class="gate-t">Abweichungen von der Bauvorlage</div>
+  <div class="gate-sub">Wo musste von den sieben Angaben abgewichen werden &mdash; weil das Werkzeug es nicht hergibt, weil eine Quelle fehlt, weil etwas anders hei&szlig;t als gedacht?</div>
+  <div class="f"><span class="f-l">Abweichung, Grund, Folge</span><textarea rows="4"></textarea></div>
+ </div>
+
+</section>
+<!-- ══════════════ 05 PRUEFUNG ══════════════ -->
+<section class="tab-panel" id="tab-pruefung">
+
+ <div class="fallkopf">
+  <div class="fallkopf-nr">Schritt 05 &middot; 85&ndash;100 Minuten</div>
+  <div class="fallkopf-t">Pr&uuml;fung gegen den Pr&uuml;fbestand</div>
+  <div class="fallkopf-txt">Die zehn F&auml;lle aus Schritt 03 laufen durch. Verglichen wird nicht der Eindruck, sondern das Ergebnis gegen das bekannte richtige Ergebnis.</div>
+ </div>
+
+ <div class="section">
+  <div class="section-title">Ergebnis je Fall</div>
+  <table class="tbl">
+   <thead><tr><th style="width:4%;"></th><th style="width:48%;">Ergebnis des Agenten &mdash; Abweichung in Stichworten</th><th style="width:14%;">Trifft zu</th><th style="width:34%;">Vermutete Ursache</th></tr></thead>
+   <tbody>
+    <tr><td class="nr">01</td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
+    <tr><td class="nr">02</td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
+    <tr><td class="nr">03</td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
+    <tr><td class="nr">04</td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
+    <tr><td class="nr">05</td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
+    <tr><td class="nr">06</td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
+    <tr><td class="nr">07</td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
+    <tr><td class="nr">08</td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
+    <tr><td class="nr">09</td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
+    <tr><td class="nr">10</td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
+   </tbody>
+  </table>
+  <div class="f-row">
+   <div class="f"><span class="f-l">Treffer von zehn</span><textarea rows="1"></textarea></div>
+   <div class="f"><span class="f-l">W&uuml;rde diese Quote f&uuml;r eine Abnahme gen&uuml;gen? Begr&uuml;ndung</span><textarea rows="1"></textarea></div>
+  </div>
+ </div>
+
+ <div class="gate g2">
+  <div class="gate-h">&Auml;nderungsprobe</div>
+  <div class="gate-t">Eine &Auml;nderung, dieselben zehn F&auml;lle</div>
+  <div class="gate-sub">&Auml;ndert <em>eine</em> Gr&ouml;&szlig;e &mdash; einen Satz im Anweisungstext, das Modell oder den Denkaufwand &mdash; und lasst dieselben F&auml;lle erneut laufen. Genau daf&uuml;r ist ein Pr&uuml;fbestand da.</div>
+  <div class="f"><span class="f-l">Was wurde ge&auml;ndert?</span><textarea rows="1"></textarea></div>
+  <div class="f-row">
+   <div class="f"><span class="f-l">Treffer nach der &Auml;nderung</span><textarea rows="1"></textarea></div>
+   <div class="f"><span class="f-l">Welche F&auml;lle kippten &mdash; in welche Richtung?</span><textarea rows="2"></textarea></div>
+  </div>
+  <div class="f"><span class="f-l">H&auml;tte man diese Verschiebung ohne Pr&uuml;fbestand bemerkt?</span><textarea rows="1"></textarea></div>
+ </div>
+
+ <div class="gate g1">
+  <div class="gate-h">Kosten</div>
+  <div class="gate-t">Kosten je Vorgang</div>
+  <div class="gate-sub">Ein Agent erledigt eine Aufgabe nicht mit einem Modellaufruf, sondern mit einer Kette. Der Verbrauch liegt entsprechend h&ouml;her als bei einem Chat. Der Betrieb geteilter Agenten wird beim Anbieter &uuml;ber ein Guthabenmodell abgerechnet, seit 6.&nbsp;Mai 2026.</div>
+  <div class="f-row">
+   <div class="f"><span class="f-l">Beobachtete Dauer bzw. Schrittzahl je Lauf</span><textarea rows="1"></textarea></div>
+   <div class="f"><span class="f-l">Wie oft w&uuml;rde der Agent im Echtbetrieb laufen &mdash; pro Monat?</span><textarea rows="1"></textarea></div>
+  </div>
+  <div class="f"><span class="f-l">Wer bekommt die Rechnung, und wer sieht den Verbrauch monatlich an?</span><textarea rows="1"></textarea></div>
+ </div>
+
+ <div class="warn">
+  <div class="warn-t">Was die eingebaute Auswertung zeigt &mdash; und was nicht</div>
+  <p>Die Nutzungsauswertung des Anbieters nennt die Zahl der L&auml;ufe und die Zahl der Personen, die den Agenten aufgerufen haben. Beides sind Nutzungszahlen. <strong>Keine Kennzahl darin sagt etwas &uuml;ber die Richtigkeit der Ergebnisse</strong> &mdash; und keine darin z&auml;hlt, wie oft ein Mensch eine Freigabe verweigert oder einen Vorschlag korrigiert hat. Wer wissen will, ob der Agent gut arbeitet, braucht den eigenen Pr&uuml;fbestand. Dieselbe L&uuml;cke findet sich bei den anderen gro&szlig;en Anbietern.</p>
+ </div>
+ <div class="f"><span class="f-l">Welche Kennzahl w&uuml;rdet Ihr zus&auml;tzlich f&uuml;hren &mdash; und woher k&auml;men die Zahlen daf&uuml;r?</span><textarea rows="2"></textarea></div>
+
+</section>
+
+<!-- ══════════════ 06 ABNAHME ══════════════ -->
+<section class="tab-panel" id="tab-abnahme">
+
+ <div class="fallkopf">
+  <div class="fallkopf-nr">Schritt 06 &middot; 100&ndash;120 Minuten</div>
+  <div class="fallkopf-t">Abnahme und &Uuml;bertrag</div>
+  <div class="fallkopf-txt">Ein Agent, der in der Schulung l&auml;uft, ist noch kein Agent, der im Unternehmen laufen darf. Hier wird der Abstand benannt.</div>
+ </div>
+
+ <div class="hilfe">
+  <div class="hilfe-t">Drei Dinge, die auf Praxisbl&auml;ttern zum Agentenbau regelm&auml;&szlig;ig fehlen</div>
+  <table class="tbl" style="margin-bottom:0;">
+   <thead><tr><th style="width:30%;">Was fehlt</th><th>Warum es zuerst kommen m&uuml;sste</th></tr></thead>
+   <tbody>
+    <tr><td><strong>Risikoeinstufung des Vorgangs</strong></td><td>Schwere und Umkehrbarkeit entscheiden, ob ein Agent &uuml;berhaupt in Frage kommt &mdash; nicht die technische Machbarkeit</td></tr>
+    <tr><td><strong>Namentlich benannte Verantwortung</strong></td><td>Ein System kann nicht haften. Ohne benannte Person ist die Zust&auml;ndigkeit im Vorfall ungekl&auml;rt</td></tr>
+    <tr><td><strong>Protokoll- und Aufsichtspflichten</strong></td><td>Bei Hochrisiko-Systemen sind Aufzeichnung und menschliche Aufsicht keine Empfehlung, sondern Vorgabe</td></tr>
+   </tbody>
+  </table>
+ </div>
+ <p style="font-size:12.3px;color:var(--muted);line-height:1.55;margin-bottom:1rem;">Das ist kein Versehen der Verfasser solcher Bl&auml;tter, sondern eine Frage der Perspektive: Sie sind von Entwickelnden f&uuml;r Entwickelnde geschrieben. Wer allein danach arbeitet, baut technisch sauber und rechtlich blind. Diese Erg&auml;nzung ist die Aufgabe der Steuerungsebene.</p>
+
+ <div class="gate g0">
+  <div class="gate-h">A</div>
+  <div class="gate-t">Einstufung und Verantwortung</div>
+  <div class="f"><span class="f-l">Risikoeinstufung des Vorgangs &mdash; und woraus sie sich ergibt</span><textarea rows="2"></textarea></div>
+  <div class="f-row">
+   <div class="f"><span class="f-l">Verantwortlich f&uuml;r den Betrieb (Rolle)</span><textarea rows="1"></textarea></div>
+   <div class="f"><span class="f-l">Verantwortlich im Vorfall (Rolle)</span><textarea rows="1"></textarea></div>
+  </div>
+  <div class="f"><span class="f-l">Wer darf den Agenten abschalten &mdash; und wie schnell geht das?</span><textarea rows="1"></textarea></div>
+ </div>
+
+ <div class="gate g1">
+  <div class="gate-h">B</div>
+  <div class="gate-t">Protokollierung</div>
+  <div class="gate-sub">Bei einem Modell gen&uuml;gt die Ausgabe. Bei einem Agenten braucht es die Abfolge: welches Werkzeug, mit welchen Parametern, in welcher Reihenfolge.</div>
+  <div class="f"><span class="f-l">Was wird aufgezeichnet, wo liegt es, wie lange?</span><textarea rows="2"></textarea></div>
+  <div class="f"><span class="f-l">Welche Frage einer Aufsicht lie&szlig;e sich mit dieser Aufzeichnung <em>nicht</em> beantworten?</span><textarea rows="2"></textarea></div>
+ </div>
+
+ <div class="gate g2">
+  <div class="gate-h">C</div>
+  <div class="gate-t">Was vor einem Echtbetrieb noch fehlt</div>
+  <div class="gate-sub">Drei konkrete Punkte. Keine Absichtserkl&auml;rungen, sondern Dinge mit einem Namen dahinter.</div>
+  <div class="f"><span class="f-l">1</span><textarea rows="1"></textarea></div>
+  <div class="f"><span class="f-l">2</span><textarea rows="1"></textarea></div>
+  <div class="f"><span class="f-l">3</span><textarea rows="1"></textarea></div>
+ </div>
+
+ <div class="gate g3">
+  <div class="gate-h">D</div>
+  <div class="gate-t">Mitnahme</div>
+  <div class="gate-sub">Die eine Erkenntnis aus diesen zwei Stunden, die im eigenen Unternehmen etwas &auml;ndert.</div>
+  <div class="f"><span class="f-l">Was nehmt Ihr mit?</span><textarea rows="3"></textarea></div>
+  <div class="f"><span class="f-l">Was war anders als erwartet?</span><textarea rows="2"></textarea></div>
+ </div>
+
+</section>
+
+<!-- ══════════════ QUELLEN ══════════════ -->
+<section class="tab-panel" id="tab-quellen">
+
+ <div class="section">
+  <div class="section-title">Produktangaben zum verwendeten Werkzeug</div>
+  <p style="font-size:12.5px;line-height:1.6;margin-bottom:.4rem;">Alle Angaben dieses Arbeitsblatts zu Einstellm&ouml;glichkeiten, Freigaben, Auswertung und Abrechnung stammen aus der Dokumentation des Anbieters. Stand der Pr&uuml;fung: 5.&nbsp;Oktober 2026. Produktoberfl&auml;chen &auml;ndern sich h&auml;ufiger als Methodik &mdash; die Bezeichnungen in diesem Blatt sind daher bewusst beschreibend und nicht als Men&uuml;pfad formuliert.</p>
+  <div class="src-row">
+   <div class="src-chip"><a href="https://openai.com/index/introducing-workspace-agents-in-chatgpt/" target="_blank" rel="noopener">OpenAI &mdash; Introducing workspace agents in ChatGPT</a> &middot; 22.&nbsp;April 2026 &middot; Ank&uuml;ndigung, Freigabe sensibler Schritte, Abrechnung ab 6.&nbsp;Mai 2026</div>
+   <div class="src-chip"><a href="https://help.openai.com/en/articles/20001143-chatgpt-workspace-agents-for-enterprise-and-business" target="_blank" rel="noopener">OpenAI Help Center &mdash; ChatGPT Workspace Agents for Enterprise and Business</a> &middot; Anlegen, Werkzeuge, Authentifizierung je Verbindung, Freigabe schreibender Aktionen, Einschr&auml;nkungen je Konnektoraktion, Zeitplan, Rollenrechte, Nutzungsauswertung</div>
+   <div class="src-chip"><a href="https://cdn.openai.com/business-guides-and-resources/workspace-agents-security-overview.pdf" target="_blank" rel="noopener">OpenAI &mdash; Workspace Agents Security Overview</a> &middot; Sicherheits- und Governance-&Uuml;bersicht des Anbieters</div>
+   <div class="src-chip"><a href="https://developers.openai.com/workspace-agents/trigger-runs" target="_blank" rel="noopener">OpenAI Developers &mdash; Trigger workspace agent runs</a> &middot; Einschr&auml;nkungen des Schnittstellenwegs</div>
+   <div class="src-chip"><a href="https://venturebeat.com/orchestration/openai-unveils-workspace-agents-a-successor-to-custom-gpts-for-enterprises-that-can-plug-directly-into-slack-salesforce-and-more" target="_blank" rel="noopener">VentureBeat &mdash; OpenAI unveils Workspace Agents</a> &middot; unabh&auml;ngige Berichterstattung zur Einf&uuml;hrung</div>
+  </div>
+ </div>
+
+ <div class="section">
+  <div class="section-title">Methodik</div>
+  <p style="font-size:12.5px;line-height:1.6;">Die sieben Angaben, der Pr&uuml;fbestand als Abnahmegrundlage und die acht Hinweise zum Agentenbau sind die Methodik dieses Arbeitsblatts. Sie gelten unabh&auml;ngig vom Werkzeug: Wechselt der Anbieter, bleiben die sieben Entscheidungen dieselben &mdash; nur der Ort, an dem sie eingetragen werden, &auml;ndert sich.</p>
+  <div class="merksatz">Das Werkzeug ist eine kleine, austauschbare Komponente. Die Entscheidungen darum herum sind das eigentliche Vorhaben.</div>
+ </div>
+
+</section>
+
+ <div class="footer">
+  <span>Arbeitsblatt &middot; Kurs KI-Manager:in</span>
+  <span>Agentenbau in der Praxis</span>
+  <span class="rechtevermerk">&copy; 2026 Ulrich Nord &middot; Alle Rechte vorbehalten. Teilnehmerinnen und Teilnehmer d&uuml;rfen dieses Material f&uuml;r die eigene berufliche Nutzung sowie innerhalb ihres Unternehmens verwenden, speichern, ausf&uuml;llen, ausdrucken und weitergeben. Ver&ouml;ffentlichung und Verwendung in eigenen Schulungs- oder Beratungsangeboten bed&uuml;rfen der schriftlichen Zustimmung.</span>
+ </div>
+
+</div>
+
+<script>
+function autoGrow(el){el.style.height='auto';el.style.height=(el.scrollHeight)+'px';}
+document.querySelectorAll('textarea').forEach(function(t){
+  autoGrow(t);
+  t.addEventListener('input',function(){autoGrow(t);});
+});
+(function(){
+  document.querySelectorAll('.tab-btn').forEach(function(b){
+    b.addEventListener('click',function(){
+      document.querySelectorAll('.tab-btn').forEach(function(x){x.classList.remove('aktiv');});
+      document.querySelectorAll('.tab-panel').forEach(function(x){x.classList.remove('aktiv');});
+      b.classList.add('aktiv');
+      var z=document.getElementById(b.dataset.ziel); if(z){z.classList.add('aktiv');}
+      window.scrollTo({top:0,behavior:'smooth'});
+      document.querySelectorAll('.tab-panel.aktiv textarea').forEach(autoGrow);
+    });
+  });
+})();
+window.addEventListener('beforeprint',function(){
+  document.querySelectorAll('.tab-panel.aktiv details').forEach(function(d){d.dataset.wasOpen=d.open?'1':'0';d.open=true;});
+  document.querySelectorAll('.tab-panel.aktiv textarea').forEach(function(t){
+    t.style.height='auto';
+    t.style.height=Math.max(t.scrollHeight, t.rows*20)+'px';
+  });
+});
+window.addEventListener('afterprint',function(){
+  document.querySelectorAll('details').forEach(function(d){if(d.dataset.wasOpen!==undefined){d.open=(d.dataset.wasOpen==='1');}});
+  document.querySelectorAll('textarea').forEach(autoGrow);
+});
+</script>
+</body>
+</html>
