@@ -126,7 +126,7 @@ Viele Anbieter von KI-Modellen (OpenAI, Anthropic usw.) bieten an, Agenten entwe
 
 1. Könnte ein anderes Team Euren Agenten allein aus Eurer Konkretisierung nachbauen?
 2. Ist an jeder Stelle klar, wo der Mensch entscheidet und wo der Agent nur vorbereitet?
-3. Welche Grundlagen aus der Handreichung *Management von KI-Agenten* (Agent oder Workflow, Eignungssignale, die drei Bausteine Modell, Werkzeuge und Anweisungen) erkennt Ihr in Eurem Szenario wieder — und wo fehlt im Original-Prompt noch eine Leitplanke?
+3. Welche Grundlagen aus der Handreichung *KI-Management (Standard und Agenten)* (Agent oder Workflow, Eignungssignale, die drei Bausteine Modell, Werkzeuge und Anweisungen) erkennt Ihr in Eurem Szenario wieder — und wo fehlt im Original-Prompt noch eine Leitplanke?
 
 ---
 
