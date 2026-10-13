@@ -115,14 +115,18 @@ Wähle mindestens eines der fünf Szenarien. Der Prompt-Text beschreibt, *was* d
 - **Schwellenwert** — ab welchem Score bzw. welcher Bewertung erfolgt die Eskalation an den Menschen?
 - **Ausgabeformat** — wie sieht die Alarmierung bzw. der Bericht konkret aus (Struktur, Felder)?
 - **Zulässige Aktionen** — was darf der Agent eigenständig tun, was braucht explizite Freigabe?
+- **Prüfbestand** — an welchen Fällen mit bekanntem richtigem Ergebnis messt Ihr, ob der Agent richtig arbeitet?
+- **Gedächtnis** — merkt sich der Agent etwas zwischen den Läufen? Wenn ja: was genau und wie lange?
 
-Viele GPAI (OpenAI, Anthropic usw.) bieten an, Agenten entweder aus Vorlagen zu nutzen oder selbst zu erstellen. Die Vorlagen - selbst, wenn Du sie nicht nutzen möchtest - geben Dir häufig einen Eindruck der Quellen, Schnittstellen und Outputformate, die sinnvoll in einen Agenten integriert warden können.
+Die acht Angaben stehen mit Checklisten im *Praxisbeispiel KI-Agentenbau* (Reiter Bauvorlage); der Reiter Startprompt hilft, sie im Gespräch mit einer KI zu erarbeiten.
 
-**Drei Prüffragen an euer Ergebnis:**
+Viele Anbieter von KI-Modellen (OpenAI, Anthropic usw.) bieten an, Agenten entweder aus Vorlagen zu nutzen oder selbst zu erstellen. Die Vorlagen — selbst wenn Du sie nicht nutzen möchtest — geben Dir häufig einen Eindruck der Quellen, Schnittstellen und Ausgabeformate, die sinnvoll in einen Agenten integriert werden können.
 
-1. Könnte ein anderes Team euren Agenten allein aus eurer Konkretisierung nachbauen?
+**Drei Prüffragen an Euer Ergebnis:**
+
+1. Könnte ein anderes Team Euren Agenten allein aus Eurer Konkretisierung nachbauen?
 2. Ist an jeder Stelle klar, wo der Mensch entscheidet und wo der Agent nur vorbereitet?
-3. Welche der Basics aus dem Hand-Out (Agent vs. Workflow, Eignungssignale, drei Bausteine, Leitplanken-Pflicht) erkennt ihr in eurem Szenario wieder — und wo fehlt im Original-Prompt noch eine Leitplanke?
+3. Welche Grundlagen aus der Handreichung *Management von KI-Agenten* (Agent oder Workflow, Eignungssignale, die drei Bausteine Modell, Werkzeuge und Anweisungen) erkennt Ihr in Eurem Szenario wieder — und wo fehlt im Original-Prompt noch eine Leitplanke?
 
 ---
 
