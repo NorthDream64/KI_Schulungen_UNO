@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Coaching-Prompt-Template — KI als Sparringspartner</title>
+<title>Prompting-Guideline — Prinzipien, Template, Praxis</title>
 <style>
   :root {
     --bg: #fbfaf8;
@@ -180,17 +180,40 @@ footer .rechtevermerk{display:block;margin-top:.7rem;padding-top:.6rem;border-to
   }
   .pcard, .callout, .trap, .link-card, .code-card { break-inside: avoid; page-break-inside: avoid; }
   h2 { break-after: avoid; page-break-after: avoid; }
+  /* Reiter gibt es nur am Bildschirm: im Ausdruck alle Abschnitte zeigen. */
+  .tab-leiste { display: none !important; }
+  .tab-panel { display: block !important; }
+  .tab-panel + .tab-panel { break-before: page; page-break-before: always; }
   a { color: #000; text-decoration: underline; }
   .links a[href^="http"]::after { content: " (" attr(href) ")"; font-size: 8.5pt; word-break: break-all; }
 }
+
+/* ---- Reiter ----
+   Die Guideline ist ein Nachschlagedokument. Am Bildschirm steht jeweils
+   nur ein Reiter, damit niemand durch das ganze Dokument scrollen muss.
+   Beim Drucken werden ALLE Reiter in Dokumentreihenfolge ausgegeben --
+   sonst fehlte im Ausdruck der groesste Teil des Inhalts. */
+.tab-leiste{display:flex;flex-wrap:wrap;gap:.3rem;margin:4px 0 26px;border-bottom:2px solid var(--line);padding-bottom:0;}
+.tab-btn{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:10.5px;letter-spacing:1px;text-transform:uppercase;padding:.55rem .85rem;border:1px solid var(--line);border-bottom:none;border-radius:7px 7px 0 0;background:var(--bg);color:var(--muted);cursor:pointer;margin-bottom:-2px;line-height:1.3;}
+.tab-btn:hover{color:var(--accent);}
+.tab-btn.aktiv{background:var(--card);color:var(--ink);border-bottom:2px solid var(--card);font-weight:700;}
+.tab-btn .tb-nr{color:var(--accent);font-weight:700;margin-right:.35rem;}
+.tab-panel{display:none;}
+.tab-panel.aktiv{display:block;}
+.tab-panel > h2:first-of-type{margin-top:0;}
+.lesehilfe{background:var(--accent-soft);border-left:4px solid var(--accent);border-radius:0 10px 10px 0;padding:14px 18px;margin:0 0 26px;font-size:.93rem;}
+.lesehilfe ul{margin:8px 0 0;padding-left:20px;}
+.lesehilfe li{margin-bottom:3px;}
+@media (max-width:560px){ .tab-btn{padding:.5rem .6rem;letter-spacing:.6px;} }
+
 </style>
 </head>
 <body>
 <div class="wrap">
 
   <header>
-    <h1>Coaching-Prompt-Template</h1>
-    <p class="subtitle">KI als Sparringspartner — eine Methode zum Mitnehmen</p>
+    <h1>Prompting-Guideline</h1>
+    <p class="subtitle">Prinzipien, Template und Praxis — KI als Sparringspartner statt als Antwort-Maschine</p>
     <p class="lead">
       <b>Eine Methode für Berufspraxis, Bewerbungsvorbereitung und Selbstreflexion.</b>
       Du nutzt eine KI nicht als Antwort-Maschine, sondern als kritischen Coach,
@@ -198,6 +221,28 @@ footer .rechtevermerk{display:block;margin-top:.7rem;padding-top:.6rem;border-to
       Argumente zu schärfen.
     </p>
   </header>
+
+  <nav class="tab-leiste">
+    <button class="tab-btn aktiv" data-ziel="tab-ueberblick">&Uuml;berblick</button>
+    <button class="tab-btn" data-ziel="tab-prinzipien"><span class="tb-nr">01</span>Prinzipien</button>
+    <button class="tab-btn" data-ziel="tab-template"><span class="tb-nr">02</span>Template</button>
+    <button class="tab-btn" data-ziel="tab-varianten"><span class="tb-nr">03</span>Varianten</button>
+    <button class="tab-btn" data-ziel="tab-praxis"><span class="tb-nr">04</span>Praxis &amp; Fallen</button>
+    <button class="tab-btn" data-ziel="tab-quellen">Quellen</button>
+  </nav>
+
+  <section class="tab-panel aktiv" id="tab-ueberblick">
+  <div class="lesehilfe">
+    <b>So ist die Guideline aufgebaut.</b> Jeder Reiter steht f&uuml;r sich &mdash; Du musst nicht vorne anfangen.
+    <ul>
+      <li><b>01 Prinzipien</b> &mdash; die acht Regeln, die unabh&auml;ngig vom Anlass und vom Werkzeug gelten. Wer nur eines lesen will, liest dieses.</li>
+      <li><b>02 Template</b> &mdash; der fertige Text zum Kopieren, mit dem Datenschutzhinweis davor.</li>
+      <li><b>03 Varianten</b> &mdash; vier zugeschnittene Fassungen f&uuml;r konkrete Anl&auml;sse.</li>
+      <li><b>04 Praxis &amp; Fallen</b> &mdash; was im Gespr&auml;ch schiefgeht und wie Du es drehst.</li>
+      <li><b>Quellen</b> &mdash; die Belege hinter der Methode.</li>
+    </ul>
+    <p style="margin:10px 0 0;font-size:.86rem;color:var(--muted);">Beim Ausdruck erscheinen alle Reiter hintereinander &mdash; es fehlt nichts.</p>
+  </div>
 
   <h2>Wofür ist das gut?</h2>
   <table>
@@ -210,6 +255,9 @@ footer .rechtevermerk{display:block;margin-top:.7rem;padding-top:.6rem;border-to
   </table>
   <p style="font-size:0.9rem;color:var(--muted);margin-top:10px;">Die Methode ist <b>wiederverwendbar</b> — du lernst sie einmal und nutzt sie ein Berufsleben lang.</p>
 
+  </section>
+
+  <section class="tab-panel" id="tab-prinzipien">
   <h2>Die acht Prinzipien</h2>
   <div class="principles">
     <div class="pcard">
@@ -273,17 +321,9 @@ footer .rechtevermerk{display:block;margin-top:.7rem;padding-top:.6rem;border-to
     <b>Prinzip 7</b> stammt aus einer Auswertung von rund 250.000 echten Gesprächen durch eine Stanford-Gruppe (Shao, Zhao, Padmakumar, Wang &amp; Yang, <a href="https://www.alphaxiv.org/abs/2608.human-ai-collaboration-at-scale" target="_blank">alphaXiv, 21.08.2026</a>). <b>Einordnung:</b> kein Begutachtungsverfahren; Daten und Auswertungswerkzeuge stammen vom Anbieter der untersuchten Modelle, und die Forschenden konnten die Einstufungen nicht gegen die Gesprächsverläufe prüfen. Die <i>Rangfolge</i> der drei Reaktionen ist belastbar, die genauen Prozentwerte sind es nicht — deshalb stehen oben Größenordnungen statt Nachkommastellen.</p><p style="margin-top:12px;"><b>Prinzip 8</b> verdankt sich einem Beitrag, den wir inhaltlich nur zum Teil teilen: Javier Manzano (Soamee, 16.09.2026) erklärt „Prompt Engineering" für tot, weil Format und Ablauf heute über Schemata und Werkzeugdefinitionen festgelegt würden statt über Formulierungen. <b>Einordnung:</b> Meinungsbeitrag eines Agenturgründers, der dieselbe Dienstleistung verkauft — und die These gilt für das <i>Bauen</i> von KI-Produkten, nicht für die Arbeit im Chatfenster; der Text räumt das selbst ein. <b>Was trägt, ist die Unterscheidung dahinter:</b> eine Einstellung ist prüfbar, eine Bitte nicht. Die gilt auch dort, wo niemand etwas baut.</p>
   </div>
 
-  <h2>Noch unsicher, wie du die Platzhalter füllen sollst?</h2>
-  <div style="background:#eef6f0;border-left:4px solid #3f7a4e;border-radius:0 10px 10px 0;padding:16px 20px;margin-bottom:10px;">
-    <p style="margin:0 0 10px;font-size:0.95rem;"><b>Vorstufe: Lass die KI zuerst Fragen stellen.</b><br>
-    Wenn du noch nicht genau weißt, was du in die Platzhalter unten schreiben sollst — welche Rolle, welcher Kontext, welches Ziel —, nutze diesen Einstieg. Die KI hilft dir, deine eigene Situation zu strukturieren, <i>bevor</i> das Sparring beginnt.</p>
-    <div class="code-card" style="margin-bottom:10px;">
-      <button class="copy-btn" onclick="copyById('vorstufe-text', this)">In Zwischenablage kopieren</button>
-      <pre id="vorstufe-text">Bevor du irgendetwas tust: Stelle mir Fragen — eine nach der anderen — zu meinem Ziel, für wen das ist und wie ein gutes Ergebnis aussieht. Mach so lange weiter, bis du genug weißt, um richtig loszulegen. Fasse dann zusammen, was du verstanden hast, und warte auf meine Bestätigung, bevor du anfängst.</pre>
-    </div>
-    <p style="margin:0;font-size:0.87rem;color:#3f5a47;"><b>Wie es weitergeht:</b> Sobald die KI zusammengefasst hat und du bestätigt hast, kopierst du das Haupt-Template unten und füllst die Platzhalter mit dem, was ihr gerade erarbeitet habt. Die zwei Methoden ergänzen sich — die Vorstufe klärt, das Template strukturiert.</p>
-  </div>
+  </section>
 
+  <section class="tab-panel" id="tab-template">
   <h2>Bevor du startest: Datenschutz und Vertraulichkeit</h2>
   <div class="callout" style="border-left:4px solid var(--accent);">
     <b>Diese Methode gehört auf ein DSGVO-konformes KI-Werkzeug — nicht in Public-Consumer-Chats.</b>
@@ -335,6 +375,19 @@ eine ehrliche Einschätzung in drei Punkten:
 3. Welche EINE Frage hat mich am meisten getroffen — und warum?</pre>
   </div>
 
+  <h2>Noch unsicher, wie du die Platzhalter füllen sollst?</h2>
+  <div style="background:#eef6f0;border-left:4px solid #3f7a4e;border-radius:0 10px 10px 0;padding:16px 20px;margin-bottom:10px;">
+    <p style="margin:0 0 10px;font-size:0.95rem;"><b>Vorstufe: Lass die KI zuerst Fragen stellen.</b><br>
+    Wenn du noch nicht genau weißt, was du in die Platzhalter oben schreiben sollst — welche Rolle, welcher Kontext, welches Ziel —, nutze diesen Einstieg. Die KI hilft dir, deine eigene Situation zu strukturieren, <i>bevor</i> das Sparring beginnt.</p>
+    <div class="code-card" style="margin-bottom:10px;">
+      <button class="copy-btn" onclick="copyById('vorstufe-text', this)">In Zwischenablage kopieren</button>
+      <pre id="vorstufe-text">Bevor du irgendetwas tust: Stelle mir Fragen — eine nach der anderen — zu meinem Ziel, für wen das ist und wie ein gutes Ergebnis aussieht. Mach so lange weiter, bis du genug weißt, um richtig loszulegen. Fasse dann zusammen, was du verstanden hast, und warte auf meine Bestätigung, bevor du anfängst.</pre>
+    </div>
+    <p style="margin:0;font-size:0.87rem;color:#3f5a47;"><b>Wie es weitergeht:</b> Sobald die KI zusammengefasst hat und du bestätigt hast, kopierst du das Haupt-Template oben und füllst die Platzhalter mit dem, was ihr gerade erarbeitet habt. Die zwei Methoden ergänzen sich — die Vorstufe klärt, das Template strukturiert.</p>
+  </div>
+  </section>
+
+  <section class="tab-panel" id="tab-varianten">
   <h2>Vier Varianten für unterschiedliche Anlässe</h2>
 
   <details open>
@@ -408,6 +461,9 @@ Beginne jetzt. Erste Frage.</pre>
     </div>
   </details>
 
+  </section>
+
+  <section class="tab-panel" id="tab-praxis">
   <h2>Praktischer Hinweis: Modell-Unterschiede</h2>
   <div class="callout">
     Nicht alle Modelle reagieren gleich auf „sei kritisch". Claude setzt Härtegrad-Anweisungen im Regelfall zuverlässiger um als GPT-4o oder Gemini im Default. Konkrete Empfehlungen:
@@ -470,6 +526,9 @@ Beginne jetzt. Erste Frage.</pre>
     <li><b>Zeitabstand.</b> Ein Durchgang heute, einer in drei Tagen. Was du beim zweiten Mal nicht mehr erinnerst, war beim ersten Mal noch nicht Teil deines Denkens — genau diese Lücken schließt du dann.</li>
   </ul>
 
+  </section>
+
+  <section class="tab-panel" id="tab-quellen">
   <h2>Weiterführende Erläuterungen</h2>
   <p style="font-size:0.92rem;color:var(--muted);">Vier Quellen, die die Methode professionell einordnen — falls du tiefer einsteigen willst:</p>
   <div class="links">
@@ -504,8 +563,10 @@ Beginne jetzt. Erste Frage.</pre>
       <p>Forschungspapier, das einen vierstufigen Prompt-Zyklus vorschlägt: <b>Understand</b> (Prinzipien der Aufgabe erfassen) → <b>Plan</b> (abstrahieren und Vorgehen planen) → <b>Act</b> (anwenden) → <b>Reflect</b> (Ergebnis kritisch prüfen). Philosophisch inspiriert von Kants Kategorien des Verstehens. Der Ansatz ist verwandt mit dem, was dieses Coaching-Template praktisch umsetzt: erst Rolle und Kontext klären (Understand/Plan), dann im Sparring handeln (Act), dann im Abschluss-Feedback reflektieren (Reflect).</p>
     </div>
   </div>
+  </section>
 
-  <footer>Ulrich Nord · Coaching-Prompt-Template · Material für den Kurs "KI-Beauftragte(r)"<span class="rechtevermerk">&copy; 2026 Ulrich Nord &middot; Alle Rechte vorbehalten. Teilnehmerinnen und Teilnehmer d&uuml;rfen diese Arbeitsvorlage f&uuml;r die eigene berufliche Nutzung sowie innerhalb ihres Unternehmens verwenden, speichern, ausdrucken, ausf&uuml;llen und weitergeben. Ver&ouml;ffentlichung und Verwendung in eigenen Schulungs- oder Beratungsangeboten bed&uuml;rfen der schriftlichen Zustimmung.</span></footer>
+
+  <footer>Ulrich Nord · Prompting-Guideline · Material für den Kurs "KI-Beauftragte(r)"<span class="rechtevermerk">&copy; 2026 Ulrich Nord &middot; Alle Rechte vorbehalten. Teilnehmerinnen und Teilnehmer d&uuml;rfen diese Arbeitsvorlage f&uuml;r die eigene berufliche Nutzung sowie innerhalb ihres Unternehmens verwenden, speichern, ausdrucken, ausf&uuml;llen und weitergeben. Ver&ouml;ffentlichung und Verwendung in eigenen Schulungs- oder Beratungsangeboten bed&uuml;rfen der schriftlichen Zustimmung.</span></footer>
 </div>
 
 <script>
@@ -521,6 +582,27 @@ function copyById(id, btn) {
 function copyTemplate(btn) {
   copyById('template-text', btn);
 }
+document.querySelectorAll('.tab-btn').forEach(function (b) {
+  b.addEventListener('click', function () {
+    document.querySelectorAll('.tab-btn').forEach(function (x) { x.classList.remove('aktiv'); });
+    document.querySelectorAll('.tab-panel').forEach(function (x) { x.classList.remove('aktiv'); });
+    b.classList.add('aktiv');
+    var ziel = document.getElementById(b.dataset.ziel);
+    if (ziel) { ziel.classList.add('aktiv'); }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+});
+/* Vor dem Drucken alle <details> aufklappen, danach zuruecksetzen. */
+window.addEventListener('beforeprint', function () {
+  document.querySelectorAll('.tab-panel details').forEach(function (d) {
+    d.dataset.wasOpen = d.open ? '1' : '0'; d.open = true;
+  });
+});
+window.addEventListener('afterprint', function () {
+  document.querySelectorAll('.tab-panel details').forEach(function (d) {
+    if (d.dataset.wasOpen === '0') { d.open = false; }
+  });
+});
 </script>
 </body>
 </html>
