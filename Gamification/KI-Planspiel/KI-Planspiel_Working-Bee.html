@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>KI-Projekt-Planspiel</title>
+<title>Working Bee · KI-Projekt-Planspiel</title>
 <style>
 :root{
   --paper:#f8f6f1;--card:#fff;--ink:#1a1a18;--muted:#6b6b60;--rule:#d5d0c5;--soft:#efece4;
@@ -181,6 +181,32 @@ aside h2{font-size:1.1rem}
 .logbook li{padding:4px 0;border-bottom:1px dotted var(--rule)}
 .logbook li b{color:var(--ink);font-weight:600}
 
+/* Vorprojekt */
+.sortlist{list-style:none;margin:10px 0 0;padding:0;display:grid;gap:8px;max-width:760px}
+.sortitem{display:grid;grid-template-columns:34px minmax(0,1fr) auto;gap:12px;align-items:center;border:1px solid var(--rule);border-radius:10px;padding:10px 12px;background:#fff;cursor:grab}
+.sortitem:active{cursor:grabbing}
+.sortitem.dragging{opacity:.45}
+.sortitem.over{border-color:var(--accent);box-shadow:0 -3px 0 var(--accent) inset}
+.sortitem .pos{width:30px;height:30px;border-radius:50%;background:var(--accent-soft);color:var(--accent);display:grid;place-items:center;font-weight:700;font-size:14px}
+.sortitem .st b{display:block;font-weight:600}
+.sortitem .st span{font-size:13px;color:var(--muted)}
+.sortitem .mv{display:flex;gap:6px}
+.sortitem .mv button{width:34px;height:34px;border-radius:8px;border:1px solid var(--rule);background:#fff;cursor:pointer;font-size:16px}
+.sortitem .mv button:hover:not([disabled]){border-color:var(--accent);color:var(--accent)}
+.sortitem .mv button[disabled]{opacity:.3;cursor:not-allowed}
+ul.rules{list-style:none;padding:0;margin:10px 0 0;display:grid;gap:8px;max-width:760px}
+ul.rules li{display:grid;grid-template-columns:28px 1fr;gap:10px;border:1px solid var(--rule);border-radius:9px;padding:9px 12px;background:#fff}
+ul.rules li p{margin:3px 0 0;font-size:13.5px;color:var(--muted)}
+ul.rules .ic{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;font-weight:700;font-size:13px}
+ul.rules li.ok .ic{background:var(--ok-bg);color:var(--ok)}
+ul.rules li.bad{border-color:#e2b9b2}
+ul.rules li.bad .ic{background:var(--bad-bg);color:var(--bad)}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:20px;max-width:760px;margin-bottom:12px}
+.two ol{padding-left:20px;margin:0}
+@media (max-width:560px){.two{grid-template-columns:1fr}.sortitem{grid-template-columns:30px minmax(0,1fr)}.sortitem .mv{grid-column:2}}
+.hint{border-left:3px solid var(--plan);background:var(--plan-soft);padding:9px 13px;border-radius:0 8px 8px 0;margin:0 0 10px;max-width:70ch;font-size:14.5px}
+
 /* Auswertung */
 .tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin:10px 0 18px}
 .tile{border:1px solid var(--rule);border-radius:10px;padding:12px 14px;background:#fff;border-top-width:4px}
@@ -231,7 +257,7 @@ footer.foot ul{margin:4px 0 10px;padding-left:18px}
   <header class="top">
     <div class="row">
       <h1>KI-Projekt-Planspiel</h1>
-      <span class="sub">Plan gegen Wirklichkeit</span>
+      <span class="sub">Working Bee · Plan gegen Wirklichkeit</span>
       <div class="meta" id="meta"></div>
     </div>
   </header>
@@ -244,35 +270,41 @@ footer.foot ul{margin:4px 0 10px;padding-left:18px}
     <p>Alle Zahlen sind fiktiv und didaktisch vereinfacht. Das Spiel läuft vollständig offline; der Spielstand bleibt nur in diesem Browser gespeichert.</p>
     <p>Grundlagen:</p>
     <ul>
+      <li>IPMA ICB 4 – Individual Competence Baseline, deutsche Fassung (GPM): Lessons Learned (4.5.1.2), Strategie (4.3.1.3–4.3.1.5), Kosten und Finanzierung (4.5.7), Ressourcen (4.5.8), Chancen und Risiken (4.5.11)</li>
+      <li><a href="https://www.peoplecert.org/browse-certifications/project-programme-and-portfolio-management/PRINCE2-2/PRINCE2-7-foundation-3579" target="_blank" rel="noopener">PRINCE2 Version 7 (PeopleCert)</a> – Prinzipien „Learn from experience“ und „Ensure continued business justification“, Praxis Business Case</li>
+      <li><a href="https://www.pmi.org/pmbok-guide-standards/foundational/PMBOK" target="_blank" rel="noopener">PMI: PMBOK Guide, 8. Auflage</a> – Leistungsbereiche Governance, Scope, Schedule, Finance, Stakeholders, Resources, Risk</li>
       <li>Ryseff, De Bruhl, Newberry (RAND, 2024): <a href="https://www.rand.org/pubs/research_reports/RRA2680-1.html" target="_blank" rel="noopener">The Root Causes of Failure for Artificial Intelligence Projects and How They Can Succeed</a> – die fünf Ursachen hinter den Ereigniskarten</li>
-      <li><a href="https://www.iso.org/standard/81118.html" target="_blank" rel="noopener">ISO/IEC 5338:2023 – AI system life cycle processes</a></li>
       <li><a href="https://www.iso.org/standard/42001" target="_blank" rel="noopener">ISO/IEC 42001:2023 – AI management systems</a>, Anhang A.4: Ressourcen für KI-Systeme (Daten, Werkzeuge, Rechenkapazität, Personal)</li>
+      <li><a href="https://eur-lex.europa.eu/legal-content/DE/TXT/HTML/?uri=OJ:L_202401689" target="_blank" rel="noopener">Verordnung (EU) 2024/1689 (KI-Verordnung)</a>, Erwägungsgrund 24 zu Art. 2 Abs. 3: militärische Systeme ausgenommen, bei ziviler Nutzung im Anwendungsbereich</li>
     </ul>
-    <p>KI-Manager:in · KI-Projekt-Planspiel</p>
+    <p>KI-Manager:in · KI-Projekt-Planspiel „Working Bee“ · Entwurf v0.2</p>
     <p>© 2026 Ulrich Nord · Alle Rechte vorbehalten. Teilnehmerinnen und Teilnehmer dürfen dieses Material für die eigene berufliche Nutzung verwenden, speichern und ausdrucken. Weitergabe an Dritte, Veröffentlichung und Verwendung in eigenen Schulungs- oder Beratungsangeboten bedürfen der schriftlichen Zustimmung.</p>
   </footer>
 </div>
 <noscript><p style="padding:20px">Bitte JavaScript aktivieren – das Planspiel läuft im Browser.</p></noscript>
 <script>
 /* ============================================================
-   KI-Projekt-Planspiel · Simulationskern (ohne DOM)
+   KI-Projekt-Planspiel „Working Bee“ · Simulationskern (ohne DOM)
    Alle Zahlen sind fiktiv und didaktisch vereinfacht.
    ============================================================ */
 (function (root) {
 'use strict';
 
+const SCALE = 4;                 // Geldbeträge: Kalibrierung ×4 (Hauptprojekt eines Drohnenherstellers)
+const E = x => x * SCALE;
+
 const CFG = {
-  horizon: 24,            // Betrachtungszeitraum in Monaten
-  runRate: 22000,         // internes Kernteam, € pro Monat
-  extCost: 12000,         // je zugekauftem Kapazitätspunkt
-  transferCost: 3000,     // Wissenstransfer-Klausel je Phase
-  kp: 8,                  // Kapazitätspunkte je Projektphase
-  extMax: 3,
-  errCostYear: 2000000,   // heutige Prognosefehlerkosten p. a. (Abschriften + Fehlmengen)
-  baselineErr: 22,        // mittlerer Prognosefehler der Baseline in %
-  target: 15,             // Zielgröße: Fehler ggü. Baseline um mind. 15 % senken
-  maxImp: 32,             // fachlich erreichbares Maximum in %
-  infra: 2000, monCost: 1000, opsKpCost: 600, opsKpMax: 6,
+  horizon: 24,                   // Betrachtungszeitraum in Monaten (ab Start des Hauptprojekts)
+  vorprojekt: 150000,            // Startbudget des Vorstands
+  runRate: E(22000),             // internes Kernteam, € pro Monat
+  extCost: E(12000),             // je zugekauftem Kapazitätspunkt
+  transferCost: E(3000),         // Wissenstransfer-Klausel je Phase
+  kp: 8, extMax: 3,
+  potYear: E(2000000),           // Deckungsbeitragspotenzial p. a. bei 100 % weniger Übernahmen und voller Nutzung
+  baseQuote: 40,                 // Übernahmequote des militärischen Modells im zivilen Test (%)
+  target: 15,                    // Zielgröße: Übernahmen um mind. 15 % senken
+  maxImp: 32,
+  infra: E(2000), monCost: E(1000), opsKpCost: E(600), opsKpMax: 6,
 };
 
 function mulberry32(a) {
@@ -288,32 +320,75 @@ const clamp = (x, a, b) => Math.max(a, Math.min(b, x));
 const sum = a => a.reduce((x, y) => x + y, 0);
 const r1 = x => Math.round(x * 10) / 10;
 
+/* ---------------- Vorprojekt: Reihenfolge der Planungsaktivitäten ---------------- */
+const ACTIVITIES = [
+  { id: 'lessons', t: 'Lessons Learned aus früheren Projekten auswerten', d: 'Was lief in früheren Entwicklungsprojekten gut, was schief?' },
+  { id: 'stake', t: 'Stakeholder analysieren', d: 'Wer ist betroffen, wer entscheidet mit, wer kann bremsen?' },
+  { id: 'la', t: 'Lenkungsausschuss einrichten', d: 'Wer gibt Budget frei und entscheidet an den Entscheidungspunkten?' },
+  { id: 'kef', t: 'KEF bestimmen und KPI ableiten', d: 'Was entscheidet über den Erfolg – und woran misst Du ihn?' },
+  { id: 'daten', t: 'Datenlage prüfen (Dateninventur)', d: 'Welche Daten gibt es – und dürfen sie zivil genutzt werden?' },
+  { id: 'psp', t: 'Leistungsumfang und Termine strukturieren', d: 'Projektstrukturplan mit Arbeitspaketen und Meilensteinen.' },
+  { id: 'risiko', t: 'Risikomanagement aufsetzen', d: 'Risiken erfassen, bewerten und Verantwortliche festlegen.' },
+  { id: 'ress', t: 'Ressourcen planen', d: 'Personal, Daten, Rechenkapazität und Werkzeuge.' },
+  { id: 'budget', t: 'Budget planen', d: 'Kosten schätzen und das Projektbudget festlegen.' },
+  { id: 'bc', t: 'Business Case berechnen', d: 'Lohnt sich das Hauptprojekt?' },
+];
+const RULES = [
+  { id: 'lessons', t: 'Lessons Learned stehen am Anfang', test: p => p.lessons <= 2,
+    x: 'ICB 4 (4.5.1.2): „Zu Beginn des Projekts sammelt der Einzelne die Lessons Learned aus früheren Projekten“ – und am Ende noch einmal. PRINCE2-Prinzip „Learn from experience“.' },
+  { id: 'stake', t: 'Stakeholderanalyse vor dem Lenkungsausschuss', test: p => p.stake < p.la,
+    x: 'Wer im Lenkungsausschuss sitzt, ergibt sich aus der Stakeholderanalyse: Wer entscheidet mit, wer trägt Budget und Risiko? (ICB 4: Stakeholder; Macht und Interessen)' },
+  { id: 'kef', t: 'KEF und KPI vor dem Business Case', test: p => p.kef < p.bc,
+    x: 'Der Business Case begründet das Projekt. Woran sich Erfolg messen lässt, muss vorher feststehen (ICB 4, Strategie: 4.3.1.3 bis 4.3.1.5).' },
+  { id: 'daten', t: 'Dateninventur vor der Ressourcenplanung', test: p => p.daten < p.ress,
+    x: 'Daten sind eine Ressource wie Personal und Rechenkapazität (ISO/IEC 42001, Anhang A.4). Was fehlt, muss beschafft und eingeplant werden.' },
+  { id: 'psp', t: 'Projektstrukturplan vor der Ressourcenplanung', test: p => p.psp < p.ress,
+    x: 'Ressourcen und Kosten werden aus den Arbeitspaketen abgeleitet, und die Ressourcenplanung muss mit der Zeitplanung abgeglichen sein (ICB 4: 4.5.7.1, 4.5.8.1).' },
+  { id: 'risiko', t: 'Risikomanagement vor dem Budget', test: p => p.risiko < p.budget,
+    x: 'Ins Budget gehören Reserven für Unsicherheiten und Risiken – dafür müssen die Risiken bekannt sein (ICB 4: 4.5.7.2).' },
+  { id: 'ress', t: 'Ressourcen vor dem Budget', test: p => p.ress < p.budget,
+    x: 'Das Budget entsteht aus der Kostenschätzung der Ressourcen (ICB 4: 4.5.7.1 und 4.5.7.2).' },
+  { id: 'budget', t: 'Budget vor dem Business Case', test: p => p.budget < p.bc,
+    x: 'Ohne Kosten keine Wirtschaftlichkeitsrechnung (PRINCE2: Business Case).' },
+];
+
+function initialOrder(seed) {
+  const rnd = mulberry32(seed * 31 + 7);
+  let ids = ACTIVITIES.map(a => a.id);
+  for (let tries = 0; tries < 20; tries++) {
+    for (let i = ids.length - 1; i > 0; i--) { const j = Math.floor(rnd() * (i + 1)); [ids[i], ids[j]] = [ids[j], ids[i]]; }
+    const pos = {}; ids.forEach((id, i) => { pos[id] = i; });
+    if (RULES.filter(r => r.test(pos)).length <= 4) break;
+  }
+  return ids;
+}
+
 /* ---------------- Plan (Erstentwurf + Ergänzungen) ---------------- */
 const PLAN_ITEMS = [
-  { id: 'daten', label: 'Datenbeschaffung und -aufbereitung als eigene Phase',
-    hint: '+1 Monat bis zum Go-live (+22.000 €)' },
-  { id: 'experiment', label: 'Experimentierphase mit offenem Ausgang',
-    hint: '+1 Monat für eine weitere Modellrunde (+22.000 €)' },
-  { id: 'betrieb', label: 'Überwachung und Nachtraining als Dauerposten',
-    hint: '+4.000 € pro Monat im Betrieb' },
-  { id: 'ausstieg', label: 'Rückfallebene und geordnete Außerbetriebnahme',
-    hint: '+6.000 € einmalig' },
-  { id: 'hochlauf', label: 'Nutzen wächst mit der Akzeptanz',
-    hint: 'Hochlauf über vier Monate statt vollem Nutzen ab dem ersten Tag' },
-  { id: 'reserve', label: 'Risikoreserve',
-    hint: '+15 % auf das Budget jeder Phase – Puffer für Unvorhergesehenes' },
+  { id: 'daten', label: 'Datenbeschaffung und -aufbereitung als eigene Phase', hint: '+1 Monat bis zum Go-live' },
+  { id: 'experiment', label: 'Experimentierphase mit offenem Ausgang', hint: '+1 Monat für eine weitere Modellrunde' },
+  { id: 'betrieb', label: 'Überwachung und Nachtraining als Dauerposten', hint: 'höhere laufende Kosten im Betrieb' },
+  { id: 'ausstieg', label: 'Rückfallebene und geordnete Außerbetriebnahme', hint: 'einmalige Zusatzkosten' },
+  { id: 'hochlauf', label: 'Nutzen wächst mit der Akzeptanz', hint: 'Hochlauf über vier Monate statt vollem Nutzen ab dem ersten Tag' },
+  { id: 'reserve', label: 'Risikoreserve', hint: '+15 % auf das Budget jeder Phase – Puffer für Unvorhergesehenes' },
 ];
+function planItemHint(it) {
+  if (it.id === 'daten' || it.id === 'experiment') return it.hint + ' (+' + fmtE(CFG.runRate) + ')';
+  if (it.id === 'betrieb') return '+' + fmtE(E(4000)) + ' pro Monat im Betrieb';
+  if (it.id === 'ausstieg') return '+' + fmtE(E(6000)) + ' einmalig';
+  return it.hint;
+}
 
 function computePlan(sel, impAssume) {
   sel = sel || {};
   const months = [1, 1 + (sel.daten ? 1 : 0), 1 + (sel.experiment ? 1 : 0), 1];
   const goLive = sum(months);
   const phaseCost = months.map(m => m * CFG.runRate);
-  phaseCost[3] += 8000 + 4000 + (sel.ausstieg ? 6000 : 0);
+  phaseCost[3] += E(8000) + E(4000) + (sel.ausstieg ? E(6000) : 0);
   if (sel.reserve) for (let i = 0; i < 4; i++) phaseCost[i] = Math.round(phaseCost[i] * 1.15);
   const invest = sum(phaseCost);
-  const ops = CFG.infra + (sel.betrieb ? 4000 : 0);
-  const benefitFull = CFG.errCostYear / 12 * impAssume / 100;
+  const ops = CFG.infra + (sel.betrieb ? E(4000) : 0);
+  const benefitFull = CFG.potYear / 12 * impAssume / 100;
   const cf = new Array(CFG.horizon + 1).fill(0);
   let m = 0;
   months.forEach((d, i) => { for (let k = 0; k < d; k++) { m++; cf[m] -= phaseCost[i] / d; } });
@@ -332,67 +407,67 @@ function computePlan(sel, impAssume) {
     count: PLAN_ITEMS.filter(x => sel[x.id]).length };
 }
 
-/* ---------------- Phasen und Hebel ---------------- */
+/* ---------------- Phasen und Stellschrauben ---------------- */
 const PHASES = [
   { key: 'herkunft', name: 'Datenherkunft/-sammlung', en: 'Extract', base: 1,
-    question: 'Welche Daten gibt es, welche fehlen – und dürfen wir sie nutzen?',
+    question: 'Welche Daten gibt es, welche fehlen – und dürfen sie zivil genutzt werden?',
     levers: [
       { id: 'inventur', name: 'Dateninventur', max: 3,
-        text: 'Welche Daten liegen wo und in welcher Qualität? Macht die Datenlage sichtbar.' },
+        text: 'Welche Flug-, Kamera- und Sensordaten gibt es, in welcher Qualität – und was ist als Verschlusssache eingestuft?' },
       { id: 'extern', name: 'Externe Daten anbinden', max: 4,
-        text: 'Wetterdaten und lokale Ereignisse (Feste, Ferien) ergänzen die Kassen- und Bestandsdaten.' },
-      { id: 'rechte', name: 'Nutzungsrechte klären', max: 3,
-        text: 'Lizenzen externer Daten, Verträge mit Lieferanten, Datenschutz.' },
-      { id: 'fach', name: 'Fachbereich einbinden', max: 4,
-        text: 'Mit Einkauf, Vertrieb und Filialleitungen klären, was die Prognose leisten soll.' },
+        text: '3D-Stadtmodelle, Wetter- und Luftraumdaten ergänzen die militärischen Flugdaten.' },
+      { id: 'rechte', name: 'Nutzungsrechte und Rechtsrahmen klären', max: 3,
+        text: 'Datenfreigaben, Lizenzen, Luftrecht – und die KI-Verordnung, die mit der zivilen Nutzung erstmals gilt.' },
+      { id: 'fach', name: 'Vertrieb, Pilotkunden und Fernpiloten einbinden', max: 4,
+        text: 'Klären, was Working Bee im Alltag leisten soll – und was nicht.' },
     ] },
   { key: 'verarbeitung', name: 'Datenverarbeitung', en: 'Load & Transform', base: 2,
     question: 'Sind die Daten so aufbereitet, dass ein Modell daraus lernen kann?',
     levers: [
       { id: 'bereinigung', name: 'Datenbereinigung', max: 4,
-        text: 'Dubletten, Ausreißer, fehlende Werte und uneinheitliche Formate behandeln.' },
+        text: 'Fehlerhafte Sensoraufnahmen, Dubletten, fehlende Werte und uneinheitliche Formate behandeln.' },
       { id: 'integration', name: 'Datenintegration', max: 3,
-        text: 'Kasse, Bestand und externe Daten zusammenführen; jedes Feld bedeutet überall dasselbe.' },
+        text: 'Flugdaten, Kamerabilder und Kartendaten zusammenführen und einheitlich beschriften.' },
       { id: 'pipeline', name: 'Datenpipeline automatisieren', max: 4,
         text: 'Der Datenfluss läuft ohne Handarbeit. Macht späteres Nachtraining schneller und billiger.' },
       { id: 'doku', name: 'Dokumentation', max: 2,
         text: 'Herkunft, Bedeutung und Bearbeitung der Daten nachvollziehbar festhalten.' },
     ] },
   { key: 'entwicklung', name: 'Modellentwicklung', en: 'Model Development', base: 2,
-    question: 'Schlägt ein Modell die heutige Bestellpraxis – und woran messen wir das?',
+    question: 'Übergibt das neue Modell seltener an den Menschen als das militärische – und woran misst Du das?',
     levers: [
       { id: 'baseline', name: 'Baseline aufbauen', max: 1,
-        text: 'Die Messlatte: „Bestellung wie am gleichen Wochentag des Vorjahres“. Ein Punkt genügt.' },
+        text: 'Die Messlatte: das militärische Modell unter denselben zivilen Testbedingungen messen. Ein Punkt genügt.' },
       { id: 'validierung', name: 'Validierungsdesign', max: 3,
-        text: 'Zeitbasierter Split und Prüfung auf Data Leakage, damit die Testdaten wirklich ungesehen sind.' },
+        text: 'Testflüge aus späteren Zeiträumen und anderen Gebieten als die Trainingsdaten; Prüfung auf Data Leakage.' },
       { id: 'varianten', name: 'Modellvarianten erproben', max: 4,
         text: 'Mehrere Verfahren und Merkmale ausprobieren und vergleichen.' },
-      { id: 'fehleranalyse', name: 'Fehleranalyse mit dem Fachbereich', max: 2,
-        text: 'Wo liegt das Modell daneben – bei welcher Warengruppe, in welcher Filiale?' },
+      { id: 'fehleranalyse', name: 'Fehleranalyse mit den Fernpiloten', max: 2,
+        text: 'Wo übernimmt der Mensch – bei welchem Wetter, in welchem Gebiet, bei welchem Landeplatz?' },
     ] },
   { key: 'bereitstellung', name: 'Modellbereitstellung', en: 'Model Deployment', base: 1,
-    question: 'Kommt die Prognose dort an, wo bestellt wird – und hält sie im Alltag?',
+    question: 'Kommt das Modell dort an, wo geflogen wird – und hält es im Alltag?',
     levers: [
-      { id: 'pilot', name: 'Pilot in zwei Filialen', max: 1,
-        text: 'Begrenzter Pilot mit Abbruchregeln. Kostet einen Monat, zeigt die echte Prognosegüte.' },
-      { id: 'integration', name: 'Integration ins Warenwirtschaftssystem', max: 3,
-        text: 'Der Bestellvorschlag erscheint direkt dort, wo die Filialleitung bestellt.' },
-      { id: 'schulung', name: 'Schulung der Filialleitungen', max: 3,
-        text: 'KI-Kompetenz: Vorschläge verstehen, prüfen und bewusst übersteuern können.' },
+      { id: 'pilot', name: 'Pilotbetrieb mit einem Kunden', max: 1,
+        text: 'Zwei Einsatzgebiete, feste Abbruchregeln. Kostet einen Monat, zeigt die echte Übernahmequote.' },
+      { id: 'integration', name: 'Integration in die Leitstelle des Kunden', max: 3,
+        text: 'Übernahme-Anforderungen der Drohne erscheinen direkt am Arbeitsplatz der Fernpiloten.' },
+      { id: 'schulung', name: 'Schulung der Fernpiloten und Disponenten', max: 3,
+        text: 'KI-Kompetenz: verstehen, wann das Modell unsicher ist, und bewusst eingreifen können.' },
       { id: 'monitoring', name: 'Monitoring einrichten', max: 2,
-        text: 'Prognosegüte und Drift laufend messen, jede Prognose mit Modellversion protokollieren.' },
+        text: 'Übernahmequote und Drift laufend messen, jede Entscheidung mit Modellversion protokollieren.' },
       { id: 'rueckfall', name: 'Rückfallebene', max: 1,
-        text: 'Wenn das Modell ausfällt, bestellen die Filialen geordnet wie bisher.' },
+        text: 'Fällt das Modell aus, fliegen Fernpiloten geordnet und sicher manuell.' },
     ] },
   { key: 'ueberwachung', name: 'Modellüberwachung', en: 'Model Monitoring', base: 0,
-    question: 'Bleibt die Prognose gut, wenn sich die Welt verändert?',
+    question: 'Bleibt das Modell gut, wenn sich die Einsatzgebiete verändern?',
     levers: [
       { id: 'auswertung', name: 'Monitoring auswerten', max: 2,
-        text: 'Jemand schaut regelmäßig auf Prognosegüte und Drift und schlägt Alarm.' },
+        text: 'Jemand schaut regelmäßig auf Übernahmequote und Drift und schlägt Alarm.' },
       { id: 'nachtraining', name: 'Nachtraining bereithalten', max: 2,
         text: 'Continuous Training: Ablauf und Kapazität für ein schnelles Retraining stehen bereit.' },
-      { id: 'feedback', name: 'Rückmeldungen und Kompetenzaufbau in den Filialen', max: 3,
-        text: 'Feste Rückmeldewege und Auffrischungen; aus Rückmeldungen wird Verbesserung (KVP).' },
+      { id: 'feedback', name: 'AI Champions und Rückmeldewege bei den Kunden', max: 3,
+        text: 'Erfahrene Fernpiloten als Ansprechpartner, feste Rückmeldewege, Auffrischungen (KVP).' },
       { id: 'wissen', name: 'Wissenstransfer nachholen', max: 2,
         text: 'Was beim externen Partner liegt, wird dokumentiert und ins Team übergeben.' },
     ] },
@@ -404,7 +479,8 @@ function newGame(seed) {
   const rnd = mulberry32(seed * 7919 + 17);
   const rolls = []; for (let i = 0; i < 24; i++) rolls.push(rnd());
   return {
-    v: 1, seed, rolls, stage: 'plan', phase: 0,
+    v: 2, seed, rolls, stage: 'vorprojekt', phase: 0,
+    order0: initialOrder(seed), vorprojekt: null, hints: {}, inventurBonus: 0,
     plan: null, month: 0,
     cost: new Array(60).fill(0), benefit: new Array(60).fill(0),
     Q: 45, C: 40, R: 30, P: 40, A: 0, D: 0, B: 0, V: 0, E: 0, F: 0,
@@ -414,7 +490,7 @@ function newGame(seed) {
     trueImp: null, meas: null, leak: false, pilotImp: null,
     extraRounds: 0, ops: null, goLive: null, aborted: null,
     flags: { schein: false, over: false, overOps: false, zielOffen: false, liste: false },
-    nachbew: 0, released: 0, log: [], lastResult: null, event: null, gate: null,
+    nachbew: 0, log: [], lastResult: null, event: null, gate: null,
     opsReport: null, done: false, phaseMonths: [], segs: [],
   };
 }
@@ -424,14 +500,31 @@ function adv(s, n, p, kind) { if (n > 0) { s.segs.push({ p, from: s.month, to: s
 function addCost(s, month, amount) { s.cost[Math.max(1, Math.min(59, month))] += amount; }
 function spent(s, upto) { let c = 0; for (let i = 1; i <= (upto == null ? 59 : upto); i++) c += s.cost[i]; return c; }
 
+function submitOrder(s, order) {
+  const pos = {}; order.forEach((id, i) => { pos[id] = i; });
+  const res = RULES.map(r => ({ id: r.id, t: r.t, x: r.x, ok: !!r.test(pos) }));
+  const n = res.filter(r => r.ok).length;
+  const ok = id => res.find(r => r.id === id).ok;
+  s.T = 50 + 2 * n;
+  const effects = ['Der Lenkungsausschuss startet mit ' + s.T + ' von 100 Punkten Vertrauen in Dich (' + n + ' von 8 Abhängigkeiten eingehalten).'];
+  if (ok('daten')) { s.known.data = true; s.inventurBonus = 1; effects.push('Deine frühe Dateninventur zahlt sich aus: Die Datenlage ist von Beginn an sichtbar und zählt in der ersten Phase mit.'); }
+  else effects.push('Die Datenlage bleibt vorerst unbekannt – Du planst Ressourcen, ohne zu wissen, welche Daten fehlen.');
+  if (ok('kef')) { s.P += 10; effects.push('Erfolgsfaktoren und Messgrößen stehen fest, bevor Du rechnest: Das Ziel ist klarer.'); }
+  if (ok('lessons')) { s.hints.lessons = true; effects.push('Deine Lessons-Learned-Auswertung liefert Dir einen Hinweis für den Business Case.'); }
+  if (ok('risiko')) { s.hints.reserve = true; effects.push('Dein Risikoregister liefert Dir einen Hinweis für das Budget.'); }
+  s.vorprojekt = { order: order.slice(), res, n, effects };
+  s.stage = 'vorprojekt_result';
+  log(s, 'Vorprojekt: Reihenfolge festgelegt, ' + n + ' von 8 Abhängigkeiten eingehalten.', 'plan');
+}
+function toPlan(s) { s.stage = 'plan'; }
+
 function submitPlan(s, sel, impAssume) {
   s.plan = computePlan(sel, impAssume);
   let msg;
-  if (s.plan.count >= 4) { s.T += 6; msg = 'Der Lenkungskreis findet den Plan nachvollziehbar, wenn auch teurer als gedacht.'; }
-  else if (s.plan.count >= 2) { s.T += 2; msg = 'Der Lenkungskreis nimmt den Plan an und fragt nach, warum er länger dauert als der Erstentwurf.'; }
-  else { msg = 'Der Lenkungskreis ist zufrieden: schneller Go-live, kurze Amortisation.'; }
-  if (impAssume >= 25) msg += ' Die Nutzenannahme von 25 % übernimmt er ohne Rückfrage.';
-  s.released = s.plan.phaseCost[0];
+  if (s.plan.count >= 4) { s.T += 6; msg = 'Der Lenkungsausschuss findet den Plan nachvollziehbar, wenn auch teurer als gedacht.'; }
+  else if (s.plan.count >= 2) { s.T += 2; msg = 'Der Lenkungsausschuss nimmt den Plan an und fragt nach, warum er länger dauert als der Erstentwurf.'; }
+  else { msg = 'Der Lenkungsausschuss ist zufrieden: schneller Go-live, kurze Amortisation.'; }
+  if (impAssume >= 25) msg += ' Die Annahme von 25 % weniger Übernahmen übernimmt er ohne Rückfrage.';
   log(s, 'Plan eingereicht: Go-live in Monat ' + s.plan.goLive + ', Investition ' + fmtE(s.plan.invest) + '. ' + msg, 'plan');
   s.stage = 'alloc'; s.phase = 0;
   return msg;
@@ -441,7 +534,7 @@ function submitPlan(s, sel, impAssume) {
 function runPhase(s, alloc, ext, transfer) {
   const ph = PHASES[s.phase];
   const a = k => alloc[k] || 0;
-  const res = []; // {label, from, to, unit, hidden}
+  const res = [];
   const before = { Q: s.Q, C: s.C, R: s.R, P: s.P, L: s.L, K: s.K, T: s.T };
   let d = ph.base, extraCost = 0;
   ext = ext || 0;
@@ -453,14 +546,16 @@ function runPhase(s, alloc, ext, transfer) {
   const notes = [];
 
   if (ph.key === 'herkunft') {
-    s.inventur = a('inventur');
-    s.Q += gain(a('inventur'), 8);
+    const inv = a('inventur') + s.inventurBonus;
+    s.inventur = inv;
+    s.Q += gain(inv, 8);
     s.C += gain(a('extern'), 35);
     s.R += gain(a('rechte'), 70);
     s.P += gain(a('fach'), 55);
     s.T += a('fach') * 1.5;
-    if (a('extern') > 0) extraCost += 3000; // Lizenz externer Daten
-    if (a('inventur') >= 1) { s.known.data = true; notes.push('Die Dateninventur zeigt, wo Ihr steht – die Datenlage ist ab jetzt sichtbar.'); }
+    if (a('extern') > 0) extraCost += E(3000);
+    if (s.inventurBonus) notes.push('Die Dateninventur aus dem Vorprojekt zählt mit.');
+    if (inv >= 1) { s.known.data = true; if (!s.inventurBonus) notes.push('Die Dateninventur zeigt, wo Du stehst – die Datenlage ist ab jetzt sichtbar.'); }
     else notes.push('Ohne Dateninventur bleibt die Datenlage vorerst unbekannt.');
   }
   if (ph.key === 'verarbeitung') {
@@ -491,18 +586,17 @@ function runPhase(s, alloc, ext, transfer) {
     s.L += gain(a('schulung'), 55);
     s.M = [0, 0.6, 1][a('monitoring')];
     s.FB = a('rueckfall') >= 1 ? 1 : 0;
-    extraCost += 8000 + a('schulung') * 2000; // Infrastruktur-Setup, Schulungsmaterial
+    extraCost += E(8000) + a('schulung') * E(2000);
     if (s.pilot) {
       d += 1;
       s.pilotImp = r1(s.trueImp + (s.rolls[7] - 0.5) * 2);
-      notes.push('Der Pilot in zwei Filialen läuft einen Monat.');
+      notes.push('Der Pilotbetrieb mit einem Kunden läuft einen Monat.');
     }
-    // Nutzungsrechte externer Daten
-    if (s.C > 55 && s.R < 50) {
-      extraCost += 9000; s.T -= 5;
-      notes.push('Lizenzprüfung vor dem Go-live: Die angebundenen Wetterdaten sind nur für nicht-gewerbliche Nutzung lizenziert. Eine gewerbliche Lizenz kostet 9.000 €; der Lenkungskreis fragt, warum das nicht früher geklärt wurde.');
-    } else if (s.C > 55) {
-      notes.push('Lizenzprüfung vor dem Go-live: Die Nutzungsrechte der externen Daten sind geklärt – keine Überraschung.');
+    if (s.R < 50) {
+      extraCost += E(9000); s.T -= 5;
+      notes.push('Rechtsprüfung vor dem Go-live: Mit der zivilen Nutzung fällt Working Bee in den Anwendungsbereich der KI-Verordnung, und die 3D-Stadtmodelle sind nur für nicht-kommerzielle Nutzung lizenziert. Nachholen kostet ' + fmtE(E(9000)) + '; der Lenkungsausschuss fragt, warum das nicht früher geklärt wurde.');
+    } else {
+      notes.push('Rechtsprüfung vor dem Go-live: Datenfreigaben, Lizenzen und Rechtsrahmen sind geklärt – keine Überraschung.');
     }
   }
 
@@ -515,7 +609,6 @@ function runPhase(s, alloc, ext, transfer) {
   s.Q = clamp(s.Q, 0, 100); s.C = clamp(s.C, 0, 100); s.R = clamp(s.R, 0, 100);
   s.P = clamp(s.P, 0, 100); s.L = clamp(s.L, 0, 100); s.T = clamp(s.T, 0, 100);
 
-  // Ergebniszeilen
   const kn = s.known.data;
   if (['herkunft', 'verarbeitung'].includes(ph.key)) {
     res.push({ label: 'Datenqualität', from: before.Q, to: s.Q, hidden: !kn });
@@ -525,7 +618,7 @@ function runPhase(s, alloc, ext, transfer) {
     res.push({ label: 'Nutzungsrechte geklärt', from: before.R, to: s.R, hidden: !kn });
     res.push({ label: 'Klarheit über das Ziel', from: before.P, to: s.P });
   }
-  if (ph.key === 'bereitstellung') res.push({ label: 'KI-Kompetenz in den Filialen', from: before.L, to: s.L });
+  if (ph.key === 'bereitstellung') res.push({ label: 'KI-Kompetenz der Fernpiloten', from: before.L, to: s.L });
   if (ext > 0) res.push({ label: 'Wissen im eigenen Haus', from: before.K, to: s.K });
 
   s.lastResult = { phase: s.phase, months: d, cost: d * CFG.runRate + extraCost, res, notes };
@@ -540,7 +633,7 @@ function computeModel(s, noiseRoll, measRoll) {
   s.trueImp = r1(CFG.maxImp * dq * (0.55 + 0.45 * s.E) + (noiseRoll - 0.5) * 6);
   s.meas = r1(s.trueImp + (s.leak ? 14 : 0) + (measRoll - 0.5) * 3);
 }
-const guete = imp => r1(100 - CFG.baselineErr * (1 - imp / 100));
+const quote = imp => r1(CFG.baseQuote * (1 - imp / 100));
 
 /* ---------------- Ereigniskarten (RAND-Ursachen) ---------------- */
 const RAND = {
@@ -554,77 +647,77 @@ const RAND = {
 function makeEvent(s) {
   const k = PHASES[s.phase].key;
   if (k === 'herkunft') {
-    const ev = { id: 'ziel', rand: 1, title: 'Zwei Ziele, eine Prognose',
-      text: 'In der Abstimmung zeigt sich: Der Einkauf will weniger Abschriften, der Vertrieb will nie wieder leere Regale. Eine Bestellprognose kann nicht beides zugleich maximieren – höhere Bestellungen senken Fehlmengen und erhöhen Abschriften.' };
-    if (s.P >= 70) { ev.auto = 'Weil Ihr Einkauf, Vertrieb und Filialleitungen früh eingebunden habt, ist die Zielgröße schon geklärt: Abschriften senken, ohne dass die Fehlmengenquote steigt.'; ev.autoFx = () => { s.T += 2; }; }
+    const ev = { id: 'ziel', rand: 1, title: 'Zwei Kunden, zwei Ziele',
+      text: 'Der Logistikkunde will möglichst viele Zustellungen pro Stunde. Der Interessent aus dem Objektschutz will lange Flugzeiten und keine Fehlalarme. Ein Modell und ein Produkt können nicht beides zugleich optimieren – und der Vertrieb hat beiden schon etwas versprochen.' };
+    if (s.P >= 70) { ev.auto = 'Weil Du Vertrieb, Pilotkunden und Fernpiloten früh eingebunden hast, ist das längst geklärt: Working Bee startet mit der Zustellung, der Objektschutz folgt als zweite Ausbaustufe.'; ev.autoFx = () => { s.T += 2; }; }
     else ev.options = [
-      { t: 'Klärungsworkshop mit Einkauf, Vertrieb und zwei Filialleitungen', c: '8.000 €',
-        fx: () => { addCost(s, s.month, 8000); s.P = Math.max(s.P, 75); s.T += 3; return 'Die Zielgröße steht: Abschriften senken, Fehlmengenquote darf nicht steigen. Alle haben zugestimmt.'; } },
+      { t: 'Klärungsworkshop mit Vertrieb und beiden Interessenten', c: fmtE(E(8000)),
+        fx: () => { addCost(s, s.month, E(8000)); s.P = Math.max(s.P, 75); s.T += 3; return 'Entschieden: Working Bee startet mit der Zustellung, der Objektschutz folgt als zweite Ausbaustufe. Beide Seiten tragen das mit.'; } },
       { t: 'Ziel offen lassen – das Modell lässt sich später anpassen', c: 'kostenlos',
-        fx: () => { s.flags.zielOffen = true; return 'Das Team optimiert auf eine Größe, die nicht alle teilen. Ob das trägt, zeigt sich erst im Betrieb.'; } },
-      { t: 'Das Projektteam legt fest: Abschriften senken', c: 'kostenlos',
-        fx: () => { s.P += 12; s.T -= 5; s.capPen += 0.05; return 'Das Ziel ist klar, aber der Vertrieb fühlt sich übergangen. Einige Filialleitungen werden skeptisch bleiben.'; } },
+        fx: () => { s.flags.zielOffen = true; return 'Das Team optimiert auf zwei Ziele, die sich widersprechen. Ob das trägt, zeigt sich erst im Betrieb.'; } },
+      { t: 'Du entscheidest allein: Zustellung zuerst', c: 'kostenlos',
+        fx: () => { s.P += 12; s.T -= 5; s.capPen += 0.05; return 'Das Ziel ist klar, aber der Vertrieb fühlt sich übergangen. Einige Kundenkontakte bleiben skeptisch.'; } },
     ];
     return ev;
   }
   if (k === 'verarbeitung') {
     const inv = s.inventur >= 2;
-    const ev = { id: 'historie', rand: 2, title: 'Lücke in der Historie',
-      text: (inv ? 'Eure Dateninventur hatte die Lücke schon gezeigt, Ihr könnt ohne Zeitdruck entscheiden: ' : '') +
-        'Zwei der zehn Filialen arbeiten erst seit acht Monaten mit dem neuen Kassensystem. Für sie fehlt ein vollständiger Jahreszyklus – Ostern, Sommer und Weihnachten sind nicht in den Daten.' };
+    const ev = { id: 'stadtdaten', rand: 2, title: 'Keine Daten aus der Stadt',
+      text: (inv ? 'Deine Dateninventur hatte die Lücke schon gezeigt, Du kannst ohne Zeitdruck entscheiden: ' : '') +
+        'Die militärischen Flugdaten stammen aus Gelände, Wald und Wüste. Für Innenstädte, Wohngebiete und Paketstationen gibt es kaum Aufnahmen – und ein Teil der Daten ist als Verschlusssache eingestuft und darf zivil nicht verwendet werden.' };
     ev.options = [
-      { t: 'Die zwei Filialen zunächst ausklammern; sie folgen nach einem Jahr', c: '20 % weniger Nutzen im ersten Jahr',
-        fx: () => { s.excl = true; s.T += 2; return 'Ehrlicher Zuschnitt: acht Filialen, saubere Daten. Im ersten Betriebsjahr fehlt der Nutzen aus zwei Filialen.'; } },
-      { t: 'Historie aus dem Altsystem rekonstruieren', c: inv ? '6.000 €' : '16.000 € und 1 Monat',
-        fx: () => { if (inv) addCost(s, s.month, 6000); else { addCost(s, s.month + 1, 16000 + CFG.runRate); adv(s, 1, s.phase, 'verzug'); s.phaseMonths[s.phase] += 1; } s.C = clamp(s.C + 5, 0, 100);
-          return inv ? 'Weil Ihr die Lücke früh kanntet, ließ sich die Rekonstruktion nebenher erledigen.' : 'Die Rekonstruktion klappt, kostet aber einen zusätzlichen Monat.'; } },
+      { t: 'Zunächst nur Stadtränder und Gewerbegebiete; Innenstädte folgen nach einem Jahr', c: '20 % weniger Nutzen im ersten Jahr',
+        fx: () => { s.excl = true; s.T += 2; return 'Ehrlicher Zuschnitt: weniger Einsatzgebiete, dafür passende Daten. Im ersten Betriebsjahr fehlt der Nutzen aus den Innenstädten.'; } },
+      { t: 'Zivile Testflüge zur Datensammlung', c: inv ? fmtE(E(6000)) : fmtE(E(16000)) + ' und 1 Monat',
+        fx: () => { if (inv) addCost(s, s.month, E(6000)); else { addCost(s, s.month + 1, E(16000) + CFG.runRate); adv(s, 1, s.phase, 'verzug'); s.phaseMonths[s.phase] += 1; } s.C = clamp(s.C + 5, 0, 100);
+          return inv ? 'Weil Du die Lücke früh kanntest, liefen die Testflüge parallel zur Datenaufbereitung.' : 'Die Testflüge liefern die fehlenden Aufnahmen, kosten aber einen zusätzlichen Monat.'; } },
       { t: 'Mit den vorhandenen Daten trainieren – das wird schon passen', c: 'kostenlos',
-        fx: () => { s.Q = clamp(s.Q - 10, 0, 100); return 'Das Team trainiert mit dem, was da ist. Für zwei Filialen fehlen die Saisonmuster.'; } },
+        fx: () => { s.Q = clamp(s.Q - 10, 0, 100); return 'Das Team trainiert mit dem, was da ist. Das Modell hat Städte kaum gesehen (Domain Shift).'; } },
     ];
     return ev;
   }
   if (k === 'entwicklung') {
-    const ev = { id: 'genai', rand: 3, title: 'Die Geschäftsführung war auf einer Konferenz',
-      text: '„Alle reden über generative KI. Sollten wir nicht ein großes Sprachmodell nehmen statt klassischem Machine Learning?“' };
+    const ev = { id: 'genai', rand: 3, title: 'Der Vorstand war auf einer Messe',
+      text: '„Ein Wettbewerber zeigt Drohnen mit einem großen multimodalen Sprachmodell an Bord. Sollten wir nicht auch so etwas einsetzen?“' };
     ev.options = [
       { t: 'Mit Baseline und Zielgröße begründen, warum das gewählte Verfahren reicht', c: 'kostenlos',
-        fx: () => { if (s.B) { s.T += 3; return 'Die Messlatte überzeugt: Es zählt, ob die Abschriften sinken, nicht welche Technik dahintersteht.'; } s.T -= 4; return 'Ohne Baseline fehlt Euch die Messlatte. Die Begründung bleibt eine Behauptung, die Geschäftsführung ist nicht überzeugt.'; } },
-      { t: 'Vergleichstest über zwei Wochen', c: '11.000 €',
-        fx: () => { addCost(s, s.month, 11000); s.T += 2; return 'Im Test bringt der neue Ansatz für diese Aufgabe keine bessere Prognosegüte. Die Frage ist beantwortet – mit Daten.'; } },
-      { t: 'Auf ein Sprachmodell umschwenken', c: '22.000 € und 1 Monat',
-        fx: () => { addCost(s, s.month + 1, CFG.runRate); adv(s, 1, s.phase, 'verzug'); s.phaseMonths[s.phase] += 1; s.T += 3; return 'Datenaufbereitung und Validierung müssen für den neuen Ansatz wiederholt werden. Am Ende steht keine bessere Prognose, aber ein Monat Verzug.'; } },
+        fx: () => { if (s.B) { s.T += 3; return 'Die Messlatte überzeugt: Es zählt, ob die Übernahmen sinken, nicht welche Technik dahintersteht.'; } s.T -= 4; return 'Ohne Baseline fehlt Dir die Messlatte. Die Begründung bleibt eine Behauptung, der Vorstand ist nicht überzeugt.'; } },
+      { t: 'Vergleichstest über zwei Wochen', c: fmtE(E(11000)),
+        fx: () => { addCost(s, s.month, E(11000)); s.T += 2; return 'Im Test senkt der neue Ansatz die Übernahmen für diese Aufgabe nicht weiter. Die Frage ist beantwortet – mit Daten.'; } },
+      { t: 'Auf ein Sprachmodell umschwenken', c: fmtE(CFG.runRate) + ' und 1 Monat',
+        fx: () => { addCost(s, s.month + 1, CFG.runRate); adv(s, 1, s.phase, 'verzug'); s.phaseMonths[s.phase] += 1; s.T += 3; return 'Datenaufbereitung und Validierung müssen für den neuen Ansatz wiederholt werden. Am Ende steht kein besseres Modell, aber ein Monat Verzug.'; } },
     ];
     return ev;
   }
   if (k === 'bereitstellung') {
     const ev = { id: 'schnittstelle', rand: 4, title: 'Die Schnittstelle, die keiner bestellt hat',
-      text: 'Das Warenwirtschaftssystem nimmt Bestellvorschläge nur über eine Schnittstelle an, die es noch nicht gibt. Ohne sie landen die Prognosen nicht dort, wo die Filialleitungen bestellen.' };
-    if (s.I >= 0.6) { ev.auto = 'Ihr habt die Integration in dieser Phase eingeplant – die Schnittstelle ist Teil der Bereitstellung. Kein Verzug.'; ev.autoFx = () => {}; }
+      text: 'Die Leitstellensoftware des Pilotkunden kann Übernahme-Anforderungen der Drohne nicht empfangen. Ohne Schnittstelle sieht die Fernpilotin nicht, wann sie eingreifen muss.' };
+    if (s.I >= 0.6) { ev.auto = 'Du hast die Integration in dieser Phase eingeplant – die Schnittstelle ist Teil der Bereitstellung. Kein Verzug.'; ev.autoFx = () => {}; }
     else {
-      const c = Math.round(18000 * (1 - 0.4 * s.A) / 1000) * 1000;
+      const c = Math.round(E(18000) * (1 - 0.4 * s.A) / 1000) * 1000;
       ev.options = [
-        { t: 'Schnittstelle vom Systemanbieter bauen lassen', c: fmtE(c) + ' und 1 Monat',
+        { t: 'Schnittstelle vom Softwareanbieter des Kunden bauen lassen', c: fmtE(c) + ' und 1 Monat',
           fx: () => { addCost(s, s.month + 1, c + CFG.runRate); adv(s, 1, s.phase, 'verzug'); s.phaseMonths[s.phase] += 1; s.I = 1;
             return s.A >= 0.6 ? 'Dank automatisierter Datenpipeline ist die Anbindung schneller gebaut als befürchtet.' : 'Die Schnittstelle steht nach einem Monat.'; } },
-        { t: 'Übergangslösung: Vorschläge als Liste per E-Mail an die Filialen', c: 'kostenlos',
-          fx: () => { s.capPen += 0.25; s.flags.liste = true; return 'Die Filialleitungen müssen Vorschläge abtippen. Viele werden es lassen.'; } },
+        { t: 'Übergangslösung: Übernahme-Anforderungen per Telefon an die Leitstelle', c: 'kostenlos',
+          fx: () => { s.capPen += 0.25; s.flags.liste = true; return 'Die Fernpiloten erfahren über Umwege, wann sie eingreifen sollen. Viele fliegen lieber gleich manuell.'; } },
         { t: 'Go-live verschieben, bis die eigene IT Kapazität hat', c: '2 Monate Wartezeit',
           fx: () => { addCost(s, s.month + 1, CFG.runRate); addCost(s, s.month + 2, CFG.runRate); adv(s, 2, s.phase, 'verzug'); s.phaseMonths[s.phase] += 2; s.I = 1;
-            return 'Die IT baut die Schnittstelle selbst. Das Projektteam wartet – und kostet weiter.'; } },
+            return 'Die eigene IT baut die Schnittstelle. Das Projektteam wartet – und kostet weiter.'; } },
       ];
     }
     return ev;
   }
   if (k === 'ueberwachung') {
-    const ev = { id: 'aktionsware', rand: 5, title: 'Aktionsware und Neuheiten',
-      text: 'Zwei Monate nach dem Go-live: Bei Aktionsartikeln und neuen Produkten liegen die Vorschläge regelmäßig daneben – es gibt keine Verkaufshistorie, aus der das Modell lernen könnte. Die Filialleitungen beschweren sich.' };
+    const ev = { id: 'wetter', rand: 5, title: 'Wetter und Sonderfälle',
+      text: 'Zwei Monate nach dem Go-live: Bei Starkwind, Schneefall und Nebel liegt das Modell regelmäßig daneben, die Fernpiloten müssen ständig übernehmen. Manche Situationen erkennen die Sensoren der Drohne schlicht nicht zuverlässig.' };
     ev.options = [
-      { t: 'Aktionsware und Neuheiten ausklammern – dort bestellt weiter der Mensch', c: '8 % weniger Nutzen',
-        fx: () => { s.S *= 0.92; s.adoptBonus += 0.05; s.T += 2; return 'Klarer Zuschnitt: Das Modell macht, was es kann. Die Filialleitungen vertrauen den übrigen Vorschlägen mehr.'; } },
-      { t: 'Mit Zusatzmerkmalen nachschärfen (Aktionskalender, ähnliche Artikel)', c: '15.000 €',
-        fx: () => { s._aktionCost = 15000; if (s.rolls[5] < 0.35) return 'Es gelingt teilweise: Mit Aktionskalender und Artikelähnlichkeit werden die Vorschläge brauchbar.'; s.S *= 0.92; s.T -= 3; return 'Der Versuch bringt wenig. Am Ende wird Aktionsware doch ausgeklammert – nach 15.000 € Umweg.'; } },
-      { t: 'Weiterlaufen lassen – die Filialleitungen gewöhnen sich daran', c: 'kostenlos',
-        fx: () => { s.capPen += 0.2; s.T -= 8; return 'Die Beschwerden halten an. Einige Filialleitungen ignorieren die Vorschläge jetzt ganz.'; } },
+      { t: 'Einsatzgrenzen festlegen: bei solchen Wetterlagen kein autonomer Flug', c: '8 % weniger Nutzen',
+        fx: () => { s.S *= 0.92; s.adoptBonus += 0.05; s.T += 2; return 'Klarer Zuschnitt: Das Modell fliegt dort, wo es zuverlässig ist. Die Fernpiloten vertrauen ihm in den übrigen Fällen mehr.'; } },
+      { t: 'Mit Zusatzsensoren und Wetterdaten nachschärfen', c: fmtE(E(15000)),
+        fx: () => { s._aktionCost = E(15000); if (s.rolls[5] < 0.35) return 'Es gelingt teilweise: Mit Zusatzsensoren und Wetterdaten werden die meisten Fälle beherrschbar.'; s.S *= 0.92; s.T -= 3; return 'Der Versuch bringt wenig. Am Ende werden doch Einsatzgrenzen festgelegt – nach einem teuren Umweg.'; } },
+      { t: 'Weiterlaufen lassen – die Fernpiloten gewöhnen sich daran', c: 'kostenlos',
+        fx: () => { s.capPen += 0.2; s.T -= 8; return 'Die Beschwerden halten an. Einige Fernpiloten schalten den autonomen Modus jetzt grundsätzlich ab.'; } },
     ];
     return ev;
   }
@@ -645,37 +738,35 @@ function resolveEvent(s, idx) {
 
 /* ---------------- Entscheidungspunkte ---------------- */
 function makeGate(s) {
-  const k = s.phase + 1; // Gate nach Phase k
+  const k = s.phase + 1;
   const g = { k, msgs: [], reports: [], decisions: [] };
-  // Plan-Ist-Abgleich
   const planCost = s.plan.costUpTo(k), actCost = spent(s, s.month);
   const planM = s.plan.monthsUpTo(k), actM = s.month;
   g.planCost = planCost; g.actCost = actCost; g.planM = planM; g.actM = actM;
-  const over = actCost > planCost * 1.1 && actCost - planCost > 10000;
+  const over = actCost > planCost * 1.1 && actCost - planCost > E(10000);
   if (!s._gateChecked) s._gateChecked = {};
   if (!s._gateChecked[k]) {
     s._gateChecked[k] = true;
     if (s.flags.schein && (over || actM > planM)) {
       s.T -= 10; g.msgs.push({ k: 'bad', t: (s.flags.schein === 'over'
-        ? 'Eure letzte Erfolgsmeldung hat nicht gehalten.'
-        : 'Euer letzter Bericht meldete „im Plan“.') + ' Jetzt zeigt der Abgleich etwas anderes – der Lenkungskreis fühlt sich schlecht informiert.' });
+        ? 'Deine letzte Erfolgsmeldung hat nicht gehalten.'
+        : 'Dein letzter Bericht meldete „im Plan“.') + ' Jetzt zeigt der Abgleich etwas anderes – der Lenkungsausschuss fühlt sich schlecht informiert.' });
     }
     s.flags.schein = false;
     if (over) {
       s.nachbew++; s.T -= 8;
-      g.msgs.push({ k: 'bad', t: 'Nachbewilligung nötig: Bis hier sind ' + fmtE(actCost) + ' verbraucht, geplant waren ' + fmtE(planCost) + '. Der Lenkungskreis bewilligt nach, aber das Vertrauen sinkt.' });
+      g.msgs.push({ k: 'bad', t: 'Nachbewilligung nötig: Bis hier sind ' + fmtE(actCost) + ' verbraucht, geplant waren ' + fmtE(planCost) + '. Der Lenkungsausschuss bewilligt nach, aber das Vertrauen sinkt.' });
     } else g.msgs.push({ k: 'ok', t: 'Budget im Rahmen: ' + fmtE(actCost) + ' verbraucht, geplant waren ' + fmtE(planCost) + '.' });
     if (actM > planM) g.msgs.push({ k: 'warn', t: 'Zeitverzug: Monat ' + actM + ' statt Monat ' + planM + ' laut Plan.' });
     s.T = clamp(s.T, 0, 100);
   }
-  // Stopp durch Lenkungskreis
   if (s.T < 20) { g.stopped = true; return g; }
 
   const nextCost = k < 4 ? s.plan.phaseCost[k] : null;
   const imp = s.meas;
   if (k === 1) {
     g.reports = [
-      { id: 'ehrlich', t: 'Beantwortet: welche Daten wir haben und nutzen dürfen. Nächste Entscheidung: ob die Datenqualität für ein Modell reicht. Kosten bis dahin: ' + fmtE(nextCost) + '.' },
+      { id: 'ehrlich', t: 'Beantwortet: welche Daten wir haben und zivil nutzen dürfen. Nächste Entscheidung: ob die Datenqualität für ein Modell reicht. Kosten bis dahin: ' + fmtE(nextCost) + '.' },
       { id: 'schein', t: 'Fertigstellungsgrad 25 %. Das Projekt liegt im Plan.' },
       { id: 'over', t: 'Das Modell ist fast fertig, wir müssen nur noch die Daten aufbereiten.' },
     ];
@@ -685,46 +776,45 @@ function makeGate(s) {
     g.reports = [
       { id: 'ehrlich', t: 'Beantwortet: Die Daten sind bereinigt und zusammengeführt (Qualität ' + Math.round(s.Q) + ' von 100). Nächste Entscheidung: ob ein Modell die Baseline schlägt. Kosten bis dahin: ' + fmtE(nextCost) + '.' },
       { id: 'schein', t: 'Fertigstellungsgrad 50 %. Das Projekt liegt im Plan.' },
-      { id: 'over', t: 'Mit diesen Daten erreichen wir sicher die geplanten ' + s.plan.impAssume + ' % Einsparung.' },
+      { id: 'over', t: 'Mit diesen Daten erreichen wir sicher die geplanten ' + s.plan.impAssume + ' % weniger Übernahmen.' },
     ];
     g.decisions = [{ id: 'weiter', t: 'Weiter in die Modellentwicklung' },
-      { id: 'datenrunde', t: 'Eine Datenrunde nachlegen (1 Monat, 22.000 €)' },
+      { id: 'datenrunde', t: 'Eine Datenrunde nachlegen (1 Monat, ' + fmtE(CFG.runRate) + ')' },
       { id: 'abbruch', t: 'Projekt beenden' }];
   }
   if (k === 3) {
-    const gm = guete(imp);
+    const q = quote(imp);
     g.metric = s.B
-      ? { baseline: guete(0), model: gm, imp, target: CFG.target, pass: imp >= CFG.target }
-      : { model: gm, imp: null };
+      ? { baseline: CFG.baseQuote, model: q, imp, target: CFG.target, pass: imp >= CFG.target }
+      : { model: q, imp: null };
     g.reports = [
       { id: 'ehrlich', t: s.B
-        ? 'Beantwortet: Das Modell senkt den Prognosefehler gegenüber der Baseline um ' + fmtP(imp) + ' (Zielgröße: ' + CFG.target + ' %). Nächste Entscheidung: ob das im Alltag hält. Kosten bis dahin: ' + fmtE(nextCost) + '.'
-        : 'Beantwortet: Das Modell erreicht ' + fmtP(gm) + ' Prognosegüte. Ob das besser ist als die heutige Bestellpraxis, wissen wir noch nicht. Nächste Entscheidung: Vergleichsmaßstab festlegen. Kosten bis dahin: ' + fmtE(nextCost) + '.' },
+        ? 'Beantwortet: Das neue Modell senkt die Übernahmen gegenüber dem militärischen um ' + fmtP(imp) + ' (Zielgröße: ' + CFG.target + ' %). Nächste Entscheidung: ob das im Alltag hält. Kosten bis dahin: ' + fmtE(nextCost) + '.'
+        : 'Beantwortet: Das neue Modell übergibt in ' + fmtP(q) + ' der Testflüge an den Menschen. Ob das besser ist als das militärische Modell, wissen wir noch nicht. Nächste Entscheidung: Vergleichsmaßstab festlegen. Kosten bis dahin: ' + fmtE(nextCost) + '.' },
       { id: 'schein', t: 'Fertigstellungsgrad 75 %. Das Projekt liegt im Plan.' },
-      { id: 'over', t: 'Wir haben ' + fmtP(gm) + ' Prognosegüte erreicht.' },
+      { id: 'over', t: 'Unser Modell fliegt ' + fmtP(r1(100 - q)) + ' der Zustellungen autonom.' },
     ];
     g.decisions = [{ id: 'weiter', t: 'Freigabe für die Bereitstellung' }];
-    if (!s.B) g.decisions.push({ id: 'baseline', t: 'Erst die Baseline nachziehen (11.000 €)' });
+    if (!s.B) g.decisions.push({ id: 'baseline', t: 'Erst die Baseline nachziehen (' + fmtE(E(11000)) + ')' });
     if (s.V < 1) g.decisions.push({ id: 'validierung', t: 'Validierung nachschärfen: zeitbasierter Split, Leakage-Prüfung (1 Monat)' });
     if (s.extraRounds < 2) g.decisions.push({ id: 'runde', t: 'Weitere Modellrunde (1 Monat)' });
     g.decisions.push({ id: 'abbruch', t: 'Projekt beenden: Ergebnis „nicht wirtschaftlich machbar“' });
   }
   if (k === 4) {
     const ops = CFG.infra + (s.M > 0 ? CFG.monCost : 0);
-    g.pilot = s.pilot ? { imp: s.pilotImp, meas: s.meas, gap: r1(s.meas - s.pilotImp), pass: s.pilotImp >= CFG.target, model: guete(s.pilotImp) } : null;
+    g.pilot = s.pilot ? { imp: s.pilotImp, meas: s.meas, gap: r1(s.meas - s.pilotImp), pass: s.pilotImp >= CFG.target, model: quote(s.pilotImp) } : null;
     g.reports = [
       { id: 'ehrlich', t: s.pilot
-        ? 'Beantwortet: Im Pilot senkt das Modell den Prognosefehler um ' + fmtP(s.pilotImp) + '. Nächste Entscheidung: wann das erste Nachtraining fällig ist. Laufende Kosten: ab ' + fmtE(ops) + ' pro Monat.'
-        : 'Beantwortet: Die Prognose läuft technisch bis ins Warenwirtschaftssystem. Offen: wie gut sie im Alltag ist. Laufende Kosten: ab ' + fmtE(ops) + ' pro Monat.' },
+        ? 'Beantwortet: Im Pilotbetrieb senkt das Modell die Übernahmen um ' + fmtP(s.pilotImp) + '. Nächste Entscheidung: wann das erste Nachtraining fällig ist. Laufende Kosten: ab ' + fmtE(ops) + ' pro Monat.'
+        : 'Beantwortet: Das Modell läuft technisch bis in die Leitstelle. Offen: wie gut es im Alltag ist. Laufende Kosten: ab ' + fmtE(ops) + ' pro Monat.' },
       { id: 'schein', t: 'Fertigstellungsgrad 100 %. Projekt abgeschlossen.' },
       { id: 'over', t: 'Nach dem Go-live läuft es dann von allein.' },
     ];
-    g.decisions = [{ id: 'weiter', t: 'Rollout auf alle Filialen' }];
+    g.decisions = [{ id: 'weiter', t: 'Regelbetrieb in allen Einsatzgebieten' }];
     if (s.pilot) g.decisions.push({ id: 'zurueck', t: 'Zurück in die Modellentwicklung (2 Monate)' });
     g.decisions.push({ id: 'abbruch', t: 'Projekt beenden' });
   }
-  // Reihenfolge der Berichte mischen
-  g.reports = g.reports.map((r, i) => ({ r, o: Math.random() })).sort((a, b) => a.o - b.o).map(x => x.r);
+  g.reports = g.reports.map(r => ({ r, o: Math.random() })).sort((a, b) => a.o - b.o).map(x => x.r);
   return g;
 }
 
@@ -736,8 +826,7 @@ function decideGate(s, reportId, decisionId) {
     if (reportId === 'ehrlich') { s.T += 4; }
     if (reportId === 'schein') { s.T += 2; if (k < 4) s.flags.schein = 'schein'; else s.flags.overOps = 'schein'; }
     if (reportId === 'over') { s.T += 5; if (k <= 2) s.flags.schein = 'over'; else if (k === 3) s.flags.over = true; else s.flags.overOps = 'over'; }
-    s._lastReport = reportId;
-    log(s, 'Bericht an den Lenkungskreis: ' + ({ ehrlich: 'beantwortete Frage, nächste Entscheidung, Kosten', schein: 'Fertigstellungsgrad', over: 'Erfolgsmeldung' })[reportId] + '.', 'report');
+    log(s, 'Bericht an den Lenkungsausschuss: ' + ({ ehrlich: 'beantwortete Frage, nächste Entscheidung, Kosten', schein: 'Fertigstellungsgrad', over: 'Erfolgsmeldung' })[reportId] + '.', 'report');
   }
   s.T = clamp(s.T, 0, 100);
   const loopBack = (txt) => { const prev = (g.msgs || []).filter(m => m.k !== 'info'); s._gateChecked[k] = true; s.gate = makeGate(s); s.gate.msgs = prev.concat([{ k: 'info', t: txt }]); return { again: true, txt }; };
@@ -750,42 +839,39 @@ function decideGate(s, reportId, decisionId) {
   }
   if (k === 3 && decisionId !== 'weiter') {
     if (decisionId === 'baseline') {
-      addCost(s, s.month, 11000); s.B = 1; log(s, 'Baseline nachgezogen (11.000 €).', 'phase');
-      return loopBack('Die Baseline steht. Jetzt seht Ihr, ob das Modell die heutige Bestellpraxis schlägt.');
+      addCost(s, s.month, E(11000)); s.B = 1; log(s, 'Baseline nachgezogen (' + fmtE(E(11000)) + ').', 'phase');
+      return loopBack('Die Baseline steht. Jetzt siehst Du, ob das neue Modell seltener übergibt als das militärische.');
     }
     if (decisionId === 'validierung') {
       addCost(s, s.month + 1, CFG.runRate); adv(s, 1, 2, 'extra'); s.V = 1;
       const wasLeak = s.leak; s.leak = false; computeModel(s, s.rolls[0], s.rolls[8]);
       log(s, 'Validierung nachgeschärft (+1 Monat).' + (wasLeak ? ' Data Leakage gefunden.' : ''), 'phase');
       return loopBack(wasLeak
-        ? 'Gefunden: Ein Teil der Testdaten lag zeitlich vor den Trainingsdaten (Data Leakage). Mit sauberem zeitbasiertem Split sinkt der gemessene Wert – auf den echten.'
+        ? 'Gefunden: Testflüge und Trainingsflüge stammten zum Teil aus denselben Tagen und Gebieten (Data Leakage). Mit sauberer Trennung sinkt der gemessene Wert – auf den echten.'
         : 'Die Prüfung findet kein Data Leakage. Der gemessene Wert ist belastbar.');
     }
     if (decisionId === 'runde') {
       addCost(s, s.month + 1, CFG.runRate); adv(s, 1, 2, 'extra'); s.extraRounds++;
       const old = s.meas; s.E = clamp(s.E + 0.2, 0, 1); computeModel(s, s.rolls[2 + s.extraRounds], s.rolls[9 + s.extraRounds]);
       log(s, 'Weitere Modellrunde (+1 Monat).', 'phase');
-      return loopBack('Weitere Modellrunde abgeschlossen. Gemessene Verbesserung vorher ' + fmtP(old) + ', jetzt ' + fmtP(s.meas) + '.');
+      return loopBack('Weitere Modellrunde abgeschlossen. Gemessene Senkung der Übernahmen vorher ' + fmtP(old) + ', jetzt ' + fmtP(s.meas) + '.');
     }
   }
   if (k === 4 && decisionId === 'zurueck') {
     addCost(s, s.month + 1, CFG.runRate); addCost(s, s.month + 2, CFG.runRate); adv(s, 2, 2, 'zurueck');
     s.V = 1; s.leak = false; s.E = clamp(s.E + 0.2, 0, 1); computeModel(s, s.rolls[11], s.rolls[12]);
     s.pilotImp = r1(s.trueImp + (s.rolls[13] - 0.5) * 2);
-    log(s, 'Zurück in die Modellentwicklung (+2 Monate), danach erneuter Pilot.', 'phase');
-    return loopBack('Nach Überarbeitung und erneutem Pilot: Das Modell senkt den Prognosefehler im Alltag um ' + fmtP(s.pilotImp) + '.');
+    log(s, 'Zurück in die Modellentwicklung (+2 Monate), danach erneuter Pilotbetrieb.', 'phase');
+    return loopBack('Nach Überarbeitung und erneutem Pilotbetrieb: Das Modell senkt die Übernahmen im Alltag um ' + fmtP(s.pilotImp) + '.');
   }
 
-  // Weiter
   if (k === 4) {
-    if (s.flags.over && s.pilot && s.meas - s.pilotImp > 8) { s.T -= 12; msgs.push('Der Pilot zeigt weniger als berichtet. Der Lenkungskreis erinnert sich an Eure Erfolgsmeldung.'); s.flags.over = false; }
+    if (s.flags.over && s.pilot && s.meas - s.pilotImp > 8) { s.T -= 12; msgs.push('Der Pilotbetrieb zeigt weniger als berichtet. Der Lenkungsausschuss erinnert sich an Deine Erfolgsmeldung.'); s.flags.over = false; }
     s.goLive = s.month;
     log(s, 'Go-live in Monat ' + s.goLive + ' (Plan: Monat ' + s.plan.goLive + ').', 'golive');
     if (s.goLive >= CFG.horizon) { endGame(s, 'zeit'); return { ended: true }; }
   }
-  if (k === 3 && s.flags.over && s.leak) { /* zeigt sich später */ }
-  s.phase = k; // nächste Phase (0-basiert)
-  if (k < 4) s.released = s.plan.phaseCost[k];
+  s.phase = k;
   s.stage = 'alloc'; s.gate = null;
   return { msgs };
 }
@@ -816,18 +902,17 @@ function simulateOps(s) {
   const delay = Math.max(1, Math.round(5 - 2 * s.M - 1.5 * monEval - 1.0 * L / 100));
   const extern = s.K < 70;
   const rDur = (retrainReady >= 0.6 ? 0 : 1) + (extern ? 1 : 0);
-  const rCost = Math.round(14000 * (1 - 0.5 * s.A) * (extern ? 1.6 : 1) * (retrainReady >= 0.6 ? 1 : 1.2) / 100) * 100;
+  const rCost = Math.round(E(14000) * (1 - 0.5 * s.A) * (extern ? 1.6 : 1) * (retrainReady >= 0.6 ? 1 : 1.2) / 1000) * 1000;
   const opsCost = CFG.infra + (s.M > 0 ? CFG.monCost : 0) + s.ops.kp * CFG.opsKpCost;
   const timeline = [];
   let adopt = 0, detected = null, restored = null;
   const disappoint = !s.pilot && s.meas - s.trueImp > 8;
-  const series = [];
   for (let m = g + 1; m <= H; m++) {
     if (m === g + 2 && s._aktionCost) { addCost(s, m, s._aktionCost); }
-    if (s.excl && m === g + 13) timeline.push({ m, k: 'ok', t: 'Die zwei ausgeklammerten Filialen haben jetzt ein volles Jahr Historie und kommen dazu.' });
+    if (s.excl && m === g + 13) timeline.push({ m, k: 'ok', t: 'Nach einem Jahr Testflügen kommen die Innenstädte als Einsatzgebiete dazu.' });
     if (m === g + 2 && disappoint) {
       cap = clamp(cap - 0.15, 0.1, 1); s.T -= s.flags.over ? 18 : 8;
-      timeline.push({ m, k: 'bad', t: 'Die Filialleitungen merken: Die Vorschläge sind schlechter als angekündigt. Die echte Verbesserung liegt bei ' + fmtP(s.trueImp) + ', gemessen hattet Ihr ' + fmtP(s.meas) + '.' + (s.leak ? ' Ursache: Data Leakage in der Validierung.' : '') });
+      timeline.push({ m, k: 'bad', t: 'Die Fernpiloten merken: Das Modell übergibt öfter als angekündigt. Die echte Senkung der Übernahmen liegt bei ' + fmtP(s.trueImp) + ', gemessen hattest Du ' + fmtP(s.meas) + '.' + (s.leak ? ' Ursache: Data Leakage in der Validierung.' : '') });
     }
     adopt = Math.min(cap, adopt + rate);
     let imp = s.trueImp, eff = adopt;
@@ -838,27 +923,25 @@ function simulateOps(s) {
         addCost(s, m, rCost);
         restored = m + rDur;
         if (s.M === 0) { s.T -= 10; cap = clamp(cap - 0.1, 0.1, 1); }
-
         timeline.push({ m, k: s.M === 0 ? 'bad' : 'warn', t: (s.M === 0
-          ? 'Drift erkannt – nicht durch Monitoring, sondern durch Beschwerden aus den Filialen, ' + (m - dm) + ' Monate nach der Umstellung.'
-          : 'Drift erkannt durch das Monitoring, ' + (m - dm) + (m - dm === 1 ? ' Monat' : ' Monate') + ' nach der Umstellung.')
+          ? 'Drift erkannt – nicht durch Monitoring, sondern durch Beschwerden der Fernpiloten, ' + (m - dm) + ' Monate nach der Veränderung.'
+          : 'Drift erkannt durch das Monitoring, ' + (m - dm) + (m - dm === 1 ? ' Monat' : ' Monate') + ' nach der Veränderung.')
           + ' Nachtraining: ' + fmtE(rCost) + (rDur ? ', ' + rDur + (rDur === 1 ? ' Monat' : ' Monate') + ' bis zum neuen Modell' : ', sofort') + (extern ? ' (über den externen Partner, weil das Wissen nicht im Haus ist)' : '') + '.' });
         if (s.flags.overOps) { s.T -= 8; timeline.push({ m, k: 'bad', t: s.flags.overOps === 'over'
-          ? 'Der Lenkungskreis erinnert an Euren Satz „Nach dem Go-live läuft es dann von allein“ – und fragt, warum jetzt ungeplante Kosten entstehen.'
-          : 'Der Lenkungskreis hatte das Projekt als abgeschlossen verbucht – und fragt, warum jetzt ungeplante Kosten entstehen.' }); }
+          ? 'Der Lenkungsausschuss erinnert an Deinen Satz „Nach dem Go-live läuft es dann von allein“ – und fragt, warum jetzt ungeplante Kosten entstehen.'
+          : 'Der Lenkungsausschuss hatte das Projekt als abgeschlossen verbucht – und fragt, warum jetzt ungeplante Kosten entstehen.' }); }
       }
       if (detected === null) eff = adopt * (1 - 0.5 * L / 100);
     }
     if (restored !== null && m === restored) timeline.push({ m, k: 'ok', t: 'Das nachtrainierte Modell ist im Einsatz.' });
-    if (m === dm) timeline.push({ m, k: 'warn', t: 'Der Hauptlieferant stellt Preisliste und Sortiment um. Das Kaufverhalten verschiebt sich, die Muster aus den Trainingsdaten passen nicht mehr (Drift).' });
-    const ben = CFG.errCostYear / 12 * imp / 100 * eff * s.S * (s.excl && m <= g + 12 ? 0.8 : 1) * fit * seg;
+    if (m === dm) timeline.push({ m, k: 'warn', t: 'Ein Kunde erweitert sein Liefergebiet auf ein Neubauviertel mit Glasfassaden und Solardächern. Die Spiegelungen kennt das Modell nicht, die Übernahmen nehmen zu (Drift).' });
+    const ben = CFG.potYear / 12 * imp / 100 * eff * s.S * (s.excl && m <= g + 12 ? 0.8 : 1) * fit * seg;
     s.benefit[m] += ben;
     addCost(s, m, opsCost);
-    series.push({ m, adopt: eff, imp });
   }
   timeline.sort((x, y) => x.m - y.m);
   s.opsReport = { timeline, driftMonth: dm <= H ? dm : null, delay: dm <= H ? (detected ? detected - dm : null) : null,
-    sev, opsCost, rCost, finalAdopt: adopt, cap, series, fit };
+    sev, opsCost, rCost, finalAdopt: adopt, cap, fit };
   s.T = clamp(s.T, 0, 100);
   if (H > s.month) s.segs.push({ p: 4, from: g, to: H, kind: 'betrieb' });
   s.month = H;
@@ -872,9 +955,8 @@ function endGame(s, reason) {
   s.aborted = reason === 'abbruch' ? { phase: s.phase, month: s.month } : null;
   s.endReason = reason;
   if (s.gate && s.gate.stopped) s.endReason = 'stopp';
-  if (reason === 'stopp') s.endReason = 'stopp';
   s.stage = 'end'; s.done = true;
-  log(s, reason === 'abbruch' ? 'Projekt in Monat ' + s.month + ' beendet.' : reason === 'stopp' ? 'Der Lenkungskreis stoppt das Projekt.' : 'Auswertung.', 'end');
+  log(s, reason === 'abbruch' ? 'Projekt in Monat ' + s.month + ' beendet.' : s.endReason === 'stopp' ? 'Der Lenkungsausschuss stoppt das Projekt.' : 'Auswertung.', 'end');
 }
 
 function results(s) {
@@ -908,9 +990,9 @@ function results(s) {
     sub: s.goLive ? 'Go-live Monat ' + s.goLive + ' statt ' + p.goLive : 'kein Go-live',
     st: !s.goLive ? (s.endReason === 'zeit' ? 'schlecht' : 'neutral') : dev <= 0.1 && dM <= 1 ? 'gut' : dev <= 0.3 && dM <= 3 ? 'mittel' : 'schlecht' });
   const ad = s.opsReport ? Math.round(s.opsReport.finalAdopt * 100) : null;
-  tiles.push({ id: 'akz', label: 'Akzeptanz in den Filialen', value: ad === null ? '–' : ad + ' %', sub: 'Anteil der Bestellungen nach Vorschlag (Monat 24)',
+  tiles.push({ id: 'akz', label: 'Akzeptanz bei den Fernpiloten', value: ad === null ? '–' : ad + ' %', sub: 'Anteil der Zustellungen im autonomen Modus (Monat 24)',
     st: ad === null ? 'neutral' : ad >= 70 ? 'gut' : ad >= 45 ? 'mittel' : 'schlecht' });
-  tiles.push({ id: 'vert', label: 'Vertrauen des Lenkungskreises', value: Math.round(s.T) + ' von 100', sub: s.nachbew ? s.nachbew + '× nachbewilligt' : 'keine Nachbewilligung',
+  tiles.push({ id: 'vert', label: 'Vertrauen des Lenkungsausschusses', value: Math.round(s.T) + ' von 100', sub: s.nachbew ? s.nachbew + '× nachbewilligt' : 'keine Nachbewilligung',
     st: s.T >= 60 ? 'gut' : s.T >= 40 ? 'mittel' : 'schlecht' });
   return { cf, cum, payback, invest, opsCostAvg, benefitY1, planB1, tiles, fin, pfin };
 }
@@ -918,33 +1000,35 @@ function results(s) {
 function debrief(s) {
   const q = [];
   const p = s.plan;
-  q.push('Wo lag die größte Abweichung zwischen Plan und Wirklichkeit – und hättet Ihr sie vorher wissen können?');
-  if (p.count <= 1) q.push('Ihr habt den Erstentwurf weitgehend übernommen. Welche der fehlenden Posten haben Euch eingeholt?');
+  q.push('Wo lag die größte Abweichung zwischen Plan und Wirklichkeit – und hättest Du sie vorher wissen können?');
+  if (s.vorprojekt && s.vorprojekt.n < 6) q.push('Im Vorprojekt hast Du ' + s.vorprojekt.n + ' von 8 Abhängigkeiten eingehalten. Welche verletzte Abhängigkeit hat sich später im Projekt bemerkbar gemacht?');
+  if (p.count <= 1) q.push('Du hast den Erstentwurf weitgehend übernommen. Welche der fehlenden Posten haben Dich eingeholt?');
   if (s.endReason === 'abbruch') q.push(s.trueImp !== null && s.trueImp < CFG.target
-    ? 'Ihr habt abgebrochen – zu Recht: Die echte Verbesserung hätte bei ' + fmtP(s.trueImp) + ' gelegen, die Zielgröße bei ' + CFG.target + ' %. War der Abbruch ein Scheitern oder ein Ergebnis?'
-    : 'Ihr habt abgebrochen. War das ein Scheitern oder ein Ergebnis? Welche Information hättet Ihr für eine bessere Entscheidung gebraucht?');
-  if (s.endReason === 'stopp') q.push('Der Lenkungskreis hat das Projekt gestoppt. An welchem Punkt ist das Vertrauen gekippt?');
-  if (s.leak) q.push('Eure Validierung zeigte ' + fmtP(s.meas) + ' Verbesserung, echt waren ' + fmtP(s.trueImp) + '. Welcher Arbeitsschritt hätte das verhindert?');
-  if (!s.B && s.known.model) q.push('Ihr hattet keine Baseline. Wie hättet Ihr ohne sie begründen können, dass das Modell gut genug ist?');
-  if (s.opsReport && s.opsReport.delay !== null && s.opsReport.delay >= 3) q.push('Der Drift blieb ' + s.opsReport.delay + ' Monate unbemerkt. Wer hätte ihn früher sehen können – die Technik oder die Menschen in den Filialen?');
-  if (s.opsReport && s.opsReport.finalAdopt < 0.55) q.push('Am Ende bestellen nur ' + Math.round(s.opsReport.finalAdopt * 100) + ' % nach Vorschlag. Welche Rolle spielten KI-Kompetenz und Integration?');
+    ? 'Du hast abgebrochen – zu Recht: Die echte Senkung der Übernahmen hätte bei ' + fmtP(s.trueImp) + ' gelegen, die Zielgröße bei ' + CFG.target + ' %. War der Abbruch ein Scheitern oder ein Ergebnis?'
+    : 'Du hast abgebrochen. War das ein Scheitern oder ein Ergebnis? Welche Information hättest Du für eine bessere Entscheidung gebraucht?');
+  if (s.endReason === 'stopp') q.push('Der Lenkungsausschuss hat das Projekt gestoppt. An welchem Punkt ist das Vertrauen gekippt?');
+  if (s.leak) q.push('Deine Validierung zeigte ' + fmtP(s.meas) + ' weniger Übernahmen, echt waren es ' + fmtP(s.trueImp) + '. Welcher Arbeitsschritt hätte das verhindert?');
+  if (!s.B && s.known.model) q.push('Du hattest keine Baseline. Wie hättest Du ohne sie begründen können, dass das neue Modell besser ist als das militärische?');
+  if (s.opsReport && s.opsReport.delay !== null && s.opsReport.delay >= 3) q.push('Der Drift blieb ' + s.opsReport.delay + ' Monate unbemerkt. Wer hätte ihn früher sehen können – die Technik oder die Fernpiloten?');
+  if (s.opsReport && s.opsReport.finalAdopt < 0.55) q.push('Am Ende fliegen nur ' + Math.round(s.opsReport.finalAdopt * 100) + ' % der Zustellungen autonom. Welche Rolle spielten KI-Kompetenz und Integration?');
   if (s.K < 70) q.push('Ein Teil des Wissens liegt beim externen Partner. Was bedeutet das für die nächsten drei Jahre?');
   if (s.flags.zielOffen) q.push('Das Ziel blieb offen. Wer hätte es entscheiden müssen – und wann?');
-  if (s.log.some(l => l.k === 'report' && /Fertigstellungsgrad/.test(l.t))) q.push('Mindestens ein Bericht meldete einen Fertigstellungsgrad. Was hätte der Lenkungskreis stattdessen wissen müssen?');
-  q.push('Welche Entscheidung würdet Ihr beim nächsten Mal anders treffen – und warum?');
-  q.push('Alle fünf Ereigniskarten entsprechen den fünf Ursachen, die die RAND-Studie für gescheiterte KI-Projekte nennt. Welche davon kennt Ihr aus Eurer eigenen Praxis?');
+  if (s.log.some(l => l.k === 'report' && /Fertigstellungsgrad/.test(l.t))) q.push('Mindestens ein Bericht meldete einen Fertigstellungsgrad. Was hätte der Lenkungsausschuss stattdessen wissen müssen?');
+  q.push('Welche Entscheidung würdest Du beim nächsten Mal anders treffen – und warum? Das ist Dein Lessons Learned für das nächste Projekt.');
+  q.push('Alle fünf Ereigniskarten entsprechen den fünf Ursachen, die die RAND-Studie für gescheiterte KI-Projekte nennt. Welche davon kennst Du aus Deiner eigenen Praxis?');
   return q.length > 8 ? q.slice(0, 6).concat(q.slice(-2)) : q;
 }
 
 function reveal(s) {
   const out = [];
+  if (s.vorprojekt) out.push(['Vorprojekt: eingehaltene Abhängigkeiten', s.vorprojekt.n + ' von 8']);
   if (s.trueImp !== null) {
-    out.push(['Echte Verbesserung gegenüber der Baseline', fmtP(s.trueImp) + ' (Zielgröße ' + CFG.target + ' %)']);
+    out.push(['Echte Senkung der Übernahmen gegenüber dem militärischen Modell', fmtP(s.trueImp) + ' (Zielgröße ' + CFG.target + ' %)']);
     out.push(['Gemessen in der Validierung', fmtP(s.meas) + (s.leak ? ' – überhöht durch Data Leakage' : '')]);
   }
   out.push(['Datenqualität · Abdeckung · Nutzungsrechte', Math.round(s.Q) + ' · ' + Math.round(s.C) + ' · ' + Math.round(s.R) + ' (von 100)']);
   out.push(['Klarheit über das Ziel', Math.round(s.P) + ' von 100']);
-  out.push(['KI-Kompetenz in den Filialen', Math.round(s.L) + ' von 100']);
+  out.push(['KI-Kompetenz der Fernpiloten', Math.round(s.L) + ' von 100']);
   out.push(['Wissen im eigenen Haus', Math.round(s.K) + ' von 100']);
   if (s.opsReport && s.opsReport.driftMonth) out.push(['Drift', 'Monat ' + s.opsReport.driftMonth + ', unbemerkt für ' + (s.opsReport.delay === null ? 'den Rest des Zeitraums' : s.opsReport.delay + (s.opsReport.delay === 1 ? ' Monat' : ' Monate'))]);
   return out;
@@ -953,11 +1037,12 @@ function reveal(s) {
 function summaryText(s, team) {
   const r = results(s);
   const lines = [];
-  lines.push('KI-Projekt-Planspiel · Spielnummer ' + s.seed + (team ? ' · ' + team : ''));
+  lines.push('KI-Projekt-Planspiel „Working Bee“ · Spielnummer ' + s.seed + (team ? ' · ' + team : ''));
+  if (s.vorprojekt) lines.push('Vorprojekt: ' + s.vorprojekt.n + ' von 8 Abhängigkeiten eingehalten');
   lines.push('Plan: Go-live Monat ' + s.plan.goLive + ', Investition ' + fmtE(s.plan.invest) + ', nach 24 Monaten ' + fmtE(r.pfin));
   lines.push('Ist: ' + (s.goLive ? 'Go-live Monat ' + s.goLive + ', Kosten bis Go-live ' + fmtE(r.invest) : 'kein Go-live') + ', nach 24 Monaten ' + fmtE(r.fin));
   r.tiles.forEach(t => lines.push(t.label + ': ' + t.value + ' (' + t.sub + ')'));
-  if (s.trueImp !== null) lines.push('Verbesserung echt/gemessen: ' + fmtP(s.trueImp) + ' / ' + fmtP(s.meas));
+  if (s.trueImp !== null) lines.push('Senkung der Übernahmen echt/gemessen: ' + fmtP(s.trueImp) + ' / ' + fmtP(s.meas));
   return lines.join('\n');
 }
 
@@ -969,8 +1054,9 @@ function fmtE(x) {
 }
 function fmtP(x) { return (x === null || x === undefined) ? '–' : (Math.round(x * 10) / 10).toLocaleString('de-DE') + ' %'; }
 
-root.PS = { CFG, PLAN_ITEMS, PHASES, RAND, computePlan, newGame, submitPlan, runPhase, resolveEvent,
-  decideGate, runOps, finishOps, results, debrief, reveal, summaryText, spent, guete, fmtE, fmtP, gain, clamp, endGame };
+root.PS = { CFG, ACTIVITIES, RULES, PLAN_ITEMS, planItemHint, PHASES, RAND, computePlan, newGame, initialOrder, submitOrder, toPlan,
+  submitPlan, runPhase, resolveEvent, decideGate, runOps, finishOps, results, debrief, reveal, summaryText, spent, quote,
+  fmtE, fmtP, gain, clamp, endGame };
 })(typeof window !== 'undefined' ? window : globalThis);
 
 </script>
@@ -980,8 +1066,9 @@ root.PS = { CFG, PLAN_ITEMS, PHASES, RAND, computePlan, newGame, submitPlan, run
 const PS = window.PS, CFG = PS.CFG, fmtE = PS.fmtE, fmtP = PS.fmtP;
 const $ = id => document.getElementById(id);
 const esc = t => String(t == null ? '' : t).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
-const KEY = 'ki-projekt-planspiel-v1';
+const KEY = 'ki-projekt-planspiel-working-bee-v2';
 const PH_SHORT = ['Datenherkunft', 'Datenverarbeitung', 'Modellentwicklung', 'Modellbereitstellung', 'Betrieb'];
+const ACT = {}; PS.ACTIVITIES.forEach(a => { ACT[a.id] = a; });
 
 let G = null;
 let meta = { seed: null, team: '', hist: [] };
@@ -989,9 +1076,7 @@ let ui = {};
 let defaultSeed = 1000 + Math.floor(Math.random() * 9000);
 let newConfirm = false;
 
-function resetUi() {
-  ui = { planSel: {}, planImp: 25, alloc: {}, ext: 0, transfer: false, report: null, copied: false };
-}
+function resetUi() { ui = { order: null, planSel: {}, planImp: 25, alloc: {}, ext: 0, transfer: false, report: null, copied: false, drag: null }; }
 resetUi();
 
 /* ---------- Speichern / Wiederherstellen ---------- */
@@ -1001,19 +1086,16 @@ function clearSaved() { try { localStorage.removeItem(KEY); } catch (e) { /* ega
 
 function apply(a) {
   const t = a[0];
-  if (t === 'plan') PS.submitPlan(G, a[1], a[2]);
+  if (t === 'order') PS.submitOrder(G, a[1]);
+  else if (t === 'toplan') PS.toPlan(G);
+  else if (t === 'plan') PS.submitPlan(G, a[1], a[2]);
   else if (t === 'phase') PS.runPhase(G, a[1], a[2], a[3]);
   else if (t === 'ops') PS.runOps(G, a[1]);
   else if (t === 'event') PS.resolveEvent(G, a[1]);
   else if (t === 'gate') PS.decideGate(G, a[1], a[2]);
   else if (t === 'finish') PS.finishOps(G);
 }
-function act(a) {
-  apply(a);
-  meta.hist.push(a); save();
-  resetUi();
-  render(true);
-}
+function act(a) { apply(a); meta.hist.push(a); save(); resetUi(); render(true); }
 function startGame(seed, team) {
   meta = { seed, team: team || '', hist: [] };
   G = PS.newGame(seed); save(); resetUi(); render(true);
@@ -1030,7 +1112,7 @@ function renderMeta() {
   if (G) {
     parts.push('<span>Spielnummer <b class="num">' + G.seed + '</b></span>');
     if (meta.team) parts.push('<span>' + esc(meta.team) + '</span>');
-    parts.push('<span>Monat <b class="num">' + Math.min(G.month, CFG.horizon) + '</b> von ' + CFG.horizon + '</span>');
+    parts.push(G.plan ? '<span>Monat <b class="num">' + Math.min(G.month, CFG.horizon) + '</b> von ' + CFG.horizon + '</span>' : '<span>Vorprojekt</span>');
   }
   $('meta').innerHTML = parts.join('');
 }
@@ -1054,7 +1136,6 @@ function renderStrip() {
 
   let ist = '';
   if (G) {
-    // gleichartige, aneinanderliegende Abschnitte zusammenfassen
     const segs = [];
     G.segs.forEach(sg => {
       const last = segs[segs.length - 1];
@@ -1078,7 +1159,7 @@ function renderStrip() {
     '<div class="lab">Plan</div><div class="lane plan">' + plan + '</div>' +
     '<div class="lab">Ist</div><div class="lane ist">' + ist + '</div>' +
     '<div></div><div class="ticks">' + ticks + '</div></div>' +
-    '<div class="legend"><span>Monate seit Projektstart</span>' +
+    '<div class="legend"><span>Monate seit Start des Hauptprojekts</span>' +
     '<span><i style="background:var(--ph1)"></i>1 Datenherkunft</span><span><i style="background:var(--ph2)"></i>2 Datenverarbeitung</span>' +
     '<span><i style="background:var(--ph3)"></i>3 Modellentwicklung</span><span><i style="background:var(--ph4)"></i>4 Modellbereitstellung</span>' +
     '<span><i style="background:repeating-linear-gradient(135deg,rgba(138,32,32,.35) 0 3px,#fff 3px 6px)"></i>Verzug oder Zusatzrunde</span></div>';
@@ -1089,124 +1170,160 @@ function barStat(label, value, max, opts) {
   opts = opts || {};
   const w = Math.max(0, Math.min(100, value / max * 100));
   return '<div class="stat"><div class="k"><span>' + label + '</span><b class="num">' + (opts.text || Math.round(value) + ' von ' + max) + '</b></div>' +
-    '<div class="bar">' + '<i class="' + (opts.cls || '') + '" style="width:' + w + '%"></i>' + (opts.mark != null ? '<span class="mark" style="left:' + opts.mark + '%"></span>' : '') + '</div></div>';
+    '<div class="bar"><i class="' + (opts.cls || '') + '" style="width:' + w + '%"></i>' + (opts.mark != null ? '<span class="mark" style="left:' + opts.mark + '%"></span>' : '') + '</div></div>';
 }
 function renderSide() {
-  if (!G || G.stage === 'plan') {
-    $('side').innerHTML = '<div class="card"><h2>Projektlage</h2><p class="small muted" style="margin-top:8px">Sobald der Lenkungskreis Euren Plan freigegeben hat, seht Ihr hier Budget, Vertrauen, Datenlage und Modell.</p></div>';
+  if (!G) {
+    $('side').innerHTML = '<div class="card"><h2>Projektlage</h2><p class="small muted" style="margin-top:8px">Hier siehst Du im Spiel Budget, Vertrauen des Lenkungsausschusses, Datenlage und Modell.</p></div>';
     return;
   }
-  const s = G, p = s.plan;
+  const s = G;
+  if (!s.plan) {
+    let h = '<div class="card"><h2>Projektlage</h2>';
+    h += '<div class="stat"><div class="k"><span>Startbudget Vorprojekt</span><b class="num">' + fmtE(CFG.vorprojekt) + '</b></div></div>';
+    if (s.vorprojekt) {
+      h += barStat('Vertrauen des Lenkungsausschusses', s.T, 100);
+      h += '<div class="stat"><div class="k"><span><b style="color:var(--ink)">Datenlage</b></span></div>' + (s.known.data ? '<div class="small">sichtbar dank früher Dateninventur</div>' : '<div class="unknown">noch unbekannt</div>') + '</div>';
+    } else h += '<p class="small muted" style="margin-top:10px">Das Vorprojekt beginnt mit Deinem Vorgehen: In welcher Reihenfolge planst Du?</p>';
+    $('side').innerHTML = h + '</div>';
+    return;
+  }
+  const p = s.plan;
   let h = '<div class="card"><h2>Projektlage</h2>';
-  // Budget
   const spent = PS.spent(s, s.month);
   let ref, refLabel;
   if (s.goLive || s.stage === 'end') { ref = p.invest; refLabel = 'Plan bis Go-live'; }
-  else {
-    const k = Math.min(4, s.stage === 'alloc' ? s.phase + 1 : s.phase + 1);
-    ref = p.costUpTo(k); refLabel = 'Plan bis Entscheidungspunkt ' + k;
-  }
+  else { const k = Math.min(4, s.phase + 1); ref = p.costUpTo(k); refLabel = 'Plan bis Entscheidungspunkt ' + k; }
   if (s.goLive) {
     const pre = PS.spent(s, s.goLive);
-    h += barStat('Kosten bis Go-live', pre, Math.max(ref, pre) * 1.0, { text: fmtE(pre), cls: pre > ref * 1.1 ? 'over' : '', mark: Math.min(100, ref / Math.max(ref, pre) * 100) });
-    h += '<div class="small muted">' + refLabel + ': ' + fmtE(ref) + '</div>';
+    h += barStat('Kosten bis Go-live', pre, Math.max(ref, pre), { text: fmtE(pre), cls: pre > ref * 1.1 ? 'over' : '', mark: Math.min(100, ref / Math.max(ref, pre) * 100) });
   } else {
     const max = Math.max(ref, spent) * 1.15;
     h += barStat('Verbraucht', spent, max, { text: fmtE(spent), cls: spent > ref * 1.1 ? 'over' : '', mark: ref / max * 100 });
-    h += '<div class="small muted">' + refLabel + ': ' + fmtE(ref) + '</div>';
   }
-  h += barStat('Vertrauen des Lenkungskreises', s.T, 100);
-  // Daten
+  h += '<div class="small muted">' + refLabel + ': ' + fmtE(ref) + '</div>';
+  h += barStat('Vertrauen des Lenkungsausschusses', s.T, 100);
   h += '<div class="stat"><div class="k"><span><b style="color:var(--ink)">Datenlage</b></span></div></div>';
-  if (s.known.data) {
-    h += barStat('Datenqualität', s.Q, 100) + barStat('Datenabdeckung', s.C, 100) + barStat('Nutzungsrechte geklärt', s.R, 100);
-  } else {
-    h += '<div class="unknown">unbekannt – ohne Dateninventur zeigt sie sich erst in der Datenverarbeitung</div>';
-  }
+  if (s.known.data) h += barStat('Datenqualität', s.Q, 100) + barStat('Datenabdeckung', s.C, 100) + barStat('Nutzungsrechte geklärt', s.R, 100);
+  else h += '<div class="unknown">unbekannt – ohne Dateninventur zeigt sie sich erst in der Datenverarbeitung</div>';
   h += barStat('Klarheit über das Ziel', s.P, 100);
-  // Modell
   h += '<div class="stat"><div class="k"><span><b style="color:var(--ink)">Modell</b></span></div>';
   if (s.known.model) {
-    h += '<div class="small">Prognosegüte gemessen: <b class="num">' + fmtP(PS.guete(s.meas)) + '</b></div>';
-    h += s.B ? '<div class="small">Baseline: <b class="num">' + fmtP(PS.guete(0)) + '</b> · Fehler gesenkt um <b class="num">' + fmtP(s.meas) + '</b></div>'
+    h += '<div class="small">Übernahmequote gemessen: <b class="num">' + fmtP(PS.quote(s.meas)) + '</b></div>';
+    h += s.B ? '<div class="small">Militärisches Modell: <b class="num">' + fmtP(CFG.baseQuote) + '</b> · Übernahmen gesenkt um <b class="num">' + fmtP(s.meas) + '</b></div>'
       : '<div class="unknown">keine Baseline – kein Vergleichsmaßstab</div>';
-    if (s.pilotImp !== null && s.pilot) h += '<div class="small">Im Pilot: Fehler gesenkt um <b class="num">' + fmtP(s.pilotImp) + '</b></div>';
+    if (s.pilotImp !== null && s.pilot) h += '<div class="small">Im Pilotbetrieb: Übernahmen gesenkt um <b class="num">' + fmtP(s.pilotImp) + '</b></div>';
   } else h += '<div class="unknown">noch nicht trainiert</div>';
   h += '</div>';
-  h += barStat('KI-Kompetenz in den Filialen', s.L, 100);
+  h += barStat('KI-Kompetenz der Fernpiloten', s.L, 100);
   h += barStat('Wissen im eigenen Haus', s.K, 100);
-  // Logbuch
-  h += '<div class="logbook"><b class="small">Logbuch</b><ol>' + s.log.slice().reverse().slice(0, 30).map(l => '<li><b>M' + l.m + '</b> ' + esc(l.t) + '</li>').join('') + '</ol></div>';
-  h += '</div>';
-  $('side').innerHTML = h;
+  h += '<div class="logbook"><b class="small">Logbuch</b><ol>' + s.log.slice().reverse().slice(0, 30).map(l => '<li><b>' + (l.k === 'plan' && !l.m ? 'VP' : 'M' + l.m) + '</b> ' + esc(l.t) + '</li>').join('') + '</ol></div>';
+  $('side').innerHTML = h + '</div>';
 }
 
-/* ---------- Hauptbereich ---------- */
+/* ---------- Start ---------- */
 function renderStart() {
   const saved = loadSaved();
   const canResume = saved && saved.seed && saved.hist && saved.hist.length;
   return '<div class="card fade">' +
-    '<h2>Eine Bestellprognose für zehn Filialen</h2>' +
-    '<p class="lead">Eure Handelskette betreibt zehn Filialen. Die Bestellmengen für Frischware legen heute die Filialleitungen nach Erfahrung fest. Die Folge sind Abschriften für verdorbene Ware und leere Regale – zusammen rund 2 Mio. € im Jahr. Eine KI-gestützte Bestellprognose soll das ändern: Das Modell schlägt Bestellmengen vor, die Filialleitung entscheidet.</p>' +
-    '<p class="lead">Ihr steuert das Vorhaben vom ersten Plan bis zum Ende des zweiten Jahres. Jede Projektphase hat 8 Kapazitätspunkte, jedes Ereignis kostet Zeit, Geld oder Vertrauen – und nicht alles, was Ihr wissen müsstet, seht Ihr sofort.</p>' +
-    '<h3>So läuft jede Phase</h3><ol class="small" style="max-width:68ch;padding-left:20px;margin:0">' +
-    '<li>Ihr verteilt die Kapazität des Teams auf die Aufgaben der Phase.</li>' +
-    '<li>Eine Ereigniskarte bringt eine Lage, auf die Ihr reagiert.</li>' +
-    '<li>Am Entscheidungspunkt berichtet Ihr dem Lenkungskreis und entscheidet, wie es weitergeht.</li></ol>' +
+    '<h2>Projekt „Working Bee“</h2>' +
+    '<p class="lead">Du bist KI-Managerin oder KI-Manager bei einem Hersteller von Drohnen. Eure Produkte werden bisher ausschließlich militärisch genutzt.</p>' +
+    '<p class="lead">„Working Bee“ soll das ändern: Die Drohnen sollen für zivile Einsätze angepasst werden – als zusätzliche Transportmöglichkeit für große Versand- und Logistikunternehmen und, als zweites Standbein, für die Sicherung besonders kritischer Gebäude und Einrichtungen. Die Machbarkeitsanalyse hält das Vorhaben für vielversprechend, aber schwierig in der Umsetzung. Du bist als Projektleitung vorgesehen.</p>' +
+    '<div class="question"><small>Der KI-Kern des Projekts</small>Ein Modell erkennt Landeplätze und Hindernisse und entscheidet, ob die Drohne eine Zustellung selbst abschließt oder ob eine Fernpilotin bzw. ein Fernpilot übernehmen muss. Das militärische Modell kennt Gelände, Fahrzeuge und Tarnung – aber keine Balkone, Oberleitungen, spielenden Kinder und Paketstationen.</div>' +
+    '<p class="lead">Der Vorstand stellt Dir <b>' + fmtE(CFG.vorprojekt) + '</b> Startbudget für das Vorprojekt zur Verfügung. Am Ende des Vorprojekts erwartet er unter anderem eine Ressourcen- und Budgetplanung für das Hauptprojekt.</p>' +
+    '<h3>So läuft das Spiel</h3><ol class="small" style="max-width:68ch;padding-left:20px;margin:0">' +
+    '<li>Vorprojekt: Du bringst Deine Planungsaktivitäten in eine Reihenfolge.</li>' +
+    '<li>Business Case: Du legst dem Lenkungsausschuss Deinen Plan für das Hauptprojekt vor.</li>' +
+    '<li>Hauptprojekt: In vier Phasen verteilst Du Kapazität, reagierst auf eine Ereigniskarte und berichtest am Entscheidungspunkt.</li>' +
+    '<li>Betrieb und Auswertung: Was ist aus Deinem Plan geworden?</li></ol>' +
     '<div class="fields" style="margin-top:18px">' +
     '<div class="field"><label for="seed">Spielnummer</label><input id="seed" class="num" inputmode="numeric" value="' + defaultSeed + '" data-fk="seed"></div>' +
     '<div class="field"><label for="team">Teamname (freiwillig)</label><input id="team" maxlength="40" placeholder="z. B. Gruppe 2" data-fk="team"></div></div>' +
     '<div class="actions" style="margin-top:6px"><button class="btn" data-go="start" data-fk="start">Spiel starten</button>' +
     (canResume ? '<button class="btn ghost" data-go="resume" data-fk="resume">Gespeichertes Spiel fortsetzen (Spielnummer ' + esc(saved.seed) + ')</button>' : '') + '</div>' +
     '<details class="lead-notes"><summary>Hinweise für die Spielleitung</summary><ul class="small">' +
-    '<li>Ablauf: Plan (ca. 10 Min.), vier Projektphasen (je ca. 15 Min.), Betrieb (ca. 10 Min.), danach Nachbesprechung (ca. 45 Min.).</li>' +
+    '<li>Ablauf: Vorprojekt (ca. 10 Min.), Business Case (ca. 10 Min.), vier Projektphasen (je ca. 15 Min.), Betrieb (ca. 10 Min.), danach Nachbesprechung (ca. 45 Min.).</li>' +
     '<li>Gruppen mit drei bis vier Personen; eine Person bedient, alle entscheiden gemeinsam.</li>' +
-    '<li>Gebt allen Gruppen dieselbe Spielnummer. Dann treffen alle auf dieselben Zufallsereignisse, und Unterschiede entstehen nur durch Entscheidungen.</li>' +
+    '<li>Gib allen Gruppen dieselbe Spielnummer. Dann starten alle mit derselben Kartenreihenfolge und treffen auf dieselben Zufallsereignisse; Unterschiede entstehen nur durch Entscheidungen.</li>' +
     '<li>Am Ende „Ergebnis kopieren“ und in den Chat stellen – so lassen sich die Gruppen vergleichen.</li>' +
     '<li>Das Spiel läuft offline in jedem aktuellen Browser. Der Spielstand bleibt beim Neuladen erhalten, aber nur in diesem Browser.</li>' +
     '<li>Die fünf Ereigniskarten bilden die fünf Ursachen ab, die eine RAND-Studie für gescheiterte KI-Projekte nennt (Quelle unten).</li>' +
     '<li>Alle Zahlen sind fiktiv und didaktisch vereinfacht.</li></ul></details></div>';
 }
 
+/* ---------- Vorprojekt ---------- */
+function renderVorprojekt() {
+  if (!ui.order) ui.order = G.order0.slice();
+  let h = '<div class="card fade"><p class="kicker">Vorprojekt · Startbudget ' + fmtE(CFG.vorprojekt) + '</p><h2>In welcher Reihenfolge gehst Du vor?</h2>' +
+    '<p class="lead">Diese zehn Aktivitäten stehen im Vorprojekt an. Bring sie in die Reihenfolge, in der Du sie angehen willst – oben steht, womit Du beginnst. Ziehe die Karten oder nutze die Pfeile.</p>' +
+    '<p class="small muted" style="max-width:68ch">Manches lässt sich parallel erledigen. Geprüft wird deshalb nicht eine einzige richtige Reihenfolge, sondern ob acht wichtige Abhängigkeiten eingehalten sind.</p>' +
+    '<ol class="sortlist" aria-label="Reihenfolge der Aktivitäten">';
+  ui.order.forEach((id, i) => {
+    const a = ACT[id];
+    h += '<li class="sortitem' + (ui.drag === id ? ' dragging' : '') + '" draggable="true" data-sort="' + id + '"><span class="pos num" aria-hidden="true">' + (i + 1) + '</span>' +
+      '<div class="st"><b>' + esc(a.t) + '</b><span>' + esc(a.d) + '</span></div>' +
+      '<div class="mv"><button data-mv="-1" data-id="' + id + '" data-fk="mv-' + id + '-u" aria-label="' + esc(a.t) + ' nach oben"' + (i === 0 ? ' disabled' : '') + '>↑</button>' +
+      '<button data-mv="1" data-id="' + id + '" data-fk="mv-' + id + '-d" aria-label="' + esc(a.t) + ' nach unten"' + (i === ui.order.length - 1 ? ' disabled' : '') + '>↓</button></div></li>';
+  });
+  h += '</ol><div class="actions"><button class="btn" data-go="order" data-fk="go-order">Reihenfolge prüfen</button><span class="small muted">Danach ist die Reihenfolge festgelegt.</span></div></div>';
+  return h;
+}
+
+function renderVorprojektResult() {
+  const v = G.vorprojekt;
+  let h = '<div class="card fade"><p class="kicker">Vorprojekt · Ergebnis</p><h2>' + v.n + ' von 8 Abhängigkeiten eingehalten</h2>';
+  h += '<ul class="rules">' + v.res.map(r => '<li class="' + (r.ok ? 'ok' : 'bad') + '"><span class="ic" aria-hidden="true">' + (r.ok ? '✓' : '✗') + '</span><div><b>' + esc(r.t) + '</b> <span class="sr">' + (r.ok ? '(eingehalten)' : '(nicht eingehalten)') + '</span><p>' + esc(r.x) + '</p></div></li>').join('') + '</ul>';
+  h += '<div class="two"><div><h3>Deine Reihenfolge</h3><ol class="small">' + v.order.map(id => '<li>' + esc(ACT[id].t) + '</li>').join('') + '</ol></div>' +
+    '<div><h3>Eine mögliche Reihenfolge</h3><ol class="small">' + PS.ACTIVITIES.map(a => '<li>' + esc(a.t) + '</li>').join('') + '</ol></div></div>';
+  h += '<p class="small muted" style="max-width:68ch">Die Reihenfolge rechts erfüllt alle acht Abhängigkeiten; sie ist nicht die einzig richtige. Wo Deine Reihenfolge abweicht, ohne eine Abhängigkeit zu verletzen, ist das Stoff für die Diskussion.</p>';
+  h += '<h3>Was Dir Deine Reihenfolge im Spiel bringt</h3><ul class="notes">' + v.effects.map(e => '<li>' + esc(e) + '</li>').join('') + '</ul>';
+  h += '<div class="actions"><button class="btn" data-go="toplan" data-fk="go-toplan">Weiter zum Business Case</button></div></div>';
+  return h;
+}
+
+/* ---------- Business Case ---------- */
 function planRow(label, a, b, cls) {
   return '<tr><td>' + label + '</td><td class="num">' + a + '</td><td class="num ' + (cls || '') + '">' + b + '</td></tr>';
 }
 function renderPlan() {
   const e = PS.computePlan({}, 25), p = PS.computePlan(ui.planSel, ui.planImp);
   const pb = x => x.payback ? 'Monat ' + x.payback : 'nicht in 24 Monaten';
-  let h = '<div class="card fade"><p class="kicker">Vor dem Start</p><h2>Der Business Case für den Lenkungskreis</h2>' +
-    '<p class="lead">Der Vertrieb hat einen Erstentwurf gerechnet – in der Logik einer einfachen ROI-Vorlage. Bevor der Lenkungskreis Budget freigibt, legt Ihr fest, was Euer Plan enthält. Der Lenkungskreis gibt das Budget stufenweise frei: immer nur bis zum nächsten Entscheidungspunkt.</p>' +
-    '<table class="cmp"><thead><tr><th></th><th>Erstentwurf</th><th>Euer Plan</th></tr></thead><tbody>' +
+  let h = '<div class="card fade"><p class="kicker">Ende des Vorprojekts</p><h2>Der Business Case für den Lenkungsausschuss</h2>' +
+    '<p class="lead">Die Machbarkeitsanalyse enthält einen Erstentwurf in der Logik einer einfachen ROI-Vorlage. Bevor der Lenkungsausschuss das Hauptprojekt freigibt, legst Du fest, was Dein Plan enthält. Er gibt das Budget stufenweise frei: immer nur bis zum nächsten Entscheidungspunkt.</p>';
+  if (G.hints.lessons) h += '<div class="hint"><b>Aus Deiner Lessons-Learned-Auswertung:</b> Im letzten Entwicklungsprojekt lagen Datenaufbereitung und Testflüge deutlich über Plan, und nach der Auslieferung fehlte das Geld für Nachbesserungen.</div>';
+  if (G.hints.reserve) h += '<div class="hint"><b>Aus Deinem Risikoregister:</b> Für ein Vorhaben mit diesem Neuheitsgrad empfiehlt sich eine Reserve für Unvorhergesehenes.</div>';
+  h += '<p class="small muted" style="max-width:68ch">Die ' + fmtE(CFG.vorprojekt) + ' des Vorprojekts sind ausgegeben. Für die Entscheidung über das Hauptprojekt zählen sie nicht mehr – es zählen nur künftige Kosten und Nutzen (versunkene Kosten).</p>' +
+    '<table class="cmp"><thead><tr><th></th><th>Erstentwurf</th><th>Dein Plan</th></tr></thead><tbody>' +
     planRow('Go-live nach', e.goLive + ' Monaten', p.goLive + ' Monaten') +
     planRow('Investition bis Go-live', fmtE(e.invest), fmtE(p.invest)) +
     planRow('Laufende Kosten pro Monat', fmtE(e.ops), fmtE(p.ops)) +
-    planRow('Nutzen pro Jahr bei voller Wirkung', fmtE(e.benefitFull * 12), fmtE(p.benefitFull * 12)) +
+    planRow('Deckungsbeitrag pro Jahr bei voller Wirkung', fmtE(e.benefitFull * 12), fmtE(p.benefitFull * 12)) +
     planRow('Amortisation', pb(e), pb(p)) +
     planRow('Ergebnis nach 24 Monaten', fmtE(e.cum[CFG.horizon]), fmtE(p.cum[CFG.horizon])) +
     '</tbody></table>' +
-    '<h3>Was fehlt im Erstentwurf?</h3><p class="small muted" style="max-width:68ch">Wählt aus, was Ihr in den Plan aufnehmt. Jeder Posten macht den Plan teurer – und vielleicht ehrlicher.</p><div class="checks">';
+    '<h3>Was fehlt im Erstentwurf?</h3><p class="small muted" style="max-width:68ch">Wähle aus, was Du in den Plan aufnimmst. Jeder Posten macht den Plan teurer – und vielleicht ehrlicher.</p><div class="checks">';
   PS.PLAN_ITEMS.forEach(it => {
     const on = !!ui.planSel[it.id];
-    h += '<label class="check' + (on ? ' on' : '') + '"><input type="checkbox" data-plan-item="' + it.id + '" data-fk="pi-' + it.id + '"' + (on ? ' checked' : '') + '><span><b>' + esc(it.label) + '</b><span>' + esc(it.hint) + '</span></span></label>';
+    h += '<label class="check' + (on ? ' on' : '') + '"><input type="checkbox" data-plan-item="' + it.id + '" data-fk="pi-' + it.id + '"' + (on ? ' checked' : '') + '><span><b>' + esc(it.label) + '</b><span>' + esc(PS.planItemHint(it)) + '</span></span></label>';
   });
-  h += '</div><h3>Mit welcher Einsparung rechnet Ihr?</h3>' +
-    '<p class="small muted" style="max-width:68ch">Gemeint ist die Senkung der heutigen Prognosefehlerkosten (2 Mio. € pro Jahr), wenn alle Filialen nach Vorschlag bestellen. Zielgröße für das Modell: den Prognosefehler gegenüber der Baseline um mindestens ' + CFG.target + ' % senken.</p>' +
-    '<div class="seg-ctl" role="group" aria-label="Einsparung">' +
+  h += '</div><h3>Mit welcher Senkung der Übernahmen rechnest Du?</h3>' +
+    '<p class="small muted" style="max-width:68ch">Mit dem militärischen Modell müssten Fernpiloten im zivilen Test bei ' + CFG.baseQuote + ' % der Zustellungen übernehmen – so ist der zivile Betrieb nicht wirtschaftlich. Nach Rechnung des Vertriebs bringt jedes Prozent weniger Übernahmen rund ' + fmtE(CFG.potYear / 100) + ' Deckungsbeitrag pro Jahr, wenn alle Einsätze autonom geflogen werden. Zielgröße für das Modell: Übernahmen um mindestens ' + CFG.target + ' % senken.</p>' +
+    '<div class="seg-ctl" role="group" aria-label="Senkung der Übernahmen">' +
     [25, 20, 15].map(v => '<button data-imp="' + v + '" data-fk="imp-' + v + '" aria-pressed="' + (ui.planImp === v) + '">' + v + ' %' + (v === 25 ? ' (Erstentwurf)' : v === 15 ? ' (Zielgröße)' : '') + '</button>').join('') +
-    '</div><div class="actions"><button class="btn" data-go="plan" data-fk="go-plan">Plan beim Lenkungskreis einreichen</button></div></div>';
+    '</div><div class="actions"><button class="btn" data-go="plan" data-fk="go-plan">Plan beim Lenkungsausschuss einreichen</button></div></div>';
   return h;
 }
 
-function leverRow(lv, val, max, remaining, opts) {
+/* ---------- Phasen ---------- */
+function leverRow(lv, val, remaining, opts) {
   opts = opts || {};
   let dots = '';
   for (let i = 0; i < lv.max; i++) dots += '<span class="dot' + (i < val ? ' on' : '') + '"></span>';
   const canUp = val < lv.max && remaining > 0 && !opts.disabled;
-  return '<div class="lever' + (val ? ' used' : '') + (opts.cls ? ' ' + opts.cls : '') + '"><div><h4>' + esc(lv.name) + '</h4><p>' + esc(lv.text) + (opts.note ? ' <i>' + esc(opts.note) + '</i>' : '') + '</p></div>' +
+  return '<div class="lever' + (val ? ' used' : '') + '"><div><h4>' + esc(lv.name) + '</h4><p>' + esc(lv.text) + (opts.note ? ' <i>' + esc(opts.note) + '</i>' : '') + '</p></div>' +
     '<div class="stepper"><button data-lev="' + lv.id + '" data-d="-1" data-fk="lev-' + lv.id + '-m" aria-label="' + esc(lv.name) + ': einen Punkt weniger"' + (val <= 0 ? ' disabled' : '') + '>−</button>' +
     '<div class="dots" aria-label="' + val + ' von ' + lv.max + ' Punkten">' + dots + '</div>' +
-    '<button data-lev="' + lv.id + '" data-d="1" data-fk="lev-' + lv.id + '-p" aria-label="' + esc(lv.name) + ': einen Punkt mehr"' + (canUp ? '' : ' disabled') + '>+</button></div>' +
-    (opts.extra || '') + '</div>';
+    '<button data-lev="' + lv.id + '" data-d="1" data-fk="lev-' + lv.id + '-p" aria-label="' + esc(lv.name) + ': einen Punkt mehr"' + (canUp ? '' : ' disabled') + '>+</button></div></div>';
 }
 const allocSum = () => Object.values(ui.alloc).reduce((a, b) => a + b, 0);
 
@@ -1218,7 +1335,7 @@ function renderAlloc() {
   h += ops ? '<p class="kicker">Betrieb · ab Monat ' + s.goLive + '</p>' : '<p class="kicker">Phase ' + (s.phase + 1) + ' von 4 · ab Monat ' + s.month + '</p>';
   h += '<h2>' + esc(ph.name) + ' <span class="muted" style="font-size:1rem;font-family:var(--sans)">(' + esc(ph.en) + ')</span></h2>';
   h += '<div class="question"><small>Die Frage dieser Phase</small>' + esc(ph.question) + '</div>';
-  if (ops) h += '<p class="lead small">Das Projektteam ist aufgelöst, die Prognose läuft. Für den Betrieb plant Ihr laufende Kapazität: bis zu ' + CFG.opsKpMax + ' Punkte, jeder kostet ' + fmtE(CFG.opsKpCost) + ' pro Monat.</p>';
+  if (ops) h += '<p class="lead small">Das Projektteam ist aufgelöst, Working Bee fliegt. Für den Betrieb planst Du laufende Kapazität: bis zu ' + CFG.opsKpMax + ' Punkte, jeder kostet ' + fmtE(CFG.opsKpCost) + ' pro Monat.</p>';
   let pips = '';
   for (let i = 0; i < capTotal; i++) {
     const isExt = !ops && i >= CFG.kp;
@@ -1230,28 +1347,26 @@ function renderAlloc() {
     const o = {};
     if (ops && lv.id === 'wissen' && s.K >= 95) { o.disabled = true; o.note = '(nicht nötig – das Wissen ist im Haus)'; }
     if (ops && lv.id === 'auswertung' && s.M === 0) o.note = '(Ohne eingerichtetes Monitoring wirkt das nur halb.)';
-    h += leverRow(lv, ui.alloc[lv.id] || 0, lv.max, remaining, o);
+    if (!ops && lv.id === 'inventur' && s.inventurBonus) o.note = '(Die Dateninventur aus dem Vorprojekt zählt als ein Punkt mit.)';
+    h += leverRow(lv, ui.alloc[lv.id] || 0, remaining, o);
   });
   if (!ops) {
-    const lv = { id: '_ext', name: 'Externe Unterstützung zukaufen', max: CFG.extMax,
-      text: 'Je Punkt ' + fmtE(CFG.extCost) + '. Bringt sofort Kapazität – das Wissen bleibt aber beim Partner, wenn Ihr keinen Wissenstransfer vereinbart.' };
-    let dots = ''; for (let i = 0; i < lv.max; i++) dots += '<span class="dot' + (i < ui.ext ? ' on' : '') + '"></span>';
+    let dots = ''; for (let i = 0; i < CFG.extMax; i++) dots += '<span class="dot' + (i < ui.ext ? ' on' : '') + '"></span>';
     const canDown = ui.ext > 0 && used <= CFG.kp + ui.ext - 1;
-    h += '<div class="lever ext"><div><h4>' + lv.name + '</h4><p>' + esc(lv.text) + '</p></div>' +
+    h += '<div class="lever ext"><div><h4>Externe Unterstützung zukaufen</h4><p>Je Punkt ' + fmtE(CFG.extCost) + '. Bringt sofort Kapazität – das Wissen bleibt aber beim Partner, wenn Du keinen Wissenstransfer vereinbarst.</p></div>' +
       '<div class="stepper"><button data-ext="-1" data-fk="ext-m" aria-label="Ein externer Punkt weniger"' + (canDown ? '' : ' disabled') + '>−</button><div class="dots">' + dots + '</div>' +
-      '<button data-ext="1" data-fk="ext-p" aria-label="Ein externer Punkt mehr"' + (ui.ext < lv.max ? '' : ' disabled') + '>+</button></div>' +
+      '<button data-ext="1" data-fk="ext-p" aria-label="Ein externer Punkt mehr"' + (ui.ext < CFG.extMax ? '' : ' disabled') + '>+</button></div>' +
       (ui.ext > 0 ? '<label class="opt"><input type="checkbox" data-transfer data-fk="transfer"' + (ui.transfer ? ' checked' : '') + '> Wissenstransfer vertraglich vereinbaren (+' + fmtE(CFG.transferCost) + ')</label>' : '') + '</div>';
   }
   h += '</div>';
-  // Schätzung
   if (ops) {
     const mc = CFG.infra + (s.M > 0 ? CFG.monCost : 0) + used * CFG.opsKpCost;
-    h += '<p class="estimate">Laufende Kosten im Betrieb: <b class="num">' + fmtE(mc) + '</b> pro Monat (Infrastruktur' + (s.M > 0 ? ', Monitoring' : '') + ' und Eure Betriebskapazität).</p>';
+    h += '<p class="estimate">Laufende Kosten im Betrieb: <b class="num">' + fmtE(mc) + '</b> pro Monat (Infrastruktur' + (s.M > 0 ? ', Monitoring' : '') + ' und Deine Betriebskapazität).</p>';
   } else {
     let c = ph.base * CFG.runRate + ui.ext * CFG.extCost + (ui.ext && ui.transfer ? CFG.transferCost : 0);
-    if (ph.key === 'herkunft' && (ui.alloc.extern || 0) > 0) c += 3000;
-    if (ph.key === 'bereitstellung') c += 8000 + (ui.alloc.schulung || 0) * 2000;
-    let d = ph.base + (ph.key === 'bereitstellung' && ui.alloc.pilot ? 1 : 0);
+    if (ph.key === 'herkunft' && (ui.alloc.extern || 0) > 0) c += 3 * CFG.runRate / 22;
+    if (ph.key === 'bereitstellung') c += 8 * CFG.runRate / 22 + (ui.alloc.schulung || 0) * 2 * CFG.runRate / 22;
+    const d = ph.base + (ph.key === 'bereitstellung' && ui.alloc.pilot ? 1 : 0);
     h += '<p class="estimate">Diese Phase dauert mindestens <b>' + d + (d === 1 ? ' Monat' : ' Monate') + '</b> und kostet mindestens <b class="num">' + fmtE(c) + '</b> (Kernteam ' + fmtE(CFG.runRate) + ' pro Monat).</p>';
   }
   if (remaining > 0) h += '<p class="small muted">' + (ops ? 'Ungenutzte Punkte kosten nichts.' : 'Noch ' + remaining + (remaining === 1 ? ' Punkt' : ' Punkte') + ' frei – ungenutzte Kapazität kostet trotzdem.') + '</p>';
@@ -1266,12 +1381,10 @@ function deltaRow(r) {
     : '<div class="bar"><i class="loss" style="width:' + r.from + '%"></i><i class="prev" style="width:' + Math.max(r.to, 0) + '%"></i></div>';
   return '<div class="delta"><span>' + esc(r.label) + '</span>' + bar + '<span style="text-align:right">' + val + '</span></div>';
 }
-function eventCard(ev, withChoices) {
+function eventCard(ev) {
   let h = '<div class="event fade"><div class="tag">Ereigniskarte</div><h3>' + esc(ev.title) + '</h3><p>' + esc(ev.text) + '</p>';
-  if (withChoices) {
-    if (ev.auto) h += '<div class="outcome">' + esc(ev.auto) + '</div><div class="actions" style="margin-top:12px"><button class="btn" data-auto data-fk="auto">Weiter</button></div>';
-    else h += '<div class="choices">' + ev.options.map((o, i) => '<button class="choice" data-opt="' + i + '" data-fk="opt-' + i + '"><span>' + esc(o.t) + '</span><small>' + esc(o.c) + '</small></button>').join('') + '</div>';
-  }
+  if (ev.auto) h += '<div class="outcome">' + esc(ev.auto) + '</div><div class="actions" style="margin-top:12px"><button class="btn" data-auto data-fk="auto">Weiter</button></div>';
+  else h += '<div class="choices">' + ev.options.map((o, i) => '<button class="choice" data-opt="' + i + '" data-fk="opt-' + i + '"><span>' + esc(o.t) + '</span><small>' + esc(o.c) + '</small></button>').join('') + '</div>';
   return h + '</div>';
 }
 function renderEvent() {
@@ -1285,15 +1398,14 @@ function renderEvent() {
     if (r.notes.length) h += '<ul class="notes">' + r.notes.map(n => '<li>' + esc(n) + '</li>').join('') + '</ul>';
     h += '</div>';
   } else {
-    h += '<p class="kicker">Betrieb · ab Monat ' + s.goLive + '</p><h2>Die ersten Monate im Betrieb</h2><p class="lead small">Die Filialen bestellen mit Vorschlag. Dann kommt die erste Rückmeldung aus dem Alltag.</p>';
+    h += '<p class="kicker">Betrieb · ab Monat ' + s.goLive + '</p><h2>Die ersten Monate im Betrieb</h2><p class="lead small">Die Fernpiloten lassen die Drohnen autonom fliegen – oder auch nicht. Dann kommt die erste Rückmeldung aus dem Alltag.</p>';
   }
-  h += eventCard(s.event, true);
-  return h + '</div>';
+  return h + eventCard(s.event) + '</div>';
 }
 
 function eventRecap(ev) {
   if (!ev || !ev.outcome) return '';
-  const chosen = ev.auto ? 'durch eine frühere Entscheidung entschärft' : 'Ihr habt gewählt: ' + ev.options[ev.chosen].t;
+  const chosen = ev.auto ? 'durch eine frühere Entscheidung entschärft' : 'Du hast gewählt: ' + ev.options[ev.chosen].t;
   return '<div class="result"><div class="small"><b>Ereignis „' + esc(ev.title) + '“</b> – ' + esc(chosen) + '.</div><p style="margin:6px 0 0">' + esc(ev.outcome) + '</p>' +
     '<div class="rand">Hintergrund: ' + esc(PS.RAND[ev.rand]) + '</div></div>';
 }
@@ -1301,25 +1413,25 @@ function eventRecap(ev) {
 function renderGate() {
   const s = G, g = s.gate;
   let h = '<div class="card fade">' + eventRecap(s.event);
-  h += '<p class="kicker">Entscheidungspunkt ' + g.k + ' von 4 · Monat ' + s.month + '</p><h2>Der Lenkungskreis tagt</h2>';
+  h += '<p class="kicker">Entscheidungspunkt ' + g.k + ' von 4 · Monat ' + s.month + '</p><h2>Der Lenkungsausschuss tagt</h2>';
   h += g.msgs.map(m => '<div class="msg ' + m.k + '">' + esc(m.t) + '</div>').join('');
   if (g.metric) {
     if (g.metric.imp !== null) {
-      h += '<div class="metric"><div><span>Prognosegüte Baseline</span><b>' + fmtP(g.metric.baseline) + '</b></div><div><span>Prognosegüte Modell</span><b>' + fmtP(g.metric.model) + '</b></div>' +
-        '<div><span>Fehler gegenüber Baseline gesenkt um</span><b>' + fmtP(g.metric.imp) + '</b></div><div><span>Zielgröße</span><b>≥ ' + CFG.target + ' %</b></div></div>' +
-        '<div class="msg ' + (g.metric.pass ? 'ok' : 'warn') + '">' + (g.metric.pass ? 'Die Validierung erreicht die Zielgröße.' : 'Die Validierung verfehlt die Zielgröße.') + ' Gemessen auf den Testdaten Eures Validierungsdesigns.</div>';
+      h += '<div class="metric"><div><span>Übernahmequote militärisches Modell</span><b>' + fmtP(g.metric.baseline) + '</b></div><div><span>Übernahmequote neues Modell</span><b>' + fmtP(g.metric.model) + '</b></div>' +
+        '<div><span>Übernahmen gesenkt um</span><b>' + fmtP(g.metric.imp) + '</b></div><div><span>Zielgröße</span><b>≥ ' + CFG.target + ' %</b></div></div>' +
+        '<div class="msg ' + (g.metric.pass ? 'ok' : 'warn') + '">' + (g.metric.pass ? 'Die Validierung erreicht die Zielgröße.' : 'Die Validierung verfehlt die Zielgröße.') + ' Gemessen auf den Testflügen Deines Validierungsdesigns.</div>';
     } else {
-      h += '<div class="metric"><div><span>Prognosegüte Modell</span><b>' + fmtP(g.metric.model) + '</b></div><div><span>Baseline</span><b>–</b></div></div>' +
-        '<div class="msg warn">Ohne Baseline wisst Ihr nicht, ob dieser Wert besser ist als die heutige Bestellpraxis.</div>';
+      h += '<div class="metric"><div><span>Übernahmequote neues Modell</span><b>' + fmtP(g.metric.model) + '</b></div><div><span>Militärisches Modell</span><b>–</b></div></div>' +
+        '<div class="msg warn">Ohne Baseline weißt Du nicht, ob dieser Wert besser ist als das militärische Modell.</div>';
     }
   }
   if (g.pilot) {
-    h += '<div class="metric"><div><span>Im Pilot: Fehler gesenkt um</span><b>' + fmtP(g.pilot.imp) + '</b></div><div><span>In der Validierung gemessen</span><b>' + fmtP(g.pilot.meas) + '</b></div><div><span>Zielgröße</span><b>≥ ' + CFG.target + ' %</b></div></div>';
-    if (g.pilot.gap > 6) h += '<div class="msg bad">Der Pilot bleibt deutlich hinter der Validierung zurück. Irgendetwas an der Validierung war zu optimistisch.</div>';
-    else h += '<div class="msg ' + (g.pilot.pass ? 'ok' : 'warn') + '">' + (g.pilot.pass ? 'Der Pilot bestätigt die Validierung.' : 'Der Pilot bestätigt die Validierung, verfehlt aber die Zielgröße.') + '</div>';
+    h += '<div class="metric"><div><span>Im Pilotbetrieb: Übernahmen gesenkt um</span><b>' + fmtP(g.pilot.imp) + '</b></div><div><span>In der Validierung gemessen</span><b>' + fmtP(g.pilot.meas) + '</b></div><div><span>Zielgröße</span><b>≥ ' + CFG.target + ' %</b></div></div>';
+    if (g.pilot.gap > 6) h += '<div class="msg bad">Der Pilotbetrieb bleibt deutlich hinter der Validierung zurück. Irgendetwas an der Validierung war zu optimistisch.</div>';
+    else h += '<div class="msg ' + (g.pilot.pass ? 'ok' : 'warn') + '">' + (g.pilot.pass ? 'Der Pilotbetrieb bestätigt die Validierung.' : 'Der Pilotbetrieb bestätigt die Validierung, verfehlt aber die Zielgröße.') + '</div>';
   }
-  h += '<h3>Was berichtet Ihr dem Lenkungskreis?</h3><div class="reports" role="radiogroup">';
-  g.reports.forEach((r, i) => {
+  h += '<h3>Was berichtest Du dem Lenkungsausschuss?</h3><div class="reports" role="radiogroup">';
+  g.reports.forEach(r => {
     const on = ui.report === r.id;
     h += '<label class="report' + (on ? ' sel' : '') + '"><input type="radio" name="rep" data-report="' + r.id + '" data-fk="rep-' + r.id + '"' + (on ? ' checked' : '') + '><span>„' + esc(r.t) + '“</span></label>';
   });
@@ -1330,7 +1442,7 @@ function renderGate() {
     h += '<button class="btn' + (i === 0 ? '' : ' ghost') + '" data-dec="' + d.id + '" data-fk="dec-' + d.id + '"' + (need ? ' disabled' : '') + '>' + esc(d.t) + '</button>';
   });
   h += '</div>';
-  if (!ui.report) h += '<p class="small muted" style="margin-top:8px">Wählt zuerst den Bericht. Zusatzrunden könnt Ihr auch ohne Bericht anstoßen.</p>';
+  if (!ui.report) h += '<p class="small muted" style="margin-top:8px">Wähle zuerst den Bericht. Zusatzrunden kannst Du auch ohne Bericht anstoßen.</p>';
   return h + '</div>';
 }
 
@@ -1338,7 +1450,7 @@ function renderOpsRun() {
   const s = G;
   return '<div class="card fade">' + eventRecap(s.event) +
     '<p class="kicker">Betrieb · ab Monat ' + s.goLive + '</p><h2>Der Alltag beginnt</h2>' +
-    '<p class="lead">Die Filialleitungen gewöhnen sich an die Vorschläge – oder auch nicht. Die Welt draußen verändert sich. Was in den Monaten bis Monat ' + CFG.horizon + ' passiert, hängt von Euren bisherigen Entscheidungen ab.</p>' +
+    '<p class="lead">Die Fernpiloten gewöhnen sich an das Modell – oder auch nicht. Die Einsatzgebiete verändern sich. Was bis Monat ' + CFG.horizon + ' passiert, hängt von Deinen bisherigen Entscheidungen ab.</p>' +
     '<div class="actions"><button class="btn" data-go="finish" data-fk="go-finish">Betrieb bis Monat ' + CFG.horizon + ' durchspielen</button></div></div>';
 }
 
@@ -1349,7 +1461,7 @@ function niceStep(range) {
 }
 const kE = v => (v < 0 ? '−' : '') + Math.abs(Math.round(v / 1000)).toLocaleString('de-DE') + ' T€';
 function chart(plan, ist, pGL, iGL) {
-  const W = 680, Hh = 280, ml = 66, mr = 92, mt = 22, mb = 34, H = CFG.horizon;
+  const W = 680, Hh = 280, ml = 70, mr = 104, mt = 22, mb = 34, H = CFG.horizon;
   const all = plan.concat(ist);
   let lo = Math.min(0, ...all), hi = Math.max(0, ...all);
   const step = niceStep(hi - lo || 1);
@@ -1361,16 +1473,15 @@ function chart(plan, ist, pGL, iGL) {
     g += '<text x="' + (ml - 8) + '" y="' + (y(v) + 4) + '" text-anchor="end" font-size="11" fill="#6b6b60">' + kE(v) + '</text>';
   }
   for (let m = 0; m <= H; m += 3) g += '<text x="' + x(m) + '" y="' + (Hh - mb + 16) + '" text-anchor="middle" font-size="11" fill="#6b6b60">' + m + '</text>';
-  g += '<text x="' + ((ml + W - mr) / 2) + '" y="' + (Hh - 4) + '" text-anchor="middle" font-size="11" fill="#6b6b60">Monate seit Projektstart</text>';
+  g += '<text x="' + ((ml + W - mr) / 2) + '" y="' + (Hh - 4) + '" text-anchor="middle" font-size="11" fill="#6b6b60">Monate seit Start des Hauptprojekts</text>';
   const markers = [[pGL, 'Go-live Plan', '#b8801a'], [iGL, 'Go-live Ist', '#1f66a3']].filter(a => a[0] && a[0] < H);
   markers.forEach((a, i) => {
     g += '<line x1="' + x(a[0]) + '" x2="' + x(a[0]) + '" y1="' + mt + '" y2="' + (Hh - mb) + '" stroke="' + a[2] + '" stroke-dasharray="2 4" stroke-width="1.2"/>';
-    g += '<text x="' + (x(a[0]) + 4) + '" y="' + (mt - 6 + i * 0) + '" font-size="11" fill="#1a1a18" ' + (i === 1 && markers.length === 2 && Math.abs(a[0] - markers[0][0]) < 3 ? 'dy="12"' : '') + '>' + a[1] + '</text>';
+    g += '<text x="' + (x(a[0]) + 4) + '" y="' + (mt - 6) + '" font-size="11" fill="#1a1a18" ' + (i === 1 && markers.length === 2 && Math.abs(a[0] - markers[0][0]) < 3 ? 'dy="12"' : '') + '>' + a[1] + '</text>';
   });
   const path = arr => arr.map((v, m) => (m ? 'L' : 'M') + x(m).toFixed(1) + ',' + y(v).toFixed(1)).join('');
   g += '<path d="' + path(plan) + '" fill="none" stroke="#b8801a" stroke-width="2" stroke-dasharray="6 5" stroke-linejoin="round"/>';
   g += '<path d="' + path(ist) + '" fill="none" stroke="#1f66a3" stroke-width="2.5" stroke-linejoin="round"/>';
-  // direkte Beschriftung am Ende
   let yp = y(plan[H]), yi = y(ist[H]);
   if (Math.abs(yp - yi) < 16) { if (yp < yi) { yp -= 8; yi += 8; } else { yp += 8; yi -= 8; } }
   g += '<text x="' + (W - mr + 8) + '" y="' + (yp + 4) + '" font-size="12" fill="#1a1a18">Plan ' + kE(plan[H]) + '</text>';
@@ -1383,9 +1494,9 @@ function chart(plan, ist, pGL, iGL) {
 }
 function bindChart(c, plan, ist) {
   const box = $('chartbox'); if (!box) return;
-  const svg = box.querySelector('svg'), hit = svg.getElementById ? svg.querySelector('#hit') : null, tt = box.querySelector('.tt');
+  const svg = box.querySelector('svg'), hit = svg.querySelector('#hit'), tt = box.querySelector('.tt');
   if (!hit) return;
-  const show = ev => {
+  hit.addEventListener('mousemove', ev => {
     const r = svg.getBoundingClientRect(), sx = (ev.clientX - r.left) / r.width * c.W;
     const m = Math.max(0, Math.min(c.H, Math.round((sx - c.ml) / (c.W - c.ml - c.mr) * c.H)));
     const X = c.x(m);
@@ -1395,23 +1506,22 @@ function bindChart(c, plan, ist) {
     svg.querySelector('#hi').setAttribute('cx', X); svg.querySelector('#hi').setAttribute('cy', c.y(ist[m]));
     tt.innerHTML = '<b>Monat ' + m + '</b><br>Plan: ' + fmtE(plan[m]) + '<br>Ist: ' + fmtE(ist[m]);
     tt.style.display = 'block';
-    const px = X / c.W * r.width; tt.style.left = Math.min(r.width - 150, px + 12) + 'px'; tt.style.top = '10px';
-  };
-  hit.addEventListener('mousemove', show);
+    const px = X / c.W * r.width; tt.style.left = Math.min(r.width - 160, px + 12) + 'px'; tt.style.top = '10px';
+  });
   hit.addEventListener('mouseleave', () => { svg.querySelector('#hov').style.display = 'none'; tt.style.display = 'none'; });
 }
 
 function renderEnd() {
   const s = G, r = PS.results(s), p = s.plan;
   const head = s.endReason === 'abbruch' ? 'Projekt beendet in Monat ' + (s.aborted ? s.aborted.month : s.month)
-    : s.endReason === 'stopp' ? 'Der Lenkungskreis hat das Projekt gestoppt'
-    : s.endReason === 'zeit' ? 'Kein Go-live innerhalb von 24 Monaten' : 'Zwei Jahre nach Projektstart';
+    : s.endReason === 'stopp' ? 'Der Lenkungsausschuss hat das Projekt gestoppt'
+    : s.endReason === 'zeit' ? 'Kein Go-live innerhalb von 24 Monaten' : 'Zwei Jahre nach Start des Hauptprojekts';
   let h = '<div class="card fade"><p class="kicker">Auswertung · Spielnummer ' + s.seed + (meta.team ? ' · ' + esc(meta.team) : '') + '</p><h2>' + head + '</h2>';
   h += '<p class="small muted">Vier Blickwinkel, kein Gesamtsieger. Was davon wichtiger ist, ist Teil der Nachbesprechung.</p>';
   const stl = { gut: '● im grünen Bereich', mittel: '● mit Abstrichen', schlecht: '● kritisch', neutral: '○ nicht bewertet' };
   h += '<div class="tiles">' + r.tiles.map(t => '<div class="tile ' + t.st + '"><div class="l">' + esc(t.label) + '</div><div class="v">' + esc(t.value) + '</div><div class="s">' + esc(t.sub) + '</div><div class="st">' + stl[t.st] + '</div></div>').join('') + '</div>';
   const c = chart(p.cum, r.cum, p.goLive, s.goLive);
-  h += '<h3>Kumulierter Cashflow: Plan gegen Ist</h3><div class="ch-legend">' +
+  h += '<h3>Kumulierter Cashflow des Hauptprojekts: Plan gegen Ist</h3><div class="ch-legend">' +
     '<span><svg width="26" height="10"><line x1="0" x2="26" y1="5" y2="5" stroke="#b8801a" stroke-width="2" stroke-dasharray="6 5"/></svg>Plan</span>' +
     '<span><svg width="26" height="10"><line x1="0" x2="26" y1="5" y2="5" stroke="#1f66a3" stroke-width="2.5"/></svg>Ist</span></div>' +
     '<div class="chartbox" id="chartbox">' + c.svg + '<div class="tt"></div></div>';
@@ -1420,20 +1530,21 @@ function renderEnd() {
     planRow('Go-live', 'Monat ' + p.goLive, s.goLive ? 'Monat ' + s.goLive : '–') +
     planRow('Kosten bis Go-live', fmtE(p.invest), s.goLive ? fmtE(r.invest) : fmtE(r.invest) + ' (ohne Go-live)') +
     planRow('Laufende Kosten pro Monat', fmtE(p.ops), r.opsCostAvg !== null ? fmtE(r.opsCostAvg) + ' (Ø)' : '–') +
-    planRow('Nutzen im ersten Betriebsjahr', fmtE(r.planB1), r.benefitY1 !== null ? fmtE(r.benefitY1) : '–') +
+    planRow('Deckungsbeitrag im ersten Betriebsjahr', fmtE(r.planB1), r.benefitY1 !== null ? fmtE(r.benefitY1) : '–') +
     planRow('Amortisation', pb(p.payback), pb(r.payback)) +
     planRow('Ergebnis nach 24 Monaten', fmtE(r.pfin), fmtE(r.fin)) + '</tbody></table>';
+  h += '<p class="small muted">Ohne die ' + fmtE(CFG.vorprojekt) + ' des Vorprojekts – sie waren zum Zeitpunkt der Entscheidung bereits ausgegeben.</p>';
   if (s.opsReport) {
     h += '<h3>Was im Betrieb geschah</h3><ul class="timeline">' +
-      '<li><span>Monat ' + s.goLive + '</span>Go-live in allen Filialen' + (s.excl ? ' außer den zwei ausgeklammerten' : '') + '. Die Akzeptanz wächst.</li>' +
+      '<li><span>Monat ' + s.goLive + '</span>Regelbetrieb' + (s.excl ? ' zunächst ohne Innenstädte' : ' in allen Einsatzgebieten') + '. Die Akzeptanz wächst.</li>' +
       s.opsReport.timeline.map(t => '<li class="' + t.k + '"><span>Monat ' + t.m + '</span>' + esc(t.t) + '</li>').join('') +
-      '<li><span>Monat ' + CFG.horizon + '</span>' + Math.round(s.opsReport.finalAdopt * 100) + ' % der Bestellungen folgen dem Vorschlag.</li></ul>';
+      '<li><span>Monat ' + CFG.horizon + '</span>' + Math.round(s.opsReport.finalAdopt * 100) + ' % der Zustellungen werden autonom geflogen.</li></ul>';
   }
-  h += '<h3>Was Ihr während des Spiels nicht sehen konntet</h3><table class="cmp reveal"><tbody>' + PS.reveal(s).map(a => '<tr><td>' + esc(a[0]) + '</td><td class="num">' + esc(a[1]) + '</td></tr>').join('') + '</tbody></table>';
+  h += '<h3>Was Du während des Spiels nicht sehen konntest</h3><table class="cmp reveal"><tbody>' + PS.reveal(s).map(a => '<tr><td>' + esc(a[0]) + '</td><td class="num">' + esc(a[1]) + '</td></tr>').join('') + '</tbody></table>';
   h += '<h3>Fragen für die Nachbesprechung</h3><ol class="debrief">' + PS.debrief(s).map(q => '<li>' + esc(q) + '</li>').join('') + '</ol>';
-  h += '<details style="margin-top:14px"><summary>Logbuch des ganzen Spiels</summary><ol class="small muted" style="padding-left:20px;margin-top:8px">' + s.log.map(l => '<li>Monat ' + l.m + ': ' + esc(l.t) + '</li>').join('') + '</ol></details>';
+  h += '<details style="margin-top:14px"><summary>Logbuch des ganzen Spiels</summary><ol class="small muted" style="padding-left:20px;margin-top:8px">' + s.log.map(l => '<li>' + (l.k === 'plan' && !l.m ? 'Vorprojekt' : 'Monat ' + l.m) + ': ' + esc(l.t) + '</li>').join('') + '</ol></details>';
   h += '<div class="actions"><button class="btn" data-go="copy" data-fk="copy">Ergebnis kopieren</button><button class="btn ghost" data-go="print" data-fk="print">Drucken</button>' +
-    '<button class="btn ghost" data-go="new" data-fk="new">' + (newConfirm ? 'Wirklich neu starten? Klickt noch einmal.' : 'Neues Spiel') + '</button>' +
+    '<button class="btn ghost" data-go="new" data-fk="new">' + (newConfirm ? 'Wirklich neu starten? Noch einmal klicken.' : 'Neues Spiel') + '</button>' +
     (ui.copied ? '<span class="copied">Kopiert – jetzt im Chat einfügen.</span>' : '') + '</div>';
   h += '<textarea id="copybuf" style="position:absolute;left:-9999px" aria-hidden="true">' + esc(PS.summaryText(s, meta.team)) + '</textarea>';
   return { html: h + '</div>', after: () => bindChart(c, p.cum, r.cum) };
@@ -1445,6 +1556,8 @@ function render(scrollTop) {
   renderMeta(); renderStrip(); renderSide();
   let out, after = null;
   if (!G) out = renderStart();
+  else if (G.stage === 'vorprojekt') out = renderVorprojekt();
+  else if (G.stage === 'vorprojekt_result') out = renderVorprojektResult();
   else if (G.stage === 'plan') out = renderPlan();
   else if (G.stage === 'alloc') out = renderAlloc();
   else if (G.stage === 'event') out = renderEvent();
@@ -1464,7 +1577,12 @@ function render(scrollTop) {
   }
 }
 
-/* ---------- Ereignisse ---------- */
+/* ---------- Bedienung ---------- */
+function moveCard(id, dir) {
+  const i = ui.order.indexOf(id), j = i + dir;
+  if (i < 0 || j < 0 || j >= ui.order.length) return;
+  [ui.order[i], ui.order[j]] = [ui.order[j], ui.order[i]];
+}
 $('main').addEventListener('click', ev => {
   const t = ev.target.closest('button, [data-plan-item], [data-report], [data-transfer]');
   if (!t || t.disabled) return;
@@ -1475,6 +1593,15 @@ $('main').addEventListener('click', ev => {
     startGame(seed, ($('team').value || '').trim().slice(0, 40)); return;
   }
   if (d.go === 'resume') { restore(loadSaved()); render(true); return; }
+  if (d.mv) {
+    moveCard(d.id, +d.mv); render();
+    const b = $('main').querySelector('[data-fk="mv-' + d.id + '-' + (+d.mv < 0 ? 'u' : 'd') + '"]');
+    if (b && !b.disabled) b.focus({ preventScroll: true });
+    else { const o = $('main').querySelector('[data-fk="mv-' + d.id + '-' + (+d.mv < 0 ? 'd' : 'u') + '"]'); if (o) o.focus({ preventScroll: true }); }
+    return;
+  }
+  if (d.go === 'order') { act(['order', ui.order.slice()]); return; }
+  if (d.go === 'toplan') { act(['toplan']); return; }
   if (d.imp) { ui.planImp = +d.imp; render(); return; }
   if (d.go === 'plan') { act(['plan', Object.assign({}, ui.planSel), ui.planImp]); return; }
   if (d.lev) {
@@ -1509,10 +1636,30 @@ $('main').addEventListener('change', ev => {
   if (d.transfer !== undefined) { ui.transfer = t.checked; render(); return; }
 });
 $('main').addEventListener('keydown', ev => {
-  if (ev.key === 'Enter' && ev.target.id === 'seed' || ev.key === 'Enter' && ev.target.id === 'team') {
+  if (ev.key === 'Enter' && (ev.target.id === 'seed' || ev.target.id === 'team')) {
     const b = $('main').querySelector('[data-go="start"]'); if (b) b.click();
   }
 });
+/* Ziehen und Ablegen der Karten */
+$('main').addEventListener('dragstart', ev => {
+  const li = ev.target.closest && ev.target.closest('[data-sort]'); if (!li) return;
+  ui.drag = li.dataset.sort; li.classList.add('dragging');
+  try { ev.dataTransfer.effectAllowed = 'move'; ev.dataTransfer.setData('text/plain', ui.drag); } catch (e) { /* ältere Browser */ }
+});
+$('main').addEventListener('dragover', ev => {
+  const li = ev.target.closest && ev.target.closest('[data-sort]'); if (!li || !ui.drag) return;
+  ev.preventDefault();
+  $('main').querySelectorAll('.sortitem.over').forEach(x => x.classList.remove('over'));
+  if (li.dataset.sort !== ui.drag) li.classList.add('over');
+});
+$('main').addEventListener('drop', ev => {
+  const li = ev.target.closest && ev.target.closest('[data-sort]'); if (!li || !ui.drag) return;
+  ev.preventDefault();
+  const from = ui.order.indexOf(ui.drag), to = ui.order.indexOf(li.dataset.sort);
+  if (from >= 0 && to >= 0 && from !== to) { ui.order.splice(from, 1); ui.order.splice(to, 0, ui.drag); }
+  ui.drag = null; render();
+});
+$('main').addEventListener('dragend', () => { if (ui.drag) { ui.drag = null; render(); } });
 
 function copyResult() {
   const txt = PS.summaryText(G, meta.team);
@@ -1522,7 +1669,6 @@ function copyResult() {
   else fallback();
 }
 
-/* ---------- Start ---------- */
 render(false);
 window.__ps = { get G() { return G; }, act, startGame };
 })();
