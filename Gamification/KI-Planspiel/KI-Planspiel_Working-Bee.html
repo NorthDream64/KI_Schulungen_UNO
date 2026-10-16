@@ -407,6 +407,15 @@ table.cmp tr.warnrow td{color:var(--bad)}
 .gauge .gv{display:inline-flex;align-items:center;gap:7px;margin-top:-2px;font-weight:700;font-size:15px;color:var(--ink)}
 .gauge .gv i{width:10px;height:10px;border-radius:50%;background:var(--accent)}
 .gauge .gv.gering i{background:var(--bad)}.gauge .gv.hoch i{background:var(--ok)}
+.gauge .dl{fill:none;stroke-width:5;stroke-linecap:round}.gauge .dl.down{stroke:var(--bad)}.gauge .dl.up{stroke:var(--ok)}
+.gauge .ghost{stroke:var(--muted);stroke-width:2;stroke-dasharray:3 3;stroke-linecap:round}
+.gauge .trend{font-size:12.5px;font-weight:700;margin-top:2px}.gauge .trend.down{color:var(--bad)}.gauge .trend.up{color:var(--ok)}
+.mood{display:flex;gap:16px;align-items:center;border:1px solid var(--rule);border-radius:10px;padding:8px 16px;background:#fff;margin:0 0 8px}
+.mood.down{border-color:#e3b8b1;background:#fdf7f6}.mood.up{border-color:#bcd7c4;background:#f6faf7}
+.mood .gauge{margin:0;width:150px;flex:none}
+.mood-t b{display:block;font-size:14px}.mood-t span{font-size:14.5px}
+.mood.down .mood-t span{color:var(--bad);font-weight:600}.mood.up .mood-t span{color:var(--ok);font-weight:600}
+@media (max-width:560px){.mood .gauge{width:120px}.mood{gap:10px;padding:8px 10px}}
 .chartbox{position:relative;margin:4px 0 6px}
 .chartbox svg{width:100%;height:auto;display:block}
 .chartbox .tt{position:absolute;pointer-events:none;background:#fff;border:1px solid var(--rule);border-radius:8px;padding:7px 10px;font-size:12.5px;box-shadow:0 6px 18px rgba(26,26,24,.12);display:none;white-space:nowrap}
@@ -509,6 +518,10 @@ const CFG = {
   contract: 10,                  // Vertragsmeilenstein: Regelbetrieb beim Logistikkunden spätestens in Monat 10
   penalty: 40000,                // Vertragsstrafe je Monat Verzug
   exitAfter: 3,                  // ab drei Monaten Verzug darf der Kunde zurücktreten
+  trustDown: 1.25,               // Vertrauen geht schneller verloren, als es entsteht: Verluste zählen 1,25-fach
+  overBase: 4, overSlope: 15, overCap: 25,   // Nachbewilligung: Vertrauensverlust wächst mit der neuen Überschreitung (vor dem Faktor oben)
+  delayPen: 3,                   // je Monat neuer Terminverzug am Quality Gate (vor dem Faktor oben)
+  stopBelow: 15,                 // darunter stoppt der Lenkungsausschuss das Projekt an einem Quality Gate
   crash: { daten: E(20000), modell: E(28000), einfuehrung: E(15000) },
 };
 
@@ -529,6 +542,7 @@ const TB = [0, 1.5, 3, 4.5, 5.5, 6.5];       // Vertrauensbonus je Punkt, abnehm
 const TRUST_ZONES = { gering: [0, 35], normal: [36, 75], hoch: [76, 100] };
 const trustZone = t => { const v = Math.round(t); return v <= 35 ? 'gering' : v <= 75 ? 'normal' : 'hoch'; };
 const clamp = (x, a, b) => Math.max(a, Math.min(b, x));
+function trust(s, d) { s.T = clamp(s.T + (d < 0 ? d * CFG.trustDown : d), 0, 100); }
 const sum = a => a.reduce((x, y) => x + y, 0);
 const r1 = x => Math.round(x * 10) / 10;
 function shuffle(ids, rnd) {
@@ -896,7 +910,7 @@ function submitSwot(s, ans) {
   const n = res.filter(r => r.ok).length;
   const effects = [];
   if (n >= 6) {
-    s.T += 3; s.hints.swot = true;
+    trust(s, 3); s.hints.swot = true;
     effects.push((n === 8 ? 'Deine SWOT ist sauber.' : 'Deine SWOT ist weitgehend belastbar.') + ' Schwächen und Risiken wandern direkt in Dein Risikoregister, der Lenkungsausschuss sieht eine strukturierte Analyse (Vertrauen steigt).');
   } else {
     effects.push('Deine SWOT ist noch unscharf. Wo intern und extern verwechselt werden, landen Maßnahmen beim falschen Adressaten: Eine Schwäche behebst Du selbst, ein Risiko kannst Du nur beobachten und abfedern.');
@@ -913,7 +927,7 @@ function submitMethod(s, m) {
   m = METHOD_FX[m] ? m : 'hybrid';
   const fx = METHOD_FX[m];
   s.method = m;
-  s.T += fx.T; s.P += fx.P; s.R += fx.R; s.adoptBonus += fx.adopt;
+  trust(s, fx.T); s.P += fx.P; s.R += fx.R; s.adoptBonus += fx.adopt;
   if (m === 'agil') {
     s.pull = [0, 1, 2].map(k => s.rolls[23 + k] < 0.4 ? 1 : 0);
     if (!s.pull.some(x => x)) s.pull[1 + Math.floor(s.rolls[27] * 2)] = 1;
@@ -939,7 +953,7 @@ function submitOrder(s, order, depth) {
   const effects = [];
   const reworked = order.filter(id => ist.rows[id].rw);
   const k = reworked.length, dT = Math.max(-10, 8 - 3 * k);
-  s.T += dT;
+  trust(s, dT);
   if (!k) effects.push('Keine Nacharbeit: Jede Aktivität konnte auf den Ergebnissen aufbauen, die sie braucht. Der Lenkungsausschuss sieht ein sauber geplantes Vorprojekt (Vertrauen steigt).');
   if (k) {
     const dW = ist.end - plan.end, one = k === 1;
@@ -952,21 +966,21 @@ function submitOrder(s, order, depth) {
   if (ok('kef', 'bc')) s.P += 10;
   if (A('kef')) { s.kpiPlan = true; effects.push('KPI und Messkonzept stehen schon jetzt: Die Baseline – das militärische Modell unter zivilen Testbedingungen – ist vereinbart und wird in der Modellentwicklung ohne eigenen Aufwand mitgemessen.'); }
   if (early || A('lessons')) s.hints.lessons = true;
-  if (A('lessons')) { s.hints.lessons2 = true; s.T += 2; }
+  if (A('lessons')) { s.hints.lessons2 = true; trust(s, 2); }
   if (ok('risiko', 'budget') || A('risiko')) s.hints.reserve = true;
   if (A('risiko')) { s.R += 30; effects.push('Die rechtliche Ersteinschätzung zeigt: Ein Teil der Flugdaten ist Verschlusssache, die 3D-Stadtmodelle sind nur nicht-kommerziell lizenziert, und mit der zivilen Nutzung gilt die KI-Verordnung. Du weißt das jetzt – nicht erst kurz vor dem Go-live.'); }
   if (A('stake')) { s.P += 15; s.adoptBonus += 0.03; effects.push('Der Anforderungsworkshop zeigt: Logistikkunde und Objektschutz wollen Verschiedenes. Das Ziel ist klarer, bevor das erste Arbeitspaket startet.'); }
-  if (A('la')) { s.T += 5; s.laRules = true; effects.push('Der Lenkungsausschuss hat eine Geschäftsordnung: Wer entscheidet was, wann wird eskaliert (Vertrauen steigt).'); }
-  if (A('psp')) { s.T += 3; s.hints.psp = true; }
+  if (A('la')) { trust(s, 5); s.laRules = true; effects.push('Der Lenkungsausschuss hat eine Geschäftsordnung: Wer entscheidet was, wann wird eskaliert (Vertrauen steigt).'); }
+  if (A('psp')) { trust(s, 3); s.hints.psp = true; }
   if (A('ress')) { s.partners = true; effects.push('Externe Partner sind vorab geprüft: Zukauf und Beschleunigung werden im Hauptprojekt günstiger.'); }
-  if (A('budget')) s.T += 3;
-  if (A('bc')) { s.hints.sens = true; s.T += 2; }
+  if (A('budget')) trust(s, 3);
+  if (A('bc')) { s.hints.sens = true; trust(s, 2); }
   s.poc = depth.poc;
   if (depth.poc === 'o') {
     effects.push('Ohne Proof of Concept startest Du früher und günstiger – aber Du weißt noch nicht, ob das Modell in der Stadt überhaupt funktioniert. Der Business Case beruht allein auf der Machbarkeitsanalyse.');
   } else {
     const strong = depth.poc === 'a';
-    s.known.data = true; s.Q += strong ? 4 : 3; s.T += strong ? 5 : 3;
+    s.known.data = true; s.Q += strong ? 4 : 3; trust(s, strong ? 5 : 3);
     s.pocE = strong ? 0.08 : 0.06;
     const lo = strong ? 19 + Math.round(s.rolls[20] * 3) : 14 + Math.round(s.rolls[20] * 3);
     const hi = lo + (strong ? 4 : 10) + Math.round(s.rolls[21] * 2);
@@ -983,11 +997,11 @@ function submitOrder(s, order, depth) {
   effects.push(ist.delay > 0
     ? 'Meilenstein „Ende Vorprojekt“: Woche ' + ist.end + ' statt Woche ' + CFG.vpPlanWeeks + ' laut Plan. Das Hauptprojekt startet nach der nächsten Sitzung des Lenkungsausschusses in Monat ' + ist.months + '.'
     : 'Meilenstein „Ende Vorprojekt“: Woche ' + ist.end + ', geplant war Woche ' + CFG.vpPlanWeeks + '. Das Hauptprojekt startet in Monat ' + ist.months + '.');
-  if (ist.delay > 0) s.T -= Math.min(6, ist.delay);
+  if (ist.delay > 0) trust(s, -(Math.min(6, ist.delay)));
   if (ist.over > 0) {
     s.nachbew++;
     const pen = ist.over > 0.1 * CFG.startBudget ? (s.laRules ? 5 : 8) : (s.laRules ? 2 : 4);
-    s.T -= pen;
+    trust(s, -(pen));
     effects.push('Das Vorprojekt kostet ' + fmtE(ist.cost) + ' – ' + fmtE(ist.over) + ' mehr als das Startbudget. Der Vorstand bewilligt nach, aber das kostet Vertrauen, noch bevor das Hauptprojekt begonnen hat.');
   } else effects.push('Das Vorprojekt bleibt mit ' + fmtE(ist.cost) + ' im Startbudget von ' + fmtE(CFG.startBudget) + '.');
   s.T = clamp(s.T, 0, 100); s.P = clamp(s.P, 0, 100); s.R = clamp(s.R, 0, 100); s.Q = clamp(s.Q, 0, 100);
@@ -1001,8 +1015,8 @@ function toPlan(s) { s.stage = 'plan'; }
 function submitPlan(s, sel, impAssume) {
   s.plan = computePlan(sel, impAssume, s.vpMonths, s.method);
   let msg;
-  if (s.plan.count >= 4) { s.T += 6; msg = 'Der Lenkungsausschuss findet den Business Case nachvollziehbar, wenn auch teurer als gedacht.'; }
-  else if (s.plan.count >= 2) { s.T += 2; msg = 'Der Lenkungsausschuss nimmt den Business Case an und fragt nach, warum das Projekt länger dauert als im Erstentwurf.'; }
+  if (s.plan.count >= 4) { trust(s, 6); msg = 'Der Lenkungsausschuss findet den Business Case nachvollziehbar, wenn auch teurer als gedacht.'; }
+  else if (s.plan.count >= 2) { trust(s, 2); msg = 'Der Lenkungsausschuss nimmt den Business Case an und fragt nach, warum das Projekt länger dauert als im Erstentwurf.'; }
   else { msg = 'Der Lenkungsausschuss ist zufrieden: schneller Go-live, kurze Amortisation.'; }
   if (impAssume >= 25) msg += s.pocRange ? ' Dass Du mit 25 % rechnest, obwohl Dein PoC weniger gezeigt hat, fällt niemandem auf – noch nicht.' : ' Die Annahme von 25 % weniger Übernahmen übernimmt er ohne Rückfrage.';
   s.T = clamp(s.T, 0, 100);
@@ -1066,10 +1080,10 @@ function runPhase(s, alloc, ext, transfer, crash) {
     s.C += gain(a('extern'), 35);
     s.R += gain(a('rechte'), 70);
     s.P += gain(a('fach'), 55);
-    s.T += TB[a('fach')];
+    trust(s, TB[a('fach')]);
     if (a('extern') > 0) extraCost += E(3000);
     s.RK = a('risikoklasse');
-    s.T += [0, 2, 3, 3.5, 4, 4.5][s.RK];
+    trust(s, [0, 2, 3, 3.5, 4, 4.5][s.RK]);
     s.Q += gain(a('bereinigung'), 30) + gain(a('integration'), 15);
     s.C += gain(a('integration'), 10);
     s.A = lv(a('pipeline'));
@@ -1104,7 +1118,7 @@ function runPhase(s, alloc, ext, transfer, crash) {
     s.I = clamp(lv(a('integration')) + fx.I, 0, 1);
     s.L += gain(a('schulung'), 55);
     s.D = clamp(lv(a('doku')) + fx.D, 0, 1);
-    s.T += TB[a('doku')];
+    trust(s, TB[a('doku')]);
     s.REG = a('registrierung');
     s.M = lv(a('monitoring'));
     s.FB = a('rueckfall') >= 1 ? 1 : 0; s.FBL = a('rueckfall');
@@ -1114,22 +1128,22 @@ function runPhase(s, alloc, ext, transfer, crash) {
       s.adoptBonus += [0, 0, 0.01, 0.02, 0.025, 0.03][s.PL]; s.L += 2 * (s.PL - 1);
       notes.push('Der Test im Pilotbetrieb mit einem Kunden läuft einen Monat.');
     }
-    if (s.REG < 1) { s.T -= 3; notes.push('Registrierungen: Ohne Vorbereitung laufen die Anträge erst nach den Tests. Solange der Kunde nicht als Betreiber registriert ist, darf er nicht fliegen – der Go-live verschiebt sich um einen Monat.'); }
+    if (s.REG < 1) { trust(s, -(3)); notes.push('Registrierungen: Ohne Vorbereitung laufen die Anträge erst nach den Tests. Solange der Kunde nicht als Betreiber registriert ist, darf er nicht fliegen – der Go-live verschiebt sich um einen Monat.'); }
     else notes.push('Registrierungen: Die Anträge sind vorbereitet und rechtzeitig gestellt – kein Warten auf die Behörden.');
     if (fx.creep && s.D < 0.5) {
-      extraCost += E(5000); s.T -= 2;
+      extraCost += E(5000); trust(s, -(2));
       notes.push('Für die Abnahme fehlt Dokumentation, die in den Sprints liegen geblieben ist. Das Team zieht sie nach (+' + fmtE(E(5000)) + ').');
     }
     // Rechtsprüfung vor dem Go-live: Risikokategorie nach dem EU AI Act und Lizenzen
     if (s.RK < 1) {
-      extraCost += E(9000); s.T -= 5;
+      extraCost += E(9000); trust(s, -(5));
       notes.push('Rechtsprüfung vor dem Go-live: Erst jetzt wird geklärt, in welche Risikokategorie des EU AI Act HILMAR fällt und welche Pflichten daraus folgen. Gutachten und nachzuziehende Nachweise kosten ' + fmtE(E(9000)) + '; der Lenkungsausschuss fragt, warum das nicht in Phase 1 geklärt wurde.');
     } else if (s.RK === 1 && s.D < 0.5) {
       extraCost += E(4000);
       notes.push('Rechtsprüfung vor dem Go-live: Die Risikokategorie ist seit Phase 1 bekannt, für die Nachweise fehlt aber Dokumentation. Nachziehen kostet ' + fmtE(E(4000)) + '.');
     } else notes.push('Rechtsprüfung vor dem Go-live: Risikokategorie und Pflichten sind seit Phase 1 geklärt und dokumentiert – keine Überraschung.');
     if (s.R + 15 * s.D < 55) {
-      extraCost += E(5000); s.T -= 3;
+      extraCost += E(5000); trust(s, -(3));
       notes.push('Lizenzprüfung: Die 3D-Stadtmodelle sind nur für nicht-kommerzielle Nutzung lizenziert, einige Datenfreigaben fehlen. Nachverhandeln kostet ' + fmtE(E(5000)) + '.');
     }
   }
@@ -1196,14 +1210,14 @@ function makeEvent(s, k) {
   if (k === 'ziel') {
     const ev = { id: 'ziel', rand: 1, title: 'Zwei Kunden, zwei Ziele',
       text: 'Der Logistikkunde will möglichst viele Zustellungen pro Stunde. Der Interessent aus dem Objektschutz will lange Flugzeiten und keine Fehlalarme. Ein Modell und ein Produkt können nicht beides zugleich optimieren – und der Vertrieb hat beiden schon etwas versprochen.' };
-    if (s.P >= 70) { ev.auto = 'Weil Du Vertrieb, Pilotkunden und Fernpiloten früh eingebunden hast, ist das längst geklärt: HILMAR startet mit der Zustellung, der Objektschutz folgt als zweite Ausbaustufe.'; ev.autoFx = () => { s.T += 2; }; }
+    if (s.P >= 70) { ev.auto = 'Weil Du Vertrieb, Pilotkunden und Fernpiloten früh eingebunden hast, ist das längst geklärt: HILMAR startet mit der Zustellung, der Objektschutz folgt als zweite Ausbaustufe.'; ev.autoFx = () => { trust(s, 2); }; }
     else ev.options = [
       { t: 'Klärungsworkshop mit Vertrieb und beiden Interessenten', c: fmtE(E(8000)),
-        fx: () => { addCost(s, s.month, E(8000)); s.P = Math.max(s.P, 75); s.T += 3; return 'Entschieden: HILMAR startet mit der Zustellung, der Objektschutz folgt als zweite Ausbaustufe. Beide Seiten tragen das mit.'; } },
+        fx: () => { addCost(s, s.month, E(8000)); s.P = Math.max(s.P, 75); trust(s, 3); return 'Entschieden: HILMAR startet mit der Zustellung, der Objektschutz folgt als zweite Ausbaustufe. Beide Seiten tragen das mit.'; } },
       { t: 'Ziel offen lassen – das Modell lässt sich später anpassen', c: 'kostenlos',
         fx: () => { s.flags.zielOffen = true; return 'Das Team optimiert auf zwei Ziele, die sich widersprechen. Ob das trägt, zeigt sich erst im Betrieb.'; } },
       { t: 'Du entscheidest allein: Zustellung zuerst', c: 'kostenlos',
-        fx: () => { s.P += 12; s.T -= 5; s.capPen += 0.05; return 'Das Ziel ist klar, aber der Vertrieb fühlt sich übergangen. Einige Kundenkontakte bleiben skeptisch.'; } },
+        fx: () => { s.P += 12; trust(s, -(5)); s.capPen += 0.05; return 'Das Ziel ist klar, aber der Vertrieb fühlt sich übergangen. Einige Kundenkontakte bleiben skeptisch.'; } },
     ];
     return ev;
   }
@@ -1214,7 +1228,7 @@ function makeEvent(s, k) {
         'Die militärischen Flugdaten stammen aus Gelände, Wald und Wüste. Für Innenstädte, Wohngebiete und Paketstationen gibt es kaum Aufnahmen – und ein Teil der Daten ist als Verschlusssache eingestuft und darf zivil nicht verwendet werden.' };
     ev.options = [
       { t: 'Zunächst nur Stadtränder und Gewerbegebiete; Innenstädte folgen nach einem Jahr', c: '20 % weniger Nutzen im ersten Jahr',
-        fx: () => { s.excl = true; s.T += 2; return 'Ehrlicher Zuschnitt: weniger Einsatzgebiete, dafür passende Daten. Im ersten Betriebsjahr fehlt der Nutzen aus den Innenstädten.'; } },
+        fx: () => { s.excl = true; trust(s, 2); return 'Ehrlicher Zuschnitt: weniger Einsatzgebiete, dafür passende Daten. Im ersten Betriebsjahr fehlt der Nutzen aus den Innenstädten.'; } },
       { t: 'Zivile Testflüge zur Datensammlung', c: inv ? fmtE(E(6000)) : fmtE(E(16000)) + ' und 1 Monat',
         fx: () => { if (inv) addCost(s, s.month, E(6000)); else { addCost(s, s.month + 1, E(16000) + CFG.runRate); adv(s, 1, s.phase, 'verzug'); s.phaseMonths[s.phase] += 1; } s.C = clamp(s.C + 5, 0, 100);
           return inv ? 'Weil Du die Lücke früh kanntest, liefen die Testflüge parallel zur Datenaufbereitung.' : 'Die Testflüge liefern die fehlenden Aufnahmen, kosten aber einen zusätzlichen Monat.'; } },
@@ -1228,11 +1242,11 @@ function makeEvent(s, k) {
       text: '„Ein Wettbewerber zeigt Drohnen mit einem großen multimodalen Sprachmodell an Bord. Sollten wir nicht auch so etwas einsetzen?“' };
     ev.options = [
       { t: 'Mit Baseline und Zielgröße begründen, warum das gewählte Verfahren reicht', c: 'kostenlos',
-        fx: () => { if (s.B) { s.T += 3; return 'Die Messlatte überzeugt: Es zählt, ob die Übernahmen sinken, nicht welche Technik dahintersteht.'; } s.T -= 4; return 'Ohne Baseline fehlt Dir die Messlatte. Die Begründung bleibt eine Behauptung, der Vorstand ist nicht überzeugt.'; } },
+        fx: () => { if (s.B) { trust(s, 3); return 'Die Messlatte überzeugt: Es zählt, ob die Übernahmen sinken, nicht welche Technik dahintersteht.'; } trust(s, -(4)); return 'Ohne Baseline fehlt Dir die Messlatte. Die Begründung bleibt eine Behauptung, der Vorstand ist nicht überzeugt.'; } },
       { t: 'Vergleichstest über zwei Wochen', c: fmtE(E(11000)),
-        fx: () => { addCost(s, s.month, E(11000)); s.T += 2; return 'Im Test senkt der neue Ansatz die Übernahmen für diese Aufgabe nicht weiter. Die Frage ist beantwortet – mit Daten.'; } },
+        fx: () => { addCost(s, s.month, E(11000)); trust(s, 2); return 'Im Test senkt der neue Ansatz die Übernahmen für diese Aufgabe nicht weiter. Die Frage ist beantwortet – mit Daten.'; } },
       { t: 'Auf ein Sprachmodell umschwenken', c: fmtE(CFG.runRate) + ' und 1 Monat',
-        fx: () => { addCost(s, s.month + 1, CFG.runRate); adv(s, 1, s.phase, 'verzug'); s.phaseMonths[s.phase] += 1; s.T += 3; return 'Datenaufbereitung und Validierung müssen für den neuen Ansatz wiederholt werden. Am Ende steht kein besseres Modell, aber ein Monat Verzug.'; } },
+        fx: () => { addCost(s, s.month + 1, CFG.runRate); adv(s, 1, s.phase, 'verzug'); s.phaseMonths[s.phase] += 1; trust(s, 3); return 'Datenaufbereitung und Validierung müssen für den neuen Ansatz wiederholt werden. Am Ende steht kein besseres Modell, aber ein Monat Verzug.'; } },
     ];
     return ev;
   }
@@ -1262,11 +1276,11 @@ function makeEvent(s, k) {
         'Bei Starkwind, Schneefall und Nebel liegt das Modell regelmäßig daneben, die Fernpiloten müssen ständig übernehmen. Manche Situationen erkennen die Sensoren der Drohne schlicht nicht zuverlässig.' };
     ev.options = [
       { t: 'Einsatzgrenzen festlegen: bei solchen Wetterlagen kein autonomer Flug', c: '8 % weniger Nutzen',
-        fx: () => { s.S *= 0.92; s.adoptBonus += 0.05; s.T += 2; return 'Klarer Zuschnitt: Das Modell fliegt dort, wo es zuverlässig ist. Die Fernpiloten vertrauen ihm in den übrigen Fällen mehr.'; } },
+        fx: () => { s.S *= 0.92; s.adoptBonus += 0.05; trust(s, 2); return 'Klarer Zuschnitt: Das Modell fliegt dort, wo es zuverlässig ist. Die Fernpiloten vertrauen ihm in den übrigen Fällen mehr.'; } },
       { t: 'Mit Zusatzsensoren und Wetterdaten nachschärfen', c: fmtE(E(15000)),
-        fx: () => { s._aktionCost = E(15000); if (s.rolls[5] < 0.35) return 'Es gelingt teilweise: Mit Zusatzsensoren und Wetterdaten werden die meisten Fälle beherrschbar.'; s.S *= 0.92; s.T -= 3; return 'Der Versuch bringt wenig. Am Ende werden doch Einsatzgrenzen festgelegt – nach einem teuren Umweg.'; } },
+        fx: () => { s._aktionCost = E(15000); if (s.rolls[5] < 0.35) return 'Es gelingt teilweise: Mit Zusatzsensoren und Wetterdaten werden die meisten Fälle beherrschbar.'; s.S *= 0.92; trust(s, -(3)); return 'Der Versuch bringt wenig. Am Ende werden doch Einsatzgrenzen festgelegt – nach einem teuren Umweg.'; } },
       { t: 'Weiterlaufen lassen – die Fernpiloten gewöhnen sich daran', c: 'kostenlos',
-        fx: () => { s.capPen += hc ? 0.1 : 0.2; s.T -= hc ? 4 : 8; return hc ? 'Das Hypercare-Team fängt die schlimmsten Fälle ab, aber die Beschwerden halten an. Einige Fernpiloten schalten den autonomen Modus bei schlechtem Wetter grundsätzlich ab.' : 'Die Beschwerden halten an. Einige Fernpiloten schalten den autonomen Modus jetzt grundsätzlich ab.'; } },
+        fx: () => { s.capPen += hc ? 0.1 : 0.2; trust(s, -(hc ? 4 : 8)); return hc ? 'Das Hypercare-Team fängt die schlimmsten Fälle ab, aber die Beschwerden halten an. Einige Fernpiloten schalten den autonomen Modus bei schlechtem Wetter grundsätzlich ab.' : 'Die Beschwerden halten an. Einige Fernpiloten schalten den autonomen Modus jetzt grundsätzlich ab.'; } },
     ];
     return ev;
   }
@@ -1402,7 +1416,7 @@ function makeGate(s) {
     if (!s._gateChecked[4]) {
       s._gateChecked[4] = true;
       if (s.flags.schein && g.actM > g.planM) {
-        s.T -= 10; g.msgs.push({ k: 'bad', t: (s.flags.schein === 'over' ? 'Deine Erfolgsmeldung vor dem Go-live hat nicht gehalten.' : 'Dein Bericht vor dem Go-live meldete „alles grün“.') + ' Jetzt zeigt der Abgleich etwas anderes – der Lenkungsausschuss fühlt sich schlecht informiert.' });
+        trust(s, -(10)); g.msgs.push({ k: 'bad', t: (s.flags.schein === 'over' ? 'Deine Erfolgsmeldung vor dem Go-live hat nicht gehalten.' : 'Dein Bericht vor dem Go-live meldete „alles grün“.') + ' Jetzt zeigt der Abgleich etwas anderes – der Lenkungsausschuss fühlt sich schlecht informiert.' });
       }
       s.flags.schein = false;
       s.T = clamp(s.T, 0, 100);
@@ -1422,18 +1436,31 @@ function makeGate(s) {
   if (!s._gateChecked[k]) {
     s._gateChecked[k] = true;
     if (s.flags.schein && (over || actM > planM)) {
-      s.T -= 10; g.msgs.push({ k: 'bad', t: (s.flags.schein === 'over'
+      trust(s, -(10)); g.msgs.push({ k: 'bad', t: (s.flags.schein === 'over'
         ? 'Deine letzte Erfolgsmeldung hat nicht gehalten.'
         : 'Dein letzter Bericht meldete „im Plan“.') + ' Jetzt zeigt der Abgleich etwas anderes – der Lenkungsausschuss fühlt sich schlecht informiert.' });
     }
     s.flags.schein = false;
-    if (over) {
-      s.nachbew++; s.T -= s.laRules ? 5 : 8;
-      g.msgs.push({ k: 'bad', t: 'Nachbewilligung nötig: Bis hier sind ' + fmtE(actCost) + ' verbraucht, geplant waren ' + fmtE(planCost) + '. Der Lenkungsausschuss bewilligt nach, aber das Vertrauen sinkt.' });
-    } else if (actCost > planCost) g.msgs.push({ k: 'warn', t: 'Budget über Plan, aber noch innerhalb der Toleranz des Lenkungsausschusses: ' + fmtE(actCost) + ' verbraucht, geplant waren ' + fmtE(planCost) + '.' });
+    // Die Reaktion wächst mit der Abweichung: Bewertet wird, was seit der letzten Nachbewilligung neu dazugekommen ist
+    const overAmt = actCost - planCost, newOver = overAmt - (s.approvedOver || 0);
+    const pct = Math.round(overAmt / planCost * 100);
+    if (over && newOver > E(10000)) {
+      const rel = newOver / planCost;
+      const raw = Math.min(CFG.overCap, CFG.overBase + CFG.overSlope * Math.max(0, rel - 0.1)) * (s.laRules ? 0.7 : 1), hit = raw * CFG.trustDown;
+      s.nachbew++; trust(s, -raw); s.approvedOver = overAmt;
+      g.msgs.push({ k: 'bad', t: 'Nachbewilligung nötig: Bis hier sind ' + fmtE(actCost) + ' verbraucht, geplant waren ' + fmtE(planCost) + ' – ' + pct + ' % mehr. ' +
+        (hit >= 20 ? 'Der Lenkungsausschuss bewilligt nur widerwillig nach und verlangt einen Maßnahmenplan – das Vertrauen sinkt deutlich.'
+          : hit >= 11 ? 'Der Lenkungsausschuss bewilligt nach und will die Ursachen wissen – das Vertrauen sinkt spürbar.'
+          : 'Der Lenkungsausschuss bewilligt nach, aber das Vertrauen sinkt.') });
+    } else if (over) g.msgs.push({ k: 'warn', t: 'Budget weiterhin über Plan: ' + fmtE(actCost) + ' verbraucht, geplant waren ' + fmtE(planCost) + ' – ' + pct + ' % mehr. Die Mehrkosten sind bereits nachbewilligt.' });
+    else if (actCost > planCost) g.msgs.push({ k: 'warn', t: 'Budget über Plan, aber noch innerhalb der Toleranz des Lenkungsausschusses: ' + fmtE(actCost) + ' verbraucht, geplant waren ' + fmtE(planCost) + '.' });
     else g.msgs.push({ k: 'ok', t: 'Budget im Rahmen: ' + fmtE(actCost) + ' verbraucht, geplant waren ' + fmtE(planCost) + '.' });
-    if (actM > planM) g.msgs.push({ k: 'warn', t: 'Terminverzug: Monat ' + actM + ' statt Monat ' + planM + ' laut Plan.' });
-    s.T = clamp(s.T, 0, 100);
+    const dM = actM - planM, newDelay = dM - (s.lastDelay || 0);
+    if (dM > 0 && newDelay > 0) {
+      trust(s, -CFG.delayPen * newDelay); s.lastDelay = dM;
+      g.msgs.push({ k: 'bad', t: 'Terminverzug: Monat ' + actM + ' statt Monat ' + planM + ' laut Plan' + (dM > newDelay ? ', ' + (newDelay === 1 ? 'ein Monat' : (NUMW[newDelay] || newDelay) + ' Monate') + ' mehr als beim letzten Quality Gate' : '') + '. ' +
+        (newDelay >= 2 ? 'Der Lenkungsausschuss ist verärgert – das Vertrauen sinkt spürbar.' : 'Der Lenkungsausschuss ist besorgt – das Vertrauen sinkt.') });
+    } else if (dM > 0) g.msgs.push({ k: 'warn', t: 'Terminverzug: Monat ' + actM + ' statt Monat ' + planM + ' laut Plan – seit dem letzten Quality Gate nicht weiter gewachsen.' });
   }
   const fc = forecastGoLive(s, k);
   g.forecast = fc;
@@ -1441,7 +1468,7 @@ function makeGate(s) {
   g.msgs.push({ k: fc > CFG.contract ? 'trend bad' : fc > s.plan.goLive ? 'trend warn' : 'trend ok',
     t: 'Meilensteintrend: Bleibt es ab jetzt beim Plan, ist der Go-live in Monat ' + fc + '. Geplant war Monat ' + s.plan.goLive + ', vertraglich zugesagt ist Monat ' + CFG.contract + '.' +
       (fc > CFG.contract ? ' Je Monat Verzug fällt eine Vertragsstrafe von ' + fmtE(CFG.penalty) + ' an; ab ' + CFG.exitAfter + ' Monaten darf der Kunde zurücktreten.' : '') });
-  if (s.T < 20) { g.stopped = true; return g; }
+  if (s.T < CFG.stopBelow) { g.stopped = true; return g; }
 
   const nextCost = k < PRE ? s.plan.phaseCost[k] : null;
   const imp = s.meas;
@@ -1483,9 +1510,9 @@ function decideGate(s, reportId, decisionId) {
   const msgs = [];
   const terminal = !isLoop(k, decisionId);
   if (reportId && terminal) {
-    if (reportId === 'ehrlich') { s.T += 4; }
-    if (reportId === 'schein') { s.T += 2; if (k < 4) s.flags.schein = 'schein'; else s.flags.overOps = 'schein'; }
-    if (reportId === 'over') { s.T += 5; if (k === 1 || k === 3) s.flags.schein = 'over'; else if (k === 2) s.flags.over = true; else s.flags.overOps = 'over'; }
+    if (reportId === 'ehrlich') { trust(s, 4); }
+    if (reportId === 'schein') { trust(s, 2); if (k < 4) s.flags.schein = 'schein'; else s.flags.overOps = 'schein'; }
+    if (reportId === 'over') { trust(s, 5); if (k === 1 || k === 3) s.flags.schein = 'over'; else if (k === 2) s.flags.over = true; else s.flags.overOps = 'over'; }
     log(s, 'Bericht an den Lenkungsausschuss: ' + ({ ehrlich: 'Ergebnis, Abweichungen, anstehende Entscheidung und Kosten', schein: 'Statusampel und Fertigstellungsgrad', over: 'Erfolgsmeldung mit Ausbauempfehlung' })[reportId] + '.', 'report');
   }
   s.T = clamp(s.T, 0, 100);
@@ -1539,7 +1566,7 @@ function decideGate(s, reportId, decisionId) {
   if (k === 4) { finishOps(s); return { ended: true }; }
 
   if (k === 3) {
-    if (s.flags.over && s.pilot && s.meas - s.pilotImp > 8) { s.T -= 12; msgs.push('Der Pilotbetrieb zeigt weniger als berichtet. Der Lenkungsausschuss erinnert sich an Deine Erfolgsmeldung.'); s.flags.over = false; }
+    if (s.flags.over && s.pilot && s.meas - s.pilotImp > 8) { trust(s, -(12)); msgs.push('Der Pilotbetrieb zeigt weniger als berichtet. Der Lenkungsausschuss erinnert sich an Deine Erfolgsmeldung.'); s.flags.over = false; }
     s.goLive = s.month;
     log(s, 'Go-live in Monat ' + s.goLive + ' (Plan: Monat ' + s.plan.goLive + ', Vertrag: Monat ' + CFG.contract + ').', 'golive');
     contractCheck(s);
@@ -1555,10 +1582,10 @@ function contractCheck(s) {
   s.contractLate = late;
   if (late > 0) {
     const pen = late * CFG.penalty;
-    addCost(s, s.goLive, pen); s.penaltyPaid = pen; s.T -= 3 * late;
+    addCost(s, s.goLive, pen); s.penaltyPaid = pen; trust(s, -(3 * late));
     log(s, 'Vertragsmeilenstein verfehlt: ' + late + (late === 1 ? ' Monat' : ' Monate') + ' Verzug, Vertragsstrafe ' + fmtE(pen) + '.', 'golive');
     if (late >= CFG.exitAfter) {
-      s.custLost = true; s.custLostUntil = s.goLive + 12; s.T -= 6;
+      s.custLost = true; s.custLostUntil = s.goLive + 12; trust(s, -(6));
       log(s, 'Der Logistikkunde tritt vom Vertrag zurück. HILMAR startet ohne den Ankerkunden.', 'golive');
     }
   } else log(s, 'Vertragsmeilenstein gehalten.', 'golive');
@@ -1606,7 +1633,7 @@ function simulateOps(s) {
     if (s.excl && m === g + 13) timeline.push({ m, k: 'ok', t: 'Nach einem Jahr Testflügen kommen die Innenstädte als Einsatzgebiete dazu.' });
     if (s.custLost && m === s.custLostUntil + 1) timeline.push({ m, k: 'ok', t: 'Neue Logistikkunden ersetzen den abgesprungenen Ankerkunden.' });
     if (m === g + 2 && disappoint) {
-      cap = clamp(cap - (hc ? 0.08 : 0.15) * fbf, 0.1, 1); s.T -= (s.flags.over ? 18 : 8) / (hc ? 2 : 1) * fbf;
+      cap = clamp(cap - (hc ? 0.08 : 0.15) * fbf, 0.1, 1); trust(s, -((s.flags.over ? 18 : 8) / (hc ? 2 : 1) * fbf));
       timeline.push({ m, k: 'bad', t: 'Die Fernpiloten merken: Das Modell übergibt öfter als angekündigt. Die echte Senkung der Übernahmen liegt bei ' + fmtP(s.trueImp) + ', gemessen hattest Du ' + fmtP(s.meas) + '.' + (s.leak ? ' Ursache: Data Leakage in der Validierung.' : '') + (hc ? ' Das Hypercare-Team fängt einen Teil des Ärgers auf.' : '') });
     }
     const rate = rate0 + (m <= hcEnd ? 0.05 * hcE : 0);
@@ -1618,12 +1645,12 @@ function simulateOps(s) {
         detected = m;
         addCost(s, m, rCost);
         restored = m + rDur;
-        if (s.M === 0) { s.T -= 10 * fbf; cap = clamp(cap - 0.1 * fbf, 0.1, 1); }
+        if (s.M === 0) { trust(s, -(10 * fbf)); cap = clamp(cap - 0.1 * fbf, 0.1, 1); }
         timeline.push({ m, k: s.M === 0 ? 'bad' : 'warn', t: (s.M === 0
           ? 'Drift erkannt – nicht durch Monitoring, sondern durch Beschwerden der Fernpiloten, ' + (m - dm) + ' Monate nach der Veränderung.'
           : 'Drift erkannt durch das Monitoring, ' + (m - dm) + (m - dm === 1 ? ' Monat' : ' Monate') + ' nach der Veränderung.')
           + ' Nachtraining: ' + fmtE(rCost) + (rDur ? ', ' + rDur + (rDur === 1 ? ' Monat' : ' Monate') + ' bis zum neuen Modell' : ', sofort') + (extern ? ' (über den externen Partner, weil das Wissen nicht im Haus ist)' : '') + '.' });
-        if (s.flags.overOps) { s.T -= 8; timeline.push({ m, k: 'bad', t: s.flags.overOps === 'over'
+        if (s.flags.overOps) { trust(s, -(8)); timeline.push({ m, k: 'bad', t: s.flags.overOps === 'over'
           ? 'Der Lenkungsausschuss erinnert an Deinen Satz „Nach dem Go-live läuft es dann von allein“ – und fragt, warum jetzt ungeplante Kosten entstehen.'
           : 'Der Lenkungsausschuss hatte das Projekt als abgeschlossen verbucht – und fragt, warum jetzt ungeplante Kosten entstehen.' }); }
       }
@@ -1823,7 +1850,7 @@ resetUi();
 function tip(labelHtml, text, cls) {
   const id = 'tp' + (++tipN);
   return '<span class="tip' + (cls ? ' ' + cls : '') + '" tabindex="0" aria-describedby="' + id + '">' + labelHtml +
-    '<span class="tip-i" aria-hidden="true">i</span><span class="tip-b" role="tooltip" id="' + id + '">' + esc(text).replace(/\n/g, '<br>') + '</span></span>';
+    '<span class="tip-i" aria-hidden="true">i</span><span class="tip-b" role="tooltip" id="' + id + '">' + esc(text).replace(/&lt;(\/?)(strong|b)&gt;/g, '<$1$2>').replace(/\n/g, '<br>') + '</span></span>';
 }
 const term = (word, shown) => tip(esc(shown || word), TERMS[word]);
 
@@ -1846,13 +1873,14 @@ function apply(a) {
   else if (t === 'gate') PS.decideGate(G, a[1], a[2]);
   else if (t === 'finish') PS.finishOps(G);
 }
-function act(a) { apply(a); meta.hist.push(a); save(); resetUi(); render(true); }
+let lastTrust = null;   // Vertrauen vor und nach der letzten Entscheidung – für die Anzeige der Veränderung
+function act(a) { const t0 = G ? G.T : null; apply(a); meta.hist.push(a); save(); resetUi(); lastTrust = t0 === null ? null : { from: t0, to: G.T }; render(true); }
 function startGame(seed, team) {
   meta = { seed, team: team || '', hist: [] };
-  G = PS.newGame(seed); save(); resetUi(); render(true);
+  G = PS.newGame(seed); lastTrust = null; save(); resetUi(); render(true);
 }
 function restore(m) {
-  meta = m; G = PS.newGame(m.seed);
+  meta = m; G = PS.newGame(m.seed); lastTrust = null;
   try { m.hist.forEach(apply); } catch (e) { G = PS.newGame(m.seed); meta.hist = []; }
   resetUi();
 }
@@ -1883,11 +1911,22 @@ function barStat(label, value, max, opts) {
 }
 /* Tachometer für das Vertrauen des Lenkungsausschusses – Bereich statt Punktzahl */
 let trustShown = null;   // zuletzt gezeigter Wert: Die Nadel bewegt sich von dort zum neuen Wert
-function trustGauge(v, compact) {
+/* Wie stark hat sich das Vertrauen mit der letzten Entscheidung verändert? Nur in Worten – das Spiel zeigt keine Punktzahl. */
+function trustTrend() {
+  if (!G || !lastTrust || Math.abs(lastTrust.to - G.T) > 0.01) return null;
+  const d = lastTrust.to - lastTrust.from;
+  if (Math.abs(d) < 1) return null;
+  const w = d <= -15 ? 'sinkt stark' : d <= -6 ? 'sinkt deutlich' : d < 0 ? 'sinkt' : d >= 6 ? 'steigt deutlich' : 'steigt';
+  const z0 = PS.trustZone(lastTrust.from), z1 = PS.trustZone(lastTrust.to);
+  return { d, dir: d < 0 ? 'down' : 'up', w, z0, z1, changed: z0 !== z1 };
+}
+function trustGauge(v, compact, opts) {
+  opts = opts || {};
   const cx = 100, cy = 96, r = 72, sw = 13, gap = 0.7;
   const a = x => Math.PI * (1 - x / 100);
   const pt = (x, rr) => [(cx + rr * Math.cos(a(x))).toFixed(1), (cy - rr * Math.sin(a(x))).toFixed(1)];
-  const arc = (x1, x2) => { const p1 = pt(x1, r), p2 = pt(x2, r); return 'M' + p1[0] + ' ' + p1[1] + ' A' + r + ' ' + r + ' 0 0 1 ' + p2[0] + ' ' + p2[1]; };
+  const arcR = (x1, x2, rr) => { const p1 = pt(x1, rr), p2 = pt(x2, rr); return 'M' + p1[0] + ' ' + p1[1] + ' A' + rr + ' ' + rr + ' 0 0 1 ' + p2[0] + ' ' + p2[1]; };
+  const arc = (x1, x2) => arcR(x1, x2, r);
   const z = PS.trustZone(v);
   const zones = [['gering', 0, 35.5], ['normal', 35.5, 75.5], ['hoch', 75.5, 100]];
   let svg = '';
@@ -1896,12 +1935,20 @@ function trustGauge(v, compact) {
     const m = (x1 + x2) / 2, side = k === 'gering' ? 'end' : k === 'hoch' ? 'start' : 'middle', lp = pt(m, r + (side === 'middle' ? 15 : 11));
     svg += '<text class="gl' + (k === z ? ' on' : '') + '" x="' + lp[0] + '" y="' + lp[1] + '" text-anchor="' + side + '" dominant-baseline="middle">' + k + '</text>';
   });
+  const tr = trustTrend();
+  if (tr) {
+    // Spur der Veränderung: farbiger Bogen innen und gestrichelte Markierung beim alten Wert
+    const lo = Math.min(lastTrust.from, lastTrust.to), hi = Math.max(lastTrust.from, lastTrust.to), gp = pt(lastTrust.from, r - sw / 2 - 2);
+    svg += '<path class="dl ' + tr.dir + '" d="' + arcR(lo, hi, r - sw - 5) + '"/>' +
+      '<line class="ghost" x1="' + cx + '" y1="' + cy + '" x2="' + gp[0] + '" y2="' + gp[1] + '"/>';
+  }
   const from = trustShown === null ? v : trustShown;
   const deg = x => (Math.max(0, Math.min(100, x)) * 1.8).toFixed(1);
   svg += '<g class="needle" data-to="' + deg(v) + '" style="transform:rotate(' + deg(from) + 'deg)"><line x1="' + cx + '" y1="' + cy + '" x2="' + (cx - r + 12) + '" y2="' + cy + '"/></g>' +
     '<circle class="hub" cx="' + cx + '" cy="' + cy + '" r="6.5"/><circle cx="' + cx + '" cy="' + cy + '" r="2.4" fill="#fff"/>';
   const g = '<div class="gauge' + (compact ? ' sm' : '') + '" role="img" aria-label="Vertrauen des Lenkungsausschusses: ' + z + '"><svg viewBox="-14 -6 228 112" aria-hidden="true">' + svg + '</svg>' +
-    '<div class="gv ' + z + '"><i aria-hidden="true"></i>' + z + '</div></div>';
+    '<div class="gv ' + z + '"><i aria-hidden="true"></i>' + z + '</div>' +
+    (tr && !opts.noTrend ? '<div class="trend ' + tr.dir + '">' + (tr.dir === 'down' ? '▼ ' : '▲ ') + tr.w + (tr.changed ? ' (vorher ' + tr.z0 + ')' : '') + '</div>' : '') + '</div>';
   if (compact) return g;
   const info = 'Der Lenkungsausschuss zeigt sein Vertrauen nicht als Punktzahl. Bereiche: gering, normal, hoch. Sinkt es sehr tief, kann er das Projekt an einem Quality Gate stoppen.';
   return '<div class="stat gauge-wrap"><div class="k"><span>' + tip('Vertrauen des Lenkungsausschusses', info) + '</span></div>' + g + '</div>';
@@ -2427,6 +2474,9 @@ function renderGate() {
   h += '<div class="criteria"><b class="small">Kriterien dieses Quality Gates</b><ul>' + g.criteria.map(c => '<li class="' + (c.ok === true ? 'ok' : c.ok === false ? 'bad' : 'unk') + '"><span aria-hidden="true">' + (c.ok === true ? '✓' : c.ok === false ? '✗' : '?') + '</span>' + esc(c.t) + '<span class="sr">' + (c.ok === true ? ' (erfüllt)' : c.ok === false ? ' (nicht erfüllt)' : ' (unbekannt)') + '</span></li>').join('') + '</ul>' +
     '<p class="small muted">Offene Kriterien halten den Lenkungsausschuss nicht auf – er entscheidet. Aber was jetzt offen bleibt, holt Dich später ein.</p></div>';
   h += g.msgs.map(m => '<div class="msg ' + m.k + '">' + (m.k.indexOf('trend') === 0 ? term('Meilensteintrend') + ': ' + esc(m.t.replace(/^Meilensteintrend: /, '')) : esc(m.t)) + '</div>').join('');
+  const tr = trustTrend(), z = PS.trustZone(s.T);
+  h += '<div class="mood ' + (tr ? tr.dir : '') + '">' + trustGauge(s.T, true, { noTrend: true }) + '<div class="mood-t"><b>Stimmung im Lenkungsausschuss</b><span>' +
+    (tr ? 'Das Vertrauen ' + tr.w + (tr.changed ? ' – von ' + tr.z0 + ' auf ' + tr.z1 : ' – es bleibt ' + z) + '.' : 'Das Vertrauen ist ' + z + '.') + '</span></div></div>';
   if (g.contract) {
     const c = g.contract;
     h += '<div class="msg ' + (c.late ? 'bad' : 'ok') + '">' + (c.late
