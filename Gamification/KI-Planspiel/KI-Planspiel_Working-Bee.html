@@ -106,7 +106,7 @@ ol.declog ul li{font-size:14.5px;line-height:1.5}
 .golive{position:absolute;top:-4px;bottom:-4px;width:0;border-left:2px solid currentColor}
 .golive span{position:absolute;top:-15px;left:3px;font-size:11px;font-weight:600;white-space:nowrap}
 .lane.plan .golive{color:var(--plan)}.lane.ist .golive{color:var(--ist)}
-.now{position:absolute;top:-3px;bottom:-3px;width:2px;background:var(--ink);opacity:.55}
+.lane .now{position:absolute;top:-3px;bottom:-3px;width:2px;background:var(--ink);opacity:.55}
 .lane i.mon{position:absolute;top:50%;width:7px;height:7px;margin:-3.5px 0 0 -3.5px;border-radius:50%}
 .lane.plan i.mon{border:1.5px solid var(--plan);background:#fff}.lane.ist i.mon{background:var(--ok)}
 .lane b.qg{position:absolute;bottom:-5px;width:9px;height:9px;margin-left:-4.5px;background:var(--accent);transform:rotate(45deg);border:1.5px solid #fff;z-index:2}
@@ -1022,18 +1022,21 @@ const MS_ITEMS = [
   { id: 'qg3', t: 'Quality Gate 3: Test abgeschlossen, Monitoring eingerichtet', tx: 'Quality Gate: Test abgeschlossen, Monitoring eingerichtet', kind: 'Quality Gate', ph: 3, o: 0,
     d: 'Tests, Integration, Dokumentation und Registrierungen sind abgeschlossen, das Monitoring läuft, die Rückfallebene steht.',
     w: 'steht in Phase 3 am Anfang: Erst wenn Tests abgeschlossen sind und das Monitoring läuft, kann über den Go-live entschieden werden.' },
-  { id: 'freigabe', t: 'Freigabe für den Go-live', tx: 'Freigabe für den Go-live', kind: 'Meilenstein', ph: 3, o: 1, d: 'Der Lenkungsausschuss gibt den Go-live frei – auf Grundlage der Ergebnisse von Quality Gate 3.',
-    w: 'folgt in Phase 3 auf Quality Gate 3 und geht dem Go-live voraus.' },
-  { id: 'golive', t: 'Go-live', tx: 'Go-live', kind: 'Meilenstein', ph: 3, o: 2, d: 'HILMAR geht beim Logistikkunden in Betrieb – zunächst als MVP (Minimum Viable Product), begleitet vom Hypercare-Team.',
+  { id: 'vorvertrag', t: 'Unterzeichnung Vorvertrag', tx: 'Unterzeichnung Vorvertrag', kind: 'Meilenstein', ph: 3, o: 1,
+    d: 'Der Logistikkunde unterschreibt den Vorvertrag: Go-live spätestens in Monat ' + CFG.contract + ', Vertragsstrafe von ' + fmtE(CFG.penalty) + ' je Monat Verzug.',
+    w: 'folgt in Phase 3 auf Quality Gate 3: Erst wenn die Tests abgeschlossen sind und das Monitoring läuft, unterschreibt der Kunde – danach folgt die Freigabe für den Go-live.' },
+  { id: 'freigabe', t: 'Freigabe für den Go-live', tx: 'Freigabe für den Go-live', kind: 'Meilenstein', ph: 3, o: 2, d: 'Der Lenkungsausschuss gibt den Go-live frei – auf Grundlage der Ergebnisse von Quality Gate 3.',
+    w: 'folgt in Phase 3 auf die Unterzeichnung des Vorvertrags und geht dem Go-live voraus.' },
+  { id: 'golive', t: 'Go-live', tx: 'Go-live', kind: 'Meilenstein', ph: 3, o: 3, d: 'HILMAR geht beim Logistikkunden in Betrieb – zunächst als MVP (Minimum Viable Product), begleitet vom Hypercare-Team.',
     w: 'folgt in Phase 3 auf die Freigabe und startet die MVP-Erprobung.' },
-  { id: 'uepilot', t: 'Übergabe MVP', tx: 'Übergabe MVP', kind: 'Meilenstein', ph: 3, o: 3, d: 'Das Projektteam übergibt das laufende MVP an die Fernpiloten des Logistikkunden; das Hypercare-Team bleibt ansprechbar.',
+  { id: 'uepilot', t: 'Übergabe MVP', tx: 'Übergabe MVP', kind: 'Meilenstein', ph: 3, o: 4, d: 'Das Projektteam übergibt das laufende MVP an die Fernpiloten des Logistikkunden; das Hypercare-Team bleibt ansprechbar.',
     w: 'folgt in Phase 3 auf den Go-live: Erst läuft das MVP an, dann übernimmt der Kunde.' },
-  { id: 'qg4', t: 'Quality Gate 4: MVP-Erprobung und kommerzieller Betrieb', tx: 'Quality Gate: MVP-Erprobung und kommerzieller Betrieb', kind: 'Quality Gate', ph: 3, o: 4,
+  { id: 'qg4', t: 'Quality Gate 4: MVP-Erprobung und kommerzieller Betrieb', tx: 'Quality Gate: MVP-Erprobung und kommerzieller Betrieb', kind: 'Quality Gate', ph: 3, o: 5,
     d: 'Die Erprobung des MVP beim Kunden ist ausgewertet – der Lenkungsausschuss entscheidet über den kommerziellen Betrieb.',
     w: 'steht nach Go-live und Übergabe MVP: Es wertet die MVP-Erprobung aus und gibt den kommerziellen Betrieb frei.' },
-  { id: 'uebetrieb', t: 'Übergabe Betrieb', tx: 'Übergabe Betrieb', kind: 'Meilenstein', ph: 3, o: 5, d: 'Nach der Hypercare übernimmt der Betrieb – das Projekt endet.',
+  { id: 'uebetrieb', t: 'Übergabe Betrieb', tx: 'Übergabe Betrieb', kind: 'Meilenstein', ph: 3, o: 6, d: 'Nach der Hypercare übernimmt der Betrieb – das Projekt endet.',
     w: 'folgt auf Quality Gate 4: Erst die Freigabe des kommerziellen Betriebs, dann die Übergabe an den Betrieb.' },
-  { id: 'ubc', t: 'Überprüfung Business Case', tx: 'Überprüfung Business Case', kind: 'Meilenstein', ph: 3, o: 6, d: 'Nach einem Jahr Betrieb: Hat HILMAR den Nutzen gebracht, den der Business Case versprochen hat?',
+  { id: 'ubc', t: 'Überprüfung Business Case', tx: 'Überprüfung Business Case', kind: 'Meilenstein', ph: 3, o: 7, d: 'Nach einem Jahr Betrieb: Hat HILMAR den Nutzen gebracht, den der Business Case versprochen hat?',
     w: 'steht ganz am Ende: Ob der Business Case trägt, zeigt sich erst im Betrieb.' },
 ];
 const MS_BY_ID = {}; MS_ITEMS.forEach(m => { MS_BY_ID[m.id] = m; });
@@ -1258,6 +1261,8 @@ function planungReview(staff) {
   return { pro, con };
 }
 function submitPlanung(s, seq, staff) {
+  // Spielstände von vor dem Meilenstein „Unterzeichnung Vorvertrag“: ihn hinter Quality Gate 3 ergänzen
+  if (Array.isArray(seq) && seq.indexOf('vorvertrag') < 0 && seq.indexOf('qg3') >= 0 && seq.length === PLAN_PHASES.length + MS_ITEMS.length - 1) { seq = seq.slice(); seq.splice(seq.indexOf('qg3') + 1, 0, 'vorvertrag'); }
   const valid = Array.isArray(seq) && seq.length === PLAN_PHASES.length + MS_ITEMS.length ? seq : s.ms0;
   const chk = msCheck(valid);
   s.staff = cleanStaff(staff);
@@ -1960,6 +1965,7 @@ function decideGate(s, reportId, decisionId) {
   if (k === 3) {
     if (s.flags.over && s.pilot && s.meas - s.pilotImp > 8) { trust(s, -(12)); msgs.push('Der Test des MVP zeigt weniger als berichtet. Der Lenkungsausschuss erinnert sich an Deine Erfolgsmeldung.'); s.flags.over = false; }
     s.goLive = s.month;
+    log(s, 'Unterzeichnung Vorvertrag: Der Logistikkunde unterschreibt – Go-live spätestens in Monat ' + CFG.contract + ', Vertragsstrafe ' + fmtE(CFG.penalty) + ' je Monat Verzug.' + (s.goLive > CFG.contract ? ' Der Termin ist bereits überschritten.' : ''), 'golive');
     log(s, 'Freigabe für den Go-live und Go-live beim Logistikkunden in Monat ' + s.goLive + ' (Plan: Monat ' + s.plan.goLive + ', Vertrag: Monat ' + CFG.contract + '). Die MVP-Erprobung beginnt.', 'golive');
     contractCheck(s);
     if (s.goLive >= CFG.horizon - 6) { endGame(s, 'zeit'); return { ended: true }; }
@@ -1978,7 +1984,7 @@ function contractCheck(s) {
     log(s, 'Vertragsmeilenstein verfehlt: ' + late + (late === 1 ? ' Monat' : ' Monate') + ' Verzug, Vertragsstrafe ' + fmtE(pen) + '.', 'golive');
     if (late >= CFG.exitAfter) {
       s.custLost = true; s.custLostUntil = s.goLive + 12; trust(s, -(6));
-      log(s, 'Der Logistikkunde tritt vom Vertrag zurück. HILMAR startet ohne den Ankerkunden.', 'golive');
+      log(s, 'Der Logistikkunde tritt vom Vorvertrag zurück. HILMAR startet ohne den Ankerkunden.', 'golive');
     }
   } else log(s, 'Vertragsmeilenstein gehalten.', 'golive');
   s.T = clamp(s.T, 0, 100);
@@ -2477,6 +2483,7 @@ function milestoneRows(s) {
     rows.push(['Quality Gate ' + k + ': ' + QG_NAMES[k], 'Monat ' + pm, cell(ist, prog), dev(ist, pm), k === 0 || (gate[k] != null && !atGate)]);
   });
   const fc = s.stage === 'end' && !s.goLive ? null : goLiveForecast(s);
+  rows.push(['Unterzeichnung Vorvertrag', 'Monat ' + p.goLive, cell(fc, !s.goLive), dev(fc, p.goLive), !!s.goLive]);
   rows.push(['Freigabe für den Go-live', 'Monat ' + p.goLive, cell(fc, !s.goLive), dev(fc, p.goLive), !!s.goLive]);
   rows.push(['Go-live', 'Monat ' + p.goLive, cell(fc, !s.goLive), dev(fc, p.goLive), !!s.goLive]);
   rows.push(['Vertragsmeilenstein: Go-live beim Logistikkunden', 'Monat ' + CFG.contract, fc == null ? '–' : fc > CFG.contract ? '<span class="bad">verfehlt</span>' : '<span class="ok">' + (s.goLive ? 'gehalten' : 'erreichbar') + '</span>', '', !!s.goLive]);
@@ -2532,7 +2539,7 @@ function renderLage(s) {
   h += '<li>Projektmethode: <b>' + (s.method ? esc(PS.METHODS.find(x => x.id === s.method).t) + '</b> · Projektmanagement ' + fmtE(PS.PM_WEEK[s.method]) + ' pro Woche' : 'noch offen</b>') + '</li>';
   if (s.vp) h += '<li>' + esc(PS.pocLabel(s.poc).replace(/^./, c => c.toUpperCase())) + '</li>';
   if (s.staff) h += '<li>' + tip('Team', [0, 1, 2].map(k => 'Phase ' + (k + 1) + ': ' + (PS.ROLES.filter(r => PS.hasRole(s.staff, r.id, k)).map(r => r.t).join(', ') || '–')).join('\n')) + ': ' + [0, 1, 2].map(k => 'Phase ' + (k + 1) + ' <b>' + PS.teamSize(s.staff, k) + '</b>').join(' · ') + ' Personen, je ' + fmtE(PS.ROLE_WEEK) + ' pro Einsatzwoche</li>';
-  h += '<li>Vertrag mit dem Logistikkunden: Go-live spätestens in Monat ' + CFG.contract + '</li></ul></div><div>';
+  h += '<li>Vorvertrag mit dem Logistikkunden (Unterzeichnung nach Quality Gate 3): Go-live spätestens in Monat ' + CFG.contract + '</li></ul></div><div>';
   h += '<h3>Daten und Modell</h3>';
   if (s.known.data) h += barStat('Datenqualität', s.Q, 100) + barStat('Datenabdeckung', s.C, 100) + barStat('Nutzungsrechte geklärt', s.R, 100);
   else h += '<div class="unknown">Datenlage noch unbekannt' + (s.plan ? ' – sie zeigt sich im Laufe von Phase 1' : '') + '</div>';
@@ -2681,7 +2688,7 @@ function renderStart() {
     '<p class="lead"><strong>HILMAR</strong> (<strong>H</strong>ighly <strong>I</strong>ndependent <strong>L</strong>oad <strong>M</strong>aximising <strong>A</strong>erial <strong>R</strong>obot) soll das ändern: Die Drohnen sollen für zivile Einsätze angepasst werden – als zusätzliche Transportmöglichkeit für große Versand- und Logistikunternehmen und, als zweites Standbein, für die Sicherung besonders kritischer Gebäude und Einrichtungen. Die Machbarkeitsanalyse hält das Vorhaben für vielversprechend, aber schwierig in der Umsetzung. Du bist als Projektleitung vorgesehen.</p>' +
     '<div class="question"><small>Der KI-Kern des Projekts</small>Ein Modell erkennt Landeplätze und Hindernisse und entscheidet, ob die Drohne eine Zustellung selbst abschließt oder ob eine Fernpilotin bzw. ein Fernpilot übernehmen muss. Das militärische Modell kennt Gelände, Fahrzeuge und Tarnung – aber keine Balkone, Oberleitungen, spielenden Kinder und Paketstationen.</div>' +
     '<p class="lead">Der Vorstand stellt Dir <b>' + fmtE(CFG.startBudget) + '</b> als Startbudget zur Verfügung und erwartet als Ergebnis eines Vorprojekts nach <b>' + CFG.vpPlanWeeks + ' Wochen</b> u.a.: Go/no-Go-Empfehlung, Business Case, eine Ressourcen- und Budgetplanung sowie Meilensteine/Quality Gates für das Hauptprojekt.</p>' +
-    '<p class="lead">Und der Vertrieb hat (wie es so die Art guter Vertriebler ist) schon etwas versprochen: Der erste Logistikkunde soll HILMAR <b>spätestens in Monat ' + CFG.contract + ' nach erfolgreicher Erprobung eines MVO ("Minimum Viablke Products")</b> einsetzen (Go-live). Dafür soll nach der Freigabe ein entsprechender Vorvertrag inkl. einer potenziellen Vertragsstrafe von ' + fmtE(CFG.penalty) + ' je Monat Verzug unterschrieben werden.</p>' +
+    '<p class="lead">Und der Vertrieb hat (wie es so die Art guter Vertriebler ist) schon etwas versprochen: Der erste Logistikkunde soll HILMAR <b>spätestens in Monat ' + CFG.contract + ' nach erfolgreicher Erprobung eines MVP („Minimum Viable Product“)</b> einsetzen (Go-live). Dafür soll nach der Freigabe ein entsprechender Vorvertrag inkl. einer potenziellen Vertragsstrafe von ' + fmtE(CFG.penalty) + ' je Monat Verzug unterschrieben werden.</p>' +
     '<h3>So läuft das Spiel</h3><ol class="small" style="padding-left:20px;margin:0">' +
     '<li>Vorprojekt: Du ordnest die SWOT-Analyse, wählst die Projektmethode und planst die Aktivitäten – Reihenfolge und Gründlichkeit. Jede Aktivität kostet Zeit und Geld.</li>' +
     '<li>Quality Gate 0: Du legst dem Lenkungsausschuss den Business Case für das Hauptprojekt vor.</li>' +
