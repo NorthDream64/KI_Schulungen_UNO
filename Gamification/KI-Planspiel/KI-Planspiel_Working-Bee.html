@@ -66,8 +66,12 @@ table.cmp.lagetab{max-width:none;min-width:520px}
 table.cmp.lagetab td.num{white-space:nowrap}
 .tscroll{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:0 -2px}
 @media (max-width:560px){table.cmp.lagetab{min-width:0;font-size:13px}table.cmp.lagetab th,table.cmp.lagetab td{padding:6px 5px}
-  table.cmp.lagetab th:nth-child(4),table.cmp.lagetab td:nth-child(4){display:none}}
+  table.cmp.lagetab th:nth-child(5),table.cmp.lagetab td:nth-child(5){display:none}}
 table.lagetab i.prog{color:var(--muted)}
+table.lagetab th.stc,table.lagetab td.stc{width:26px;padding-right:0;text-align:center}
+.ms-st{display:inline-grid;place-items:center;width:20px;height:20px;border-radius:50%;font-size:12px;font-weight:700;line-height:1;vertical-align:-4px}
+.ms-st.ok{background:var(--ok-bg);color:var(--ok)}.ms-st.now{background:var(--accent);color:#fff;font-size:11px}
+table.lagetab tr.done td{color:var(--muted)}table.lagetab tr.done td .bad{color:var(--bad)}table.lagetab tr.now td{font-weight:600}
 table.lagetab .bad{color:var(--bad);font-weight:600}table.lagetab .ok{color:var(--ok)}
 .lage2{max-width:none;gap:28px}
 .lage-list{margin:6px 0 0;padding-left:18px}
@@ -297,6 +301,17 @@ ul.review{margin:0;padding-left:18px;font-size:14.5px}
 ul.review li{margin:0 0 7px}
 ul.review.con li::marker{color:var(--warn)}ul.review.pro li::marker{color:var(--ok)}
 .ask{font-family:var(--serif);font-size:1.25rem;font-weight:700;margin:18px 0 0}
+/* Bericht an den Lenkungsausschuss */
+.lagebox{border:1px solid var(--rule);border-radius:10px;padding:10px 14px;margin:6px 0 12px;background:#fcfbf8}
+.lagebox .lb-h{font-weight:600;font-size:14px;margin-bottom:6px}
+.lagebox dl{display:grid;grid-template-columns:max-content 1fr;gap:4px 14px;margin:0;font-size:14px}
+.lagebox dt{color:var(--muted)}.lagebox dd{margin:0}.lagebox dd small{color:var(--muted)}
+.lagebox .bad{color:var(--bad);font-weight:600}.lagebox .warn{color:var(--warn)}.lagebox .ok{color:var(--ok)}
+@media (max-width:560px){.lagebox dl{grid-template-columns:1fr;gap:0}.lagebox dd{margin-bottom:6px}}
+.rep-l{display:block;font-size:13.5px;color:var(--muted);margin:2px 0 4px}
+.reptext{width:100%;border:1px solid var(--rule);border-radius:9px;padding:10px 12px;font:inherit;font-size:15px;line-height:1.5;resize:vertical;background:#fff}
+.reptext:focus{outline:2px solid #6aa5d8;outline-offset:1px}
+.rep-count{text-align:right;margin-top:2px}
 .rv-note{font-size:13px;color:var(--muted);border-top:1px solid var(--soft);padding-top:10px;margin:14px 0 0}
 .check.minus input{accent-color:var(--plan)}
 .seg-ctl button .muted{font-weight:400;font-size:12.5px}
@@ -344,6 +359,8 @@ ul.rules li.rw p.dst{color:var(--warn)}
 .tip-i{display:inline-grid;place-items:center;width:15px;height:15px;border-radius:50%;background:var(--accent-soft);color:var(--accent);font:700 10.5px/1 var(--sans);margin-left:4px;vertical-align:1px;border:0}
 .tip-b{position:fixed;left:0;top:0;z-index:60;width:max-content;max-width:min(320px,80vw);background:#1a1a18;color:#fff;font:400 13px/1.45 var(--sans);padding:8px 11px;border-radius:8px;box-shadow:0 8px 24px rgba(0,0,0,.2);display:none;pointer-events:none;text-align:left;white-space:normal;letter-spacing:0}
 .tip:hover>.tip-b,.tip:focus>.tip-b,.tip.open>.tip-b{display:block}
+/* Infobox immer weiß auf schwarz – auch wenn die Umgebung Textfarbe oder Schriftgröße vorgibt (z. B. Kennzahlen, Häkchen-Listen) */
+.tip>.tip-b{color:#fff;font:400 13px/1.45 var(--sans);text-align:left;text-transform:none;letter-spacing:normal}
 .tip.wide>.tip-b{max-width:min(420px,86vw)}
 .oc-b .tip{font-size:13px;color:var(--accent)}
 .tip.inl{border-bottom:0}
@@ -541,8 +558,8 @@ const CFG = {
   vpTeamWeek: 3500,              // Planungsteam (Projektleitung, Assistenz) je Woche
   vpSlots: 2,                    // das Planungsteam bearbeitet zwei Aktivitäten gleichzeitig
   runRate: E(22000),             // internes Kernteam, € pro Monat
-  extCost: E(12000),             // je zugekauftem Kapazitätspunkt
-  transferCost: E(3000),         // Wissenstransfer-Klausel je Phase
+  extCost: E(7000),              // je zugekauftem Kapazitätspunkt (etwa so teuer wie ein Punkt des eigenen Teams)
+  transferCost: E(2000),         // Wissenstransfer-Klausel je Phase
   extMax: 5,                     // eigene Kapazität je Phase steht bei den Phasen (kp)
   potYear: E(1675000),           // Deckungsbeitragspotenzial p. a. bei 100 % weniger Übernahmen und voller Nutzung
   baseQuote: 40,                 // Übernahmequote des militärischen Modells im zivilen Test (%)
@@ -557,7 +574,8 @@ const CFG = {
   overCeil: 60,                  // nach einer Nachbewilligung ist das Vertrauen höchstens 60 (Mitte der Zone „normal“), danach folgt der Abzug
   overBase: 8, overRepBase: 3, overSlope: 15, overCap: 20,   // Nachbewilligung: Sockel (beim ersten Mal höher) plus 15 Punkte je 100 % neuer Überschreitung über 10 % (vor dem Faktor oben)
   delayPen: 3,                   // je Monat neuer Terminverzug am Quality Gate (vor dem Faktor oben)
-  stopBelow: 15,                 // darunter stoppt der Lenkungsausschuss das Projekt an einem Quality Gate
+  stopBelow: 15,
+  reportMin: 20, reportMax: 250,   // Bericht an den Lenkungsausschuss: Freitext, wirkt nicht auf das Vertrauen, steht im Entscheidungs-Log                 // darunter stoppt der Lenkungsausschuss das Projekt an einem Quality Gate
   crash: { daten: E(20000), modell: E(28000), einfuehrung: E(15000) },
 };
 
@@ -789,8 +807,8 @@ const PLAN_ITEMS = [
   { id: 'hochlauf', kind: 'plus', label: 'Nutzen wächst mit der Akzeptanz', hint: 'Hochlauf über vier Monate statt vollem Nutzen ab dem ersten Tag',
     pro: 'Der Business Case rechnet damit, dass die Fernpiloten dem Modell erst nach und nach vertrauen.', con: 'Amortisation später, der Business Case sieht schlechter aus.',
     miss: 'Der Business Case rechnet mit vollem Nutzen ab dem ersten Tag – das trifft selten zu.' },
-  { id: 'reserve', kind: 'plus', label: 'Risikoreserve', hint: '+15 % auf das Budget jeder Phase – Puffer für Unvorhergesehenes',
-    pro: 'Kleine Überschreitungen fängt die Reserve auf – ohne Nachbewilligung.', con: 'Investition um 15 % höher.',
+  { id: 'reserve', kind: 'plus', label: 'Risikoreserve', hint: '+15 % als Projektreserve – steht ab Phase 1 für Unvorhergesehenes bereit',
+    pro: 'Überschreitungen bis zur Höhe der Reserve fängt sie auf – in jeder Phase, ohne Nachbewilligung.', con: 'Investition um 15 % höher.',
     miss: 'Ohne Reserve führt schon eine kleine Überschreitung zur Nachbewilligung.' },
   { id: 'datenred', kind: 'minus', label: 'Weniger Daten für Training, Validierung und Test des Modells', hint: '−1 Monat in Phase 1',
     pro: 'Phase 1 ist einen Monat kürzer – das Team kostet einen Monat weniger, der Go-live rückt näher.', con: 'Das Modell sieht weniger Einsatzgebiete und Wetterlagen; Validierung und Test werden weniger belastbar.' },
@@ -829,13 +847,15 @@ function computePlan(sel, impAssume, vp, method, staff) {
   const phaseCost = months.map((m, k) => m * (teamMonthOf(staff, k) + pmMonth(method)));
   phaseCost[2] += E(8000) + E(4000) + (sel.ausstieg ? E(6000) : 0) - (sel.online ? ONLINE_SAVE : 0);
   if (sel.cocreation) { phaseCost[0] -= CO_CREDIT; phaseCost[1] -= CO_CREDIT; }
-  if (sel.reserve) for (let i = 0; i < 3; i++) phaseCost[i] = Math.round(phaseCost[i] * 1.15);
-  const invest = sum(phaseCost);
+  // Risikoreserve: 15 % der geplanten Kosten als Projektreserve – sie steht ab Phase 1 für das ganze Projekt bereit
+  const reserve = sel.reserve ? Math.round(sum(phaseCost) * 0.15 / 1000) * 1000 : 0;
+  const invest = sum(phaseCost) + reserve;
   const ops = CFG.infra + opsLevel(sel).cost;
   const benefitFull = CFG.potYear / 12 * impAssume / 100;
   const cf = new Array(H + 1).fill(0);
   let m = vp;
-  months.forEach((d, i) => { for (let k = 0; k < d; k++) { m++; cf[m] -= phaseCost[i] / d; } });
+  const base = sum(phaseCost);
+  months.forEach((d, i) => { for (let k = 0; k < d; k++) { m++; cf[m] -= phaseCost[i] * (1 + (base ? reserve / base : 0)) / d; } });   // im Business Case wird die Reserve als verbraucht gerechnet
   for (let k = 1; m + k <= H; k++) {
     const ramp = sel.hochlauf ? Math.min(1, k / 4) : 1;
     cf[m + k] += benefitFull * ramp * (sel.cocreation && k <= 12 ? 0.9 : 1) - ops;
@@ -847,7 +867,7 @@ function computePlan(sel, impAssume, vp, method, staff) {
   const costUpTo = k => sum(phaseCost.slice(0, k));
   const monthsUpTo = k => k <= 3 ? starts[k] : goLive + CFG.hcMonths;
   return { sel: Object.assign({}, sel), impAssume, vp, staff, months, starts, goLive, close: goLive + CFG.hcMonths,
-    phaseCost, invest, ops, benefitFull, cf, cum, payback, costUpTo, monthsUpTo,
+    phaseCost, reserve, invest, ops, benefitFull, cf, cum, payback, costUpTo, monthsUpTo,
     count: PLAN_ITEMS.filter(x => x.kind === 'plus' && sel[x.id]).length };
 }
 
@@ -1705,7 +1725,7 @@ function forecastGoLive(s, k) { return s.month + sum(s.plan.months.slice(k)); }
    Der Unterschied liegt im Inhalt – nur einer beantwortet die Frage der Phase, nennt Abweichungen und die Entscheidung, die ansteht. */
 const NUMW = ['kein', 'ein', 'zwei', 'drei', 'vier', 'fünf'];
 function execFacts(s, g) {
-  const over = g.actCost > g.planCost * 1.1 && g.actCost - g.planCost > E(10000);
+  const over = budgetCheck(s, g.k, g.actCost).over;
   const dM = g.actM - g.planM;
   const open = (g.criteria || []).filter(c => c.ok !== true).length;
   return (over ? 'Budget überschritten: ' + fmtE(g.actCost) + ' statt ' + fmtE(g.planCost) + ', Nachbewilligung nötig'
@@ -1764,6 +1784,14 @@ function execReports(s, g, k, nextCost) {
   ];
 }
 
+/* Budgetrahmen bis Quality Gate k: Plan bis dahin, dazu die ganze Risikoreserve; darüber hinaus toleriert der Lenkungsausschuss 10 % */
+function budgetCheck(s, k, actCost) {
+  const plan = s.plan.costUpTo(k), reserve = s.plan.reserve || 0;
+  const limit = plan + reserve;
+  const overAmt = actCost - limit;
+  const over = actCost > limit + plan * 0.1 && overAmt > E(10000);
+  return { plan, reserve, limit, overAmt, over, useRes: Math.max(0, Math.min(reserve, actCost - plan)) };
+}
 function makeGate(s) {
   const k = s.phase + 1;
   const fx = mfx(s);
@@ -1794,7 +1822,7 @@ function makeGate(s) {
   const planCost = s.plan.costUpTo(k), actCost = spent(s, s.month);
   const planM = s.plan.monthsUpTo(k), actM = s.month;
   g.planCost = planCost; g.actCost = actCost; g.planM = planM; g.actM = actM;
-  const over = actCost > planCost * 1.1 && actCost - planCost > E(10000);
+  const bc = budgetCheck(s, k, actCost), over = bc.over;
   if (!s._gateChecked[k]) {
     s._gateChecked[k] = true;
     if (s.flags.schein && (over || actM > planM)) {
@@ -1804,21 +1832,23 @@ function makeGate(s) {
     }
     s.flags.schein = false;
     // Die Reaktion wächst mit der Abweichung: Bewertet wird, was seit der letzten Nachbewilligung neu dazugekommen ist
-    const overAmt = actCost - planCost, newOver = overAmt - (s.approvedOver || 0);
-    const pct = Math.round(overAmt / planCost * 100);
+    const overAmt = bc.overAmt, newOver = overAmt - (s.approvedOver || 0);
+    const pct = Math.round((actCost - planCost) / planCost * 100);
+    const resTxt = bc.reserve ? ' (dazu Risikoreserve ' + fmtE(bc.reserve) + ')' : '';
     if (over && newOver > E(10000)) {
       const rel = newOver / planCost;
       const raw = Math.min(CFG.overCap, (s.nachbew ? CFG.overRepBase : CFG.overBase) + CFG.overSlope * Math.max(0, rel - 0.1)) * (s.laRules ? 0.7 : 1), hit = raw * CFG.trustDown;
       const t0 = s.T, capped = s.T > CFG.overCeil;
       s.nachbew++; s.T = Math.min(s.T, CFG.overCeil); trust(s, -raw); s.approvedOver = overAmt;
       const drop = t0 - s.T;
-      g.msgs.push({ k: 'bad', t: 'Nachbewilligung nötig: Bis hier sind ' + fmtE(actCost) + ' verbraucht, geplant waren ' + fmtE(planCost) + ' – ' + pct + ' % mehr. ' +
+      g.msgs.push({ k: 'bad', t: 'Nachbewilligung nötig: Bis hier sind ' + fmtE(actCost) + ' verbraucht, geplant waren ' + fmtE(planCost) + resTxt + ' – ' + pct + ' % mehr. ' +
         (raw >= 15 ? 'Der Lenkungsausschuss bewilligt nur widerwillig nach und verlangt einen Maßnahmenplan – das Vertrauen sinkt deutlich.'
           : drop >= 20 ? 'Der Lenkungsausschuss bewilligt nach und will die Ursachen wissen – das Vertrauen sinkt deutlich.'
           : 'Der Lenkungsausschuss bewilligt nach, aber das Vertrauen sinkt.') +
         (capped ? ' Wer nachbewilligen lassen muss, hat beim Lenkungsausschuss kein hohes Vertrauen mehr.' : '') });
-    } else if (over) g.msgs.push({ k: 'warn', t: 'Budget weiterhin über Plan: ' + fmtE(actCost) + ' verbraucht, geplant waren ' + fmtE(planCost) + ' – ' + pct + ' % mehr. Die Mehrkosten sind bereits nachbewilligt.' });
-    else if (actCost > planCost) g.msgs.push({ k: 'warn', t: 'Budget über Plan, aber noch innerhalb der Toleranz des Lenkungsausschusses: ' + fmtE(actCost) + ' verbraucht, geplant waren ' + fmtE(planCost) + '.' });
+    } else if (over) g.msgs.push({ k: 'warn', t: 'Budget weiterhin über Plan: ' + fmtE(actCost) + ' verbraucht, geplant waren ' + fmtE(planCost) + resTxt + ' – ' + pct + ' % mehr. Die Mehrkosten sind bereits nachbewilligt.' });
+    else if (actCost > planCost && bc.reserve && actCost <= bc.limit) g.msgs.push({ k: 'warn', t: 'Budget über Plan – die Risikoreserve fängt es auf: ' + fmtE(actCost) + ' verbraucht, geplant waren ' + fmtE(planCost) + '. Aus der Reserve genutzt: ' + fmtE(bc.useRes) + ', noch frei: ' + fmtE(bc.reserve - bc.useRes) + '.' });
+    else if (actCost > planCost) g.msgs.push({ k: 'warn', t: 'Budget über Plan, aber noch innerhalb der Toleranz des Lenkungsausschusses: ' + fmtE(actCost) + ' verbraucht, geplant waren ' + fmtE(planCost) + resTxt + '.' });
     else g.msgs.push({ k: 'ok', t: 'Budget im Rahmen: ' + fmtE(actCost) + ' verbraucht, geplant waren ' + fmtE(planCost) + '.' });
     const dM = actM - planM, newDelay = dM - (s.lastDelay || 0);
     if (dM > 0 && newDelay > 0) {
@@ -1869,11 +1899,10 @@ function decideGate(s, reportId, decisionId) {
   const fx = mfx(s);
   const msgs = [];
   const terminal = !isLoop(k, decisionId);
+  // Der Bericht ist Freitext: Das Spiel bewertet ihn nicht, er steht im Entscheidungs-Log für die Nachbesprechung
   if (reportId && terminal) {
-    if (reportId === 'ehrlich') { trust(s, 4); }
-    if (reportId === 'schein') { trust(s, 2); if (k < 4) s.flags.schein = 'schein'; else s.flags.overOps = 'schein'; }
-    if (reportId === 'over') { trust(s, 5); if (k === 1 || k === 3) s.flags.schein = 'over'; else if (k === 2) s.flags.over = true; else s.flags.overOps = 'over'; }
-    log(s, 'Bericht an den Lenkungsausschuss: ' + ({ ehrlich: 'Ergebnis, Abweichungen, anstehende Entscheidung und Kosten', schein: 'Statusampel und Fertigstellungsgrad', over: 'Erfolgsmeldung mit Ausbauempfehlung' })[reportId] + '.', 'report');
+    const txt = String(reportId).replace(/\s+/g, ' ').trim().slice(0, CFG.reportMax);
+    if (txt) log(s, 'Bericht an Quality Gate ' + k + ': „' + txt + '“', 'report');
   }
   s.T = clamp(s.T, 0, 100);
   const loopBack = (txt) => { const prev = (g.msgs || []).filter(m => m.k !== 'info' && m.k.indexOf('trend') < 0 && !(k === 4 && (m.k === 'ok' || m.k === 'warn'))); s._gateChecked[k] = true; s.gate = makeGate(s); s.gate.msgs = prev.concat(s.gate.msgs.filter(m => m.k.indexOf('trend') === 0 || (k === 4 && (m.k === 'ok' || m.k === 'warn'))), [{ k: 'info', t: txt }]); return { again: true, txt }; };
@@ -2147,7 +2176,7 @@ function fmtP(x) { return (x === null || x === undefined) ? '–' : (Math.round(
 
 function pocLabel(l) { return l === 'o' ? 'kein PoC' : l === 'a' ? 'ausführlicher PoC (' + fmtE(ACT_BY_ID.poc.opts.a.c) + ')' : 'PoC (' + fmtE(ACT_BY_ID.poc.opts.n.c) + ')'; }
 
-root.PS = { E, PLAN_BY_ID, OPS_LEVELS, opsLevel, planReview, roleFac, allocReview, LEVER_REVIEW, planungReview, cleanStaff, ROLE_WEEK, ROLES, ROLE_BY_ID, NEEDS, DRAFT_STAFF, hasRole, teamSize, teamMonthOf, PLAN_PHASES, MS_ITEMS, msCheck, submitPlanung, PM_WEEK, pmMonth, trustZone, TRUST_ZONES, CFG, ACTIVITIES, ACT_BY_ID, PRED, DEPS, LESSONS_EARLY, MUSTER, depStatus, LV, phaseCap, ownCap, pullLoss, stepDuration, PULL_TEXT, SWOT, QUAD, METHODS, PLAN_ITEMS, planItemHint, PHASES, PHASE_NAMES, PRE, OPS, QG_NAMES, isLoop, RAND,
+root.PS = { E, budgetCheck, PLAN_BY_ID, OPS_LEVELS, opsLevel, planReview, roleFac, allocReview, LEVER_REVIEW, planungReview, cleanStaff, ROLE_WEEK, ROLES, ROLE_BY_ID, NEEDS, DRAFT_STAFF, hasRole, teamSize, teamMonthOf, PLAN_PHASES, MS_ITEMS, msCheck, submitPlanung, PM_WEEK, pmMonth, trustZone, TRUST_ZONES, CFG, ACTIVITIES, ACT_BY_ID, PRED, DEPS, LESSONS_EARLY, MUSTER, depStatus, LV, phaseCap, ownCap, pullLoss, stepDuration, PULL_TEXT, SWOT, QUAD, METHODS, PLAN_ITEMS, planItemHint, PHASES, PHASE_NAMES, PRE, OPS, QG_NAMES, isLoop, RAND,
   scheduleVP, weeksToMonths, defaultDepth, pocLabel, computePlan, crashInfo, newGame, initialOrder, submitOrder, submitSwot, toMethode, submitMethod, toPlan,
   submitPlan, runPhase, resolveEvent, decideGate, runOps, finishOps, results, debrief, reveal, summaryText, spent, quote,
   fmtE, fmtP, gain, clamp, endGame, gateCriteria };
@@ -2302,7 +2331,7 @@ function trustGauge(v, compact, opts) {
     '<circle class="hub" cx="' + cx + '" cy="' + cy + '" r="6.5"/><circle cx="' + cx + '" cy="' + cy + '" r="2.4" fill="#fff"/>';
   const g = '<div class="gauge' + (compact ? ' sm' : '') + '" role="img" aria-label="Vertrauen des Lenkungsausschusses: ' + z + '"><svg viewBox="-14 -6 228 112" aria-hidden="true">' + svg + '</svg>' +
     '<div class="gv ' + z + '"><i aria-hidden="true"></i>' + z + '</div>' +
-    (tr && !opts.noTrend ? '<div class="trend ' + tr.dir + '">' + (tr.dir === 'down' ? '▼ ' : '▲ ') + tr.w + (tr.changed ? ' (vorher ' + tr.z0 + ')' : '') + '</div>' : '') + '</div>';
+    (tr && tr.changed && !opts.noTrend ? '<div class="trend ' + tr.dir + '">' + (tr.dir === 'down' ? '▼ sinkt' : '▲ steigt') + ' (vorher ' + tr.z0 + ')</div>' : '') + '</div>';
   if (compact) return g;
   const info = 'Der Lenkungsausschuss zeigt sein Vertrauen nicht als Punktzahl. Bereiche: gering, normal, hoch. Sinkt es sehr tief, kann er das Projekt an einem Quality Gate stoppen.';
   return '<div class="stat gauge-wrap"><div class="k"><span>' + tip('Vertrauen des Lenkungsausschusses', info) + '</span></div>' + g + '</div>';
@@ -2355,9 +2384,11 @@ function budgetInfo(s) {
   }
   const p = s.plan, spent = PS.spent(s, s.goLive || s.month);
   const k = Math.min(PS.PRE, kNextOf(s) + (s.stage === 'gate' ? 0 : 1));
-  const ref = s.goLive || s.stage === 'end' ? p.invest : p.costUpTo(Math.max(1, k));
-  const over = spent > ref * 1.1 && spent - ref > 40000;   // dieselbe Toleranz wie am Quality Gate
-  return { label: 'Budget Hauptprojekt', value: fmtE(spent) + ' von ' + fmtE(ref), sub: (s.goLive || s.stage === 'end' ? 'Plan bis Go-live' : 'Plan bis Quality Gate ' + Math.max(1, k)) + (over ? ' · über der Toleranz' : spent > ref ? ' · über Plan, innerhalb der Toleranz' : ''), cls: over ? 'bad' : spent > ref ? 'warn' : 'ok' };
+  const fin = s.goLive || s.stage === 'end', kk = fin ? PS.PRE : Math.max(1, k);
+  const bc = PS.budgetCheck(s, kk, spent), ref = bc.plan;   // dieselbe Prüfung wie am Quality Gate: Plan, Risikoreserve, 10 % Toleranz
+  const sub = (fin ? 'Plan bis Go-live' : 'Plan bis Quality Gate ' + kk) + (bc.reserve ? ' · Risikoreserve ' + fmtE(bc.reserve) + (spent > ref ? ', davon genutzt ' + fmtE(bc.useRes) : '') : '') +
+    (bc.over ? ' · über der Toleranz' : spent > bc.limit ? ' · über Plan, innerhalb der Toleranz' : '');
+  return { label: 'Budget Hauptprojekt', value: fmtE(spent) + ' von ' + fmtE(ref), sub, cls: bc.over ? 'bad' : spent > ref ? 'warn' : 'ok' };
 }
 function quickLage(s) {
   const f = finishInfo(s), b = budgetInfo(s);
@@ -2385,9 +2416,9 @@ function milestoneRows(s) {
   const rows = [];
   const cell = (m, prog) => m == null ? '–' : (prog ? '<i class="prog">Monat ' + m + '</i>' : 'Monat ' + m);
   const dev = (ist, plan) => ist == null || plan == null ? '' : ist - plan === 0 ? '<span class="ok">±0</span>' : '<span class="' + (ist > plan ? 'bad' : 'ok') + '">' + (ist > plan ? '+' : '−') + Math.abs(ist - plan) + '</span>';
-  if (s.vpIst) rows.push(['Ende Vorprojekt', 'Woche ' + CFG.vpPlanWeeks, 'Woche ' + s.vpWeeks, s.vpWeeks - CFG.vpPlanWeeks ? '<span class="' + (s.vpWeeks > CFG.vpPlanWeeks ? 'bad' : 'ok') + '">' + (s.vpWeeks > CFG.vpPlanWeeks ? '+' : '−') + Math.abs(s.vpWeeks - CFG.vpPlanWeeks) + ' Wo.</span>' : '<span class="ok">±0</span>']);
+  if (s.vpIst) rows.push(['Ende Vorprojekt', 'Woche ' + CFG.vpPlanWeeks, 'Woche ' + s.vpWeeks, s.vpWeeks - CFG.vpPlanWeeks ? '<span class="' + (s.vpWeeks > CFG.vpPlanWeeks ? 'bad' : 'ok') + '">' + (s.vpWeeks > CFG.vpPlanWeeks ? '+' : '−') + Math.abs(s.vpWeeks - CFG.vpPlanWeeks) + ' Wo.</span>' : '<span class="ok">±0</span>', true]);
   const p = s.plan;
-  if (!p) return rows;
+  if (!p) return markNext(s, rows);
   const kN = kNextOf(s), gate = s.gateAt || {};
   p.starts.forEach((pm, k) => {
     let ist, prog = false;
@@ -2395,22 +2426,30 @@ function milestoneRows(s) {
     else if (k <= kN && gate[k] != null) ist = gate[k];
     else if (s.stage === 'end' && !s.goLive) ist = null;
     else { ist = k - 1 >= kN ? s.month + p.months.slice(kN, k).reduce((a, b) => a + b, 0) : s.month; prog = true; }
-    rows.push(['Quality Gate ' + k + ': ' + QG_NAMES[k], 'Monat ' + pm, cell(ist, prog), dev(ist, pm)]);
+    const atGate = s.stage === 'gate' && s.gate && s.gate.k === k;
+    rows.push(['Quality Gate ' + k + ': ' + QG_NAMES[k], 'Monat ' + pm, cell(ist, prog), dev(ist, pm), k === 0 || (gate[k] != null && !atGate)]);
   });
   const fc = s.stage === 'end' && !s.goLive ? null : goLiveForecast(s);
-  rows.push(['Freigabe für den Go-live', 'Monat ' + p.goLive, cell(fc, !s.goLive), dev(fc, p.goLive)]);
-  rows.push(['Go-live', 'Monat ' + p.goLive, cell(fc, !s.goLive), dev(fc, p.goLive)]);
-  rows.push(['Vertragsmeilenstein: Go-live beim Logistikkunden', 'Monat ' + CFG.contract, fc == null ? '–' : fc > CFG.contract ? '<span class="bad">verfehlt</span>' : '<span class="ok">' + (s.goLive ? 'gehalten' : 'erreichbar') + '</span>', '']);
-  const up = fc == null ? null : fc + 1, upDone = s.stage === 'end' && s.goLive;
-  rows.push(['Übergabe MVP', 'Monat ' + (p.goLive + 1), cell(up, !upDone), dev(up, p.goLive + 1)]);
+  rows.push(['Freigabe für den Go-live', 'Monat ' + p.goLive, cell(fc, !s.goLive), dev(fc, p.goLive), !!s.goLive]);
+  rows.push(['Go-live', 'Monat ' + p.goLive, cell(fc, !s.goLive), dev(fc, p.goLive), !!s.goLive]);
+  rows.push(['Vertragsmeilenstein: Go-live beim Logistikkunden', 'Monat ' + CFG.contract, fc == null ? '–' : fc > CFG.contract ? '<span class="bad">verfehlt</span>' : '<span class="ok">' + (s.goLive ? 'gehalten' : 'erreichbar') + '</span>', '', !!s.goLive]);
+  const up = fc == null ? null : fc + 1, upDone = !!s.goLive && (s.stage === 'end' || (s.stage === 'gate' && s.gate && s.gate.k === 4) || s.month > s.goLive);
+  rows.push(['Übergabe MVP', 'Monat ' + (p.goLive + 1), cell(up, !upDone), dev(up, p.goLive + 1), upDone]);
   const g4 = gate[4] != null && (s.stage === 'end' || (s.stage === 'gate' && s.gate && s.gate.k === 4)) ? gate[4] : null;
   const hoIst = g4 != null ? g4 : fc == null ? null : fc + CFG.hcMonths + (s.hcExt || 0);
-  rows.push(['Quality Gate 4: ' + QG_NAMES[4], 'Monat ' + p.close, cell(hoIst, g4 == null), dev(hoIst, p.close)]);
-  rows.push(['Übergabe Betrieb', 'Monat ' + p.close, cell(hoIst, g4 == null), dev(hoIst, p.close)]);
+  const hoDone = s.stage === 'end' && s.endReason === 'regulaer' && gate[4] != null;
+  rows.push(['Quality Gate 4: ' + QG_NAMES[4], 'Monat ' + p.close, cell(hoIst, g4 == null), dev(hoIst, p.close), hoDone]);
+  rows.push(['Übergabe Betrieb', 'Monat ' + p.close, cell(hoIst, g4 == null), dev(hoIst, p.close), hoDone]);
   const bc = fc == null ? null : fc + 12;
-  rows.push(['Überprüfung Business Case', 'Monat ' + (p.goLive + 12), cell(bc, !(s.bcReview && s.stage === 'end')), dev(bc, p.goLive + 12)]);
-  return rows;
+  rows.push(['Überprüfung Business Case', 'Monat ' + (p.goLive + 12), cell(bc, !(s.bcReview && s.stage === 'end')), dev(bc, p.goLive + 12), !!(s.bcReview && s.stage === 'end')]);
+  return markNext(s, rows);
 }
+/* Status je Zeile: abgeschlossen (✓) oder als Nächstes (▸) – der erste offene Termin, solange das Spiel läuft */
+function markNext(s, rows) {
+  let next = s.stage !== 'end';
+  return rows.map(r => { const st = r[4] ? 'done' : next ? 'now' : ''; if (!r[4]) next = false; return r.slice(0, 4).concat([st]); });
+}
+const MS_STATUS = { done: '<span class="ms-st ok" title="abgeschlossen" aria-label="abgeschlossen">✓</span>', now: '<span class="ms-st now" title="als Nächstes" aria-label="als Nächstes">▸</span>' };
 function renderLage(s) {
   const f = finishInfo(s), b = budgetInfo(s);
   let h = '<div class="card fade lage"><p class="kicker">Projektlage · ' + (s.plan ? 'Monat ' + s.month : 'Vorprojekt') + '</p><h2>' + esc(phaseLabel(s)) + '</h2>';
@@ -2420,9 +2459,9 @@ function renderLage(s) {
     '<div class="kpi gk">' + trustGauge(s.T) + '</div></div>';
   // Termine
   const rows = milestoneRows(s);
-  if (rows.length) h += '<h3>Termine und Meilensteine</h3><div class="tscroll"><table class="cmp ms lagetab"><thead><tr><th>Meilenstein oder Quality Gate</th><th>Plan</th><th>Ist / Prognose</th><th>Abweichung</th></tr></thead><tbody>' +
-    rows.map(r => '<tr><td>' + esc(r[0]) + '</td><td class="num">' + r[1] + '</td><td class="num">' + r[2] + '</td><td class="num">' + r[3] + '</td></tr>').join('') + '</tbody></table></div>' +
-    (s.plan ? '<p class="small muted">Kursiv: Prognose, wenn es ab jetzt beim Plan bleibt. Abweichung in Monaten.</p>' : '');
+  if (rows.length) h += '<h3>Termine und Meilensteine</h3><div class="tscroll"><table class="cmp ms lagetab"><thead><tr><th class="stc"><span class="sr">Status</span></th><th>Meilenstein oder Quality Gate</th><th>Plan</th><th>Ist / Prognose</th><th>Abweichung</th></tr></thead><tbody>' +
+    rows.map(r => '<tr class="' + r[4] + '"><td class="stc">' + (MS_STATUS[r[4]] || '') + '</td><td>' + esc(r[0]) + '</td><td class="num">' + r[1] + '</td><td class="num">' + r[2] + '</td><td class="num">' + r[3] + '</td></tr>').join('') + '</tbody></table></div>' +
+    '<p class="small muted">' + MS_STATUS.done + ' abgeschlossen · ' + MS_STATUS.now + ' als Nächstes' + (s.plan ? ' · kursiv: Prognose, wenn es ab jetzt beim Plan bleibt. Abweichung in Monaten.' : '') + '</p>';
   else h += '<h3>Termine</h3><p class="small">Ende Vorprojekt laut Plan: Woche ' + CFG.vpPlanWeeks + '. Der Vertrag mit dem Logistikkunden verlangt den Go-live spätestens in Monat ' + CFG.contract + ', sonst wird eine ' + term('Vertragsstrafe') + ' fällig.</p>';
   h += '<div class="two lage2"><div><h3>Budget</h3>';
   const live = vpLive();
@@ -2431,10 +2470,11 @@ function renderLage(s) {
   if (s.plan) {
     const p = s.plan, spent = PS.spent(s, s.goLive || s.month);
     const k = Math.min(PS.PRE, kNextOf(s) + (s.stage === 'gate' ? 0 : 1));
-    const ref = s.goLive || s.stage === 'end' ? p.invest : p.costUpTo(Math.max(1, k));
-    const max = Math.max(ref, spent) * 1.15;
-    h += barStat('Hauptprojekt verbraucht', spent, max, { text: fmtE(spent), cls: spent > ref * 1.1 && spent - ref > 40000 ? 'over' : '', mark: ref / max * 100 });
-    h += '<div class="small muted">' + (s.goLive || s.stage === 'end' ? 'Plan bis Go-live' : 'Plan bis Quality Gate ' + Math.max(1, k)) + ': ' + fmtE(ref) + ' · Gesamtinvestition bis Go-live laut Business Case: ' + fmtE(p.invest) + '</div>';
+    const fin = s.goLive || s.stage === 'end', kk = fin ? PS.PRE : Math.max(1, k);
+    const bc = PS.budgetCheck(s, kk, spent), ref = bc.plan;
+    const max = Math.max(bc.limit, spent) * 1.15;
+    h += barStat('Hauptprojekt verbraucht', spent, max, { text: fmtE(spent), cls: bc.over ? 'over' : '', mark: ref / max * 100 });
+    h += '<div class="small muted">' + (fin ? 'Plan bis Go-live' : 'Plan bis Quality Gate ' + kk) + ': ' + fmtE(ref) + (bc.reserve ? ' · Risikoreserve ' + fmtE(bc.reserve) + ' (genutzt ' + fmtE(bc.useRes) + ')' : '') + ' · Gesamtinvestition bis Go-live laut Business Case: ' + fmtE(p.invest) + '</div>';
     const extra = [];
     if (s.nachbew) extra.push(s.nachbew + '× nachbewilligt');
     if (s.crashCost) extra.push('Beschleunigung durch externe Berater: ' + fmtE(s.crashCost));
@@ -2937,6 +2977,20 @@ function eventRecap(ev) {
     '<div class="rand">Hintergrund: ' + esc(PS.RAND[ev.rand]) + '</div></div>';
 }
 
+const repOk = () => (ui.report || '').trim().length >= CFG.reportMin;
+/* Projektlage auf einen Blick – die Grundlage für den Bericht an den Lenkungsausschuss */
+function lageBox(s) {
+  const f = finishInfo(s), b = budgetInfo(s), rows = [];
+  rows.push([f.label, '<span class="' + f.cls + '">' + esc(f.value) + '</span>' + (f.sub ? ' <small>' + esc(f.sub) + '</small>' : '')]);
+  rows.push([b.label, '<span class="' + b.cls + '">' + esc(b.value) + '</span>' + (b.sub ? ' <small>' + esc(b.sub) + '</small>' : '')]);
+  if (s.nachbew) rows.push(['Nachbewilligungen', s.nachbew + '×']);
+  if (s.known.data) rows.push(['Daten (von 100)', 'Qualität ' + Math.round(s.Q) + ' · Abdeckung ' + Math.round(s.C) + ' · Nutzungsrechte ' + Math.round(s.R)]);
+  if (s.known.model) rows.push(['Modell', s.B ? 'Übernahmen gesenkt um ' + fmtP(s.meas) + ' (Zielgröße ≥ ' + CFG.target + ' %)' : 'Übernahmequote ' + fmtP(PS.quote(s.meas)) + ' – ohne Baseline kein Vergleich']);
+  if (s.pilot && s.pilotImp !== null && s.phase >= 2) rows.push(['Test des MVP', 'Übernahmen gesenkt um ' + fmtP(s.pilotImp)]);
+  if (s.staff && s.phase < PS.PRE) rows.push(['Team in dieser Phase', esc(PS.ROLES.filter(r => PS.hasRole(s.staff, r.id, Math.min(s.phase, 2))).map(r => r.t).join(', '))]);
+  return '<div class="lagebox"><div class="lb-h">' + tip('Projektlage auf einen Blick', 'Die wichtigsten Zahlen für Deinen Bericht. Alle Einzelheiten stehen im Reiter „Projektlage“.') + '</div><dl>' +
+    rows.map(r => '<dt>' + esc(r[0]) + '</dt><dd>' + r[1] + '</dd>').join('') + '</dl></div>';
+}
 function renderGate() {
   const s = G, g = s.gate;
   let h = '<div class="card fade">' + (s.stepEvents || []).map(eventRecap).join('');
@@ -2945,8 +2999,9 @@ function renderGate() {
     '<p class="small muted">Offene Kriterien halten den Lenkungsausschuss nicht auf – er entscheidet. Aber was jetzt offen bleibt, holt Dich später ein.</p></div>';
   h += g.msgs.map(m => '<div class="msg ' + m.k + '">' + (m.k.indexOf('trend') === 0 ? term('Meilensteintrend') + ': ' + esc(m.t.replace(/^Meilensteintrend: /, '')) : esc(m.t)) + '</div>').join('');
   const tr = trustTrend(), z = PS.trustZone(s.T);
-  h += '<div class="mood ' + (tr ? tr.dir : '') + '">' + trustGauge(s.T, true, { noTrend: true }) + '<div class="mood-t"><b>Stimmung im Lenkungsausschuss</b><span>' +
-    (tr ? 'Das Vertrauen ' + tr.w + (tr.changed ? ' – von ' + tr.z0 + ' auf ' + tr.z1 : ' – es bleibt ' + z) + '.' : 'Das Vertrauen ist ' + z + '.') + '</span></div></div>';
+  h += '<div class="mood ' + (tr && tr.changed ? tr.dir : '') + '">' + trustGauge(s.T, true, { noTrend: true }) + '<div class="mood-t"><b>Stimmung im Lenkungsausschuss</b><span>' +
+    // Entweder der Bereich bleibt, oder das Vertrauen steigt bzw. sinkt in einen anderen Bereich
+    (tr && tr.changed ? 'Das Vertrauen ' + (tr.dir === 'down' ? 'sinkt' : 'steigt') + ' von ' + tr.z0 + ' auf ' + tr.z1 + '.' : 'Das Vertrauen ' + (tr ? 'bleibt ' : 'ist ') + z + '.') + '</span></div></div>';
   if (g.contract) {
     const c = g.contract;
     h += '<div class="msg ' + (c.late ? 'bad' : 'ok') + '">' + (c.late
@@ -2968,19 +3023,18 @@ function renderGate() {
     if (g.pilot.gap > 6) h += '<div class="msg bad">Der Test des MVP bleibt deutlich hinter der Validierung zurück. Irgendetwas an der Validierung war zu optimistisch.</div>';
     else h += '<div class="msg ' + (g.pilot.pass ? 'ok' : 'warn') + '">' + (g.pilot.pass ? 'Der Test des MVP bestätigt die Validierung.' : 'Der Test des MVP bestätigt die Validierung, verfehlt aber die Zielgröße.') + '</div>';
   }
-  h += '<h3>Was berichtest Du dem Lenkungsausschuss?</h3><div class="reports" role="radiogroup">';
-  g.reports.forEach(r => {
-    const on = ui.report === r.id;
-    h += '<label class="report' + (on ? ' sel' : '') + '"><input type="radio" name="rep" data-report="' + r.id + '" data-fk="rep-' + r.id + '"' + (on ? ' checked' : '') + '><span>„' + esc(r.t) + '“</span></label>';
-  });
-  h += '</div><h3>Wie geht es weiter?</h3><div class="decisions">';
+  const rep = ui.report || '', ok = repOk();
+  h += '<h3>Was berichtest Du dem Lenkungsausschuss?</h3>' + lageBox(s) +
+    '<label class="rep-l" for="reptext">Dein Bericht – höchstens ' + CFG.reportMax + ' Zeichen, etwa drei Sätze. Er steht danach im Reiter „Entscheidungen“.</label>' +
+    '<textarea id="reptext" class="reptext" data-reptext data-fk="reptext" maxlength="' + CFG.reportMax + '" rows="4" placeholder="Was ist der Stand – und was soll der Lenkungsausschuss entscheiden?">' + esc(rep) + '</textarea>' +
+    '<div class="rep-count small muted"><span id="repcount">' + rep.length + '</span> / ' + CFG.reportMax + ' Zeichen</div>';
+  h += '<h3>Wie geht es weiter?</h3><div class="decisions">';
   const terminal = id => !PS.isLoop(g.k, id);
   g.decisions.forEach((d, i) => {
-    const need = terminal(d.id) && !ui.report;
-    h += '<button class="btn' + (i === 0 ? '' : ' ghost') + '" data-dec="' + d.id + '" data-fk="dec-' + d.id + '"' + (need ? ' disabled' : '') + '>' + esc(d.t) + '</button>';
+    const need = terminal(d.id);
+    h += '<button class="btn' + (i === 0 ? '' : ' ghost') + '" data-dec="' + d.id + '" data-fk="dec-' + d.id + '"' + (need ? ' data-needrep' : '') + (need && !ok ? ' disabled' : '') + '>' + esc(d.t) + '</button>';
   });
-  h += '</div>';
-  if (!ui.report) h += '<p class="small muted" style="margin-top:8px">Wähle zuerst den Bericht.' + (g.k === 4 ? ' Die Verlängerung der Hypercare kannst Du auch ohne Bericht anstoßen.' : '') + '</p>';
+  h += '</div><p class="small muted rep-hint" style="margin-top:8px"' + (ok ? ' hidden' : '') + '>Schreib zuerst Deinen Bericht (mindestens ' + CFG.reportMin + ' Zeichen).' + (g.k === 4 ? ' Die Verlängerung der Hypercare kannst Du auch ohne Bericht anstoßen.' : '') + '</p>';
   return h + '</div>';
 }
 
@@ -3237,6 +3291,13 @@ function setExt(nv) {
 }
 $('main').addEventListener('input', ev => {
   const t = ev.target;
+  if (t.dataset && t.dataset.reptext !== undefined) {
+    ui.report = t.value; const ok = repOk();
+    const c = $('repcount'); if (c) c.textContent = t.value.length;
+    $('main').querySelectorAll('[data-needrep]').forEach(b => { b.disabled = !ok; });
+    const hint = $('main').querySelector('.rep-hint'); if (hint) hint.hidden = ok;
+    return;
+  }
   if (t.dataset && t.dataset.extrange !== undefined) { const o = $('extout'); if (o) o.textContent = extLabel(+t.value, G); t.setAttribute('aria-valuetext', extLabel(+t.value, G)); }
 });
 $('main').addEventListener('change', ev => {
@@ -3244,7 +3305,6 @@ $('main').addEventListener('change', ev => {
   if (d.extrange !== undefined) { setExt(+t.value); render(); return; }
   if (d.planItem) { ui.planSel[d.planItem] = t.checked; render(); return; }
   if (d.staff) { staffSel()[d.staff][+d.k] = t.checked ? 1 : 0; render(); return; }
-  if (d.report) { ui.report = d.report; render(); return; }
   if (d.transfer !== undefined) { ui.transfer = t.checked; render(); return; }
   if (d.crash !== undefined) { ui.crash = t.checked; render(); return; }
   if (d.method) { ui.method = d.method; render(); return; }
