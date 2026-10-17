@@ -2841,6 +2841,74 @@
           }
         ]
       }
+    },
+    {
+      "id": "L7-08",
+      "schwierigkeit": 3,
+      "paket": 7,
+      "absender": "Beschaffungsleitung",
+      "kanal": "E-Mail",
+      "szenario": "Die Beschaffungsleitung schreibt Petra: „Wir vergleichen zwei LLM-Anbieter für unseren Kunden-Assistenten. Anbieter A bewirbt „sorgfältiges RLHF mit tausenden Bewertenden“. Anbieter B wirbt mit „Constitutional AI nach einer öffentlich dokumentierten Prinzipien-Liste“. Beide Angebote sind preislich vergleichbar. Welche Rückfragen sind aus Compliance-Sicht entscheidend?“",
+      "frage": "Welche Aussagen sind zutreffend? (Mehrfachauswahl)",
+      "optionen": [
+        {
+          "id": "a",
+          "text": "Entscheidender Vorteil von Constitutional AI (prinzipienbasierte Ausrichtung): Der Maßstab ist ein lesbares Dokument. Compliance kann prüfen, nach welchen Grundsätzen das Modell ausgerichtet wurde — und dagegen argumentieren. Bei RLHF steckt der Maßstab in den Köpfen der Bewertenden und ist von außen nicht einsehbar."
+        },
+        {
+          "id": "b",
+          "text": "Beide Verfahren haben einen wesentlichen Governance-Haken gemeinsam: Ausrichtung ist KEIN unveränderlicher Zustand. Nachtrainieren mit eigenen Daten kann sie abschwächen oder aufheben — deshalb gehören Prüffälle zum Verweigerungsverhalten nach jedem Nachtrainieren erneut durchlaufen."
+        },
+        {
+          "id": "c",
+          "text": "DPO (Direct Preference Optimization) ist eine 2023 vorgestellte Vereinfachung ohne separates Belohnungsmodell (Rafailov et al., NeurIPS 2023). Praktische Folge: Ausrichtung ist so viel billiger und einfacher geworden, dass sie nicht mehr nur Modellanbietern vorbehalten ist — Unternehmen können nachgelagert selbst ausrichten."
+        },
+        {
+          "id": "d",
+          "text": "Welches Alignment-Verfahren verwendet wird, ist für die Beschaffung irrelevant — alle Verfahren führen zu identischem Modell-Verhalten."
+        }
+      ],
+      "korrekt": [
+        "a",
+        "b",
+        "c"
+      ],
+      "feedback_richtig": "Genau. Der entscheidende Executive-Perspektiv-Wechsel: Alignment ist nicht mehr nur technische Eigenschaft des Modells — es ist ein Beschaffungsgegenstand mit konkreten Rückfragen. „Nach welchen Grundsätzen wurde ausgerichtet, und kann ich sie lesen?“ ist eine der produktivsten Fragen in einem LLM-Beschaffungs-Gespräch. Die DPO-Entwicklung seit 2023 verändert zusätzlich die Kostenstruktur: Nachträgliche Ausrichtung durch das kaufende Unternehmen wird realistisch.",
+      "feedback_falsch": "Alignment-Verfahren unterscheiden sich erheblich — in der Transparenz des Maßstabs (lesbares Dokument vs. implizites Bewerter-Urteil), in der Prüfbarkeit und in der Kostenstruktur. Für die Beschaffung macht das einen Unterschied: Wer nach „Constitutional-AI-Grundsätzen“ fragt und keine Antwort bekommt, hat eine klare Verhandlungsposition. Wer sich mit „wir machen RLHF“ zufriedengibt, hat die inhaltliche Prüfung verschenkt.",
+      "glossar": {
+        "begriff": "Constitutional AI und DPO — Alignment als Beschaffungsgegenstand",
+        "erklaerung": "Constitutional AI (Prinzipienbasierte Ausrichtung, Bai et al. 2022, Anthropic): Alignment entlang einer schriftlich fixierten Prinzipien-Liste — das Modell kritisiert und überarbeitet seine eigenen Antworten gegen diese Prinzipien. Maßstab ist ein lesbares Dokument. DPO (Direct Preference Optimization, Rafailov et al. 2023, Stanford, NeurIPS 2023 Outstanding-Paper-Runner-up): Vereinfachung ohne separates Belohnungsmodell — macht Ausrichtung so viel billiger, dass sie nicht mehr Modellanbietern vorbehalten ist. Governance-Hinweis für alle Verfahren: Alignment ist kein unveränderlicher Zustand; Nachtrainieren kann sie aufheben."
+      },
+      "vertiefung": {
+        "begriff": "Alignment-Verfahren jenseits von RLHF — Constitutional AI und DPO",
+        "laien_erklaerung": "RLHF (siehe die Frage zu RLHF/RLVR in dieser Reise) war 2022 der große Durchbruch der LLM-Ausrichtung — ist aber seither nicht die einzige Methode geblieben. Zwei weitere Verfahren haben die Landschaft spürbar verändert und sind für die Beschaffung von LLM-basierten Systemen operativ relevant.\n\nPrinzipienbasierte Ausrichtung (Constitutional AI, Bai et al. 2022, Anthropic): Statt menschliche Bewerter paarweise entscheiden zu lassen, wird das Modell gegen eine SCHRIFTLICHE Liste von Grundsätzen ausgerichtet. In zwei Phasen: In der Supervised-Phase wird das Modell gezielt mit problematischen Eingaben konfrontiert, muss seine eigenen Antworten gegen die Prinzipien kritisieren und überarbeiten, und wird auf diese Überarbeitungen fine-getunt. In der zweiten Phase vergleicht das Modell Antwortpaare gegen die Prinzipien und erzeugt dadurch Präferenz-Daten für ein Belohnungs-Modell — oft „RLAIF“ genannt (Reinforcement Learning from AI Feedback).\n\nDer strategisch entscheidende Unterschied zu RLHF liegt nicht in der Technik, sondern in der Nachvollziehbarkeit: Bei RLHF steckt der Maßstab in den Köpfen der Bewertenden — von außen nicht einsehbar, nicht argumentierbar, nicht revidierbar. Bei Constitutional AI ist der Maßstab ein Dokument — lesbar, kritisierbar, versionierbar. Damit wird aus einer technischen Eigenschaft ein Beschaffungsgegenstand: „Nach welchen Grundsätzen wurde ausgerichtet, und kann ich sie lesen?“ ist eine der produktivsten Fragen im LLM-Vertragsgespräch.\n\nDirect Preference Optimization (DPO, Rafailov et al. 2023, Stanford): Technisch eine Vereinfachung — DPO zeigt, dass sich der klassische RLHF-Zweistufenprozess (erst Belohnungsmodell lernen, dann Reinforcement Learning) als EIN direkter Optimierungsschritt lösen lässt. Kein separates Belohnungsmodell, kein Sampling, deutlich weniger Rechenaufwand und weniger Hyperparameter-Tuning. Das Paper wurde auf der NeurIPS 2023 als Outstanding-Paper-Runner-up ausgezeichnet.\n\nFür den Kurs ist die Technik nicht der Kern — die Folge ist es: Durch DPO und ähnliche Verfahren ist Ausrichtung so viel billiger und einfacher geworden, dass sie nicht mehr Modellanbietern vorbehalten ist. Ein Unternehmen kann ein Foundation Model einkaufen und mit eigenen Präferenz-Daten nachträglich selbst ausrichten — für die eigene Fachsprache, die eigene Branchen-Ethik, die eigenen Verbots-Themen. Das verändert die Beschaffungs-Strategie: Statt „welches ausgerichtete Modell kaufen wir?“ kann die Frage lauten „welches Basis-Modell nehmen wir und richten wir selbst aus?“.\n\nDer Governance-Haken für alle Alignment-Verfahren — RLHF, Constitutional AI, DPO gleichermaßen: Ausrichtung ist kein unveränderlicher Zustand. Jedes Nachtrainieren mit eigenen Daten kann sie abschwächen oder aufheben, auch unbeabsichtigt. Die praktische Konsequenz: Nach jedem Nachtrainieren gehören Prüffälle zum Verweigerungsverhalten erneut durchlaufen — mit roten Prompts, mit Grenzfällen, mit genau den Themen, die das ausgerichtete Modell vorher verweigert hat. Dieser Prüfschritt gehört in die Governance-Routine, nicht in eine einmalige Abnahme.\n\nWarum das für Dich als KI-Managerin wichtig ist: Alignment ist seit 2023 ein konkreter Beschaffungsgegenstand und eine konkrete interne Governance-Aufgabe. Die drei wichtigsten Fragen in einem LLM-Beschaffungs-Gespräch: Nach welchen Prinzipien oder Daten wurde ausgerichtet (und können wir sie lesen)? Welche Prüffälle zum Verweigerungsverhalten liegen dem Modell zugrunde (und können wir sie nachspielen)? Und: Wird jedes Nachtrainieren bei uns durch einen Alignment-Regressions-Test abgesichert? Wer diese drei Fragen stellt, verhandelt in einer anderen Liga als wer sich mit „das Modell ist natürlich ausgerichtet“ zufriedengibt.",
+        "quellen": [
+          {
+            "titel": "Constitutional AI: Harmlessness from AI Feedback — Bai et al. 2022 (Anthropic Research)",
+            "art": "Wissenschaftliches Preprint",
+            "institution": "Anthropic / arXiv",
+            "url": "https://arxiv.org/abs/2212.08073"
+          },
+          {
+            "titel": "Direct Preference Optimization: Your Language Model is Secretly a Reward Model — Rafailov et al., NeurIPS 2023 (Outstanding-Paper-Runner-up, Stanford University)",
+            "art": "Wissenschaftliches Paper (peer-reviewed, NeurIPS 2023)",
+            "institution": "Stanford University · NeurIPS",
+            "url": "https://neurips.cc/virtual/2023/poster/72164"
+          },
+          {
+            "titel": "Direct Preference Optimization — arXiv-Preprint (Mai 2023)",
+            "art": "Wissenschaftliches Preprint",
+            "institution": "Stanford University · CZ Biohub",
+            "url": "https://arxiv.org/abs/2305.18290"
+          },
+          {
+            "titel": "AI alignment — Wikipedia (englisch), Oberbegriff-Übersicht",
+            "art": "Enzyklopädie-Artikel",
+            "institution": "Wikipedia",
+            "url": "https://en.wikipedia.org/wiki/AI_alignment"
+          }
+        ]
+      }
     }
   ]
 }

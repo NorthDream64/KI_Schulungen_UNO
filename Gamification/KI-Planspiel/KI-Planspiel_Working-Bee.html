@@ -721,11 +721,11 @@ const METHODS = [
     d: 'Leistungsumfang, Termine und Budget werden vorab festgelegt und an Meilensteinen geprüft. Änderungen laufen über Änderungsanträge. Ausführliche Dokumentation.',
     p: 'Das Management erhält regelmäßige Statusberichte im Ampelformat; für jede Phase ist eine ausführliche Dokumentation gesichert. Dein Entwicklungsteam muss sich allerdings an die Planungsvorgaben anpassen und büßt dadurch Geschwindigkeit ein. Der Aufwand in der Anforderungsbearbeitung („Requirements Engineering“) wird höher, da neue oder geänderte Anforderungen über das Management geklärt werden müssen.' },
   { id: 'agil', t: 'Agil', sub: 'zum Beispiel Scrum',
-    d: 'Arbeit in kurzen Sprints mit einem priorisierten Backlog (im Prinzip eine Liste hinsichtlich ihrer Machbarkeit bewerteter Anforderungen). Eine Product Ownerin aus dem Vertrieb hält laufend Kontakt zu Pilotkunden und Fernpiloten. Das Ergebnis wächst Schritt für Schritt. Scrum oder Kanban unterstützen durch schnelle Feedbackschleifen die kontinuierliche Anpassungen des KI-Modells.',
+    d: 'Arbeit in kurzen Sprints mit einem priorisierten Backlog (im Prinzip eine Liste hinsichtlich ihrer Machbarkeit bewerteter Anforderungen). Eine Product Ownerin aus dem Vertrieb hält laufend Kontakt zu Pilotkunden und Fernpiloten. Das Ergebnis wächst Schritt für Schritt. Scrum oder Kanban unterstützen durch schnelle Feedbackschleifen die kontinuierliche Anpassung des KI-Modells.',
     p: 'Das Entwicklungsteam ist motiviert und arbeitet offene Themen („Epics“) zügig ab. Neue Anforderungen können schnell eingebaut, fertige Lösungen rasch durch die Product Ownerin reviewt werden. Modellanpassung und schnelle Reaktion auf neue Erkenntnisse sind möglich. Allerdings erhält das Management kaum Berichte in einer ihm vertrauten Form. Immer wieder drohen wichtige Ressourcen von ihren Fachvorgesetzten aus dem Projekt gezogen zu werden.' },
   { id: 'hybrid', t: 'Hybrid', sub: 'fester Rahmen, agiler Kern',
     d: 'Budget, Quality Gates, Verträge und Zulassungsfragen laufen im klassischen Rahmen. Datenaufbereitung und Modellentwicklung arbeiten in Sprints.',
-    p: 'In der Literatur wird für KI-Projekte häufig dieser hybride Ansatz empfohlen, das er klassisches Projektmanagement (für Rahmenbedingungen wie Budget und Meilensteine) und agile Methoden (wie Scrum und Kanban für die Entwicklung) kombiniert. Die Kosten für das Projektmanagement können in der Praxis dadurch allerdings deutlich steigen, da sowohl die klassische als auch die agile Welt „bedient“ werden müssen.' },
+    p: 'In der Literatur wird für KI-Projekte häufig dieser hybride Ansatz empfohlen, da er klassisches Projektmanagement (für Rahmenbedingungen wie Budget und Meilensteine) und agile Methoden (wie Scrum und Kanban für die Entwicklung) kombiniert. Die Kosten für das Projektmanagement können in der Praxis dadurch allerdings deutlich steigen, da sowohl die klassische als auch die agile Welt „bedient“ werden müssen.' },
 ];
 const METHOD_FX = {
   klassisch: { T: 5, P: -3, R: 10, D: 0.25, E: 0, I: 0.3, adopt: -0.02, change: E(6000), creep: 0 },
@@ -2661,9 +2661,12 @@ function placeTip(t) {
   const w = b.offsetWidth, h = b.offsetHeight;
   b.style.display = prev; b.style.visibility = '';
   const left = Math.max(8, Math.min(r.left - 16, vw - w - 8));
-  const spaceBelow = vh - r.bottom - 16, spaceAbove = r.top - 16;
+  // Die Reiterleiste klebt oben im Fenster: Dort darf die Infobox nicht hin, sonst verdeckt die Leiste sie
+  const bar = $('tabs'), br = bar && !bar.hidden ? bar.getBoundingClientRect() : null;
+  const minTop = 8 + (br && br.bottom > 0 ? br.bottom : 0);
+  const spaceBelow = vh - r.bottom - 16, spaceAbove = r.top - minTop - 8;
   let top = h <= spaceBelow || spaceBelow >= spaceAbove ? r.bottom + 8 : r.top - h - 8;
-  top = Math.max(8, Math.min(top, vh - h - 8));          // nie aus dem Fenster laufen
+  top = Math.max(minTop, Math.min(top, vh - h - 8));     // nie aus dem Fenster und nie unter die Leiste
   b.style.left = left + 'px';
   b.style.top = top + 'px';
   // Läuft gerade eine Einblend-Animation, verschiebt sie den Bezugsrahmen – dann nachkorrigieren
