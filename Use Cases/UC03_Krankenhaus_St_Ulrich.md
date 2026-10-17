@@ -163,7 +163,7 @@ Aus der zweiten Aussage folgt eine Ersparnis von rund 30 Minuten je langem Arztb
 
 Das muss nicht falsch sein — in manchen Abteilungen ist das plausibel, in anderen nicht. Aber es ist genau die Rechnung, die vor einer Unterschrift zu führen ist. Leitfrage an die Teilnehmenden: *Wie viele lange Arztbriefe schreibt eine Ärztin in Deiner Vergleichsabteilung tatsächlich pro Tag — und wie kämst Du an diese Zahl?*
 
-### Prüffragen zur Einordnung nach EU AI Act
+### Leitfragen zur Einordnung nach EU AI Act
 
 Diese Fragen sind bewusst offen gestellt — sie gehören von den Teilnehmenden beantwortet, nicht vom Use Case vorgegeben.
 
@@ -214,7 +214,7 @@ Daraus folgen Betreiberpflichten, die mit der KI-VO nichts zu tun haben: ordnung
 
 Für rein administrative KI-Systeme, die weder Medizinprodukt noch Sicherheitsbauteil sind, gelten dagegen nur die erleichterten Kompetenz- und Transparenzpflichten.
 
-**Übung:** Fülle die vierte Spalte der Tabelle oben aus. Prüffrage je Initiative: *Welchen Zweck hat der Hersteller angegeben — und deckt sich das mit dem, was St. Ulrich damit tut?*
+**Übung:** Fülle die vierte Spalte der Tabelle oben aus. Leitfrage je Initiative: *Welchen Zweck hat der Hersteller angegeben — und deckt sich das mit dem, was St. Ulrich damit tut?*
 
 ### Der Rollenwechsel — die wichtigste Falle in diesem Fall
 

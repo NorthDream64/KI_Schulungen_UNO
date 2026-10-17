@@ -85,7 +85,7 @@ Der Vorstand erwartet keine Umsetzungsplanung, sondern eine **nachvollziehbare G
 3. **Wie werden die Kriterien gewichtet** — und warum? Nicht jedes Kriterium wiegt gleich schwer.
 4. **Woher kommen die Informationen?** Halte fest, was Du belegen kannst und was eine Annahme ist. Beides ist zulässig — vermischen darfst Du es nicht.
 
-Drei Prüffragen an Dein fertiges Raster: Trennt es die Initiativen tatsächlich voneinander, oder landen alle im Mittelfeld? Ließe sich damit auch eine Initiative **begründet ablehnen**? Und würde Dr. Hofer die Bewertung ohne Deine mündliche Erläuterung verstehen?
+Drei Leitfragen an Dein fertiges Raster: Trennt es die Initiativen tatsächlich voneinander, oder landen alle im Mittelfeld? Ließe sich damit auch eine Initiative **begründet ablehnen**? Und würde Dr. Hofer die Bewertung ohne Deine mündliche Erläuterung verstehen?
 
 ---
 

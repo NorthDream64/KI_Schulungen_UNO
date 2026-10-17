@@ -122,7 +122,7 @@ Die acht Angaben stehen mit Checklisten im *Praxisbeispiel KI-Agentenbau* (Reite
 
 Viele Anbieter von KI-Modellen (OpenAI, Anthropic usw.) bieten an, Agenten entweder aus Vorlagen zu nutzen oder selbst zu erstellen. Die Vorlagen — selbst wenn Du sie nicht nutzen möchtest — geben Dir häufig einen Eindruck der Quellen, Schnittstellen und Ausgabeformate, die sinnvoll in einen Agenten integriert werden können.
 
-**Drei Prüffragen an Euer Ergebnis:**
+**Drei Leitfragen an Euer Ergebnis:**
 
 1. Könnte ein anderes Team Euren Agenten allein aus Eurer Konkretisierung nachbauen?
 2. Ist an jeder Stelle klar, wo der Mensch entscheidet und wo der Agent nur vorbereitet?
