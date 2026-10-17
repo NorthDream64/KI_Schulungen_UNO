@@ -297,6 +297,11 @@ ul.review{margin:0;padding-left:18px;font-size:14.5px}
 ul.review li{margin:0 0 7px}
 ul.review.con li::marker{color:var(--warn)}ul.review.pro li::marker{color:var(--ok)}
 .ask{font-family:var(--serif);font-size:1.25rem;font-weight:700;margin:18px 0 0}
+.rv-note{font-size:13px;color:var(--muted);border-top:1px solid var(--soft);padding-top:10px;margin:14px 0 0}
+.check.minus input{accent-color:var(--plan)}
+.seg-ctl button .muted{font-weight:400;font-size:12.5px}
+.seg-ctl button[aria-pressed="true"] .muted{color:#dbe6f0}
+@media (max-width:560px){.seg-ctl.opslvl{display:flex;flex-direction:column}.seg-ctl.opslvl button{border-right:0;border-bottom:1px solid var(--rule);text-align:left}.seg-ctl.opslvl button:last-child{border-bottom:0}}
 body.is-dragging{user-select:none;-webkit-user-select:none;cursor:grabbing}
 .grip{display:flex;flex-direction:column;align-items:center;gap:5px;touch-action:none;cursor:grab;padding:4px 0;border:0;background:none;font:inherit;color:inherit;border-radius:8px}
 .grip:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
@@ -767,18 +772,48 @@ const METHOD_FX = {
   hybrid: { T: 3, P: 5, R: 5, D: 0.1, E: 0.04, I: 0.15, adopt: 0.02, change: E(2000), creep: 0 },
 };
 /* ---------------- Business Case (Erstentwurf + Ergänzungen) ---------------- */
+/* kind 'plus': fehlt im Erstentwurf, macht den Business Case teurer (und ehrlicher) · kind 'minus': spart Zeit oder Geld – mit Folgen */
 const PLAN_ITEMS = [
-  { id: 'daten', label: 'Genug Zeit für Datenbeschaffung und -aufbereitung', hint: '+1 Monat in Phase 1' },
-  { id: 'experiment', label: 'Experimentierphase mit offenem Ausgang', hint: '+1 Monat in Phase 2 für eine weitere Modellrunde' },
-  { id: 'pilot', label: 'Test unter Einsatzbedingungen vor dem Go-live', hint: '+1 Monat in Phase 3' },
-  { id: 'betrieb', label: 'Hypercare, Monitoring und Nachtraining als feste Posten', hint: 'höhere laufende Kosten nach dem Go-live' },
-  { id: 'ausstieg', label: 'Rückfallebene und geordnete Außerbetriebnahme', hint: 'einmalige Zusatzkosten' },
-  { id: 'hochlauf', label: 'Nutzen wächst mit der Akzeptanz', hint: 'Hochlauf über vier Monate statt vollem Nutzen ab dem ersten Tag' },
-  { id: 'reserve', label: 'Risikoreserve', hint: '+15 % auf das Budget jeder Phase – Puffer für Unvorhergesehenes' },
+  { id: 'daten', kind: 'plus', label: 'Genug Zeit für Datenbeschaffung und -aufbereitung', hint: '+1 Monat in Phase 1',
+    pro: 'Phase 1 bekommt die Zeit, die Beschaffung und Aufbereitung erfahrungsgemäß brauchen – der Plan ist realistischer.', con: 'Investition höher, Go-live einen Monat später.',
+    miss: 'Ohne Zeitpuffer für die Daten ist Phase 1 knapp geplant – reicht die Zeit nicht, muss nachbewilligt werden.' },
+  { id: 'experiment', kind: 'plus', label: 'Experimentierphase mit offenem Ausgang', hint: '+1 Monat in Phase 2 für eine weitere Modellrunde',
+    pro: 'Modellentwicklung ist Experiment: Eine zweite Runde ist eingeplant statt nachbewilligt.', con: 'Investition höher, Go-live einen Monat später.',
+    miss: 'Phase 2 rechnet mit einem Treffer im ersten Versuch – jede weitere Runde fehlt im Budget.' },
+  { id: 'pilot', kind: 'plus', label: 'MVP unter realen Bedingungen testen', hint: '+1 Monat in Phase 3',
+    pro: 'Du weißt vor dem Go-live, wie das MVP im Alltag abschneidet.', con: 'Investition höher, Go-live einen Monat später.',
+    miss: 'Ohne Test unter realen Bedingungen zeigt erst die MVP-Erprobung nach dem Go-live, ob die Validierung hält.' },
+  { id: 'ausstieg', kind: 'plus', label: 'Rückfallebene und geordnete Außerbetriebnahme', hint: 'einmalige Zusatzkosten',
+    pro: 'Für den Fall, dass HILMAR ausfällt oder abgeschaltet werden muss, ist vorgesorgt.', con: 'Einmalige Zusatzkosten.',
+    miss: 'Für Ausfall oder Abschaltung ist im Budget nichts vorgesehen.' },
+  { id: 'hochlauf', kind: 'plus', label: 'Nutzen wächst mit der Akzeptanz', hint: 'Hochlauf über vier Monate statt vollem Nutzen ab dem ersten Tag',
+    pro: 'Der Business Case rechnet damit, dass die Fernpiloten dem Modell erst nach und nach vertrauen.', con: 'Amortisation später, der Business Case sieht schlechter aus.',
+    miss: 'Der Business Case rechnet mit vollem Nutzen ab dem ersten Tag – das trifft selten zu.' },
+  { id: 'reserve', kind: 'plus', label: 'Risikoreserve', hint: '+15 % auf das Budget jeder Phase – Puffer für Unvorhergesehenes',
+    pro: 'Kleine Überschreitungen fängt die Reserve auf – ohne Nachbewilligung.', con: 'Investition um 15 % höher.',
+    miss: 'Ohne Reserve führt schon eine kleine Überschreitung zur Nachbewilligung.' },
+  { id: 'datenred', kind: 'minus', label: 'Weniger Daten für Training, Validierung und Test des Modells', hint: '−1 Monat in Phase 1',
+    pro: 'Phase 1 ist einen Monat kürzer – das Team kostet einen Monat weniger, der Go-live rückt näher.', con: 'Das Modell sieht weniger Einsatzgebiete und Wetterlagen; Validierung und Test werden weniger belastbar.' },
+  { id: 'cocreation', kind: 'minus', label: 'Pilotkunden in die Entwicklung einbinden (Co-Creation)', hint: 'Kunde stellt Daten, Testgelände und Fernpiloten',
+    pro: 'Der Kunde trägt einen Teil der Kosten und bringt seine Sicht früh ein – Ziel und Akzeptanz werden klarer.', con: 'Dafür erhält er Vorzugskonditionen: Im ersten Betriebsjahr fehlen 10 % des Nutzens.' },
+  { id: 'online', kind: 'minus', label: 'Training der Fernpiloten und Disponenten nur online', hint: 'keine Reise- und Präsenzkosten',
+    pro: 'Spart Reise- und Präsenzkosten in Phase 3.', con: 'Online-Training vermittelt Wissen, übt aber das Eingreifen nicht – die KI-Kompetenz der Fernpiloten steigt weniger.' },
 ];
+const PLAN_BY_ID = {}; PLAN_ITEMS.forEach(x => { PLAN_BY_ID[x.id] = x; });
+/* Hypercare, Monitoring und Nachtraining sind immer enthalten – in drei Umfängen */
+const OPS_LEVELS = {
+  min: { t: 'minimal', kp: 4, cost: E(2000), pro: 'Geringere laufende Kosten nach dem Go-live.', con: 'Höchstens 4 Kapazitätspunkte für Hypercare, Monitoring, Nachtraining und Rückmeldewege – bei Drift und Startproblemen wird es eng.' },
+  std: { t: 'Standard', kp: 7, cost: E(4000), pro: 'Bis zu 7 Kapazitätspunkte für Hypercare, Monitoring, Nachtraining und Rückmeldewege.', con: '' },
+  plus: { t: 'zusätzlich', kp: 10, cost: E(6500), pro: 'Bis zu 10 Kapazitätspunkte: mehr Hypercare, engeres Monitoring, Nachtraining in Bereitschaft.', con: 'Höhere laufende Kosten nach dem Go-live.' },
+};
+const opsLevel = sel => OPS_LEVELS[(sel && sel.opsLevel) || 'std'] || OPS_LEVELS.std;
+const CO_CREDIT = E(10000);   // Co-Creation: Kundenbeitrag je Phase 1 und 2
+const ONLINE_SAVE = E(3000);  // nur Online-Training: Ersparnis in Phase 3
 function planItemHint(it, staff) {
   if (it.id === 'daten' || it.id === 'experiment' || it.id === 'pilot') return it.hint + ' (+' + fmtE(teamMonthOf(staff || DRAFT_STAFF, { daten: 0, experiment: 1, pilot: 2 }[it.id])) + ' für Dein Team)';
-  if (it.id === 'betrieb') return '+' + fmtE(E(4000)) + ' pro Monat nach dem Go-live';
+  if (it.id === 'datenred') return it.hint + ' (−' + fmtE(teamMonthOf(staff || DRAFT_STAFF, 0)) + ' für Dein Team)';
+  if (it.id === 'cocreation') return it.hint + ': −' + fmtE(2 * CO_CREDIT) + ' in Phase 1 und 2; dafür −10 % Nutzen im ersten Betriebsjahr';
+  if (it.id === 'online') return it.hint + ': −' + fmtE(ONLINE_SAVE) + ' in Phase 3';
   if (it.id === 'ausstieg') return '+' + fmtE(E(6000)) + ' einmalig';
   return it.hint;
 }
@@ -788,21 +823,22 @@ function computePlan(sel, impAssume, vp, method, staff) {
   sel = sel || {}; vp = vp == null ? weeksToMonths(CFG.vpPlanWeeks) : vp;
   const H = CFG.horizon;
   // Drei Phasen bis zum Go-live; Phase 3 endet nach der Hypercare mit der Übergabe an den Betrieb
-  const months = [2 + (sel.daten ? 1 : 0), 1 + (sel.experiment ? 1 : 0), 1 + (sel.pilot ? 1 : 0)];
+  const months = [Math.max(1, 2 + (sel.daten ? 1 : 0) - (sel.datenred ? 1 : 0)), 1 + (sel.experiment ? 1 : 0), 1 + (sel.pilot ? 1 : 0)];
   const starts = [vp]; months.forEach((d, i) => starts.push(starts[i] + d));
   const goLive = starts[3];
   const phaseCost = months.map((m, k) => m * (teamMonthOf(staff, k) + pmMonth(method)));
-  phaseCost[2] += E(8000) + E(4000) + (sel.ausstieg ? E(6000) : 0);
+  phaseCost[2] += E(8000) + E(4000) + (sel.ausstieg ? E(6000) : 0) - (sel.online ? ONLINE_SAVE : 0);
+  if (sel.cocreation) { phaseCost[0] -= CO_CREDIT; phaseCost[1] -= CO_CREDIT; }
   if (sel.reserve) for (let i = 0; i < 3; i++) phaseCost[i] = Math.round(phaseCost[i] * 1.15);
   const invest = sum(phaseCost);
-  const ops = CFG.infra + (sel.betrieb ? E(4000) : 0);
+  const ops = CFG.infra + opsLevel(sel).cost;
   const benefitFull = CFG.potYear / 12 * impAssume / 100;
   const cf = new Array(H + 1).fill(0);
   let m = vp;
   months.forEach((d, i) => { for (let k = 0; k < d; k++) { m++; cf[m] -= phaseCost[i] / d; } });
   for (let k = 1; m + k <= H; k++) {
     const ramp = sel.hochlauf ? Math.min(1, k / 4) : 1;
-    cf[m + k] += benefitFull * ramp - ops;
+    cf[m + k] += benefitFull * ramp * (sel.cocreation && k <= 12 ? 0.9 : 1) - ops;
   }
   const cum = []; let c = 0;
   for (let i = 0; i <= H; i++) { c += cf[i]; cum.push(c); }
@@ -812,7 +848,7 @@ function computePlan(sel, impAssume, vp, method, staff) {
   const monthsUpTo = k => k <= 3 ? starts[k] : goLive + CFG.hcMonths;
   return { sel: Object.assign({}, sel), impAssume, vp, staff, months, starts, goLive, close: goLive + CFG.hcMonths,
     phaseCost, invest, ops, benefitFull, cf, cum, payback, costUpTo, monthsUpTo,
-    count: PLAN_ITEMS.filter(x => sel[x.id]).length };
+    count: PLAN_ITEMS.filter(x => x.kind === 'plus' && sel[x.id]).length };
 }
 
 /* ---------------- Phasen und Stellschrauben ----------------
@@ -857,8 +893,8 @@ const PHASES = [
   { key: 'einfuehrung', ph: 3, part: 1, partName: 'Test, Training, Dokumentation und Registrierung', name: PHASE_NAMES[2], en: 'Model Deployment', base: 1, kp: 10,
     question: 'Kommt das Modell dort an, wo geflogen wird – darf es dort fliegen, und hält es im Alltag?',
     levers: [
-      { id: 'pilot', name: 'Test unter Einsatzbedingungen', max: 5,
-        text: 'Testflüge in zwei Einsatzgebieten des Kunden mit festen Abbruchregeln – vor dem Go-live. Kostet einen Monat, zeigt die echte Übernahmequote. Weitere Punkte: mehr Einsatzgebiete und Fernpiloten im Test – das Ergebnis wird belastbarer, und mehr Fernpiloten kennen HILMAR schon vor dem Go-live.' },
+      { id: 'pilot', name: 'MVP unter realen Bedingungen testen', max: 5,
+        text: 'Das MVP (Minimum Viable Product: die einfachste einsatzfähige Version von HILMAR) fliegt vor dem Go-live in zwei Einsatzgebieten des Kunden, mit festen Abbruchregeln. Kostet einen Monat, zeigt die echte Übernahmequote. Weitere Punkte: mehr Einsatzgebiete und Fernpiloten im Test – das Ergebnis wird belastbarer, und mehr Fernpiloten kennen HILMAR schon vor dem Go-live.' },
       { id: 'integration', name: 'Integration in die Leitstelle des Kunden', max: 5,
         text: 'Übernahme-Anforderungen der Drohne erscheinen direkt am Arbeitsplatz der Fernpiloten.' },
       { id: 'schulung', name: 'Training der Fernpiloten und Disponenten', max: 5,
@@ -899,7 +935,7 @@ const ROLES = [
   { id: 'ds', t: 'Data Scientist', d: 'Bereitet Daten auf, entwickelt und bewertet das Modell und richtet die Modellüberwachung ein.' },
   { id: 'cm', t: 'Change Manager', d: 'Bereitet Fernpiloten, Disponenten und Kunden auf die Veränderung vor: Kommunikation, Training, Rückmeldewege.' },
   { id: 'pm', t: 'Projektmanagerin', d: 'Plant, steuert und berichtet an den Lenkungsausschuss; hält Vertrieb, Pilotkunden und Fachbereiche zusammen.' },
-  { id: 'test', t: 'Tester', d: 'Entwirft Testfälle und Testflüge, prüft das Modell gegen die Zielgröße, testet die Anbindung an die Leitstelle und leitet den Test unter Einsatzbedingungen.' },
+  { id: 'test', t: 'Tester', d: 'Entwirft Testfälle und Testflüge, prüft das Modell gegen die Zielgröße, testet die Anbindung an die Leitstelle und leitet den Test des MVP unter realen Bedingungen.' },
   { id: 'doku', t: 'Dokumentation', d: 'Hält Daten, Modell und Betrieb nachvollziehbar fest – etwa in Data Cards und der Model Card – und liefert die Unterlagen für die Registrierungen.' },
   { id: 'dsb', t: 'Datenschutz', d: 'Prüft, welche personenbezogenen Daten Kameras und Protokolle erfassen und wie sie verarbeitet werden dürfen.' },
   { id: 'sec', t: 'IT-Sicherheit', d: 'Sichert die Anbindung an die Leitstelle gegen Angriffe und Ausfälle und plant die Rückfallebene für den Betrieb.' },
@@ -948,13 +984,13 @@ const MS_ITEMS = [
     w: 'steht in Phase 3 am Anfang: Erst wenn Tests abgeschlossen sind und das Monitoring läuft, kann über den Go-live entschieden werden.' },
   { id: 'freigabe', t: 'Freigabe für den Go-live', tx: 'Freigabe für den Go-live', kind: 'Meilenstein', ph: 3, o: 1, d: 'Der Lenkungsausschuss gibt den Go-live frei – auf Grundlage der Ergebnisse von Quality Gate 3.',
     w: 'folgt in Phase 3 auf Quality Gate 3 und geht dem Go-live voraus.' },
-  { id: 'golive', t: 'Go-live', tx: 'Go-live', kind: 'Meilenstein', ph: 3, o: 2, d: 'HILMAR geht beim Logistikkunden in Betrieb – zunächst als Pilotbetrieb, begleitet vom Hypercare-Team.',
-    w: 'folgt in Phase 3 auf die Freigabe und eröffnet den Pilotbetrieb.' },
-  { id: 'uepilot', t: 'Übergabe Pilot', tx: 'Übergabe Pilot', kind: 'Meilenstein', ph: 3, o: 3, d: 'Das Projektteam übergibt den laufenden Pilotbetrieb an die Fernpiloten des Logistikkunden; das Hypercare-Team bleibt ansprechbar.',
-    w: 'folgt in Phase 3 auf den Go-live: Erst läuft der Pilot an, dann übernimmt der Kunde.' },
-  { id: 'qg4', t: 'Quality Gate 4: Pilotierung und kommerzieller Betrieb', tx: 'Quality Gate: Pilotierung und kommerzieller Betrieb', kind: 'Quality Gate', ph: 3, o: 4,
-    d: 'Der Pilotbetrieb ist ausgewertet – der Lenkungsausschuss entscheidet über den kommerziellen Betrieb.',
-    w: 'steht nach Go-live und Übergabe Pilot: Es wertet den Pilotbetrieb aus und gibt den kommerziellen Betrieb frei.' },
+  { id: 'golive', t: 'Go-live', tx: 'Go-live', kind: 'Meilenstein', ph: 3, o: 2, d: 'HILMAR geht beim Logistikkunden in Betrieb – zunächst als MVP (Minimum Viable Product), begleitet vom Hypercare-Team.',
+    w: 'folgt in Phase 3 auf die Freigabe und startet die MVP-Erprobung.' },
+  { id: 'uepilot', t: 'Übergabe MVP', tx: 'Übergabe MVP', kind: 'Meilenstein', ph: 3, o: 3, d: 'Das Projektteam übergibt das laufende MVP an die Fernpiloten des Logistikkunden; das Hypercare-Team bleibt ansprechbar.',
+    w: 'folgt in Phase 3 auf den Go-live: Erst läuft das MVP an, dann übernimmt der Kunde.' },
+  { id: 'qg4', t: 'Quality Gate 4: MVP-Erprobung und kommerzieller Betrieb', tx: 'Quality Gate: MVP-Erprobung und kommerzieller Betrieb', kind: 'Quality Gate', ph: 3, o: 4,
+    d: 'Die Erprobung des MVP beim Kunden ist ausgewertet – der Lenkungsausschuss entscheidet über den kommerziellen Betrieb.',
+    w: 'steht nach Go-live und Übergabe MVP: Es wertet die MVP-Erprobung aus und gibt den kommerziellen Betrieb frei.' },
   { id: 'uebetrieb', t: 'Übergabe Betrieb', tx: 'Übergabe Betrieb', kind: 'Meilenstein', ph: 3, o: 5, d: 'Nach der Hypercare übernimmt der Betrieb – das Projekt endet.',
     w: 'folgt auf Quality Gate 4: Erst die Freigabe des kommerziellen Betriebs, dann die Übergabe an den Betrieb.' },
   { id: 'ubc', t: 'Überprüfung Business Case', tx: 'Überprüfung Business Case', kind: 'Meilenstein', ph: 3, o: 6, d: 'Nach einem Jahr Betrieb: Hat HILMAR den Nutzen gebracht, den der Business Case versprochen hat?',
@@ -1032,7 +1068,7 @@ const PULL_TEXT = [
   'Der IT-Betrieb fordert seinen Integrationsspezialisten für ein Release in der Linie zurück.',
 ];
 const pullLoss = k => k === 0 ? 2 : 1;
-function ownCap(s, k) { k = k == null ? s.phase : k; return k >= OPS ? CFG.opsKpMax : PHASES[k].kp; }
+function ownCap(s, k) { k = k == null ? s.phase : k; return k >= OPS ? opsLevel(s.plan && s.plan.sel).kp : PHASES[k].kp; }
 function phaseCap(s) { return ownCap(s) - (s.pull && s.phase < PRE && s.pull[s.phase] ? pullLoss(s.phase) : 0); }
 function trimAlloc(alloc, cap) {
   const a = Object.assign({}, alloc);
@@ -1181,6 +1217,18 @@ function submitPlanung(s, seq, staff) {
   s.stage = 'plan';
 }
 
+function planReview(sel, impAssume) {
+  sel = sel || {}; const pro = [], con = [];
+  PLAN_ITEMS.forEach(it => {
+    if (sel[it.id]) { pro.push({ lever: it.label, t: it.pro }); if (it.con) con.push({ lever: it.label, t: it.con }); }
+    else if (it.miss) con.push({ lever: it.label, t: it.miss });
+  });
+  const L = opsLevel(sel);
+  if (L.pro) pro.push({ lever: 'Hypercare, Monitoring und Nachtraining: ' + L.t, t: L.pro });
+  if (L.con) con.push({ lever: 'Hypercare, Monitoring und Nachtraining: ' + L.t, t: L.con });
+  if (impAssume >= 25) con.push({ t: 'Du rechnest mit 25 % weniger Übernahmen – die Zielgröße liegt bei ' + CFG.target + ' %. Bleibt das Modell darunter, trägt der Business Case nicht.' });
+  return { pro, con };
+}
 function submitPlan(s, sel, impAssume) {
   s.plan = computePlan(sel, impAssume, s.vpMonths, s.method, s.staff);
   let msg;
@@ -1199,6 +1247,7 @@ function submitPlan(s, sel, impAssume) {
 function stepDuration(s, alloc) {
   const ph = PHASES[s.phase], a = k => (alloc || {})[k] || 0;
   let work = ph.base, wait = 0;
+  if (ph.key === 'daten' && s.plan && s.plan.sel.datenred) work -= 1;   // weniger Daten: Phase 1 einen Monat kürzer
   if (ph.key === 'einfuehrung') {
     if (a('pilot') >= 1) work += 1;
     if (a('registrierung') * roleFac(s, s.phase, 'registrierung') < 1) wait += 1;
@@ -1241,7 +1290,7 @@ const LEVER_REVIEW = {
     helpdesk: { pro: 'Help Desk und betroffene Beschäftigte sind vorbereitet: Fragen nach dem Go-live laufen nicht ins Leere, die Akzeptanz steigt.', con: 'Help Desk und Belegschaft erfahren erst beim Go-live, was sich ändert – Unsicherheit und Rückfragen bremsen die Akzeptanz.' },
   },
   einfuehrung: {
-    pilot: { pro: 'Der Test unter Einsatzbedingungen zeigt die echte Übernahmequote vor dem Go-live – dafür dauert die Phase einen Monat länger.', con: 'Ohne Test unter Einsatzbedingungen bist Du einen Monat schneller, aber erst im Pilotbetrieb nach dem Go-live zeigt sich, ob die Validierung hält.' },
+    pilot: { pro: 'Der Test des MVP unter realen Bedingungen zeigt die echte Übernahmequote vor dem Go-live – dafür dauert die Phase einen Monat länger.', con: 'Ohne Test des MVP bist Du einen Monat schneller, aber erst die MVP-Erprobung nach dem Go-live zeigt, ob die Validierung hält.' },
     integration: { proAt: 2, conAt: 2, pro: 'Übernahme-Anforderungen erscheinen direkt am Arbeitsplatz der Fernpiloten.', con: 'Knappe Integration: Die Fernpiloten arbeiten mit Behelfslösungen – im schlimmsten Fall verzögert die Schnittstelle den Go-live.' },
     schulung: { proAt: 2, pro: 'Geschulte Fernpiloten vertrauen dem Modell, wo es sicher ist, und greifen ein, wo nicht.', con: 'Ungeschulte Fernpiloten übernehmen im Zweifel lieber selbst – der Nutzen bleibt aus.' },
     doku: { pro: 'Data Cards und Model Card liegen vor – Grundlage für Abnahme, Registrierung und Rechtsprüfung.', con: 'Ohne Dokumentation fehlen Nachweise für Abnahme, Registrierung und Rechtsprüfung.' },
@@ -1333,6 +1382,9 @@ function runPhase(s, alloc, ext, transfer, crash) {
     trust(s, arrI([0, 2, 3, 3.5, 4, 4.5], s.RKq));
     s.Q += gain(e('bereinigung'), 30) + gain(e('integration'), 15);
     s.debt = e('bereinigung') < 1 ? 2 : e('bereinigung') < 2 ? 1 : 0;   // knapp bereinigt: Fehler kommen beim Training zurück
+    const SEL = (s.plan && s.plan.sel || {});
+    if (SEL.datenred) { s.C = clamp(s.C - 12, 0, 100); notes.push('Weniger Daten (laut Business Case): Phase 1 ist einen Monat kürzer, aber das Modell sieht weniger Einsatzgebiete und Wetterlagen – die Datenabdeckung bleibt geringer.'); }
+    if (SEL.cocreation) { extraCost -= CO_CREDIT; s.P += 10; s.C += 4; s.adoptBonus += 0.02; notes.push('Co-Creation: Der Pilotkunde stellt Daten, Testgelände und Fernpiloten (−' + fmtE(CO_CREDIT) + ') und bringt seine Sicht früh ein.'); }
     s.C += gain(e('integration'), 10);
     s.A = lvI(e('pipeline'));
     if (inv < 1 && !s.known.data) notes.push('Ohne Dateninventur zeigt sich erst bei der Aufbereitung, welche Daten fehlen.');
@@ -1355,7 +1407,10 @@ function runPhase(s, alloc, ext, transfer, crash) {
     }
     s.B = a('baseline') + (s.kpiPlan ? 1 : 0) >= 1 ? 1 : 0;
     s.BL = Math.min(5, e('baseline') + (s.kpiPlan ? 1 : 0));   // Breite der Baseline: Einsatzgebiete und Wetterlagen
-    s.V = lvI(e('validierung'));
+    const SEL = (s.plan && s.plan.sel || {});
+    s.V = lvI(e('validierung')) * (SEL.datenred ? 0.85 : 1);
+    if (SEL.datenred) notes.push('Weniger Daten (laut Business Case): Für Validierung und Test bleiben weniger Flüge – das Ergebnis ist weniger belastbar.');
+    if (SEL.cocreation) { extraCost -= CO_CREDIT; notes.push('Co-Creation: Der Pilotkunde testet Zwischenstände mit eigenen Fernpiloten (−' + fmtE(CO_CREDIT) + ').'); }
     s.E = clamp(gain(e('varianten'), 1) + fx.E + s.pocE + arrI([0, 0, 0.02, 0.035, 0.045, 0.05], s.BL) - (doCrash ? 0.1 : 0), 0, 1);
     s.F = lvI(e('fehleranalyse'));
     s.P += gain(e('fehleranalyse'), 10);
@@ -1373,17 +1428,19 @@ function runPhase(s, alloc, ext, transfer, crash) {
   if (ph.key === 'einfuehrung') {
     s.pilot = a('pilot') >= 1 ? 1 : 0; s.PL = e('pilot');
     s.I = clamp(lvI(e('integration')) + fx.I, 0, 1);
-    s.L += gain(e('schulung'), 55);
+    const SEL = (s.plan && s.plan.sel || {});
+    s.L += gain(e('schulung'), SEL.online ? 38 : 55);
+    if (SEL.online && a('schulung') > 0) notes.push('Training nur online (laut Business Case): Die Fernpiloten kennen die Regeln, haben das Eingreifen aber nicht geübt.');
     s.D = clamp(lvI(e('doku')) + fx.D, 0, 1);
     trust(s, arrI(TB, e('doku')));
     s.REG = e('registrierung');
     s.M = lvI(e('monitoring'));
     s.FB = a('rueckfall') >= 1 ? 1 : 0; s.FBL = e('rueckfall');
-    extraCost += E(8000) + a('schulung') * E(2000);
+    extraCost += SEL.online ? E(8000) - ONLINE_SAVE + a('schulung') * E(500) : E(8000) + a('schulung') * E(2000);
     if (s.pilot) {
       s.pilotImp = r1(s.trueImp + (s.rolls[7] - 0.5) * 2 * (1 - 0.15 * Math.max(0, s.PL - 1)));
       s.adoptBonus += arrI([0, 0, 0.01, 0.02, 0.025, 0.03], s.PL); s.L += 2 * Math.max(0, s.PL - 1);
-      notes.push('Der Test unter Einsatzbedingungen läuft einen Monat.');
+      notes.push('Der Test des MVP unter realen Bedingungen läuft einen Monat.');
     }
     if (s.REG < 1) { trust(s, -(3)); notes.push(a('registrierung') >= 1
       ? 'Registrierungen: Die Anträge sind gestellt, aber unvollständig – es fehlen Nachweise, die Compliance und Dokumentation hätten liefern müssen. Die Behörde fordert Unterlagen nach. Solange der Kunde nicht als Betreiber registriert ist, darf er nicht fliegen – der Go-live verschiebt sich um einen Monat.'
@@ -1608,7 +1665,7 @@ function resolveEvent(s, idx) {
 
 /* ---------------- Quality Gates ----------------
    QG 1 nach Phase 1, QG 2 nach Phase 2, QG 3 vor dem Go-live, QG 4 „Übergabe an den Betrieb“ nach der Hypercare */
-const QG_NAMES = ['Projektfreigabe', 'Datenbasis belastbar', 'Modell validiert', 'Test abgeschlossen, Monitoring eingerichtet', 'Pilotierung und kommerzieller Betrieb'];
+const QG_NAMES = ['Projektfreigabe', 'Datenbasis belastbar', 'Modell validiert', 'Test abgeschlossen, Monitoring eingerichtet', 'MVP-Erprobung und kommerzieller Betrieb'];
 function gateCriteria(s, k) {
   const c = (t, ok, unk) => ({ t, ok: unk ? null : !!ok });
   if (k === 1) return [
@@ -1624,7 +1681,7 @@ function gateCriteria(s, k) {
     c('Validierung mit zeitlich und räumlich getrennten Testflügen', s.V >= 0.9),
   ];
   if (k === 3) return [
-    c('Test unter Einsatzbedingungen bestätigt die Validierung', s.pilot && s.pilotImp >= CFG.target && s.meas - s.pilotImp <= 6),
+    c('Test des MVP unter realen Bedingungen bestätigt die Validierung', s.pilot && s.pilotImp >= CFG.target && s.meas - s.pilotImp <= 6),
     c('Übernahme-Anforderungen erscheinen in der Leitstelle', s.I >= 0.6),
     c('Data Cards und Model Card liegen vor', s.D >= 0.5),
     c('Monitoring eingerichtet', s.M > 0),
@@ -1699,9 +1756,9 @@ function execReports(s, g, k, nextCost) {
   const vt = late ? ' Der Go-live liegt ' + (late === 1 ? 'einen Monat' : (NUMW[late] || late) + ' Monate') + ' nach dem Vertragstermin; die Vertragsstrafe ist fällig.' : '';
   return [
     { id: 'ehrlich', t: (s.pilot
-      ? 'Ergebnis: Im Test unter Einsatzbedingungen senkt das Modell die Übernahmen um ' + fmtP(s.pilotImp) + (s.meas - s.pilotImp > 2 ? ', ' + fmtP(r1(s.meas - s.pilotImp)).replace(' %', '') + ' Prozentpunkte weniger als in der Validierung' : '') + '. '
-      : 'Ergebnis: Das Modell läuft technisch bis in die Leitstelle; wie gut es im Alltag ist, zeigt erst der Pilotbetrieb – einen Test unter Einsatzbedingungen hatten wir nicht. ') + F + vt +
-      ' Entscheidung: Freigabe für den Go-live beim Logistikkunden, danach Pilotbetrieb mit zwei Monaten Hypercare bis Quality Gate 4; laufende Kosten ab ' + fmtE(ops) + ' pro Monat, das erste Nachtraining ist einzuplanen.' },
+      ? 'Ergebnis: Im Test des MVP unter realen Bedingungen senkt das Modell die Übernahmen um ' + fmtP(s.pilotImp) + (s.meas - s.pilotImp > 2 ? ', ' + fmtP(r1(s.meas - s.pilotImp)).replace(' %', '') + ' Prozentpunkte weniger als in der Validierung' : '') + '. '
+      : 'Ergebnis: Das Modell läuft technisch bis in die Leitstelle; wie gut es im Alltag ist, zeigt erst die MVP-Erprobung – einen Test des MVP unter realen Bedingungen hatten wir nicht. ') + F + vt +
+      ' Entscheidung: Freigabe für den Go-live beim Logistikkunden, danach MVP-Erprobung mit zwei Monaten Hypercare bis Quality Gate 4; laufende Kosten ab ' + fmtE(ops) + ' pro Monat, das erste Nachtraining ist einzuplanen.' },
     { id: 'schein', t: green + 'Alle Arbeitspakete sind abgeschlossen und abgenommen, die Dokumentation ist vollständig. Der Go-live ist Formsache, die Hypercare kann knapp ausfallen.' + noDec },
     { id: 'over', t: 'Lage: HILMAR ist einsatzbereit und übertrifft den Business Case. Nachbesserungen erwarten wir nicht. Empfehlung: Go-live sofort in allen Einsatzgebieten und das Projektteam schon jetzt für das zweite Standbein Objektschutz einplanen.' },
   ];
@@ -1730,7 +1787,7 @@ function makeGate(s) {
     g.msgs.push(g.actM > g.planM ? { k: 'warn', t: 'Übergabe in Monat ' + g.actM + ' statt Monat ' + g.planM + ' laut Plan.' } : { k: 'ok', t: 'Übergabe wie geplant in Monat ' + g.actM + '.' });
     g.reports = execReports(s, g, 4, null);
     g.decisions = [{ id: 'uebergabe', t: 'Kommerziellen Betrieb freigeben und an den Betrieb übergeben – Projekt abschließen' }];
-    if (s.ops && s.ops.hc && !s.hcExt) g.decisions.push({ id: 'verlaengern', t: 'Pilotbetrieb mit Hypercare um einen Monat verlängern (' + fmtE(s.ops.hc * CFG.hcCost) + ')' });
+    if (s.ops && s.ops.hc && !s.hcExt) g.decisions.push({ id: 'verlaengern', t: 'MVP-Erprobung mit Hypercare um einen Monat verlängern (' + fmtE(s.ops.hc * CFG.hcCost) + ')' });
     g.reports = g.reports.map(r => ({ r, o: Math.random() })).sort((a, b) => a.o - b.o).map(x => x.r);
     return g;
   }
@@ -1797,7 +1854,7 @@ function makeGate(s) {
   if (k === 3) {
     g.pilot = s.pilot ? { imp: s.pilotImp, meas: s.meas, gap: r1(s.meas - s.pilotImp), pass: s.pilotImp >= CFG.target, model: quote(s.pilotImp) } : null;
     g.contract = { goLive: s.month, due: CFG.contract, late: Math.max(0, s.month - CFG.contract) };
-    g.decisions = [{ id: 'weiter', t: 'Freigabe für den Go-live: Pilotbetrieb beim Logistikkunden starten' }];
+    g.decisions = [{ id: 'weiter', t: 'Freigabe für den Go-live: MVP beim Logistikkunden in Betrieb nehmen' }];
     g.decisions.push({ id: 'abbruch', t: 'Projekt beenden' });
   }
   g.reports = g.reports.map(r => ({ r, o: Math.random() })).sort((a, b) => a.o - b.o).map(x => x.r);
@@ -1838,9 +1895,9 @@ function decideGate(s, reportId, decisionId) {
   if (k === 4) { finishOps(s); return { ended: true }; }
 
   if (k === 3) {
-    if (s.flags.over && s.pilot && s.meas - s.pilotImp > 8) { trust(s, -(12)); msgs.push('Der Test unter Einsatzbedingungen zeigt weniger als berichtet. Der Lenkungsausschuss erinnert sich an Deine Erfolgsmeldung.'); s.flags.over = false; }
+    if (s.flags.over && s.pilot && s.meas - s.pilotImp > 8) { trust(s, -(12)); msgs.push('Der Test des MVP zeigt weniger als berichtet. Der Lenkungsausschuss erinnert sich an Deine Erfolgsmeldung.'); s.flags.over = false; }
     s.goLive = s.month;
-    log(s, 'Freigabe für den Go-live und Go-live beim Logistikkunden in Monat ' + s.goLive + ' (Plan: Monat ' + s.plan.goLive + ', Vertrag: Monat ' + CFG.contract + '). Der Pilotbetrieb beginnt.', 'golive');
+    log(s, 'Freigabe für den Go-live und Go-live beim Logistikkunden in Monat ' + s.goLive + ' (Plan: Monat ' + s.plan.goLive + ', Vertrag: Monat ' + CFG.contract + '). Die MVP-Erprobung beginnt.', 'golive');
     contractCheck(s);
     if (s.goLive >= CFG.horizon - 6) { endGame(s, 'zeit'); return { ended: true }; }
   }
@@ -1866,6 +1923,7 @@ function contractCheck(s) {
 
 /* ---------------- Go-live, Hypercare, Betrieb ---------------- */
 function runOps(s, alloc) {
+  alloc = trimAlloc(alloc, ownCap(s, OPS));
   const a = k => alloc[k] || 0;
   const kp = a('auswertung') + a('nachtraining') + a('feedback') + a('wissen');
   s.ops = { alloc: Object.assign({}, alloc), kp, hc: a('hypercare') };
@@ -1888,19 +1946,25 @@ function simulateOps(s) {
   const seg = 0.9 + 0.1 * s.F;
   const rate0 = 0.12 + 0.2 * L / 100 + 0.04 * [0, 1, 2, 3, 3.6, 4][Math.min(5, a.feedback || 0)] + s.adoptBonus;
   let cap = clamp(0.3 + 0.45 * L / 100 + 0.15 * s.I - s.capPen + s.adoptBonus + 0.03 * hcE - ((s.HD || 0) < 1 ? 0.03 : 0), 0.1, 0.95);   // ein Rest bleibt immer manuell: Sonderfälle, Kundenwünsche
-  const dm = g + 3 + Math.floor(s.rolls[3] * 3);
-  const sev = r1(10 + s.rolls[4] * 6);
-  const delay = Math.max(1, Math.round(5 - 2.5 * s.M - 1.9 * monEval - 1.0 * L / 100));
+  // Zwei Drift-Ereignisse im Betrieb: neues Liefergebiet, später der erste Winter. Monitoring, Auswertung und Nachtraining wirken bei jedem.
+  const DR = [
+    { dm: g + 3 + Math.floor(s.rolls[3] * 3), sev: r1(10 + s.rolls[4] * 6),
+      t: 'Ein Kunde erweitert sein Liefergebiet auf ein Neubauviertel mit Glasfassaden und Solardächern. Die Spiegelungen kennt das Modell nicht, die Übernahmen nehmen zu (Drift).' },
+    { dm: g + 12 + Math.floor(s.rolls[14] * 4), sev: r1(8 + s.rolls[15] * 6),
+      t: 'Der erste Winter im Betrieb: Schnee und Eis auf Balkonen, Dächern und Paketstationen – Bilder, die in den Trainingsdaten kaum vorkommen. Die Übernahmen nehmen wieder zu (Drift).' },
+  ].filter(d => d.dm <= H).map(d => Object.assign(d, { detected: null, restored: null }));
+  const dm = DR.length ? DR[0].dm : H + 1, sev = DR.length ? DR[0].sev : 0;
+  const delay = Math.max(0, Math.round(5 - 2.5 * s.M - 2.5 * monEval - 1.0 * L / 100));   // regelmäßige Auswertung: Drift fällt früher auf
   const extern = s.K < 70;
-  const rDur = (retrainReady >= 0.5 ? 0 : 1) + (extern ? 1 : 0);
+  const rDur = (retrainReady >= 0.8 ? 0 : retrainReady >= 0.5 ? 1 : 2) + (extern ? 1 : 0);  // Nachtraining in Bereitschaft: schneller ein neues Modell
   const rCost = Math.round(E(14000) * (1 - 0.5 * s.A) * (extern ? 1.6 : 1) * (retrainReady >= 0.5 ? 1 : 1.2) / 1000) * 1000;
   const opsCost = CFG.infra + (s.M > 0 ? CFG.monCost : 0) + s.ops.kp * CFG.opsKpCost;
   const timeline = [];
-  let adopt = 0, detected = null, restored = null;
+  let adopt = 0, overOpsHit = false;
   const disappoint = !s.pilot && s.meas - s.trueImp > 8;
   if ((s.HD || 0) < 1) timeline.push({ m: g + 1, k: 'warn', t: 'Beim Help Desk laufen Fragen zu HILMAR auf, die dort niemand beantworten kann. Disponenten und Fernpiloten sind verunsichert – einige schalten den autonomen Modus vorsorglich ab.' });
-  timeline.push({ m: g + 1, k: 'ok', t: 'Übergabe Pilot: Die Fernpiloten des Logistikkunden fliegen den Pilotbetrieb jetzt selbst' + (hc ? ', das Hypercare-Team bleibt ansprechbar.' : '.') });
-  timeline.push({ m: hcEnd, k: 'ok', t: 'Quality Gate 4: Pilotierung ausgewertet, kommerzieller Betrieb freigegeben. Übergabe an den Betrieb, das Projekt ist abgeschlossen. ' + (s.M > 0 ? 'Das Monitoring läuft ab jetzt regelmäßig weiter.' : 'Ein regelmäßiges Monitoring gibt es nicht.') });
+  timeline.push({ m: g + 1, k: 'ok', t: 'Übergabe MVP: Die Fernpiloten des Logistikkunden fliegen das MVP jetzt selbst' + (hc ? ', das Hypercare-Team bleibt ansprechbar.' : '.') });
+  timeline.push({ m: hcEnd, k: 'ok', t: 'Quality Gate 4: MVP-Erprobung ausgewertet, kommerzieller Betrieb freigegeben. Übergabe an den Betrieb, das Projekt ist abgeschlossen. ' + (s.M > 0 ? 'Das Monitoring läuft ab jetzt regelmäßig weiter.' : 'Ein regelmäßiges Monitoring gibt es nicht.') });
   for (let m = g + 1; m <= H; m++) {
     if (m <= hcEnd && hc) addCost(s, m, hc * CFG.hcCost);
     if (m === g + 2 && s._aktionCost) { addCost(s, m, s._aktionCost); }
@@ -1913,33 +1977,37 @@ function simulateOps(s) {
     const rate = rate0 + (m <= hcEnd ? 0.05 * hcE : 0);
     adopt = Math.min(cap, adopt + rate);
     let imp = s.trueImp, eff = adopt;
-    if (m >= dm && (restored === null || m < restored)) {
-      imp = s.trueImp - sev;
-      if (detected === null && m >= dm + delay) {
-        detected = m;
-        addCost(s, m, rCost);
-        restored = m + rDur;
-        if (s.M === 0) { trust(s, -(10 * fbf)); cap = clamp(cap - 0.1 * fbf, 0.1, 1); }
-        timeline.push({ m, k: s.M === 0 ? 'bad' : 'warn', t: (s.M === 0
-          ? 'Drift erkannt – nicht durch Monitoring, sondern durch Beschwerden der Fernpiloten, ' + (m - dm) + ' Monate nach der Veränderung.'
-          : 'Drift erkannt durch das Monitoring, ' + (m - dm) + (m - dm === 1 ? ' Monat' : ' Monate') + ' nach der Veränderung.')
-          + ' Nachtraining: ' + fmtE(rCost) + (rDur ? ', ' + rDur + (rDur === 1 ? ' Monat' : ' Monate') + ' bis zum neuen Modell' : ', sofort') + (extern ? ' (über den externen Partner, weil das Wissen nicht im Haus ist)' : '') + '.' });
-        if (s.flags.overOps) { trust(s, -(8)); timeline.push({ m, k: 'bad', t: s.flags.overOps === 'over'
-          ? 'Der Lenkungsausschuss erinnert an Deinen Satz „Nach dem Go-live läuft es dann von allein“ – und fragt, warum jetzt ungeplante Kosten entstehen.'
-          : 'Der Lenkungsausschuss hatte das Projekt als abgeschlossen verbucht – und fragt, warum jetzt ungeplante Kosten entstehen.' }); }
+    DR.forEach(d => {
+      if (m === d.dm) timeline.push({ m, k: 'warn', t: d.t });
+      if (m >= d.dm && (d.restored === null || m < d.restored)) {
+        imp -= d.sev;
+        if (d.detected === null && m >= d.dm + delay) {
+          d.detected = m;
+          addCost(s, m, rCost);
+          d.restored = m + rDur + 1;   // im Monat der Entdeckung wirkt der Drift noch; danach rDur Monate bis zum neuen Modell
+          if (s.M === 0) { trust(s, -(10 * fbf)); cap = clamp(cap - 0.1 * fbf, 0.1, 1); }
+          timeline.push({ m, k: s.M === 0 ? 'bad' : 'warn', t: (s.M === 0
+            ? 'Drift erkannt – nicht durch Monitoring, sondern durch Beschwerden der Fernpiloten, ' + (m - d.dm) + ' Monate nach der Veränderung.'
+            : 'Drift erkannt durch das Monitoring, ' + (m === d.dm ? 'noch im selben Monat.' : (m - d.dm) + (m - d.dm === 1 ? ' Monat' : ' Monate') + ' nach der Veränderung.'))
+            + ' Nachtraining: ' + fmtE(rCost) + (rDur ? ', ' + rDur + (rDur === 1 ? ' Monat' : ' Monate') + ' bis zum neuen Modell' : ', sofort') + (extern ? ' (über den externen Partner, weil das Wissen nicht im Haus ist)' : '') + '.' });
+          if (s.flags.overOps && !overOpsHit) { overOpsHit = true; trust(s, -(8)); timeline.push({ m, k: 'bad', t: s.flags.overOps === 'over'
+            ? 'Der Lenkungsausschuss erinnert an Deinen Satz „Nach dem Go-live läuft es dann von allein“ – und fragt, warum jetzt ungeplante Kosten entstehen.'
+            : 'Der Lenkungsausschuss hatte das Projekt als abgeschlossen verbucht – und fragt, warum jetzt ungeplante Kosten entstehen.' }); }
+        }
+        if (d.detected === null) eff = adopt * (1 - 0.5 * L / 100);
       }
-      if (detected === null) eff = adopt * (1 - 0.5 * L / 100);
-    }
-    if (restored !== null && m === restored) timeline.push({ m, k: 'ok', t: 'Das nachtrainierte Modell ist im Einsatz.' });
-    if (m === dm) timeline.push({ m, k: 'warn', t: 'Ein Kunde erweitert sein Liefergebiet auf ein Neubauviertel mit Glasfassaden und Solardächern. Die Spiegelungen kennt das Modell nicht, die Übernahmen nehmen zu (Drift).' });
+      if (d.restored !== null && m === d.restored && rDur > 0) timeline.push({ m, k: 'ok', t: 'Das nachtrainierte Modell ist im Einsatz.' });
+    });
+    imp = Math.max(0, imp);
     const custF = s.custLost && m <= s.custLostUntil ? 0.75 : 1;
-    const ben = CFG.potYear / 12 * imp / 100 * eff * s.S * (s.excl && m <= g + 12 ? 0.8 : 1) * fit * seg * custF;
+    const ben = CFG.potYear / 12 * imp / 100 * eff * s.S * (s.excl && m <= g + 12 ? 0.8 : 1) * fit * seg * custF * (s.plan.sel.cocreation && m <= g + 12 ? 0.9 : 1);
     s.benefit[m] += ben;
     addCost(s, m, opsCost);
   }
   timeline.sort((x, y) => x.m - y.m);
-  s.opsReport = { timeline, driftMonth: dm <= H ? dm : null, detected, delay: dm <= H ? (detected ? detected - dm : null) : null,
-    sev, opsCost, rCost, finalAdopt: adopt, cap, fit, hcEnd, restored };
+  const d0 = DR[0] || { detected: null, restored: null };
+  s.opsReport = { timeline, driftMonth: DR.length ? dm : null, detected: d0.detected, delay: DR.length ? (d0.detected !== null ? d0.detected - dm : null) : null,
+    sev, opsCost, rCost, finalAdopt: adopt, cap, fit, hcEnd, restored: d0.restored, drifts: DR.map(d => ({ dm: d.dm, detected: d.detected, delay: d.detected !== null ? d.detected - d.dm : null })) };
   s.T = clamp(s.T, 0, 100);
   s.segs.push({ p: OPS, from: g, to: hcEnd, kind: 'hypercare' });
   s.month = H;
@@ -1952,7 +2020,7 @@ function simulateOps(s) {
     timeline.push({ m: g + 12, k: b >= 0.9 * pb ? 'ok' : 'warn', t: 'Überprüfung Business Case: Im ersten Jahr nach dem Go-live brachte HILMAR ' + fmtE(Math.round(b / 1000) * 1000) + ' Deckungsbeitrag – geplant waren ' + fmtE(Math.round(pb / 1000) * 1000) + '.' });
     timeline.sort((x, y) => x.m - y.m);
   }
-  log(s, 'Pilotbetrieb mit Hypercare bis Monat ' + hcEnd + ', Quality Gate 4 und Übergabe an den Betrieb; Betrieb bis Monat ' + H + ' simuliert.', 'ops');
+  log(s, 'MVP-Erprobung mit Hypercare bis Monat ' + hcEnd + ', Quality Gate 4 und Übergabe an den Betrieb; Betrieb bis Monat ' + H + ' simuliert.', 'ops');
 }
 
 function finishOps(s) { simulateOps(s); endGame(s, 'regulaer'); }
@@ -2079,7 +2147,7 @@ function fmtP(x) { return (x === null || x === undefined) ? '–' : (Math.round(
 
 function pocLabel(l) { return l === 'o' ? 'kein PoC' : l === 'a' ? 'ausführlicher PoC (' + fmtE(ACT_BY_ID.poc.opts.a.c) + ')' : 'PoC (' + fmtE(ACT_BY_ID.poc.opts.n.c) + ')'; }
 
-root.PS = { E, roleFac, allocReview, LEVER_REVIEW, planungReview, cleanStaff, ROLE_WEEK, ROLES, ROLE_BY_ID, NEEDS, DRAFT_STAFF, hasRole, teamSize, teamMonthOf, PLAN_PHASES, MS_ITEMS, msCheck, submitPlanung, PM_WEEK, pmMonth, trustZone, TRUST_ZONES, CFG, ACTIVITIES, ACT_BY_ID, PRED, DEPS, LESSONS_EARLY, MUSTER, depStatus, LV, phaseCap, ownCap, pullLoss, stepDuration, PULL_TEXT, SWOT, QUAD, METHODS, PLAN_ITEMS, planItemHint, PHASES, PHASE_NAMES, PRE, OPS, QG_NAMES, isLoop, RAND,
+root.PS = { E, PLAN_BY_ID, OPS_LEVELS, opsLevel, planReview, roleFac, allocReview, LEVER_REVIEW, planungReview, cleanStaff, ROLE_WEEK, ROLES, ROLE_BY_ID, NEEDS, DRAFT_STAFF, hasRole, teamSize, teamMonthOf, PLAN_PHASES, MS_ITEMS, msCheck, submitPlanung, PM_WEEK, pmMonth, trustZone, TRUST_ZONES, CFG, ACTIVITIES, ACT_BY_ID, PRED, DEPS, LESSONS_EARLY, MUSTER, depStatus, LV, phaseCap, ownCap, pullLoss, stepDuration, PULL_TEXT, SWOT, QUAD, METHODS, PLAN_ITEMS, planItemHint, PHASES, PHASE_NAMES, PRE, OPS, QG_NAMES, isLoop, RAND,
   scheduleVP, weeksToMonths, defaultDepth, pocLabel, computePlan, crashInfo, newGame, initialOrder, submitOrder, submitSwot, toMethode, submitMethod, toPlan,
   submitPlan, runPhase, resolveEvent, decideGate, runOps, finishOps, results, debrief, reveal, summaryText, spent, quote,
   fmtE, fmtP, gain, clamp, endGame, gateCriteria };
@@ -2104,7 +2172,8 @@ const TERMS = {
   'Meilensteintrend': 'Wie sich der erwartete Termin eines Meilensteins von Sitzung zu Sitzung verschiebt. Rutscht er immer weiter nach hinten, ist das ein Frühwarnsignal.',
   'Proof of Concept': 'Ein kleiner, zeitlich begrenzter Versuch, der zeigt, ob der Lösungsansatz grundsätzlich trägt – bevor das große Budget fließt.',
   'Crashing': 'Terminverkürzung durch zusätzliche Ressourcen bei gleichem Leistungsumfang. Sie kostet immer extra, und nicht jede Arbeit wird schneller, wenn mehr Menschen daran arbeiten (Brooks: „Adding manpower to a late software project makes it later“).',
-  'Hypercare': 'Die Phase verstärkter Betreuung direkt nach dem Go-live – hier während des Pilotbetriebs –, bevor eine Lösung an den Betrieb übergeben wird.',
+  'Hypercare': 'Die Phase verstärkter Betreuung direkt nach dem Go-live – hier während der Erprobung des MVP beim Kunden –, bevor eine Lösung an den Betrieb übergeben wird.',
+  'MVP': 'Minimum Viable Product: die einfachste Version eines Produkts, die echte Nutzer schon einsetzen können. Sie hat gerade so viel Funktion, dass sich unter realen Bedingungen zeigt, ob das Produkt trägt – bevor weiter investiert wird. Hier: HILMAR mit dem neuen Modell beim ersten Logistikkunden.',
   'Baseline': 'Die Messlatte: hier das militärische Modell unter denselben zivilen Testbedingungen. Ohne sie lässt sich nicht sagen, ob das neue Modell besser ist.',
   'Übernahmequote': 'Anteil der Zustellungen, bei denen eine Fernpilotin oder ein Fernpilot übernehmen muss. Je niedriger, desto wirtschaftlicher.',
   'Drift': 'Das Modell wird im Betrieb schlechter, weil sich die Welt verändert, in der es eingesetzt wird – hier neue Einsatzgebiete.',
@@ -2333,7 +2402,7 @@ function milestoneRows(s) {
   rows.push(['Go-live', 'Monat ' + p.goLive, cell(fc, !s.goLive), dev(fc, p.goLive)]);
   rows.push(['Vertragsmeilenstein: Go-live beim Logistikkunden', 'Monat ' + CFG.contract, fc == null ? '–' : fc > CFG.contract ? '<span class="bad">verfehlt</span>' : '<span class="ok">' + (s.goLive ? 'gehalten' : 'erreichbar') + '</span>', '']);
   const up = fc == null ? null : fc + 1, upDone = s.stage === 'end' && s.goLive;
-  rows.push(['Übergabe Pilot', 'Monat ' + (p.goLive + 1), cell(up, !upDone), dev(up, p.goLive + 1)]);
+  rows.push(['Übergabe MVP', 'Monat ' + (p.goLive + 1), cell(up, !upDone), dev(up, p.goLive + 1)]);
   const g4 = gate[4] != null && (s.stage === 'end' || (s.stage === 'gate' && s.gate && s.gate.k === 4)) ? gate[4] : null;
   const hoIst = g4 != null ? g4 : fc == null ? null : fc + CFG.hcMonths + (s.hcExt || 0);
   rows.push(['Quality Gate 4: ' + QG_NAMES[4], 'Monat ' + p.close, cell(hoIst, g4 == null), dev(hoIst, p.close)]);
@@ -2385,7 +2454,7 @@ function renderLage(s) {
     h += '<div class="stat"><div class="small">' + term('Übernahmequote') + ' gemessen: <b class="num">' + fmtP(PS.quote(s.meas)) + '</b></div>';
     h += s.B ? '<div class="small">Militärisches Modell: <b class="num">' + fmtP(CFG.baseQuote) + '</b> · Übernahmen gesenkt um <b class="num">' + fmtP(s.meas) + '</b></div>'
       : '<div class="unknown">keine Baseline – kein Vergleichsmaßstab</div>';
-    if (s.pilotImp !== null && s.pilot) h += '<div class="small">Im Test unter Einsatzbedingungen: Übernahmen gesenkt um <b class="num">' + fmtP(s.pilotImp) + '</b></div>';
+    if (s.pilotImp !== null && s.pilot) h += '<div class="small">Im Test des MVP unter realen Bedingungen: Übernahmen gesenkt um <b class="num">' + fmtP(s.pilotImp) + '</b></div>';
     h += '</div>';
   } else if (s.plan) h += '<div class="unknown">Modell noch nicht trainiert</div>';
   h += '<h3>Menschen und Wissen</h3>' + barStat('Klarheit über das Ziel', s.P, 100) + barStat('KI-Kompetenz der Fernpiloten', s.L, 100) + barStat('Wissen im eigenen Haus', s.K, 100);
@@ -2619,7 +2688,7 @@ function planungResult() {
 }
 
 /* ---------- „Willst Du das so entscheiden?“ ---------- */
-const rvList = (items, cls) => '<ul class="review ' + cls + '">' + items.map(x => '<li>' + (x.lever ? '<b>' + esc(x.lever) + ' (' + x.pts + (x.pts === 1 ? ' Punkt' : ' Punkte') + '):</b> ' : '') + esc(x.t) + '</li>').join('') + '</ul>';
+const rvList = (items, cls) => '<ul class="review ' + cls + '">' + items.map(x => '<li>' + (x.lever ? '<b>' + esc(x.lever) + (x.pts != null ? ' (' + x.pts + (x.pts === 1 ? ' Punkt' : ' Punkte') + ')' : '') + ':</b> ' : '') + esc(x.t) + '</li>').join('') + '</ul>';
 function renderConfirm() {
   const c = ui.confirm, s = G;
   let title = '', intro = '', pro = [], con = [], yes = 'Ja, so entscheiden';
@@ -2643,6 +2712,12 @@ function renderConfirm() {
     intro = '<p class="small"><b>Deine Wahl:</b> ' + esc(o.t) + ' · ' + esc(o.c) + '</p>';
     if (o.pro) pro = [{ t: o.pro }];
     if (o.con) con = [{ t: o.con }];
+  } else if (c.kind === 'plan') {
+    const r = PS.planReview(Object.assign({ opsLevel: 'std' }, ui.planSel), ui.planImp);
+    const p = PS.computePlan(ui.planSel, ui.planImp, G.vpMonths, G.method, G.staff);
+    title = 'Dein Business Case';
+    intro = '<p class="estimate">Go-live in Monat <b>' + p.goLive + '</b>, Investition bis zum Go-live <b class="num">' + fmtE(p.invest) + '</b>, Ergebnis nach ' + CFG.horizon + ' Monaten <b class="num">' + fmtE(p.cum[CFG.horizon]) + '</b>.</p>';
+    pro = r.pro; con = r.con; yes = 'Ja, so einreichen';
   } else if (c.kind === 'gate') {
     title = 'Projekt beenden?';
     intro = '<p class="small"><b>Deine Wahl:</b> ' + esc((s.gate.decisions.find(d => d.id === c.dec) || {}).t || 'Projekt beenden') + '</p>';
@@ -2652,6 +2727,7 @@ function renderConfirm() {
   return '<div class="card fade confirm"><p class="kicker">Entscheidung prüfen</p><h2>' + esc(title) + '</h2>' + intro +
     '<div class="two rv"><div><h3 class="rv-h pro">Was dafür spricht</h3>' + (pro.length ? rvList(pro, 'pro') : '<p class="muted small">Nichts Besonderes.</p>') + '</div>' +
     '<div><h3 class="rv-h con">Was Du in Kauf nimmst</h3>' + (con.length ? rvList(con, 'con') : '<p class="muted small">Nichts Wesentliches.</p>') + '</div></div>' +
+    '<p class="rv-note">Die Vor- und Nachteile geben die Einschätzung des Dozenten wieder. Sie sind nicht Bestandteil der TÜV-Zertifizierungsprüfung.</p>' +
     '<p class="ask">Willst Du das so entscheiden?</p><div class="actions"><button class="btn" data-go="yes" data-fk="yes">' + yes + '</button><button class="btn ghost" data-go="no" data-fk="no">Nein, zurück zur Entscheidung</button></div></div>';
 }
 
@@ -2665,13 +2741,20 @@ function milestonePlan(p) {
   rows.push({ m: p.goLive, t: 'Freigabe für den Go-live', a: 'Meilenstein', o: 4.1 });
   rows.push({ m: p.goLive, t: 'Go-live', a: 'Meilenstein', o: 4.2 });
   rows.push({ m: CFG.contract, t: 'Go-live beim Logistikkunden', a: 'Meilenstein (vertraglich)', o: 4.3 });
-  rows.push({ m: p.goLive + 1, t: 'Übergabe Pilot', a: 'Meilenstein', o: 4.4 });
+  rows.push({ m: p.goLive + 1, t: 'Übergabe MVP', a: 'Meilenstein', o: 4.4 });
   rows.push({ m: p.close, t: 'Quality Gate 4: ' + QG_NAMES[4], a: 'Quality Gate', o: 5 });
   rows.push({ m: p.close, t: 'Übergabe Betrieb', a: 'Meilenstein', o: 5.1 });
   rows.push({ m: p.goLive + 12, t: 'Überprüfung Business Case', a: 'Meilenstein', o: 6 });
   rows.sort((a, b) => a.m - b.m || a.o - b.o);
   return '<table class="cmp ms"><thead><tr><th>Meilenstein oder Quality Gate</th><th>Art</th><th>Monat</th></tr></thead><tbody>' +
     rows.map(r => '<tr' + (r.a.indexOf('vertraglich') > 0 && p.goLive > CFG.contract ? ' class="warnrow"' : '') + '><td>' + esc(r.t) + '</td><td>' + esc(r.a) + '</td><td class="num">' + r.m + '</td></tr>').join('') + '</tbody></table>';
+}
+function planChecks(kind) {
+  return '<div class="checks">' + PS.PLAN_ITEMS.filter(it => it.kind === kind).map(it => {
+    const on = !!ui.planSel[it.id];
+    const label = esc(it.label).replace(/\bMVP\b/, () => term('MVP'));
+    return '<label class="check' + (on ? ' on' : '') + (kind === 'minus' ? ' minus' : '') + '"><input type="checkbox" data-plan-item="' + it.id + '" data-fk="pi-' + it.id + '"' + (on ? ' checked' : '') + '><span><b>' + label + '</b><span>' + esc(PS.planItemHint(it, G.staff)) + '</span></span></label>';
+  }).join('') + '</div>';
 }
 function renderPlan() {
   const vp = G.vpMonths;
@@ -2692,12 +2775,12 @@ function renderPlan() {
     planRow('Amortisation', pb(e), pb(p)) +
     planRow('Ergebnis nach ' + CFG.horizon + ' Monaten', fmtE(e.cum[CFG.horizon]), fmtE(p.cum[CFG.horizon])) +
     '</tbody></table>' +
-    '<h3>Was fehlt im Erstentwurf?</h3><p class="small muted">Wähle aus, was Du in den Business Case aufnimmst. Jeder Posten macht ihn teurer – und vielleicht ehrlicher.</p><div class="checks">';
-  PS.PLAN_ITEMS.forEach(it => {
-    const on = !!ui.planSel[it.id];
-    h += '<label class="check' + (on ? ' on' : '') + '"><input type="checkbox" data-plan-item="' + it.id + '" data-fk="pi-' + it.id + '"' + (on ? ' checked' : '') + '><span><b>' + esc(it.label) + '</b><span>' + esc(PS.planItemHint(it, G.staff)) + '</span></span></label>';
-  });
-  h += '</div><h3>Mit welcher Senkung der Übernahmen rechnest Du?</h3>' +
+    '<h3>Was fehlt im Erstentwurf?</h3><p class="small muted">Wähle aus, was Du in den Business Case aufnimmst. Jeder Posten macht ihn teurer – und vielleicht ehrlicher.</p>' + planChecks('plus') +
+    '<h3>Wo lässt sich sparen?</h3><p class="small muted">Diese Posten machen den Business Case billiger oder schneller. Was Du hier abziehst, gilt auch im Projekt – mit allen Folgen.</p>' + planChecks('minus') +
+    '<h3>Hypercare, Monitoring und Nachtraining</h3><p class="small muted">Sind in jedem Business Case enthalten. Du legst nur den Umfang fest – er bestimmt die laufenden Kosten und wie viele Kapazitätspunkte Dir nach dem Go-live zur Verfügung stehen.</p>' +
+    '<div class="seg-ctl opslvl" role="group" aria-label="Umfang von Hypercare, Monitoring und Nachtraining">' +
+    ['min', 'std', 'plus'].map(k => { const L = PS.OPS_LEVELS[k]; return '<button data-opslevel="' + k + '" data-fk="ops-' + k + '" aria-pressed="' + ((ui.planSel.opsLevel || 'std') === k) + '">' + esc(L.t) + ' <span class="muted">· ' + fmtE(CFG.infra + L.cost) + '/Monat · ' + L.kp + ' Punkte</span></button>'; }).join('') + '</div>' +
+    '<h3>Mit welcher Senkung der Übernahmen rechnest Du?</h3>' +
     '<p class="small muted">Mit dem militärischen Modell liegt die ' + term('Übernahmequote') + ' im zivilen Test bei ' + CFG.baseQuote + ' % – so ist der zivile Betrieb nicht wirtschaftlich. Nach Rechnung des Vertriebs bringt jedes Prozent weniger Übernahmen rund ' + fmtE(CFG.potYear / 100) + ' Deckungsbeitrag pro Jahr, wenn alle Einsätze autonom geflogen werden. Zielgröße für das Modell: Übernahmen um mindestens ' + CFG.target + ' % senken.</p>' +
     '<div class="seg-ctl" role="group" aria-label="Senkung der Übernahmen">' +
     [25, 20, 15].map(v => '<button data-imp="' + v + '" data-fk="imp-' + v + '" aria-pressed="' + (ui.planImp === v) + '">' + v + ' %' + (v === 25 ? ' (Erstentwurf)' : v === 15 ? ' (Zielgröße)' : '') + '</button>').join('') + '</div>';
@@ -2707,7 +2790,7 @@ function renderPlan() {
   }
   h += '<h3>Dein Meilensteinplan</h3><p class="small muted">Jeder ' + term('Meilenstein') + ' markiert einen Zeitpunkt, jedes ' + term('Quality Gate') + ' eine Entscheidung anhand von Kriterien.</p>' + milestonePlan(p);
   if (p.goLive > CFG.contract) h += '<div class="msg bad">Dein überarbeiteter Business Case verfehlt den Vertragsmeilenstein um ' + (p.goLive - CFG.contract) + (p.goLive - CFG.contract === 1 ? ' Monat' : ' Monate') + '. Schon im Business Case einen Verzug einzugestehen ist ehrlich – teuer wird er trotzdem.</div>';
-  h += '<div class="actions"><button class="btn" data-go="plan" data-fk="go-plan">Business Case beim Lenkungsausschuss einreichen</button></div></div>';
+  h += '<div class="actions"><button class="btn" data-go="plan-check" data-fk="go-plan">Business Case prüfen</button><span class="small muted">Vor dem Einreichen siehst Du Vor- und Nachteile Deines Business Case.</span></div></div>';
   return h;
 }
 
@@ -2734,11 +2817,11 @@ function crashCard(s) {
   if (ci.possible) {
     h += '<p>Externe Berater verkürzen diese Phase um einen Monat. Kosten: <b class="num">' + fmtE(ci.fee) + '</b> zusätzlich – die Arbeit des Kernteams bleibt gleich, sie wird nur verdichtet.' +
       (ph.key === 'modell' ? ' Vorsicht: Modellentwicklung lässt sich schlecht beschleunigen. Neue Leute brauchen Einarbeitung, Experimente brauchen Rechenzeit.' : '') +
-      (ph.key === 'einfuehrung' ? ' Der Test unter Einsatzbedingungen läuft dann parallel zur Integration.' + (ci.wait ? ' Die Wartezeit auf die Registrierung verkürzen die Berater nicht.' : '') : '') + '</p>' +
+      (ph.key === 'einfuehrung' ? ' Der Test des MVP läuft dann parallel zur Integration.' + (ci.wait ? ' Die Wartezeit auf die Registrierung verkürzen die Berater nicht.' : '') : '') + '</p>' +
       '<label class="opt"><input type="checkbox" data-crash data-fk="crash"' + (ui.crash ? ' checked' : '') + '> Phase mit externen Beratern beschleunigen (+' + fmtE(ci.fee) + ')</label>';
   } else {
     h += '<p class="muted">' + (ci.reason === 'plan' ? 'Du liegst im Plan, und der Vertragsmeilenstein ist nicht gefährdet – kein Anlass zur Beschleunigung.'
-      : ph.key === 'einfuehrung' ? 'Die Arbeit dauert nur einen Monat – kürzer geht nicht. Mit Test unter Einsatzbedingungen ließe sich der Test parallel zur Integration fahren.' + (ci.wait ? ' Die Wartezeit auf die Registrierung lässt sich ohnehin nicht verkürzen.' : '')
+      : ph.key === 'einfuehrung' ? 'Die Arbeit dauert nur einen Monat – kürzer geht nicht. Mit Test des MVP unter realen Bedingungen ließe sich der Test parallel zur Integration fahren.' + (ci.wait ? ' Die Wartezeit auf die Registrierung lässt sich ohnehin nicht verkürzen.' : '')
       : 'Diese Phase dauert nur einen Monat – kürzer geht nicht.') + '</p>';
   }
   return h + '</div></div>';
@@ -2765,7 +2848,7 @@ function renderAlloc() {
   const used = allocSum(), remaining = capTotal - used;
   const extCost = extCostOf(s);
   let h = '<div class="card fade">';
-  if (ops) h += '<p class="kicker">Phase 3 von 3 · Teil 2: ' + esc(ph.partName) + ' · Go-live und Pilotbetrieb ab Monat ' + s.goLive + ' · ' + term('Hypercare') + ' bis Monat ' + (s.goLive + CFG.hcMonths) + '</p>';
+  if (ops) h += '<p class="kicker">Phase 3 von 3 · Teil 2: ' + esc(ph.partName) + ' · Go-live und Erprobung des ' + term('MVP') + ' ab Monat ' + s.goLive + ' · ' + term('Hypercare') + ' bis Monat ' + (s.goLive + CFG.hcMonths) + '</p>';
   else {
     const planStart = s.plan.starts[s.phase], behind = s.month - planStart;
     h += '<p class="kicker">Phase ' + ph.ph + ' von 3' + (ph.part ? ' · Teil 1: ' + esc(ph.partName) : '') + ' · ab Monat ' + s.month + (behind > 0 ? ' · ' + behind + (behind === 1 ? ' Monat' : ' Monate') + ' hinter Plan' : ' · im Plan') + '</p>';
@@ -2774,7 +2857,7 @@ function renderAlloc() {
   h += '<div class="question"><small>Die Frage ' + (ph.part ? 'dieses Teils' : 'dieser Phase') + '</small>' + esc(ph.question) + '</div>';
   if (!ops && s.staff) h += '<p class="small teamline"><b>Dein Team in dieser Phase:</b> ' + esc(PS.ROLES.filter(r => PS.hasRole(s.staff, r.id, s.phase)).map(r => r.t).join(', ')) + '</p>';
   if (!ops && s.pull && s.pull[s.phase]) h += '<div class="msg warn"><b>Agiler Alltag:</b> ' + esc(PS.PULL_TEXT[s.phase]) + ' Dir stehen in dieser Phase ' + own + ' statt ' + PS.ownCap(s) + ' eigene Kapazitätspunkte zur Verfügung.</div>';
-  if (ops) h += '<p class="lead small">HILMAR fliegt im Pilotbetrieb beim Logistikkunden. Nach einem Monat übergibt das Projektteam den Pilotbetrieb an die Fernpiloten des Kunden (Meilenstein „Übergabe Pilot“). Nach zwei Monaten Hypercare entscheidet der Lenkungsausschuss am Quality Gate 4 „' + QG_NAMES[4] + '“ über den kommerziellen Betrieb und die Übergabe an den Betrieb; danach läuft das Monitoring regelmäßig weiter. Du planst bis zu ' + CFG.opsKpMax + ' Punkte: Das Hypercare-Team kostet ' + fmtE(CFG.hcCost) + ' je Punkt und Monat, aber nur während der Hypercare; alle anderen Punkte kosten dauerhaft ' + fmtE(CFG.opsKpCost) + ' pro Monat.</p>';
+  if (ops) h += '<p class="lead small">HILMAR fliegt als ' + term('MVP') + ' beim Logistikkunden. Nach einem Monat übergibt das Projektteam das MVP an die Fernpiloten des Kunden (Meilenstein „Übergabe MVP“). Nach zwei Monaten Hypercare entscheidet der Lenkungsausschuss am Quality Gate 4 „' + QG_NAMES[4] + '“ über den kommerziellen Betrieb und die Übergabe an den Betrieb; danach läuft das Monitoring regelmäßig weiter. Laut Business Case (Umfang „' + esc(PS.opsLevel(s.plan.sel).t) + '“) planst Du bis zu ' + PS.ownCap(s) + ' Punkte: Das Hypercare-Team kostet ' + fmtE(CFG.hcCost) + ' je Punkt und Monat, aber nur während der Hypercare; alle anderen Punkte kosten dauerhaft ' + fmtE(CFG.opsKpCost) + ' pro Monat.</p>';
   // Kapazität: einfarbige Punkte – verteilt oder frei; die Herkunft steht im Text
   let pips = '';
   for (let i = 0; i < capTotal; i++) pips += '<span class="pip' + (i >= used ? ' free' : '') + '"></span>';
@@ -2881,9 +2964,9 @@ function renderGate() {
     }
   }
   if (g.pilot) {
-    h += '<div class="metric"><div><span>Im Test unter Einsatzbedingungen: Übernahmen gesenkt um</span><b>' + fmtP(g.pilot.imp) + '</b></div><div><span>In der Validierung gemessen</span><b>' + fmtP(g.pilot.meas) + '</b></div><div><span>Zielgröße</span><b>≥ ' + CFG.target + ' %</b></div></div>';
-    if (g.pilot.gap > 6) h += '<div class="msg bad">Der Test unter Einsatzbedingungen bleibt deutlich hinter der Validierung zurück. Irgendetwas an der Validierung war zu optimistisch.</div>';
-    else h += '<div class="msg ' + (g.pilot.pass ? 'ok' : 'warn') + '">' + (g.pilot.pass ? 'Der Test unter Einsatzbedingungen bestätigt die Validierung.' : 'Der Test unter Einsatzbedingungen bestätigt die Validierung, verfehlt aber die Zielgröße.') + '</div>';
+    h += '<div class="metric"><div><span>Im Test des MVP: Übernahmen gesenkt um</span><b>' + fmtP(g.pilot.imp) + '</b></div><div><span>In der Validierung gemessen</span><b>' + fmtP(g.pilot.meas) + '</b></div><div><span>Zielgröße</span><b>≥ ' + CFG.target + ' %</b></div></div>';
+    if (g.pilot.gap > 6) h += '<div class="msg bad">Der Test des MVP bleibt deutlich hinter der Validierung zurück. Irgendetwas an der Validierung war zu optimistisch.</div>';
+    else h += '<div class="msg ' + (g.pilot.pass ? 'ok' : 'warn') + '">' + (g.pilot.pass ? 'Der Test des MVP bestätigt die Validierung.' : 'Der Test des MVP bestätigt die Validierung, verfehlt aber die Zielgröße.') + '</div>';
   }
   h += '<h3>Was berichtest Du dem Lenkungsausschuss?</h3><div class="reports" role="radiogroup">';
   g.reports.forEach(r => {
@@ -3108,12 +3191,14 @@ $('main').addEventListener('click', ev => {
     if (c.kind === 'planung') act(['planung', msSeq().slice(), JSON.parse(JSON.stringify(staffSel()))]);
     else if (c.kind === 'phase') { const ci = PS.crashInfo(G, ui.alloc); act(['phase', Object.assign({}, ui.alloc), ui.ext, ui.ext > 0 && ui.transfer, !!(ui.crash && ci && ci.possible)]); }
     else if (c.kind === 'ops') act(['ops', Object.assign({}, ui.alloc)]);
+    else if (c.kind === 'plan') act(['plan', Object.assign({ opsLevel: 'std' }, ui.planSel), ui.planImp]);
     else if (c.kind === 'event') act(['event', c.i]);
     else if (c.kind === 'gate') act(['gate', ui.report, c.dec]);
     return;
   }
   if (d.imp) { ui.planImp = +d.imp; render(); return; }
-  if (d.go === 'plan') { act(['plan', Object.assign({}, ui.planSel), ui.planImp]); return; }
+  if (d.opslevel) { ui.planSel.opsLevel = d.opslevel; render(); return; }
+  if (d.go === 'plan-check') { ui.confirm = { kind: 'plan' }; render(true); return; }
   if (d.lev) {
     const ph = PS.PHASES[G.phase], lv = ph.levers.find(l => l.id === d.lev);
     const cap = PS.phaseCap(G) + (G.phase === PS.OPS ? 0 : ui.ext);
