@@ -593,8 +593,7 @@ const CFG = {
   trustDown: 1.25,               // Vertrauen geht schneller verloren, als es entsteht: Verluste zählen 1,25-fach
   overCeil: 60,                  // nach einer Nachbewilligung ist das Vertrauen höchstens 60 (Mitte der Zone „normal“), danach folgt der Abzug
   overBase: 8, overRepBase: 3, overSlope: 15, overCap: 20,   // Nachbewilligung: Sockel (beim ersten Mal höher) plus 15 Punkte je 100 % neuer Überschreitung über 10 % (vor dem Faktor oben)
-  delayPen: 1,                   // je Monat neuer Terminverzug am Quality Gate, solange der Vorvertrag nicht gefährdet ist (Zeit für Qualität)
-  delayPenRisk: 5,               // je Monat neuer Terminverzug, wenn der Go-live nach dem Termin des Vorvertrags droht
+  delayPen: 1,                   // je Monat neuer Terminverzug am Quality Gate: Zeit für Qualität nimmt der Lenkungsausschuss eher hin
   intWeight: 0.35,               // Mehrkosten aus internen Teamkosten wiegen beim Lenkungsausschuss nur gut ein Drittel so schwer wie Zahlungen an Externe
   qualPen: 2, qualCap: 6,        // je nicht erfülltem Kriterium an Quality Gate 1–3 (höchstens 6)
   stopBelow: 15,                 // darunter stoppt der Lenkungsausschuss das Projekt an einem Quality Gate
@@ -1941,10 +1940,9 @@ function makeGate(s) {
     const dM = actM - planM, newDelay = dM - (s.lastDelay || 0);
     const risk = forecastGoLive(s, k) > CFG.contract;   // droht der Go-live nach dem Termin des Vorvertrags?
     if (dM > 0 && newDelay > 0) {
-      trust(s, -(risk ? CFG.delayPenRisk : CFG.delayPen) * newDelay); s.lastDelay = dM;
-      g.msgs.push({ k: risk ? 'bad' : 'warn', t: 'Terminverzug: Monat ' + actM + ' statt Monat ' + planM + ' laut Plan' + (dM > newDelay ? ', ' + (newDelay === 1 ? 'ein Monat' : (NUMW[newDelay] || newDelay) + ' Monate') + ' mehr als beim letzten Quality Gate' : '') + '. ' +
-        (risk ? (newDelay >= 2 ? 'Damit ist der Vorvertrag gefährdet – der Lenkungsausschuss ist verärgert, das Vertrauen sinkt deutlich.' : 'Damit ist der Vorvertrag gefährdet – der Lenkungsausschuss reagiert empfindlich, das Vertrauen sinkt.')
-          : 'Der Termin des Vorvertrags ist nicht gefährdet: Der Lenkungsausschuss runzelt die Stirn, akzeptiert aber zusätzliche Zeit, wenn sie der Qualität dient.') });
+      trust(s, -CFG.delayPen * newDelay); s.lastDelay = dM;
+      g.msgs.push({ k: 'warn', t: 'Terminverzug: Monat ' + actM + ' statt Monat ' + planM + ' laut Plan' + (dM > newDelay ? ', ' + (newDelay === 1 ? 'ein Monat' : (NUMW[newDelay] || newDelay) + ' Monate') + ' mehr als beim letzten Quality Gate' : '') + '. ' +
+        'Der Lenkungsausschuss runzelt die Stirn, akzeptiert aber zusätzliche Zeit, wenn sie der Qualität dient' + (risk ? ' – und erinnert an den Termin des Vorvertrags: Danach wird je Monat eine Vertragsstrafe fällig.' : '.') });
     } else if (dM > 0) g.msgs.push({ k: 'warn', t: 'Terminverzug: Monat ' + actM + ' statt Monat ' + planM + ' laut Plan – seit dem letzten Quality Gate nicht weiter gewachsen.' });
     const failed = (g.criteria || []).filter(c => c.ok === false);
     if (failed.length) {
@@ -2074,9 +2072,9 @@ function simulateOps(s) {
   // Zwei Drift-Ereignisse im Betrieb: neues Liefergebiet, später der erste Winter. Monitoring, Auswertung und Nachtraining wirken bei jedem.
   const DR = [
     { dm: g + 3 + Math.floor(s.rolls[3] * 3), sev: r1(10 + s.rolls[4] * 6),
-      t: 'Ein Kunde erweitert sein Liefergebiet auf ein Neubauviertel mit Glasfassaden und Solardächern. Die Spiegelungen kennt das Modell nicht, die Übernahmen nehmen zu (Drift).' },
+      t: 'Ein Kunde erweitert sein Liefergebiet auf ein Neubauviertel mit Glasfassaden und Solardächern. Die Spiegelungen kennt das Modell nicht, die Übernahmen nehmen zu (Drift). ' + (s.C < 60 ? 'Das hätte das Projekt voraussehen können: Solche Fassaden fehlten in den Trainingsdaten, die Datenabdeckung war knapp.' : 'Trotz guter Datenabdeckung lässt sich nicht jede neue Umgebung vorhersehen.') + ' Bis das Modell nachtrainiert ist, kann der Kunde im neuen Gebiet nicht wie zugesagt beliefert werden – darauf reagiert der Lenkungsausschuss empfindlich.' },
     { dm: g + 12 + Math.floor(s.rolls[14] * 4), sev: r1(8 + s.rolls[15] * 6),
-      t: 'Der erste Winter im Betrieb: Schnee und Eis auf Balkonen, Dächern und Paketstationen – Bilder, die in den Trainingsdaten kaum vorkommen. Die Übernahmen nehmen wieder zu (Drift).' },
+      t: 'Der erste Winter im Betrieb: Schnee und Eis auf Balkonen, Dächern und Paketstationen – Bilder, die in den Trainingsdaten kaum vorkommen. Die Übernahmen nehmen wieder zu (Drift). Den Winter hätte das Projekt einplanen können; bis zum Nachtraining liefert HILMAR nicht so zuverlässig wie zugesagt.' },
   ].filter(d => d.dm <= H).map(d => Object.assign(d, { detected: null, restored: null }));
   const dm = DR.length ? DR[0].dm : H + 1, sev = DR.length ? DR[0].sev : 0;
   const delay = Math.max(0, Math.round(5 - 2.5 * s.M - 2.5 * monEval - 1.0 * L / 100));   // regelmäßige Auswertung: Drift fällt früher auf
@@ -2310,6 +2308,7 @@ const TERMS = {
   'Hypercare': 'Die Phase verstärkter Betreuung direkt nach dem Go-live – hier während der Erprobung des MVP beim Kunden –, bevor eine Lösung an den Betrieb übergeben wird.',
   'MVP': 'Minimum Viable Product: die einfachste Version eines Produkts, die echte Nutzer schon einsetzen können. In der agilen Methodik dienen iterative Deployment-Zyklen dazu, einen MVP zu erzeugen, der dabei hilft, frühzeitig Nutzerfeedback zu sammeln und dadurch das Projektrisiko zu reduzieren. Ein MVP hat gerade so viel Funktion, dass sich unter realen Bedingungen zeigt, ob das Produkt trägt – bevor weiter investiert wird. Hier: HILMAR mit dem neuen Modell beim ersten Logistikkunden.',
   'Baseline': 'Die Messlatte: hier das militärische Modell unter denselben zivilen Testbedingungen. Ohne sie lässt sich nicht sagen, ob das neue Modell besser ist.',
+  'Corporate Digital Responsibility (CDR)': 'Freiwillige Verantwortung eines Unternehmens für die Folgen seiner Digitalisierung, über das gesetzlich Geforderte hinaus. Der CDR-Kodex der deutschen CDR-Initiative nennt unter anderem Klima- und Ressourcenschutz als Handlungsfeld.',
   'Kritische Erfolgsfaktoren (KEF)': 'Elemente, die Du in Dein Projekt einbeziehst, damit die Erfolgskriterien wahrscheinlicher erfüllt werden – etwa ein klares Ziel, gute Daten oder Kompetenz im Team (IPMA ICB 4, 4.3.1.4 und 4.5.1.1).',
   'Erfolgskriterien': 'Messgrößen, an denen die Stakeholder den Erfolg eines Projekts bewerten – etwa Kosten, Termine und Nutzen (IPMA ICB 4, 4.5.1.1).',
   'REHO-Team': 'Die Menschen beim Logistikkunden, die aus der Ferne eingreifen, wenn die Drohne nicht selbst weiterkommt. REHO steht für „Remotely enacted human override“: Ein Mensch übernimmt aus der Ferne die Steuerung.',
@@ -2753,7 +2752,7 @@ function renderStart() {
     '<p class="lead"><strong>HILMAR</strong> (<strong>H</strong>ighly <strong>I</strong>ndependent <strong>L</strong>oad <strong>M</strong>aximising <strong>A</strong>erial <strong>R</strong>obot) soll das ändern: Die Drohnen sollen für zivile Einsätze angepasst werden – als zusätzliche Transportmöglichkeit für große Versand- und Logistikunternehmen und, als zweites Standbein, für die Sicherung besonders kritischer Gebäude und Einrichtungen. Die Machbarkeitsanalyse hält das Vorhaben für vielversprechend, aber schwierig in der Umsetzung. Du bist als Projektleitung vorgesehen.</p>' +
     '<div class="question"><small>Der KI-Kern des Projekts</small>Ein Modell erkennt Landeplätze und Hindernisse und entscheidet, ob die Drohne eine Zustellung selbst abschließt oder ob ein Mensch aus der Ferne übernehmen muss: das REHO-Team (REHO steht für „Remotely enacted human override“). Das militärische Modell kennt Gelände, Fahrzeuge und Tarnung – aber keine Balkone, Oberleitungen, spielenden Kinder und Paketstationen.</div>' +
     '<p class="lead">Der Vorstand stellt Dir <b>' + fmtE(CFG.startBudget) + '</b> als Startbudget zur Verfügung und erwartet als Ergebnis eines Vorprojekts nach <b>' + CFG.vpPlanWeeks + ' Wochen</b> u.a.: Go/no-Go-Empfehlung, Business Case, eine Ressourcen- und Budgetplanung sowie Meilensteine/Quality Gates für das Hauptprojekt.</p>' +
-    '<p class="lead">Und der Vertrieb hat (wie es so die Art guter Vertriebler ist) schon etwas versprochen: Der erste Logistikkunde soll HILMAR <b>spätestens in Monat ' + CFG.contract + ' nach dem erfolgreichen "Proof of Concept" (PoC)</b> einsetzen (Go-live). Dafür soll nach der Freigabe ein entsprechender Vorvertrag inkl. einer potenziellen Vertragsstrafe von ' + fmtE(CFG.penalty) + ' je Monat Verzug unterschrieben werden.</p>' +
+    '<p class="lead">Und der Vertrieb hat (wie es so die Art guter Vertriebler ist) schon etwas versprochen: Der erste Logistikkunde soll HILMAR <b>spätestens in Monat ' + CFG.contract + ' nach dem erfolgreichen „Proof of Concept“ (PoC)</b> einsetzen (Go-live). Dafür soll nach der Freigabe ein entsprechender Vorvertrag inkl. einer potenziellen Vertragsstrafe von ' + fmtE(CFG.penalty) + ' je Monat Verzug unterschrieben werden.</p>' +
     '<h3>So läuft das Spiel</h3><ol class="small" style="padding-left:20px;margin:0">' +
     '<li>Vorprojekt: Du ordnest die SWOT-Analyse, wählst die Projektmethode und planst die Aktivitäten – Reihenfolge und Gründlichkeit. Jede Aktivität kostet Zeit und Geld.</li>' +
     '<li>Quality Gate 0: Du legst dem Lenkungsausschuss den Business Case für das Hauptprojekt vor.</li>' +
@@ -2929,6 +2928,7 @@ function renderPlanung() {
   h += '</ol>';
   h += '<h3>2. Dein Team je Phase</h3>' +
     '<div class="msg info staffinfo"><b>Kosten:</b> Jede Person kostet ' + fmtE(PS.ROLE_WEEK) + ' pro Einsatzwoche. Wir unterscheiden dabei nicht zwischen internen und externen Ressourcen. In der Realität würde dieser Unterschied die Budget- und Ressourcenplanung beeinflussen – etwa über Tagessätze, Verfügbarkeit und die Frage, ob das Wissen nach dem Projekt im Haus bleibt.</div>' +
+    '<div class="msg info"><b>Trainingsdaten sind eine kritische Ressource – plane sie wie Personal.</b> Welche Daten sind verfügbar und dürfen genutzt werden? Taugt ihre Qualität? Und wer bereitet sie auf, mit welcher Kapazität? Fehlt eines davon, wird es zum Engpass für das ganze Projekt. Im Spiel entscheidet die Datenbasis aus Phase 1, ob das Modell eine zweite Runde braucht.</div>' +
     '<p class="small muted">Wer in einer Phase eingeplant ist, arbeitet die ganze Phase mit. In Phase 3 gilt eine Ausnahme: Im Test des MVP und in Wartezeiten bleibt nur das Kernteam – die übrigen gehen zurück in die Linie, die Teamkosten halbieren sich. Eine Rolle kann in einer oder in mehreren Phasen mitarbeiten. Das Team in Phase 3 arbeitet bis zum Go-live; die Hypercare planst Du danach gesondert. Fehlt eine Rolle, wirken die Aktivitäten, für die sie gebraucht wird, nur halb so stark.</p>';
   h += '<div class="tscroll"><table class="cmp staff"><thead><tr><th>Rolle</th>' + [0, 1, 2].map(k => '<th class="c">' + tip('Phase ' + (k + 1), PS.PHASE_NAMES[k]) + '</th>').join('') + '</tr></thead><tbody>';
   PS.ROLES.forEach(r => {
@@ -3039,7 +3039,9 @@ function renderPlan() {
     planRow('Amortisation', pb(e), pb(p)) +
     planRow('Ergebnis nach ' + CFG.horizon + ' Monaten', fmtE(e.cum[CFG.horizon]), fmtE(p.cum[CFG.horizon])) +
     '</tbody></table>' +
+    '<div class="msg info"><b>Was ein KI-Budget eigens braucht:</b> Rechne nicht nur mit Personal. Ein KI-Vorhaben braucht eigene Posten für Lizenzen (Daten, Software, Modelle), für Rechenleistung und Speicher in der Cloud – beim Training wie im Betrieb – und für externe Fachleute, wo im eigenen Haus Wissen fehlt, etwa in Data Science. Im Spiel stecken sie in den externen Daten (Phase 1), der Infrastruktur im Betrieb und der externen Unterstützung.</div>' +
     '<h3>Was würdest Du zum Erstentwurf hinzufügen?</h3><p class="small muted">Wähle aus, was Du in den Business Case aufnimmst. Jeder Posten macht ihn teurer – und vielleicht ehrlicher.</p>' + planChecks('plus') +
+    '<div class="msg info"><b>Empfehlung: ' + term('Corporate Digital Responsibility (CDR)') + ' als Add-on.</b> CDR verankert ethische, soziale und ökologische Fragen in der KI-Governance. Für HILMAR heißt das zum Beispiel: Energie und CO₂ je Trainingslauf und je 1.000 Zustellungen messen, Training und Nachtraining in Stunden und Regionen mit sauberem Strom legen, Rechenzentren auch nach ihrem Strommix auswählen – und vorab fragen, ob jede Rechenlast nötig ist. Im Business Case dieses Spiels ist CDR kein eigener Posten.</div>' +
     '<h3>Wo lässt sich sparen?</h3><p class="small muted">Diese Posten machen den Business Case billiger oder schneller. Was Du hier abziehst, gilt auch im Projekt – mit allen Folgen.</p>' + planChecks('minus') +
     '<h3>Hypercare, Monitoring und Nachtraining</h3><p class="small muted">Sind in jedem Business Case enthalten. Du legst nur den Umfang fest – er bestimmt die laufenden Kosten und wie viele Kapazitätspunkte Dir nach dem Go-live zur Verfügung stehen.</p>' +
     '<div class="seg-ctl opslvl" role="group" aria-label="Umfang von Hypercare, Monitoring und Nachtraining">' +
@@ -3128,7 +3130,7 @@ function renderAlloc() {
   h += '<div class="capbox"><div class="cap"><div class="pips" aria-hidden="true">' + pips + '</div><span><b class="num">' + used + ' von ' + capTotal + '</b> ' + tip('Kapazitätspunkten', TERMS['Kapazitätspunkte']) + ' verteilt' +
     (ops ? '' : '<span class="cap-src">' + own + ' eigene' + (ui.ext ? ' + ' + ui.ext + ' zugekauft' : '') + '</span>') + '</span></div>';
   if (!ops) {
-    h += '<div class="extctl"><label for="extr">' + tip('Externe Unterstützung zukaufen', 'Bringt sofort zusätzliche Kapazitätspunkte, je Punkt ' + fmtE(extCost) + '. Das Wissen bleibt aber beim Partner, wenn Du keinen Wissenstransfer vereinbarst. Schiebst Du den Regler zurück, werden die zuletzt vergebenen Punkte wieder frei.') + '</label>' +
+    h += '<div class="extctl"><label for="extr">' + tip('Externe Unterstützung zukaufen', 'Bringt sofort zusätzliche Kapazitätspunkte, je Punkt ' + fmtE(extCost) + '. Externe Partner – etwa spezialisierte Start-ups oder Forschungseinrichtungen – bringen Spezialwissen schnell ins Projekt. Das Wissen bleibt aber beim Partner, wenn Du keinen Wissenstransfer vereinbarst. Schiebst Du den Regler zurück, werden die zuletzt vergebenen Punkte wieder frei.') + '</label>' +
       '<div class="ext-row"><div class="ext-slider"><input type="range" id="extr" min="0" max="' + CFG.extMax + '" step="1" value="' + ui.ext + '" data-extrange data-fk="ext-range" aria-valuetext="' + esc(extLabel(ui.ext, s)) + '">' +
       '<div class="ext-scale" aria-hidden="true">' + Array.from({ length: CFG.extMax + 1 }, (_, i) => '<span>' + i + '</span>').join('') + '</div></div>' +
       '<output id="extout" for="extr" class="num">' + esc(extLabel(ui.ext, s)) + '</output></div>' +
