@@ -582,7 +582,7 @@ const CFG = {
   transferCost: E(2000),         // Wissenstransfer-Klausel je Phase
   extMax: 5,                     // eigene Kapazität je Phase steht bei den Phasen (kp)
   potYear: E(1675000),           // Deckungsbeitragspotenzial p. a. bei 100 % weniger Übernahmen und voller Nutzung
-  baseQuote: 40,                 // Übernahmequote des militärischen Modells im zivilen Test (%)
+  baseQuote: 40,                 // Human Override Rate des militärischen Modells im zivilen Test (%)
   target: 15,                    // Zielgröße: Übernahmen um mind. 15 % senken
   maxImp: 32,
   infra: E(2000), monCost: E(1000), opsKpCost: E(600), opsKpMax: 7,
@@ -934,7 +934,7 @@ const PHASES = [
     question: 'Kommt das Modell dort an, wo geflogen wird – darf es dort fliegen, und hält es im Alltag?',
     levers: [
       { id: 'pilot', name: 'MVP unter realen Bedingungen testen', max: 5,
-        text: 'Das MVP (Minimum Viable Product: die einfachste einsatzfähige Version von HILMAR) fliegt vor dem Go-live in zwei Einsatzgebieten des Kunden, mit festen Abbruchregeln. Kostet einen Monat, zeigt die echte Übernahmequote. Weitere Punkte: mehr Einsatzgebiete und mehr Mitglieder des REHO-Teams im Test – das Ergebnis wird belastbarer, und mehr Mitglieder des REHO-Teams kennen HILMAR schon vor dem Go-live.' },
+        text: 'Das MVP (Minimum Viable Product: die einfachste einsatzfähige Version von HILMAR) fliegt vor dem Go-live in zwei Einsatzgebieten des Kunden, mit festen Abbruchregeln. Kostet einen Monat, zeigt die echte Human Override Rate. Weitere Punkte: mehr Einsatzgebiete und mehr Mitglieder des REHO-Teams im Test – das Ergebnis wird belastbarer, und mehr Mitglieder des REHO-Teams kennen HILMAR schon vor dem Go-live.' },
       { id: 'integration', name: 'Integration in die Leitstelle des Kunden', max: 5,
         text: 'Übernahme-Anforderungen der Drohne erscheinen direkt am Arbeitsplatz des REHO-Teams.' },
       { id: 'schulung', name: 'Training des REHO-Teams und der Disponenten', max: 5,
@@ -944,7 +944,7 @@ const PHASES = [
       { id: 'registrierung', name: 'Registrierungen vor dem Go-live', max: 5,
         text: 'Der Kunde muss als Betreiber der Drohnen beim Luftfahrt-Bundesamt registriert sein; je nach Einstufung aus Phase 1 muss HILMAR zusätzlich in die EU-Datenbank für KI-Systeme. Ohne Vorbereitung laufen die Anträge erst nach den Tests – der Go-live verschiebt sich um einen Monat. Weitere Punkte: Unterlagen und Abstimmungen mit den Behörden stehen früh.' },
       { id: 'monitoring', name: 'Monitoring einrichten', max: 5,
-        text: 'Übernahmequote und Drift laufend messen, jede Entscheidung mit Modellversion protokollieren.' },
+        text: 'Human Override Rate und Drift laufend messen, jede Entscheidung mit Modellversion protokollieren.' },
       { id: 'rueckfall', name: 'Rückfallebene', max: 5,
         text: 'Fällt das Modell aus, fliegt das REHO-Team geordnet und sicher manuell. Weitere Punkte: Die Rückfallebene wird regelmäßig geübt – bei Drift oder Ausfall leiden Vertrauen und Akzeptanz weniger.' },
     ] },
@@ -954,7 +954,7 @@ const PHASES = [
       { id: 'hypercare', name: 'Hypercare-Team', max: 5,
         text: 'Zwei Monate verstärkte Betreuung nach dem Go-live: Ansprechpartner vor Ort, schnelle Fehlerbehebung, tägliche Abstimmung.' },
       { id: 'auswertung', name: 'Monitoring regelmäßig auswerten', max: 5,
-        text: 'Jemand schaut jeden Monat auf Übernahmequote und Drift und schlägt Alarm.' },
+        text: 'Jemand schaut jeden Monat auf Human Override Rate und Drift und schlägt Alarm.' },
       { id: 'nachtraining', name: 'Nachtraining bereithalten', max: 5,
         text: 'Continuous Training: Ablauf und Kapazität für ein schnelles Retraining stehen bereit.' },
       { id: 'feedback', name: 'AI Champions und Rückmeldewege bei den Kunden', max: 5,
@@ -1349,17 +1349,17 @@ const LEVER_REVIEW = {
     helpdesk: { pro: 'Help Desk und betroffene Beschäftigte sind vorbereitet: Fragen nach dem Go-live laufen nicht ins Leere, die Akzeptanz steigt.', con: 'Help Desk und Belegschaft erfahren erst beim Go-live, was sich ändert – Unsicherheit und Rückfragen bremsen die Akzeptanz.' },
   },
   einfuehrung: {
-    pilot: { pro: 'Der Test des MVP unter realen Bedingungen zeigt die echte Übernahmequote vor dem Go-live – dafür dauert die Phase einen Monat länger.', con: 'Ohne Test des MVP bist Du einen Monat schneller, aber erst die MVP-Erprobung nach dem Go-live zeigt, ob die Validierung hält.' },
+    pilot: { pro: 'Der Test des MVP unter realen Bedingungen zeigt die echte Human Override Rate vor dem Go-live – dafür dauert die Phase einen Monat länger.', con: 'Ohne Test des MVP bist Du einen Monat schneller, aber erst die MVP-Erprobung nach dem Go-live zeigt, ob die Validierung hält.' },
     integration: { proAt: 2, conAt: 2, pro: 'Übernahme-Anforderungen erscheinen direkt am Arbeitsplatz des REHO-Teams.', con: 'Knappe Integration: Das REHO-Team arbeitet mit Behelfslösungen – im schlimmsten Fall verzögert die Schnittstelle den Go-live.' },
     schulung: { proAt: 2, pro: 'Ein geschultes REHO-Team vertraut dem Modell, wo es sicher ist, und greift ein, wo nicht.', con: 'Ein ungeschultes REHO-Team übernimmt im Zweifel lieber selbst – der Nutzen bleibt aus.' },
     doku: { pro: 'Data Cards und Model Card liegen vor – Grundlage für Abnahme, Registrierung und Rechtsprüfung.', con: 'Ohne Dokumentation fehlen Nachweise für Abnahme, Registrierung und Rechtsprüfung.' },
     registrierung: { pro: 'Die Anträge laufen parallel zu den Tests – kein Warten auf die Behörden.', con: 'Ohne Vorbereitung laufen die Anträge erst nach den Tests: ein Monat Warten vor dem Go-live.' },
-    monitoring: { pro: 'Übernahmequote und Drift werden laufend gemessen – Probleme fallen früh auf.', con: 'Ohne Monitoring merkt Ihr Drift erst an den Beschwerden des REHO-Teams.' },
+    monitoring: { pro: 'Human Override Rate und Drift werden laufend gemessen – Probleme fallen früh auf.', con: 'Ohne Monitoring merkt Ihr Drift erst an den Beschwerden des REHO-Teams.' },
     rueckfall: { pro: 'Fällt das Modell aus, fliegt das REHO-Team geordnet manuell weiter.', con: 'Ohne Rückfallebene gibt es bei einem Ausfall keinen geordneten Weg zurück zum manuellen Flug.' },
   },
   hypercare: {
     hypercare: { pro: 'Schnelle Hilfe in den ersten beiden Monaten – das stützt die Akzeptanz.', con: 'Ohne Hypercare-Team steht der Betrieb mit den Startproblemen allein da.' },
-    auswertung: { pro: 'Jemand schaut regelmäßig auf Übernahmequote und Drift und schlägt Alarm.', con: 'Niemand wertet das Monitoring regelmäßig aus – die Daten sind da, aber keiner schlägt Alarm.' },
+    auswertung: { pro: 'Jemand schaut regelmäßig auf Human Override Rate und Drift und schlägt Alarm.', con: 'Niemand wertet das Monitoring regelmäßig aus – die Daten sind da, aber keiner schlägt Alarm.' },
     nachtraining: { pro: 'Nachtraining steht bereit – nach einer Drift ist das Modell schnell wieder gut.', con: 'Kommt eine Drift, muss das Nachtraining erst organisiert werden – das kostet Zeit und Nutzen.' },
     feedback: { pro: 'AI Champions und feste Rückmeldewege verbessern Modell und Akzeptanz laufend.', con: 'Ohne Rückmeldewege versanden die Erfahrungen des REHO-Teams.' },
     wissen: { pro: 'Was beim externen Partner lag, geht ins eigene Haus über.', con: 'Wissen bleibt beim externen Partner – Nachtraining wird teurer und langsamer.' },
@@ -2186,7 +2186,7 @@ function kef(s) {
   return { factors, criteria };
 }
 
-// Leistung des Modells: Übernahmequote militärisches Modell (CFG.baseQuote) gegen das neue Modell
+// Leistung des Modells: Human Override Rate militärisches Modell (CFG.baseQuote) gegen das neue Modell
 function modelPerf(s) {
   if (s.trueImp === null) return [];
   const auto = imp => 100 - quote(imp), pp = imp => auto(imp) - auto(0);
@@ -2257,7 +2257,7 @@ const TERMS = {
   'Kritische Erfolgsfaktoren (KEF)': 'Elemente, die Du in Dein Projekt einbeziehst, damit die Erfolgskriterien wahrscheinlicher erfüllt werden – etwa ein klares Ziel, gute Daten oder Kompetenz im Team (IPMA ICB 4, 4.3.1.4 und 4.5.1.1).',
   'Erfolgskriterien': 'Messgrößen, an denen die Stakeholder den Erfolg eines Projekts bewerten – etwa Kosten, Termine und Nutzen (IPMA ICB 4, 4.5.1.1).',
   'REHO-Team': 'Die Menschen beim Logistikkunden, die aus der Ferne eingreifen, wenn die Drohne nicht selbst weiterkommt. REHO steht für „Remotely enacted human override“: Ein Mensch übernimmt aus der Ferne die Steuerung.',
-  'Übernahmequote': 'Anteil der Zustellungen, bei denen das REHO-Team übernehmen muss. Je niedriger, desto wirtschaftlicher.',
+  'Human Override Rate': 'Anteil der Zustellungen, bei denen das REHO-Team übernehmen muss. Je niedriger, desto wirtschaftlicher.',
   'Drift': 'Das Modell wird im Betrieb schlechter, weil sich die Welt verändert, in der es eingesetzt wird – hier ein neues Liefergebiet und der erste Winter.',
   'Lenkungsausschuss': 'Das Gremium, das Budget stufenweise freigibt und an den Quality Gates über den Fortgang entscheidet.',
   'Business Case': 'Die Begründung, warum sich das Projekt lohnt: Kosten, Nutzen, Risiken und Zeitpunkt.',
@@ -2546,7 +2546,7 @@ function renderLage(s) {
   else h += '<div class="unknown">Datenlage noch unbekannt' + (s.plan ? ' – sie zeigt sich im Laufe von Phase 1' : '') + '</div>';
   if (s.plan && (s.phase >= 1 || s.stage === 'gate' || s.stage === 'event')) h += '<div class="small" style="margin-top:8px">Risikokategorie nach EU AI Act: <b>' + (s.RK >= 1 ? 'geprüft' : 'nicht geprüft') + '</b></div>';
   if (s.known.model) {
-    h += '<div class="stat"><div class="small">' + term('Übernahmequote') + ' gemessen: <b class="num">' + fmtP(PS.quote(s.meas)) + '</b></div>';
+    h += '<div class="stat"><div class="small">' + term('Human Override Rate') + ' gemessen: <b class="num">' + fmtP(PS.quote(s.meas)) + '</b></div>';
     h += s.B ? '<div class="small">Militärisches Modell: <b class="num">' + fmtP(CFG.baseQuote) + '</b> · Übernahmen gesenkt um <b class="num">' + fmtP(s.meas) + '</b></div>'
       : '<div class="unknown">keine Baseline – kein Vergleichsmaßstab</div>';
     if (s.pilotImp !== null && s.pilot) h += '<div class="small">Im Test des MVP unter realen Bedingungen: Übernahmen gesenkt um <b class="num">' + fmtP(s.pilotImp) + '</b></div>';
@@ -2988,7 +2988,7 @@ function renderPlan() {
     '<div class="seg-ctl opslvl" role="group" aria-label="Umfang von Hypercare, Monitoring und Nachtraining">' +
     ['min', 'std', 'plus'].map(k => { const L = PS.OPS_LEVELS[k]; return '<button data-opslevel="' + k + '" data-fk="ops-' + k + '" aria-pressed="' + ((ui.planSel.opsLevel || 'std') === k) + '">' + esc(L.t) + ' <span class="muted">· ' + fmtE(CFG.infra + L.cost) + '/Monat · ' + L.kp + ' Punkte</span></button>'; }).join('') + '</div>' +
     '<h3>Mit welcher Senkung der Übernahmen rechnest Du?</h3>' +
-    '<p class="small muted">Mit dem militärischen Modell liegt die ' + term('Übernahmequote') + ' im zivilen Test bei ' + CFG.baseQuote + ' % – so ist der zivile Betrieb nicht wirtschaftlich. Nach Rechnung des Vertriebs bringt jedes Prozent weniger Übernahmen rund ' + fmtE(CFG.potYear / 100) + ' Deckungsbeitrag pro Jahr, wenn alle Einsätze autonom geflogen werden. Zielgröße für das Modell: Übernahmen um mindestens ' + CFG.target + ' % senken.</p>' +
+    '<p class="small muted">Mit dem militärischen Modell liegt die ' + term('Human Override Rate') + ' im zivilen Test bei ' + CFG.baseQuote + ' % – so ist der zivile Betrieb nicht wirtschaftlich. Nach Rechnung des Vertriebs bringt jedes Prozent weniger Übernahmen rund ' + fmtE(CFG.potYear / 100) + ' Deckungsbeitrag pro Jahr, wenn alle Einsätze autonom geflogen werden. Zielgröße für das Modell: Übernahmen um mindestens ' + CFG.target + ' % senken.</p>' +
     '<div class="seg-ctl" role="group" aria-label="Senkung der Übernahmen">' +
     [25, 20, 15].map(v => '<button data-imp="' + v + '" data-fk="imp-' + v + '" aria-pressed="' + (ui.planImp === v) + '">' + v + ' %' + (v === 25 ? ' (Erstentwurf)' : v === 15 ? ' (Zielgröße)' : '') + '</button>').join('') + '</div>';
   if (G.hints.sens) {
@@ -3152,7 +3152,7 @@ function lageBox(s) {
   rows.push([b.label, '<span class="' + b.cls + '">' + esc(b.value) + '</span>' + (b.sub ? ' <small>' + esc(b.sub) + '</small>' : '')]);
   if (s.nachbew) rows.push(['Nachbewilligungen', s.nachbew + '×']);
   if (s.known.data) rows.push(['Daten (von 100)', 'Qualität ' + Math.round(s.Q) + ' · Abdeckung ' + Math.round(s.C) + ' · Nutzungsrechte ' + Math.round(s.R)]);
-  if (s.known.model) rows.push(['Modell', s.B ? 'Übernahmen gesenkt um ' + fmtP(s.meas) + ' (Zielgröße ≥ ' + CFG.target + ' %)' : 'Übernahmequote ' + fmtP(PS.quote(s.meas)) + ' – ohne Baseline kein Vergleich']);
+  if (s.known.model) rows.push(['Modell', s.B ? 'Übernahmen gesenkt um ' + fmtP(s.meas) + ' (Zielgröße ≥ ' + CFG.target + ' %)' : 'Human Override Rate ' + fmtP(PS.quote(s.meas)) + ' – ohne Baseline kein Vergleich']);
   if (s.pilot && s.pilotImp !== null && s.phase >= 2) rows.push(['Test des MVP', 'Übernahmen gesenkt um ' + fmtP(s.pilotImp)]);
   if (s.staff && s.phase < PS.PRE) rows.push(['Team in dieser Phase', esc(PS.ROLES.filter(r => PS.hasRole(s.staff, r.id, Math.min(s.phase, 2))).map(r => r.t).join(', '))]);
   return '<div class="lagebox"><div class="lb-h">' + tip('Projektlage auf einen Blick', 'Die wichtigsten Zahlen für Deinen Bericht. Alle Einzelheiten stehen im Reiter „Projektlage“.') + '</div><dl>' +
@@ -3177,11 +3177,11 @@ function renderGate() {
   }
   if (g.metric) {
     if (g.metric.imp !== null) {
-      h += '<div class="metric"><div><span>' + term('Baseline') + ': militärisches Modell</span><b>' + fmtP(g.metric.baseline) + '</b></div><div><span>Übernahmequote neues Modell</span><b>' + fmtP(g.metric.model) + '</b></div>' +
+      h += '<div class="metric"><div><span>' + term('Baseline') + ': militärisches Modell</span><b>' + fmtP(g.metric.baseline) + '</b></div><div><span>Human Override Rate neues Modell</span><b>' + fmtP(g.metric.model) + '</b></div>' +
         '<div><span>Übernahmen gesenkt um</span><b>' + fmtP(g.metric.imp) + '</b></div><div><span>Zielgröße</span><b>≥ ' + CFG.target + ' %</b></div></div>' +
         '<div class="msg ' + (g.metric.pass ? 'ok' : 'warn') + '">' + (g.metric.pass ? 'Die Validierung erreicht die Zielgröße.' : 'Die Validierung verfehlt die Zielgröße.') + ' Gemessen auf den Testflügen Deines Validierungsdesigns.</div>';
     } else {
-      h += '<div class="metric"><div><span>' + term('Übernahmequote') + ' neues Modell</span><b>' + fmtP(g.metric.model) + '</b></div><div><span>Militärisches Modell</span><b>–</b></div></div>' +
+      h += '<div class="metric"><div><span>' + term('Human Override Rate') + ' neues Modell</span><b>' + fmtP(g.metric.model) + '</b></div><div><span>Militärisches Modell</span><b>–</b></div></div>' +
         '<div class="msg warn">Ohne ' + term('Baseline') + ' weißt Du nicht, ob dieser Wert besser ist als das militärische Modell.</div>';
     }
   }
