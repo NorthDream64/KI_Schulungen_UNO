@@ -551,6 +551,7 @@ footer.foot ul{margin:4px 0 10px;padding-left:18px}
       <li><a href="https://eur-lex.europa.eu/legal-content/DE/TXT/?uri=OJ:L_202401689" target="_blank" rel="noopener">Verordnung (EU) 2024/1689 (KI-Verordnung)</a>, geändert durch Verordnung (EU) 2026/1744 (Digital Omnibus): Art. 2 Abs. 3 und Erwägungsgrund 24 – Systeme ausschließlich für militärische Zwecke sind ausgenommen, bei ziviler Nutzung gilt die Verordnung; Art. 6 Abs. 1 mit Anhang I Abschnitt B (unbemannte Luftfahrzeuge nach Verordnung (EU) 2018/1139) und Anhang III – Einstufung als Hochrisiko-KI-System; Art. 49 – Registrierung von Hochrisiko-KI-Systemen nach Anhang III in der EU-Datenbank</li>
       <li><a href="https://lxgesetze.de/luftvg/66a" target="_blank" rel="noopener">§ 66a Luftverkehrsgesetz</a> mit Art. 14 der Durchführungsverordnung (EU) 2019/947 – Register der Betreiber unbemannter Fluggeräte beim Luftfahrt-Bundesamt</li>
       <li><a href="https://arxiv.org/abs/1810.03993v2" target="_blank" rel="noopener">Mitchell u. a.: Model Cards for Model Reporting</a>, ACM FAT* 2019 – <a href="https://dl.acm.org/doi/10.1145/3531146.3533231" target="_blank" rel="noopener">Pushkarna, Zaldivar, Kjartansson: Data Cards</a>, ACM FAccT 2022 – Dokumentation von Modellen und Datenbeständen</li>
+      <li>Corporate Digital Responsibility-Initiative: CDR-Kodex (2021) – Handlungsfelder „Umgang mit Daten“, „Klima- und Ressourcenschutz“ und „Mitarbeitenden-Einbindung“ (Add-on CDR im Business Case)</li>
       <li><a href="https://learn.mountaingoatsoftware.com/blog/what-are-story-points" target="_blank" rel="noopener">Cohn, M.: What Are Agile Story Points?</a> – Story Points als relative Schätzgröße für Aufwand, Grundlage für Velocity und Kapazität eines Teams</li>
     </ul>
     <p>KI-Manager:in · KI-Projekt-Planspiel „HILMAR“ – Highly Independent Load Maximising Aerial Robot</p>
@@ -601,6 +602,9 @@ const CFG = {
   slipTeam: 0.5,                 // Test des MVP und Wartezeiten in Phase 3: nur das Kernteam bleibt (Anteil der Teamkosten)
   round2Below: 0.75,             // Datenbasis (Qualität und Abdeckung) unter diesem Wert: Das Modell braucht eine zweite Runde
   crash: { daten: E(20000), modell: E(28000), einfuehrung: E(15000) },
+  // Add-on Corporate Digital Responsibility (CDR): Messkonzept und Leitlinie (Phase 1, extern), CO₂-Bilanz zum Go-live (Phase 3, extern), Ökostrom-Aufschlag und Messung im Betrieb
+  cdr: { setup: E(4000), bilanz: E(2000), month: E(250), rights: 5, cap: 0.01, trust: 2,
+    esgAfter: 6, esgCost: E(4000), esgTrust: 2 },   // Kundenanfrage nach der CO₂-Bilanz: sechs Monate nach dem Go-live
 };
 
 function mulberry32(a) {
@@ -840,6 +844,10 @@ const PLAN_ITEMS = [
     pro: 'Der Kunde trägt einen Teil der Kosten und bringt seine Sicht früh ein – Ziel und Akzeptanz werden klarer.', con: 'Dafür erhält er Vorzugskonditionen: Im ersten Betriebsjahr fehlen 10 % des Nutzens.' },
   { id: 'online', kind: 'minus', label: 'Training des REHO-Teams und der Disponenten nur online', hint: 'keine Reise- und Präsenzkosten',
     pro: 'Spart Reise- und Präsenzkosten in Phase 3.', con: 'Online-Training vermittelt Wissen, übt aber das Eingreifen nicht – die KI-Kompetenz des REHO-Teams steigt weniger.' },
+  { id: 'cdr', kind: 'cdr', label: 'Verantwortung messbar machen: Klima, Daten, Mitarbeitende', hint: 'Messkonzept und Leitlinie, CO₂-Bilanz, Ökostrom',
+    pro: 'Energie und CO₂ je Trainingslauf und je 1.000 Zustellungen sind gemessen, Kamerabilder werden schon an Bord verpixelt, REHO-Team und Disponenten wissen früh, was sich für sie ändert.',
+    con: 'Kostet Geld – überwiegend an Externe – und rechnet sich im Business Case nicht von selbst.',
+    miss: 'Energiebedarf und CO₂-Ausstoß von HILMAR werden nicht erfasst. Fragt ein Kunde danach, muss nachträglich gerechnet werden.' },
 ];
 const PLAN_BY_ID = {}; PLAN_ITEMS.forEach(x => { PLAN_BY_ID[x.id] = x; });
 /* Hypercare, Monitoring und Nachtraining sind immer enthalten – in drei Umfängen */
@@ -849,6 +857,7 @@ const OPS_LEVELS = {
   plus: { t: 'zusätzlich', kp: 10, cost: E(6500), pro: 'Bis zu 10 Kapazitätspunkte: mehr Hypercare, engeres Monitoring, Nachtraining in Bereitschaft.', con: 'Höhere laufende Kosten nach dem Go-live.' },
 };
 const opsLevel = sel => OPS_LEVELS[(sel && sel.opsLevel) || 'std'] || OPS_LEVELS.std;
+const cdrOps = s => (s.plan && s.plan.sel && s.plan.sel.cdr ? CFG.cdr.month : 0);   // CDR: Ökostrom-Aufschlag und Messung im Betrieb
 const CO_CREDIT = E(10000);   // Co-Creation: Kundenbeitrag je Phase 1 und 2
 const ONLINE_SAVE = E(3000);  // nur Online-Training: Ersparnis in Phase 3
 function planItemHint(it, staff) {
@@ -858,6 +867,7 @@ function planItemHint(it, staff) {
   if (it.id === 'cocreation') return it.hint + ': −' + fmtE(2 * CO_CREDIT) + ' in Phase 1 und 2; dafür −10 % Nutzen im ersten Betriebsjahr';
   if (it.id === 'online') return it.hint + ': −' + fmtE(ONLINE_SAVE) + ' in Phase 3';
   if (it.id === 'ausstieg') return '+' + fmtE(E(6000)) + ' einmalig';
+  if (it.id === 'cdr') return it.hint + ': +' + fmtE(CFG.cdr.setup) + ' in Phase 1, +' + fmtE(CFG.cdr.bilanz) + ' in Phase 3, +' + fmtE(CFG.cdr.month) + ' pro Monat im Betrieb';
   return it.hint;
 }
 
@@ -872,12 +882,14 @@ function computePlan(sel, impAssume, vp, method, staff) {
   const phaseCost = months.map((m, k) => teamPlanOf(staff, k, m) + m * pmMonth(method));
   phaseCost[2] += E(8000) + E(4000) + (sel.ausstieg ? E(6000) : 0) - (sel.online ? ONLINE_SAVE : 0);
   if (sel.cocreation) { phaseCost[0] -= CO_CREDIT; phaseCost[1] -= CO_CREDIT; }
-  // Davon an Externe: Sachkosten in Phase 3 (Training, Material), Außerbetriebnahme; Co-Creation senkt sie
-  const phaseExt = [sel.cocreation ? -CO_CREDIT : 0, sel.cocreation ? -CO_CREDIT : 0, E(8000) + E(4000) + (sel.ausstieg ? E(6000) : 0) - (sel.online ? ONLINE_SAVE : 0)];
+  if (sel.cdr) { phaseCost[0] += CFG.cdr.setup; phaseCost[2] += CFG.cdr.bilanz; }
+  // Davon an Externe: Sachkosten in Phase 3 (Training, Material), Außerbetriebnahme, CDR; Co-Creation senkt sie
+  const phaseExt = [(sel.cocreation ? -CO_CREDIT : 0) + (sel.cdr ? CFG.cdr.setup : 0), sel.cocreation ? -CO_CREDIT : 0,
+    E(8000) + E(4000) + (sel.ausstieg ? E(6000) : 0) - (sel.online ? ONLINE_SAVE : 0) + (sel.cdr ? CFG.cdr.bilanz : 0)];
   // Risikoreserve: 15 % der geplanten Kosten als Projektreserve – sie steht ab Phase 1 für das ganze Projekt bereit
   const reserve = sel.reserve ? Math.round(sum(phaseCost) * 0.15 / 1000) * 1000 : 0;
   const invest = sum(phaseCost) + reserve;
-  const ops = CFG.infra + opsLevel(sel).cost;
+  const ops = CFG.infra + opsLevel(sel).cost + (sel.cdr ? CFG.cdr.month : 0);
   const benefitFull = CFG.potYear / 12 * impAssume / 100;
   const cf = new Array(H + 1).fill(0);
   let m = vp;
@@ -1308,6 +1320,7 @@ function submitPlan(s, sel, impAssume) {
   if (s.plan.count >= 4) { trust(s, 6); msg = 'Der Lenkungsausschuss findet den Business Case nachvollziehbar, wenn auch teurer als gedacht.'; }
   else if (s.plan.count >= 2) { trust(s, 2); msg = 'Der Lenkungsausschuss nimmt den Business Case an und fragt nach, warum das Projekt länger dauert als im Erstentwurf.'; }
   else { msg = 'Der Lenkungsausschuss ist zufrieden: schneller Go-live, kurze Amortisation.'; }
+  if (s.plan.sel.cdr) { trust(s, CFG.cdr.trust); msg += ' Das CDR-Add-on nimmt er wohlwollend auf: Klima, Datenschutz und die Mitarbeitenden sind von Anfang an mitgedacht.'; }
   if (impAssume >= 25) msg += s.pocRange ? ' Dass Du mit 25 % rechnest, obwohl Dein PoC weniger gezeigt hat, fällt niemandem auf – noch nicht.' : ' Die Annahme von 25 % weniger Übernahmen übernimmt er ohne Rückfrage.';
   s.T = clamp(s.T, 0, 100);
   log(s, 'Quality Gate 0 – Projektfreigabe: Go-live geplant in Monat ' + s.plan.goLive + ', Investition ' + fmtE(s.plan.invest) + '. ' + msg, 'plan');
@@ -1465,6 +1478,7 @@ function runPhase(s, alloc, ext, transfer, crash) {
     const SEL = (s.plan && s.plan.sel || {});
     if (SEL.datenred) { s.C = clamp(s.C - 12, 0, 100); notes.push('Weniger Daten (laut Business Case): Phase 1 ist einen Monat kürzer, aber das Modell sieht weniger Einsatzgebiete und Wetterlagen – die Datenabdeckung bleibt geringer.'); }
     if (SEL.cocreation) { extraCost -= CO_CREDIT; extExt -= CO_CREDIT; s.P += 10; s.C += 4; s.adoptBonus += 0.02; notes.push('Co-Creation: Der Pilotkunde stellt Daten, Testgelände und sein REHO-Team (−' + fmtE(CO_CREDIT) + ') und bringt seine Sicht früh ein.'); }
+    if (SEL.cdr) { extraCost += CFG.cdr.setup; extExt += CFG.cdr.setup; s.R += CFG.cdr.rights; notes.push('CDR (laut Business Case): Ein externer Partner erstellt Messkonzept und Leitlinie (+' + fmtE(CFG.cdr.setup) + '). Neue Kamerabilder werden schon an Bord der Drohne verpixelt – das klärt einen Teil der Datenschutzfragen.'); }
     s.C += gain(e('integration'), 10);
     s.A = lvI(e('pipeline'));
     if (inv < 1 && !s.known.data) notes.push('Ohne Dateninventur zeigt sich erst bei der Aufbereitung, welche Daten fehlen.');
@@ -1522,6 +1536,7 @@ function runPhase(s, alloc, ext, transfer, crash) {
     s.M = lvI(e('monitoring'));
     s.FB = a('rueckfall') >= 1 ? 1 : 0; s.FBL = e('rueckfall');
     { const x = SEL.online ? E(8000) - ONLINE_SAVE + a('schulung') * E(500) : E(8000) + a('schulung') * E(2000); extraCost += x; extExt += x; }   // Trainer, Reise, Material
+    if (SEL.cdr) { extraCost += CFG.cdr.bilanz; extExt += CFG.cdr.bilanz; notes.push('CDR (laut Business Case): Die CO₂-Bilanz für Training und Betrieb liegt zum Go-live vor (+' + fmtE(CFG.cdr.bilanz) + '). REHO-Team und Disponenten wurden früh und offen einbezogen.'); }
     if (s.pilot) {
       s.pilotImp = r1(s.trueImp + (s.rolls[7] - 0.5) * 2 * (1 - 0.15 * Math.max(0, s.PL - 1)));
       s.adoptBonus += arrI([0, 0, 0.01, 0.02, 0.025, 0.03], s.PL); s.L += 2 * Math.max(0, s.PL - 1);
@@ -1819,7 +1834,7 @@ function execReports(s, g, k, nextCost) {
   const green = 'Status grün: Quality Gate ' + k + ' erreicht, Fertigstellungsgrad ' + (k * 25) + ' %. ';
   const noDec = ' Eine Entscheidung des Lenkungsausschusses ist nicht erforderlich.';
   if (k === 4) {
-    const ops = CFG.infra + (s.M > 0 ? CFG.monCost : 0) + s.ops.kp * CFG.opsKpCost;
+    const ops = CFG.infra + (s.M > 0 ? CFG.monCost : 0) + s.ops.kp * CFG.opsKpCost + cdrOps(s);
     const open = g.criteria.filter(c => c.ok !== true).map(c => c.t);
     const dM = g.actM - g.planM;
     return [
@@ -1851,7 +1866,7 @@ function execReports(s, g, k, nextCost) {
       { id: 'over', t: 'Lage: Durchbruch in der Modellentwicklung – HILMAR fliegt ' + fmtP(r1(100 - q)) + ' der Zustellungen autonom und liegt damit deutlich über dem Business Case. Empfehlung: die Inbetriebnahme auf alle Einsatzgebiete ausweiten, die Skalierung jetzt budgetieren und den Pilotbetrieb verkürzen.' },
     ];
   }
-  const ops = CFG.infra + (s.M > 0 ? CFG.monCost : 0);
+  const ops = CFG.infra + (s.M > 0 ? CFG.monCost : 0) + cdrOps(s);
   const late = Math.max(0, s.month - CFG.contract);
   const vt = late ? ' Der Go-live liegt ' + (late === 1 ? 'einen Monat' : (NUMW[late] || late) + ' Monate') + ' nach dem Vertragstermin; die Vertragsstrafe ist fällig.' : '';
   return [
@@ -2068,7 +2083,7 @@ function simulateOps(s) {
   const fit = 0.55 + 0.45 * s.P / 100 - (s.flags.zielOffen ? 0.08 : 0);
   const seg = 0.9 + 0.1 * s.F;
   const rate0 = 0.12 + 0.2 * L / 100 + 0.04 * [0, 1, 2, 3, 3.6, 4][Math.min(5, a.feedback || 0)] + s.adoptBonus;
-  let cap = clamp(0.3 + 0.45 * L / 100 + 0.15 * s.I - s.capPen + s.adoptBonus + 0.03 * hcE - ((s.HD || 0) < 1 ? 0.03 : 0), 0.1, 0.95);   // ein Rest bleibt immer manuell: Sonderfälle, Kundenwünsche
+  let cap = clamp(0.3 + 0.45 * L / 100 + 0.15 * s.I - s.capPen + s.adoptBonus + 0.03 * hcE - ((s.HD || 0) < 1 ? 0.03 : 0) + (s.plan.sel.cdr ? CFG.cdr.cap : 0), 0.1, 0.95);   // ein Rest bleibt immer manuell: Sonderfälle, Kundenwünsche
   // Zwei Drift-Ereignisse im Betrieb: neues Liefergebiet, später der erste Winter. Monitoring, Auswertung und Nachtraining wirken bei jedem.
   const DR = [
     { dm: g + 3 + Math.floor(s.rolls[3] * 3), sev: r1(10 + s.rolls[4] * 6),
@@ -2081,7 +2096,7 @@ function simulateOps(s) {
   const extern = s.K < 70;
   const rDur = (retrainReady >= 0.8 ? 0 : retrainReady >= 0.5 ? 1 : 2) + (extern ? 1 : 0);  // Nachtraining in Bereitschaft: schneller ein neues Modell
   const rCost = Math.round(E(14000) * (1 - 0.5 * s.A) * (extern ? 1.6 : 1) * (retrainReady >= 0.5 ? 1 : 1.2) / 1000) * 1000;
-  const opsCost = CFG.infra + (s.M > 0 ? CFG.monCost : 0) + s.ops.kp * CFG.opsKpCost;
+  const opsCost = CFG.infra + (s.M > 0 ? CFG.monCost : 0) + s.ops.kp * CFG.opsKpCost + cdrOps(s);
   const timeline = [];
   let adopt = 0, overOpsHit = false;
   const disappoint = !s.pilot && s.meas - s.trueImp > 8;
@@ -2093,6 +2108,12 @@ function simulateOps(s) {
     if (m === g + 2 && s._aktionCost) { addCost(s, m, s._aktionCost, true); }
     if (s.excl && m === g + 13) timeline.push({ m, k: 'ok', t: 'Nach einem Jahr Testflügen kommen die Innenstädte als Einsatzgebiete dazu.' });
     if (s.custLost && m === s.custLostUntil + 1) timeline.push({ m, k: 'ok', t: 'Neue Logistikkunden ersetzen den abgesprungenen Ankerkunden.' });
+    if (m === g + CFG.cdr.esgAfter) {
+      if (s.plan.sel.cdr) { trust(s, CFG.cdr.esgTrust); s.esg = 'ok';
+        timeline.push({ m, k: 'ok', t: 'Der Logistikkunde bereitet seinen Nachhaltigkeitsbericht vor und fragt nach der CO₂-Bilanz je Zustellung. Sie liegt vor, gemessen statt geschätzt. HILMAR geht als Pluspunkt in seinen Bericht ein, und der Vertrieb legt die Zahlen auch anderen Kunden vor, die danach fragen.' }); }
+      else { addCost(s, m, CFG.cdr.esgCost, true); trust(s, -CFG.cdr.esgTrust); s.esg = 'nach';
+        timeline.push({ m, k: 'warn', t: 'Der Logistikkunde bereitet seinen Nachhaltigkeitsbericht vor und fragt nach der CO₂-Bilanz je Zustellung. Es gibt keine. Ein externer Dienstleister rechnet nachträglich, mit Schätzwerten statt Messungen (' + fmtE(CFG.cdr.esgCost) + '). Der Lenkungsausschuss fragt, warum das nicht von Anfang an erfasst wurde.' }); }
+    }
     if (m === g + 2 && disappoint) {
       cap = clamp(cap - (hc ? 0.08 : 0.15) * fbf, 0.1, 1); trust(s, -((s.flags.over ? 18 : 8) / (hc ? 2 : 1) * fbf));
       timeline.push({ m, k: 'bad', t: 'Das REHO-Team merkt: Das Modell übergibt öfter als angekündigt. Die echte Senkung der Übernahmen liegt bei ' + fmtP(s.trueImp) + ', gemessen hattest Du ' + fmtP(s.meas) + '.' + (s.leak ? ' Ursache: Data Leakage in der Validierung.' : '') + (hc ? ' Das Hypercare-Team fängt einen Teil des Ärgers auf.' : '') });
@@ -2280,7 +2301,7 @@ function fmtP(x) { return (x === null || x === undefined) ? '–' : (Math.round(
 
 function pocLabel(l) { return l === 'o' ? 'kein PoC' : l === 'a' ? 'ausführlicher PoC (' + fmtE(ACT_BY_ID.poc.opts.a.c) + ')' : 'PoC (' + fmtE(ACT_BY_ID.poc.opts.n.c) + ')'; }
 
-root.PS = { E, budgetCheck, phaseActuals, weeksToMonths, PLAN_BY_ID, OPS_LEVELS, opsLevel, planReview, roleFac, allocReview, LEVER_REVIEW, planungReview, cleanStaff, ROLE_WEEK, ROLES, ROLE_BY_ID, NEEDS, DRAFT_STAFF, hasRole, teamSize, teamMonthOf, PLAN_PHASES, MS_ITEMS, msCheck, submitPlanung, PM_WEEK, pmMonth, trustZone, TRUST_ZONES, CFG, ACTIVITIES, ACT_BY_ID, PRED, DEPS, LESSONS_EARLY, MUSTER, depStatus, LV, phaseCap, ownCap, pullLoss, stepDuration, PULL_TEXT, SWOT, QUAD, METHODS, PLAN_ITEMS, planItemHint, PHASES, PHASE_NAMES, PRE, OPS, QG_NAMES, isLoop, RAND,
+root.PS = { E, cdrOps, budgetCheck, phaseActuals, weeksToMonths, PLAN_BY_ID, OPS_LEVELS, opsLevel, planReview, roleFac, allocReview, LEVER_REVIEW, planungReview, cleanStaff, ROLE_WEEK, ROLES, ROLE_BY_ID, NEEDS, DRAFT_STAFF, hasRole, teamSize, teamMonthOf, PLAN_PHASES, MS_ITEMS, msCheck, submitPlanung, PM_WEEK, pmMonth, trustZone, TRUST_ZONES, CFG, ACTIVITIES, ACT_BY_ID, PRED, DEPS, LESSONS_EARLY, MUSTER, depStatus, LV, phaseCap, ownCap, pullLoss, stepDuration, PULL_TEXT, SWOT, QUAD, METHODS, PLAN_ITEMS, planItemHint, PHASES, PHASE_NAMES, PRE, OPS, QG_NAMES, isLoop, RAND,
   scheduleVP, weeksToMonths, defaultDepth, pocLabel, computePlan, crashInfo, newGame, initialOrder, submitOrder, submitSwot, toMethode, submitMethod, toPlan,
   submitPlan, runPhase, resolveEvent, decideGate, runOps, finishOps, results, kef, modelPerf, summaryText, makeEvent, METHOD_FX, CO_CREDIT, ONLINE_SAVE, teamCostOf, needRound2, dataBasis, spent, spentExt, quote,
   fmtE, fmtP, gain, clamp, endGame, gateCriteria };
@@ -3041,7 +3062,7 @@ function renderPlan() {
     '</tbody></table>' +
     '<div class="msg info"><b>Was ein KI-Budget eigens braucht:</b> Rechne nicht nur mit Personal. Ein KI-Vorhaben braucht eigene Posten für Lizenzen (Daten, Software, Modelle), für Rechenleistung und Speicher in der Cloud – beim Training wie im Betrieb – und für externe Fachleute, wo im eigenen Haus Wissen fehlt, etwa in Data Science. Im Spiel stecken sie in den externen Daten (Phase 1), der Infrastruktur im Betrieb und der externen Unterstützung.</div>' +
     '<h3>Was würdest Du zum Erstentwurf hinzufügen?</h3><p class="small muted">Wähle aus, was Du in den Business Case aufnimmst. Jeder Posten macht ihn teurer – und vielleicht ehrlicher.</p>' + planChecks('plus') +
-    '<div class="msg info"><b>Empfehlung: ' + term('Corporate Digital Responsibility (CDR)') + ' als Add-on.</b> CDR verankert ethische, soziale und ökologische Fragen in der KI-Governance. Für HILMAR heißt das zum Beispiel: Energie und CO₂ je Trainingslauf und je 1.000 Zustellungen messen, Training und Nachtraining in Stunden und Regionen mit sauberem Strom legen, Rechenzentren auch nach ihrem Strommix auswählen – und vorab fragen, ob jede Rechenlast nötig ist. Im Business Case dieses Spiels ist CDR kein eigener Posten.</div>' +
+    '<h3>Add-on: ' + term('Corporate Digital Responsibility (CDR)') + '</h3><p class="small muted">CDR verankert ethische, soziale und ökologische Fragen in der KI-Governance. Für HILMAR heißt das: Energie und CO₂ je Trainingslauf und je 1.000 Zustellungen messen, Training und Nachtraining in Stunden mit sauberem Strom legen, ein Rechenzentrum mit Ökostrom wählen, Kamerabilder schon an Bord der Drohne verpixeln und REHO-Team und Disponenten früh einbeziehen.</p>' + planChecks('cdr') +
     '<h3>Wo lässt sich sparen?</h3><p class="small muted">Diese Posten machen den Business Case billiger oder schneller. Was Du hier abziehst, gilt auch im Projekt – mit allen Folgen.</p>' + planChecks('minus') +
     '<h3>Hypercare, Monitoring und Nachtraining</h3><p class="small muted">Sind in jedem Business Case enthalten. Du legst nur den Umfang fest – er bestimmt die laufenden Kosten und wie viele Kapazitätspunkte Dir nach dem Go-live zur Verfügung stehen.</p>' +
     '<div class="seg-ctl opslvl" role="group" aria-label="Umfang von Hypercare, Monitoring und Nachtraining">' +
@@ -3155,8 +3176,8 @@ function renderAlloc() {
   h += '</div>';
   if (ops) {
     const hc = ui.alloc.hypercare || 0, kp = used - hc;
-    const mc = CFG.infra + (s.M > 0 ? CFG.monCost : 0) + kp * CFG.opsKpCost;
-    h += '<p class="estimate">Hypercare: <b class="num">' + fmtE(hc * CFG.hcCost * CFG.hcMonths) + '</b> für zwei Monate. Laufende Kosten danach: <b class="num">' + fmtE(mc) + '</b> pro Monat (Infrastruktur' + (s.M > 0 ? ', Monitoring' : '') + ' und Deine Betriebskapazität).</p>';
+    const mc = CFG.infra + (s.M > 0 ? CFG.monCost : 0) + kp * CFG.opsKpCost + PS.cdrOps(s);
+    h += '<p class="estimate">Hypercare: <b class="num">' + fmtE(hc * CFG.hcCost * CFG.hcMonths) + '</b> für zwei Monate. Laufende Kosten danach: <b class="num">' + fmtE(mc) + '</b> pro Monat (Infrastruktur' + (s.M > 0 ? ', Monitoring' : '') + (PS.cdrOps(s) ? ', CDR' : '') + ' und Deine Betriebskapazität).</p>';
   } else {
     const est = allocEstimate(s);
     h += '<p class="estimate">' + (ph.part ? 'Dieser Teil der Phase' : 'Diese Phase') + ' dauert mindestens <b>' + est.d + (est.d === 1 ? ' Monat' : ' Monate') + '</b>' + (est.wait ? ' (davon ein Monat Warten auf die Registrierung)' : '') + ' und kostet mindestens <b class="num">' + fmtE(est.c) + '</b> (Team: ' + est.n + (est.n === 1 ? ' Person, ' : ' Personen, ') + fmtE(est.tm) + ' pro Monat; Projektmanagement ' + fmtE(est.pm) + ' pro Monat).</p>';
