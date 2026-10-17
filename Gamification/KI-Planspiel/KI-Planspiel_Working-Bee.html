@@ -307,7 +307,7 @@ ul.review.con li::marker{color:var(--warn)}ul.review.pro li::marker{color:var(--
 table.cmp.guvtab td small{display:block;font-size:12px;color:var(--muted);font-weight:400}
 table.cmp.guvtab td small.bad{color:var(--bad)}
 table.cmp.guvtab .bad{color:var(--bad);font-weight:600}table.cmp.guvtab .warn{color:var(--warn);font-weight:600}table.cmp.guvtab .ok{color:var(--ok)}
-table.cmp.guvtab td.num{white-space:nowrap;vertical-align:top}
+table.cmp.guvtab td{vertical-align:top}table.cmp.guvtab td.num{white-space:nowrap}
 table.cmp.guvtab td:first-child{min-width:190px}
 @media (min-width:561px){table.cmp.guvtab{width:100%;table-layout:fixed}table.cmp.guvtab col.c-n{width:21%}table.cmp.guvtab td small{white-space:normal}table.cmp.guvtab td:first-child{min-width:0}}
 .gantt-wrap svg{width:100%;height:auto;display:block}
@@ -2628,13 +2628,20 @@ function renderGuv(s) {
     rows.push({ t: 'Phase ' + (k + 1) + ': ' + n + (k === 2 ? ' (bis Go-live)' : ''), dur: 'Plan ' + monTxt(p.months[k]) + (a ? ' · Ist ' + monTxt(a.months) : ''), late: a && a.months > p.months[k],
       plan: pc, ist: a ? a.cost : null, extra: a ? a.extra : null, st: a ? 'done' : (s.phase === k ? 'now' : '') });
   });
+  // Abgeschlossene Phasen: ihre Ist-Kosten gegen ihren Plan (für Reserve und Summenzeile)
+  const doneK = A.map((a, k) => a ? k : -1).filter(k => k >= 0);
+  const planDone = doneK.reduce((x, k) => x + p.phaseCost[k], 0);
   if (p.reserve) {
-    const used = Math.max(0, Math.min(p.reserve, sumIst - sumPlan));
+    const used = Math.max(0, Math.min(p.reserve, sumIst - planDone));
     rows.push({ t: 'Risikoreserve', dur: 'steht ab Phase 1 für das ganze Projekt bereit', plan: p.reserve, ist: used, note: 'genutzt', reserve: true });
   }
   if (s.penaltyPaid) rows.push({ t: 'Vertragsstrafe', dur: s.contractLate + (s.contractLate === 1 ? ' Monat' : ' Monate') + ' nach dem Vertragstermin', plan: 0, ist: s.penaltyPaid, st: 'done' });
-  const istInv = s.goLive ? PS.spent(s, s.goLive) : null;
-  rows.push({ t: 'Hauptprojekt bis zum Go-live', dur: 'ohne Vorprojekt · Go-live Plan Monat ' + p.goLive + (s.goLive ? ' · Ist Monat ' + s.goLive : ''), late: s.goLive && s.goLive > p.goLive, plan: p.invest, ist: istInv, sum: true });
+  const phTxt = doneK.length ? 'Phase ' + (doneK[0] + 1) + (doneK.length > 1 ? '–' + (doneK[doneK.length - 1] + 1) : '') : '';
+  const istInv = s.goLive ? PS.spent(s, s.goLive) : doneK.length ? sumIst : null;
+  const shareTxt = istInv != null && p.invest ? Math.round(istInv / p.invest * 100) + ' % des Budgets' : '';
+  rows.push({ t: 'Hauptprojekt bis zum Go-live', dur: 'ohne Vorprojekt · Go-live Plan Monat ' + p.goLive + (s.goLive ? ' · Ist Monat ' + s.goLive : ''), late: s.goLive && s.goLive > p.goLive, plan: p.invest, ist: istInv, sum: true,
+    note: s.goLive ? shareTxt : istInv != null ? 'bisher, ' + phTxt + ' · ' + shareTxt : '',
+    devPlan: s.goLive ? null : planDone, devNote: !s.goLive && istInv != null ? 'gegenüber Plan ' + phTxt + ': ' + fmtE(planDone) : '' });
   h += '<h3>Investition</h3>' + guvTable(rows);
   // Betrieb nach dem Go-live
   if (s.stage === 'end' && s.goLive) {
@@ -2656,7 +2663,7 @@ function guvTable(rows) {
   return '<div class="tscroll"><table class="cmp guvtab"><colgroup><col><col class="c-n"><col class="c-n"><col class="c-n"></colgroup><thead><tr><th>Posten</th><th>Plan</th><th>Ist</th><th>Abweichung</th></tr></thead><tbody>' + rows.map(r => {
     const dev = r.ist == null ? '<td class="num muted" data-l="Abweichung">' + (r.st === 'now' ? 'läuft' : '–') + '</td>'
       : r.reserve ? '<td class="num" data-l="Abweichung">' + (r.ist ? 'noch frei ' + fmtE(r.plan - r.ist) : '<span class="ok">unberührt</span>') + '</td>'
-      : devCell(r.ist, r.plan, r.income);
+      : devCell(r.ist, r.devPlan != null ? r.devPlan : r.plan, r.income).replace(/<\/td>$/, r.devNote ? '<small>' + esc(r.devNote) + '</small></td>' : '</td>');
     return '<tr class="' + (r.sum ? 'sum' : '') + '"><td><b>' + esc(r.t) + '</b>' + (r.dur ? '<small class="' + (r.late ? 'bad' : '') + '">' + esc(r.dur) + '</small>' : '') + '</td>' +
       '<td class="num" data-l="Plan">' + fmtE(r.plan) + '</td><td class="num" data-l="Ist">' + (r.ist == null ? '–' : fmtE(r.ist)) + (r.extra ? '<small>davon weitere Kosten ' + (r.extra < 0 ? '−' : '') + fmtE(Math.abs(r.extra)) + '</small>' : '') + (r.note ? '<small>' + esc(r.note) + '</small>' : '') + '</td>' + dev + '</tr>';
   }).join('') + '</tbody></table></div>';
