@@ -583,9 +583,9 @@ const CFG = {
   extCost: E(7000),              // je zugekauftem Kapazitätspunkt (etwa so teuer wie ein Punkt des eigenen Teams)
   transferCost: E(2000),         // Wissenstransfer-Klausel je Phase
   extMax: 5,                     // eigene Kapazität je Phase steht bei den Phasen (kp)
-  potYear: E(1675000),           // Deckungsbeitragspotenzial p. a. bei 100 % weniger Übernahmen und voller Nutzung
+  potYear: E(1675000),           // Deckungsbeitragspotenzial p. a. bei 100 % weniger menschlichen Eingriffen und voller Nutzung
   baseQuote: 40,                 // Human Override Rate des militärischen Modells im zivilen Test (%)
-  target: 15,                    // Zielgröße: Übernahmen um mind. 15 % senken
+  target: 15,                    // Zielgröße: menschliche Eingriffe um mind. 15 % senken
   maxImp: 32,
   infra: E(2000), monCost: E(1000), opsKpCost: E(600), opsKpMax: 7,
   hcMonths: 2, hcCost: E(3000),  // Hypercare: zwei Monate, je Punkt und Monat
@@ -957,7 +957,7 @@ const PHASES = [
       { id: 'pilot', name: 'MVP unter realen Bedingungen testen', max: 5,
         text: 'Das MVP (Minimum Viable Product: die einfachste einsatzfähige Version von HILMAR) fliegt vor dem Go-live in zwei Einsatzgebieten des Kunden, mit festen Abbruchregeln. Kostet einen Monat, zeigt die echte Human Override Rate. Weitere Punkte: mehr Einsatzgebiete und mehr Mitglieder des REHO-Teams im Test – das Ergebnis wird belastbarer, und mehr Mitglieder des REHO-Teams kennen HILMAR schon vor dem Go-live.' },
       { id: 'integration', name: 'Systemintegration: Anbindung an die Leitstelle des Kunden', max: 5,
-        text: 'HILMAR wird an die Systeme des Kunden angebunden: Übernahme-Anforderungen der Drohne erscheinen direkt am Arbeitsplatz des REHO-Teams.' },
+        text: 'HILMAR wird an die Systeme des Kunden angebunden: Eingriffsanforderungen der Drohne erscheinen direkt am Arbeitsplatz des REHO-Teams.' },
       { id: 'schulung', name: 'Training des REHO-Teams und der Disponenten', max: 5,
         text: 'KI-Kompetenz: verstehen, wann das Modell unsicher ist, und bewusst eingreifen können.' },
       { id: 'doku', name: 'Dokumentation: Data Cards und Model Card', max: 5,
@@ -1049,7 +1049,7 @@ const MS_ITEMS = [
     d: 'Das Modell ist auf Testflügen validiert, die nicht im Training waren, und schlägt die Baseline.',
     w: 'gehört ans Ende von Phase 2 – es prüft das Modell gegen die Baseline.' },
   { id: 'sysint', t: 'Systemintegration mit Kunden-Schnittstellen abgeschlossen', kind: 'Meilenstein', ph: 3, o: 0,
-    d: 'HILMAR ist an die Leitstelle des Kunden angebunden: Übernahme-Anforderungen der Drohne erscheinen am Arbeitsplatz des REHO-Teams. Nicht zu verwechseln mit der Datenintegration in Phase 1.',
+    d: 'HILMAR ist an die Leitstelle des Kunden angebunden: Eingriffsanforderungen der Drohne erscheinen am Arbeitsplatz des REHO-Teams. Nicht zu verwechseln mit der Datenintegration in Phase 1.',
     w: 'steht am Anfang von Phase 3: Erst wenn HILMAR an die Leitstelle angebunden ist, lässt sich das Ganze testen.' },
   { id: 'qg_tests', t: 'Quality Gate 4: Tests abgeschlossen, Monitoring eingerichtet', tx: 'Tests abgeschlossen, Monitoring eingerichtet', kind: 'Quality Gate', ph: 3, o: 1,
     d: 'Tests, Dokumentation und Registrierungen sind abgeschlossen, das Monitoring läuft, die Rückfallebene steht.',
@@ -1277,8 +1277,8 @@ function submitOrder(s, order, depth) {
     const hi = lo + (strong ? 4 : 10) + Math.round(s.rolls[21] * 2);
     s.pocRange = [lo, hi];
     effects.push(strong
-      ? 'Ergebnis des PoC: Auch im Stadtviertel senkt ein einfaches Modell die Übernahmen um ' + lo + ' bis ' + hi + ' %. Die Datenlücke in Innenstädten ist bekannt und beziffert. Der Lenkungsausschuss sieht einen belastbaren Nachweis.'
-      : 'Ergebnis des PoC: Auf der Teststrecke am Stadtrand senkt ein einfaches Modell die Übernahmen um ' + lo + ' bis ' + hi + ' %. Wie es in der Innenstadt aussieht, bleibt offen – die Spanne ist entsprechend breit.');
+      ? 'Ergebnis des PoC: Auch im Stadtviertel senkt ein einfaches Modell die menschlichen Eingriffe um ' + lo + ' bis ' + hi + ' %. Die Datenlücke in Innenstädten ist bekannt und beziffert. Der Lenkungsausschuss sieht einen belastbaren Nachweis.'
+      : 'Ergebnis des PoC: Auf der Teststrecke am Stadtrand senkt ein einfaches Modell die menschlichen Eingriffe um ' + lo + ' bis ' + hi + ' %. Wie es in der Innenstadt aussieht, bleibt offen – die Spanne ist entsprechend breit.');
   }
   s.vp = { order: order.slice(), depth: Object.assign({}, depth) };
   s.vpPlan = plan; s.vpIst = ist;
@@ -1346,7 +1346,7 @@ function planReview(sel, impAssume) {
   const L = opsLevel(sel);
   if (L.pro) pro.push({ lever: 'Hypercare, Monitoring und Nachtraining: ' + L.t, t: L.pro });
   if (L.con) con.push({ lever: 'Hypercare, Monitoring und Nachtraining: ' + L.t, t: L.con });
-  if (impAssume >= 25) con.push({ t: 'Du rechnest mit 25 % weniger Übernahmen – die Zielgröße liegt bei ' + CFG.target + ' %. Bleibt das Modell darunter, trägt der Business Case nicht.' });
+  if (impAssume >= 25) con.push({ t: 'Du rechnest mit 25 % weniger menschlichen Eingriffen – die Zielgröße liegt bei ' + CFG.target + ' %. Bleibt das Modell darunter, trägt der Business Case nicht.' });
   return { pro, con };
 }
 function submitPlan(s, sel, impAssume) {
@@ -1356,7 +1356,7 @@ function submitPlan(s, sel, impAssume) {
   else if (s.plan.count >= 2) { trust(s, 2); msg = 'Der Lenkungsausschuss nimmt den Business Case an und fragt nach, warum das Projekt länger dauert als im Erstentwurf.'; }
   else { msg = 'Der Lenkungsausschuss ist zufrieden: schneller Go-live, kurze Amortisation.'; }
   if (s.plan.sel.cdr) { trust(s, CFG.cdr.trust); msg += ' Das CDR-Add-on nimmt er wohlwollend auf: Klima, Datenschutz und die Mitarbeitenden sind von Anfang an mitgedacht.'; }
-  if (impAssume >= 25) msg += s.pocRange ? ' Dass Du mit 25 % rechnest, obwohl Dein PoC weniger gezeigt hat, fällt niemandem auf – noch nicht.' : ' Die Annahme von 25 % weniger Übernahmen übernimmt er ohne Rückfrage.';
+  if (impAssume >= 25) msg += s.pocRange ? ' Dass Du mit 25 % rechnest, obwohl Dein PoC weniger gezeigt hat, fällt niemandem auf – noch nicht.' : ' Die Annahme von 25 % weniger menschlichen Eingriffen übernimmt er ohne Rückfrage.';
   s.T = clamp(s.T, 0, 100);
   log(s, 'Meilenstein Projektfreigabe: Go-live geplant in Monat ' + s.plan.goLive + ', Investition ' + fmtE(s.plan.invest) + '. ' + msg, 'plan');
   s.stage = 'alloc'; s.phase = 0;
@@ -1417,7 +1417,7 @@ const LEVER_REVIEW = {
   },
   einfuehrung: {
     pilot: { pro: 'Der Test des MVP unter realen Bedingungen zeigt die echte Human Override Rate vor dem Go-live – dafür dauert die Phase einen Monat länger.', con: 'Ohne Test des MVP bist Du einen Monat schneller, aber erst der Betrieb nach dem Go-live zeigt, ob die Validierung hält.' },
-    integration: { proAt: 2, conAt: 2, pro: 'Übernahme-Anforderungen erscheinen direkt am Arbeitsplatz des REHO-Teams.', con: 'Knappe Systemintegration: Das REHO-Team arbeitet mit Behelfslösungen – im schlimmsten Fall verzögert die Schnittstelle den Go-live.' },
+    integration: { proAt: 2, conAt: 2, pro: 'Eingriffsanforderungen erscheinen direkt am Arbeitsplatz des REHO-Teams.', con: 'Knappe Systemintegration: Das REHO-Team arbeitet mit Behelfslösungen – im schlimmsten Fall verzögert die Schnittstelle den Go-live.' },
     schulung: { proAt: 2, pro: 'Ein geschultes REHO-Team vertraut dem Modell, wo es sicher ist, und greift ein, wo nicht.', con: 'Ein ungeschultes REHO-Team übernimmt im Zweifel lieber selbst – der Nutzen bleibt aus.' },
     doku: { pro: 'Data Cards und Model Card liegen vor – Grundlage für Abnahme, Registrierung und Rechtsprüfung.', con: 'Ohne Dokumentation fehlen Nachweise für Abnahme, Registrierung und Rechtsprüfung.' },
     registrierung: { pro: 'Die Anträge laufen parallel zu den Tests – kein Warten auf die Behörden.', con: 'Ohne Vorbereitung laufen die Anträge erst nach den Tests: ein Monat Warten vor dem Go-live.' },
@@ -1429,16 +1429,17 @@ const LEVER_REVIEW = {
     auswertung: { pro: 'Jemand schaut regelmäßig auf Human Override Rate und Drift und schlägt Alarm.', con: 'Niemand wertet das Monitoring regelmäßig aus – die Daten sind da, aber keiner schlägt Alarm.' },
     nachtraining: { pro: 'Nachtraining steht bereit – nach einer Drift ist das Modell schnell wieder gut.', con: 'Kommt eine Drift, muss das Nachtraining erst organisiert werden – das kostet Zeit und Nutzen.' },
     feedback: { pro: 'AI Champions und feste Rückmeldewege verbessern Modell und Akzeptanz laufend.', con: 'Ohne Rückmeldewege versanden die Erfahrungen des REHO-Teams.' },
-    wissen: { pro: 'Was beim externen Partner lag, geht ins eigene Haus über.', con: 'Wissen bleibt beim externen Partner – Nachtraining wird teurer und langsamer.' },
+    wissen: { pro: 'Was beim externen Partner lag, geht ins eigene Haus über; das Projektteam hält die Lessons Learned fest.', con: 'Wissen bleibt beim externen Partner – Nachtraining wird teurer und langsamer. Lessons Learned hält niemand fest.' },
   },
 };
+// Liegt das Wissen schon im Haus, bleibt von dieser Stellschraube die Übergabe mit Lessons Learned.
+const REVIEW_LL = { pro: 'Das Projektteam hält fest, was gut lief und was nicht, und übergibt geordnet an den Betrieb.', con: 'Niemand hält die Lessons Learned fest – die Erfahrungen gehen für künftige Projekte verloren.' };
 function allocReview(s, alloc, ext, transfer, crash) {
   const ph = PHASES[s.phase], ops = s.phase === OPS, R = LEVER_REVIEW[ph.key] || {};
   const a = k => (alloc || {})[k] || 0;
   const pro = [], con = [];
   ph.levers.forEach(l => {
-    const r = R[l.id]; if (!r) return;
-    if (ops && l.id === 'wissen' && s.K >= 95) return;
+    const r = ops && l.id === 'wissen' && s.K >= 95 ? REVIEW_LL : R[l.id]; if (!r) return;
     const v = a(l.id);
     if (v >= (r.proAt || 1)) pro.push({ lever: l.name, pts: v, t: r.pro });
     if (v < (r.conAt || 1)) con.push({ lever: l.name, pts: v, t: r.con });
@@ -1702,7 +1703,7 @@ const EVENT_REVIEW = {
     { pro: 'Der Vorstand bekommt, was er sich wünscht.', con: 'Datenaufbereitung und Validierung müssen wiederholt werden: ein Monat Verzug und Teamkosten – ob das Modell besser wird, ist offen.' },
   ],
   schnittstelle: [
-    { pro: 'Eine richtige Schnittstelle: Das REHO-Team sieht Übernahme-Anforderungen direkt.', con: 'Kostet Geld und einen Monat – das Kernteam kostet in dieser Zeit weiter.' },
+    { pro: 'Eine richtige Schnittstelle: Das REHO-Team sieht Eingriffsanforderungen direkt.', con: 'Kostet Geld und einen Monat – das Kernteam kostet in dieser Zeit weiter.' },
     { pro: 'Kein Verzug, keine Kosten.', con: 'Das REHO-Team erfährt über Umwege, wann es eingreifen soll – viele fliegen dann lieber gleich manuell. Der Nutzen sinkt dauerhaft.' },
     { pro: 'Die Schnittstelle entsteht im eigenen Haus.', con: 'Zwei Monate Warten – das Kernteam kostet weiter, der Go-live rückt nach hinten.' },
   ],
@@ -1754,9 +1755,9 @@ function makeEvent0(s, k) {
       text: '„Ein Wettbewerber zeigt Drohnen mit einem großen multimodalen Sprachmodell an Bord. Sollten wir nicht auch so etwas einsetzen?“' };
     ev.options = [
       { t: 'Mit Baseline und Zielgröße begründen, warum das gewählte Verfahren reicht', c: 'kostenlos',
-        fx: () => { if (s.B) { trust(s, 3); return 'Die Messlatte überzeugt: Es zählt, ob die Übernahmen sinken, nicht welche Technik dahintersteht.'; } trust(s, -(4)); return 'Ohne Baseline fehlt Dir die Messlatte. Die Begründung bleibt eine Behauptung, der Vorstand ist nicht überzeugt.'; } },
+        fx: () => { if (s.B) { trust(s, 3); return 'Die Messlatte überzeugt: Es zählt, ob die menschlichen Eingriffe abnehmen, nicht welche Technik dahintersteht.'; } trust(s, -(4)); return 'Ohne Baseline fehlt Dir die Messlatte. Die Begründung bleibt eine Behauptung, der Vorstand ist nicht überzeugt.'; } },
       { t: 'Vergleichstest über zwei Wochen', c: fmtE(E(11000)),
-        fx: () => { addCost(s, s.month, E(11000), true); trust(s, 2); return 'Im Test senkt der neue Ansatz die Übernahmen für diese Aufgabe nicht weiter. Die Frage ist beantwortet – mit Daten.'; } },
+        fx: () => { addCost(s, s.month, E(11000), true); trust(s, 2); return 'Im Test senkt der neue Ansatz die menschlichen Eingriffe für diese Aufgabe nicht weiter. Die Frage ist beantwortet – mit Daten.'; } },
       { t: 'Auf ein Sprachmodell umschwenken', c: fmtE(teamMonth(s)) + ' und 1 Monat',
         fx: () => { addCost(s, s.month + 1, teamMonth(s)); adv(s, 1, s.phase, 'verzug'); s.phaseMonths[s.phase] += 1; trust(s, 3); return 'Datenaufbereitung und Validierung müssen für den neuen Ansatz wiederholt werden. Am Ende steht kein besseres Modell, aber ein Monat Verzug.'; } },
     ];
@@ -1764,7 +1765,7 @@ function makeEvent0(s, k) {
   }
   if (k === 'schnittstelle') {
     const ev = { id: 'schnittstelle', rand: 4, title: 'Die Schnittstelle, die keiner bestellt hat',
-      text: 'Die Leitstellensoftware des Pilotkunden kann Übernahme-Anforderungen der Drohne nicht empfangen. Ohne Schnittstelle sieht das REHO-Team nicht, wann es eingreifen muss.' };
+      text: 'Die Leitstellensoftware des Pilotkunden kann Eingriffsanforderungen der Drohne nicht empfangen. Ohne Schnittstelle sieht das REHO-Team nicht, wann es eingreifen muss.' };
     if (s.I >= 0.6) { ev.auto = 'Du hast die Systemintegration (Anbindung an die Leitstelle) eingeplant – die Schnittstelle ist Teil der Inbetriebnahme. Kein Verzug.'; ev.autoFx = () => {}; }
     else {
       const c = Math.round(E(18000) * (1 - 0.4 * s.A) / 1000) * 1000;
@@ -1773,7 +1774,7 @@ function makeEvent0(s, k) {
         { t: 'Schnittstelle vom Softwareanbieter des Kunden bauen lassen', c: fmtE(c + tmK(1)) + ' und 1 Monat',
           fx: () => { addCost(s, s.month + 1, c, true); addCost(s, s.month + 1, tmK(1)); adv(s, 1, s.phase, 'verzug'); s.phaseMonths[s.phase] += 1; s.I = 1;
             return s.A >= 0.6 ? 'Dank automatisierter Datenpipeline ist die Anbindung schneller gebaut als befürchtet.' : 'Die Schnittstelle steht nach einem Monat.'; } },
-        { t: 'Übergangslösung: Übernahme-Anforderungen per Telefon an die Leitstelle', c: 'kostenlos',
+        { t: 'Übergangslösung: Eingriffsanforderungen per Telefon an die Leitstelle', c: 'kostenlos',
           fx: () => { s.capPen += 0.25; s.flags.liste = true; return 'Das REHO-Team erfährt über Umwege, wann es eingreifen soll. Viele fliegen lieber gleich manuell.'; } },
         { t: 'Go-live verschieben, bis die eigene IT Kapazität hat', c: fmtE(tmK(1) + tmK(2)) + ' und 2 Monate Wartezeit',
           fx: () => { const t1 = tmK(1), t2 = tmK(2); addCost(s, s.month + 1, t1); addCost(s, s.month + 2, t2); adv(s, 2, s.phase, 'verzug'); s.phaseMonths[s.phase] += 2; s.I = 1;
@@ -1840,7 +1841,7 @@ function gateCriteria(s, k) {
   }
   if (k === 2) return [
     c('Baseline gemessen: militärisches Modell unter zivilen Testbedingungen', s.B),
-    c('Zielgröße in der Validierung erreicht (mindestens ' + CFG.target + ' % weniger Übernahmen)', s.meas >= CFG.target, !s.B),
+    c('Zielgröße in der Validierung erreicht (mindestens ' + CFG.target + ' % weniger menschliche Eingriffe)', s.meas >= CFG.target, !s.B),
     c('Validierung mit zeitlich und räumlich getrennten Testflügen', s.V >= 0.9),
   ];
   if (k === 3) {
@@ -1848,7 +1849,7 @@ function gateCriteria(s, k) {
     const g3 = 'Quality Gate 4: ' + QG_NAMES[4], g4 = 'Quality Gate 5: ' + QG_NAMES[5];
     return [
       c('Test des MVP unter realen Bedingungen bestätigt die Validierung', s.pilot && s.pilotImp >= CFG.target && s.meas - s.pilotImp <= 6, false, g3),
-      c('Systemintegration: Übernahme-Anforderungen erscheinen in der Leitstelle', s.I >= 0.6, false, g3),
+      c('Systemintegration: Eingriffsanforderungen erscheinen in der Leitstelle', s.I >= 0.6, false, g3),
       c('Data Cards und Model Card liegen vor', s.D >= 0.5, false, g3),
       c('Monitoring eingerichtet', s.M > 0, false, g3),
       c('Rückfallebene vorhanden', s.FB, false, g3),
@@ -1896,7 +1897,7 @@ function execReports(s, g, k, nextCost) {
     return [
       { id: 'ehrlich', t: 'Ergebnis: HILMAR ist seit Monat ' + s.goLive + ' im Einsatz, die Hypercare ist abgeschlossen' + (dM > 0 ? ', ' + (dM === 1 ? 'einen Monat' : (NUMW[dM] || dM) + ' Monate') + ' später als geplant' : '') + '. ' +
         (open.length ? (open.length === 1 ? 'Ein Abschlusskriterium ist offen: ' : (NUMW[open.length] || open.length) + ' Abschlusskriterien sind offen: ') + open.join('; ') + '.' : 'Alle Abschlusskriterien sind erfüllt.') +
-        ' Der Betrieb übernimmt Monitoring, Rückfallebene und Nachtraining; laufende Kosten ab ' + fmtE(ops) + ' pro Monat. Entscheidung: Lessons Learned abschließen, an den Betrieb übergeben und das Projekt beenden.' },
+        ' Der Betrieb übernimmt Monitoring, Rückfallebene und Nachtraining; laufende Kosten ab ' + fmtE(ops) + ' pro Monat. Entscheidung: ' + ((s.ops.alloc.wissen || 0) >= 1 ? 'Lessons Learned abschließen, an den Betrieb übergeben' : 'an den Betrieb übergeben') + ' und das Projekt beenden.' },
       { id: 'schein', t: 'Status grün: Projekt abgeschlossen, Fertigstellungsgrad 100 %. Alle Störungsmeldungen aus der Hypercare sind geschlossen. Das Projektteam wird aufgelöst, das Projektbudget geschlossen.' + noDec },
       { id: 'over', t: 'Lage: HILMAR läuft stabil und übertrifft den Business Case. Der Betrieb läuft aus eigener Kraft, ein Nachtraining ist nicht absehbar. Empfehlung: das Monitoring auf Stichproben reduzieren und das Projektteam sofort für das zweite Standbein Objektschutz einsetzen.' },
     ];
@@ -1907,13 +1908,13 @@ function execReports(s, g, k, nextCost) {
       (s.C < 55 ? '; für Innenstädte reicht die Abdeckung noch nicht' : '') + '; die Risikokategorie nach dem EU AI Act ist ' + (s.RK >= 1 ? 'geprüft' : 'noch nicht geprüft') + '. ' + F +
       ' Entscheidung: Freigabe der Phase „' + PHASES[1].name + '“, ' + nc + ' bis zum nächsten Quality Gate; dort folgt der Nachweis gegen die Baseline.' },
     { id: 'schein', t: green + 'Alle Arbeitspakete der Datenphase sind abgeschlossen, die Pipeline steht, der Mittelabfluss entspricht mit ' + pc + ' dem Plan, die Zusammenarbeit mit den Pilotkunden ist eingespielt.' + noDec },
-    { id: 'over', t: 'Lage: Die Datenbasis ist deutlich besser als erwartet; mit dieser Qualität erreichen wir sicher die geplanten ' + s.plan.impAssume + ' % weniger Übernahmen, eher mehr. Risiken für den Go-live sehen wir nicht. Empfehlung: den Pilotkunden den Regelbetrieb schon jetzt verbindlich zusagen und den Vertrieb auf weitere Kunden ansetzen.' },
+    { id: 'over', t: 'Lage: Die Datenbasis ist deutlich besser als erwartet; mit dieser Qualität erreichen wir sicher die geplanten ' + s.plan.impAssume + ' % weniger menschliche Eingriffe, eher mehr. Risiken für den Go-live sehen wir nicht. Empfehlung: den Pilotkunden den Regelbetrieb schon jetzt verbindlich zusagen und den Vertrieb auf weitere Kunden ansetzen.' },
   ];
   if (k === 2) {
     const imp = s.meas, q = quote(imp), hit = imp >= CFG.target;
     return [
       { id: 'ehrlich', t: (s.B
-        ? 'Ergebnis: Gegenüber dem militärischen Modell senkt das neue die Übernahmen um ' + fmtP(imp) + ' – gemessen in der Validierung, noch nicht im Alltag; Zielgröße (' + CFG.target + ' %) ' + (hit ? 'erreicht' : 'verfehlt') + '. '
+        ? 'Ergebnis: Gegenüber dem militärischen Modell senkt das neue die menschlichen Eingriffe um ' + fmtP(imp) + ' – gemessen in der Validierung, noch nicht im Alltag; Zielgröße (' + CFG.target + ' %) ' + (hit ? 'erreicht' : 'verfehlt') + '. '
         : 'Ergebnis: Das neue Modell übergibt in ' + fmtP(q) + ' der Testflüge an den Menschen; ob das besser ist als das militärische Modell, können wir ohne Baseline nicht belegen. ') + F +
         (s.B && hit ? ' Entscheidung: Freigabe der Phase „' + PHASES[2].name + '“, ' + nc + ' bis zu den Quality Gates vor dem Go-live.'
           : s.B ? ' Entscheidung: weitere Modellrunde oder Abbruch – eine Inbetriebnahme empfehlen wir so nicht.'
@@ -1927,7 +1928,7 @@ function execReports(s, g, k, nextCost) {
   const vt = late ? ' Der Go-live liegt ' + (late === 1 ? 'einen Monat' : (NUMW[late] || late) + ' Monate') + ' nach dem Vertragstermin; die Vertragsstrafe ist fällig.' : '';
   return [
     { id: 'ehrlich', t: (s.pilot
-      ? 'Ergebnis: Im Test des MVP unter realen Bedingungen senkt das Modell die Übernahmen um ' + fmtP(s.pilotImp) + (s.meas - s.pilotImp > 2 ? ', ' + fmtP(r1(s.meas - s.pilotImp)).replace(' %', '') + ' Prozentpunkte weniger als in der Validierung' : '') + '. '
+      ? 'Ergebnis: Im Test des MVP unter realen Bedingungen senkt das Modell die menschlichen Eingriffe um ' + fmtP(s.pilotImp) + (s.meas - s.pilotImp > 2 ? ', ' + fmtP(r1(s.meas - s.pilotImp)).replace(' %', '') + ' Prozentpunkte weniger als in der Validierung' : '') + '. '
       : 'Ergebnis: Das Modell läuft technisch bis in die Leitstelle; wie gut es im Alltag ist, zeigt erst der Betrieb – einen Test des MVP unter realen Bedingungen hatten wir nicht. ') + F + vt +
       ' Entscheidung: MVP abnehmen und Go-live beim Logistikkunden (kommerzielle Markteinführung), danach zwei Monate Hypercare bis zum Projektabschluss; laufende Kosten ab ' + fmtE(ops) + ' pro Monat, das erste Nachtraining ist einzuplanen.' },
     { id: 'schein', t: green + 'Alle Arbeitspakete sind abgeschlossen und abgenommen, die Dokumentation ist vollständig. Der Go-live ist Formsache, die Hypercare kann knapp ausfallen.' + noDec },
@@ -1965,7 +1966,7 @@ function makeGate(s) {
     g.msgs = g.msgs.filter(m => m.k.indexOf('trend') < 0 && m.k !== 'time');
     g.msgs.push(g.actM > g.planM ? { k: 'warn', t: 'Projektabschluss in Monat ' + g.actM + ' statt Monat ' + g.planM + ' laut Plan.' } : { k: 'ok', t: 'Projektabschluss wie geplant in Monat ' + g.actM + '.' });
     g.reports = execReports(s, g, 4, null);
-    g.decisions = [{ id: 'uebergabe', t: 'Projekt abschließen: Lessons Learned festhalten und an den Betrieb übergeben' }];
+    g.decisions = [{ id: 'uebergabe', t: (s.ops.alloc.wissen || 0) >= 1 ? 'Projekt abschließen: Lessons Learned festhalten und an den Betrieb übergeben' : 'Projekt abschließen und an den Betrieb übergeben' }];
     if (s.ops && s.ops.hc && !s.hcExt) g.decisions.push({ id: 'verlaengern', t: 'Hypercare um einen Monat verlängern (' + fmtE(s.ops.hc * CFG.hcCost) + ')' });
     g.reports = g.reports.map(r => ({ r, o: Math.random() })).sort((a, b) => a.o - b.o).map(x => x.r);
     return g;
@@ -2145,9 +2146,9 @@ function simulateOps(s) {
   // Zwei Drift-Ereignisse im Betrieb: neues Liefergebiet, später der erste Winter. Monitoring, Auswertung und Nachtraining wirken bei jedem.
   const DR = [
     { dm: g + 3 + Math.floor(s.rolls[3] * 3), sev: r1(10 + s.rolls[4] * 6),
-      t: 'Ein Kunde erweitert sein Liefergebiet auf ein Neubauviertel mit Glasfassaden und Solardächern. Die Spiegelungen kennt das Modell nicht, die Übernahmen nehmen zu (Drift). ' + (s.C < 60 ? 'Das hätte das Projekt voraussehen können: Solche Fassaden fehlten in den Trainingsdaten, die Datenabdeckung war knapp.' : 'Trotz guter Datenabdeckung lässt sich nicht jede neue Umgebung vorhersehen.') + ' Bis das Modell nachtrainiert ist, kann der Kunde im neuen Gebiet nicht wie zugesagt beliefert werden – darauf reagiert der Lenkungsausschuss empfindlich.' },
+      t: 'Ein Kunde erweitert sein Liefergebiet auf ein Neubauviertel mit Glasfassaden und Solardächern. Die Spiegelungen kennt das Modell nicht, die menschlichen Eingriffe nehmen zu (Drift). ' + (s.C < 60 ? 'Das hätte das Projekt voraussehen können: Solche Fassaden fehlten in den Trainingsdaten, die Datenabdeckung war knapp.' : 'Trotz guter Datenabdeckung lässt sich nicht jede neue Umgebung vorhersehen.') + ' Bis das Modell nachtrainiert ist, kann der Kunde im neuen Gebiet nicht wie zugesagt beliefert werden – darauf reagiert der Lenkungsausschuss empfindlich.' },
     { dm: g + 12 + Math.floor(s.rolls[14] * 4), sev: r1(8 + s.rolls[15] * 6),
-      t: 'Der erste Winter im Betrieb: Schnee und Eis auf Balkonen, Dächern und Paketstationen – Bilder, die in den Trainingsdaten kaum vorkommen. Die Übernahmen nehmen wieder zu (Drift). Den Winter hätte das Projekt einplanen können; bis zum Nachtraining liefert HILMAR nicht so zuverlässig wie zugesagt.' },
+      t: 'Der erste Winter im Betrieb: Schnee und Eis auf Balkonen, Dächern und Paketstationen – Bilder, die in den Trainingsdaten kaum vorkommen. Die menschlichen Eingriffe nehmen wieder zu (Drift). Den Winter hätte das Projekt einplanen können; bis zum Nachtraining liefert HILMAR nicht so zuverlässig wie zugesagt.' },
   ].filter(d => d.dm <= H).map(d => Object.assign(d, { detected: null, restored: null }));
   const dm = DR.length ? DR[0].dm : H + 1, sev = DR.length ? DR[0].sev : 0;
   const delay = Math.max(0, Math.round(5 - 2.5 * s.M - 2.5 * monEval - 1.0 * L / 100));   // regelmäßige Auswertung: Drift fällt früher auf
@@ -2175,7 +2176,7 @@ function simulateOps(s) {
     }
     if (m === g + 2 && disappoint) {
       cap = clamp(cap - (hc ? 0.08 : 0.15) * fbf, 0.1, 1); trust(s, -((s.flags.over ? 18 : 8) / (hc ? 2 : 1) * fbf));
-      timeline.push({ m, k: 'bad', t: 'Das REHO-Team merkt: Das Modell übergibt öfter als angekündigt. Die echte Senkung der Übernahmen liegt bei ' + fmtP(s.trueImp) + ', gemessen hattest Du ' + fmtP(s.meas) + '.' + (s.leak ? ' Ursache: Data Leakage in der Validierung.' : '') + (hc ? ' Das Hypercare-Team fängt einen Teil des Ärgers auf.' : '') });
+      timeline.push({ m, k: 'bad', t: 'Das REHO-Team merkt: Das Modell übergibt öfter als angekündigt. Die echte Senkung der menschlichen Eingriffe liegt bei ' + fmtP(s.trueImp) + ', gemessen hattest Du ' + fmtP(s.meas) + '.' + (s.leak ? ' Ursache: Data Leakage in der Validierung.' : '') + (hc ? ' Das Hypercare-Team fängt einen Teil des Ärgers auf.' : '') });
     }
     const rate = rate0 + (m <= hcEnd ? 0.05 * hcE : 0);
     adopt = Math.min(cap, adopt + rate);
@@ -2330,9 +2331,9 @@ function modelPerf(s) {
   const autoTxt = imp => r1(auto(imp)).toLocaleString('de-DE') + ' %';
   return [
     { t: 'Steigerung des autonomen Navigierens gegenüber dem rein militärischen Modell', v: ppTxt(s.trueImp), bad: s.trueImp < CFG.target,
-      sub: (s.goLive ? autoTxt(s.trueImp) + ' der Zustellungen im autonomen Modus kommen ohne Übernahme aus' : 'Im Betrieb wären ' + autoTxt(s.trueImp) + ' der Zustellungen im autonomen Modus ohne Übernahme ausgekommen') + ', beim militärischen Modell ' + autoTxt(0) + '. Das entspricht ' + fmtP(s.trueImp) + ' weniger Übernahmen (Zielgröße: mindestens ' + CFG.target + ' % weniger).' },
+      sub: (s.goLive ? autoTxt(s.trueImp) + ' der Zustellungen im autonomen Modus kommen ohne menschlichen Eingriff aus' : 'Im Betrieb wären ' + autoTxt(s.trueImp) + ' der Zustellungen im autonomen Modus ohne menschlichen Eingriff ausgekommen') + ', beim militärischen Modell ' + autoTxt(0) + '. Das entspricht ' + fmtP(s.trueImp) + ' weniger menschlichen Eingriffen (Zielgröße: mindestens ' + CFG.target + ' % weniger).' },
     { t: 'In der Validierung gemessen', v: ppTxt(s.meas),
-      sub: autoTxt(s.meas) + ' ohne Übernahme, ' + fmtP(s.meas) + ' weniger Übernahmen' + (s.leak ? ' – überhöht durch Data Leakage' : '') + '.' },
+      sub: autoTxt(s.meas) + ' ohne menschlichen Eingriff, ' + fmtP(s.meas) + ' weniger menschliche Eingriffe' + (s.leak ? ' – überhöht durch Data Leakage' : '') + '.' },
   ];
 }
 
@@ -2395,7 +2396,7 @@ const TERMS = {
   'Kritische Erfolgsfaktoren (KEF)': 'Elemente, die Du in Dein Projekt einbeziehst, damit die Erfolgskriterien wahrscheinlicher erfüllt werden – etwa ein klares Ziel, gute Daten oder Kompetenz im Team (IPMA ICB 4, 4.3.1.4 und 4.5.1.1).',
   'Erfolgskriterien': 'Messgrößen, an denen die Stakeholder den Erfolg eines Projekts bewerten – etwa Kosten, Termine und Nutzen (IPMA ICB 4, 4.5.1.1).',
   'REHO-Team': 'Die Menschen beim Logistikkunden, die aus der Ferne eingreifen, wenn die Drohne nicht selbst weiterkommt. <strong>REHO</strong> steht für „Remotely enacted human override“: Ein Mensch übernimmt aus der Ferne die Steuerung.',
-  'Human Override Rate': 'Anteil der Zustellungen, bei denen das REHO-Team übernehmen muss. Je niedriger, desto wirtschaftlicher.',
+  'Human Override Rate': 'Anteil der Zustellungen, bei denen das REHO-Team eingreifen muss. Je niedriger, desto wirtschaftlicher.',
   'Drift': 'Das Modell wird im Betrieb schlechter, weil sich die Welt verändert, in der es eingesetzt wird – hier ein neues Liefergebiet und der erste Winter.',
   'Lenkungsausschuss': 'Das Gremium, das Budget stufenweise freigibt und an den Quality Gates über den Fortgang entscheidet. Hier reagiert er empfindlich auf Geld, das an Externe geht, auf Qualitätsprobleme und auf Verzug, der den Vorvertrag gefährdet.',
   'Business Case': 'Die Begründung, warum sich das Projekt lohnt: Kosten, Nutzen, Risiken und Zeitpunkt.',
@@ -2689,9 +2690,9 @@ function renderLage(s) {
   if (s.plan && (s.phase >= 1 || s.stage === 'gate' || s.stage === 'event')) h += '<div class="small" style="margin-top:8px">Risikokategorie nach EU AI Act: <b>' + (s.RK >= 1 ? 'geprüft' : 'nicht geprüft') + '</b></div>';
   if (s.known.model) {
     h += '<div class="stat"><div class="small">' + term('Human Override Rate') + ' gemessen: <b class="num">' + fmtP(PS.quote(s.meas)) + '</b></div>';
-    h += s.B ? '<div class="small">Militärisches Modell: <b class="num">' + fmtP(CFG.baseQuote) + '</b> · Übernahmen gesenkt um <b class="num">' + fmtP(s.meas) + '</b></div>'
+    h += s.B ? '<div class="small">Militärisches Modell: <b class="num">' + fmtP(CFG.baseQuote) + '</b> · Menschliche Eingriffe gesenkt um <b class="num">' + fmtP(s.meas) + '</b></div>'
       : '<div class="unknown">keine Baseline – kein Vergleichsmaßstab</div>';
-    if (s.pilotImp !== null && s.pilot) h += '<div class="small">Im Test des MVP unter realen Bedingungen: Übernahmen gesenkt um <b class="num">' + fmtP(s.pilotImp) + '</b></div>';
+    if (s.pilotImp !== null && s.pilot) h += '<div class="small">Im Test des MVP unter realen Bedingungen: menschliche Eingriffe gesenkt um <b class="num">' + fmtP(s.pilotImp) + '</b></div>';
     h += '</div>';
   } else if (s.plan) h += '<div class="unknown">Modell noch nicht trainiert</div>';
   h += '<h3>Menschen und Wissen</h3>' + barStat('Klarheit über das Ziel', s.P, 100) + barStat('KI-Kompetenz des REHO-Teams', s.L, 100) + barStat('Wissen im eigenen Haus', s.K, 100);
@@ -3127,7 +3128,7 @@ function renderPlan() {
   if (G.hints.lessons) h += '<div class="hint"><b>Aus Deiner Lessons-Learned-Auswertung:</b> Im letzten Entwicklungsprojekt lagen Datenaufbereitung und Testflüge deutlich über Plan, und nach der Auslieferung fehlte das Geld für Nachbesserungen.' + (G.hints.lessons2 ? ' In den Interviews sagten zwei frühere Projektleitungen dasselbe: Die zweite Modellrunde stand in keinem Plan – gebraucht wurde sie immer.' : '') + '</div>';
   if (G.hints.reserve) h += '<div class="hint"><b>Aus Deinem Risikoregister:</b> Für ein Vorhaben mit diesem Neuheitsgrad empfiehlt sich eine Reserve für Unvorhergesehenes.</div>';
   if (G.hints.psp) h += '<div class="hint"><b>Aus Deinem Projektstrukturplan:</b> Datenaufbereitung und Modellentwicklung brauchen je ein eigenes Zeitfenster – im Erstentwurf sind sie zusammengequetscht.</div>';
-  if (G.pocRange) h += '<div class="hint"><b>Aus Deinem ' + term('Proof of Concept') + ':</b> Ein einfaches Modell senkte die Übernahmen um ' + G.pocRange[0] + ' bis ' + G.pocRange[1] + ' %' + (G.poc === 'a' ? ', auch im Stadtviertel.' : ' – nur am Stadtrand getestet.') + '</div>';
+  if (G.pocRange) h += '<div class="hint"><b>Aus Deinem ' + term('Proof of Concept') + ':</b> Ein einfaches Modell senkte die menschlichen Eingriffe um ' + G.pocRange[0] + ' bis ' + G.pocRange[1] + ' %' + (G.poc === 'a' ? ', auch im Stadtviertel.' : ' – nur am Stadtrand getestet.') + '</div>';
   h += '<p class="small muted">Das Vorprojekt hat ' + fmtE(G.vpCost) + ' gekostet. Für die Entscheidung über das Budget im Hauptprojekt zählt das nicht - dieses muss neu aufgeplant werden. Alle Monatsangaben zählen ab Projektstart; das Hauptprojekt beginnt in Monat ' + vp + '. Enthalten: Dein Team aus der Projektplanung (je Person ' + fmtE(PS.ROLE_WEEK) + ' pro Einsatzwoche) und Projektmanagement nach Deiner Methode, ' + fmtE(PS.PM_WEEK[G.method]) + ' pro Woche bis zum Go-live. Der Erstentwurf rechnet nur mit einer Projektmanagerin und einem Data Scientist.</p>' +
     '<table class="cmp"><thead><tr><th></th><th>Erstentwurf</th><th>Dein überarbeiteter Business Case</th></tr></thead><tbody>' +
     planRow('Go-live in Monat', e.goLive, p.goLive, p.goLive > CFG.contract ? 'bad' : '') +
@@ -3144,9 +3145,9 @@ function renderPlan() {
     '<h3>Hypercare, Monitoring und Nachtraining</h3><p class="small muted">Sind in jedem Business Case enthalten. Du legst nur den Umfang fest – er bestimmt die laufenden Kosten und wie viele Kapazitätspunkte Dir nach dem Go-live zur Verfügung stehen.</p>' +
     '<div class="seg-ctl opslvl" role="group" aria-label="Umfang von Hypercare, Monitoring und Nachtraining">' +
     ['min', 'std', 'plus'].map(k => { const L = PS.OPS_LEVELS[k]; return '<button data-opslevel="' + k + '" data-fk="ops-' + k + '" aria-pressed="' + ((ui.planSel.opsLevel || 'std') === k) + '">' + esc(L.t) + ' <span class="muted">· ' + fmtE(CFG.infra + L.cost) + '/Monat · ' + L.kp + ' Punkte</span></button>'; }).join('') + '</div>' +
-    '<h3>Mit welcher Senkung der Übernahmen rechnest Du?</h3>' +
-    '<p class="small muted">Mit dem militärischen Modell liegt die ' + term('Human Override Rate') + ' im zivilen Test bei ' + CFG.baseQuote + ' % – so ist der zivile Betrieb nicht wirtschaftlich. Nach Rechnung des Vertriebs bringt jedes Prozent weniger Übernahmen rund ' + fmtE(CFG.potYear / 100) + ' Deckungsbeitrag pro Jahr, wenn alle Einsätze autonom geflogen werden. Zielgröße für das Modell: Übernahmen um mindestens ' + CFG.target + ' % senken.</p>' +
-    '<div class="seg-ctl" role="group" aria-label="Senkung der Übernahmen">' +
+    '<h3>Mit welcher Senkung der menschlichen Eingriffe rechnest Du?</h3>' +
+    '<p class="small muted">Mit dem militärischen Modell liegt die ' + term('Human Override Rate') + ' im zivilen Test bei ' + CFG.baseQuote + ' % – so ist der zivile Betrieb nicht wirtschaftlich. Nach Rechnung des Vertriebs bringt jedes Prozent weniger an menschlichen Eingriffen rund ' + fmtE(CFG.potYear / 100) + ' Deckungsbeitrag pro Jahr, wenn alle Einsätze autonom geflogen werden. Zielgröße für das Modell: menschliche Eingriffe um mindestens ' + CFG.target + ' % senken.</p>' +
+    '<div class="seg-ctl" role="group" aria-label="Senkung der menschlichen Eingriffe">' +
     [25, 20, 15].map(v => '<button data-imp="' + v + '" data-fk="imp-' + v + '" aria-pressed="' + (ui.planImp === v) + '">' + v + ' %' + (v === 25 ? ' (Erstentwurf)' : v === 15 ? ' (Zielgröße)' : '') + '</button>').join('') + '</div>';
   if (G.hints.sens) {
     const r = [25, 20, 15].map(v => PS.computePlan(ui.planSel, v, vp, G.method, G.staff).cum[CFG.horizon]);
@@ -3240,7 +3241,7 @@ function renderAlloc() {
   h += '<div class="levers">';
   ph.levers.forEach(lv => {
     const o = {};
-    if (ops && lv.id === 'wissen' && s.K >= 95) { o.disabled = true; o.note = 'Nicht nötig – das Wissen ist im Haus.'; }
+    if (ops && lv.id === 'wissen' && s.K >= 95) o.note = 'Das Wissen ist schon im Haus – ein Punkt genügt für Übergabe und Lessons Learned.';
     if (ops && lv.id === 'auswertung' && s.M === 0) o.note = 'Ohne eingerichtetes Monitoring wirkt das nur halb.';
     if (!ops && lv.id === 'baseline' && s.kpiPlan) o.note = 'Im Messkonzept vereinbart: Die Baseline zählt als ein Punkt mit; weitere Punkte machen sie breiter.';
     if (!ops) {
@@ -3309,8 +3310,8 @@ function lageBox(s) {
   rows.push([b.label, '<span class="' + b.cls + '">' + esc(b.value) + '</span>' + (b.sub ? ' <small>' + esc(b.sub) + '</small>' : '')]);
   if (s.nachbew) rows.push(['Nachbewilligungen', s.nachbew + '×']);
   if (s.known.data) rows.push(['Daten (von 100)', 'Qualität ' + Math.round(s.Q) + ' · Abdeckung ' + Math.round(s.C) + ' · Nutzungsrechte ' + Math.round(s.R)]);
-  if (s.known.model) rows.push(['Modell', s.B ? 'Übernahmen gesenkt um ' + fmtP(s.meas) + ' (Zielgröße ≥ ' + CFG.target + ' %)' : 'Human Override Rate ' + fmtP(PS.quote(s.meas)) + ' – ohne Baseline kein Vergleich']);
-  if (s.pilot && s.pilotImp !== null && s.phase >= 2) rows.push(['Test des MVP', 'Übernahmen gesenkt um ' + fmtP(s.pilotImp)]);
+  if (s.known.model) rows.push(['Modell', s.B ? 'Menschliche Eingriffe gesenkt um ' + fmtP(s.meas) + ' (Zielgröße ≥ ' + CFG.target + ' %)' : 'Human Override Rate ' + fmtP(PS.quote(s.meas)) + ' – ohne Baseline kein Vergleich']);
+  if (s.pilot && s.pilotImp !== null && s.phase >= 2) rows.push(['Test des MVP', 'Menschliche Eingriffe gesenkt um ' + fmtP(s.pilotImp)]);
   if (s.staff && s.phase < PS.PRE) rows.push(['Team in dieser Phase', esc(PS.ROLES.filter(r => PS.hasRole(s.staff, r.id, Math.min(s.phase, 2))).map(r => r.t).join(', '))]);
   return '<div class="lagebox"><div class="lb-h">' + tip('Projektlage auf einen Blick', 'Die wichtigsten Zahlen für Deinen Bericht. Alle Einzelheiten stehen im Reiter „Projektlage“.') + '</div><dl>' +
     rows.map(r => '<dt>' + esc(r[0]) + '</dt><dd>' + r[1] + '</dd>').join('') + '</dl></div>';
@@ -3337,7 +3338,7 @@ function renderGate() {
   if (g.metric) {
     if (g.metric.imp !== null) {
       h += '<div class="metric"><div><span>' + term('Baseline') + ': militärisches Modell</span><b>' + fmtP(g.metric.baseline) + '</b></div><div><span>Human Override Rate neues Modell</span><b>' + fmtP(g.metric.model) + '</b></div>' +
-        '<div><span>Übernahmen gesenkt um</span><b>' + fmtP(g.metric.imp) + '</b></div><div><span>Zielgröße</span><b>≥ ' + CFG.target + ' %</b></div></div>' +
+        '<div><span>Menschliche Eingriffe gesenkt um</span><b>' + fmtP(g.metric.imp) + '</b></div><div><span>Zielgröße</span><b>≥ ' + CFG.target + ' %</b></div></div>' +
         '<div class="msg ' + (g.metric.pass ? 'ok' : 'warn') + '">' + (g.metric.pass ? 'Die Validierung erreicht die Zielgröße.' : 'Die Validierung verfehlt die Zielgröße.') + ' Gemessen auf den Testflügen Deines Validierungsdesigns.</div>';
     } else {
       h += '<div class="metric"><div><span>' + term('Human Override Rate') + ' neues Modell</span><b>' + fmtP(g.metric.model) + '</b></div><div><span>Militärisches Modell</span><b>–</b></div></div>' +
@@ -3345,7 +3346,7 @@ function renderGate() {
     }
   }
   if (g.pilot) {
-    h += '<div class="metric"><div><span>Im Test des MVP: Übernahmen gesenkt um</span><b>' + fmtP(g.pilot.imp) + '</b></div><div><span>In der Validierung gemessen</span><b>' + fmtP(g.pilot.meas) + '</b></div><div><span>Zielgröße</span><b>≥ ' + CFG.target + ' %</b></div></div>';
+    h += '<div class="metric"><div><span>Im Test des MVP: menschliche Eingriffe gesenkt um</span><b>' + fmtP(g.pilot.imp) + '</b></div><div><span>In der Validierung gemessen</span><b>' + fmtP(g.pilot.meas) + '</b></div><div><span>Zielgröße</span><b>≥ ' + CFG.target + ' %</b></div></div>';
     if (g.pilot.gap > 6) h += '<div class="msg bad">Der Test des MVP bleibt deutlich hinter der Validierung zurück. Irgendetwas an der Validierung war zu optimistisch.</div>';
     else h += '<div class="msg ' + (g.pilot.pass ? 'ok' : 'warn') + '">' + (g.pilot.pass ? 'Der Test des MVP bestätigt die Validierung.' : 'Der Test des MVP bestätigt die Validierung, verfehlt aber die Zielgröße.') + '</div>';
   }
