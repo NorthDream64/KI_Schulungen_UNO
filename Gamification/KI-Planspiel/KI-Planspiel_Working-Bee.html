@@ -2342,7 +2342,7 @@ function modelPerf(s) {
 function summaryText(s, team) {
   const r = results(s);
   const lines = [];
-  lines.push('KI-Projekt-Planspiel „HILMAR“ · Spielnummer ' + s.seed + (team ? ' · ' + team : ''));
+  lines.push('KI-Projektsimulation „HILMAR“ · ' + (team || 'anonym'));
   if (s.vorprojekt) lines.push('Vorprojekt: ' + (s.vorprojekt.k ? s.vorprojekt.k + (s.vorprojekt.k === 1 ? ' Aktivität' : ' Aktivitäten') + ' nachgearbeitet' : 'ohne Nacharbeit') + (s.swot ? ', SWOT ' + s.swot.n + ' von 8' : ''));
   if (s.vp) lines.push('Vorgehen: ' + METHODS.find(x => x.id === s.method).t + ', ' + pocLabel(s.poc) + ', Ende Vorprojekt Woche ' + s.vpWeeks + ' (Plan ' + CFG.vpPlanWeeks + '), ' + fmtE(s.vpCost));
   lines.push('Business Case: Go-live Monat ' + s.plan.goLive + ', Investition ' + fmtE(s.plan.invest) + ', nach ' + CFG.horizon + ' Monaten ' + fmtE(r.pfin));
@@ -2411,14 +2411,15 @@ const TERMS = {
 let G = null;
 let meta = { seed: null, team: '', hist: [] };
 let ui = {};
-let defaultSeed = 1000 + Math.floor(Math.random() * 9000);
+let defaultSeed = 1000 + Math.floor(Math.random() * 9000);   // Spielnummer: zufällig; für dasselbe Szenario per Link vorgeben (…html?nr=1234)
+const urlSeed = () => { const m = /[?&#]nr=(\d{1,6})(?!\d)/.exec(location.search + location.hash); return m ? Math.max(1, +m[1]) : null; };
 let newConfirm = false;
 let tipN = 0;
 let drag = null, suppressClick = false;
 
 function resetUi() {
   ui = { order: null, depth: null, swot: {}, method: null, planSel: {}, planImp: 25, msSeq: null, staff: null, confirm: null,
-    alloc: {}, allocLog: [], trimNote: '', ext: 0, transfer: false, crash: false, report: null, copied: false, tab: 'spiel' };
+    alloc: {}, allocLog: [], trimNote: '', ext: 0, transfer: false, crash: false, report: null, saved: false, tab: 'spiel' };
 }
 resetUi();
 
@@ -2466,7 +2467,6 @@ function restore(m) {
 function renderMeta() {
   const parts = [];
   if (G) {
-    parts.push('<span>Spielnummer <b class="num">' + G.seed + '</b></span>');
     if (meta.team) parts.push('<span>' + esc(meta.team) + '</span>');
     if (G.stage === 'end') parts.push('<span>Auswertung</span>');
     else parts.push(G.plan ? '<span>Monat <b class="num">' + G.month + '</b></span>' : '<span>Vorprojekt</span>');
@@ -2853,18 +2853,16 @@ function renderStart() {
     '<li>Projektfreigabe: Du legst dem Lenkungsausschuss den Business Case für das Hauptprojekt vor.</li>' +
     '<li>Hauptprojekt in drei Phasen: Du verteilst Kapazität, reagierst auf Ereigniskarten und berichtest an den Quality Gates. Phase 3 endet mit Go-live, Hypercare und dem Projektabschluss.</li>' +
     '<li>Dann die Auswertung über drei Jahre: Was ist aus Deinem Business Case geworden?</li></ol>' +
-    '<p class="small muted" style="margin-top:8px">Im Spiel findest Du oben zwei weitere Reiter: <b>Projektlage</b> mit Phase, Terminen, Budget und dem Vertrauen des Lenkungsausschusses – beim Darüberfahren mit der Maus auch als Kurzansicht – und <b>Entscheidungen</b> mit allem, was Du bisher entschieden hast.</p>' +
+    '<p class="small muted" style="margin-top:8px">Im Spiel findest Du oben drei weitere Reiter: <b>Projektlage</b> mit Phase, Terminen, Budget und dem Vertrauen des Lenkungsausschusses – beim Darüberfahren mit der Maus auch als Kurzansicht –, <b>Projekt-G&amp;V</b> mit Plan und Ist je Phase und dem Balkenplan sowie <b>Entscheidungen</b> mit allem, was Du bisher entschieden hast.</p>' +
     '<p class="small muted" style="margin-top:10px">Begriffe mit <span class="tip-i" aria-hidden="true" style="margin:0 2px">i</span> erklären sich, wenn Du mit der Maus darauf zeigst oder sie antippst.</p>' +
     '<div class="fields" style="margin-top:14px">' +
-    '<div class="field"><label for="seed">Spielnummer</label><input id="seed" class="num" inputmode="numeric" value="' + defaultSeed + '" data-fk="seed"></div>' +
-    '<div class="field"><label for="team">Teamname (freiwillig)</label><input id="team" maxlength="40" placeholder="z. B. Gruppe 2" data-fk="team"></div></div>' +
+    '<div class="field"><label for="team">Name (freiwillig)</label><input id="team" maxlength="40" placeholder="z. B. Alex" autocomplete="off" data-fk="team"></div></div>' +
     '<div class="actions" style="margin-top:6px"><button class="btn" data-go="start" data-fk="start">Spiel starten</button>' +
-    (canResume ? '<button class="btn ghost" data-go="resume" data-fk="resume">Gespeichertes Spiel fortsetzen (Spielnummer ' + esc(saved.seed) + ')</button>' : '') + '</div>' +
+    (canResume ? '<button class="btn ghost" data-go="resume" data-fk="resume">Gespeichertes Spiel fortsetzen' + (saved.team ? ' (' + esc(saved.team) + ')' : '') + '</button>' : '') + '</div>' +
     '<details class="lead-notes"><summary>Hinweise für die Spielleitung</summary><ul class="small">' +
     '<li>Ablauf: Vorprojekt mit SWOT, Projektmethode und Planungsaktivitäten (ca. 25 Min.), Business Case (ca. 10 Min.), Phase 1 (ca. 20 Min.), Phase 2 (ca. 15 Min.), Phase 3 mit Go-live, Hypercare und Projektabschluss (ca. 25 Min.)</li>' +
     '<li>Wahlweise in Gruppen mit drei bis vier Personen; eine Person bedient, alle entscheiden gemeinsam. Oder als Einzelübung.</li>' +
-    '<li>Mit identischer Spielnummer starten alle mit derselben Kartenreihenfolge und treffen auf dieselben Zufallsereignisse; Unterschiede entstehen nur durch Entscheidungen.</li>' +
-    '<li>Am Ende „Ergebnis kopieren“ – so lassen sich die Ergebnisse bei Bedarf vergleichen.</li>' +
+    '<li>Am Ende „Projektbericht herunterladen“: eine HTML-Datei mit Zusammenfassung, Projektlage nach jeder Phase, Auswertung, Projekt-G&amp;V und Entscheidungs-Log – zum Abgeben, Vergleichen und für die Nachbesprechung.</li>' +
     '<li>Das Spiel läuft offline in jedem aktuellen Browser. Der Spielstand bleibt beim Neuladen erhalten, aber nur in diesem Browser.</li>' +
     '<li>Die fünf Ereigniskarten bilden die fünf Ursachen ab, die eine RAND-Studie für gescheiterte KI-Projekte nennt (Quelle unten).</li>' +
     '<li>Alle Zahlen sind fiktiv und didaktisch vereinfacht.</li></ul></details></div>';
@@ -3431,7 +3429,7 @@ function renderEnd() {
   const head = s.endReason === 'abbruch' ? 'Projekt beendet in Monat ' + (s.aborted ? s.aborted.month : s.month)
     : s.endReason === 'stopp' ? 'Der Lenkungsausschuss hat das Projekt gestoppt'
     : s.endReason === 'zeit' ? 'Go-live zu spät für einen sinnvollen Betrieb' : 'Drei Jahre nach Projektstart';
-  let h = '<div class="card fade"><p class="kicker">Auswertung · Spielnummer ' + s.seed + (meta.team ? ' · ' + esc(meta.team) : '') + '</p><h2>' + head + '</h2>';
+  let h = '<div class="card fade"><p class="kicker">Auswertung' + (meta.team ? ' · ' + esc(meta.team) : '') + '</p><h2>' + head + '</h2>';
   h += '<p class="small muted">Vier Blickwinkel, kein Gesamtsieger. Dies als Erinnerung, dass Rentabilität sich oft erst lange nach Projektende zeigt.</p>';
   const stl = { gut: '● im grünen Bereich', mittel: '● mit Abstrichen', schlecht: '● kritisch', neutral: '○ nicht bewertet', normal: '● im normalen Bereich' };
   h += '<div class="tiles">' + r.tiles.map(t => '<div class="tile ' + t.st + '"><div class="l">' + esc(t.label) + '</div><div class="v">' + esc(t.value) + '</div><div class="s">' + esc(t.sub) + '</div><div class="st">' + stl[t.st] + '</div></div>').join('') + '</div>';
@@ -3468,10 +3466,9 @@ function renderEnd() {
     '<tr class="grp"><th colspan="2">Erfolgskriterien</th></tr>' + K.criteria.map(kefRow).join('') + '</tbody></table>';
   if (MP.length) h += '<h3>Leistung des Modells</h3><table class="cmp kef"><tbody>' + MP.map(kefRow).join('') + '</tbody></table>';
   h += '<details style="margin-top:14px"><summary>Logbuch des ganzen Spiels</summary><ol class="small muted" style="padding-left:20px;margin-top:8px">' + s.log.map(l => '<li>' + (l.vp ? 'Vorprojekt' : 'Monat ' + l.m) + ': ' + esc(l.t) + '</li>').join('') + '</ol></details>';
-  h += '<div class="actions"><button class="btn" data-go="copy" data-fk="copy">Ergebnis kopieren</button><button class="btn ghost" data-go="print" data-fk="print">Drucken</button>' +
+  h += '<div class="actions"><button class="btn" data-go="report" data-fk="report">Projektbericht herunterladen</button><button class="btn ghost" data-go="print" data-fk="print">Drucken</button>' +
     '<button class="btn ghost" data-go="new" data-fk="new">' + (newConfirm ? 'Wirklich neu starten? Noch einmal klicken.' : 'Neues Spiel') + '</button>' +
-    (ui.copied ? '<span class="copied">Kopiert.</span>' : '') + '</div>';
-  h += '<textarea id="copybuf" style="position:absolute;left:-9999px" aria-hidden="true">' + esc(PS.summaryText(s, meta.team)) + '</textarea>';
+    (ui.saved ? '<span class="copied">Heruntergeladen – im Download-Ordner Deines Browsers.</span>' : '') + '</div>';
   return { html: h + '</div>', after: () => bindChart(c, p.cum, r.cum) };
 }
 
@@ -3560,8 +3557,7 @@ $('main').addEventListener('click', ev => {
   if (!t || t.disabled) return;
   const d = t.dataset;
   if (d.go === 'start') {
-    const raw = ($('seed').value || '').replace(/\D/g, '');
-    const seed = Math.max(1, parseInt(raw || defaultSeed, 10) % 1000000);
+    const seed = urlSeed() || defaultSeed;
     startGame(seed, ($('team').value || '').trim().slice(0, 40)); return;
   }
   if (d.go === 'resume') { restore(loadSaved()); render(true); return; }
@@ -3602,7 +3598,7 @@ $('main').addEventListener('click', ev => {
   if (d.opt !== undefined) { ui.confirm = { kind: 'event', i: +d.opt }; render(true); return; }
   if (d.auto !== undefined) { act(['event', null]); return; }
   if (d.dec) { if (d.dec === 'abbruch') { ui.confirm = { kind: 'gate', dec: d.dec }; render(true); } else act(['gate', ui.report, d.dec]); return; }
-  if (d.go === 'copy') { copyResult(); return; }
+  if (d.go === 'report') { downloadReport(); return; }
   if (d.go === 'print') { window.print(); return; }
   if (d.go === 'new') {
     if (!newConfirm) { newConfirm = true; render(); setTimeout(() => { newConfirm = false; if (G && G.stage === 'end') render(); }, 4000); return; }
@@ -3653,7 +3649,7 @@ $('main').addEventListener('keydown', ev => {
     const b = $('main').querySelector('[data-fk="grip-' + id + '"]'); if (b) b.focus({ preventScroll: true });
     return;
   }
-  if (ev.key === 'Enter' && (ev.target.id === 'seed' || ev.target.id === 'team')) {
+  if (ev.key === 'Enter' && ev.target.id === 'team') {
     const b = $('main').querySelector('[data-go="start"]'); if (b) b.click();
   }
 });
@@ -3723,12 +3719,79 @@ $('main').addEventListener('pointerup', () => endDrag(true));
 $('main').addEventListener('pointercancel', () => endDrag(false));
 window.addEventListener('click', ev => { if (suppressClick) { suppressClick = false; ev.stopPropagation(); ev.preventDefault(); } }, true);
 
-function copyResult() {
-  const txt = PS.summaryText(G, meta.team);
-  const done = () => { ui.copied = true; render(); };
-  const fallback = () => { const ta = $('copybuf'); if (!ta) return; ta.removeAttribute('aria-hidden'); ta.select(); try { document.execCommand('copy'); done(); } catch (e) { /* nichts */ } };
-  if (navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(txt).then(done, fallback);
-  else fallback();
+/* ---------- Projektbericht: eine HTML-Datei zum Herunterladen ----------
+   Projektlage zur Sitzung des Lenkungsausschusses am Ende von Phase 1, 2 und 3 (Projektabschluss).
+   Gespeichert wird sie nicht: Der Bericht spielt Spielnummer und Entscheidungen nach – wie das Fortsetzen nach dem Neuladen. */
+const REPORT_GATES = [[1, 'Projektlage nach Phase 1', 'Sitzung des Lenkungsausschusses zu den Quality Gates 1 und 2'],
+  [2, 'Projektlage nach Phase 2', 'Sitzung des Lenkungsausschusses zum Quality Gate 3'],
+  [4, 'Projektlage nach Phase 3', 'Projektabschluss nach der Hypercare']];
+function replayTo(n) {
+  const G0 = G; G = PS.newGame(meta.seed);
+  try { for (let i = 0; i < n; i++) apply(meta.hist[i]); return G; } finally { G = G0; }
+}
+function gateSnapshots() {
+  const G0 = G, last = {};
+  G = PS.newGame(meta.seed);
+  try { meta.hist.forEach((a, i) => { apply(a); if (G.stage === 'gate' && G.gate) last[G.gate.k] = i + 1; }); } finally { G = G0; }
+  return REPORT_GATES.filter(x => last[x[0]]).map(x => ({ title: x[1], sub: x[2], s: replayTo(last[x[0]]) }));
+}
+/* Für die Datei: Knöpfe, Infoboxen und Bewegung entfernen, die Nadel des Tachometers auf den Endwert setzen */
+function staticHtml(html) {
+  const box = document.createElement('div'); box.innerHTML = html;
+  box.querySelectorAll('.actions, .tt, details, .tip-i, .tip-b, .trend, button').forEach(e => e.remove());
+  box.querySelectorAll('.tip').forEach(t => t.replaceWith(...t.childNodes));
+  box.querySelectorAll('.fade').forEach(e => e.classList.remove('fade'));
+  box.querySelectorAll('.needle[data-to]').forEach(n => { n.style.transform = 'rotate(' + n.dataset.to + 'deg)'; n.removeAttribute('data-to'); });
+  box.querySelectorAll('[id]').forEach(e => e.removeAttribute('id'));
+  box.querySelectorAll('[data-fk],[tabindex],[aria-describedby]').forEach(e => { e.removeAttribute('data-fk'); e.removeAttribute('tabindex'); e.removeAttribute('aria-describedby'); });
+  return box.innerHTML;
+}
+const REPORT_CSS = '.rep-top{padding-top:28px}.rep-top .sub{margin:4px 0 0}' +
+  '.rep-toc{margin:10px 0 6px;font-size:14px}.rep-toc ol{margin:0;padding-left:20px}.rep-toc li{margin:1px 0}' +
+  '.rep-band{font-family:var(--serif);font-size:1.3rem;font-weight:700;line-height:1.25;margin:36px 0 4px;padding-bottom:6px;border-bottom:2px solid var(--ink)}' +
+  '.rep-band .n{color:var(--muted);margin-right:10px}.rep-sub{color:var(--muted);font-size:14px;margin:0 0 12px}' +
+  'table.rep-sum{width:100%}table.cmp.rep-sum th{text-align:left;font-weight:600;width:44%;vertical-align:top;padding-right:16px;color:var(--ink);font-size:inherit}table.cmp.rep-sum td{text-align:left}' +
+  '@media (max-width:560px){table.cmp.rep-sum th,table.cmp.rep-sum td{display:block;width:auto;padding:0;border:0}table.cmp.rep-sum tr{display:block;padding:7px 0;border-bottom:1px solid var(--soft)}}' +
+  '@media print{.rep-toc{display:none}section.rep{break-before:page}section.rep:first-of-type{break-before:auto}}';
+function reportHtml() {
+  const s = G, name = meta.team || '', who = name || 'anonym';
+  const d = new Date(), dStr = d.toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric' });
+  const lt = lastTrust, ts = trustShown, G0 = G;
+  lastTrust = null; trustShown = null;
+  const parts = [];
+  try {
+    const lines = PS.summaryText(s, name).split('\n').slice(1);
+    parts.push(['zusammenfassung', 'Zusammenfassung', '', '<div class="card"><h2>Das Projekt auf einen Blick</h2><table class="cmp rep-sum"><tbody>' +
+      lines.map(l => { const i = l.indexOf(': '); return i < 0 ? '<tr><td colspan="2">' + esc(l) + '</td></tr>' : '<tr><th>' + esc(l.slice(0, i)) + '</th><td>' + esc(l.slice(i + 2)).replace(/(\d) (€|%)/g, '$1&nbsp;$2') + '</td></tr>'; }).join('') + '</tbody></table></div>']);
+    let snaps = [];
+    try { snaps = gateSnapshots(); } catch (e) { snaps = []; }
+    snaps.forEach((x, i) => { G = x.s; try { parts.push(['lage' + (i + 1), x.title, x.sub, staticHtml(renderLage(x.s))]); } finally { G = G0; } });
+    parts.push(['auswertung', 'Auswertung', '', staticHtml(renderEnd().html)]);
+    parts.push(['guv', 'Projekt-G&amp;V', '', staticHtml(renderGuv(s))]);
+    parts.push(['entscheidungen', 'Entscheidungs-Log', '', staticHtml(renderLog(s))]);
+  } finally { G = G0; lastTrust = lt; trustShown = ts; }
+  const css = Array.from(document.querySelectorAll('head style')).map(x => x.textContent).join('\n') + REPORT_CSS;
+  const rights = Array.from(document.querySelectorAll('footer.foot p')).map(p => p.textContent).filter(t => /©/.test(t)).map(t => '<p>' + esc(t) + '</p>').join('');
+  return '<!doctype html>\n<html lang="de">\n<head>\n<meta charset="utf-8">\n<meta name="viewport" content="width=device-width,initial-scale=1">\n' +
+    '<title>Projektbericht HILMAR – ' + esc(who) + '</title>\n<style>\n' + css + '\n</style>\n</head>\n<body>\n<div class="wrap">\n' +
+    '<header class="top rep-top"><div class="row"><h1>Projektbericht HILMAR</h1><div class="meta"><span>' + esc(who) + '</span><span>' + dStr + '</span></div></div>' +
+    '<p class="sub">KI-Projektsimulation · Duale Nutzung militärischer Drohnen für zivile Märkte</p></header>\n' +
+    '<nav class="rep-toc" aria-label="Inhalt"><ol>' + parts.map(p => '<li><a href="#' + p[0] + '">' + p[1] + '</a></li>').join('') + '</ol></nav>\n' +
+    parts.map((p, i) => '<section class="rep" id="' + p[0] + '"><p class="rep-band"><span class="n">' + (i + 1) + '</span>' + p[1] + '</p>' + (p[2] ? '<p class="rep-sub">' + esc(p[2]) + '</p>' : '') + p[3] + '</section>').join('\n') +
+    '\n<footer class="foot" style="margin-top:36px"><p>Alle Zahlen sind fiktiv und didaktisch vereinfacht. Erstellt am ' + dStr + ' mit der KI-Projektsimulation „HILMAR“ · Spielnummer ' + s.seed + '</p>' + rights + '</footer>\n</div>\n</body>\n</html>\n';
+}
+function reportFileName() {
+  const n = (meta.team || 'anonym').replace(/ä/g, 'ae').replace(/ö/g, 'oe').replace(/ü/g, 'ue').replace(/Ä/g, 'Ae').replace(/Ö/g, 'Oe').replace(/Ü/g, 'Ue').replace(/ß/g, 'ss')
+    .normalize('NFKD').replace(/[̀-ͯ]/g, '').replace(/[^A-Za-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 40) || 'anonym';
+  const d = new Date(), p2 = x => String(x).padStart(2, '0');
+  return 'Projektbericht_HILMAR_' + n + '_' + d.getFullYear() + '-' + p2(d.getMonth() + 1) + '-' + p2(d.getDate()) + '.html';
+}
+function downloadReport() {
+  const url = URL.createObjectURL(new Blob([reportHtml()], { type: 'text/html;charset=utf-8' }));
+  const a = document.createElement('a'); a.href = url; a.download = reportFileName();
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 4000);
+  ui.saved = true; render();
 }
 
 render(false);

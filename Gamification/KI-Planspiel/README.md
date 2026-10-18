@@ -8,7 +8,7 @@ Im Mittelpunkt steht die Frage, wie ein KI-Projekt geplant und gesteuert wird: R
 
 - [KI-Planspiel_Working-Bee.html](KI-Planspiel_Working-Bee.html) im Browser öffnen. Herunterladen und lokal öffnen genügt.
 - Das Spiel läuft vollständig offline: keine Anmeldung, keine Übertragung an einen Server. Der Spielstand bleibt nur im eigenen Browser gespeichert.
-- **Spielnummer:** Alle Zufallswerte hängen an der Spielnummer. Gruppen mit derselben Nummer spielen unter denselben Bedingungen – so lassen sich Ergebnisse in der Nachbesprechung vergleichen.
+- **Spielnummer:** Alle Zufallswerte hängen an der Spielnummer. Das Spiel vergibt sie zufällig. Sollen alle Gruppen unter denselben Bedingungen spielen, öffnen sie das Spiel mit derselben Nummer im Link, z. B. `KI-Planspiel_Working-Bee.html?nr=1234`.
 
 ## Ablauf
 
@@ -16,6 +16,7 @@ Im Mittelpunkt steht die Frage, wie ein KI-Projekt geplant und gesteuert wird: R
 2. **Projektfreigabe:** Business Case für den Lenkungsausschuss.
 3. **Hauptprojekt in drei Phasen:** Kapazität verteilen, auf Ereignisse reagieren, an den Quality Gates berichten. Phase 3 endet mit dem Go-live (kommerzielle Markteinführung), zwei Monaten Hypercare und dem Projektabschluss mit Lessons Learned.
 4. **Auswertung über drei Jahre:** Business Case gegen Ist, kritische Erfolgsfaktoren und Erfolgskriterien.
+5. **Projektbericht:** Am Ende lässt sich ein Bericht als HTML-Datei herunterladen – mit Zusammenfassung, Projektlage nach jeder Phase, Auswertung, Projekt-G&V und Entscheidungs-Log.
 
 Neben dem Spiel zeigen drei Reiter die **Projektlage**, die **Projekt-G&V** und alle bisherigen **Entscheidungen**.
 
