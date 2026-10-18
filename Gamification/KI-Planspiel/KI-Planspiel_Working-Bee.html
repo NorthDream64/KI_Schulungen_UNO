@@ -597,7 +597,7 @@ const CFG = {
   overBase: 8, overRepBase: 3, overSlope: 15, overCap: 20,   // Nachbewilligung: Sockel (beim ersten Mal höher) plus 15 Punkte je 100 % neuer Überschreitung über 10 % (vor dem Faktor oben)
   delayPen: 1,                   // je Monat neuer Terminverzug am Quality Gate: Zeit für Qualität nimmt der Lenkungsausschuss eher hin
   intWeight: 0.35,               // Mehrkosten aus internen Teamkosten wiegen beim Lenkungsausschuss nur gut ein Drittel so schwer wie Zahlungen an Externe
-  qualPen: 2, qualCap: 6,        // je nicht erfülltem Kriterium an Quality Gate 1–3 (höchstens 6)
+  qualPen: 2, qualCap: 6,        // je nicht erfülltem Kriterium in den Sitzungen nach Phase 1, nach Phase 2 und vor dem Go-live (höchstens 6 je Sitzung)
   stopBelow: 15,                 // darunter stoppt der Lenkungsausschuss das Projekt an einem Quality Gate
   reportMin: 20, reportMax: 250, // Bericht an den Lenkungsausschuss: Freitext, wirkt nicht auf das Vertrauen, steht im Entscheidungs-Log
   slipTeam: 0.5,                 // Test des MVP und Wartezeiten in Phase 3: nur das Kernteam bleibt (Anteil der Teamkosten)
@@ -1036,28 +1036,31 @@ const PLAN_PHASES = [
 const MS_ITEMS = [
   { id: 'projektfreigabe', t: 'Projektfreigabe', kind: 'Meilenstein', ph: 0, o: 0, d: 'Der Lenkungsausschuss gibt das Hauptprojekt auf Grundlage des Business Case frei.',
     w: 'gehört ans Ende des Vorprojekts: Mit dem Business Case gibt der Lenkungsausschuss das Hauptprojekt frei.' },
-  { id: 'etl', t: 'Datenaufbereitung (ETL) abgeschlossen', kind: 'Meilenstein', ph: 1, o: 0,
-    d: 'ETL steht für Extract, Transform, Load: Flug-, Kamera- und Kartendaten sind aus den Quellsystemen gezogen, bereinigt, in ein gemeinsames Format gebracht (Datenintegration) und in den Datenbestand für das Training geladen.',
-    w: 'gehört in Phase 1 vor das Quality Gate: Erst wenn die Daten aufbereitet sind, lässt sich prüfen, ob ihre Qualität reicht.' },
-  { id: 'qg1', t: 'Quality Gate 1: Datenqualität definiert und gesichert', tx: 'Datenqualität definiert und gesichert', kind: 'Quality Gate', ph: 1, o: 1,
+  { id: 'qg_bereinigt', t: 'Quality Gate 1: Daten bereinigt und standardisiert', tx: 'Daten bereinigt und standardisiert', kind: 'Quality Gate', ph: 1, o: 0,
+    d: 'Fehlerhafte Aufnahmen, Dubletten und Lücken sind behandelt; die Daten aus den verschiedenen Quellen haben ein einheitliches Format und einheitliche Beschriftungen (Datenintegration) – der Transform-Schritt der Datenaufbereitung (ETL).',
+    w: 'steht in Phase 1 vor der Prüfung der Datenqualität: erst bereinigen und vereinheitlichen, dann die Qualität sichern.' },
+  { id: 'qg_daten', t: 'Quality Gate 2: Datenqualität definiert und gesichert', tx: 'Datenqualität definiert und gesichert', kind: 'Quality Gate', ph: 1, o: 1,
     d: 'Die Anforderungen an die Datenqualität sind festgelegt und erfüllt: Die Daten decken die Einsatzgebiete ab, sind nutzbar und dürfen zivil verwendet werden.',
-    w: 'gehört ans Ende von Phase 1 – es prüft, ob die Datenqualität festgelegt und erreicht ist.' },
-  { id: 'qg2', t: 'Quality Gate 2: Modellvalidierung abgeschlossen', tx: 'Modellvalidierung abgeschlossen', kind: 'Quality Gate', ph: 2, o: 0,
+    w: 'folgt in Phase 1 auf die Bereinigung – es prüft, ob die festgelegte Datenqualität erreicht ist.' },
+  { id: 'auswahl', t: 'Auswahl der Merkmale und Trainingssätze abgeschlossen', kind: 'Meilenstein', ph: 1, o: 2,
+    d: 'Die Merkmale (Features), aus denen das Modell lernt, sind ausgewählt, und die Datensätze für das Training sind zusammengestellt.',
+    w: 'schließt Phase 1 ab: Erst wenn die Datenqualität gesichert ist, lohnt es sich, Merkmale und Trainingsdaten festzulegen – damit beginnt die Modellentwicklung.' },
+  { id: 'qg_modell', t: 'Quality Gate 3: Modellvalidierung abgeschlossen', tx: 'Modellvalidierung abgeschlossen', kind: 'Quality Gate', ph: 2, o: 0,
     d: 'Das Modell ist auf Testflügen validiert, die nicht im Training waren, und schlägt die Baseline.',
     w: 'gehört ans Ende von Phase 2 – es prüft das Modell gegen die Baseline.' },
   { id: 'sysint', t: 'Systemintegration mit Kunden-Schnittstellen abgeschlossen', kind: 'Meilenstein', ph: 3, o: 0,
     d: 'HILMAR ist an die Leitstelle des Kunden angebunden: Übernahme-Anforderungen der Drohne erscheinen am Arbeitsplatz des REHO-Teams. Nicht zu verwechseln mit der Datenintegration in Phase 1.',
     w: 'steht am Anfang von Phase 3: Erst wenn HILMAR an die Leitstelle angebunden ist, lässt sich das Ganze testen.' },
-  { id: 'qg3', t: 'Quality Gate 3: Tests abgeschlossen, Monitoring eingerichtet', tx: 'Tests abgeschlossen, Monitoring eingerichtet', kind: 'Quality Gate', ph: 3, o: 1,
+  { id: 'qg_tests', t: 'Quality Gate 4: Tests abgeschlossen, Monitoring eingerichtet', tx: 'Tests abgeschlossen, Monitoring eingerichtet', kind: 'Quality Gate', ph: 3, o: 1,
     d: 'Tests, Dokumentation und Registrierungen sind abgeschlossen, das Monitoring läuft, die Rückfallebene steht.',
     w: 'folgt in Phase 3 auf die Systemintegration: Erst wenn die Tests abgeschlossen sind und das Monitoring läuft, geht es Richtung Go-live.' },
   { id: 'vorvertrag', t: 'Unterzeichnung Vorvertrag', kind: 'Meilenstein', ph: 3, o: 2,
     d: 'Der Logistikkunde unterschreibt den Vorvertrag: Go-live spätestens in Monat ' + CFG.contract + ', Vertragsstrafe von ' + fmtE(CFG.penalty) + ' je Monat Verzug.',
-    w: 'folgt in Phase 3 auf Quality Gate 3 und geht dem Go-live voraus: Erst wenn die Tests abgeschlossen sind, unterschreibt der Kunde.' },
+    w: 'folgt in Phase 3 auf Quality Gate 4 und geht dem Go-live voraus: Erst wenn die Tests abgeschlossen sind, unterschreibt der Kunde.' },
   { id: 'mvp', t: 'MVP abgenommen', kind: 'Meilenstein', ph: 3, o: 2,
     d: 'Der Logistikkunde nimmt das MVP (Minimum Viable Product) ab: die einfachste einsatzfähige Version von HILMAR.',
     w: 'folgt in Phase 3 auf die Tests und geht dem Go-live voraus: Der Kunde nimmt das MVP ab, bevor HILMAR kommerziell startet.' },
-  { id: 'qg4', t: 'Quality Gate 4: Kompetenzaufbau', tx: 'Kompetenzaufbau', kind: 'Quality Gate', ph: 3, o: 2,
+  { id: 'qg_kompetenz', t: 'Quality Gate 5: Kompetenzaufbau', tx: 'Kompetenzaufbau', kind: 'Quality Gate', ph: 3, o: 2,
     d: 'REHO-Team und Disponenten sind trainiert, Help Desk und Belegschaft vorbereitet, und das Wissen externer Partner ist im eigenen Haus angekommen.',
     w: 'steht in Phase 3 vor dem Go-live: Wer mit HILMAR arbeitet, muss vorbereitet sein, bevor es kommerziell losgeht.' },
   { id: 'golive', t: 'Go-live (kommerzielle Markteinführung)', kind: 'Meilenstein', ph: 3, o: 3,
@@ -1066,18 +1069,27 @@ const MS_ITEMS = [
   { id: 'lessons', t: 'Lessons Learned abgeschlossen', kind: 'Meilenstein', ph: 3, o: 4,
     d: 'Nach der Hypercare hält das Team fest, was gut lief und was nicht, und übergibt an den Betrieb – das Projekt endet.',
     w: 'folgt auf Go-live und Hypercare und schließt das Projekt ab (ICB 4: Lessons Learned auch am Ende festhalten).' },
-  { id: 'qg5', t: 'Quality Gate 5: Überprüfung real erzielter ROI', tx: 'Überprüfung real erzielter ROI', kind: 'Quality Gate', ph: 3, o: 5,
+  { id: 'qg_roi', t: 'Quality Gate 6: Überprüfung real erzielter ROI', tx: 'Überprüfung real erzielter ROI', kind: 'Quality Gate', ph: 3, o: 5,
     d: 'Nach einem Jahr Betrieb: Hat HILMAR die Investition so zurückgebracht, wie der Business Case es versprochen hat (Return on Investment)?',
     w: 'steht ganz am Ende: Ob sich die Investition rechnet, zeigt sich erst nach einem Jahr Betrieb.' },
 ];
-/* Spielstände mit der früheren Meilensteinliste: bekannte Einträge übernehmen, neue an ihrer richtigen Stelle ergänzen */
-const MS_OLD = { qg0: 'projektfreigabe', freigabe: null, uepilot: null, qg4: null, uebetrieb: 'lessons', ubc: 'qg5' };
+/* Spielstände mit früheren Meilensteinlisten: bekannte Einträge übernehmen, neue an ihrer richtigen Stelle ergänzen */
+const MS_V1 = { qg0: 'projektfreigabe', freigabe: null, uepilot: null, qg4: null, uebetrieb: 'lessons', ubc: 'qg5' };   // Liste bis 17.10.2026
+const MS_V2 = { etl: 'qg_bereinigt', qg1: 'qg_daten', qg2: 'qg_modell', qg3: 'qg_tests', qg4: 'qg_kompetenz', qg5: 'qg_roi' };   // erste Liste vom 18.10.2026
 function migrateMsSeq(seq) {
-  if (!Array.isArray(seq) || !seq.some(id => ['qg0', 'freigabe', 'uepilot', 'uebetrieb', 'ubc'].indexOf(id) >= 0)) return seq;
-  const out = [];
-  seq.forEach(id => { if (Object.prototype.hasOwnProperty.call(MS_OLD, id)) { if (MS_OLD[id]) out.push(MS_OLD[id]); } else out.push(id); });
-  const ins = (id, before) => { if (out.indexOf(id) < 0) { const i = out.indexOf(before); out.splice(i < 0 ? out.length : i, 0, id); } };
-  ins('vorvertrag', 'golive'); ins('etl', 'qg1'); ins('sysint', 'qg3'); ins('mvp', 'golive'); ins('qg4', 'golive');
+  if (!Array.isArray(seq)) return seq;
+  const has = (M, id) => Object.prototype.hasOwnProperty.call(M, id);
+  const mapSeq = (arr, M) => { const out = []; arr.forEach(id => { if (has(M, id)) { if (M[id]) out.push(M[id]); } else out.push(id); }); return out; };
+  const ins = (out, id, before) => { if (out.indexOf(id) < 0) { const i = out.indexOf(before); out.splice(i < 0 ? out.length : i, 0, id); } };
+  let out = seq;
+  if (out.some(id => ['qg0', 'freigabe', 'uepilot', 'uebetrieb', 'ubc'].indexOf(id) >= 0)) {
+    out = mapSeq(out, MS_V1);
+    ins(out, 'vorvertrag', 'golive'); ins(out, 'etl', 'qg1'); ins(out, 'sysint', 'qg3'); ins(out, 'mvp', 'golive'); ins(out, 'qg4', 'golive');
+  }
+  if (out.some(id => has(MS_V2, id))) {
+    out = mapSeq(out, MS_V2);
+    if (out.indexOf('auswahl') < 0) { const i = out.indexOf('qg_daten'); out.splice(i < 0 ? out.length : i + 1, 0, 'auswahl'); }
+  }
   return out;
 }
 const MS_BY_ID = {}; MS_ITEMS.forEach(m => { MS_BY_ID[m.id] = m; });
@@ -1498,6 +1510,7 @@ function runPhase(s, alloc, ext, transfer, crash) {
     trust(s, arrI([0, 2, 3, 3.5, 4, 4.5], s.RKq));
     s.Q += gain(e('bereinigung'), 30) + gain(e('integration'), 15);
     s.debt = e('bereinigung') < 1 ? 2 : e('bereinigung') < 2 ? 1 : 0;   // knapp bereinigt: Fehler kommen beim Training zurück
+    s.DI = e('integration');   // Datenintegration: Kriterium an Quality Gate 1
     const SEL = (s.plan && s.plan.sel || {});
     if (SEL.datenred) { s.C = clamp(s.C - 12, 0, 100); notes.push('Weniger Daten (laut Business Case): Phase 1 ist einen Monat kürzer, aber das Modell sieht weniger Einsatzgebiete und Wetterlagen – die Datenabdeckung bleibt geringer.'); }
     if (SEL.cocreation) { extraCost -= CO_CREDIT; extExt -= CO_CREDIT; s.P += 10; s.C += 4; s.adoptBonus += 0.02; notes.push('Co-Creation: Der Pilotkunde stellt Daten, Testgelände und sein REHO-Team (−' + fmtE(CO_CREDIT) + ') und bringt seine Sicht früh ein.'); }
@@ -1802,22 +1815,29 @@ function resolveEvent(s, idx) {
 }
 
 /* ---------------- Quality Gates ----------------
-   Quality Gates 1–5 (Index = Nummer). Projektfreigabe ist ein Meilenstein.
-   Sitzungen des Lenkungsausschusses (interner Index k): 0 Projektfreigabe, 1 nach Phase 1, 2 nach Phase 2,
-   3 vor dem Go-live (Quality Gates 3 und 4), 4 Projektabschluss nach der Hypercare. Quality Gate 5 (ROI) folgt im Betrieb. */
-const QG_NAMES = ['Projektfreigabe', 'Datenqualität definiert und gesichert', 'Modellvalidierung abgeschlossen', 'Tests abgeschlossen, Monitoring eingerichtet', 'Kompetenzaufbau', 'Überprüfung real erzielter ROI'];
-const GATE_SHORT = ['Projektfreigabe', 'Quality Gate 1', 'Quality Gate 2', 'Quality Gates 3 und 4', 'Projektabschluss'];
-const GATE_TITLE = ['Meilenstein Projektfreigabe', 'Quality Gate 1: ' + QG_NAMES[1], 'Quality Gate 2: ' + QG_NAMES[2],
-  'Quality Gates 3 und 4: ' + QG_NAMES[3] + ' · ' + QG_NAMES[4], 'Projektabschluss: Lessons Learned abgeschlossen'];
+   Quality Gates 1–6 (Index = Nummer). Projektfreigabe ist ein Meilenstein.
+   Sitzungen des Lenkungsausschusses (interner Index k): 0 Projektfreigabe, 1 nach Phase 1 (Quality Gates 1 und 2), 2 nach Phase 2 (Quality Gate 3),
+   3 vor dem Go-live (Quality Gates 4 und 5), 4 Projektabschluss nach der Hypercare. Quality Gate 6 (ROI) folgt im Betrieb. */
+const QG_NAMES = ['Projektfreigabe', 'Daten bereinigt und standardisiert', 'Datenqualität definiert und gesichert', 'Modellvalidierung abgeschlossen',
+  'Tests abgeschlossen, Monitoring eingerichtet', 'Kompetenzaufbau', 'Überprüfung real erzielter ROI'];
+const GATE_SHORT = ['Projektfreigabe', 'Quality Gates 1 und 2', 'Quality Gate 3', 'Quality Gates 4 und 5', 'Projektabschluss'];
+const GATE_TITLE = ['Meilenstein Projektfreigabe', 'Quality Gates 1 und 2: ' + QG_NAMES[1] + ' · ' + QG_NAMES[2], 'Quality Gate 3: ' + QG_NAMES[3],
+  'Quality Gates 4 und 5: ' + QG_NAMES[4] + ' · ' + QG_NAMES[5], 'Projektabschluss: Lessons Learned abgeschlossen'];
 function gateCriteria(s, k) {
   const c = (t, ok, unk, grp) => ({ t, ok: unk ? null : !!ok, grp });
-  if (k === 1) return [
-    c('Datenqualität mindestens 60 von 100', s.Q >= 60),
-    c('Datenabdeckung mindestens 55 von 100', s.C >= 55),
-    c('Nutzungsrechte und Rechtsrahmen weitgehend geklärt (mindestens 50 von 100)', s.R >= 50),
-    c('Risikokategorie nach EU AI Act geprüft', s.RK >= 1),
-    c('Ziel mit Vertrieb und Pilotkunden geklärt (mindestens 60 von 100)', s.P >= 60),
-  ];
+  if (k === 1) {
+    // Eine Sitzung nach Phase 1, zwei Quality Gates; dazu zwei weitere Ergebnisse der Phase
+    const g1 = 'Quality Gate 1: ' + QG_NAMES[1], g2 = 'Quality Gate 2: ' + QG_NAMES[2], g0 = 'Außerdem prüft der Lenkungsausschuss';
+    return [
+      c('Datenbereinigung ausreichend: Fehler kommen nicht im Training zurück', s.debt === 0, false, g1),
+      c('Datenintegration: Daten aus den Quellen in einem gemeinsamen Format', (s.DI || 0) >= 1, false, g1),
+      c('Datenqualität mindestens 60 von 100', s.Q >= 60, false, g2),
+      c('Datenabdeckung mindestens 55 von 100', s.C >= 55, false, g2),
+      c('Nutzungsrechte und Rechtsrahmen weitgehend geklärt (mindestens 50 von 100)', s.R >= 50, false, g2),
+      c('Risikokategorie nach EU AI Act geprüft', s.RK >= 1, false, g0),
+      c('Ziel mit Vertrieb und Pilotkunden geklärt (mindestens 60 von 100)', s.P >= 60, false, g0),
+    ];
+  }
   if (k === 2) return [
     c('Baseline gemessen: militärisches Modell unter zivilen Testbedingungen', s.B),
     c('Zielgröße in der Validierung erreicht (mindestens ' + CFG.target + ' % weniger Übernahmen)', s.meas >= CFG.target, !s.B),
@@ -1825,7 +1845,7 @@ function gateCriteria(s, k) {
   ];
   if (k === 3) {
     // Eine Sitzung vor dem Go-live, zwei Quality Gates
-    const g3 = 'Quality Gate 3: ' + QG_NAMES[3], g4 = 'Quality Gate 4: ' + QG_NAMES[4];
+    const g3 = 'Quality Gate 4: ' + QG_NAMES[4], g4 = 'Quality Gate 5: ' + QG_NAMES[5];
     return [
       c('Test des MVP unter realen Bedingungen bestätigt die Validierung', s.pilot && s.pilotImp >= CFG.target && s.meas - s.pilotImp <= 6, false, g3),
       c('Systemintegration: Übernahme-Anforderungen erscheinen in der Leitstelle', s.I >= 0.6, false, g3),
@@ -2059,6 +2079,7 @@ function decideGate(s, reportId, decisionId) {
     if (open.length) { s.openGates = (s.openGates || 0) + 1; log(s, GATE_SHORT[k] + ': ' + (k === 4 ? 'Abschluss' : 'Freigabe') + ' mit ' + open.length + (open.length === 1 ? ' offenen Kriterium' : ' offenen Kriterien') + '.', 'gate'); }
     else log(s, GATE_SHORT[k] + ': alle Kriterien erfüllt.', 'gate');
   }
+  if (k === 1 && terminal) log(s, 'Auswahl der Merkmale und Trainingssätze abgeschlossen: Phase 1 endet, die Daten gehen in die Modellentwicklung.', 'gate');
   if (k === 4 && decisionId === 'verlaengern') {
     log(s, 'Hypercare um einen Monat verlängert (' + fmtE(s.ops.hc * CFG.hcCost) + ').', 'ops');
     s.hcExt = 1; s.month += 1;
@@ -2193,7 +2214,7 @@ function simulateOps(s) {
   s.T = clamp(s.T, 0, 100);
   s.segs.push({ p: OPS, from: g, to: hcEnd, kind: 'hypercare' });
   s.month = H;
-  // Quality Gate 5 ein Jahr nach dem Go-live: real erzielter ROI – Rückfluss im ersten Betriebsjahr gegen den Plan
+  // Quality Gate 6 ein Jahr nach dem Go-live: real erzielter ROI – Rückfluss im ersten Betriebsjahr gegen den Plan
   if (g + 12 <= H) {
     const p = s.plan; let b = 0, pb = 0, oc = 0, pnet = 0;
     for (let m = g + 1; m <= g + 12; m++) { b += s.benefit[m]; oc += s.cost[m]; }
@@ -2201,7 +2222,7 @@ function simulateOps(s) {
     const inv = spent(s, g), pret = p.invest ? pnet / p.invest : 0, ret = inv ? (b - oc) / inv : 0;
     s.bcReview = { m: g + 12, b, pb, ret, pret };
     const pct = x => Math.round(x * 100) + ' %';
-    timeline.push({ m: g + 12, k: b >= 0.9 * pb ? 'ok' : 'warn', t: 'Quality Gate 5 – Überprüfung real erzielter ROI: Im ersten Jahr nach dem Go-live brachte HILMAR ' + fmtE(Math.round(b / 1000) * 1000) + ' Deckungsbeitrag – geplant waren ' + fmtE(Math.round(pb / 1000) * 1000) + '. Nach laufenden Kosten flossen ' + pct(ret) + ' der Investition zurück (Business Case: ' + pct(pret) + ').' });
+    timeline.push({ m: g + 12, k: b >= 0.9 * pb ? 'ok' : 'warn', t: 'Quality Gate 6 – Überprüfung real erzielter ROI: Im ersten Jahr nach dem Go-live brachte HILMAR ' + fmtE(Math.round(b / 1000) * 1000) + ' Deckungsbeitrag – geplant waren ' + fmtE(Math.round(pb / 1000) * 1000) + '. Nach laufenden Kosten flossen ' + pct(ret) + ' der Investition zurück (Business Case: ' + pct(pret) + ').' });
     timeline.sort((x, y) => x.m - y.m);
   }
   log(s, 'Hypercare bis Monat ' + hcEnd + ', Projektabschluss mit Lessons Learned und Übergabe an den Betrieb; Betrieb bis Monat ' + H + ' simuliert.', 'ops');
@@ -2600,15 +2621,15 @@ function milestoneRows(s) {
     else { ist[k] = k - 1 >= kN ? s.month + p.months.slice(kN, k).reduce((x, y) => x + y, 0) : s.month; prog[k] = true; }
     done[k] = gate[k] != null && !(s.stage === 'gate' && s.gate && s.gate.k === k);
   });
-  rows.push(['Datenaufbereitung (ETL) abgeschlossen', 'Monat ' + p.starts[1], cell(ist[1], prog[1]), dev(ist[1], p.starts[1]), done[1]]);
-  rows.push(['Quality Gate 1: ' + QG_NAMES[1], 'Monat ' + p.starts[1], cell(ist[1], prog[1]), dev(ist[1], p.starts[1]), done[1]]);
-  rows.push(['Quality Gate 2: ' + QG_NAMES[2], 'Monat ' + p.starts[2], cell(ist[2], prog[2]), dev(ist[2], p.starts[2]), done[2]]);
+  ['Quality Gate 1: ' + QG_NAMES[1], 'Quality Gate 2: ' + QG_NAMES[2], 'Auswahl der Merkmale und Trainingssätze abgeschlossen'].forEach(t =>
+    rows.push([t, 'Monat ' + p.starts[1], cell(ist[1], prog[1]), dev(ist[1], p.starts[1]), done[1]]));
+  rows.push(['Quality Gate 3: ' + QG_NAMES[3], 'Monat ' + p.starts[2], cell(ist[2], prog[2]), dev(ist[2], p.starts[2]), done[2]]);
   // Systemintegration: im ersten Monat von Phase 3
   const siIst = ist[2] == null ? null : ist[2] + 1, siDone = !!s.goLive || (gate[3] != null);
   rows.push(['Systemintegration mit Kunden-Schnittstellen abgeschlossen', 'Monat ' + (p.starts[2] + 1), cell(siIst, !siDone && (prog[2] || !done[2] || s.phase <= 2)), dev(siIst, p.starts[2] + 1), siDone]);
-  // Sitzung vor dem Go-live: Quality Gates 3 und 4, Vorvertrag, Abnahme des MVP, Go-live
+  // Sitzung vor dem Go-live: Quality Gates 4 und 5, Vorvertrag, Abnahme des MVP, Go-live
   const fc = s.stage === 'end' && !s.goLive ? null : goLiveForecast(s);
-  [['Quality Gate 3: ' + QG_NAMES[3]], ['Unterzeichnung Vorvertrag'], ['MVP abgenommen'], ['Quality Gate 4: ' + QG_NAMES[4]],
+  [['Quality Gate 4: ' + QG_NAMES[4]], ['Unterzeichnung Vorvertrag'], ['MVP abgenommen'], ['Quality Gate 5: ' + QG_NAMES[5]],
    ['Go-live (kommerzielle Markteinführung) – laut Vorvertrag spätestens Monat ' + CFG.contract]].forEach(r =>
     rows.push([r[0], 'Monat ' + p.goLive, cell(fc, !s.goLive), dev(fc, p.goLive), !!s.goLive]));
   // Projektabschluss nach der Hypercare
@@ -2617,7 +2638,7 @@ function milestoneRows(s) {
   const hoDone = s.stage === 'end' && s.endReason === 'regulaer' && gate[4] != null;
   rows.push(['Lessons Learned abgeschlossen', 'Monat ' + p.close, cell(hoIst, g4 == null), dev(hoIst, p.close), hoDone]);
   const bc = fc == null ? null : fc + 12;
-  rows.push(['Quality Gate 5: ' + QG_NAMES[5], 'Monat ' + (p.goLive + 12), cell(bc, !(s.bcReview && s.stage === 'end')), dev(bc, p.goLive + 12), !!(s.bcReview && s.stage === 'end')]);
+  rows.push(['Quality Gate 6: ' + QG_NAMES[6], 'Monat ' + (p.goLive + 12), cell(bc, !(s.bcReview && s.stage === 'end')), dev(bc, p.goLive + 12), !!(s.bcReview && s.stage === 'end')]);
   return markNext(s, rows);
 }
 /* Status je Zeile: abgeschlossen (✓) oder als Nächstes (▸) – der erste offene Termin, solange das Spiel läuft */
@@ -2661,7 +2682,7 @@ function renderLage(s) {
   h += '<li>Projektmethode: <b>' + (s.method ? esc(PS.METHODS.find(x => x.id === s.method).t) + '</b> · Projektmanagement ' + fmtE(PS.PM_WEEK[s.method]) + ' pro Woche' : 'noch offen</b>') + '</li>';
   if (s.vp) h += '<li>' + esc(PS.pocLabel(s.poc).replace(/^./, c => c.toUpperCase())) + '</li>';
   if (s.staff) h += '<li>' + tip('Team', [0, 1, 2].map(k => 'Phase ' + (k + 1) + ': ' + (PS.ROLES.filter(r => PS.hasRole(s.staff, r.id, k)).map(r => r.t).join(', ') || '–')).join('\n')) + ': ' + [0, 1, 2].map(k => 'Phase ' + (k + 1) + ' <b>' + PS.teamSize(s.staff, k) + '</b>').join(' · ') + ' Personen, je ' + fmtE(PS.ROLE_WEEK) + ' pro Einsatzwoche</li>';
-  h += '<li>Vorvertrag mit dem Logistikkunden (Unterzeichnung nach Quality Gate 3): Go-live spätestens in Monat ' + CFG.contract + '</li></ul></div><div>';
+  h += '<li>Vorvertrag mit dem Logistikkunden (Unterzeichnung nach Quality Gate 4): Go-live spätestens in Monat ' + CFG.contract + '</li></ul></div><div>';
   h += '<h3>Daten und Modell</h3>';
   if (s.known.data) h += barStat('Datenqualität', s.Q, 100) + barStat('Datenabdeckung', s.C, 100) + barStat('Nutzungsrechte geklärt', s.R, 100);
   else h += '<div class="unknown">Datenlage noch unbekannt' + (s.plan ? ' – sie zeigt sich im Laufe von Phase 1' : '') + '</div>';
@@ -3074,17 +3095,18 @@ function milestonePlan(p) {
   const M = 'Meilenstein', Q = 'Quality Gate';
   const rows = [
     { m: p.starts[0], t: 'Projektfreigabe', a: M },
-    { m: p.starts[1], t: 'Datenaufbereitung (ETL) abgeschlossen', a: M },
     { m: p.starts[1], t: 'Quality Gate 1: ' + QG_NAMES[1], a: Q },
-    { m: p.starts[2], t: 'Quality Gate 2: ' + QG_NAMES[2], a: Q },
+    { m: p.starts[1], t: 'Quality Gate 2: ' + QG_NAMES[2], a: Q },
+    { m: p.starts[1], t: 'Auswahl der Merkmale und Trainingssätze abgeschlossen', a: M },
+    { m: p.starts[2], t: 'Quality Gate 3: ' + QG_NAMES[3], a: Q },
     { m: p.starts[2] + 1, t: 'Systemintegration mit Kunden-Schnittstellen abgeschlossen', a: M },
-    { m: p.goLive, t: 'Quality Gate 3: ' + QG_NAMES[3], a: Q },
+    { m: p.goLive, t: 'Quality Gate 4: ' + QG_NAMES[4], a: Q },
     { m: p.goLive, t: 'Unterzeichnung Vorvertrag', a: M },
     { m: p.goLive, t: 'MVP abgenommen', a: M },
-    { m: p.goLive, t: 'Quality Gate 4: ' + QG_NAMES[4], a: Q },
+    { m: p.goLive, t: 'Quality Gate 5: ' + QG_NAMES[5], a: Q },
     { m: p.goLive, t: 'Go-live (kommerzielle Markteinführung)', a: M + ' (laut Vorvertrag spätestens Monat ' + CFG.contract + ')', warn: p.goLive > CFG.contract },
     { m: p.close, t: 'Lessons Learned abgeschlossen', a: M },
-    { m: p.goLive + 12, t: 'Quality Gate 5: ' + QG_NAMES[5], a: Q },
+    { m: p.goLive + 12, t: 'Quality Gate 6: ' + QG_NAMES[6], a: Q },
   ];
   return '<table class="cmp ms"><thead><tr><th>Meilenstein oder Quality Gate</th><th>Art</th><th>Monat</th></tr></thead><tbody>' +
     rows.map(r => '<tr' + (r.warn ? ' class="warnrow"' : '') + '><td>' + esc(r.t) + '</td><td>' + esc(r.a) + '</td><td class="num">' + r.m + '</td></tr>').join('') + '</tbody></table>';
@@ -3299,7 +3321,7 @@ function renderGate() {
   const gt = PS.GATE_TITLE[g.k];
   h += '<p class="kicker">' + (g.k >= 1 && g.k <= 3 ? esc(gt).replace(/^Quality Gates?/, w => term('Quality Gate', w)) : esc(gt)) + ' · Monat ' + s.month + '</p><h2>Der ' + term('Lenkungsausschuss') + ' tagt</h2>';
   let grp0 = null;
-  h += '<div class="criteria"><b class="small">' + (g.k === 4 ? 'Kriterien für den Projektabschluss' : g.k === 3 ? 'Kriterien der beiden Quality Gates' : 'Kriterien dieses Quality Gates') + '</b><ul>' + g.criteria.map(c => (c.grp && c.grp !== grp0 ? '<li class="grp">' + esc(grp0 = c.grp) + '</li>' : '') + '<li class="' + (c.ok === true ? 'ok' : c.ok === false ? 'bad' : 'unk') + '"><span aria-hidden="true">' + (c.ok === true ? '✓' : c.ok === false ? '✗' : '?') + '</span>' + esc(c.t) + '<span class="sr">' + (c.ok === true ? ' (erfüllt)' : c.ok === false ? ' (nicht erfüllt)' : ' (unbekannt)') + '</span></li>').join('') + '</ul>' +
+  h += '<div class="criteria"><b class="small">' + (g.k === 4 ? 'Kriterien für den Projektabschluss' : g.k === 1 || g.k === 3 ? 'Kriterien dieser Sitzung' : 'Kriterien dieses Quality Gates') + '</b><ul>' + g.criteria.map(c => (c.grp && c.grp !== grp0 ? '<li class="grp">' + esc(grp0 = c.grp) + '</li>' : '') + '<li class="' + (c.ok === true ? 'ok' : c.ok === false ? 'bad' : 'unk') + '"><span aria-hidden="true">' + (c.ok === true ? '✓' : c.ok === false ? '✗' : '?') + '</span>' + esc(c.t) + '<span class="sr">' + (c.ok === true ? ' (erfüllt)' : c.ok === false ? ' (nicht erfüllt)' : ' (unbekannt)') + '</span></li>').join('') + '</ul>' +
     '<p class="small muted">Offene Kriterien halten den Lenkungsausschuss nicht auf – er entscheidet. Aber was jetzt offen bleibt, holt Dich später ein.</p></div>';
   h += g.msgs.map(m => '<div class="msg ' + m.k + '">' + (m.k.indexOf('trend') === 0 ? term('Meilensteintrend') + ': ' + esc(m.t.replace(/^Meilensteintrend: /, '')) : esc(m.t)) + '</div>').join('');
   const tr = trustTrend(), z = PS.trustZone(s.T);
