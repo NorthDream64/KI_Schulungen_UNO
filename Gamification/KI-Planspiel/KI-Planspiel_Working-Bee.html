@@ -1033,13 +1033,13 @@ const PLAN_PHASES = [
   { id: 'ph3', t: 'Phase 3: ' + PHASE_NAMES[2] },
 ];
 const MS_ITEMS = [
-  { id: 'qg0', t: 'Quality Gate 0: Projektfreigabe', tx: 'Quality Gate: Projektfreigabe', kind: 'Quality Gate', ph: 0, o: 0, d: 'Der Lenkungsausschuss gibt das Hauptprojekt auf Grundlage des Business Case frei.',
+  { id: 'qg0', t: 'Quality Gate 0: Projektfreigabe', tx: 'Projektfreigabe', kind: 'Quality Gate', ph: 0, o: 0, d: 'Der Lenkungsausschuss gibt das Hauptprojekt auf Grundlage des Business Case frei.',
     w: 'gehört ans Ende des Vorprojekts: Mit dem Business Case gibt der Lenkungsausschuss das Hauptprojekt frei.' },
-  { id: 'qg1', t: 'Quality Gate 1: Datenbasis belastbar', tx: 'Quality Gate: Datenaufbereitung abgeschlossen', kind: 'Quality Gate', ph: 1, o: 0, d: 'Die Daten sind vorhanden, nutzbar und dürfen zivil verwendet werden.',
+  { id: 'qg1', t: 'Quality Gate 1: Datenbasis belastbar', tx: 'Datenaufbereitung abgeschlossen', kind: 'Quality Gate', ph: 1, o: 0, d: 'Die Daten sind vorhanden, nutzbar und dürfen zivil verwendet werden.',
     w: 'gehört ans Ende von Phase 1 – es prüft, ob die Datenbasis trägt.' },
-  { id: 'qg2', t: 'Quality Gate 2: Modell validiert', tx: 'Quality Gate: Modell validiert', kind: 'Quality Gate', ph: 2, o: 0, d: 'Das Modell schlägt die Baseline in der Validierung.',
+  { id: 'qg2', t: 'Quality Gate 2: Modell validiert', tx: 'Modell validiert', kind: 'Quality Gate', ph: 2, o: 0, d: 'Das Modell schlägt die Baseline in der Validierung.',
     w: 'gehört ans Ende von Phase 2 – es prüft das Modell gegen die Baseline.' },
-  { id: 'qg3', t: 'Quality Gate 3: Test abgeschlossen, Monitoring eingerichtet', tx: 'Quality Gate: Test abgeschlossen, Monitoring eingerichtet', kind: 'Quality Gate', ph: 3, o: 0,
+  { id: 'qg3', t: 'Quality Gate 3: Test abgeschlossen, Monitoring eingerichtet', tx: 'Test abgeschlossen, Monitoring eingerichtet', kind: 'Quality Gate', ph: 3, o: 0,
     d: 'Tests, Integration, Dokumentation und Registrierungen sind abgeschlossen, das Monitoring läuft, die Rückfallebene steht.',
     w: 'steht in Phase 3 am Anfang: Erst wenn Tests abgeschlossen sind und das Monitoring läuft, kann über den Go-live entschieden werden.' },
   { id: 'vorvertrag', t: 'Unterzeichnung Vorvertrag', tx: 'Unterzeichnung Vorvertrag', kind: 'Meilenstein', ph: 3, o: 1,
@@ -1051,7 +1051,7 @@ const MS_ITEMS = [
     w: 'folgt in Phase 3 auf die Freigabe und startet die MVP-Erprobung.' },
   { id: 'uepilot', t: 'Übergabe MVP', tx: 'Übergabe MVP', kind: 'Meilenstein', ph: 3, o: 4, d: 'Das Projektteam übergibt das laufende MVP an das REHO-Team des Logistikkunden; das Hypercare-Team bleibt ansprechbar.',
     w: 'folgt in Phase 3 auf den Go-live: Erst läuft das MVP an, dann übernimmt der Kunde.' },
-  { id: 'qg4', t: 'Quality Gate 4: MVP-Erprobung und kommerzieller Betrieb', tx: 'Quality Gate: MVP-Erprobung und kommerzieller Betrieb', kind: 'Quality Gate', ph: 3, o: 5,
+  { id: 'qg4', t: 'Quality Gate 4: MVP-Erprobung und kommerzieller Betrieb', tx: 'MVP-Erprobung und kommerzieller Betrieb', kind: 'Quality Gate', ph: 3, o: 5,
     d: 'Die Erprobung des MVP beim Kunden ist ausgewertet – der Lenkungsausschuss entscheidet über den kommerziellen Betrieb.',
     w: 'steht nach Go-live und Übergabe MVP: Es wertet die MVP-Erprobung aus und gibt den kommerziellen Betrieb frei.' },
   { id: 'uebetrieb', t: 'Übergabe Betrieb', tx: 'Übergabe Betrieb', kind: 'Meilenstein', ph: 3, o: 6, d: 'Nach der Hypercare übernimmt der Betrieb – das Projekt endet.',
@@ -2949,7 +2949,7 @@ function renderPlanung() {
     const P = PS.PLAN_PHASES.find(x => x.id === id);
     if (P) { h += '<li class="phrow" data-ph="' + id + '"><b>' + esc(P.t) + '</b>' + (P.sub ? '<span>' + esc(P.sub) + '</span>' : '') + '</li>'; return; }
     const m = MS[id];
-    h += '<li class="sortitem" data-sort="' + id + '"><button type="button" class="grip" data-grip="' + id + '" data-fk="grip-' + id + '" title="Ziehen, um die Position zu ändern" aria-label="' + esc(m.tx || m.t) + '. Mit Pfeil nach oben oder unten verschieben."><span class="dots6" aria-hidden="true"></span></button>' +
+    h += '<li class="sortitem" data-sort="' + id + '"><button type="button" class="grip" data-grip="' + id + '" data-fk="grip-' + id + '" title="Ziehen, um die Position zu ändern" aria-label="' + esc(m.kind + ': ' + (m.tx || m.t)) + '. Mit Pfeil nach oben oder unten verschieben."><span class="dots6" aria-hidden="true"></span></button>' +
       '<div class="st"><b>' + tip(esc(m.tx || m.t), m.d) + '</b><span class="mskind ' + (m.kind === 'Meilenstein' ? 'm' : 'q') + '">' + esc(m.kind) + '</span></div></li>';
   });
   h += '</ol>';
