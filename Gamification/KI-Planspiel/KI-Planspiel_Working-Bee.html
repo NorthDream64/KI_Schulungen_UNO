@@ -933,7 +933,7 @@ const PHASES = [
       { id: 'bereinigung', name: 'Datenbereinigung', max: 5,
         text: 'Fehlerhafte Sensoraufnahmen, Dubletten, fehlende Werte und uneinheitliche Formate behandeln.' },
       { id: 'integration', name: 'Datenintegration', max: 5,
-        text: 'Flugdaten, Kamerabilder und Kartendaten aus den eigenen Systemen zusammenführen, auf ein gemeinsames Format bringen und einheitlich beschriften – damit das Training auf einem stimmigen Datenbestand aufsetzt.' },
+        text: 'Flugdaten, Kamerabilder und Kartendaten aus den eigenen Systemen zusammenführen, auf ein gemeinsames Format bringen und einheitlich beschriften – damit das Training auf einem stimmigen Datenbestand aufsetzt. Nicht zu verwechseln mit Datenintegrität: dem Schutz der Daten vor Veränderung und Manipulation.' },
       { id: 'pipeline', name: 'Datenpipeline automatisieren', max: 5,
         text: 'Der Datenfluss läuft ohne Handarbeit. Macht späteres Nachtraining schneller und billiger.' },
     ] },
@@ -2605,7 +2605,7 @@ function milestoneRows(s) {
   rows.push(['Quality Gate 2: ' + QG_NAMES[2], 'Monat ' + p.starts[2], cell(ist[2], prog[2]), dev(ist[2], p.starts[2]), done[2]]);
   // Systemintegration: im ersten Monat von Phase 3
   const siIst = ist[2] == null ? null : ist[2] + 1, siDone = !!s.goLive || (gate[3] != null);
-  rows.push(['Systemintegration abgeschlossen', 'Monat ' + (p.starts[2] + 1), cell(siIst, !siDone && (prog[2] || !done[2] || s.phase <= 2)), dev(siIst, p.starts[2] + 1), siDone]);
+  rows.push(['Systemintegration mit Kunden-Schnittstellen abgeschlossen', 'Monat ' + (p.starts[2] + 1), cell(siIst, !siDone && (prog[2] || !done[2] || s.phase <= 2)), dev(siIst, p.starts[2] + 1), siDone]);
   // Sitzung vor dem Go-live: Quality Gates 3 und 4, Vorvertrag, Abnahme des MVP, Go-live
   const fc = s.stage === 'end' && !s.goLive ? null : goLiveForecast(s);
   [['Quality Gate 3: ' + QG_NAMES[3]], ['Unterzeichnung Vorvertrag'], ['MVP abgenommen'], ['Quality Gate 4: ' + QG_NAMES[4]],
@@ -3077,7 +3077,7 @@ function milestonePlan(p) {
     { m: p.starts[1], t: 'Datenaufbereitung (ETL) abgeschlossen', a: M },
     { m: p.starts[1], t: 'Quality Gate 1: ' + QG_NAMES[1], a: Q },
     { m: p.starts[2], t: 'Quality Gate 2: ' + QG_NAMES[2], a: Q },
-    { m: p.starts[2] + 1, t: 'Systemintegration abgeschlossen', a: M },
+    { m: p.starts[2] + 1, t: 'Systemintegration mit Kunden-Schnittstellen abgeschlossen', a: M },
     { m: p.goLive, t: 'Quality Gate 3: ' + QG_NAMES[3], a: Q },
     { m: p.goLive, t: 'Unterzeichnung Vorvertrag', a: M },
     { m: p.goLive, t: 'MVP abgenommen', a: M },
