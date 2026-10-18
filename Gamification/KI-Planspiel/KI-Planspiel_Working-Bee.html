@@ -589,6 +589,7 @@ const CFG = {
   maxImp: 32,
   infra: E(2000), monCost: E(1000), opsKpCost: E(600), opsKpMax: 7,
   hcMonths: 2, hcCost: E(3000),  // Hypercare: zwei Monate, je Punkt und Monat
+  llCost: E(2500),               // Übergabe und Lessons Learned: einmalig je Punkt (Workshop und strukturierte Dokumentation, 10.000 €)
   contract: 10,                  // Vertragsmeilenstein: Go-live beim Logistikkunden spätestens in Monat 10
   penalty: 40000,                // Vertragsstrafe je Monat Verzug
   exitAfter: 3,                  // ab drei Monaten Verzug darf der Kunde zurücktreten
@@ -2122,7 +2123,7 @@ function contractCheck(s) {
 function runOps(s, alloc) {
   alloc = trimAlloc(alloc, ownCap(s, OPS));
   const a = k => alloc[k] || 0;
-  const kp = a('auswertung') + a('nachtraining') + a('feedback') + a('wissen');
+  const kp = a('auswertung') + a('nachtraining') + a('feedback');   // laufende Betriebskapazität; Übergabe und Lessons Learned kosten einmalig (CFG.llCost)
   s.ops = { alloc: Object.assign({}, alloc), kp, hc: a('hypercare') };
   s.L = clamp(s.L + gain(a('feedback'), 20), 0, 100);
   s.P = clamp(s.P + gain(a('feedback'), 15), 0, 100);
@@ -2165,6 +2166,7 @@ function simulateOps(s) {
     : 'Projektabschluss ohne Lessons Learned: Was gut lief und was nicht, hält niemand fest. Übergabe an den Betrieb – das Projekt ist abgeschlossen. ') + (s.M > 0 ? 'Das Monitoring läuft ab jetzt regelmäßig weiter.' : 'Ein regelmäßiges Monitoring gibt es nicht.') });
   for (let m = g + 1; m <= H; m++) {
     if (m <= hcEnd && hc) addCost(s, m, hc * CFG.hcCost);
+    if (m === hcEnd && a.wissen) addCost(s, m, a.wissen * CFG.llCost);   // Projektabschluss: Workshop und Dokumentation
     if (m === g + 2 && s._aktionCost) { addCost(s, m, s._aktionCost, true); }
     if (s.excl && m === g + 13) timeline.push({ m, k: 'ok', t: 'Nach einem Jahr Testflügen kommen die Innenstädte als Einsatzgebiete dazu.' });
     if (s.custLost && m === s.custLostUntil + 1) timeline.push({ m, k: 'ok', t: 'Neue Logistikkunden ersetzen den abgesprungenen Ankerkunden.' });
@@ -2795,7 +2797,7 @@ function renderGuv(s) {
     for (let m = p.goLive + 1; m <= H; m++) { pOps += p.ops; pBen += p.cf[m] + p.ops; }
     const ops = [
       { t: 'Deckungsbeitrag (Nutzen)', dur: 'nach dem Go-live bis Monat ' + H, plan: pBen, ist: ben, income: true },
-      { t: 'Laufende Kosten', dur: 'Hypercare, Monitoring, Nachtraining, Infrastruktur', plan: pOps, ist: oc },
+      { t: 'Laufende Kosten', dur: 'Hypercare, ' + (s.ops && s.ops.alloc.wissen ? 'Lessons Learned, ' : '') + 'Monitoring, Nachtraining, Infrastruktur', plan: pOps, ist: oc },
       { t: 'Ergebnis nach ' + H + ' Monaten', dur: 'Nutzen minus Kosten von Hauptprojekt und Betrieb, ohne Vorprojekt', plan: r.pfin, ist: r.fin, income: true, sum: true },
     ];
     h += '<h3>Betrieb nach dem Go-live</h3>' + guvTable(ops);
@@ -3222,7 +3224,7 @@ function renderAlloc() {
   h += '<div class="question"><small>Die Frage ' + (ph.part ? 'dieses Teils' : 'dieser Phase') + '</small>' + esc(ph.question) + '</div>';
   if (!ops && s.staff) h += '<p class="small teamline"><b>Dein Team in dieser Phase:</b> ' + esc(PS.ROLES.filter(r => PS.hasRole(s.staff, r.id, s.phase)).map(r => r.t).join(', ')) + '</p>';
   if (!ops && s.pull && s.pull[s.phase]) h += '<div class="msg warn"><b>Agiler Alltag:</b> ' + esc(PS.PULL_TEXT[s.phase]) + ' Dir stehen in dieser Phase ' + own + ' statt ' + PS.ownCap(s) + ' eigene Kapazitätspunkte zur Verfügung.</div>';
-  if (ops) h += '<p class="lead small">HILMAR ist beim Logistikkunden im kommerziellen Betrieb. Das REHO-Team des Kunden fliegt selbst, in den ersten zwei Monaten begleitet von der ' + term('Hypercare') + '. Danach schließt Du das Projekt ab: Lessons Learned festhalten, an den Betrieb übergeben; das Monitoring läuft regelmäßig weiter. Laut Business Case (Umfang „' + esc(PS.opsLevel(s.plan.sel).t) + '“) planst Du bis zu ' + PS.ownCap(s) + ' Punkte: Das Hypercare-Team kostet ' + fmtE(CFG.hcCost) + ' je Punkt und Monat, aber nur während der Hypercare; alle anderen Punkte kosten dauerhaft ' + fmtE(CFG.opsKpCost) + ' pro Monat.</p>';
+  if (ops) h += '<p class="lead small">HILMAR ist beim Logistikkunden im kommerziellen Betrieb. Das REHO-Team des Kunden fliegt selbst, in den ersten zwei Monaten begleitet von der ' + term('Hypercare') + '. Danach schließt Du das Projekt ab: Lessons Learned festhalten, an den Betrieb übergeben; das Monitoring läuft regelmäßig weiter. Laut Business Case (Umfang „' + esc(PS.opsLevel(s.plan.sel).t) + '“) planst Du bis zu ' + PS.ownCap(s) + ' Punkte: Das Hypercare-Team kostet ' + fmtE(CFG.hcCost) + ' je Punkt und Monat, aber nur während der Hypercare; Übergabe und Lessons Learned kosten einmalig ' + fmtE(CFG.llCost) + ' je Punkt (Workshop und strukturierte Dokumentation); alle anderen Punkte kosten dauerhaft ' + fmtE(CFG.opsKpCost) + ' pro Monat.</p>';
   // Kapazität: einfarbige Punkte – verteilt oder frei; die Herkunft steht im Text
   let pips = '';
   for (let i = 0; i < capTotal; i++) pips += '<span class="pip' + (i >= used ? ' free' : '') + '"></span>';
@@ -3253,9 +3255,9 @@ function renderAlloc() {
   if (!ops) h += crashCard(s);
   h += '</div>';
   if (ops) {
-    const hc = ui.alloc.hypercare || 0, kp = used - hc;
+    const hc = ui.alloc.hypercare || 0, ll = ui.alloc.wissen || 0, kp = used - hc - ll;
     const mc = CFG.infra + (s.M > 0 ? CFG.monCost : 0) + kp * CFG.opsKpCost + PS.cdrOps(s);
-    h += '<p class="estimate">Hypercare: <b class="num">' + fmtE(hc * CFG.hcCost * CFG.hcMonths) + '</b> für zwei Monate. Laufende Kosten danach: <b class="num">' + fmtE(mc) + '</b> pro Monat (Infrastruktur' + (s.M > 0 ? ', Monitoring' : '') + (PS.cdrOps(s) ? ', CDR' : '') + ' und Deine Betriebskapazität).</p>';
+    h += '<p class="estimate">Hypercare: <b class="num">' + fmtE(hc * CFG.hcCost * CFG.hcMonths) + '</b> für zwei Monate.' + (ll ? ' Übergabe und Lessons Learned: <b class="num">' + fmtE(ll * CFG.llCost) + '</b> einmalig.' : '') + ' Laufende Kosten danach: <b class="num">' + fmtE(mc) + '</b> pro Monat (Infrastruktur' + (s.M > 0 ? ', Monitoring' : '') + (PS.cdrOps(s) ? ', CDR' : '') + ' und Deine Betriebskapazität).</p>';
   } else {
     const est = allocEstimate(s);
     h += '<p class="estimate">' + (ph.part ? 'Dieser Teil der Phase' : 'Diese Phase') + ' dauert mindestens <b>' + est.d + (est.d === 1 ? ' Monat' : ' Monate') + '</b>' + (est.wait ? ' (davon ein Monat Warten auf die Registrierung)' : '') + ' und kostet mindestens <b class="num">' + fmtE(est.c) + '</b> (Team: ' + est.n + (est.n === 1 ? ' Person, ' : ' Personen, ') + fmtE(est.tm) + ' pro Monat; Projektmanagement ' + fmtE(est.pm) + ' pro Monat).</p>';
