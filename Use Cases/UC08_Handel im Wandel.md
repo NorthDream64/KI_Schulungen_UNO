@@ -6,11 +6,11 @@
 
 ## Das Unternehmen
 
-**NoHa GmbH & Co. KG** *(Arbeitstitel: Nord-Handel)*, Zentrale **Hambrg**
+**NoHa GmbH & Co. KG** *(Arbeitstitel: Nord-Handel)*, Zentrale **Hamburg**
 Familiengeführtes Handelsunternehmen mit Filialen und Onlineshop (Omnichannel)
 Gründung: **[ergänzen]** · Mitarbeitende: ca. 1.400 *(Vorschlag)* · Umsatz: ca. 300 Mio. EUR *(Vorschlag)*, davon rund 18 % online *(Vorschlag)*
 
-**Sortiment:** **Lebensmittel, inbesondere im Hochpreis- und Delikatessensegment, Küchenbedarf (eigene Marke namens Cuisine de Nord**
+**Sortiment:** **Lebensmittel, insbesondere im Hochpreis- und Delikatessensegment, und Küchenbedarf (Eigenmarke „Cuisine de Nord“)**
 
 **Marktposition:** Mittlerer Anbieter ohne bundesweite Präsenz – stark in seinen Kernregionen, dort mit hoher Bekanntheit und treuer Stammkundschaft.
 
@@ -18,7 +18,7 @@ Gründung: **[ergänzen]** · Mitarbeitende: ca. 1.400 *(Vorschlag)* · Umsatz: 
 |---|---|
 | **Norddeutschland** | Kernmarkt, ca. 25 Filialen *(Vorschlag)* |
 | **Neue Bundesländer** | Zweiter Schwerpunkt, ca. 15 Filialen *(Vorschlag)* |
-| **Grenzregion Niederlande** | Kundschaft im grenznahen Raum bis Groningen; eigene Filialen auf deutscher Seite in **Emden** und **Oldenburg** mit hohem Anteil niederländischer Kundinnen und Kunden; eigene Pilot-Läden in Gronningen und Emmen**; on-line Lieferung mit eigener Markt (ebenfalls Pilot) namens "DeliNord" |
+| **Grenzregion Niederlande** | Kundschaft im grenznahen Raum bis Groningen; eigene Filialen auf deutscher Seite in **Emden** und **Oldenburg** mit hohem Anteil niederländischer Kundinnen und Kunden; eigene Pilot-Läden in **Groningen** und **Emmen**; Online-Lieferung unter eigener Marke „DeliNord“ (ebenfalls Pilot) |
 
 **Kundenbindung:** Kundenkarte mit Bonusprogramm (Kaufhistorie, Kontaktdaten, Einwilligungen für Werbung) – genutzt in Filiale und Onlineshop.
 
