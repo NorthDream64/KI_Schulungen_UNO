@@ -172,9 +172,9 @@ var QBANK = {
       "sc": "Das Kreditscoring-Modell Deiner Bank läuft seit sechs Monaten produktiv. Die Vorstandsvorsitzende fragt, was jetzt eigentlich noch zu tun sei.",
       "q": "Welche Aussage(n) zu Monitoring und iterativer Optimierung im Produktivbetrieb ist oder sind korrekt?",
       "opts": [
-        "Monitoring und iterative Optimierung sind notwendig, um das System an sich ändernde Datenmuster anzupassen und einer Leistungsverschlechterung (Model Drift) vorzubeugen",
-        "Der Einsatz von Modellen in Produktivsystemen erfordert die Etablierung von MLOps-Konzepten zur Standardisierung und Automatisierung des Deployment-Prozesses",
-        "Die fortlaufende Protokollierung aller Systemaktivitäten und Modellentscheidungen ist eine Schlüsselanforderung an Nachvollziehbarkeit und Auditierbarkeit und unterstützt Governance-Anforderungen wie ISO/IEC 42001",
+        "Weil sich Kundenverhalten und Datenlage weiter verändern, muss das Modell laufend beobachtet und nachjustiert werden; sonst lässt seine Leistung unbemerkt nach (Model Drift)",
+        "Damit neue Modellversionen geordnet und wiederholbar in Betrieb gehen, braucht es MLOps: standardisierte, möglichst automatisierte Abläufe von der Freigabe bis zum Deployment",
+        "Werden Eingaben, Modellversionen und Entscheidungen im Betrieb laufend protokolliert, lässt sich jede Einstufung später nachvollziehen und prüfen — eine Grundlage für Audits nach ISO/IEC 42001",
         "Sobald ein Modell in der Abnahme eine Genauigkeit von über 99 Prozent erreicht hat, kann die laufende Überwachung entfallen"
       ],
       "correct": [
@@ -182,24 +182,24 @@ var QBANK = {
         1,
         2
       ],
-      "exp": "Monitoring und iterative Optimierung halten das System an sich verändernden Datenmustern nach und beugen so der Leistungsverschlechterung durch Model Drift vor. MLOps liefert dafür den standardisierten und automatisierten Deployment-Prozess — ohne ihn bleibt jede Änderung ein Einzelfall. Die fortlaufende Protokollierung ist die Grundlage von Nachvollziehbarkeit und Auditierbarkeit und wird von Managementsystemen wie ISO/IEC 42001 ausdrücklich verlangt. Eine hohe Anfangsgenauigkeit macht Überwachung dagegen gerade nicht überflüssig: Sie ist eine Momentaufnahme des Abnahmezeitpunkts und sagt nichts darüber, wie sich Daten und Wirklichkeit danach entwickeln — je besser ein Modell startet, desto eher wird sein Nachlassen übersehen.",
+      "exp": "Laufende Beobachtung und Nachjustierung halten das Modell mit einer sich verändernden Datenlage Schritt und verhindern, dass seine Leistung unbemerkt nachlässt (Model Drift). MLOps liefert dafür den standardisierten und automatisierten Deployment-Prozess — ohne ihn bleibt jede Änderung ein Einzelfall. Die fortlaufende Protokollierung ist die Grundlage von Nachvollziehbarkeit und Auditierbarkeit und wird von Managementsystemen wie ISO/IEC 42001 ausdrücklich verlangt. Eine hohe Anfangsgenauigkeit macht Überwachung dagegen gerade nicht überflüssig: Sie ist eine Momentaufnahme des Abnahmezeitpunkts und sagt nichts darüber, wie sich Daten und Wirklichkeit danach entwickeln — je besser ein Modell startet, desto eher wird sein Nachlassen übersehen.",
       "src": "EU AI Act — Art. 26 (Betreiberpflichten) · artificialintelligenceact.eu/article/26/ · ISO/IEC 42001"
     },
     {
       "sc": "Das Team richtet die laufende Überwachung ein und diskutiert, welche Größen überhaupt beobachtet werden müssen.",
       "q": "Welche Aussage(n) zu den überwachten Größen im Produktivbetrieb ist oder sind korrekt?",
       "opts": [
-        "Die kontinuierliche Überwachung von Metriken wie Precision (Präzision), Recall (Sensitivität) oder F1-Score (harmonisches Mittel aus beiden), um eine Verschlechterung der Modellleistung frühzeitig zu erkennen",
-        "Die Analyse von Datenintegrität und Input-Drift im Datenstrom, um sicherzustellen, dass sich die Eigenschaften der Eingabedaten nicht unvorhergesehen verändert haben",
-        "Die Implementierung automatisierter Feedback-Schleifen, die Nutzungsmuster und Ergebnisse systematisch erfassen und für ein automatisches oder manuelles Retraining nutzen",
-        "Die vorrangige Nutzung der Testdaten aus der Trainingsphase, da diese eine unvoreingenommene Bewertung liefern und im Betrieb dann nicht neu erhoben werden müssen"
+        "Precision (Präzision), Recall (Sensitivität) und F1-Score werden auch nach dem Go-live regelmäßig gemessen, damit ein Nachlassen der Modellleistung früh auffällt",
+        "Auch die eingehenden Daten werden beobachtet: Sind sie vollständig und fehlerfrei, und verschiebt sich ihre Verteilung gegenüber den Trainingsdaten (Input-Drift, auch Data Drift)?",
+        "Rückmeldungen aus dem Betrieb, etwa Korrekturen durch die Sachbearbeitung, werden automatisch gesammelt und fließen in ein geplantes oder ausgelöstes Retraining ein",
+        "Für die Bewertung im Betrieb genügen die Testdaten aus der Entwicklung; sie sind unvoreingenommen, deshalb müssen im Betrieb keine neuen Vergleichswerte erhoben werden"
       ],
       "correct": [
         0,
         1,
         2
       ],
-      "exp": "Precision, Recall und der F1-Score werden nicht nur einmal bei der Abnahme gemessen, sondern laufend — nur so fällt eine schleichende Verschlechterung auf. Die Beobachtung von Datenintegrität und Input-Drift ist der zweite Pfeiler und oft der wichtigere: Sie funktioniert auch dann, wenn im Betrieb gar nicht bekannt wird, was richtig gewesen wäre, und ist dann das einzige Frühwarnsystem. Automatisierte Feedback-Schleifen schließen den Kreis zum Retraining und machen den Unterschied zwischen bloßem Protokollesammeln und tatsächlichem Lernen aus dem Betrieb. Die Testdaten aus der Trainingsphase dagegen sind eine Momentaufnahme; sie bilden die Wirklichkeit nach dem Go-Live nicht ab und können eine laufende Messung nicht ersetzen.",
+      "exp": "Precision, Recall und der F1-Score werden nicht nur einmal bei der Abnahme gemessen, sondern laufend — nur so fällt eine schleichende Verschlechterung auf. Die Beobachtung von Datenintegrität und Input-Drift (Data Drift) ist der zweite Pfeiler und oft der wichtigere: Sie funktioniert auch dann, wenn im Betrieb gar nicht bekannt wird, was richtig gewesen wäre, und ist dann das einzige Frühwarnsystem. Automatisierte Feedback-Schleifen schließen den Kreis zum Retraining und machen den Unterschied zwischen bloßem Protokollesammeln und tatsächlichem Lernen aus dem Betrieb. Die Testdaten aus der Trainingsphase dagegen sind eine Momentaufnahme; sie bilden die Wirklichkeit nach dem Go-Live nicht ab und können eine laufende Messung nicht ersetzen.",
       "src": "EU AI Act — Art. 72 (Beobachtung nach dem Inverkehrbringen) · artificialintelligenceact.eu/article/72/"
     },
     {
@@ -290,7 +290,7 @@ var QBANK = {
       "opts": [
         "Begrenzungen gehören auf die System- und Anwendungsebene; eine Anweisung im Prompt ist eine Bitte und keine technische Grenze",
         "Beim Agenten muss die Kette der Handlungen nachvollziehbar sein, nicht nur das Endergebnis — Protokollierung und Beobachtbarkeit sind eigene Bausteine des Systems",
-        "Bei Agenten, deren Entscheidungen erhebliche Auswirkungen auf Menschen haben, ist das Prinzip der menschlichen Aufsicht (Human Oversight) mit tatsächlicher Eingriffsmöglichkeit zu sichern",
+        "Treffen Agenten Entscheidungen, die Menschen erheblich betreffen, braucht es menschliche Aufsicht (Human Oversight), die tatsächlich eingreifen und stoppen kann",
         "Teilen sich mehrere Agenten einen technischen Zugang, genügt es im Vorfall festzustellen, dass ein Agent gehandelt hat"
       ],
       "correct": [
