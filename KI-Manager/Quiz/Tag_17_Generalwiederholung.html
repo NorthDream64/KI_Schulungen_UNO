@@ -413,7 +413,7 @@ var QBANK = [
     opts: [
       'In typischen ML-Projekten entfallen 60 bis 80 Prozent des Gesamtaufwands auf Datenvorbereitung, -bereinigung und Feature-Engineering — die Modellwahl ist der kleinere Teil.',
       'Ohne saubere und konsistente Trainingsdaten liefert selbst das beste Modell keine belastbaren Ergebnisse — \'Garbage in, Garbage out\' gilt uneingeschränkt.',
-      'Datendrift — die Veränderung statistischer Eigenschaften der Produktivdaten gegenüber den Trainingsdaten — ist ein häufiger Grund für schleichende Modellverschlechterung im laufenden Betrieb.',
+      'Datendrift (Input-Drift) — die Veränderung statistischer Eigenschaften der Produktivdaten gegenüber den Trainingsdaten — ist ein häufiger Grund für schleichende Modellverschlechterung im laufenden Betrieb.',
       'Das Garbage-in-Garbage-out-Prinzip betrifft vor allem Supervised Learning — unüberwachte Lernverfahren profitieren durch ihren eigenständigen Mustererkennungsansatz von einem natürlichen Schutz vor Datenqualitätsproblemen.',
     ],
     correct: [0, 1, 2],
@@ -467,13 +467,13 @@ var QBANK = [
     nr: 20, cat: 'Datenmanagement & Tools',
     q: 'Im Produktivbetrieb beobachtest du, dass die Vorhersagequalität eines Kreditrisiko-Modells nach einigen Monaten allmählich nachlässt, obwohl die Systemkonfiguration unverändert ist. Welche Aussage(n) zu Ursachen und Umgang mit Model Drift ist oder sind korrekt?',
     opts: [
-      'Model Drift entsteht, wenn sich Verteilungen von Eingabedaten (Data Drift) oder Zielvariablen (Concept Drift) im Zeitverlauf verändern.',
+      'Model Drift entsteht, wenn sich die Verteilung der Eingabedaten (Data Drift, auch Input-Drift) oder der Zusammenhang zwischen Eingaben und Zielgröße (Concept Drift) im Zeitverlauf verändert.',
       'Regelmäßiges Monitoring von Modell-Performance und Eingabedaten ist notwendig, um Drift-Effekte frühzeitig zu erkennen und darauf zu reagieren.',
       'Model Drift ist ein einmaliges Phänomen unmittelbar nach dem Deployment; danach bleibt die Modellqualität dauerhaft und konstant stabil.',
       'Retraining mit aktuellen Daten oder Anpassung des Modells sind typische Gegenmaßnahmen zur Wiederherstellung der Vorhersagequalität nach Drift.',
     ],
     correct: [0, 1, 3],
-    exp: 'Model Drift entsteht, wenn sich die Verteilung der Eingabedaten (Data Drift) oder die Beziehung zwischen Ein- und Ausgabe (Concept Drift) im Zeitverlauf verändert — etwa durch Marktwandel, saisonale Effekte oder externe Schocks. Regelmäßiges Monitoring von Modell-Performance und Eingabedaten ist notwendig, um Drift frühzeitig zu erkennen und zu reagieren. Retraining mit aktuellen Daten oder Modellanpassung sind typische Gegenmaßnahmen. Model Drift ist kein einmaliges Post-Deployment-Phänomen: er ist ein struktureller Bestandteil des Produktivbetriebs und muss über den gesamten Lebenszyklus überwacht werden.',
+    exp: 'Model Drift entsteht, wenn sich die Verteilung der Eingabedaten (Data Drift, auch Input-Drift) oder die Beziehung zwischen Ein- und Ausgabe (Concept Drift) im Zeitverlauf verändert — etwa durch Marktwandel, saisonale Effekte oder externe Schocks. Regelmäßiges Monitoring von Modell-Performance und Eingabedaten ist notwendig, um Drift frühzeitig zu erkennen und zu reagieren. Retraining mit aktuellen Daten oder Modellanpassung sind typische Gegenmaßnahmen. Model Drift ist kein einmaliges Post-Deployment-Phänomen: er ist ein struktureller Bestandteil des Produktivbetriebs und muss über den gesamten Lebenszyklus überwacht werden.',
     src: 'KIM Tag 8 · Model Drift'
   },
   /* Q21 · Datenmanagement & Tools · 3r */
@@ -497,7 +497,7 @@ var QBANK = [
     opts: [
       'Zentrale Qualitätsdimensionen sind Vollständigkeit, Konsistenz, Aktualität, Genauigkeit und Repräsentativität für den späteren Anwendungsfall.',
       'Repräsentative Trainingsdaten reduzieren das Risiko von Bias und Diskriminierung im späteren Modellverhalten deutlich und sind rechtlich empfohlen.',
-      'Im laufenden Betrieb müssen Trainingsdaten und Modelleingaben regelmäßig auf Aktualität und Datendrift überprüft werden — Datenqualität ist kein einmaliger Check, sondern ein kontinuierlicher Prozess über den Modell-Lebenszyklus.',
+      'Im laufenden Betrieb müssen Trainingsdaten und Modelleingaben regelmäßig auf Aktualität und Datendrift (Input-Drift) überprüft werden — Datenqualität ist kein einmaliger Check, sondern ein kontinuierlicher Prozess über den Modell-Lebenszyklus.',
       'Synthetisch generierte Trainingsdaten sind datenschutzrechtlich unbedenklich und können sensible personenbezogene Echtzeitdaten in regulierten Sektoren ohne weitere Prüfung vollständig ersetzen.',
     ],
     correct: [0, 1, 2],
@@ -709,12 +709,12 @@ var QBANK = [
     q: 'Eine schrittweise Verschlechterung der Modellgüte im Produktivbetrieb erfordert ein tragfähiges Überwachungskonzept. Welche Aussage(n) zu Bestandteilen und Zielsetzung einer belastbaren Modellüberwachung ist oder sind korrekt?',
     opts: [
       'Monitoring erfasst technische Metriken (Latenz, Verfügbarkeit) und fachliche Metriken (Vorhersagequalität, Drift-Indikatoren) auf strukturierte Weise.',
-      'Automatisierte Alerts bei Performance-Einbrüchen oder Data-Drift-Signalen ermöglichen frühzeitige Reaktion und minimieren Auswirkungen im Geschäftsbetrieb.',
+      'Automatisierte Alerts bei Performance-Einbrüchen oder Signalen für Data Drift (Input-Drift) ermöglichen frühzeitige Reaktion und minimieren Auswirkungen im Geschäftsbetrieb.',
       'Das Monitoring der Systemverfügbarkeit reicht aus, um Modellqualität und Aussagekraft im Produktivbetrieb belastbar sicherzustellen.',
       'Regelmäßige Überprüfung gegen aktuelle Ground-Truth-Daten liefert die belastbarste Aussage über die tatsächliche Modellqualität im Zeitverlauf.',
     ],
     correct: [0, 1, 3],
-    exp: 'Ein belastbares Monitoring erfasst technische Metriken (Latenz, Verfügbarkeit, Fehlerraten) und fachliche Metriken (Vorhersagequalität, Drift-Indikatoren) gleichermaßen strukturiert — beides in Dashboards und mit Alerting hinterlegt. Automatisierte Alerts bei Performance-Einbrüchen oder Data-Drift-Signalen ermöglichen frühzeitige Reaktion, bevor Geschäftsfolgen entstehen. Regelmäßige Überprüfung gegen aktuelle Ground-Truth-Daten (z. B. per Delayed Labels oder manueller Stichprobe) liefert die belastbarste Aussage zur tatsächlichen Modellqualität im Zeitverlauf. Reines Systemverfügbarkeits-Monitoring reicht nicht — ein Modell kann technisch verfügbar sein und trotzdem fachlich völlig unbrauchbar arbeiten (schleichender Drift, Bias-Zunahme).',
+    exp: 'Ein belastbares Monitoring erfasst technische Metriken (Latenz, Verfügbarkeit, Fehlerraten) und fachliche Metriken (Vorhersagequalität, Drift-Indikatoren) gleichermaßen strukturiert — beides in Dashboards und mit Alerting hinterlegt. Automatisierte Alerts bei Performance-Einbrüchen oder Signalen für Data Drift (Input-Drift) ermöglichen frühzeitige Reaktion, bevor Geschäftsfolgen entstehen. Regelmäßige Überprüfung gegen aktuelle Ground-Truth-Daten (z. B. per Delayed Labels oder manueller Stichprobe) liefert die belastbarste Aussage zur tatsächlichen Modellqualität im Zeitverlauf. Reines Systemverfügbarkeits-Monitoring reicht nicht — ein Modell kann technisch verfügbar sein und trotzdem fachlich völlig unbrauchbar arbeiten (schleichender Drift, Bias-Zunahme).',
     src: 'KIM Tag 8 · Monitoring'
   },
   /* Q38 · Modelltraining & Einsatz · 3r */
@@ -938,10 +938,10 @@ var QBANK = [
       'Ein KVP-Prozess mit Trigger-Kriterien für Retraining oder Rollback ist zentrales Element des Risikomanagements bei produktiver KI.',
       'Model Drift kann geschäftsrelevante Fehlentscheidungen auslösen und erfordert deshalb systematisches Monitoring und definierte Reaktionsprozesse im Betrieb.',      
       'Model Drift ist kein relevantes Betriebsrisiko, sondern ein technisches Phänomen, das im Rahmen des Evergreen-Ansatzes kontinuierlicher Updates adressiert wird.',
-      'Frühwarnindikatoren wie Data-Drift, Concept-Drift und Verschlechterung fachlicher Metriken sollten in Dashboards abgebildet und alarmiert werden.',
+      'Frühwarnindikatoren wie Data Drift (Input-Drift), Concept Drift und Verschlechterung fachlicher Metriken sollten in Dashboards abgebildet und alarmiert werden.',
     ],
     correct: [0, 1, 3],
-    exp: 'Model Drift kann geschäftsrelevante Fehlentscheidungen auslösen (Preisprognose zu hoch/niedrig, Kreditrisiko unterschätzt) und erfordert deshalb systematisches Monitoring und definierte Reaktionsprozesse — Drift ist ein Betriebs-, nicht ein Wartungsthema. Ein KVP-Prozess mit Trigger-Kriterien für Retraining oder Rollback ist zentrales Element des Risikomanagements bei produktiver KI — er verbindet Monitoring mit Handlungsfähigkeit. Frühwarnindikatoren wie Data Drift, Concept Drift und Verschlechterung fachlicher Metriken sollten in Dashboards abgebildet und alarmiert werden. Model Drift zu ignorieren ist keine Option — es führt unweigerlich zu unbemerkten Fehlentscheidungen mit potenziell erheblichen Geschäfts- und Compliance-Folgen.',
+    exp: 'Model Drift kann geschäftsrelevante Fehlentscheidungen auslösen (Preisprognose zu hoch/niedrig, Kreditrisiko unterschätzt) und erfordert deshalb systematisches Monitoring und definierte Reaktionsprozesse — Drift ist ein Betriebs-, nicht ein Wartungsthema. Ein KVP-Prozess mit Trigger-Kriterien für Retraining oder Rollback ist zentrales Element des Risikomanagements bei produktiver KI — er verbindet Monitoring mit Handlungsfähigkeit. Frühwarnindikatoren wie Data Drift (Input-Drift), Concept Drift und Verschlechterung fachlicher Metriken sollten in Dashboards abgebildet und alarmiert werden. Model Drift zu ignorieren ist keine Option — es führt unweigerlich zu unbemerkten Fehlentscheidungen mit potenziell erheblichen Geschäfts- und Compliance-Folgen.',
     src: 'KIM Tag 8 · Model Drift'
   },
   /* Q54 · Risikomanagement & Projektsteuerung · 3r */
@@ -1039,7 +1039,7 @@ var QBANK = [
       'Mitigation-Maßnahmen reichen von Datensatz-Balancing über Modell-Regularisierung bis zu Post-Processing-Korrekturen der Modellausgaben.',
     ],
     correct: [0, 1, 3],
-    exp: 'Systematische Analyse von Trainings- und Betriebsdaten auf Verteilungsunterschiede zwischen sensiblen Gruppen (Geschlecht, Alter, Herkunft) ist Grundlage jeder Bias-Detektion — was nicht gemessen wird, kann nicht verbessert werden. Fairness-Metriken (Equal Opportunity, Demographic Parity, Equalized Odds) machen Bias in Modellentscheidungen quantitativ messbar und über Zeit vergleichbar — sie ersetzen intuitive Einschätzungen. Mitigation-Maßnahmen wirken auf drei Ebenen: Preprocessing (Datensatz-Balancing, Reweighting), Inprocessing (Modell-Regularisierung, Fairness-Constraints) und Postprocessing (Korrektur der Modellausgaben). Bias tritt keinesfalls nur zum Trainingszeitpunkt auf — er kann durch Data Drift oder veränderte Betriebsbedingungen auch im laufenden Betrieb neu entstehen.',
+    exp: 'Systematische Analyse von Trainings- und Betriebsdaten auf Verteilungsunterschiede zwischen sensiblen Gruppen (Geschlecht, Alter, Herkunft) ist Grundlage jeder Bias-Detektion — was nicht gemessen wird, kann nicht verbessert werden. Fairness-Metriken (Equal Opportunity, Demographic Parity, Equalized Odds) machen Bias in Modellentscheidungen quantitativ messbar und über Zeit vergleichbar — sie ersetzen intuitive Einschätzungen. Mitigation-Maßnahmen wirken auf drei Ebenen: Preprocessing (Datensatz-Balancing, Reweighting), Inprocessing (Modell-Regularisierung, Fairness-Constraints) und Postprocessing (Korrektur der Modellausgaben). Bias tritt keinesfalls nur zum Trainingszeitpunkt auf — er kann durch Data Drift (Input-Drift) oder veränderte Betriebsbedingungen auch im laufenden Betrieb neu entstehen.',
     src: 'KIM Tag 8 · Bias-Mitigation'
   },
 
@@ -1339,7 +1339,6 @@ var QBANK = [
   /* Q81 · Grundlagen & Rollen · 1r · (ex Tag 3) */
   {
     nr: 81, cat: 'Grundlagen & Rollen',
-    sc: 'Zur Entscheidung steht die organisatorische Verankerung der Funktion KI-Manager:in im Unternehmen.',
     q: 'Im Unternehmen wird entschieden, wo die Kontrollfunktion für KI-Compliance organisatorisch angesiedelt wird; sie soll Informationssicherheit, Datenschutz und Fachbereiche unabhängig koordinieren. Welche Aussage(n) zur Eignung der Einbindungsmodelle ist oder sind korrekt?',
     opts: [
       'Eine Stabsstelle direkt beim Vorstandsvorsitz ist gut geeignet: Sie sichert Unabhängigkeit von IT und Fachbereichen und eine direkte Eskalation an die Geschäftsführung.',
@@ -1403,7 +1402,7 @@ var QBANK = [
   /* Q85 · Datenmanagement & Tools · 3r · (ex Tag 3) */
   {
     nr: 85, cat: 'Datenmanagement & Tools',
-    sc: 'Die Machbarkeitsprüfung eines Kredit-Scoring-Modells ergibt einen kritischen Befund zur Datengrundlage.',
+    sc: 'Der Machbarkeitscheck eines Kredit-Scoring-Modells ergibt einen kritischen Befund zur Datengrundlage.',
     q: 'Die Trainingsdaten sind drei Jahre alt, eine Verzerrung ist nicht auszuschließen. Welche Aussage(n) zu den abzuleitenden Maßnahmen ist oder sind korrekt?',
     opts: [
       'Eine Bias-Analyse der historischen Kreditentscheidungen durchführen, bevor das Modell trainiert wird',
@@ -1434,7 +1433,7 @@ var QBANK = [
   /* Q87 · Grundlagen & Rollen · 1r · (ex Tag 3) */
   {
     nr: 87, cat: 'Grundlagen & Rollen',
-    sc: 'Im Projekt-Kick-off wird diskutiert, wer für den Machbarkeitscheck eines KI-Vorhabens verantwortlich ist — KI-Managerin oder Projektleitung.',
+    sc: 'Im Projekt-Kick-off wird diskutiert, wer für den Machbarkeitscheck eines KI-Vorhabens verantwortlich ist: KI-Managerin, IT-Abteilung oder Datenschutzbeauftragter.',
     q: 'Welche Aussage(n) zur Rollenverantwortung für den Machbarkeitscheck eines KI-Vorhabens ist oder sind korrekt?',
     opts: [
       'Die KI-Manager:in koordiniert den Machbarkeitscheck und ist für die Vollständigkeit und Konsistenz des Gesamtergebnisses verantwortlich.',
@@ -1465,12 +1464,12 @@ var QBANK = [
   /* Q89 · Risikomanagement & Projektsteuerung · 3r · (ex Tag 3) */
   {
     nr: 89, cat: 'Risikomanagement & Projektsteuerung',
-    sc: 'Der Projektleiter bereitet die Use-Case-Bewertung für die Präsentation vor der Vorstandsvorsitzenden vor und formuliert die Priorisierungsempfehlung.',
-    q: 'Zur Vorbereitung der Vorstandsvorlage ist eine Priorisierungsempfehlung aus der Use-Case-Bewertung abzuleiten. Welche Aussage(n) dazu ist oder sind korrekt?',
+    sc: 'Drei Vorhaben sind bewertet: Projekt 1 Kredit-Scoring (hoher Impact, mittlerer Effort, Hochrisiko), Projekt 2 Betrugserkennung (hoher Impact, hoher Effort), Projekt 3 interner Support-Chatbot (mittlerer Impact, niedriger Effort).',
+    q: 'Welche Aussage(n) zur Priorisierungsempfehlung für den Vorstand ist oder sind korrekt?',
     opts: [
       'Projekt 1 (Kredit-Scoring) sollte als strategisches Projekt gestartet werden — nicht als sofortiger Quick Win',
       'Projekt 3 (Support-Chatbot) eignet sich als paralleler Quick Win: niedriger Effort, schnelle Sichtbarkeit, kein Hochrisiko',
-      'Projekt 2 (Betrugserkennung) sollte vor Proejkt 1 gestartet werden, da das Verlustpräventionspotenzial höher ist',
+      'Projekt 2 (Betrugserkennung) sollte vor Projekt 1 gestartet werden, da das Verlustpräventionspotenzial höher ist',
       'Projekt 1 hat hohen regulatorischen Handlungsdruck (Finanzaufsicht BaFin, EU AI Act) — das erhöht seinen strategischen Impact'
     ],
     correct: [0,1,3],
@@ -1846,7 +1845,7 @@ function renderCard(qi) {
   card.className = 'q-card';
   card.id = 'qcard-' + qi;
   card.innerHTML = '<div class="q-num">Frage ' + (qi + 1) + ' von ' + total + ' · ' + escHtml(q.cat) + '</div>'
-    + '<div class="q-text">' + escHtml(q.q) + '</div>'
+    + '<div class="q-text">' + escHtml((q.sc ? q.sc + ' ' : '') + q.q) + '</div>'
     + '<div class="q-hint">Eine oder mehrere Antworten können richtig sein.</div>'
     + '<div class="opt-list" id="opts-' + qi + '"></div>';
   container.appendChild(card);
@@ -2104,7 +2103,7 @@ function showFinalResults() {
     var ok = sel.length === cor.length && sel.every(function(v, i){ return v === cor[i]; });
     reviewHtml += '<div style="margin-bottom:1.2rem;padding:1rem;background:var(--card);border:1px solid var(--rule);border-radius:10px;">'
       + '<div style="font-family:\'DM Mono\',monospace;font-size:10px;color:var(--muted);margin-bottom:.4rem;">Frage ' + (qi + 1) + ' · ' + escHtml(q.cat) + '</div>'
-      + '<div style="font-size:14px;font-weight:500;margin-bottom:.5rem;">' + escHtml(q.q) + '</div>'
+      + '<div style="font-size:14px;font-weight:500;margin-bottom:.5rem;">' + escHtml((q.sc ? q.sc + ' ' : '') + q.q) + '</div>'
       + '<div style="font-size:12px;color:' + (ok ? 'var(--correct)' : 'var(--wrong)') + ';font-weight:500;">' + (ok ? '✓ Vollständig richtig' : '✗ Nicht vollständig richtig') + '</div>'
       + '</div>';
   });
