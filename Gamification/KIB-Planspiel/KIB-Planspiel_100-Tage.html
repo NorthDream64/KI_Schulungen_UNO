@@ -1496,10 +1496,10 @@
         gap: 6px;
       }
       .rm.edit {
-        grid-template-columns: 118px minmax(0, 1.1fr) repeat(5, minmax(0, 1fr));
+        grid-template-columns: 132px minmax(0, 1.1fr) repeat(5, minmax(0, 1fr));
       }
       .rm.ro {
-        grid-template-columns: 118px repeat(5, minmax(0, 1fr));
+        grid-template-columns: 132px repeat(5, minmax(0, 1fr));
       }
       .rc {
         grid-row: var(--r);
@@ -1556,6 +1556,14 @@
         border-radius: 3px;
         background: var(--ok);
       }
+      .cap .bar b {
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        border-radius: 3px 0 0 3px;
+        background: repeating-linear-gradient(135deg, #9d978a 0 3px, #cfc9bd 3px 6px);
+      }
       .cap .bar em {
         position: absolute;
         top: -3px;
@@ -1582,7 +1590,8 @@
         padding: 4px 2px;
         font-size: 13px;
         line-height: 1.25;
-        overflow-wrap: anywhere;
+        overflow-wrap: break-word;
+        hyphens: auto;
       }
       .rc.lab small {
         color: var(--muted);
@@ -1788,6 +1797,30 @@
           font-size: 13px;
         }
       }
+
+      /* TESTMENÜ (nur für die Spielleitung) */
+      .testmenue {
+        position: fixed;
+        right: 12px;
+        bottom: 12px;
+        z-index: 50;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 6px 10px;
+        max-width: 560px;
+        padding: 8px 12px;
+        border: 2px dashed #b45309;
+        border-radius: 10px;
+        background: #fff7ed;
+        font-size: 13px;
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
+      }
+      .testmenue select {
+        font: inherit;
+        margin-left: 4px;
+      }
+      /* Ende TESTMENÜ */
 
       /* Einschätzung nach dem Sortieren */
       ul.abw {
@@ -2324,7 +2357,7 @@ const DATA = {
           "nr": 1,
           "text": "Zwei Kanäle: technische Auswertung von Firmengeräten und Netzwerk plus Befragung aller Bereiche, auch der niederländischen Läden.",
           "ll": false,
-          "tage": 4,
+          "tage": 5,
           "rg": {
             "R": 12,
             "A": 6
@@ -5441,12 +5474,12 @@ const DATA = {
       ],
       [
         "gov",
-        "Governance",
+        "Governance/Compliance",
         "#3b6e47"
       ],
       [
         "sch",
-        "Schulung",
+        "KI-Kompetenz",
         "#6d4fa0"
       ]
     ],
@@ -5866,14 +5899,14 @@ const DATA = {
     ],
     "reifegrad": {
       "A": "gering",
-      "B": "gering"
+      "B": "hoch"
     },
     "rgName": {
       "gering": "gering",
       "hoch": "höher"
     },
     "rgText": "Wie lange die Inventarisierung dauert, hängt vom Reifegrad ab: wie viel Schatten-KI es gibt, wie gut das Asset-Register gepflegt ist und wie fit die IT-Administration ist.",
-    "eineAktivitaet": "Zur Vereinfachung gilt – anders als im wahren Leben: Jeder Tag gehört genau einer Aktivität, an mehreren Dingen parallel arbeitest Du nicht.",
+    "eineAktivitaet": "Zur Vereinfachung gilt – anders als im wahren Leben: Jeder Tag gehört genau einer Aktivität, an mehreren Dingen parallel arbeitest Du nicht. Ein Abschnitt umfasst 25 Kalendertage, das sind rund 18 Arbeitstage.",
     "abh": [
       [
         "risk_sq",
@@ -5989,7 +6022,7 @@ const DATA = {
       }
     },
     "faustregel": "Erst wissen, dann regeln – und nie den ganzen Kalender verplanen.",
-    "info": "Deine Rolle hat vier Kernaufgaben: <strong>Inventarisierung</strong>, <strong>Risikomanagement</strong>, <strong>Governance/Compliance</strong> und <strong>KI-Kompetenz</strong>. Jede durchläuft im Prinzip vier Phasen: Den Status quo ermitteln, mögliche Lücken identifizieren, geeigentete Maßnahmen planen und abstimmen, Maßnahmen umsetzen. Lege die Aktivitäten in Deinen Kalender. Über einen guten Plan entscheiden zwei Dinge: die Reihenfolge, denn manches baut aufeinander auf – und der Puffer, denn Anfragen und Vorfälle kommen ungefragt dazu.",
+    "info": "Deine Rolle hat vier Kernaufgaben: <strong>Inventarisierung</strong>, <strong>Risikobewertung</strong>, <strong>Governance/Compliance</strong> und <strong>KI-Kompetenz</strong>. Jede durchläuft im Prinzip vier Phasen: den Status quo ermitteln, mögliche Lücken identifizieren, geeignete Maßnahmen planen und abstimmen, Maßnahmen umsetzen. Lege die Aktivitäten in Deinen Kalender. Über einen guten Plan entscheiden zwei Dinge: die Reihenfolge, denn manches baut aufeinander auf – und der Puffer, denn Anfragen und Vorfälle kommen ungefragt dazu.",
     "kalender": {
       "E1": "Auswertung der KI-Zugriffe mit Arne Lüders",
       "E2": "Gespräch mit dem Betriebsrat",
@@ -6001,6 +6034,23 @@ const DATA = {
       "E8": "Copilot-Lizenzen verhandeln",
       "E9": "Lageeinschätzung schreiben",
       "E10": "Messe „KI im Handel“"
+    },
+    "referenz": {
+      "inv_sq": 1,
+      "inv_mp": 2,
+      "inv_mu": 2,
+      "risk_sq": 1,
+      "risk_lu": 2,
+      "risk_mp": 3,
+      "risk_mu": 4,
+      "gov_sq": 1,
+      "gov_lu": 1,
+      "gov_mp": 2,
+      "gov_mu": 3,
+      "sch_sq": 2,
+      "sch_lu": 2,
+      "sch_mp": 3,
+      "sch_mu": 4
     }
   },
   "auto": {
@@ -6039,6 +6089,9 @@ const DATA = {
 
 const KEY = 'kib100-mvp-3';
 const TFK = Object.keys(DATA.tf);
+// Nur <strong> aus den Drehbuch-Texten bleibt als Auszeichnung erhalten
+const escB = s => esc(s).replace(/&lt;(\/?)strong&gt;/g, '<$1strong>');
+const wbr = s => esc(s).replace(/\//g, '/<wbr>');
 const esc = s =>
   String(s == null ? '' : s).replace(
     /[&<>"]/g,
@@ -6263,8 +6316,9 @@ function rmFix(s) {
   );
 }
 const rmLast = (plan, c, al) => RM.akt.filter(a => plan[a.id] === c).reduce((n, a) => n + rmT(a, al), 0);
-const rmKap = (c, kap1) => (c === 1 ? kap1 : c <= 4 ? RM.kap : null);
-function rmPruefen(plan, kap1, al) {
+// Arbeitstage je Abschnitt; Tag 1–25: Mandat und Sofort-Aufgaben (fix1) sind schon verplant
+const rmKap = c => (c === 1 ? DATA.budget[1] : c <= 4 ? RM.kap : null);
+function rmPruefen(plan, fix1, al) {
   const out = { folge: [], abh: [], ueber: [], knapp: [] };
   RM.ka.forEach(([ka]) => {
     const ids = RM.akt.filter(a => a.ka === ka).map(a => a.id);
@@ -6276,16 +6330,17 @@ function rmPruefen(plan, kap1, al) {
     if (plan[spaet] && plan[frueh] && plan[spaet] < plan[frueh]) out.abh.push([spaet, frueh, satz]);
   });
   [1, 2, 3, 4].forEach(c => {
-    const l = rmLast(plan, c, al),
-      k = rmKap(c, kap1);
+    const f = c === 1 ? fix1 : 0,
+      l = f + rmLast(plan, c, al),
+      k = rmKap(c);
     if (l > k) out.ueber.push([c, l, k]);
-    else if (l > k * RM.puffer) out.knapp.push([c, l, k]);
+    else if (l - f > (k - f) * RM.puffer) out.knapp.push([c, l, k]);
   });
   return out;
 }
 function roadmap(s, plan) {
   const fx = { wirkung: [] },
-    kap1 = Math.max(0, budget(s, 1) - s.spent[1]),
+    fix1 = s.spent[1],
     abw = [];
   let gut = 0,
     f = 0,
@@ -6303,7 +6358,7 @@ function roadmap(s, plan) {
       else f += 1;
     } else if (c > Math.max(...best)) v += 1;
   });
-  const pr = rmPruefen(plan, kap1, s.al),
+  const pr = rmPruefen(plan, fix1, s.al),
     regeln = pr.folge.length + pr.abh.length + pr.ueber.length;
   f += pr.ueber.length;
   const qual = RM.qualitaet.find(([ab]) => gut >= ab * RM.akt.length);
@@ -6328,7 +6383,7 @@ function roadmap(s, plan) {
     if (st === 'geplant' && rab) fx.wirkung.push([akt, k, sec, rab]);
     if (st === 'spaeter' && auf) fx.wirkung.push([akt, k, sec, auf]);
   });
-  s.roadmap = { plan: Object.assign({}, plan), gut, qual: qual[1], stil, abw, pruef: pr, kap1, regeln };
+  s.roadmap = { plan: Object.assign({}, plan), gut, qual: qual[1], stil, abw, pruef: pr, fix1, regeln };
   fx.qual = qual;
   fx.reaktion = (RM.profile[stil] && RM.profile[stil].reaktion) || [qual[3], qual[4]];
   return fx;
@@ -6767,7 +6822,7 @@ function viewStart() {
     '<div class="card"><h2 tabindex="-1">Deine ersten 100 Tage</h2>' +
     '<p>Die Geschäftsführung der <b>NoHa GmbH &amp; Co. KG</b> hat Dich zur KI-Beauftragten bzw. zum KI-Beauftragten ernannt. In 100 Tagen erwartet sie von Dir einen tragfähigen Rahmen für den Einsatz von KI.</p>' +
     '<p>NoHa ist ein familiengeführtes Handelsunternehmen aus Hamburg: Lebensmittel mit Schwerpunkt Delikatessen, dazu kommt exklusiver Küchenbedarf unter der Eigenmarke „Cuisine de Nord“, rund 1.400 Beschäftigte, Filialen in Norddeutschland und den neuen Bundesländern. Dazu kommen zwei Pilot-Läden in Groningen und Emmen; als Projekt wird momentan ein Lieferdienst für hochpreisige, nicht verderbliche Delikatessen unter dem Arbeitstitel „DeliNord“ konzipiert.</p>' +
-    '<h3>Deine Rolle</h3><div class="tasks"><div><b>Inventarisierung</b>Was haben wir, wo läuft es, wer ist zuständig?</div><div><b>Risikobewertung</b>Welche Risikoklasse, welche Pflichten?</div><div><b>Governance</b>Wer darf was, wie wird entschieden und dokumentiert?</div><div><b>Schulung</b>KI-Kompetenz der Beschäftigten fördern.</div></div>' +
+    '<h3>Deine Rolle</h3><div class="tasks"><div><b>Inventarisierung</b>Was haben wir, wo läuft es, wer ist zuständig?</div><div><b>Risikobewertung</b>Welche Risikoklasse, welche Pflichten?</div><div><b>Governance/Compliance</b>Wer darf was, wie wird entschieden und dokumentiert?</div><div><b>KI-Kompetenz</b>Die Beschäftigten befähigen und schulen.</div></div>' +
     '<p class="small muted">Was die Rolle nicht ist: keine Entwicklungsaufgabe, keine Sonderhaftung – die Verantwortung bleibt bei der Geschäftsführung –, kein Ersatz für die Datenschutzbeauftragte oder die Informationssicherheit.</p>' +
     '<p>In diesem Spiel bist Du auch das <strong>"KI-Gewissen"</strong> des Unternehmens: Du denkst im Entscheidungsprozess diejenigen mit, die nicht am Tisch sitzen – Beschäftigte, Bewerberinnen und Bewerber, Kundinnen und Kunden, externe Auditorinnen, Aufsichtsbehörden, mitunter sogar die Öffentlichkeit.</p>' +
     '<h3>Wer Dir begegnet</h3><p class="small muted hoverhint">Fahre mit der Maus über eine Box, um mehr zu erfahren.</p><div class="people">' +
@@ -7360,22 +7415,28 @@ const RM_STIL = {
   gemischt: 'Dein Plan folgt keiner klaren Linie – mal eher forsch, mal eher vorsichtig.',
 };
 const tagen = n => (n === 1 ? '1 Tag' : n === 0.5 ? '½ Tag' : zahl(n) + ' Tagen');
-function rmCap(l, k) {
+// Balken je Abschnitt: l = verplant insgesamt, k = Arbeitstage, f = schon fest verplant (Mandat, Sofort-Aufgaben)
+function rmCap(l, k, f) {
+  f = f || 0;
   if (k == null) return '<span class="cap"><small>' + tage(l) + ' geplant</small></span>';
-  const cls = l > k ? ' over' : l > k * RM.puffer ? ' knapp' : '',
-    pct = k ? Math.min(100, (l / k) * 100) : l ? 100 : 0;
+  const cls = l > k ? ' over' : l - f > (k - f) * RM.puffer ? ' knapp' : '',
+    w = x => (k ? Math.max(0, Math.min(100, (x / k) * 100)) : 0).toFixed(1) + '%';
   return (
     '<span class="cap' +
     cls +
-    '"><span class="bar"><i style="width:' +
-    pct.toFixed(1) +
-    '%"></i><em style="left:' +
-    (RM.puffer * 100).toFixed(1) +
-    '%"></em></span><small>' +
+    '"><span class="bar">' +
+    (f ? '<b style="width:' + w(f) + '"></b>' : '') +
+    '<i style="left:' +
+    w(f) +
+    ';width:' +
+    w(Math.min(l, k) - f) +
+    '"></i><em style="left:' +
+    w(f + (k - f) * RM.puffer) +
+    '"></em></span><small>' +
     zahl(l) +
     ' von ' +
-    tagen(k) +
-    '</small></span>'
+    k +
+    ' Arbeitstagen</small></span>'
   );
 }
 function rmTile(a, o) {
@@ -7423,7 +7484,7 @@ function rmTile(a, o) {
 // Kalender: Zeilen = Kernaufgaben, Spalten = Abschnitte. Am Smartphone stehen die Abschnitte untereinander.
 function rmGrid(s, plan, edit) {
   const sel = edit ? ui.selRm : null,
-    kap1 = edit ? Math.max(0, left(s)) : s.roadmap.kap1,
+    fix1 = edit ? s.spent[1] : s.roadmap.fix1,
     cols = edit ? [0, 1, 2, 3, 4, 5] : [1, 2, 3, 4, 5],
     cpos = c => (edit ? c + 2 : c + 1),
     selKa = sel ? rmAkt(sel).ka : null;
@@ -7460,7 +7521,8 @@ function rmGrid(s, plan, edit) {
       );
       return;
     }
-    const inner = '<b>' + esc(rmSp(c)[1]) + '</b>' + rmCap(rmLast(plan, c, s.al), rmKap(c, kap1));
+    const f = c === 1 ? fix1 : 0,
+      inner = '<b>' + esc(rmSp(c)[1]) + '</b>' + rmCap(f + rmLast(plan, c, s.al), rmKap(c), f);
     h += edit
       ? '<button class="rc hd" style="--r:1;--c:' +
         cpos(c) +
@@ -7494,7 +7556,7 @@ function rmGrid(s, plan, edit) {
       r,
       1,
       0,
-      '<span class="dot" style="background:' + col + '"></span><b>' + esc(name) + '</b>'
+      '<span class="dot" style="background:' + col + '"></span><b>' + wbr(name) + '</b>'
     );
     cols.forEach(c => {
       const ts = RM.akt.filter(a => a.ka === ka && (c === 0 ? !plan[a.id] : plan[a.id] === c));
@@ -7573,7 +7635,7 @@ function rmInfo(s) {
     '</div><div class="rmkats" aria-hidden="true">' +
     RM.ka.map(([, n, c]) => '<span style="--k:' + c + '">' + esc(n) + '</span>').join('') +
     '</div><p>' +
-    esc(RM.info) +
+    escB(RM.info) +
     '</p><p><b>Ein Tag, eine Aktivität:</b> ' +
     esc(RM.eineAktivitaet) +
     '</p><p><b>Reifegrad bei NoHa: ' +
@@ -7587,14 +7649,14 @@ function viewRoadmap(s) {
   const plan = ui.rm,
     n = Object.keys(plan).length,
     total = RM.akt.length,
-    kap1 = Math.max(0, left(s));
+    fix1 = s.spent[1];
   return (
     '<div class="card"><div class="cardhead">' +
     badge('Grundstein') +
     '<span class="muted">Deine Planung</span></div><h2 tabindex="-1">Deine 100-Tage-Roadmap</h2>' +
     '<p>Der Posteingang ist sortiert, die ersten Tage sind verplant. Jetzt strukturierst Du Deine 100 Tage: Lege für jede der vier Kernaufgaben fest, in welchem Abschnitt Du welche Phase angehst.</p>' +
     rmInfo(s) +
-    '<p class="small muted">So geht’s: Aktivität anklicken und einen Abschnitt wählen – oder mit der Maus in den Kalender ziehen. Tastatur: Aktivität auswählen, dann 1 bis 5, mit 0 zurück. Unter jedem Abschnitt steht, wie viele Arbeitstage verplant sind; der Strich markiert zwei Drittel.</p>' +
+    '<p class="small muted">So geht’s: Aktivität anklicken und einen Abschnitt wählen – oder mit der Maus in den Kalender ziehen. Tastatur: Aktivität auswählen, dann 1 bis 5, mit 0 zurück. Unter jedem Abschnitt steht, wie viele Arbeitstage verplant sind – bei Tag 1–25 zählen Mandat und Sofort-Aufgaben mit (schraffiert). Der Strich zeigt, wie viel Du höchstens fest verplanen solltest; den Rest brauchst Du für Anfragen und Vorfälle.</p>' +
     rmGrid(s, plan, true) +
     rmPicker(s) +
     '<div class="actions"><button class="btn" data-go="roadmap"' +
@@ -7604,10 +7666,12 @@ function viewRoadmap(s) {
     ' von ' +
     total +
     ' eingeplant · Tag 1–25: ' +
-    zahl(rmLast(plan, 1, s.al)) +
+    zahl(fix1 + rmLast(plan, 1, s.al)) +
     ' von ' +
-    tagen(kap1) +
-    ' verplant</span></div></div>'
+    rmKap(1) +
+    ' Arbeitstagen verplant, davon ' +
+    tage(fix1) +
+    ' durch Mandat und Posteingang</span></div></div>'
   );
 }
 function rmBefunde(pr) {
@@ -7626,7 +7690,7 @@ function rmBefunde(pr) {
   });
   pr.abh.forEach(([, , satz]) => out.push(esc(satz)));
   pr.ueber.forEach(([c, l, k]) =>
-    out.push(esc(rmSp(c)[1]) + ' ist überplant: ' + tage(l) + ' Arbeit bei ' + tage(k) + ' freier Zeit.')
+    out.push(esc(rmSp(c)[1]) + ' ist überplant: ' + tage(l) + ' Arbeit bei ' + k + ' Arbeitstagen.')
   );
   return out;
 }
@@ -7657,8 +7721,8 @@ function rmEinschaetzung(s, mitPlan) {
             ': ' +
             zahl(l) +
             ' von ' +
-            tagen(k) +
-            ' verplant – wenig Puffer für Anfragen und Vorfälle.'
+            k +
+            ' Arbeitstagen verplant – wenig Puffer für Anfragen und Vorfälle.'
         )
         .join(' ') +
       '</p>';
@@ -8683,6 +8747,112 @@ function downloadReport() {
   const m = document.getElementById('saved');
   if (m) m.textContent = 'Heruntergeladen – im Download-Ordner Deines Browsers.';
 }
+
+/* ════════ TESTMENÜ (nur für die Spielleitung) ════════
+   Springt an eine Stelle des Spiels, ohne es von vorn durchzuspielen. Bis dahin wird mit den
+   empfohlenen Entscheidungen gespielt. Aufruf: Spiel mit „#test“ am Ende der Adresse öffnen.
+   Entfernen: in spiel/build_spiel.py TESTMENUE = False setzen – oder diesen Block löschen. */
+const TEST_ZIELE = [
+  ['mandat', 'Dein Mandat (Start)'],
+  ['posteingang', 'Posteingang am ersten Tag'],
+  ['roadmap', '100-Tage-Roadmap'],
+  ['aufgaben', 'Aufgaben in Abschnitt 1'],
+  ['vorfall', 'Vorfall in Abschnitt 1'],
+  ['rueckblick1', 'Rückblick Abschnitt 1'],
+  ['abschnitt2', 'Aufgaben in Abschnitt 2'],
+  ['rueckblick2', 'Rückblick Abschnitt 2'],
+  ['ende', 'Zwischenbilanz'],
+];
+function testPfad(al, ziel) {
+  const s = newState(al, 'Test'),
+    hist = [],
+    doA = a => {
+      hist.push(a);
+      apply(s, a);
+    };
+  const rank = { empfohlen: 0, vertretbar: 1, problematisch: 2 },
+    PRIO = ['K02', 'K07', 'K03', 'K12', 'K10', 'K04', 'K13', 'K08', 'K11', 'K06', 'K05'];
+  const best = k =>
+    optList(k, s.al)
+      .filter(o => isVorfall(k) || cost(s, k, o) <= left(s))
+      .sort((a, b) => rank[a.bew] - rank[b.bew] || a.tage - b.tage)[0];
+  const spielen = haltBeiVorfall => {
+    for (let g = 0; g < 40; g++) {
+      const vf = openCards(s).filter(isVorfall);
+      if (haltBeiVorfall && vf.length) return;
+      const open = vf.length ? vf : openCards(s).sort((a, b) => PRIO.indexOf(a) - PRIO.indexOf(b));
+      if (!open.length) return;
+      const o = best(open[0]);
+      if (!o) return;
+      doA(['d', open[0], o.nr]);
+    }
+  };
+  if (ziel === 'mandat') return hist;
+  doA(['d', 'K01', 1]);
+  if (ziel === 'posteingang') return hist;
+  doA([
+    't',
+    Object.fromEntries(
+      TRI.mails.map(m => [m.id, ['Q2', 'Q3', 'Q4', 'Q1'].find(q => m.q[q].bew === 'empfohlen')])
+    ),
+  ]);
+  if (ziel === 'roadmap') return hist;
+  doA(['r', Object.assign({}, RM.referenz)]);
+  if (ziel === 'aufgaben') return hist;
+  spielen(true);
+  if (ziel === 'vorfall') return hist;
+  spielen(false);
+  if (!s.vorfall) {
+    doA(['v']);
+    spielen(false);
+  }
+  doA(['c']);
+  if (ziel === 'rueckblick1') return hist;
+  doA(['n']);
+  if (ziel === 'abschnitt2') return hist;
+  spielen(false);
+  doA(['c']);
+  if (ziel === 'rueckblick2') return hist;
+  doA(['n']);
+  return hist;
+}
+function testSprung(al, ziel) {
+  meta = { v: 1, al, name: 'Test', hist: testPfad(al, ziel) };
+  save();
+  G = replay(meta.al, meta.name, meta.hist);
+  Object.assign(ui, {
+    tab: 'spiel',
+    after: null,
+    sel: null,
+    msg: '',
+    cardMsg: '',
+    lastT: null,
+    tri: {},
+    selMail: null,
+    rm: {},
+    selRm: null,
+  });
+  ui.open = ziel === 'mandat' ? 'K01' : ziel === 'vorfall' ? openCards(G).find(isVorfall) || null : null;
+  render(true);
+}
+(function testmenue() {
+  if (!/test/i.test(location.hash + location.search)) return;
+  const box = document.createElement('div');
+  box.className = 'testmenue';
+  box.innerHTML =
+    '<b>Testmenü</b><label>Ausgangslage <select id="tmAl"><option>A</option><option>B</option></select></label>' +
+    '<label>Springen zu <select id="tmZiel">' +
+    TEST_ZIELE.map(([k, l]) => '<option value="' + k + '">' + esc(l) + '</option>').join('') +
+    '</select></label><button class="btn sm" id="tmGo">Springen</button>' +
+    '<span class="small">bis dahin mit den empfohlenen Entscheidungen</span>';
+  document.body.appendChild(box);
+  document
+    .getElementById('tmGo')
+    .addEventListener('click', () =>
+      testSprung(document.getElementById('tmAl').value, document.getElementById('tmZiel').value)
+    );
+})();
+/* ════════ Ende TESTMENÜ ════════ */
 
 /* Start */
 (function init() {

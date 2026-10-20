@@ -16,7 +16,7 @@ Im Mittelpunkt steht die Frage, was eine KI-Beauftragte oder ein KI-Beauftragter
 
 1. **Mandat:** Gespräch mit der Geschäftsführung über Deine Rolle.
 2. **Posteingang am ersten Tag:** zehn E-Mails nach Wichtigkeit und Dringlichkeit in die Eisenhower-Matrix sortieren – sofort erledigen, einplanen, delegieren oder weglegen.
-3. **Deine 100-Tage-Roadmap:** ein Kalender über die 100 Tage. Für die vier Kernaufgaben – Inventarisierung, Risikobewertung, Governance, Schulung – legst Du fest, wann Du den Status quo ermittelst, Lücken identifizierst, Maßnahmen planst und umsetzt.
+3. **Deine 100-Tage-Roadmap:** ein Kalender über die 100 Tage. Für die vier Kernaufgaben – Inventarisierung, Risikobewertung, Governance/Compliance, KI-Kompetenz – legst Du fest, wann Du den Status quo ermittelst, Lücken identifizierst, Maßnahmen planst und umsetzt.
 4. **Aufgaben:** Anfragen aus den Fachbereichen gründlich, pragmatisch oder gar nicht bearbeiten. Die Zeit reicht nicht für alles.
 5. **Vorfälle:** kommen ungefragt und lassen sich nicht verschieben.
 6. **Rückblick** am Ende jedes Abschnitts: Einordnung jeder Entscheidung mit Erklärung und Rechtsgrundlage.
