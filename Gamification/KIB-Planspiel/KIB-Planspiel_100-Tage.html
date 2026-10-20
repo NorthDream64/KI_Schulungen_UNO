@@ -1433,6 +1433,360 @@
         user-select: none;
       }
 
+      /* 100-Tage-Roadmap: Kalender mit vier Kernaufgaben (Zeilen) und fünf Abschnitten (Spalten) */
+      .sr {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+        clip: rect(0 0 0 0);
+        white-space: nowrap;
+      }
+      .rminfo {
+        margin-top: 10px;
+        font-size: 14.5px;
+      }
+      .rminfo p {
+        margin: 8px 0 0;
+      }
+      .rmflow,
+      .rmkats {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+      }
+      .rmflow span {
+        background: #fff;
+        border: 1px solid var(--rule);
+        border-radius: 6px;
+        padding: 3px 10px 3px 6px;
+        font-size: 13px;
+      }
+      .rmflow span b {
+        display: inline-grid;
+        place-items: center;
+        width: 18px;
+        height: 18px;
+        margin-right: 6px;
+        border-radius: 50%;
+        background: var(--accent);
+        color: #fff;
+        font-size: 11px;
+      }
+      .rmflow span:not(:last-child)::after {
+        content: '→';
+        margin-left: 8px;
+        color: var(--muted);
+      }
+      .rmkats {
+        margin-top: 8px;
+      }
+      .rmkats span {
+        background: #fff;
+        border-left: 4px solid var(--k);
+        border-radius: 4px;
+        padding: 2px 8px;
+        font-size: 12.5px;
+      }
+      .rmw {
+        margin: 12px 0 0;
+      }
+      .rm {
+        display: grid;
+        gap: 6px;
+      }
+      .rm.edit {
+        grid-template-columns: 118px minmax(0, 1.1fr) repeat(5, minmax(0, 1fr));
+      }
+      .rm.ro {
+        grid-template-columns: 118px repeat(5, minmax(0, 1fr));
+      }
+      .rc {
+        grid-row: var(--r);
+        grid-column: var(--c);
+        min-width: 0;
+      }
+      .rc.hd {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        align-items: stretch;
+        padding: 6px 8px;
+        border: 1px solid transparent;
+        border-radius: 8px;
+        background: var(--soft);
+        color: var(--ink);
+        font: inherit;
+        font-size: 13px;
+        text-align: left;
+      }
+      .rc.hd.off {
+        background: transparent;
+        border: 1px dashed var(--rule);
+      }
+      .rc.hd small {
+        color: var(--muted);
+        font-size: 12px;
+      }
+      .rm.armed button.rc.hd {
+        cursor: pointer;
+        border-color: var(--accent);
+      }
+      .rm.armed button.rc.hd:hover {
+        background: var(--accent-soft);
+      }
+      .cap {
+        display: flex;
+        flex-direction: column;
+        gap: 3px;
+      }
+      .cap .bar {
+        position: relative;
+        display: block;
+        height: 7px;
+        border: 1px solid var(--rule);
+        border-radius: 4px;
+        background: #fff;
+      }
+      .cap .bar i {
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        border-radius: 3px;
+        background: var(--ok);
+      }
+      .cap .bar em {
+        position: absolute;
+        top: -3px;
+        bottom: -3px;
+        width: 2px;
+        background: var(--ink);
+        opacity: 0.45;
+      }
+      .cap.knapp .bar i {
+        background: #c98a1a;
+      }
+      .cap.over .bar i {
+        background: var(--bad);
+      }
+      .cap.over small {
+        color: var(--bad);
+        font-weight: 700;
+      }
+      .rc.lab {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 2px;
+        padding: 4px 2px;
+        font-size: 13px;
+        line-height: 1.25;
+        overflow-wrap: anywhere;
+      }
+      .rc.lab small {
+        color: var(--muted);
+        font-size: 11.5px;
+      }
+      .rc.lab .dot {
+        display: block;
+        width: 26px;
+        height: 4px;
+        margin-bottom: 3px;
+        border-radius: 2px;
+      }
+      .rc.cell {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        min-height: 40px;
+        padding: 4px;
+        border: 1px solid var(--rule);
+        border-radius: 8px;
+        background: #fff;
+      }
+      .rc.cell.offc {
+        background: var(--paper);
+        border-style: dashed;
+      }
+      .rc.cell.fixc {
+        min-height: 0;
+        border-color: transparent;
+        background: transparent;
+      }
+      .rc.cell.fixc:not(.leer) {
+        background: repeating-linear-gradient(135deg, #f3f1ec 0 6px, #e9e5dc 6px 12px);
+      }
+      .rm.armed .rc.cell[data-col] {
+        cursor: pointer;
+      }
+      .rm.armed .rc.cell.lane[data-col] {
+        border-color: #9cb8d1;
+        background: var(--accent-soft);
+      }
+      .rm.armed .rc.cell.lane.offc[data-col] {
+        background: var(--paper);
+      }
+      .rc.over {
+        outline: 2px solid var(--accent);
+        outline-offset: 1px;
+      }
+      .fix {
+        display: block;
+        padding: 3px 6px;
+        border: 1px solid var(--rule);
+        border-left: 4px solid var(--muted);
+        border-radius: 6px;
+        background: #fff;
+        font-size: 12px;
+        line-height: 1.3;
+      }
+      .fix small {
+        color: var(--muted);
+        white-space: nowrap;
+      }
+      .cap2 {
+        display: none;
+        font-size: 11.5px;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+      }
+      .rmt {
+        position: relative;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 0 6px;
+        width: 100%;
+        padding: 5px 7px;
+        border: 1px solid var(--rule);
+        border-left: 4px solid var(--k);
+        border-radius: 6px;
+        background: #fafaf7;
+        background: color-mix(in srgb, var(--k) 9%, #fff);
+        color: var(--ink);
+        font: inherit;
+        font-size: 12.5px;
+        line-height: 1.25;
+        text-align: left;
+        cursor: pointer;
+      }
+      .rmt .ph {
+        font-weight: 600;
+      }
+      .rmt .pn {
+        display: inline-grid;
+        place-items: center;
+        width: 15px;
+        height: 15px;
+        margin-right: 5px;
+        border-radius: 50%;
+        background: var(--k);
+        color: #fff;
+        font-size: 10px;
+        vertical-align: 1px;
+      }
+      .rmt .tg {
+        color: var(--muted);
+        font-size: 11.5px;
+      }
+      .rmt:hover {
+        border-color: var(--k);
+      }
+      .rmt.sel {
+        outline: 2px solid var(--k);
+        outline-offset: 1px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+      }
+      .rmt.ro {
+        padding-right: 20px;
+        cursor: default;
+      }
+      .rmt .bm {
+        position: absolute;
+        top: 6px;
+        right: 6px;
+        width: 9px;
+        height: 9px;
+        border-radius: 50%;
+      }
+      .rmt.empfohlen .bm {
+        background: var(--ok);
+      }
+      .rmt.vertretbar .bm {
+        background: #c98a1a;
+      }
+      .rmt.problematisch .bm {
+        background: var(--bad);
+      }
+      .rmpick {
+        position: sticky;
+        bottom: 0;
+        z-index: 5;
+        margin-top: 10px;
+        padding: 10px 12px;
+        border: 1px solid var(--rule);
+        border-top: 4px solid var(--k);
+        border-radius: 10px;
+        background: #fff;
+        box-shadow: 0 -4px 14px rgba(0, 0, 0, 0.08);
+      }
+      .rmpick.idle {
+        position: static;
+        border-top-width: 1px;
+        box-shadow: none;
+      }
+      .rmpick .t {
+        font-size: 14px;
+      }
+      .rmpick .kchip {
+        display: inline-block;
+        padding: 1px 8px;
+        border-radius: 999px;
+        background: var(--k);
+        color: #fff;
+        font-size: 11.5px;
+        font-weight: 700;
+      }
+      .rmpick .qpick {
+        margin-top: 8px;
+      }
+      @media (max-width: 820px) {
+        .rm.edit,
+        .rm.ro {
+          display: flex;
+          flex-direction: column;
+        }
+        .rc {
+          order: var(--o);
+        }
+        .rc.corner,
+        .rc.lab,
+        .rc.cell.leer {
+          display: none;
+        }
+        .rc.hd {
+          margin-top: 8px;
+        }
+        .rc.cell {
+          min-height: 0;
+        }
+        .cap2 {
+          display: block;
+        }
+        .rmpick .qpick {
+          display: grid;
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+          gap: 6px;
+        }
+        .rmpick .qpick .btn {
+          padding: 6px 6px;
+          font-size: 13px;
+        }
+      }
+
       /* Einschätzung nach dem Sortieren */
       ul.abw {
         margin: 4px 0 10px;
@@ -1597,7 +1951,7 @@
    Erzeugt aus dem Drehbuch des Spiels. Texte bitte dort ändern –
    Änderungen in diesem Block gehen beim nächsten Bau verloren. */
 const DATA = {
-  "stand": "19.10.2026",
+  "stand": "20.10.2026",
   "tf": {
     "P": "Professionelle KI-Kommunikation",
     "R": "Rolle, Recht und Compliance",
@@ -4373,6 +4727,55 @@ const DATA = {
       "chatregeln",
       true,
       -1
+    ],
+    [
+      "K02",
+      1,
+      "rm_K02",
+      "spaeter",
+      1
+    ],
+    [
+      "K07",
+      1,
+      "rm_K07",
+      "geplant",
+      -1
+    ],
+    [
+      "K07",
+      1,
+      "rm_K07",
+      "spaeter",
+      1
+    ],
+    [
+      "K10",
+      1,
+      "rm_K10",
+      "geplant",
+      -1
+    ],
+    [
+      "K10",
+      1,
+      "rm_K10",
+      "spaeter",
+      1
+    ],
+    [
+      "K12",
+      1,
+      "rm_K12",
+      "geplant",
+      -1
+    ],
+    [
+      "K12",
+      1,
+      "rm_K12",
+      "spaeter",
+      1
     ]
   ],
   "schwachAb": 3,
@@ -5022,6 +5425,483 @@ const DATA = {
     },
     "faustregel": "Die Frist eines anderen ist noch keine Dringlichkeit für Dich."
   },
+  "roadmap": {
+    "ka": [
+      [
+        "inv",
+        "Inventarisierung",
+        "#2f6690"
+      ],
+      [
+        "risk",
+        "Risikobewertung",
+        "#a2462a"
+      ],
+      [
+        "gov",
+        "Governance",
+        "#3b6e47"
+      ],
+      [
+        "sch",
+        "Schulung",
+        "#6d4fa0"
+      ]
+    ],
+    "ph": [
+      [
+        "sq",
+        "Status quo ermitteln",
+        "Status quo"
+      ],
+      [
+        "lu",
+        "Lücken identifizieren",
+        "Lücken"
+      ],
+      [
+        "mp",
+        "Maßnahmen planen",
+        "Planen"
+      ],
+      [
+        "mu",
+        "Maßnahmen umsetzen",
+        "Umsetzen"
+      ]
+    ],
+    "spalten": [
+      [
+        1,
+        "Tag 1–25",
+        "1–25"
+      ],
+      [
+        2,
+        "Tag 26–50",
+        "26–50"
+      ],
+      [
+        3,
+        "Tag 51–75",
+        "51–75"
+      ],
+      [
+        4,
+        "Tag 76–100",
+        "76–100"
+      ],
+      [
+        5,
+        "nach Tag 100",
+        "später"
+      ]
+    ],
+    "kap": 18,
+    "puffer": 0.6666666666666666,
+    "akt": [
+      {
+        "id": "inv_sq",
+        "ka": "inv",
+        "ph": "sq",
+        "tage": 3,
+        "text": "Erfassen, wo KI schon im Einsatz ist – Systeme, Werkzeuge, private Konten.",
+        "bew": {
+          "1": "empfohlen",
+          "2": "vertretbar",
+          "3": "problematisch",
+          "4": "problematisch",
+          "5": "problematisch"
+        },
+        "frueh": "forsch",
+        "kurz": "Das Verzeichnis ist das Fundament: Ohne Lagebild kannst Du nichts bewerten und nichts regeln.",
+        "recht": "Art. 3 Nr. 3 und 4 KI-VO"
+      },
+      {
+        "id": "inv_lu",
+        "ka": "inv",
+        "ph": "lu",
+        "tage": 1,
+        "text": "Prüfen, was im Verzeichnis fehlt: Zweck, Zuständige, Anbieter, Datenarten.",
+        "bew": {
+          "1": "empfohlen",
+          "2": "empfohlen",
+          "3": "vertretbar",
+          "4": "problematisch",
+          "5": "problematisch"
+        },
+        "frueh": "forsch",
+        "kurz": "Die Lücken zeigen sich schon bei der Bestandsaufnahme – plane sie direkt danach ein.",
+        "recht": ""
+      },
+      {
+        "id": "inv_mp",
+        "ka": "inv",
+        "ph": "mp",
+        "tage": 1,
+        "text": "Festlegen, wie neue KI gemeldet und das Verzeichnis gepflegt wird.",
+        "bew": {
+          "1": "vertretbar",
+          "2": "empfohlen",
+          "3": "vertretbar",
+          "4": "problematisch",
+          "5": "problematisch"
+        },
+        "frueh": "forsch",
+        "kurz": "Der Meldeweg folgt auf das erste Verzeichnis – nicht vorher, aber auch nicht erst am Ende.",
+        "recht": ""
+      },
+      {
+        "id": "inv_mu",
+        "ka": "inv",
+        "ph": "mu",
+        "tage": 2,
+        "text": "Verzeichnis und Meldeweg für neue KI in Betrieb nehmen.",
+        "bew": {
+          "1": "problematisch",
+          "2": "empfohlen",
+          "3": "empfohlen",
+          "4": "vertretbar",
+          "5": "problematisch"
+        },
+        "frueh": "forsch",
+        "kurz": "Ein Verzeichnis ohne Pflege veraltet schnell. Spätestens ab Tag 75 sollte der Meldeweg laufen.",
+        "recht": ""
+      },
+      {
+        "id": "risk_sq",
+        "ka": "risk",
+        "ph": "sq",
+        "tage": 2,
+        "text": "Die erfassten Systeme erstmals einordnen: Rolle von NoHa, Risikoklasse, verbotene Praktiken.",
+        "bew": {
+          "1": "empfohlen",
+          "2": "empfohlen",
+          "3": "vertretbar",
+          "4": "problematisch",
+          "5": "problematisch"
+        },
+        "frueh": "forsch",
+        "kurz": "Die erste Einordnung gehört direkt hinter die Bestandsaufnahme – verbotene Praktiken sind schon seit Februar 2025 untersagt.",
+        "recht": "Art. 5, Art. 6, Art. 113 KI-VO"
+      },
+      {
+        "id": "risk_lu",
+        "ka": "risk",
+        "ph": "lu",
+        "tage": 2,
+        "text": "Pflichten je System mit dem Ist abgleichen – etwa Transparenz, menschliche Aufsicht, Datenschutz-Folgenabschätzung.",
+        "bew": {
+          "1": "vertretbar",
+          "2": "empfohlen",
+          "3": "vertretbar",
+          "4": "problematisch",
+          "5": "problematisch"
+        },
+        "frueh": "vorsichtig",
+        "kurz": "Den Pflichtenabgleich machst Du, sobald die Systeme eingeordnet sind – vorher prüfst Du ins Blaue.",
+        "recht": "Art. 26, Art. 50 KI-VO; Art. 35 DSGVO"
+      },
+      {
+        "id": "risk_mp",
+        "ka": "risk",
+        "ph": "mp",
+        "tage": 2,
+        "text": "Maßnahmen je Risiko festlegen und im Risikoregister dokumentieren.",
+        "bew": {
+          "1": "problematisch",
+          "2": "empfohlen",
+          "3": "empfohlen",
+          "4": "vertretbar",
+          "5": "problematisch"
+        },
+        "frueh": "vorsichtig",
+        "kurz": "Maßnahmen legst Du fest, wenn die Lücken bekannt sind. Am ersten Tag wäre das Papier ohne Grundlage.",
+        "recht": ""
+      },
+      {
+        "id": "risk_mu",
+        "ka": "risk",
+        "ph": "mu",
+        "tage": 3,
+        "text": "Maßnahmen umsetzen: Kennzeichnung, menschliche Aufsicht, Folgenabschätzungen.",
+        "bew": {
+          "1": "problematisch",
+          "2": "vertretbar",
+          "3": "empfohlen",
+          "4": "empfohlen",
+          "5": "vertretbar"
+        },
+        "frueh": "forsch",
+        "kurz": "Umsetzen braucht Zeit. Manches darf über Tag 100 hinausgehen – wenn es geplant ist.",
+        "recht": "Art. 26 KI-VO"
+      },
+      {
+        "id": "gov_sq",
+        "ka": "gov",
+        "ph": "sq",
+        "tage": 1,
+        "text": "Sichten, was schon geregelt ist: IT- und Datenschutzregeln, Freigabewege, Betriebsvereinbarungen.",
+        "bew": {
+          "1": "empfohlen",
+          "2": "vertretbar",
+          "3": "problematisch",
+          "4": "problematisch",
+          "5": "problematisch"
+        },
+        "frueh": "forsch",
+        "kurz": "Erst sichten, was es schon gibt – dann regelst Du nichts doppelt.",
+        "recht": ""
+      },
+      {
+        "id": "gov_lu",
+        "ka": "gov",
+        "ph": "lu",
+        "tage": 1,
+        "text": "Klären, was fehlt: Wer gibt KI frei? Was gilt für frei verfügbare KI-Dienste?",
+        "bew": {
+          "1": "empfohlen",
+          "2": "empfohlen",
+          "3": "vertretbar",
+          "4": "problematisch",
+          "5": "problematisch"
+        },
+        "frueh": "forsch",
+        "kurz": "Die Lücken zeigen, was wirklich fehlt – früh, damit die Richtlinie darauf aufbaut.",
+        "recht": ""
+      },
+      {
+        "id": "gov_mp",
+        "ka": "gov",
+        "ph": "mp",
+        "tage": 3,
+        "text": "KI-Richtlinie und Freigabeprozess entwerfen, mit Betriebsrat und Datenschutz abstimmen.",
+        "bew": {
+          "1": "problematisch",
+          "2": "empfohlen",
+          "3": "vertretbar",
+          "4": "problematisch",
+          "5": "problematisch"
+        },
+        "frueh": "vorsichtig",
+        "kurz": "Eine Richtlinie vor dem Lagebild regelt am Bedarf vorbei und wirkt bürokratisch. Der richtige Zeitpunkt ist nach der ersten Risikoeinordnung.",
+        "recht": "§ 87 Abs. 1 Nr. 6 BetrVG; DIN EN ISO/IEC 42001, Ausgabe 08-2026, Kap. 5.2"
+      },
+      {
+        "id": "gov_mu",
+        "ka": "gov",
+        "ph": "mu",
+        "tage": 2,
+        "text": "Richtlinie von der Geschäftsführung beschließen lassen, bekannt machen, Freigaben starten.",
+        "bew": {
+          "1": "problematisch",
+          "2": "vertretbar",
+          "3": "empfohlen",
+          "4": "empfohlen",
+          "5": "problematisch"
+        },
+        "frueh": "forsch",
+        "kurz": "Die Richtlinie beschließt die Geschäftsführung. Sie sollte innerhalb der 100 Tage gelten – sonst endet Dein Start ohne Rahmen.",
+        "recht": "DIN EN ISO/IEC 42001, Ausgabe 08-2026, Kap. 5.2"
+      },
+      {
+        "id": "sch_sq",
+        "ka": "sch",
+        "ph": "sq",
+        "tage": 1,
+        "text": "Ermitteln, wer KI wofür nutzt und was die Beschäftigten schon können.",
+        "bew": {
+          "1": "empfohlen",
+          "2": "empfohlen",
+          "3": "vertretbar",
+          "4": "problematisch",
+          "5": "problematisch"
+        },
+        "frueh": "forsch",
+        "kurz": "Was die Beschäftigten schon können, erhebst Du am besten gleich mit der Bestandsaufnahme.",
+        "recht": ""
+      },
+      {
+        "id": "sch_lu",
+        "ka": "sch",
+        "ph": "lu",
+        "tage": 1,
+        "text": "Bedarf je Zielgruppe bestimmen: Geschäftsführung, Fachbereiche, alle Beschäftigten.",
+        "bew": {
+          "1": "vertretbar",
+          "2": "empfohlen",
+          "3": "vertretbar",
+          "4": "problematisch",
+          "5": "problematisch"
+        },
+        "frueh": "forsch",
+        "kurz": "Den Bedarf je Zielgruppe kennst Du erst, wenn der Status quo steht.",
+        "recht": "DIN EN ISO/IEC 42001, Ausgabe 08-2026, Kap. 7.2"
+      },
+      {
+        "id": "sch_mp",
+        "ka": "sch",
+        "ph": "mp",
+        "tage": 2,
+        "text": "Schulungskonzept: Zielgruppen, Formate, Anbieter, Budget.",
+        "bew": {
+          "1": "problematisch",
+          "2": "empfohlen",
+          "3": "empfohlen",
+          "4": "vertretbar",
+          "5": "problematisch"
+        },
+        "frueh": "forsch",
+        "kurz": "Ein Konzept vor der Bedarfsanalyse ist wie das Rabattpaket vom ersten Tag: gekauft, bevor klar ist, wer was braucht.",
+        "recht": ""
+      },
+      {
+        "id": "sch_mu",
+        "ka": "sch",
+        "ph": "mu",
+        "tage": 3,
+        "text": "Erste Schulungen durchführen und die Teilnahme dokumentieren.",
+        "bew": {
+          "1": "problematisch",
+          "2": "vertretbar",
+          "3": "empfohlen",
+          "4": "empfohlen",
+          "5": "problematisch"
+        },
+        "frueh": "forsch",
+        "kurz": "Die Pflicht, KI-Kompetenz zu fördern, gilt seit Februar 2025 – die ersten Schulungen gehören in die 100 Tage.",
+        "recht": "Art. 4 KI-VO (Fassung nach VO (EU) 2026/1744)"
+      }
+    ],
+    "abh": [
+      [
+        "risk_sq",
+        "inv_sq",
+        "Du ordnest Risiken ein, bevor Du weißt, welche KI es gibt."
+      ],
+      [
+        "gov_mp",
+        "risk_sq",
+        "Die Richtlinie entsteht, bevor die Risiken eingeordnet sind."
+      ],
+      [
+        "sch_lu",
+        "inv_sq",
+        "Du bestimmst den Schulungsbedarf, bevor Du weißt, wer KI wofür nutzt."
+      ]
+    ],
+    "regelT": -1,
+    "regelMax": 3,
+    "qualitaet": [
+      [
+        13,
+        "durchdacht",
+        3,
+        "Das ist ein Plan, den ich verstehe: erst hinschauen, dann regeln – und Luft für das Unerwartete.",
+        "Henrike Sievers",
+        {
+          "I": 3,
+          "R": 2
+        }
+      ],
+      [
+        10,
+        "brauchbar",
+        1,
+        "Ein brauchbarer Plan. An zwei, drei Stellen würde ich die Reihenfolge noch einmal prüfen.",
+        "Thomas Kühn",
+        {
+          "I": 1
+        }
+      ],
+      [
+        0,
+        "lückenhaft",
+        -2,
+        "Ehrlich gesagt erkenne ich in dem Plan noch keine Linie.",
+        "Henrike Sievers",
+        {}
+      ]
+    ],
+    "akVorsichtig": -2,
+    "wirkung": [
+      [
+        "inv_sq",
+        "K02",
+        1,
+        1,
+        0,
+        1
+      ],
+      [
+        "risk_sq",
+        "K07",
+        1,
+        1,
+        -1,
+        1
+      ],
+      [
+        "gov_mp",
+        "K10",
+        2,
+        1,
+        -1,
+        1
+      ],
+      [
+        "risk_lu",
+        "K12",
+        2,
+        1,
+        -1,
+        1
+      ]
+    ],
+    "profile": {
+      "forsch": {
+        "name": "Die forsche Linie",
+        "text": "Will nach 50 Tagen fertig sein: Verzeichnis, Richtlinie und Schulungen laufen gleichzeitig an, umgesetzt wird parallel zur Analyse.",
+        "staerke": "Schnell sichtbare Ergebnisse.",
+        "preis": "Abschnitt 1 ist überplant, Maßnahmen entstehen vor dem Lagebild – und für Anfragen und Vorfälle bleibt keine Zeit.",
+        "reaktion": [
+          "Ein ehrgeiziger Plan. Ich frage mich nur, wann Du die Anfragen der Fachbereiche bearbeiten willst.",
+          "Thomas Kühn"
+        ]
+      },
+      "vorsichtig": {
+        "name": "Die vorsichtige Linie",
+        "text": "Will erst alles prüfen: Pflichten und Regeln stehen am Anfang, umgesetzt wird erst nach Tag 100.",
+        "staerke": "Rechtlich gründlich.",
+        "preis": "Nach 100 Tagen gibt es viele Analysen, aber kaum Wirkung – und die Fachbereiche erleben vor allem Prüfungen.",
+        "reaktion": [
+          "Viele Prüfungen, wenig Ergebnisse – was sehen wir davon nach 100 Tagen?",
+          "Henrike Sievers"
+        ]
+      },
+      "empfohlen": {
+        "name": "Der empfohlene Weg",
+        "text": "Je Kernaufgabe die Phasen in ihrer Reihenfolge, aber versetzt: Zuerst die Bestandsaufnahme, darauf baut die Risikoeinordnung auf, auf beiden die Richtlinie. Status quo und Lücken in den ersten 25 Tagen, Regeln und Konzepte ab Tag 26, umgesetzt wird bis Tag 100 – auch die ersten Schulungen. Rund ein Drittel der Zeit bleibt frei für Anfragen und Vorfälle.",
+        "staerke": "Jeder Schritt baut auf dem vorigen auf, und es bleibt Luft.",
+        "preis": "Keiner – aber nach 100 Tagen ist nicht alles fertig, und das ist in Ordnung.",
+        "reaktion": null
+      }
+    },
+    "faustregel": "Erst wissen, dann regeln – und nie den ganzen Kalender verplanen.",
+    "info": "Deine Rolle hat vier Kernaufgaben: Inventarisierung, Risikobewertung, Governance und Schulung. Jede durchläuft vier Phasen: Status quo ermitteln, Lücken identifizieren, Maßnahmen planen, Maßnahmen umsetzen. Lege die 16 Aktivitäten in Deinen Kalender. Über einen guten Plan entscheiden zwei Dinge: die Reihenfolge, denn manches baut aufeinander auf – und der Puffer, denn Anfragen und Vorfälle kommen ungefragt dazu. Was nach Tag 100 kommt, darf dort stehen.",
+    "kalender": {
+      "E1": "Auswertung der KI-Zugriffe mit Arne Lüders",
+      "E2": "Gespräch mit dem Betriebsrat",
+      "E3": "Schulungspaket bestellen",
+      "E4": "Pflichtenkatalog und Webinar",
+      "E5": "Produkttexte mit dem Marketing",
+      "E6": "Kundendaten im KI-Dienst klären",
+      "E7": "Präsentation Kamerapilot",
+      "E8": "Copilot-Lizenzen verhandeln",
+      "E9": "Lageeinschätzung schreiben",
+      "E10": "Messe „KI im Handel“"
+    }
+  },
   "auto": {
     "K02": 4
   },
@@ -5056,7 +5936,7 @@ const DATA = {
 /* „Die ersten 100 Tage“ – Planspiel KI-Beauftragte
    Spielstand = Ausgangslage + Liste der Aktionen; der Zustand wird bei jedem Laden neu abgespielt. */
 
-const KEY = 'kib100-mvp-2';
+const KEY = 'kib100-mvp-3';
 const TFK = Object.keys(DATA.tf);
 const esc = s =>
   String(s == null ? '' : s).replace(
@@ -5252,6 +6132,96 @@ function triage(s, map) {
   fx.reaktion = (P[stil] && P[stil].reaktion) || [qual[3], qual[4]];
   return fx;
 }
+/* 100-Tage-Roadmap: 16 Aktivitäten (vier Kernaufgaben × vier Phasen) in den Kalender */
+const RM = DATA.roadmap;
+const rmAkt = id => RM.akt.find(a => a.id === id);
+const rmKa = id => RM.ka.find(k => k[0] === id);
+const rmPh = id => RM.ph.find(p => p[0] === id);
+const rmSp = c => RM.spalten.find(x => x[0] === c);
+const rmName = a => rmKa(a.ka)[1] + ' · ' + rmPh(a.ph)[1];
+const rmBest = a =>
+  Object.keys(a.bew)
+    .filter(c => a.bew[c] === 'empfohlen')
+    .map(Number);
+// Was aus dem Posteingang schon im Kalender steht: Sofort-Aufgaben und zugesagte Zeit (Abschnitt 1)
+function rmFix(s) {
+  if (!s.triage) return [];
+  const mandat = s.dec.K01 && s.dec.K01.cost ? [[DATA.cards.K01.titel, s.dec.K01.cost]] : [];
+  return mandat.concat(
+    TRI.mails
+      .map(m => {
+        const q = s.triage.map[m.id],
+          d = (q === 'Q1' ? TRI.sofortTage : 0) + (m.q[q].zeit || 0);
+        return d ? [RM.kalender[m.id] || m.betreff, d] : null;
+      })
+      .filter(Boolean)
+  );
+}
+const rmLast = (plan, c) => RM.akt.filter(a => plan[a.id] === c).reduce((n, a) => n + a.tage, 0);
+const rmKap = (c, kap1) => (c === 1 ? kap1 : c <= 4 ? RM.kap : null);
+function rmPruefen(plan, kap1) {
+  const out = { folge: [], abh: [], ueber: [], knapp: [] };
+  RM.ka.forEach(([ka]) => {
+    const ids = RM.ph.map(([ph]) => ka + '_' + ph);
+    for (let i = 1; i < ids.length; i++)
+      if (plan[ids[i]] && plan[ids[i - 1]] && plan[ids[i]] < plan[ids[i - 1]])
+        out.folge.push([ids[i], ids[i - 1]]);
+  });
+  RM.abh.forEach(([spaet, frueh, satz]) => {
+    if (plan[spaet] && plan[frueh] && plan[spaet] < plan[frueh]) out.abh.push([spaet, frueh, satz]);
+  });
+  [1, 2, 3, 4].forEach(c => {
+    const l = rmLast(plan, c),
+      k = rmKap(c, kap1);
+    if (l > k) out.ueber.push([c, l, k]);
+    else if (l > k * RM.puffer) out.knapp.push([c, l, k]);
+  });
+  return out;
+}
+function roadmap(s, plan) {
+  const fx = { wirkung: [] },
+    kap1 = Math.max(0, budget(s, 1) - s.spent[1]),
+    abw = [];
+  let gut = 0,
+    f = 0,
+    v = 0;
+  RM.akt.forEach(a => {
+    const c = plan[a.id];
+    if (a.bew[c] === 'empfohlen') {
+      gut += 1;
+      return;
+    }
+    abw.push(a.id);
+    const best = rmBest(a);
+    if (c < Math.min(...best)) {
+      if (a.frueh === 'vorsichtig') v += 1;
+      else f += 1;
+    } else if (c > Math.max(...best)) v += 1;
+  });
+  const pr = rmPruefen(plan, kap1),
+    regeln = pr.folge.length + pr.abh.length + pr.ueber.length;
+  f += pr.ueber.length;
+  const qual = RM.qualitaet.find(([ab]) => gut >= ab);
+  const stil =
+    gut >= RM.qualitaet[0][0] && !regeln ? 'empfohlen' : f > v ? 'forsch' : v > f ? 'vorsichtig' : 'gemischt';
+  s.T = clamp(s.T + qual[2] + Math.max(-RM.regelMax, RM.regelT * regeln));
+  if (stil === 'vorsichtig') s.AK = clamp(s.AK + RM.akVorsichtig);
+  TFK.forEach(t => {
+    if (qual[5][t]) s.RG[t] = clamp(s.RG[t] + qual[5][t]);
+  });
+  // Wirkung auf Anfragen: rechtzeitig (und nicht problematisch früh) eingeplant → schneller, zu spät → langsamer
+  RM.wirkung.forEach(([akt, k, sec, nr, rab, auf]) => {
+    const c = plan[akt],
+      st = c > sec ? 'spaeter' : rmAkt(akt).bew[c] === 'problematisch' ? 'frueh' : 'geplant';
+    s.flags['rm_' + k] = st;
+    if (st === 'geplant' && rab) fx.wirkung.push([akt, k, sec, rab]);
+    if (st === 'spaeter' && auf) fx.wirkung.push([akt, k, sec, auf]);
+  });
+  s.roadmap = { plan: Object.assign({}, plan), gut, qual: qual[1], stil, abw, pruef: pr, kap1, regeln };
+  fx.qual = qual;
+  fx.reaktion = (RM.profile[stil] && RM.profile[stil].reaktion) || [qual[3], qual[4]];
+  return fx;
+}
 function autoNr(s, k) {
   if (DATA.auto[k]) return DATA.auto[k];
   const o = optList(k, s.al).find(x => x.ll);
@@ -5278,6 +6248,7 @@ function nextSection(s) {
 function apply(s, a) {
   if (a[0] === 'd') return decide(s, a[1], a[2], false);
   if (a[0] === 't') return triage(s, a[1]);
+  if (a[0] === 'r') return roadmap(s, a[1]);
   if (a[0] === 'v') {
     s.vorfall = true;
     return null;
@@ -5327,6 +6298,8 @@ const ui = {
   cardMsg: '',
   tri: {},
   selMail: null,
+  rm: {},
+  selRm: null,
 };
 function save() {
   try {
@@ -5886,7 +6859,8 @@ function viewCard(s, k) {
   });
   h += '</div>';
   const changed = shuffled(k, s.al).some(o => cost(s, k, o) !== o.tage);
-  if (changed) h += '<p class="small muted">* Zeitbedarf durch frühere Entscheidungen verändert.</p>';
+  if (changed)
+    h += '<p class="small muted">* Zeitbedarf durch frühere Entscheidungen oder Deine Roadmap verändert.</p>';
   h +=
     '<div class="actions"><button class="btn" data-go="decide"' +
     (ui.sel == null ? ' disabled' : '') +
@@ -6221,7 +7195,7 @@ function viewAfterTriage(s) {
     out.map(([i, t]) => '<li><span class="ic">' + i + '</span><span>' + t + '</span></li>').join('') +
     '</ul>' +
     '<p class="small muted" style="margin-top:14px">Die ausführliche Begründung je E-Mail steht im Rückblick am Ende des Abschnitts.</p>' +
-    '<div class="actions"><button class="btn" data-go="inbox">Zu den Aufgaben</button></div></div>'
+    '<div class="actions"><button class="btn" data-go="inbox">Weiter: Deine 100-Tage-Roadmap</button></div></div>'
   );
 }
 function triageReview(s) {
@@ -6264,8 +7238,472 @@ function triageReview(s) {
         if (m.recht) h += '<div class="src">Grundlage: ' + esc(m.recht) + '</div>';
         return h + '</div>';
       })
+      .join('')
+  );
+}
+/* ───── 100-Tage-Roadmap: Kalender, Einschätzung, Rückblick ───── */
+const RM_STIL = {
+  empfohlen: 'Dein Plan folgt dem empfohlenen Weg.',
+  forsch: 'Dein Plan hat einen forschen Zug: Du willst vieles früh und gleichzeitig erledigen.',
+  vorsichtig: 'Dein Plan hat einen vorsichtigen Zug: Du prüfst zuerst gründlich – und setzt spät um.',
+  gemischt: 'Dein Plan folgt keiner klaren Linie – mal eher forsch, mal eher vorsichtig.',
+};
+const tagen = n => (n === 1 ? '1 Tag' : n + ' Tagen');
+function rmCap(l, k) {
+  if (k == null) return '<span class="cap"><small>' + tage(l) + ' geplant</small></span>';
+  const cls = l > k ? ' over' : l > k * RM.puffer ? ' knapp' : '',
+    pct = k ? Math.min(100, (l / k) * 100) : l ? 100 : 0;
+  return (
+    '<span class="cap' +
+    cls +
+    '"><span class="bar"><i style="width:' +
+    pct.toFixed(1) +
+    '%"></i><em style="left:' +
+    (RM.puffer * 100).toFixed(1) +
+    '%"></em></span><small>' +
+    l +
+    ' von ' +
+    tagen(k) +
+    '</small></span>'
+  );
+}
+function rmTile(a, o) {
+  const k = rmKa(a.ka),
+    ph = rmPh(a.ph),
+    inner =
+      '<span class="ph"><span class="pn">' +
+      (RM.ph.indexOf(ph) + 1) +
+      '</span>' +
+      esc(ph[2]) +
+      '</span><span class="tg">' +
+      tage(a.tage) +
+      '</span>';
+  if (o.ro)
+    return (
+      '<span class="rmt ro ' +
+      o.bew +
+      '" style="--k:' +
+      k[2] +
+      '">' +
+      inner +
+      '<span class="bm" title="' +
+      o.bew +
+      '"><span class="sr">' +
+      o.bew +
+      '</span></span></span>'
+    );
+  return (
+    '<button class="rmt' +
+    (o.sel ? ' sel' : '') +
+    '" style="--k:' +
+    k[2] +
+    '" data-rm="' +
+    a.id +
+    '" aria-pressed="' +
+    !!o.sel +
+    '" title="' +
+    esc(ph[1] + ': ' + a.text) +
+    '" aria-label="' +
+    esc(rmName(a) + ', ' + tage(a.tage)) +
+    '">' +
+    inner +
+    '</button>'
+  );
+}
+// Kalender: Zeilen = Kernaufgaben, Spalten = Abschnitte. Am Smartphone stehen die Abschnitte untereinander.
+function rmGrid(s, plan, edit) {
+  const sel = edit ? ui.selRm : null,
+    kap1 = edit ? Math.max(0, left(s)) : s.roadmap.kap1,
+    cols = edit ? [0, 1, 2, 3, 4, 5] : [1, 2, 3, 4, 5],
+    cpos = c => (edit ? c + 2 : c + 1),
+    selKa = sel ? rmAkt(sel).ka : null;
+  const cell = (cls, r, c, o, inner, attrs) =>
+    '<div class="rc ' +
+    cls +
+    '" style="--r:' +
+    r +
+    ';--c:' +
+    c +
+    ';--o:' +
+    o +
+    '"' +
+    (attrs || '') +
+    '>' +
+    inner +
+    '</div>';
+  let h =
+    '<div class="rmw"><div class="rm' +
+    (edit ? ' edit' : ' ro') +
+    (sel ? ' armed' : '') +
+    '" role="group" aria-label="Kalender der 100 Tage">' +
+    cell('corner', 1, 1, 0, '');
+  cols.forEach(c => {
+    if (c === 0) {
+      const n = RM.akt.filter(a => !plan[a.id]).length;
+      h += cell(
+        'hd off',
+        1,
+        2,
+        0,
+        '<b>Noch offen</b><small>' + n + ' von ' + RM.akt.length + ' Aktivitäten</small>',
+        ' data-col="0"'
+      );
+      return;
+    }
+    const inner = '<b>' + esc(rmSp(c)[1]) + '</b>' + rmCap(rmLast(plan, c), rmKap(c, kap1));
+    h += edit
+      ? '<button class="rc hd" style="--r:1;--c:' +
+        cpos(c) +
+        ';--o:' +
+        c * 10 +
+        '" data-col="' +
+        c +
+        '"' +
+        (sel ? '' : ' tabindex="-1"') +
+        '>' +
+        inner +
+        '</button>'
+      : cell('hd', 1, cpos(c), c * 10, inner);
+  });
+  const fix = rmFix(s);
+  h += cell('lab', 2, 1, 0, '<b>Bereits verplant</b><small>Mandat und Posteingang</small>');
+  cols.forEach(c => {
+    const inner =
+      c === 1 && fix.length
+        ? '<span class="cap2">Bereits verplant</span>' +
+          fix
+            .map(([t, d]) => '<span class="fix">' + esc(t) + ' <small>' + tage(d) + '</small></span>')
+            .join('')
+        : '';
+    h += cell('cell fixc' + (inner ? '' : ' leer'), 2, cpos(c), c * 10 + 1, inner);
+  });
+  RM.ka.forEach(([ka, name, col], i) => {
+    const r = i + 3;
+    h += cell(
+      'lab',
+      r,
+      1,
+      0,
+      '<span class="dot" style="background:' + col + '"></span><b>' + esc(name) + '</b>'
+    );
+    cols.forEach(c => {
+      const ts = RM.akt.filter(a => a.ka === ka && (c === 0 ? !plan[a.id] : plan[a.id] === c));
+      const inner = ts
+        .map(a => (edit ? rmTile(a, { sel: sel === a.id }) : rmTile(a, { ro: true, bew: a.bew[plan[a.id]] })))
+        .join('');
+      h += cell(
+        'cell' + (ts.length ? '' : ' leer') + (selKa === ka ? ' lane' : '') + (c === 0 ? ' offc' : ''),
+        r,
+        cpos(c),
+        c * 10 + 2 + i,
+        (inner ? '<span class="cap2" style="color:' + col + '">' + esc(name) + '</span>' : '') + inner,
+        edit ? ' data-col="' + c + '"' : ''
+      );
+    });
+  });
+  return h + '</div></div>';
+}
+function rmPicker() {
+  const id = ui.selRm;
+  if (!id)
+    return '<div class="rmpick idle"><span class="small muted">Wähle eine Aktivität aus – dann den Abschnitt.</span></div>';
+  const a = rmAkt(id),
+    k = rmKa(a.ka),
+    cur = ui.rm[id];
+  return (
+    '<div class="rmpick" style="--k:' +
+    k[2] +
+    '"><div class="t"><span class="kchip">' +
+    esc(k[1]) +
+    '</span> <b>' +
+    esc(rmPh(a.ph)[1]) +
+    '</b> <span class="muted">· ' +
+    tage(a.tage) +
+    '</span><br><span class="small">' +
+    esc(a.text) +
+    '</span></div><div class="qpick" role="group" aria-label="Abschnitt wählen">' +
+    RM.spalten
+      .map(
+        ([c, l]) =>
+          '<button class="btn sm ghost' +
+          (cur === c ? ' on' : '') +
+          '" data-col="' +
+          c +
+          '"><span class="num">' +
+          c +
+          '</span> ' +
+          esc(l) +
+          '</button>'
+      )
       .join('') +
-    '<h3>Deine Entscheidungen</h3>'
+    (cur
+      ? '<button class="btn sm ghost" data-col="0"><span class="num">0</span> zurück zu „offen“</button>'
+      : '') +
+    '</div></div>'
+  );
+}
+function rmInfo() {
+  return (
+    '<details class="eis" open><summary>Kernaufgaben, Phasen und Puffer</summary><div class="rminfo">' +
+    '<div class="rmflow" aria-hidden="true">' +
+    RM.ph.map(([, n], i) => '<span><b>' + (i + 1) + '</b>' + esc(n) + '</span>').join('') +
+    '</div><div class="rmkats" aria-hidden="true">' +
+    RM.ka.map(([, n, c]) => '<span style="--k:' + c + '">' + esc(n) + '</span>').join('') +
+    '</div><p>' +
+    esc(RM.info) +
+    '</p></div></details>'
+  );
+}
+function viewRoadmap(s) {
+  const plan = ui.rm,
+    n = Object.keys(plan).length,
+    total = RM.akt.length,
+    kap1 = Math.max(0, left(s));
+  return (
+    '<div class="card"><div class="cardhead">' +
+    badge('Grundstein') +
+    '<span class="muted">Deine Planung</span></div><h2 tabindex="-1">Deine 100-Tage-Roadmap</h2>' +
+    '<p>Der Posteingang ist sortiert, die ersten Tage sind verplant. Jetzt strukturierst Du Deine 100 Tage: Lege für jede der vier Kernaufgaben fest, in welchem Abschnitt Du welche Phase angehst.</p>' +
+    rmInfo() +
+    '<p class="small muted">So geht’s: Aktivität anklicken und einen Abschnitt wählen – oder mit der Maus in den Kalender ziehen. Tastatur: Aktivität auswählen, dann 1 bis 5, mit 0 zurück. Unter jedem Abschnitt steht, wie viele Arbeitstage verplant sind; der Strich markiert zwei Drittel.</p>' +
+    rmGrid(s, plan, true) +
+    rmPicker() +
+    '<div class="actions"><button class="btn" data-go="roadmap"' +
+    (n < total ? ' disabled' : '') +
+    '>Roadmap steht</button><span class="small muted">' +
+    n +
+    ' von ' +
+    total +
+    ' eingeplant · Tag 1–25: ' +
+    rmLast(plan, 1) +
+    ' von ' +
+    tagen(kap1) +
+    ' verplant</span></div></div>'
+  );
+}
+function rmBefunde(pr) {
+  const out = [];
+  pr.folge.forEach(([b, a]) => {
+    const A = rmAkt(a),
+      B = rmAkt(b);
+    out.push(
+      esc(rmKa(B.ka)[1]) +
+        ': „' +
+        esc(rmPh(B.ph)[1]) +
+        '“ liegt vor „' +
+        esc(rmPh(A.ph)[1]) +
+        '“ – die Phasen bauen aufeinander auf.'
+    );
+  });
+  pr.abh.forEach(([, , satz]) => out.push(esc(satz)));
+  pr.ueber.forEach(([c, l, k]) =>
+    out.push(esc(rmSp(c)[1]) + ' ist überplant: ' + tage(l) + ' Arbeit bei ' + tage(k) + ' freier Zeit.')
+  );
+  return out;
+}
+function rmEinschaetzung(s, mitPlan) {
+  const t = s.roadmap,
+    P = RM.profile,
+    bef = rmBefunde(t.pruef);
+  let h =
+    '<p>' +
+    t.gut +
+    ' von ' +
+    RM.akt.length +
+    ' Aktivitäten liegen im empfohlenen Abschnitt. ' +
+    esc(RM_STIL[t.stil]) +
+    '</p>';
+  if (bef.length)
+    h +=
+      '<p style="margin-bottom:4px"><b>Hier hakt der Plan:</b></p><ul class="abw">' +
+      bef.map(x => '<li>' + x + '</li>').join('') +
+      '</ul>';
+  if (t.pruef.knapp.length)
+    h +=
+      '<p class="small muted">' +
+      t.pruef.knapp
+        .map(
+          ([c, l, k]) =>
+            esc(rmSp(c)[1]) +
+            ': ' +
+            l +
+            ' von ' +
+            tagen(k) +
+            ' verplant – wenig Puffer für Anfragen und Vorfälle.'
+        )
+        .join(' ') +
+      '</p>';
+  if (t.abw.length)
+    h +=
+      '<p style="margin-bottom:4px"><b>Hier lohnt ein zweiter Blick:</b></p><ul class="abw">' +
+      t.abw
+        .map(id => {
+          const a = rmAkt(id);
+          return (
+            '<li><b>' +
+            esc(rmName(a)) +
+            '</b><br><span class="muted">Dein Abschnitt: ' +
+            esc(rmSp(t.plan[id])[1]) +
+            ' · empfohlen: ' +
+            rmBest(a)
+              .map(c => esc(rmSp(c)[1]))
+              .join(' oder ') +
+            '</span><br>' +
+            esc(a.kurz) +
+            '</li>'
+          );
+        })
+        .join('') +
+      '</ul>';
+  h +=
+    '<div class="profiles">' +
+    ['forsch', 'vorsichtig', 'empfohlen']
+      .map(
+        k =>
+          '<div class="pf ' +
+          k +
+          (t.stil === k ? ' mine' : '') +
+          '"><b>' +
+          esc(P[k].name) +
+          (t.stil === k ? ' <span class="chip">Deine Tendenz</span>' : '') +
+          '</b><p>' +
+          esc(P[k].text) +
+          '</p><p class="small"><b>Stärke:</b> ' +
+          esc(P[k].staerke) +
+          '<br><b>Preis:</b> ' +
+          esc(P[k].preis) +
+          '</p></div>'
+      )
+      .join('') +
+    '</div><p class="faust"><b>Faustregel:</b> ' +
+    esc(RM.faustregel) +
+    '</p>';
+  if (mitPlan)
+    h +=
+      '<details class="vgl"><summary>Dein Kalender im Überblick</summary>' +
+      rmGrid(s, t.plan, false) +
+      '<p class="small muted">Farbiger Punkt: grün empfohlen, gelb vertretbar, rot problematisch.</p></details>';
+  return h;
+}
+function viewAfterRoadmap(s) {
+  const { before, fx } = ui.after,
+    out = [];
+  fx.wirkung.forEach(([akt, , sec, d]) => {
+    const a = rmAkt(akt),
+      wo = ' (' + esc(rmSp(s.roadmap.plan[akt])[1]) + ')';
+    out.push([
+      '⏱',
+      d < 0
+        ? '<b>Rechtzeitig eingeplant:</b> ' +
+          esc(rmName(a)) +
+          wo +
+          ' – eine passende Anfrage geht einen Tag schneller.'
+        : '<b>Spät eingeplant:</b> ' +
+          esc(rmName(a)) +
+          wo +
+          ' – eine passende Anfrage ' +
+          (sec === 1 ? 'gleich zu Beginn' : 'ab Tag 26') +
+          ' kostet einen Tag mehr.',
+    ]);
+  });
+  TFK.forEach(t => {
+    const d = s.RG[t] - before.RG[t];
+    if (d)
+      out.push([
+        d > 0 ? '<span class="up">▲</span>' : '<span class="down">▼</span>',
+        'Reifegrad ' + esc(DATA.tf[t]) + ': ' + (d > 0 ? '+' : '') + d,
+      ]);
+  });
+  const dT = s.T - before.T,
+    dA = s.AK - before.AK;
+  if (dT)
+    out.push([
+      dT > 0 ? '<span class="up">▲</span>' : '<span class="down">▼</span>',
+      'Rückhalt der Geschäftsführung ' +
+        (dT > 0 ? 'steigt' : 'sinkt') +
+        (zoneT(before.T) !== zoneT(s.T) ? ' – jetzt <b>' + zoneT(s.T) + '</b>' : ''),
+    ]);
+  if (dA)
+    out.push([
+      dA > 0 ? '<span class="up">▲</span>' : '<span class="down">▼</span>',
+      'Akzeptanz der Fachbereiche ' +
+        (dA > 0 ? 'steigt' : 'sinkt') +
+        (zoneA(before.AK) !== zoneA(s.AK) ? ' – jetzt <b>' + zoneA(s.AK) + '</b>' : ''),
+    ]);
+  return (
+    '<div class="card"><div class="cardhead">' +
+    badge('Grundstein') +
+    '<span class="muted">Deine Planung</span></div><h2 tabindex="-1">Deine 100-Tage-Roadmap</h2>' +
+    '<p class="quote">„' +
+    esc(fx.reaktion[0]) +
+    '“<small>' +
+    esc(fx.reaktion[1]) +
+    '</small></p>' +
+    '<h3>Kurze Einschätzung</h3>' +
+    rmEinschaetzung(s, true) +
+    (out.length
+      ? '<h3>Was daraus folgt</h3><ul class="cons">' +
+        out.map(([i, t]) => '<li><span class="ic">' + i + '</span><span>' + t + '</span></li>').join('') +
+        '</ul>'
+      : '') +
+    '<p class="small muted" style="margin-top:14px">Die Begründung je Aktivität steht im Rückblick am Ende des Abschnitts.</p>' +
+    '<div class="actions"><button class="btn" data-go="inbox">Zu den Aufgaben</button></div></div>'
+  );
+}
+function rmReview(s) {
+  if (!s.roadmap) return '';
+  const t = s.roadmap,
+    bef = rmBefunde(t.pruef);
+  return (
+    '<h3>Deine 100-Tage-Roadmap</h3>' +
+    '<p class="muted" style="margin-top:0">' +
+    esc(RM_STIL[t.stil]) +
+    ' ' +
+    t.gut +
+    ' von ' +
+    RM.akt.length +
+    ' Aktivitäten liegen im empfohlenen Abschnitt.</p>' +
+    '<div class="pf empfohlen solo"><b>' +
+    esc(RM.profile.empfohlen.name) +
+    '</b><p>' +
+    esc(RM.profile.empfohlen.text) +
+    '</p><p class="small"><b>Faustregel:</b> ' +
+    esc(RM.faustregel) +
+    '</p></div>' +
+    (bef.length
+      ? '<p style="margin-bottom:4px"><b>Hier hakt der Plan:</b></p><ul class="abw">' +
+        bef.map(x => '<li>' + x + '</li>').join('') +
+        '</ul>'
+      : '') +
+    rmGrid(s, t.plan, false) +
+    RM.akt
+      .map(a => {
+        const c = t.plan[a.id],
+          bw = a.bew[c];
+        let h =
+          '<div class="rev"><div class="h">' +
+          bewChip(bw) +
+          '<b>' +
+          esc(rmName(a)) +
+          '</b><span class="small muted">' +
+          tage(a.tage) +
+          '</span></div>' +
+          '<div class="ch">Dein Abschnitt: <b>' +
+          esc(rmSp(c)[1]) +
+          '</b></div><p style="margin:6px 0">' +
+          esc(a.kurz) +
+          '</p>';
+        if (bw !== 'empfohlen')
+          h +=
+            '<p class="alt"><b>Empfohlen:</b> ' +
+            rmBest(a)
+              .map(x => esc(rmSp(x)[1]))
+              .join(' oder ') +
+            '</p>';
+        if (a.recht) h += '<div class="src">Grundlage: ' + esc(a.recht) + '</div>';
+        return h + '</div>';
+      })
+      .join('')
   );
 }
 function consequences(before, s, k, fx) {
@@ -6452,7 +7890,8 @@ function viewReview(s) {
       tage(s.carry[s.sec + 1]) +
       ' fehlen Dir im nächsten Abschnitt.</div>';
   h +=
-    (s.sec === 1 && s.triage ? triageReview(s) : '<h3>Deine Entscheidungen</h3>') +
+    (s.sec === 1 ? triageReview(s) + rmReview(s) : '') +
+    '<h3>Deine Entscheidungen</h3>' +
     reviewItems(s, s.sec) +
     '<div class="actions"><button class="btn" data-go="next">' +
     (last ? 'Zur Zwischenbilanz' : 'Weiter zu Abschnitt ' + (s.sec + 1)) +
@@ -6538,6 +7977,9 @@ function viewEnd(s) {
     '<dt>Posteingang am ersten Tag</dt><dd>' +
     (s.triage ? s.triage.gut + ' von ' + TRI.mails.length + ' wie empfohlen' : '–') +
     '</dd>' +
+    '<dt>100-Tage-Roadmap</dt><dd>' +
+    (s.roadmap ? s.roadmap.gut + ' von ' + RM.akt.length + ' wie empfohlen' : '–') +
+    '</dd>' +
     '<dt>Entscheidungen</dt><dd>' +
     n.empfohlen +
     ' empfohlen · ' +
@@ -6591,7 +8033,7 @@ function viewEnd(s) {
           SEC[sec].titel +
           '</h3>' +
           (sec === 1
-            ? triageReview(s)
+            ? (triageReview(s) + rmReview(s) + '<h3>Deine Entscheidungen</h3>')
                 .replace(/<h3>/g, '<h4>')
                 .replace(/<\/h3>/g, '</h4>')
             : '') +
@@ -6612,6 +8054,19 @@ function viewLog(s) {
       '</td><td>' +
       (s.closed[1]
         ? s.triage.gut + ' von ' + TRI.mails.length + ' wie empfohlen'
+        : '<span class="small muted">im Rückblick</span>') +
+      '</td></tr>'
+    : '';
+  const rmRow = s.roadmap
+    ? '<tr><td class="num">1</td><td><b>Deine 100-Tage-Roadmap</b><br><span class="small muted">' +
+      RM.akt.length +
+      ' Aktivitäten</span></td><td>' +
+      RM.spalten
+        .map(([c, , k]) => esc(k) + ': ' + RM.akt.filter(a => s.roadmap.plan[a.id] === c).length)
+        .join(' · ') +
+      '</td><td class="num">–</td><td>' +
+      (s.closed[1]
+        ? s.roadmap.gut + ' von ' + RM.akt.length + ' wie empfohlen'
         : '<span class="small muted">im Rückblick</span>') +
       '</td></tr>'
     : '';
@@ -6640,7 +8095,10 @@ function viewLog(s) {
   const k01 = s.order.indexOf('K01') + 1,
     rr = rows0.split('</tr>');
   const rows =
-    (k01 ? rr.slice(0, k01).join('</tr>') + (k01 ? '</tr>' : '') : '') + tri + rr.slice(k01).join('</tr>');
+    (k01 ? rr.slice(0, k01).join('</tr>') + (k01 ? '</tr>' : '') : '') +
+    tri +
+    rmRow +
+    rr.slice(k01).join('</tr>');
   return (
     '<div class="card"><h2 tabindex="-1">Entscheidungen</h2>' +
     (rows
@@ -6703,15 +8161,18 @@ function render(focus) {
     else if (s.phase === 'review') main = viewReview(s);
     else if (s.phase === 'end') main = viewEnd(s);
     else if (ui.after && ui.after.triage) main = viewAfterTriage(s);
+    else if (ui.after && ui.after.roadmap) main = viewAfterRoadmap(s);
     else if (ui.after) main = viewAfter(s);
     else if (ui.open) main = viewCard(s, ui.open);
     else if (s.sec === 1 && s.dec.K01 && !s.triage) main = viewTriage(s);
+    else if (s.sec === 1 && s.triage && !s.roadmap) main = viewRoadmap(s);
     else main = viewInbox(s);
     const side =
       ui.tab === 'spiel' &&
       s.phase === 'play' &&
       !(s.sec === 1 && s.dec.K01 && !s.triage && !ui.after && !ui.open) &&
-      !(ui.after && ui.after.triage);
+      !(s.sec === 1 && s.triage && !s.roadmap && !ui.after && !ui.open) &&
+      !(ui.after && (ui.after.triage || ui.after.roadmap));
     app.innerHTML = side
       ? '<div class="grid"><div>' + strip(s) + main + '</div>' + sidePanels(s) + '</div>'
       : main;
@@ -6738,6 +8199,8 @@ function startGame(al, name) {
   ui.lastT = null;
   ui.tri = {};
   ui.selMail = null;
+  ui.rm = {};
+  ui.selRm = null;
   render(true);
 }
 function resume() {
@@ -6751,12 +8214,25 @@ function resume() {
   ui.lastT = null;
   ui.tri = {};
   ui.selMail = null;
+  ui.rm = {};
+  ui.selRm = null;
   ui.open = G.phase === 'play' && !G.dec.K01 ? 'K01' : null;
   render(true);
 }
 document.addEventListener('click', e => {
-  const t = e.target.closest('[data-go],[data-open],[data-tab],[data-al],[data-mail],[data-quad]');
+  const t = e.target.closest(
+    '[data-go],[data-open],[data-tab],[data-al],[data-mail],[data-quad],[data-rm],[data-col]'
+  );
   if (!t || t.disabled) return;
+  if (t.dataset.rm) {
+    ui.selRm = ui.selRm === t.dataset.rm ? null : t.dataset.rm;
+    renderKeep('[data-rm="' + t.dataset.rm + '"]');
+    return;
+  }
+  if (t.dataset.col !== undefined) {
+    if (ui.selRm) placeRm(ui.selRm, +t.dataset.col);
+    return;
+  }
   if (t.dataset.mail) {
     ui.selMail = ui.selMail === t.dataset.mail ? null : t.dataset.mail;
     renderKeep('[data-mail="' + t.dataset.mail + '"]');
@@ -6847,6 +8323,12 @@ document.addEventListener('click', e => {
     ui.after = { triage: true, before: r.before, fx: r.fx };
     ui.selMail = null;
     render(true);
+  } else if (go === 'roadmap') {
+    if (Object.keys(ui.rm).length < RM.akt.length) return;
+    const r = act(['r', Object.assign({}, ui.rm)]);
+    ui.after = { roadmap: true, before: r.before, fx: r.fx };
+    ui.selRm = null;
+    render(true);
   } else if (go === 'report') downloadReport();
   else if (go === 'again') {
     clearSaved();
@@ -6880,6 +8362,26 @@ function placeMail(id, q) {
   const next = TRI.mails.find(m => !ui.tri[m.id]);
   renderKeep(next ? '[data-mail="' + next.id + '"]' : '[data-go="triage"]');
 }
+function placeRm(id, c) {
+  if (c) ui.rm[id] = c;
+  else delete ui.rm[id];
+  ui.selRm = null;
+  const next = RM.akt.find(a => !ui.rm[a.id]);
+  renderKeep(next ? '[data-rm="' + next.id + '"]' : '[data-go="roadmap"]');
+}
+document.addEventListener('keydown', e => {
+  if (!G || !ui.selRm || !document.querySelector('.rm.edit')) return;
+  if (['1', '2', '3', '4', '5'].includes(e.key)) {
+    e.preventDefault();
+    placeRm(ui.selRm, +e.key);
+  } else if (e.key === '0' || e.key === 'Backspace') {
+    e.preventDefault();
+    placeRm(ui.selRm, 0);
+  } else if (e.key === 'Escape') {
+    ui.selRm = null;
+    renderKeep();
+  }
+});
 document.addEventListener('keydown', e => {
   if (!G || !ui.selMail || !document.querySelector('.tri')) return;
   if (['1', '2', '3', '4'].includes(e.key)) {
@@ -6893,9 +8395,16 @@ document.addEventListener('keydown', e => {
 /* Ziehen mit der Maus (Finger und Stift: antippen und Feld wählen – sonst würde die Seite nicht mehr scrollen) */
 let mdrag = null;
 document.addEventListener('pointerdown', e => {
-  const b = e.target.closest && e.target.closest('.mail, .chipmail');
+  const b = e.target.closest && e.target.closest('.mail, .chipmail, .rmt[data-rm]');
   if (!b || e.pointerType !== 'mouse' || e.button > 0) return;
-  mdrag = { id: b.dataset.mail, x0: e.clientX, y0: e.clientY, ghost: null, src: b };
+  mdrag = {
+    rm: !!b.dataset.rm,
+    id: b.dataset.mail || b.dataset.rm,
+    x0: e.clientX,
+    y0: e.clientY,
+    ghost: null,
+    src: b,
+  };
 });
 document.addEventListener('pointermove', e => {
   if (!mdrag) return;
@@ -6910,9 +8419,9 @@ document.addEventListener('pointermove', e => {
   }
   mdrag.ghost.style.left = e.clientX + 12 + 'px';
   mdrag.ghost.style.top = e.clientY + 8 + 'px';
-  document.querySelectorAll('.quad.over').forEach(q => q.classList.remove('over'));
+  document.querySelectorAll('.quad.over, .rc.over').forEach(q => q.classList.remove('over'));
   const over = document.elementFromPoint(e.clientX, e.clientY);
-  const q = over && over.closest('.quad');
+  const q = over && over.closest(mdrag.rm ? '.rm [data-col]' : '.quad');
   if (q) q.classList.add('over');
   if (e.clientY < 60) window.scrollBy(0, -12);
   else if (e.clientY > window.innerHeight - 60) window.scrollBy(0, 12);
@@ -6925,7 +8434,7 @@ document.addEventListener('pointerup', e => {
   d.ghost.remove();
   document.body.classList.remove('is-dragging');
   const over = document.elementFromPoint(e.clientX, e.clientY),
-    z = over && over.closest('[data-quad]');
+    z = over && over.closest(d.rm ? '.rm [data-col]' : '[data-quad]');
   const swallow = ev => {
     ev.stopPropagation();
     ev.preventDefault();
@@ -6935,6 +8444,10 @@ document.addEventListener('pointerup', e => {
   setTimeout(() => window.removeEventListener('click', swallow, true), 0);
   if (!z) {
     renderKeep();
+    return;
+  }
+  if (d.rm) {
+    placeRm(d.id, +z.dataset.col);
     return;
   }
   if (z.dataset.quad === 'none') {
