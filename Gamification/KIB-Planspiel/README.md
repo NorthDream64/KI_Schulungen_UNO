@@ -17,12 +17,12 @@ Im Mittelpunkt steht die Frage, was eine KI-Beauftragte oder ein KI-Beauftragter
 1. **Mandat:** Gespräch mit der Geschäftsführung über Deine Rolle.
 2. **Posteingang am ersten Tag:** zehn E-Mails nach Wichtigkeit und Dringlichkeit in die Eisenhower-Matrix sortieren – sofort erledigen, einplanen, delegieren oder weglegen.
 3. **Deine 100-Tage-Roadmap:** ein Kalender über die 100 Tage. Für die vier Kernaufgaben – Inventarisierung, Risikobewertung, Governance/Compliance, KI-Kompetenz – legst Du fest, wann Du den Status quo ermittelst, Lücken identifizierst, Maßnahmen planst und umsetzt.
-4. **Aufgaben:** Anfragen aus den Fachbereichen gründlich, pragmatisch oder gar nicht bearbeiten. Die Zeit reicht nicht für alles.
+4. **Woche 2 – Dein Posteingang am Montagmorgen:** Jetzt trifft der Plan auf die Wirklichkeit. Im Posteingang liegt, was Du am ersten Tag sofort erledigen wolltest, dazu die Aufgaben aus Deiner Roadmap für Tag 1–25 und zwei neue E-Mails zum Einsortieren. Was Du eingeplant hast, kommt später wieder, Delegiertes läuft ohne Dich, Neues kommt dazu. Aufgaben und Anfragen gründlich, pragmatisch oder gar nicht bearbeiten, Roadmap-Aufgaben notfalls verschieben – die Zeit reicht nicht für alles.
 5. **Vorfälle:** kommen ungefragt und lassen sich nicht verschieben.
 6. **Rückblick** am Ende jedes Abschnitts: Einordnung jeder Entscheidung mit Erklärung und Rechtsgrundlage.
 7. **Zwischenbilanz** nach 50 Tagen mit Lagebild, als Bericht zum Herunterladen.
 
-Neben dem Spiel zeigen drei Reiter Deinen **100-Tage-Plan** (sobald die Roadmap steht, als Referenz zum Nachschlagen), das **Lagebild** (Rückhalt der Geschäftsführung, Akzeptanz der Fachbereiche, Reifegrad je Themenfeld, offene Risiken) und alle bisherigen **Entscheidungen**.
+Neben dem Spiel zeigen drei Reiter Deinen **100-Tage-Plan** (sobald die Roadmap steht, als Referenz zum Nachschlagen – mit dem, was Du schon umgesetzt oder verschoben hast), das **Lagebild** (Rückhalt der Geschäftsführung, Akzeptanz der Fachbereiche, Reifegrad je Themenfeld, offene Risiken) und alle bisherigen **Entscheidungen**.
 
 ## Grundlagen
 
