@@ -1686,18 +1686,8 @@
         font-weight: 600;
         hyphens: auto;
       }
-      .rmt .pn {
-        display: inline-grid;
-        place-items: center;
-        min-width: 15px;
-        height: 15px;
-        padding: 0 3px;
-        margin-right: 5px;
-        border-radius: 8px;
-        background: var(--k);
-        color: #fff;
-        font-size: 10px;
-        vertical-align: 1px;
+      .rmnote {
+        margin: 10px 0 0;
       }
       .rmt .tg {
         color: var(--muted);
@@ -5542,6 +5532,7 @@ const DATA = {
           "sq",
           "lu"
         ],
+        "nach": [],
         "name": "Status quo und Lücken ermitteln",
         "label": "Status quo und Lücken",
         "tage": {
@@ -5565,6 +5556,9 @@ const DATA = {
         "ka": "inv",
         "ph": [
           "mp"
+        ],
+        "nach": [
+          "inv_sq"
         ],
         "name": "Inventarisierung der KI planen",
         "label": "Planen",
@@ -5590,6 +5584,9 @@ const DATA = {
         "ph": [
           "mu"
         ],
+        "nach": [
+          "inv_mp"
+        ],
         "name": "KI-Anwendungen inventarisieren",
         "label": "Inventarisieren",
         "tage": {
@@ -5609,114 +5606,19 @@ const DATA = {
         "recht": ""
       },
       {
-        "id": "risk_sq",
+        "id": "risk_kvo",
         "ka": "risk",
         "ph": [
           "sq"
         ],
-        "name": "Status quo ermitteln",
-        "label": "Status quo",
+        "nach": [],
+        "name": "KI-Systeme nach KI-VO einordnen",
+        "label": "Nach KI-VO einordnen",
         "tage": {
           "gering": 2,
-          "hoch": 2
-        },
-        "text": "Die erfassten Systeme erstmals einordnen: Rolle von NoHa, Risikoklasse, verbotene Praktiken.",
-        "bew": {
-          "1": "empfohlen",
-          "2": "empfohlen",
-          "3": "vertretbar",
-          "4": "problematisch",
-          "5": "problematisch"
-        },
-        "frueh": "forsch",
-        "kurz": "Die erste Einordnung gehört direkt hinter die Bestandsaufnahme – verbotene Praktiken sind schon seit Februar 2025 untersagt.",
-        "recht": "Art. 5, Art. 6, Art. 113 KI-VO"
-      },
-      {
-        "id": "risk_lu",
-        "ka": "risk",
-        "ph": [
-          "lu"
-        ],
-        "name": "Lücken identifizieren",
-        "label": "Lücken",
-        "tage": {
-          "gering": 2,
-          "hoch": 2
-        },
-        "text": "Pflichten je System mit dem Ist abgleichen – etwa Transparenz, menschliche Aufsicht, Datenschutz-Folgenabschätzung.",
-        "bew": {
-          "1": "vertretbar",
-          "2": "empfohlen",
-          "3": "vertretbar",
-          "4": "problematisch",
-          "5": "problematisch"
-        },
-        "frueh": "vorsichtig",
-        "kurz": "Den Pflichtenabgleich machst Du, sobald die Systeme eingeordnet sind – vorher prüfst Du ins Blaue.",
-        "recht": "Art. 26, Art. 50 KI-VO; Art. 35 DSGVO"
-      },
-      {
-        "id": "risk_mp",
-        "ka": "risk",
-        "ph": [
-          "mp"
-        ],
-        "name": "Maßnahmen planen",
-        "label": "Planen",
-        "tage": {
-          "gering": 2,
-          "hoch": 2
-        },
-        "text": "Maßnahmen je Risiko festlegen und im Risikoregister dokumentieren.",
-        "bew": {
-          "1": "problematisch",
-          "2": "empfohlen",
-          "3": "empfohlen",
-          "4": "vertretbar",
-          "5": "problematisch"
-        },
-        "frueh": "vorsichtig",
-        "kurz": "Maßnahmen legst Du fest, wenn die Lücken bekannt sind. Am ersten Tag wäre das Papier ohne Grundlage.",
-        "recht": ""
-      },
-      {
-        "id": "risk_mu",
-        "ka": "risk",
-        "ph": [
-          "mu"
-        ],
-        "name": "Maßnahmen umsetzen",
-        "label": "Umsetzen",
-        "tage": {
-          "gering": 3,
-          "hoch": 3
-        },
-        "text": "Maßnahmen umsetzen: Kennzeichnung, menschliche Aufsicht, Folgenabschätzungen.",
-        "bew": {
-          "1": "problematisch",
-          "2": "vertretbar",
-          "3": "empfohlen",
-          "4": "empfohlen",
-          "5": "vertretbar"
-        },
-        "frueh": "forsch",
-        "kurz": "Umsetzen braucht Zeit. Manches darf über Tag 100 hinausgehen – wenn es geplant ist.",
-        "recht": "Art. 26 KI-VO"
-      },
-      {
-        "id": "gov_sq",
-        "ka": "gov",
-        "ph": [
-          "sq"
-        ],
-        "name": "Status quo ermitteln",
-        "label": "Status quo",
-        "tage": {
-          "gering": 1,
           "hoch": 1
         },
-        "text": "Sichten, was schon geregelt ist: IT- und Datenschutzregeln, Freigabewege, Betriebsvereinbarungen.",
+        "text": "Für jedes erfasste KI-System die Rolle von NoHa, die Risikoklasse und mögliche verbotene Praktiken bestimmen.",
         "bew": {
           "1": "empfohlen",
           "2": "vertretbar",
@@ -5725,46 +5627,132 @@ const DATA = {
           "5": "problematisch"
         },
         "frueh": "forsch",
-        "kurz": "Erst sichten, was es schon gibt – dann regelst Du nichts doppelt.",
-        "recht": ""
+        "kurz": "Die Einordnung gehört direkt hinter die Bestandsaufnahme: Verbotene Praktiken sind seit Februar 2025 untersagt, und von der Risikoklasse hängen alle weiteren Pflichten ab.",
+        "recht": "Art. 3 Nr. 3 und 4, Art. 5, Art. 6, Art. 113 KI-VO"
       },
       {
-        "id": "gov_lu",
-        "ka": "gov",
+        "id": "risk_reg",
+        "ka": "risk",
         "ph": [
           "lu"
         ],
-        "name": "Lücken identifizieren",
-        "label": "Lücken",
+        "nach": [
+          "risk_kvo"
+        ],
+        "name": "Risikoregister einrichten (Bewertungsskala, Kategorisierung)",
+        "label": "Risikoregister einrichten",
         "tage": {
-          "gering": 1,
+          "gering": 2,
           "hoch": 1
         },
-        "text": "Klären, was fehlt: Wer gibt KI frei? Was gilt für frei verfügbare KI-Dienste?",
+        "text": "Ein Risikoregister mit einheitlicher Bewertungsskala und Risikokategorien anlegen und die ersten Risiken erfassen und bewerten.",
         "bew": {
-          "1": "empfohlen",
+          "1": "vertretbar",
           "2": "empfohlen",
           "3": "vertretbar",
           "4": "problematisch",
           "5": "problematisch"
         },
+        "frueh": "vorsichtig",
+        "kurz": "Das Register baut auf der Einordnung auf. Eine einheitliche Bewertungsskala macht Risiken vergleichbar – auch wenn später andere bewerten.",
+        "recht": "DIN EN ISO/IEC 42001, Ausgabe 08-2026, Kap. 6.1.2"
+      },
+      {
+        "id": "risk_proz",
+        "ka": "risk",
+        "ph": [
+          "mp"
+        ],
+        "nach": [
+          "risk_reg"
+        ],
+        "name": "Risikomanagementprozess entwickeln und erproben",
+        "label": "Prozess entwickeln und erproben",
+        "tage": {
+          "gering": 3,
+          "hoch": 2
+        },
+        "text": "Festlegen, wer wann wie Risiken bewertet, Maßnahmen beschließt und nachhält – und den Ablauf an einem Vorhaben erproben.",
+        "bew": {
+          "1": "problematisch",
+          "2": "empfohlen",
+          "3": "empfohlen",
+          "4": "vertretbar",
+          "5": "problematisch"
+        },
+        "frueh": "vorsichtig",
+        "kurz": "Der Prozess entsteht, wenn Register und Bewertungsskala stehen. Erst die Erprobung an einem echten Vorhaben zeigt, ob er im Alltag trägt.",
+        "recht": "DIN EN ISO/IEC 42001, Ausgabe 08-2026, Kap. 6.1.2 und 6.1.3"
+      },
+      {
+        "id": "risk_auto",
+        "ka": "risk",
+        "ph": [
+          "mu"
+        ],
+        "nach": [
+          "risk_proz"
+        ],
+        "name": "Risikomanagement automatisieren (Aktualisierung, Erinnerung)",
+        "label": "Automatisieren",
+        "tage": {
+          "gering": 2,
+          "hoch": 1
+        },
+        "text": "Wiedervorlagen und Erinnerungen einrichten, damit Risiken regelmäßig und bei wesentlichen Änderungen neu bewertet werden.",
+        "bew": {
+          "1": "problematisch",
+          "2": "problematisch",
+          "3": "vertretbar",
+          "4": "empfohlen",
+          "5": "vertretbar"
+        },
         "frueh": "forsch",
-        "kurz": "Die Lücken zeigen, was wirklich fehlt – früh, damit die Richtlinie darauf aufbaut.",
+        "kurz": "Automatisieren lohnt sich erst, wenn der Prozess erprobt ist. Neu bewertet wird in geplanten Abständen und bei wesentlichen Änderungen.",
+        "recht": "DIN EN ISO/IEC 42001, Ausgabe 08-2026, Kap. 8.2"
+      },
+      {
+        "id": "gov_reg",
+        "ka": "gov",
+        "ph": [
+          "sq",
+          "lu"
+        ],
+        "nach": [],
+        "name": "Status und relevante Regularien ermitteln",
+        "label": "Status und Regularien",
+        "tage": {
+          "gering": 2,
+          "hoch": 1
+        },
+        "text": "Sichten, was bei NoHa schon geregelt ist, und klären, welche Regularien gelten – von der KI-Verordnung über die DSGVO bis zur Mitbestimmung.",
+        "bew": {
+          "1": "empfohlen",
+          "2": "vertretbar",
+          "3": "problematisch",
+          "4": "problematisch",
+          "5": "problematisch"
+        },
+        "frueh": "forsch",
+        "kurz": "Erst sichten, was es schon gibt und was gilt – dann regelst Du nichts doppelt und nichts am Bedarf vorbei.",
         "recht": ""
       },
       {
-        "id": "gov_mp",
+        "id": "gov_dev",
         "ka": "gov",
         "ph": [
           "mp"
         ],
-        "name": "Maßnahmen planen",
-        "label": "Planen",
+        "nach": [
+          "gov_reg"
+        ],
+        "name": "Governance entwickeln und erproben",
+        "label": "Governance entwickeln und erproben",
         "tage": {
-          "gering": 3,
+          "gering": 4,
           "hoch": 3
         },
-        "text": "KI-Richtlinie und Freigabeprozess entwerfen, mit Betriebsrat und Datenschutz abstimmen.",
+        "text": "KI-Richtlinie, Rollen und Freigabeprozess entwerfen, mit Betriebsrat und Datenschutz abstimmen und an ersten Vorhaben erproben.",
         "bew": {
           "1": "problematisch",
           "2": "empfohlen",
@@ -5773,22 +5761,25 @@ const DATA = {
           "5": "problematisch"
         },
         "frueh": "vorsichtig",
-        "kurz": "Eine Richtlinie vor dem Lagebild regelt am Bedarf vorbei und wirkt bürokratisch. Der richtige Zeitpunkt ist nach der ersten Risikoeinordnung.",
-        "recht": "§ 87 Abs. 1 Nr. 6 BetrVG; DIN EN ISO/IEC 42001, Ausgabe 08-2026, Kap. 5.2"
+        "kurz": "Eine Richtlinie vor dem Lagebild regelt am Bedarf vorbei und wirkt bürokratisch. Der richtige Zeitpunkt ist nach der Einordnung nach KI-VO. Erproben heißt auch: Wo Schatten-KI bleibt, ist der offizielle Weg zu umständlich.",
+        "recht": "§ 87 Abs. 1 Nr. 6 BetrVG; DIN EN ISO/IEC 42001, Ausgabe 08-2026, Kap. 5.2 und 5.3"
       },
       {
-        "id": "gov_mu",
+        "id": "gov_ank",
         "ka": "gov",
         "ph": [
           "mu"
         ],
-        "name": "Maßnahmen umsetzen",
-        "label": "Umsetzen",
+        "nach": [
+          "gov_dev"
+        ],
+        "name": "Compliance verankern (technisch, organisatorisch)",
+        "label": "Compliance verankern",
         "tage": {
-          "gering": 2,
+          "gering": 3,
           "hoch": 2
         },
-        "text": "Richtlinie von der Geschäftsführung beschließen lassen, bekannt machen, Freigaben starten.",
+        "text": "Regeln technisch absichern – etwa Zugriffs- und Datenschutzeinstellungen – und organisatorisch verankern: Zuständigkeiten, Nachweise, Kontrollen.",
         "bew": {
           "1": "problematisch",
           "2": "vertretbar",
@@ -5797,22 +5788,24 @@ const DATA = {
           "5": "problematisch"
         },
         "frueh": "forsch",
-        "kurz": "Die Richtlinie beschließt die Geschäftsführung. Sie sollte innerhalb der 100 Tage gelten – sonst endet Dein Start ohne Rahmen.",
+        "kurz": "Verankert wird, was entwickelt und erprobt ist. Bis Tag 100 sollten die Regeln gelten und technisch wie organisatorisch abgesichert sein – sonst endet Dein Start ohne Rahmen.",
         "recht": "DIN EN ISO/IEC 42001, Ausgabe 08-2026, Kap. 5.2"
       },
       {
-        "id": "sch_sq",
+        "id": "sch_soll",
         "ka": "sch",
         "ph": [
-          "sq"
+          "sq",
+          "lu"
         ],
-        "name": "Status quo ermitteln",
-        "label": "Status quo",
+        "nach": [],
+        "name": "Soll/Ist der KI-Kompetenzen ermitteln",
+        "label": "Soll/Ist ermitteln",
         "tage": {
-          "gering": 1,
+          "gering": 2,
           "hoch": 1
         },
-        "text": "Ermitteln, wer KI wofür nutzt und was die Beschäftigten schon können.",
+        "text": "Festlegen, welche KI-Kompetenz welche Rolle braucht, und erheben, was die Beschäftigten schon können.",
         "bew": {
           "1": "empfohlen",
           "2": "empfohlen",
@@ -5821,46 +5814,25 @@ const DATA = {
           "5": "problematisch"
         },
         "frueh": "forsch",
-        "kurz": "Was die Beschäftigten schon können, erhebst Du am besten gleich mit der Bestandsaufnahme.",
-        "recht": ""
-      },
-      {
-        "id": "sch_lu",
-        "ka": "sch",
-        "ph": [
-          "lu"
-        ],
-        "name": "Lücken identifizieren",
-        "label": "Lücken",
-        "tage": {
-          "gering": 1,
-          "hoch": 1
-        },
-        "text": "Bedarf je Zielgruppe bestimmen: Geschäftsführung, Fachbereiche, alle Beschäftigten.",
-        "bew": {
-          "1": "vertretbar",
-          "2": "empfohlen",
-          "3": "vertretbar",
-          "4": "problematisch",
-          "5": "problematisch"
-        },
-        "frueh": "forsch",
-        "kurz": "Den Bedarf je Zielgruppe kennst Du erst, wenn der Status quo steht.",
+        "kurz": "Welche Kompetenz nötig ist, ergibt sich aus der Nutzung – deshalb nach der Bestandsaufnahme. Das Ist lässt sich gut zusammen mit ihr erheben.",
         "recht": "DIN EN ISO/IEC 42001, Ausgabe 08-2026, Kap. 7.2"
       },
       {
-        "id": "sch_mp",
+        "id": "sch_konz",
         "ka": "sch",
         "ph": [
           "mp"
         ],
-        "name": "Maßnahmen planen",
-        "label": "Planen",
+        "nach": [
+          "sch_soll"
+        ],
+        "name": "Spezifische Schulungskonzepte entwickeln und abstimmen",
+        "label": "Schulungs­konzepte",
         "tage": {
           "gering": 2,
-          "hoch": 2
+          "hoch": 1
         },
-        "text": "Schulungskonzept: Zielgruppen, Formate, Anbieter, Budget.",
+        "text": "Zielgruppengerechte Schulungskonzepte entwickeln – Inhalte, Formate, Anbieter, Budget – und mit Fachbereichen, Personal und Betriebsrat abstimmen.",
         "bew": {
           "1": "problematisch",
           "2": "empfohlen",
@@ -5869,22 +5841,53 @@ const DATA = {
           "5": "problematisch"
         },
         "frueh": "forsch",
-        "kurz": "Ein Konzept vor der Bedarfsanalyse ist wie das Rabattpaket vom ersten Tag: gekauft, bevor klar ist, wer was braucht.",
+        "kurz": "Ein Konzept vor dem Soll/Ist ist wie das Rabattpaket vom ersten Tag: gekauft, bevor klar ist, wer was braucht.",
         "recht": ""
       },
       {
-        "id": "sch_mu",
+        "id": "sch_multi",
+        "ka": "sch",
+        "ph": [
+          "mp"
+        ],
+        "nach": [
+          "sch_soll"
+        ],
+        "name": "KI-Multiplikatoren identifizieren",
+        "label": "Multiplikatoren",
+        "tage": {
+          "gering": 1,
+          "hoch": 0.5
+        },
+        "text": "In den Fachbereichen erfahrene Anwenderinnen und Anwender gewinnen, die andere unterstützen und Rückmeldungen bündeln.",
+        "bew": {
+          "1": "vertretbar",
+          "2": "empfohlen",
+          "3": "empfohlen",
+          "4": "vertretbar",
+          "5": "problematisch"
+        },
+        "frueh": "forsch",
+        "kurz": "Multiplikatoren tragen die Schulungen in die Fläche – sie sollten feststehen, bevor geschult wird.",
+        "recht": ""
+      },
+      {
+        "id": "sch_durch",
         "ka": "sch",
         "ph": [
           "mu"
         ],
-        "name": "Maßnahmen umsetzen",
-        "label": "Umsetzen",
+        "nach": [
+          "sch_konz",
+          "sch_multi"
+        ],
+        "name": "Schulungen durchführen",
+        "label": "Schulungen durchführen",
         "tage": {
           "gering": 3,
-          "hoch": 3
+          "hoch": 2
         },
-        "text": "Erste Schulungen durchführen und die Teilnahme dokumentieren.",
+        "text": "Die ersten Schulungen zielgruppengerecht durchführen und die Teilnahme dokumentieren.",
         "bew": {
           "1": "problematisch",
           "2": "vertretbar",
@@ -5893,8 +5896,62 @@ const DATA = {
           "5": "problematisch"
         },
         "frueh": "forsch",
-        "kurz": "Die Pflicht, KI-Kompetenz zu fördern, gilt seit Februar 2025 – die ersten Schulungen gehören in die 100 Tage.",
+        "kurz": "Art. 4 KI-VO verpflichtet Anbieter und Betreiber, die Entwicklung von KI-Kompetenz zu unterstützen. Die ersten Schulungen gehören deshalb in die 100 Tage.",
         "recht": "Art. 4 KI-VO (Fassung nach VO (EU) 2026/1744)"
+      },
+      {
+        "id": "sch_mess",
+        "ka": "sch",
+        "ph": [
+          "mu"
+        ],
+        "nach": [
+          "sch_durch"
+        ],
+        "name": "KI-Kompetenz messen",
+        "label": "Kompetenz messen",
+        "tage": {
+          "gering": 1,
+          "hoch": 1
+        },
+        "text": "Prüfen, ob die Schulungen wirken – etwa mit kurzen Tests, Beobachtung im Alltag und Rückmeldungen der Multiplikatoren.",
+        "bew": {
+          "1": "problematisch",
+          "2": "problematisch",
+          "3": "vertretbar",
+          "4": "empfohlen",
+          "5": "vertretbar"
+        },
+        "frueh": "forsch",
+        "kurz": "Messen kannst Du erst, wenn geschult wurde. Die Wirksamkeit zu bewerten, sieht auch die ISO-Norm vor – und es ist Dein Nachweis, was getan wurde.",
+        "recht": "DIN EN ISO/IEC 42001, Ausgabe 08-2026, Kap. 7.2"
+      },
+      {
+        "id": "sch_auff",
+        "ka": "sch",
+        "ph": [
+          "mu"
+        ],
+        "nach": [
+          "sch_durch"
+        ],
+        "name": "Auffrischung automatisieren",
+        "label": "Auffrischung automatisieren",
+        "tage": {
+          "gering": 1,
+          "hoch": 0.5
+        },
+        "text": "Regelmäßige Auffrischungen einrichten – etwa Microlearning und Erinnerungen bei neuen Werkzeugen oder Regeln.",
+        "bew": {
+          "1": "problematisch",
+          "2": "problematisch",
+          "3": "vertretbar",
+          "4": "empfohlen",
+          "5": "empfohlen"
+        },
+        "frueh": "forsch",
+        "kurz": "Auffrischen setzt voraus, dass es etwas aufzufrischen gibt – das gehört ans Ende der 100 Tage oder danach.",
+        "recht": ""
       }
     ],
     "reifegrad": {
@@ -5909,19 +5966,19 @@ const DATA = {
     "eineAktivitaet": "Zur Vereinfachung gilt – anders als im wahren Leben: Jeder Tag gehört genau einer Aktivität, an mehreren Dingen parallel arbeitest Du nicht. Ein Abschnitt umfasst 25 Kalendertage, das sind rund 18 Arbeitstage.",
     "abh": [
       [
-        "risk_sq",
+        "risk_kvo",
         "inv_sq",
-        "Du ordnest Risiken ein, bevor Du weißt, welche KI es gibt."
+        "Du ordnest KI-Systeme nach KI-VO ein, bevor Du weißt, welche KI es gibt."
       ],
       [
-        "gov_mp",
-        "risk_sq",
-        "Die Richtlinie entsteht, bevor die Risiken eingeordnet sind."
+        "gov_dev",
+        "risk_kvo",
+        "Die Governance entsteht, bevor die KI-Systeme nach KI-VO eingeordnet sind."
       ],
       [
-        "sch_lu",
+        "sch_soll",
         "inv_sq",
-        "Du bestimmst den Schulungsbedarf, bevor Du weißt, wer KI wofür nutzt."
+        "Du ermittelst Soll und Ist der KI-Kompetenzen, bevor Du weißt, wer KI wofür nutzt."
       ]
     ],
     "regelT": -1,
@@ -5968,7 +6025,7 @@ const DATA = {
         1
       ],
       [
-        "risk_sq",
+        "risk_kvo",
         "K07",
         1,
         1,
@@ -5976,7 +6033,7 @@ const DATA = {
         1
       ],
       [
-        "gov_mp",
+        "gov_dev",
         "K10",
         2,
         1,
@@ -5984,7 +6041,7 @@ const DATA = {
         1
       ],
       [
-        "risk_lu",
+        "risk_kvo",
         "K12",
         2,
         1,
@@ -6015,7 +6072,7 @@ const DATA = {
       },
       "empfohlen": {
         "name": "Der empfohlene Weg",
-        "text": "Je Kernaufgabe die Phasen in ihrer Reihenfolge, aber versetzt: Zuerst die Bestandsaufnahme, darauf baut die Risikoeinordnung auf, auf beiden die Richtlinie. Status quo und Lücken in den ersten 25 Tagen, Regeln und Konzepte ab Tag 26, umgesetzt wird bis Tag 100 – auch die ersten Schulungen. Rund ein Drittel der Zeit bleibt frei für Anfragen und Vorfälle.",
+        "text": "Je Kernaufgabe die Schritte in ihrer Reihenfolge, aber versetzt: Zuerst die Bestandsaufnahme, darauf baut die Einordnung nach KI-VO auf, auf beiden die Governance. Status quo und Regularien in den ersten 25 Tagen, Risikoregister, Governance und Soll/Ist ab Tag 26, Risikomanagementprozess und Schulungskonzepte danach – geschult wird bis Tag 100. Rund ein Drittel der Zeit bleibt frei für Anfragen und Vorfälle.",
         "staerke": "Jeder Schritt baut auf dem vorigen auf, und es bleibt Luft.",
         "preis": "Keiner – aber nach 100 Tagen ist nicht alles fertig, und das ist in Ordnung.",
         "reaktion": null
@@ -6039,19 +6096,21 @@ const DATA = {
       "inv_sq": 1,
       "inv_mp": 2,
       "inv_mu": 2,
-      "risk_sq": 1,
-      "risk_lu": 2,
-      "risk_mp": 3,
-      "risk_mu": 4,
-      "gov_sq": 1,
-      "gov_lu": 1,
-      "gov_mp": 2,
-      "gov_mu": 3,
-      "sch_sq": 2,
-      "sch_lu": 2,
-      "sch_mp": 3,
-      "sch_mu": 4
-    }
+      "risk_kvo": 1,
+      "risk_reg": 2,
+      "risk_proz": 3,
+      "risk_auto": 4,
+      "gov_reg": 1,
+      "gov_dev": 2,
+      "gov_ank": 3,
+      "sch_soll": 2,
+      "sch_konz": 3,
+      "sch_multi": 3,
+      "sch_durch": 4,
+      "sch_mess": 4,
+      "sch_auff": 4
+    },
+    "hinweis": "Für die Reihenfolge gibt es kein „richtig“ und kein „falsch“. Die Einschätzung orientiert sich an bewährten Vorgehensweisen – in einer anderen Organisation kann ein anderer Weg ebenso gut tragen."
   },
   "auto": {
     "K02": 4
@@ -6296,7 +6355,11 @@ const rmSp = c => RM.spalten.find(x => x[0] === c);
 const rmName = a => rmKa(a.ka)[1] + ' · ' + a.name;
 // Aufwand nach Reifegrad der Ausgangslage; Phasennummern der Aktivität (z. B. „1+2“)
 const rmT = (a, al) => a.tage[RM.reifegrad[al] || 'gering'];
-const rmPhNr = a => a.ph.map(p => RM.ph.findIndex(x => x[0] === p) + 1).join('+');
+// Kacheln im Kalender in fester, gemischter Reihenfolge – die Reihenfolge herauszufinden ist Aufgabe der Spielenden
+const rmMix = al =>
+  RM.akt
+    .slice()
+    .sort((a, b) => hash(a.id + al + 'Roadmap') - hash(b.id + al + 'Roadmap') || (a.id < b.id ? -1 : 1));
 const rmBest = a =>
   Object.keys(a.bew)
     .filter(c => a.bew[c] === 'empfohlen')
@@ -6320,12 +6383,12 @@ const rmLast = (plan, c, al) => RM.akt.filter(a => plan[a.id] === c).reduce((n, 
 const rmKap = c => (c === 1 ? DATA.budget[1] : c <= 4 ? RM.kap : null);
 function rmPruefen(plan, fix1, al) {
   const out = { folge: [], abh: [], ueber: [], knapp: [] };
-  RM.ka.forEach(([ka]) => {
-    const ids = RM.akt.filter(a => a.ka === ka).map(a => a.id);
-    for (let i = 1; i < ids.length; i++)
-      if (plan[ids[i]] && plan[ids[i - 1]] && plan[ids[i]] < plan[ids[i - 1]])
-        out.folge.push([ids[i], ids[i - 1]]);
-  });
+  // Reihenfolge innerhalb einer Kernaufgabe: keine Aktivität vor ihren Vorgängern („baut auf“)
+  RM.akt.forEach(a =>
+    a.nach.forEach(n => {
+      if (plan[a.id] && plan[n] && plan[a.id] < plan[n]) out.folge.push([a.id, n]);
+    })
+  );
   RM.abh.forEach(([spaet, frueh, satz]) => {
     if (plan[spaet] && plan[frueh] && plan[spaet] < plan[frueh]) out.abh.push([spaet, frueh, satz]);
   });
@@ -7441,14 +7504,7 @@ function rmCap(l, k, f) {
 }
 function rmTile(a, o) {
   const k = rmKa(a.ka),
-    inner =
-      '<span class="ph"><span class="pn">' +
-      rmPhNr(a) +
-      '</span>' +
-      esc(a.label) +
-      '</span><span class="tg">' +
-      tage(rmT(a, o.al)) +
-      '</span>';
+    inner = '<span class="ph">' + esc(a.label) + '</span><span class="tg">' + tage(rmT(a, o.al)) + '</span>';
   if (o.ro)
     return (
       '<span class="rmt ro ' +
@@ -7559,7 +7615,9 @@ function rmGrid(s, plan, edit) {
       '<span class="dot" style="background:' + col + '"></span><b>' + wbr(name) + '</b>'
     );
     cols.forEach(c => {
-      const ts = RM.akt.filter(a => a.ka === ka && (c === 0 ? !plan[a.id] : plan[a.id] === c));
+      const ts = (edit ? rmMix(s.al) : RM.akt).filter(
+        a => a.ka === ka && (c === 0 ? !plan[a.id] : plan[a.id] === c)
+      );
       const inner = ts
         .map(a =>
           edit
@@ -7659,6 +7717,9 @@ function viewRoadmap(s) {
     '<p class="small muted">So geht’s: Aktivität anklicken und einen Abschnitt wählen – oder mit der Maus in den Kalender ziehen. Tastatur: Aktivität auswählen, dann 1 bis 5, mit 0 zurück. Unter jedem Abschnitt steht, wie viele Arbeitstage verplant sind – bei Tag 1–25 zählen Mandat und Sofort-Aufgaben mit (schraffiert). Der Strich zeigt, wie viel Du höchstens fest verplanen solltest; den Rest brauchst Du für Anfragen und Vorfälle.</p>' +
     rmGrid(s, plan, true) +
     rmPicker(s) +
+    '<p class="small muted rmnote">' +
+    esc(RM.hinweis) +
+    '</p>' +
     '<div class="actions"><button class="btn" data-go="roadmap"' +
     (n < total ? ' disabled' : '') +
     '>Roadmap steht</button><span class="small muted">' +
@@ -7839,7 +7900,9 @@ function viewAfterRoadmap(s) {
         out.map(([i, t]) => '<li><span class="ic">' + i + '</span><span>' + t + '</span></li>').join('') +
         '</ul>'
       : '') +
-    '<p class="small muted" style="margin-top:14px">Die Begründung je Aktivität steht im Rückblick am Ende des Abschnitts.</p>' +
+    '<p class="small muted" style="margin-top:14px">' +
+    esc(RM.hinweis) +
+    ' Die Begründung je Aktivität steht im Rückblick am Ende des Abschnitts.</p>' +
     '<div class="actions"><button class="btn" data-go="inbox">Zu den Aufgaben</button></div></div>'
   );
 }
@@ -7869,6 +7932,9 @@ function rmReview(s) {
         '</ul>'
       : '') +
     rmGrid(s, t.plan, false) +
+    '<p class="small muted">' +
+    esc(RM.hinweis) +
+    '</p>' +
     RM.akt
       .map(a => {
         const c = t.plan[a.id],
