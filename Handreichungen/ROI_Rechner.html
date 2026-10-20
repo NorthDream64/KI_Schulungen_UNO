@@ -120,6 +120,7 @@ a{color:var(--accent);}
 .tbl td:first-child{text-align:left;font-weight:500;}
 .tbl tr.tr-good td{background:var(--good-bg);}
 .tbl tr.tr-result td{background:var(--result-bg);font-weight:600;}
+.tbl tr.tr-sec td{background:var(--phase);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);text-align:left;font-weight:600;padding:.6rem .7rem .4rem;}
 .tbl .neg{color:var(--red);}
 .tbl .pos{color:var(--green);}
 
@@ -179,7 +180,8 @@ a{color:var(--accent);}
   Der Rechner ist in vier Schritten aufgebaut: <strong>① Baseline</strong> beschreibt den heutigen Prozess ohne KI.
   <strong>② Savings</strong> erfasst, wie stark die KI den Prozess beeinflusst.
   <strong>③ Expenditure</strong> nimmt einmalige Investitionen (CAPEX, z.B. für den Erwerb der KI-Lizenzen oder auch die externen Kosten für das KI-Projekt) und laufende Aufwendungen (OPEX, z.B. laufende Wartung, Help Desk, Monitoring) auf —
-  über den <em>Umlagefaktor</em> wird nur der Anteil angerechnet, der tatsächlich der Vorgangsbearbeitung zuzurechnen ist. Unter Umständen werden über die gleiche Lizenz oder den gleichen Provider auch andere KI-Dienstleistungen erbracht und aabgerechnet.
+  über den <em>Umlagefaktor</em> wird nur der Anteil angerechnet, der tatsächlich der Vorgangsbearbeitung zuzurechnen ist. Unter Umständen werden über die gleiche Lizenz oder den gleichen Provider auch andere KI-Dienstleistungen erbracht und abgerechnet.
+  Die <em>Nutzungsdauer</em> legt fest, über wie viele Jahre die CAPEX abgeschrieben wird und wann sie durch eine Ersatzinvestition erneuert werden muss.
   <strong>④ Future State</strong> zeigt denselben Prozess mit KI — mit den gleichen Kennzahlen wie die Baseline,
   aber neu berechnet. Alle Werte aktualisieren sich sofort.
 </div>
@@ -364,7 +366,7 @@ a{color:var(--accent);}
       <div class="unit">% (0–100) — der Rest entfällt auf andere Vorhaben</div>
     </div>
     <div class="field">
-      <label>Nutzungsdauer CAPEX <span class="hint">Verteilung der Einmalinvestition</span></label>
+      <label>Nutzungsdauer CAPEX <span class="hint">Abschreibungsdauer; danach Ersatzinvestition</span></label>
       <input type="number" id="capex_years" value="3" min="1" max="10" step="1">
       <div class="unit">Jahre</div>
     </div>
@@ -433,12 +435,22 @@ a{color:var(--accent);}
   <div class="kpi-card kpi-warn">
     <div class="kpi-label">Amortisation</div>
     <div class="kpi-value amber" id="kpi_payback">—</div>
-    <div class="kpi-sub">Monate bis Break-even</div>
+    <div class="kpi-sub">Monate bis Break-even &middot; Zahlungssicht</div>
+  </div>
+  <div class="kpi-card kpi-main">
+    <div class="kpi-label">ROI im ersten vollen Jahr</div>
+    <div class="kpi-value green" id="kpi_roi1">—</div>
+    <div class="kpi-sub">Jahr 1 &middot; Ergebnissicht</div>
   </div>
   <div class="kpi-card">
     <div class="kpi-label">Umgelegte CAPEX</div>
     <div class="kpi-value blue" id="kpi_invest">—</div>
-    <div class="kpi-sub">einmalig</div>
+    <div class="kpi-sub" id="kpi_invest_sub">je Investition</div>
+  </div>
+  <div class="kpi-card">
+    <div class="kpi-label">Abschreibung</div>
+    <div class="kpi-value blue" id="kpi_afa">—</div>
+    <div class="kpi-sub" id="kpi_afa_sub">je Jahr</div>
   </div>
 </div>
 
@@ -456,7 +468,7 @@ a{color:var(--accent);}
 
 <!-- ─── TIMELINE TABLE ────────────────────────────────── -->
 <div class="section-card">
-  <div class="sec-title">Kumulierte Kosten-Nutzen-Rechnung — 5 Jahre</div>
+  <div class="sec-title">Kosten-Nutzen-Rechnung &middot; Jahr 0 bis 5</div>
   <div style="overflow-x:auto;">
   <table class="tbl" id="timeline_tbl">
     <thead>
@@ -476,12 +488,13 @@ a{color:var(--accent);}
   Dieses Modell arbeitet ohne Diskontierung (kein NPV/DCF) und ist auf Plausibilitätsbewertung ausgelegt.
   Berücksichtigt werden direkte Personalzeitersparnisse auf Basis des <em>aktuellen</em> Vorgangsvolumens.
   Der <em>Umlagefaktor</em> bildet ab, dass CAPEX und OPEX einer KI-Plattform meist mehreren Vorhaben zugutekommen —
-  nur der zugerechnete Anteil belastet diesen Business Case. In der Kennzahl „vollständig allokierte Kosten KI"
-  wird die umgelegte CAPEX linear über die Nutzungsdauer verteilt und mit den umgelegten OPEX zusammengeführt;
-  in der Amortisationsrechnung erscheint die CAPEX dagegen als Einmalbetrag in Jahr 0 (keine Doppelzählung).
+  nur der zugerechnete Anteil belastet diesen Business Case.<br>
+  <strong>Zwei Sichten auf dieselbe Investition:</strong> Die <em>Ergebnissicht</em> verteilt die umgelegte CAPEX als Abschreibung linear über die Nutzungsdauer (CAPEX &divide; Nutzungsdauer je Jahr). Daraus ergeben sich Gewinn und ROI je Jahr; genauso geht die CAPEX in die annualisierten, allokierten Kosten KI des Future State ein.
+  Die <em>Zahlungssicht</em> setzt die CAPEX als Auszahlung in Jahr 0 an und nach Ablauf der Nutzungsdauer als Ersatzinvestition in gleicher Höhe. Daraus ergeben sich der kumulierte Zahlungsüberschuss und die Amortisation.
+  Beide Sichten werden getrennt geführt — es gibt keine Doppelzählung. Die Nutzungsdauer beginnt mit Jahr 0; weil nach ihrem Ablauf ersetzt wird, läuft die Abschreibung in jedem Jahr weiter.
   Strategische Zusatznutzen (Skalierung, Qualität, Time-to-Decision) sind nicht eingerechnet.
   ROI-Formel: <strong>Gewinn &divide; investiertes Kapital &times; 100</strong> — angewendet je Jahr, nicht kumuliert: Der ROI ist wie eine Verzinsung eine Kennzahl je Periode. Im Nenner steht das eingesetzte Kapital, nicht die Summe aller Kosten.<br>
-  <strong>Annahmen für Jahr 0 (Einführungsjahr):</strong> Die Lösung läuft in diesem Jahr noch nicht durchgängig. Angesetzt werden daher <strong>50 % der umgelegten OPEX</strong> (der laufende Betrieb startet erst im Jahresverlauf) und <strong>25 % der jährlichen Personalersparnis</strong> (Einführung, Schulung und Anlaufkurve verzögern den Nutzen). Ab Jahr 1 werden beide Werte voll angesetzt. Beide Anteile sind gesetzte Planungsannahmen, keine empirischen Werte — für einen realen Business Case sind sie durch eigene Erfahrungswerte zu ersetzen. Die Amortisationsrechnung oben arbeitet unabhängig davon mit der vollen monatlichen Nettoersparnis (Personalersparnis abzüglich umgelegter OPEX) und fällt daher optimistischer aus als die Jahresreihe.<br>
+  <strong>Annahmen für Jahr 0 (Einführungsjahr):</strong> Die Lösung läuft in diesem Jahr noch nicht durchgängig. Angesetzt werden daher <strong>50 % der umgelegten OPEX</strong> (der laufende Betrieb startet erst im Jahresverlauf) und <strong>25 % der jährlichen Personalersparnis</strong> (Einführung, Schulung und Anlaufkurve verzögern den Nutzen). Ab Jahr 1 werden beide Werte voll angesetzt. Beide Anteile sind gesetzte Planungsannahmen, keine empirischen Werte — für einen realen Business Case sind sie durch eigene Erfahrungswerte zu ersetzen. Die Amortisation wird aus der Zahlungssicht abgeleitet und berücksichtigt damit auch das Einführungsjahr. Investitionen fallen zu Jahresbeginn an, Ersparnis und OPEX verteilen sich gleichmäßig über das Jahr.<br>
   Quellen: <a href="https://welt-der-bwl.de/ROI-Return-on-Investment" target="_blank">Welt der BWL</a> &middot; <a href="https://www.gabler-banklexikon.de/definition/return-investment-roi-60969" target="_blank">Gabler Banklexikon</a> &middot; <a href="https://wiki.hslu.ch/controlling/DuPont-Kennzahlensystem" target="_blank">Hochschule Luzern — DuPont-Kennzahlensystem</a>
 </div>
 
@@ -519,7 +532,7 @@ function getInputs(){
     c_infra:     v('c_infra'),
     c_maint:     v('c_maint'),
     alloc:       v('alloc')/100,
-    capex_years: Math.max(1, v('capex_years')),
+    capex_years: Math.max(1, Math.round(v('capex_years'))),
   };
 }
 
@@ -557,14 +570,13 @@ function compute(p){
   const fs_delta_mo      = bl_cost_mo - fs_cost_mo;
 
   // ── Wirtschaftlichkeit ──
-  // Gewinn je Jahr: Personalersparnis abzüglich laufender (umgelegter) OPEX.
-  // CAPEX erscheint separat als Einmalbetrag in Jahr 0 — keine Doppelzählung.
+  // Zwei Sichten auf dieselbe Investition (keine Doppelzählung):
+  // Ergebnissicht: CAPEX als lineare Abschreibung über die Nutzungsdauer → Gewinn und ROI je Jahr.
+  // Zahlungssicht: CAPEX als Auszahlung in Jahr 0 und als Ersatzinvestition nach Ablauf der
+  //                Nutzungsdauer → kumulierter Zahlungsüberschuss und Amortisation.
   const saving_gross_yr = sv_value_mo * 12;
   const saving_net_yr   = saving_gross_yr - opex_alloc_yr;
-  // net_mo wird nicht mehr angezeigt (stiftete im Balkenblock Verwirrung mit
-  // "Differenz je Monat"), dient aber weiterhin als Nenner der Amortisation.
-  const net_mo          = saving_net_yr / 12;
-  const payback_mo      = net_mo > 0 ? capex_alloc / net_mo : Infinity;
+  const afa_yr          = capex_alloc / p.capex_years;
 
   // ── Zeitreihe ──
   // Jahr 0 ist das Einführungsjahr: Die Lösung läuft noch nicht das volle Jahr.
@@ -572,19 +584,40 @@ function compute(p){
   const Y0_OPEX_ANTEIL = 0.50;  // 50 % der umgelegten OPEX
   const Y0_NUTZEN_ANTEIL = 0.25;  // 25 % der jährlichen Personalersparnis
   const years        = [0,1,2,3,4,5];
-  const invest_disp  = years.map(y => y===0 ? capex_alloc : 0);
   const running_disp = years.map(y => y===0 ? opex_alloc_yr  * Y0_OPEX_ANTEIL   : opex_alloc_yr);
   const bens         = years.map(y => y===0 ? saving_gross_yr * Y0_NUTZEN_ANTEIL : saving_gross_yr);
-  const nets         = years.map((y,i) => bens[i] - invest_disp[i] - running_disp[i]);
-  const cumul        = [];
-  years.forEach((y,i) => cumul.push((cumul[i-1]||0) + nets[i]));
+
+  // Ergebnissicht. Die Nutzungsdauer beginnt mit Jahr 0; nach ihrem Ablauf wird ersetzt,
+  // die Abschreibung läuft deshalb in jedem Jahr des Zeitraums weiter.
+  const afa_disp     = years.map(() => afa_yr);
+  const gewinn       = years.map((y,i) => bens[i] - running_disp[i] - afa_disp[i]);
 
   // ── ROI je Jahr ──
   // Klassische BWL-Definition (DuPont): Gewinn ÷ investiertes Kapital × 100.
   // Bewusst NICHT über mehrere Jahre kumuliert: Der ROI ist — wie eine Verzinsung —
-  // eine Kennzahl je Periode. Jahr 0 ist negativ, weil investiert und erst anteilig
-  // zurückgeflossen ist; ab Jahr 1 zeigt er die jährliche Rendite auf das eingesetzte Kapital.
-  const roi_yr = nets.map(v => capex_alloc > 0 ? v / capex_alloc * 100 : 0);
+  // eine Kennzahl je Periode. Im Gewinn ist die Abschreibung abgezogen.
+  const roi_yr = gewinn.map(g => capex_alloc > 0 ? g / capex_alloc * 100 : 0);
+
+  // Zahlungssicht. Erstinvestition in Jahr 0, Ersatzinvestition in Jahr N, 2N … (innerhalb des Zeitraums).
+  const invest_disp  = years.map(y => (y % p.capex_years === 0) ? capex_alloc : 0);
+  const cash         = years.map((y,i) => bens[i] - running_disp[i] - invest_disp[i]);
+  const cumul        = [];
+  years.forEach((y,i) => cumul.push((cumul[i-1]||0) + cash[i]));
+
+  // Amortisation: erster Zeitpunkt, an dem der kumulierte Zahlungsüberschuss null erreicht.
+  // Investitionen fallen zu Jahresbeginn an, Ersparnis und OPEX gleichmäßig über das Jahr.
+  let payback_mo = Infinity;
+  if (capex_alloc <= 0) {
+    payback_mo = 0;
+  } else {
+    let kum = 0;
+    for (let i = 0; i < years.length; i++){
+      kum -= invest_disp[i];
+      const proMonat = (bens[i] - running_disp[i]) / 12;
+      if (kum < 0 && proMonat > 0 && kum + 12 * proMonat >= 0){ payback_mo = i * 12 + (-kum) / proMonat; break; }
+      kum += 12 * proMonat;
+    }
+  }
 
   return {
     bl_h_gross_mo, bl_h_detail_mo, bl_h_mo, bl_cost_mo, bl_cost_case,
@@ -592,8 +625,8 @@ function compute(p){
     capex_total, opex_total_yr, capex_alloc, opex_alloc_yr,
     capex_alloc_mo, opex_alloc_mo, ki_cost_mo,
     fs_h_gross_case, fs_h_detail_case, fs_h_mo, fs_personal_mo, fs_cost_mo, fs_cost_case, fs_delta_mo,
-    saving_gross_yr, saving_net_yr, net_mo, payback_mo,
-    invest_disp, running_disp, bens, nets, cumul, roi_yr
+    saving_gross_yr, saving_net_yr, afa_yr, payback_mo,
+    invest_disp, running_disp, bens, afa_disp, gewinn, roi_yr, cash, cumul
   };
 }
 
@@ -656,8 +689,15 @@ function calculate(){
   renderVs('vs_case', r.bl_cost_case, r.fs_cost_case, '€/Vorgang');
 
   // ── KPIs ──
-  set('kpi_payback', fmtMo(r.payback_mo));
+  const jahre = n => n + (n === 1 ? ' Jahr' : ' Jahre');
+  set('kpi_payback', isFinite(r.payback_mo) ? fmtMo(r.payback_mo) : 'nach Jahr 5');
   set('kpi_invest',  fmtEur(r.capex_alloc));
+  set('kpi_invest_sub', p.capex_years > 5 ? 'einmalig im Betrachtungszeitraum' : 'je Investition · Ersatz nach ' + p.capex_years + (p.capex_years === 1 ? ' Jahr' : ' Jahren'));
+  set('kpi_afa',     fmtEur(r.afa_yr));
+  set('kpi_afa_sub', 'je Jahr · CAPEX ÷ ' + jahre(p.capex_years));
+  set('kpi_roi1',    fmtPct(r.roi_yr[1]));
+  const roiEl = document.getElementById('kpi_roi1');
+  if (roiEl) roiEl.className = 'kpi-value ' + (r.roi_yr[1] >= 0 ? 'green' : 'neg');
 
   // ── Vergleichsbalken (je Monat) ──
   const maxVal = Math.max(r.bl_cost_mo, r.fs_cost_mo, 1);
@@ -712,27 +752,37 @@ function calculate(){
   `;
 
   // ── Zeitreihen-Tabelle ──
-  const beMonth = isFinite(r.payback_mo) ? r.payback_mo : null;
+  // Break-even: Spalte des Jahres, in dem der kumulierte Zahlungsüberschuss null erreicht.
+  const beIdx = isFinite(r.payback_mo) ? Math.max(0, Math.ceil(r.payback_mo / 12) - 1) : -1;
   const rows = [
-    {label:'Umgelegte CAPEX (€)',                 vals:r.invest_disp,  cls:'neg', isCost:true},
-    {label:'Umgelegte OPEX (€/Jahr)',             vals:r.running_disp, cls:'neg', isCost:true},
-    {label:'Jährl. Personalersparnis (€)',        vals:r.bens,         cls:'pos', isCost:false},
-    {label:'Gewinn / Jahr (€)',                   vals:r.nets,         cls:'',    bold:true, isNet:true},
-    {label:'Kumulierter Gewinn (€)',              vals:r.cumul,        cls:'',    bold:true, isCumul:true},
-    {label:'ROI / Jahr (%)',                      vals:r.roi_yr,       cls:'',    bold:true, isRoi:true},
+    {sec:'Ergebnissicht — Gewinn und ROI'},
+    {label:'Jährl. Personalersparnis (€)',              vals:r.bens},
+    {label:'Umgelegte OPEX (€/Jahr)',                   vals:r.running_disp, isCost:true},
+    {label:'Abschreibung (CAPEX ÷ Nutzungsdauer)',      vals:r.afa_disp,     isCost:true},
+    {label:'Gewinn / Jahr (€)',                         vals:r.gewinn,       bold:true, isNet:true},
+    {label:'ROI / Jahr (%)',                            vals:r.roi_yr,       bold:true, isRoi:true},
+    {sec:'Zahlungssicht — Amortisation'},
+    {label:'Investition und Ersatzinvestition (€)',     vals:r.invest_disp,  isCost:true},
+    {label:'Zahlungsüberschuss / Jahr (€)',             vals:r.cash,         bold:true, isNet:true},
+    {label:'Kumulierter Zahlungsüberschuss (€)',        vals:r.cumul,        bold:true, isCumul:true},
   ];
   const tbody = document.getElementById('timeline_body');
   tbody.innerHTML = '';
   rows.forEach(row => {
     const tr = document.createElement('tr');
-    if(row.isNet) tr.className='tr-result';
+    if (row.sec){
+      tr.className = 'tr-sec';
+      tr.innerHTML = `<td colspan="7">${row.sec}</td>`;
+      tbody.appendChild(tr);
+      return;
+    }
+    if(row.isNet || row.isRoi) tr.className='tr-result';
     if(row.isCumul) tr.className='tr-good';
-    if(row.isRoi) tr.className='tr-result';
     tr.innerHTML = `<td style="font-weight:${row.bold?'600':'400'}">${row.label}</td>` +
       row.vals.map((val,i) => {
-        const isBreak = row.isCumul && i>0 && beMonth && (i-1)*12 < beMonth && i*12 >= beMonth;
-        const cls = val < 0 ? 'neg' : val > 0 ? 'pos' : '';
-        const mk  = isBreak ? '<span class="be-marker">Break-even ↑</span>' : '';
+        // Kostenzeilen rot, Ergebniszeilen nach Vorzeichen
+        const cls = row.isCost ? (val > 0 ? 'neg' : '') : (val < 0 ? 'neg' : val > 0 ? 'pos' : '');
+        const mk  = row.isCumul && i === beIdx ? '<span class="be-marker">Break-even ↑</span>' : '';
         const txt = row.isRoi ? fmtPct(val) : fmtEur(val);
         return `<td class="${cls}">${txt}${mk}</td>`;
       }).join('');
@@ -785,8 +835,8 @@ function resetCase(){
 
 function resetDefaults(){
   const defaults = {vol:17,h_gross:3,pct_detail:50,h_detail:12,rate:120,
-                    eff_gross:70,eff_detail:50,c_dev:55000,c_data:15000,
-                    c_train:5000,c_infra:8000,c_maint:7000,alloc:100,capex_years:3};
+                    eff_gross:70,eff_detail:50,c_dev:25000,c_data:75000,
+                    c_train:5000,c_infra:5000,c_maint:2500,alloc:100,capex_years:3};
   Object.entries(defaults).forEach(([k,val])=>{
     const el = document.getElementById(k);
     if(el) el.value = val;
