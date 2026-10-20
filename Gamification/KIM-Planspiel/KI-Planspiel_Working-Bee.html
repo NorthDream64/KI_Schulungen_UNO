@@ -262,7 +262,7 @@ aside h2{font-size:1.1rem}
 .logbook li{padding:4px 0;border-bottom:1px dotted var(--rule)}
 .logbook li b{color:var(--ink);font-weight:600}
 
-/* Vorprojekt */
+/* Projektinitialisierung */
 .sortlist{list-style:none;margin:10px 0 0;padding:0;display:grid;gap:8px}
 .sortitem{display:grid;grid-template-columns:40px minmax(0,1fr);gap:12px;align-items:center;border:1px solid var(--rule);border-radius:10px;padding:10px 12px;background:#fff;cursor:grab;position:relative;touch-action:pan-y;transition:border-color .12s,box-shadow .12s}
 .sortitem:hover{border-color:#a9bccd;box-shadow:0 2px 10px rgba(26,26,24,.07)}
@@ -387,7 +387,7 @@ ul.rules li.rw p.dst{color:var(--warn)}
 h2 .tip,h4 .tip{font:inherit}
 @media print{.tip-i,.tip-b{display:none}}
 
-/* Balkenplan Vorprojekt */
+/* Balkenplan Projektinitialisierung */
 .gantt{border:1px solid var(--rule);border-radius:10px;padding:10px 12px 8px;background:#fff;margin:6px 0 10px}
 .g-row{display:grid;grid-template-columns:150px minmax(0,1fr);align-items:center;gap:8px;min-height:22px}
 .g-lab{font-size:12.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -575,8 +575,8 @@ const E = x => x * SCALE;
 const CFG = {
   horizon: 36,                   // Betrachtungszeitraum des Business Case: Monate ab Projektstart
   stripMin: 18,                  // Zeitleiste: mindestens 18 Monate
-  startBudget: 150000,           // Startbudget des Vorstands für das Vorprojekt
-  vpPlanWeeks: 12,               // Meilenstein „Ende Vorprojekt“ laut Plan des Vorstands
+  startBudget: 150000,           // Startbudget des Vorstands für die Projektinitialisierung
+  vpPlanWeeks: 12,               // Meilenstein „Ende Projektinitialisierung“ laut Plan des Vorstands
   vpTeamWeek: 3500,              // Planungsteam (Projektleitung, Assistenz) je Woche
   vpSlots: 2,                    // das Planungsteam bearbeitet zwei Aktivitäten gleichzeitig
   runRate: E(22000),             // internes Kernteam, € pro Monat
@@ -638,7 +638,7 @@ function shuffle(ids, rnd) {
   return ids;
 }
 
-/* ---------------- Vorprojekt: Aktivitäten mit Reihenfolge, Gründlichkeit, Zeit und Budget ---------------- */
+/* ---------------- Projektinitialisierung: Aktivitäten mit Reihenfolge, Gründlichkeit, Zeit und Budget ---------------- */
 const ACTIVITIES = [
   { id: 'lessons', t: 'Lessons Learned aus früheren Projekten auswerten', d: 'Was lief in früheren Entwicklungsprojekten gut, was schief?',
     opts: { n: { w: 1, c: 2000 }, a: { w: 2, c: 5000, x: 'Interviews mit drei früheren Projektleitungen statt nur Abschlussberichte lesen.' } } },
@@ -656,7 +656,7 @@ const ACTIVITIES = [
     opts: { n: { w: 2, c: 3000 }, a: { w: 3, c: 6000, x: 'Mit Meilensteinplan, Abhängigkeiten und Puffern.' } } },
   { id: 'risiko', t: 'Risikomanagement aufsetzen', d: 'Risiken erfassen, bewerten und Verantwortliche festlegen.',
     opts: { n: { w: 1, c: 4000 }, a: { w: 3, c: 20000, x: 'Mit rechtlicher Ersteinschätzung durch eine Fachkanzlei: Luftrecht, Exportkontrolle, Datenlizenzen, KI-Verordnung.' } } },
-  { id: 'ress', t: 'Ressourcen für das Hauptprojekt planen', d: 'Personal, Daten, Rechenkapazität und Werkzeuge für die Umsetzung. Das Vorprojekt selbst ist mit Planungsteam und Startbudget ausgestattet.',
+  { id: 'ress', t: 'Ressourcen für das Hauptprojekt planen', d: 'Personal, Daten, Rechenkapazität und Werkzeuge für die Umsetzung. Die Projektinitialisierung selbst ist mit Planungsteam und Startbudget ausgestattet.',
     opts: { n: { w: 1, c: 2000 }, a: { w: 2, c: 5000, x: 'Mit Kapazitätsabgleich in der Linie und vorab geprüften externen Partnern.' } } },
   { id: 'budget', t: 'Budget für das Hauptprojekt planen', d: 'Kosten schätzen und das Budget festlegen, das Du beim Lenkungsausschuss beantragst.',
     opts: { n: { w: 1, c: 2000 }, a: { w: 2, c: 4000, x: 'Bottom-up-Schätzung je Arbeitspaket statt Pauschale.' } } },
@@ -770,7 +770,7 @@ function depStatus(ist) {
   });
 }
 
-/* ---------------- Vorprojekt 2: SWOT aus der Machbarkeitsanalyse ---------------- */
+/* ---------------- Projektinitialisierung 2: SWOT aus der Machbarkeitsanalyse ---------------- */
 const QUAD = {
   S: { t: 'Stärke', long: 'Stärken', where: 'intern', how: 'hilfreich' },
   W: { t: 'Schwäche', long: 'Schwächen', where: 'intern', how: 'hinderlich' },
@@ -797,7 +797,7 @@ const SWOT = [
 ];
 function initialSwot(seed) { return shuffle(SWOT.map(x => x.id), mulberry32(seed * 53 + 11)); }
 
-/* ---------------- Vorprojekt 3: Vorgehen, Methode und Preisschilder ---------------- */
+/* ---------------- Projektinitialisierung 3: Vorgehen, Methode und Preisschilder ---------------- */
 // Projektmanagement im Hauptprojekt je Woche bis zum Go-live: hybrid 1,5-mal so teuer wie klassisch, dreimal so teuer wie agil.
 // Läuft mit der tatsächlichen Dauer – jeder Monat Verzug kostet auch hier.
 const PM_WEEK = { agil: E(250), klassisch: E(500), hybrid: E(750) };
@@ -1029,14 +1029,14 @@ function cleanStaff(staff) {
 }
 /* Meilensteine und Quality Gates: Die Phasen sind vorgegeben, die Teilnehmenden ordnen die Meilensteine ein */
 const PLAN_PHASES = [
-  { id: 'ph0', t: 'Vorprojekt', sub: 'abgeschlossen – nur zur Information' },
+  { id: 'ph0', t: 'Projektinitialisierung', sub: 'abgeschlossen – nur zur Information' },
   { id: 'ph1', t: 'Phase 1: ' + PHASE_NAMES[0] },
   { id: 'ph2', t: 'Phase 2: ' + PHASE_NAMES[1] },
   { id: 'ph3', t: 'Phase 3: ' + PHASE_NAMES[2] },
 ];
 const MS_ITEMS = [
   { id: 'projektfreigabe', t: 'Projektfreigabe', kind: 'Meilenstein', ph: 0, o: 0, d: 'Der Lenkungsausschuss gibt das Hauptprojekt auf Grundlage des Business Case frei.',
-    w: 'gehört ans Ende des Vorprojekts: Mit dem Business Case gibt der Lenkungsausschuss das Hauptprojekt frei.' },
+    w: 'gehört ans Ende der Projektinitialisierung: Mit dem Business Case gibt der Lenkungsausschuss das Hauptprojekt frei.' },
   { id: 'qg_bereinigt', t: 'Quality Gate 1: Daten bereinigt und standardisiert', tx: 'Daten bereinigt und standardisiert', kind: 'Quality Gate', ph: 1, o: 0,
     d: 'Fehlerhafte Aufnahmen, Dubletten und Lücken sind behandelt; die Daten aus den verschiedenen Quellen haben ein einheitliches Format und einheitliche Beschriftungen (Datenintegration) – der Transform-Schritt der Datenaufbereitung (ETL).',
     w: 'steht in Phase 1 vor der Prüfung der Datenqualität: erst bereinigen und vereinheitlichen, dann die Qualität sichern.' },
@@ -1117,7 +1117,7 @@ function initialMsOrder(seed) {
   const rnd = mulberry32(seed * 17 + 3);
   for (let tries = 0; tries < 50; tries++) {
     const ids = shuffle(MS_ITEMS.map(m => m.id), rnd);
-    const slot = {}; ids.forEach(id => { slot[id] = 1 + Math.floor(rnd() * 4); });   // hinter Vorprojekt, Phase 1, 2 oder 3
+    const slot = {}; ids.forEach(id => { slot[id] = 1 + Math.floor(rnd() * 4); });   // hinter der Projektinitialisierung, Phase 1, 2 oder 3
     const seq = [];
     PLAN_PHASES.forEach((p, i) => { seq.push(p.id); ids.filter(id => slot[id] === i + 1).forEach(id => seq.push(id)); });
     if (msCheck(seq).n <= 4) return seq;
@@ -1211,7 +1211,7 @@ function submitSwot(s, ans) {
   if (wrongW) effects.push('Du hast ' + (['', 'einmal', 'zweimal', 'dreimal', 'viermal'][wrongW] || wrongW + '-mal') + ' Schwäche und Risiko vertauscht. Die Frage zur Unterscheidung: Liegt es in unserem Haus – oder im Umfeld?');
   s.swot = { res, n, effects };
   s.stage = 'swot_result';
-  log(s, 'Vorprojekt: SWOT-Analyse geordnet, ' + n + ' von 8 Aussagen richtig zugeordnet.', 'plan');
+  log(s, 'Projektinitialisierung: SWOT-Analyse geordnet, ' + n + ' von 8 Aussagen richtig zugeordnet.', 'plan');
 }
 function toMethode(s) { s.stage = 'methode'; }
 
@@ -1246,7 +1246,7 @@ function submitOrder(s, order, depth) {
   const reworked = order.filter(id => ist.rows[id].rw);
   const k = reworked.length, dT = Math.max(-10, 8 - 3 * k);
   trust(s, dT);
-  if (!k) effects.push('Keine Nacharbeit: Jede Aktivität konnte auf den Ergebnissen aufbauen, die sie braucht. Der Lenkungsausschuss sieht ein sauber geplantes Vorprojekt (Vertrauen steigt).');
+  if (!k) effects.push('Keine Nacharbeit: Jede Aktivität konnte auf den Ergebnissen aufbauen, die sie braucht. Der Lenkungsausschuss sieht eine sauber geplante Projektinitialisierung (Vertrauen steigt).');
   if (k) {
     const dW = ist.end - plan.end, one = k === 1;
     effects.push('Nacharbeit: ' + reworked.map(id => '„' + ACT_BY_ID[id].t + '“').join(', ') + (one ? ' musste' : ' mussten') + ' nachgearbeitet werden – ' + (one ? 'sie wurde' : 'sie wurden') + ' begonnen, bevor Ergebnisse vorlagen, auf denen ' + (one ? 'sie aufbaut' : 'sie aufbauen') + ' (Einzelheiten unten). Das kostet ' + (dW > 0 ? dW + (dW === 1 ? ' Woche' : ' Wochen') + ' und ' : '') + fmtE(ist.reworkCost) + '. ' +
@@ -1287,20 +1287,20 @@ function submitOrder(s, order, depth) {
   s.segs.push({ p: -1, from: 0, to: ist.end * 12 / 52, kind: 'vp' });
   s.month = ist.months;
   effects.push(ist.delay > 0
-    ? 'Meilenstein „Ende Vorprojekt“: Woche ' + ist.end + ' statt Woche ' + CFG.vpPlanWeeks + ' laut Plan. Das Hauptprojekt startet nach der nächsten Sitzung des Lenkungsausschusses in Monat ' + ist.months + '.'
-    : 'Meilenstein „Ende Vorprojekt“: Woche ' + ist.end + ', geplant war Woche ' + CFG.vpPlanWeeks + '. Das Hauptprojekt startet in Monat ' + ist.months + '.');
+    ? 'Meilenstein „Ende Projektinitialisierung“: Woche ' + ist.end + ' statt Woche ' + CFG.vpPlanWeeks + ' laut Plan. Das Hauptprojekt startet nach der nächsten Sitzung des Lenkungsausschusses in Monat ' + ist.months + '.'
+    : 'Meilenstein „Ende Projektinitialisierung“: Woche ' + ist.end + ', geplant war Woche ' + CFG.vpPlanWeeks + '. Das Hauptprojekt startet in Monat ' + ist.months + '.');
   if (ist.delay > 0) trust(s, -(Math.min(6, ist.delay)));
   if (ist.over > 0) {
     s.nachbew++;
     const pen = ist.over > 0.1 * CFG.startBudget ? (s.laRules ? 5 : 8) : (s.laRules ? 2 : 4);
     trust(s, -(pen));
-    effects.push('Das Vorprojekt kostet ' + fmtE(ist.cost) + ' – ' + fmtE(ist.over) + ' mehr als das Startbudget. Der Vorstand bewilligt nach, aber das kostet Vertrauen, noch bevor das Hauptprojekt begonnen hat.');
-  } else effects.push('Das Vorprojekt bleibt mit ' + fmtE(ist.cost) + ' im Startbudget von ' + fmtE(CFG.startBudget) + '.');
+    effects.push('Die Projektinitialisierung kostet ' + fmtE(ist.cost) + ' – ' + fmtE(ist.over) + ' mehr als das Startbudget. Der Vorstand bewilligt nach, aber das kostet Vertrauen, noch bevor das Hauptprojekt begonnen hat.');
+  } else effects.push('Die Projektinitialisierung bleibt mit ' + fmtE(ist.cost) + ' im Startbudget von ' + fmtE(CFG.startBudget) + '.');
   s.T = clamp(s.T, 0, 100); s.P = clamp(s.P, 0, 100); s.R = clamp(s.R, 0, 100); s.Q = clamp(s.Q, 0, 100);
   const muster = scheduleVP(MUSTER, depth, true);
   s.vorprojekt = { order: order.slice(), res, k, reworked, early, lessonsStart: ist.rows.lessons.start, effects, muster: { end: muster.end, cost: muster.cost } };
   s.stage = 'vorprojekt_result';
-  log(s, 'Vorprojekt: Ende in Woche ' + ist.end + ' (Plan: ' + CFG.vpPlanWeeks + '), ' + fmtE(ist.cost) + (k ? ', ' + k + (k === 1 ? ' Aktivität' : ' Aktivitäten') + ' nachgearbeitet' : ', ohne Nacharbeit') + '.', 'plan');
+  log(s, 'Projektinitialisierung: Ende in Woche ' + ist.end + ' (Plan: ' + CFG.vpPlanWeeks + '), ' + fmtE(ist.cost) + (k ? ', ' + k + (k === 1 ? ' Aktivität' : ' Aktivitäten') + ' nachgearbeitet' : ', ohne Nacharbeit') + '.', 'plan');
 }
 function toPlan(s) { s.stage = 'planung'; }
 /* Vor- und Nachteile einer Teamplanung (vor dem Einreichen) */
@@ -2294,7 +2294,7 @@ function kef(s) {
   if (s.swot) vpSub.push('SWOT: ' + s.swot.n + ' von 8 Aussagen richtig zugeordnet');
   if (s.planung) vpSub.push('Projektplanung: ' + s.planung.n + ' von ' + s.planung.items.length + ' Meilensteinen und Quality Gates richtig eingeordnet');
   if (p) vpSub.push('Business Case: ' + p.count + ' von ' + PLAN_ITEMS.filter(x => x.kind === 'plus').length + ' Zuschlägen eingeplant');
-  factors.push({ id: 'vp', t: 'Planungsqualität Vorprojekt', v: s.vorprojekt ? (vk ? vk + (vk === 1 ? ' Aktivität' : ' Aktivitäten') + ' nachgearbeitet (' + fmtE(s.vpIst.reworkCost) + ')' : 'ohne Nacharbeit') : '–', sub: vpSub.join(' · ') });
+  factors.push({ id: 'vp', t: 'Planungsqualität Projektinitialisierung', v: s.vorprojekt ? (vk ? vk + (vk === 1 ? ' Aktivität' : ' Aktivitäten') + ' nachgearbeitet (' + fmtE(s.vpIst.reworkCost) + ')' : 'ohne Nacharbeit') : '–', sub: vpSub.join(' · ') });
   factors.push({ id: 'ziel', t: 'Klarheit über das Ziel', v: Math.round(s.P) + ' von 100',
     sub: s.flags.zielOffen ? 'Zustellung oder Objektschutz: Die Zielfrage blieb offen, das Team optimierte auf zwei Ziele.' : 'Wie klar Logistikkunde, Vertrieb und REHO-Team wissen, was HILMAR leisten soll.' });
   factors.push({ id: 'daten', t: 'Datenqualität', v: 'Qualität ' + Math.round(s.Q) + ' · Abdeckung ' + Math.round(s.C) + ' · Nutzungsrechte ' + Math.round(s.R),
@@ -2312,14 +2312,14 @@ function kef(s) {
   if (p && s.goLive) {
     const inv = spent(s, s.goLive);
     criteria.push({ id: 'budget', t: 'Budgettreue', v: signE(inv - p.invest) + ' (' + pctDev(inv, p.invest) + ')', bad: inv > p.invest * 1.1,
-      sub: 'Hauptprojekt bis zum Go-live: ' + fmtE(inv) + ' statt ' + fmtE(p.invest) + (p.reserve ? ' (inkl. Risikoreserve)' : '') + (vpDev ? ' · Vorprojekt: ' + vpDev : '') });
+      sub: 'Hauptprojekt bis zum Go-live: ' + fmtE(inv) + ' statt ' + fmtE(p.invest) + (p.reserve ? ' (inkl. Risikoreserve)' : '') + (vpDev ? ' · Projektinitialisierung: ' + vpDev : '') });
     const dM = s.goLive - p.goLive;
     criteria.push({ id: 'termin', t: 'Termintreue', v: (dM > 0 ? '+' : dM < 0 ? '−' : '±') + mon(Math.abs(dM)), bad: dM > 0,
       sub: 'Go-live Monat ' + s.goLive + (dM ? ' statt ' + p.goLive : ' wie geplant') + ' · Vertragsmeilenstein Monat ' + CFG.contract + ': ' + (s.contractLate ? 'um ' + mon(s.contractLate) + ' verfehlt' : 'gehalten') +
-        (s.vpWeeks > CFG.vpPlanWeeks ? ' · Vorprojekt: ' + (s.vpWeeks - CFG.vpPlanWeeks) + ' Wochen länger' : '') });
+        (s.vpWeeks > CFG.vpPlanWeeks ? ' · Projektinitialisierung: ' + (s.vpWeeks - CFG.vpPlanWeeks) + ' Wochen länger' : '') });
   } else {
     const inv = spent(s);
-    criteria.push({ id: 'budget', t: 'Budgettreue', v: 'kein Go-live', sub: p ? 'bis zum Projektende ausgegeben: ' + fmtE(inv) + ' (Business Case bis zum Go-live: ' + fmtE(p.invest) + ')' + (vpDev ? ' · Vorprojekt: ' + vpDev : '') : (vpDev ? 'Vorprojekt: ' + vpDev : '') });
+    criteria.push({ id: 'budget', t: 'Budgettreue', v: 'kein Go-live', sub: p ? 'bis zum Projektende ausgegeben: ' + fmtE(inv) + ' (Business Case bis zum Go-live: ' + fmtE(p.invest) + ')' + (vpDev ? ' · Projektinitialisierung: ' + vpDev : '') : (vpDev ? 'Projektinitialisierung: ' + vpDev : '') });
     criteria.push({ id: 'termin', t: 'Termintreue', v: 'kein Go-live', sub: p ? 'geplant war Monat ' + p.goLive : '' });
   }
   return { factors, criteria };
@@ -2343,8 +2343,8 @@ function summaryText(s, team) {
   const r = results(s);
   const lines = [];
   lines.push('KI-Projektsimulation „HILMAR“ · ' + (team || 'anonym'));
-  if (s.vorprojekt) lines.push('Vorprojekt: ' + (s.vorprojekt.k ? s.vorprojekt.k + (s.vorprojekt.k === 1 ? ' Aktivität' : ' Aktivitäten') + ' nachgearbeitet' : 'ohne Nacharbeit') + (s.swot ? ', SWOT ' + s.swot.n + ' von 8' : ''));
-  if (s.vp) lines.push('Vorgehen: ' + METHODS.find(x => x.id === s.method).t + ', ' + pocLabel(s.poc) + ', Ende Vorprojekt Woche ' + s.vpWeeks + ' (Plan ' + CFG.vpPlanWeeks + '), ' + fmtE(s.vpCost));
+  if (s.vorprojekt) lines.push('Projektinitialisierung: ' + (s.vorprojekt.k ? s.vorprojekt.k + (s.vorprojekt.k === 1 ? ' Aktivität' : ' Aktivitäten') + ' nachgearbeitet' : 'ohne Nacharbeit') + (s.swot ? ', SWOT ' + s.swot.n + ' von 8' : ''));
+  if (s.vp) lines.push('Vorgehen: ' + METHODS.find(x => x.id === s.method).t + ', ' + pocLabel(s.poc) + ', Ende Projektinitialisierung Woche ' + s.vpWeeks + ' (Plan ' + CFG.vpPlanWeeks + '), ' + fmtE(s.vpCost));
   lines.push('Business Case: Go-live Monat ' + s.plan.goLive + ', Investition ' + fmtE(s.plan.invest) + ', nach ' + CFG.horizon + ' Monaten ' + fmtE(r.pfin));
   lines.push('Ist: ' + (s.goLive ? 'Go-live Monat ' + s.goLive + ', Kosten bis Go-live ' + fmtE(r.invest) : 'kein Go-live') + ', nach ' + CFG.horizon + ' Monaten ' + fmtE(r.fin));
   if (s.goLive) lines.push('Vertragsmeilenstein Monat ' + CFG.contract + ': ' + (s.contractLate ? s.contractLate + (s.contractLate === 1 ? ' Monat' : ' Monate') + ' Verzug, Vertragsstrafe ' + fmtE(s.penaltyPaid) : 'gehalten') + (s.crashes.length ? ' · Beschleunigung ' + fmtE(s.crashCost) : ''));
@@ -2469,12 +2469,12 @@ function renderMeta() {
   if (G) {
     if (meta.team) parts.push('<span>' + esc(meta.team) + '</span>');
     if (G.stage === 'end') parts.push('<span>Auswertung</span>');
-    else parts.push(G.plan ? '<span>Monat <b class="num">' + G.month + '</b></span>' : '<span>Vorprojekt</span>');
+    else parts.push(G.plan ? '<span>Monat <b class="num">' + G.month + '</b></span>' : '<span>Projektinitialisierung</span>');
   }
   $('meta').innerHTML = parts.join('');
 }
 
-/* ---------- Vorprojekt: aktuelle Auswahl ---------- */
+/* ---------- Projektinitialisierung: aktuelle Auswahl ---------- */
 function vpOrder() { if (!ui.order) ui.order = G.order0.slice(); return ui.order; }
 function vpDepth() { if (!ui.depth) ui.depth = PS.defaultDepth(); return ui.depth; }
 function vpLive() { return G && G.stage === 'vorprojekt' ? PS.scheduleVP(vpOrder(), vpDepth(), false) : null; }
@@ -2539,14 +2539,14 @@ function animateGauges() {
 function vpStats(cost, weeks, label, costOnly) {
   const max = Math.max(CFG.startBudget, cost) * 1.1;
   const wmax = Math.max(CFG.vpPlanWeeks, weeks) * 1.15;
-  return barStat('Kosten Vorprojekt' + (label || ''), cost, max, { text: fmtE(cost) + ' von ' + fmtE(CFG.startBudget), cls: cost > CFG.startBudget ? 'over' : '', mark: CFG.startBudget / max * 100 }) +
-    (costOnly ? '' : barStat('Ende Vorprojekt' + (label || ''), weeks, wmax, { text: 'Woche ' + weeks + ' · Plan ' + CFG.vpPlanWeeks, cls: weeks > CFG.vpPlanWeeks ? 'over' : '', mark: CFG.vpPlanWeeks / wmax * 100 }));
+  return barStat('Kosten Projektinitialisierung' + (label || ''), cost, max, { text: fmtE(cost) + ' von ' + fmtE(CFG.startBudget), cls: cost > CFG.startBudget ? 'over' : '', mark: CFG.startBudget / max * 100 }) +
+    (costOnly ? '' : barStat('Ende Projektinitialisierung' + (label || ''), weeks, wmax, { text: 'Woche ' + weeks + ' · Plan ' + CFG.vpPlanWeeks, cls: weeks > CFG.vpPlanWeeks ? 'over' : '', mark: CFG.vpPlanWeeks / wmax * 100 }));
 }
 
 /* Wo steht das Projekt? */
 function phaseLabel(s) {
-  if (['swot', 'swot_result', 'methode', 'vorprojekt'].includes(s.stage)) return 'Vorprojekt';
-  if (s.stage === 'vorprojekt_result' || s.stage === 'planung' || s.stage === 'plan') return 'Ende des Vorprojekts · Projektfreigabe';
+  if (['swot', 'swot_result', 'methode', 'vorprojekt'].includes(s.stage)) return 'Projektinitialisierung';
+  if (s.stage === 'vorprojekt_result' || s.stage === 'planung' || s.stage === 'plan') return 'Ende der Projektinitialisierung · Projektfreigabe';
   if (s.stage === 'end') return 'Abgeschlossen';
   if (s.stage === 'gate') return PS.GATE_TITLE[s.gate.k];
   const st = PS.PHASES[Math.min(s.phase, PS.OPS)];
@@ -2560,13 +2560,13 @@ function goLiveForecast(s) {
   return k < PS.PRE ? s.month + p.months.slice(k).reduce((a, b) => a + b, 0) : s.month;
 }
 const monDelta = d => d === 0 ? 'wie geplant' : (d > 0 ? '+' : '−') + Math.abs(d) + (Math.abs(d) === 1 ? ' Monat' : ' Monate');
-/* Fertigstellungstermin gegen Plan – im Vorprojekt in Wochen, danach in Monaten */
+/* Fertigstellungstermin gegen Plan – in der Projektinitialisierung in Wochen, danach in Monaten */
 function finishInfo(s) {
   if (!s.plan) {
     const live = vpLive(), w = s.vpIst ? s.vpWeeks : live ? live.end : null;
-    if (w === null) return { label: 'Ende Vorprojekt', value: 'Plan: Woche ' + CFG.vpPlanWeeks, cls: '' };
+    if (w === null) return { label: 'Ende Projektinitialisierung', value: 'Plan: Woche ' + CFG.vpPlanWeeks, cls: '' };
     const d = w - CFG.vpPlanWeeks;
-    return { label: 'Ende Vorprojekt' + (s.vpIst ? '' : ' (Vorschau)'), value: 'Woche ' + w + ' · Plan ' + CFG.vpPlanWeeks, sub: d ? (d > 0 ? '+' : '−') + Math.abs(d) + (Math.abs(d) === 1 ? ' Woche' : ' Wochen') : 'wie geplant', cls: d > 0 ? 'bad' : 'ok' };
+    return { label: 'Ende Projektinitialisierung' + (s.vpIst ? '' : ' (Vorschau)'), value: 'Woche ' + w + ' · Plan ' + CFG.vpPlanWeeks, sub: d ? (d > 0 ? '+' : '−') + Math.abs(d) + (Math.abs(d) === 1 ? ' Woche' : ' Wochen') : 'wie geplant', cls: d > 0 ? 'bad' : 'ok' };
   }
   const fc = goLiveForecast(s), d = fc - s.plan.goLive;
   return { label: 'Fertigstellung: Go-live' + (s.goLive ? '' : ' (Prognose)'), value: 'Monat ' + fc + ' · Plan ' + s.plan.goLive, sub: monDelta(d) + ' · Vertrag: Monat ' + CFG.contract, cls: fc > CFG.contract ? 'bad' : d > 0 ? 'warn' : 'ok' };
@@ -2574,7 +2574,7 @@ function finishInfo(s) {
 function budgetInfo(s) {
   if (!s.plan) {
     const live = vpLive(), c = s.vpIst ? s.vpCost : live ? live.cost : 0;
-    return { label: 'Budget Vorprojekt', value: fmtE(c) + ' von ' + fmtE(CFG.startBudget), cls: c > CFG.startBudget ? 'bad' : 'ok' };
+    return { label: 'Budget Projektinitialisierung', value: fmtE(c) + ' von ' + fmtE(CFG.startBudget), cls: c > CFG.startBudget ? 'bad' : 'ok' };
   }
   const p = s.plan, spent = PS.spent(s, s.goLive || s.month);
   const k = Math.min(PS.PRE, kNextOf(s) + (s.stage === 'gate' ? 0 : 1));
@@ -2612,8 +2612,8 @@ function milestoneRows(s) {
   const cell = (m, prog) => m == null ? '–' : (prog ? '<i class="prog">Monat ' + m + '</i>' : 'Monat ' + m);
   const dev = (ist, plan) => ist == null || plan == null ? '' : ist - plan === 0 ? '<span class="ok">±0</span>' : '<span class="' + (ist > plan ? 'bad' : 'ok') + '">' + (ist > plan ? '+' : '−') + Math.abs(ist - plan) + '</span>';
   const p = s.plan;
-  // Projektfreigabe am Ende des Vorprojekts: Plan in Wochen
-  if (s.vpIst) rows.push(['Projektfreigabe (Ende Vorprojekt)', 'Woche ' + CFG.vpPlanWeeks, 'Woche ' + s.vpWeeks, s.vpWeeks - CFG.vpPlanWeeks ? '<span class="' + (s.vpWeeks > CFG.vpPlanWeeks ? 'bad' : 'ok') + '">' + (s.vpWeeks > CFG.vpPlanWeeks ? '+' : '−') + Math.abs(s.vpWeeks - CFG.vpPlanWeeks) + ' Wo.</span>' : '<span class="ok">±0</span>', !!p]);
+  // Projektfreigabe am Ende der Projektinitialisierung: Plan in Wochen
+  if (s.vpIst) rows.push(['Projektfreigabe (Ende Projektinitialisierung)', 'Woche ' + CFG.vpPlanWeeks, 'Woche ' + s.vpWeeks, s.vpWeeks - CFG.vpPlanWeeks ? '<span class="' + (s.vpWeeks > CFG.vpPlanWeeks ? 'bad' : 'ok') + '">' + (s.vpWeeks > CFG.vpPlanWeeks ? '+' : '−') + Math.abs(s.vpWeeks - CFG.vpPlanWeeks) + ' Wo.</span>' : '<span class="ok">±0</span>', !!p]);
   if (!p) return markNext(s, rows);
   const kN = kNextOf(s), gate = s.gateAt || {};
   // Ende von Phase 1 und 2 (Sitzungen 1 und 2): Ist, sonst Prognose
@@ -2652,7 +2652,7 @@ function markNext(s, rows) {
 const MS_STATUS = { done: '<span class="ms-st ok" title="abgeschlossen" aria-label="abgeschlossen">✓</span>', now: '<span class="ms-st now" title="als Nächstes" aria-label="als Nächstes">▸</span>' };
 function renderLage(s) {
   const f = finishInfo(s), b = budgetInfo(s);
-  let h = '<div class="card fade lage"><p class="kicker">Projektlage · ' + (s.plan ? 'Monat ' + s.month : 'Vorprojekt') + '</p><h2>' + esc(phaseLabel(s)) + '</h2>';
+  let h = '<div class="card fade lage"><p class="kicker">Projektlage · ' + (s.plan ? 'Monat ' + s.month : 'Projektinitialisierung') + '</p><h2>' + esc(phaseLabel(s)) + '</h2>';
   h += '<div class="kpis">' +
     '<div class="kpi"><span class="l">' + esc(f.label) + '</span><b class="v ' + f.cls + '">' + esc(f.value) + '</b>' + (f.sub ? '<span class="s">' + esc(f.sub) + '</span>' : '') + '</div>' +
     '<div class="kpi"><span class="l">' + esc(b.label) + '</span><b class="v ' + b.cls + '">' + esc(b.value) + '</b>' + (b.sub ? '<span class="s">' + esc(b.sub) + '</span>' : '') + '</div>' +
@@ -2662,11 +2662,11 @@ function renderLage(s) {
   if (rows.length) h += '<h3>Termine und Meilensteine</h3><div class="tscroll"><table class="cmp ms lagetab"><thead><tr><th class="stc"><span class="sr">Status</span></th><th>Meilenstein oder Quality Gate</th><th>Plan</th><th>Ist / Prognose</th><th>Abweichung</th></tr></thead><tbody>' +
     rows.map(r => '<tr class="' + r[4] + '"><td class="stc">' + (MS_STATUS[r[4]] || '') + '</td><td>' + esc(r[0]) + '</td><td class="num">' + r[1] + '</td><td class="num">' + r[2] + '</td><td class="num">' + r[3] + '</td></tr>').join('') + '</tbody></table></div>' +
     '<p class="small muted">' + MS_STATUS.done + ' abgeschlossen · ' + MS_STATUS.now + ' als Nächstes' + (s.plan ? ' · kursiv: Prognose, wenn es ab jetzt beim Plan bleibt. Abweichung in Monaten.' : '') + '</p>';
-  else h += '<h3>Termine</h3><p class="small">Ende Vorprojekt laut Plan: Woche ' + CFG.vpPlanWeeks + '. Der Vertrag mit dem Logistikkunden verlangt den Go-live spätestens in Monat ' + CFG.contract + ', sonst wird eine ' + term('Vertragsstrafe') + ' fällig.</p>';
+  else h += '<h3>Termine</h3><p class="small">Ende der Projektinitialisierung laut Plan: Woche ' + CFG.vpPlanWeeks + '. Der Vertrag mit dem Logistikkunden verlangt den Go-live spätestens in Monat ' + CFG.contract + ', sonst wird eine ' + term('Vertragsstrafe') + ' fällig.</p>';
   h += '<div class="two lage2"><div><h3>Budget</h3>';
   const live = vpLive();
   if (s.vpIst) h += vpStats(s.vpCost, s.vpWeeks, '', !!s.plan); else if (live) h += vpStats(live.cost, live.end, ' (Vorschau)');
-  else h += '<div class="stat"><div class="k"><span>Startbudget Vorprojekt</span><b class="num">' + fmtE(CFG.startBudget) + '</b></div></div>';
+  else h += '<div class="stat"><div class="k"><span>Startbudget Projektinitialisierung</span><b class="num">' + fmtE(CFG.startBudget) + '</b></div></div>';
   if (s.plan) {
     const p = s.plan, spent = PS.spent(s, s.goLive || s.month);
     const k = Math.min(PS.PRE, kNextOf(s) + (s.stage === 'gate' ? 0 : 1));
@@ -2715,7 +2715,7 @@ const monTxt = n => (Math.round(n * 10) / 10).toLocaleString('de-DE') + (n === 1
 function ganttMain(s) {
   const p = s.plan, A = PS.phaseActuals(s);
   const vpPlanM = CFG.vpPlanWeeks * 12 / 52, vpIstM = s.vpWeeks ? s.vpWeeks * 12 / 52 : null;
-  const rows = [{ t: 'Vorprojekt', plan: [0, vpPlanM], ist: vpIstM != null ? [[0, vpIstM, '']] : [] }];
+  const rows = [{ t: 'Projektinitialisierung', plan: [0, vpPlanM], ist: vpIstM != null ? [[0, vpIstM, '']] : [] }];
   PS.PHASE_NAMES.forEach((n, k) => rows.push({ t: 'Phase ' + (k + 1) + (k === 2 ? ' bis Go-live' : ''), sub: n, plan: [p.starts[k], p.starts[k + 1]],
     ist: s.segs.filter(x => x.p === k).map(x => [x.from, x.to, x.kind]) }));
   const hc = s.segs.find(x => x.p === PS.OPS);
@@ -2754,12 +2754,12 @@ function ganttMain(s) {
     '<p class="small muted legend"><span class="lg plan"></span>Plan (Business Case) <span class="lg ist"></span>Ist <span class="lg late"></span>länger als geplant · Monate seit Projektstart</p>';
 }
 function renderGuv(s) {
-  let h = '<div class="card fade guv"><p class="kicker">Projekt-G&amp;V · ' + (s.plan ? 'Monat ' + s.month : 'Vorprojekt') + '</p><h2>Plan und Ist – wo läuft es aus dem Ruder?</h2>';
+  let h = '<div class="card fade guv"><p class="kicker">Projekt-G&amp;V · ' + (s.plan ? 'Monat ' + s.month : 'Projektinitialisierung') + '</p><h2>Plan und Ist – wo läuft es aus dem Ruder?</h2>';
   h += '<p class="lead small">Kosten und Dauer je Phase: Plan aus Deinem Business Case gegen das, was tatsächlich passiert ist. Rot: mehr als 10 % über Plan. „An Externe“ ist Geld, das das Haus verlässt – darauf reagiert der Lenkungsausschuss empfindlicher als auf interne Teamkosten.</p>';
   const rows = [];
-  // Vorprojekt
-  if (s.vpIst) rows.push({ t: 'Vorprojekt', dur: 'Plan ' + CFG.vpPlanWeeks + ' · Ist ' + s.vpWeeks + ' Wochen', late: s.vpWeeks > CFG.vpPlanWeeks, plan: CFG.startBudget, ist: s.vpCost, st: 'done' });
-  else rows.push({ t: 'Vorprojekt', dur: 'Plan ' + CFG.vpPlanWeeks + ' Wochen', plan: CFG.startBudget, ist: null, st: 'now' });
+  // Projektinitialisierung
+  if (s.vpIst) rows.push({ t: 'Projektinitialisierung', dur: 'Plan ' + CFG.vpPlanWeeks + ' · Ist ' + s.vpWeeks + ' Wochen', late: s.vpWeeks > CFG.vpPlanWeeks, plan: CFG.startBudget, ist: s.vpCost, st: 'done' });
+  else rows.push({ t: 'Projektinitialisierung', dur: 'Plan ' + CFG.vpPlanWeeks + ' Wochen', plan: CFG.startBudget, ist: null, st: 'now' });
   if (!s.plan) {
     h += guvTable(rows) + '<p class="small muted">Die Phasen des Hauptprojekts erscheinen hier, sobald der Lenkungsausschuss Deinen Business Case freigegeben hat.</p>';
     return h + '<div class="actions"><button class="btn ghost" data-tab="spiel" data-fk="back-spiel">Zurück zum Spiel</button></div></div>';
@@ -2785,7 +2785,7 @@ function renderGuv(s) {
   const istInv = s.goLive ? PS.spent(s, s.goLive) : doneK.length ? sumIst : null;
   const extInv = s.goLive ? PS.spentExt(s, s.goLive) - (s.penaltyPaid || 0) : doneK.reduce((x, k) => x + (A[k].ext || 0), 0);
   const shareTxt = istInv != null && p.invest ? Math.round(istInv / p.invest * 100) + ' % des Budgets' : '';
-  rows.push({ t: 'Hauptprojekt bis zum Go-live', dur: 'ohne Vorprojekt · Go-live Plan Monat ' + p.goLive + (s.goLive ? ' · Ist Monat ' + s.goLive : ''), late: s.goLive && s.goLive > p.goLive, plan: p.invest, ist: istInv, sum: true,
+  rows.push({ t: 'Hauptprojekt bis zum Go-live', dur: 'ohne Projektinitialisierung · Go-live Plan Monat ' + p.goLive + (s.goLive ? ' · Ist Monat ' + s.goLive : ''), late: s.goLive && s.goLive > p.goLive, plan: p.invest, ist: istInv, sum: true,
     note: (s.goLive ? shareTxt : istInv != null ? 'bisher, ' + phTxt + ' · ' + shareTxt : '') + (istInv != null && extInv ? ' · davon an Externe ' + (extInv < 0 ? '−' : '') + fmtE(Math.abs(extInv)) : ''),
     devPlan: s.goLive ? null : planDone, devNote: !s.goLive && istInv != null ? 'gegenüber Plan ' + phTxt + ': ' + fmtE(planDone) : '' });
   h += '<h3>Investition</h3>' + guvTable(rows);
@@ -2798,7 +2798,7 @@ function renderGuv(s) {
     const ops = [
       { t: 'Deckungsbeitrag (Nutzen)', dur: 'nach dem Go-live bis Monat ' + H, plan: pBen, ist: ben, income: true },
       { t: 'Laufende Kosten', dur: 'Hypercare, ' + (s.ops && s.ops.alloc.wissen ? 'Lessons Learned, ' : '') + 'Monitoring, Nachtraining, Infrastruktur', plan: pOps, ist: oc },
-      { t: 'Ergebnis nach ' + H + ' Monaten', dur: 'Nutzen minus Kosten von Hauptprojekt und Betrieb, ohne Vorprojekt', plan: r.pfin, ist: r.fin, income: true, sum: true },
+      { t: 'Ergebnis nach ' + H + ' Monaten', dur: 'Nutzen minus Kosten von Hauptprojekt und Betrieb, ohne Projektinitialisierung', plan: r.pfin, ist: r.fin, income: true, sum: true },
     ];
     h += '<h3>Betrieb nach dem Go-live</h3>' + guvTable(ops);
   } else h += '<p class="small muted">Nutzen und laufende Kosten nach dem Go-live erscheinen hier am Ende des Spiels.</p>';
@@ -2823,7 +2823,7 @@ function renderLog(s) {
   if (!s.log.length) return h + '<p class="muted">Noch keine Einträge.</p><div class="actions"><button class="btn ghost" data-tab="spiel" data-fk="back-spiel">Zurück zum Spiel</button></div></div>';
   const groups = [];
   s.log.forEach(l => {
-    const key = l.vp ? 'Vorprojekt' : 'Monat ' + l.m;
+    const key = l.vp ? 'Projektinitialisierung' : 'Monat ' + l.m;
     const last = groups[groups.length - 1];
     if (last && last.key === key) last.items.push(l); else groups.push({ key, items: [l] });
   });
@@ -2843,13 +2843,13 @@ function renderStart() {
     '<li><b>Richtung:</b> KI-Manager entwickeln die langfristige Vision für den KI-Einsatz und wählen die Anwendungsfälle (Use Cases) aus, die den größten Wertbeitrag versprechen – in einer klaren Reihenfolge.</li>' +
     '<li><b>Managementsystem:</b> KI-Manager verantworten das ' + term('Managementsystem für Künstliche Intelligenz (AIMS)') + ' nach DIN&nbsp;EN&nbsp;ISO/IEC&nbsp;42001: Sie bauen es auf, halten es dauerhaft in Betrieb und prüfen, ob es wirkt. Die <strong>KI-Beauftragten</strong> stehen ihnen zur Seite. Ihr Schwerpunkt ist die Compliance: Werden Recht und ethische Grundsätze eingehalten?</li>' +
     '<li><b>Fachverstand:</b> KI-Manager kennen die Teilgebiete der KI gut genug, um für einen Anwendungsfall die passende Technologie zu wählen – und um zu erkennen, wo eine einfache Automatisierung genügt.</li></ul>' +
-    'Im Planspiel geht es um einen Ausschnitt davon: einen Anwendungsfall als Projektleiterin bzw. Projektleiter vom Vorprojekt bis in den Betrieb bringen.</div>' +
+    'Im Planspiel geht es um einen Ausschnitt davon: einen Anwendungsfall als Projektleiterin bzw. Projektleiter von der Projektinitialisierung bis in den Betrieb bringen.</div>' +
     '<p class="lead"><strong>HILMAR</strong> (<strong>H</strong>ighly <strong>I</strong>ndependent <strong>L</strong>oad <strong>M</strong>aximising <strong>A</strong>erial <strong>R</strong>obot) soll das ändern: Die Drohnen sollen für zivile Einsätze angepasst werden – als zusätzliche Transportmöglichkeit für große Versand- und Logistikunternehmen und, als zweites Standbein, für die Sicherung besonders kritischer Gebäude und Einrichtungen. Extra um HILMAR in den Markt zu bringen, wurde ein Tochterunternehmen namens „Working Bee GmbH“ gegründet. Die Machbarkeitsanalyse hält das Vorhaben für vielversprechend, aber schwierig in der Umsetzung. Du bist als Projektleitung vorgesehen.</p>' +
     '<div class="question"><small>Der KI-Kern des Projekts</small>Ein Modell erkennt Landeplätze und Hindernisse und entscheidet, ob die Drohne eine Zustellung selbst abschließt oder ob ein Mensch aus der Ferne übernehmen muss: das REHO-Team (<strong>REHO</strong> steht für „Remotely enacted human override“). Das militärische Modell kennt Gelände, Fahrzeuge und Tarnung – aber keine Balkone, Oberleitungen, spielenden Kinder und Paketstationen.</div>' +
-    '<p class="lead">Der Vorstand stellt Dir <b>' + fmtE(CFG.startBudget) + '</b> als Startbudget zur Verfügung und erwartet als Ergebnis eines Vorprojekts nach <b>' + CFG.vpPlanWeeks + ' Wochen</b> u.a.: Go/no-Go-Empfehlung, Business Case, eine Ressourcen- und Budgetplanung sowie Meilensteine/Quality Gates für das Hauptprojekt.</p>' +
+    '<p class="lead">Der Vorstand stellt Dir <b>' + fmtE(CFG.startBudget) + '</b> als Startbudget zur Verfügung und erwartet als Ergebnis einer Projektinitialisierung nach <b>' + CFG.vpPlanWeeks + ' Wochen</b> u.a.: Go/no-Go-Empfehlung, Business Case, eine Ressourcen- und Budgetplanung sowie Meilensteine/Quality Gates für das Hauptprojekt.</p>' +
     '<p class="lead">Und der Vertrieb hat (wie es so die Art guter Vertriebler ist) schon etwas versprochen: Der erste Logistikkunde soll HILMAR <b>spätestens in Monat ' + CFG.contract + ' nach dem erfolgreichen „Proof of Concept“ (PoC)</b> einsetzen. Dafür soll nach der Freigabe ein entsprechender Vorvertrag inkl. einer potenziellen Vertragsstrafe von ' + fmtE(CFG.penalty) + ' je Monat Verzug unterschrieben werden.</p>' +
     '<h3>So läuft das Spiel</h3><ol class="small" style="padding-left:20px;margin:0">' +
-    '<li>Vorprojekt: Du ordnest die SWOT-Analyse, wählst die Projektmethode und planst die Aktivitäten – Reihenfolge und Gründlichkeit. Jede Aktivität kostet Zeit und Geld.</li>' +
+    '<li>Projektinitialisierung: Du ordnest die SWOT-Analyse, wählst die Projektmethode und planst die Aktivitäten – Reihenfolge und Gründlichkeit. Jede Aktivität kostet Zeit und Geld.</li>' +
     '<li>Projektfreigabe: Du legst dem Lenkungsausschuss den Business Case für das Hauptprojekt vor.</li>' +
     '<li>Hauptprojekt in drei Phasen: Du verteilst Kapazität, reagierst auf Ereigniskarten und berichtest an den Quality Gates. Phase 3 endet mit Go-live, Hypercare und dem Projektabschluss.</li>' +
     '<li>Dann die Auswertung über drei Jahre: Was ist aus Deinem Business Case geworden?</li></ol>' +
@@ -2860,7 +2860,7 @@ function renderStart() {
     '<div class="actions" style="margin-top:6px"><button class="btn" data-go="start" data-fk="start">Spiel starten</button>' +
     (canResume ? '<button class="btn ghost" data-go="resume" data-fk="resume">Gespeichertes Spiel fortsetzen' + (saved.team ? ' (' + esc(saved.team) + ')' : '') + '</button>' : '') + '</div>' +
     '<details class="lead-notes"><summary>Hinweise für die Spielleitung</summary><ul class="small">' +
-    '<li>Ablauf: Vorprojekt mit SWOT, Projektmethode und Planungsaktivitäten (ca. 25 Min.), Business Case (ca. 10 Min.), Phase 1 (ca. 20 Min.), Phase 2 (ca. 15 Min.), Phase 3 mit Go-live, Hypercare und Projektabschluss (ca. 25 Min.)</li>' +
+    '<li>Ablauf: Projektinitialisierung mit SWOT, Projektmethode und Planungsaktivitäten (ca. 25 Min.), Business Case (ca. 10 Min.), Phase 1 (ca. 20 Min.), Phase 2 (ca. 15 Min.), Phase 3 mit Go-live, Hypercare und Projektabschluss (ca. 25 Min.)</li>' +
     '<li>Wahlweise in Gruppen mit drei bis vier Personen; eine Person bedient, alle entscheiden gemeinsam. Oder als Einzelübung.</li>' +
     '<li>Am Ende „Projektbericht herunterladen“: eine HTML-Datei mit Zusammenfassung, Projektlage nach jeder Phase, Auswertung, Projekt-G&amp;V und Entscheidungs-Log – zum Abgeben, Vergleichen und für die Nachbesprechung.</li>' +
     '<li>Das Spiel läuft offline in jedem aktuellen Browser. Der Spielstand bleibt beim Neuladen erhalten, aber nur in diesem Browser.</li>' +
@@ -2868,7 +2868,7 @@ function renderStart() {
     '<li>Alle Zahlen sind fiktiv und didaktisch vereinfacht.</li></ul></details></div>';
 }
 
-/* ---------- Vorprojekt 1: SWOT ---------- */
+/* ---------- Projektinitialisierung 1: SWOT ---------- */
 function swotGrid(placeFn) {
   const cell = q => '<div class="sw sw-' + q + '"><b>' + PS.QUAD[q].long + '</b><small>' + PS.QUAD[q].where + ' · ' + PS.QUAD[q].how + '</small>' + (placeFn ? '<ul>' + placeFn(q) + '</ul>' : '') + '</div>';
   return '<div class="swgrid"><span></span><span class="swh">hilfreich</span><span class="swh">hinderlich</span>' +
@@ -2876,7 +2876,7 @@ function swotGrid(placeFn) {
 }
 function renderSwot() {
   const n = Object.keys(ui.swot).length;
-  let h = '<div class="card fade"><p class="kicker">Vorprojekt · Schritt 1 von 3</p><h2>Die ' + term('SWOT-Analyse') + ' aus der Machbarkeitsanalyse</h2>' +
+  let h = '<div class="card fade"><p class="kicker">Projektinitialisierung · Schritt 1 von 3</p><h2>Die ' + term('SWOT-Analyse') + ' aus der Machbarkeitsanalyse</h2>' +
     '<p class="lead">Die Machbarkeitsanalyse hat acht Aussagen gesammelt – leider unsortiert. Ordne jede einem Feld zu, bevor daraus Dein Risikoregister wird. Die Frage dahinter: Liegt es in unserem Haus oder im Umfeld? Hilft es oder hindert es?</p>' +
     swotGrid(null) + '<ul class="swlist">';
   G.swot0.forEach((id, i) => {
@@ -2889,7 +2889,7 @@ function renderSwot() {
 }
 function renderSwotResult() {
   const v = G.swot;
-  let h = '<div class="card fade"><p class="kicker">Vorprojekt · Schritt 1 von 3 · Ergebnis</p><h2>' + v.n + ' von 8 Aussagen richtig zugeordnet</h2>';
+  let h = '<div class="card fade"><p class="kicker">Projektinitialisierung · Schritt 1 von 3 · Ergebnis</p><h2>' + v.n + ' von 8 Aussagen richtig zugeordnet</h2>';
   h += '<ul class="rules">' + v.res.map(r => '<li class="' + (r.ok ? 'ok' : 'bad') + '"><span class="ic" aria-hidden="true">' + (r.ok ? '✓' : '✗') + '</span><div><b>' + esc(r.t) + '</b>' +
     '<p>' + (r.ok ? PS.QUAD[r.q].t + '. ' : 'Richtig wäre: ' + PS.QUAD[r.q].t + (r.a ? ' (Deine Wahl: ' + PS.QUAD[r.a].t + ')' : '') + '. ') + esc(r.x) + '</p></div></li>').join('') + '</ul>';
   h += '<h3>Die geordnete SWOT</h3>' + swotGrid(q => PS.SWOT.filter(x => x.q === q).map(x => '<li>' + esc(x.t) + '</li>').join(''));
@@ -2898,9 +2898,9 @@ function renderSwotResult() {
   return h;
 }
 
-/* ---------- Vorprojekt 2: Projektmethode ---------- */
+/* ---------- Projektinitialisierung 2: Projektmethode ---------- */
 function renderMethode() {
-  let h = '<div class="card fade"><p class="kicker">Vorprojekt · Schritt 2 von 3</p><h2>Klassisch, agil oder hybrid?</h2>' +
+  let h = '<div class="card fade"><p class="kicker">Projektinitialisierung · Schritt 2 von 3</p><h2>Klassisch, agil oder hybrid?</h2>' +
     '<p class="lead">Bevor Du die Aktivitäten planst, legst Du fest, wie das Projekt gesteuert wird. Welche Methode passt, hängt davon ab, wie klar Aufgabe und Lösungsweg sind und wie viele Beteiligte sich abstimmen müssen.</p>';
   if (G.hints.swot) h += '<div class="hint"><b>Aus Deiner SWOT:</b> Die größte interne Schwäche ist die Datenlage in Städten – wie gut das Modell dort wird, weiß heute niemand. Gleichzeitig verlangen Kunden, Vorstand und Zulassung feste Termine und Nachweise.</div>';
   h += '<div class="optgrid">';
@@ -2916,7 +2916,7 @@ function renderMethode() {
   return h;
 }
 
-/* ---------- Vorprojekt 3: Aktivitäten ---------- */
+/* ---------- Projektinitialisierung 3: Aktivitäten ---------- */
 const wk = w => w + (w === 1 ? ' Woche' : ' Wochen');
 function depthCtl(id, cur) {
   const a = ACT[id];
@@ -2952,18 +2952,18 @@ function vpGantt(sch, opts) {
 }
 function vpTotals(sch, ist) {
   const late = sch.end - CFG.vpPlanWeeks;
-  return '<div class="vptot"><div><span>Ende Vorprojekt</span><b class="' + (late > 0 ? 'bad' : 'ok') + '">Woche ' + sch.end + '</b><small>Plan: Woche ' + CFG.vpPlanWeeks + (late > 0 ? ' · ' + wk(late) + ' später' : '') + '</small></div>' +
+  return '<div class="vptot"><div><span>Ende Projektinitialisierung</span><b class="' + (late > 0 ? 'bad' : 'ok') + '">Woche ' + sch.end + '</b><small>Plan: Woche ' + CFG.vpPlanWeeks + (late > 0 ? ' · ' + wk(late) + ' später' : '') + '</small></div>' +
     '<div><span>Hauptprojekt startet</span><b>Monat ' + sch.months + '</b><small>nach der nächsten Sitzung des Lenkungsausschusses</small></div>' +
-    '<div><span>Kosten Vorprojekt</span><b class="' + (sch.over ? 'bad' : 'ok') + '">' + fmtE(sch.cost) + '</b><small>Startbudget ' + fmtE(CFG.startBudget) + (sch.over ? ' · ' + fmtE(sch.over) + ' darüber' : ' · ' + fmtE(CFG.startBudget - sch.cost) + ' frei') + '</small></div></div>' +
+    '<div><span>Kosten Projektinitialisierung</span><b class="' + (sch.over ? 'bad' : 'ok') + '">' + fmtE(sch.cost) + '</b><small>Startbudget ' + fmtE(CFG.startBudget) + (sch.over ? ' · ' + fmtE(sch.over) + ' darüber' : ' · ' + fmtE(CFG.startBudget - sch.cost) + ' frei') + '</small></div></div>' +
     '<p class="small muted">Aktivitäten ' + fmtE(sch.actCost) + ' · Planungsteam ' + wk(sch.end) + ' à ' + fmtE(CFG.vpTeamWeek) + ' = ' + fmtE(sch.teamCost) + (ist && sch.reworkCost ? ' · Nacharbeit ' + fmtE(sch.reworkCost) : '') + '</p>';
 }
 function renderVorprojekt() {
   const order = vpOrder(), depth = vpDepth();
   const sch = PS.scheduleVP(order, depth, false);
-  let h = '<div class="card fade"><p class="kicker">Vorprojekt · Schritt 3 von 3 · Startbudget ' + fmtE(CFG.startBudget) + ' · Ende laut Plan: Woche ' + CFG.vpPlanWeeks + '</p><h2>Was tust Du in welcher Reihenfolge – und wie gründlich?</h2>' +
-    '<p class="lead">Diese elf Aktivitäten stehen im Vorprojekt an. Bring sie in die Reihenfolge, in der Du sie angehen willst – oben steht, womit Du beginnst. Für jede Aktivität legst Du fest, wie gründlich sie erledigt wird: Gründlicher bringt mehr Sicherheit, kostet aber Zeit und Geld.</p>' +
+  let h = '<div class="card fade"><p class="kicker">Projektinitialisierung · Schritt 3 von 3 · Startbudget ' + fmtE(CFG.startBudget) + ' · Ende laut Plan: Woche ' + CFG.vpPlanWeeks + '</p><h2>Was tust Du in welcher Reihenfolge – und wie gründlich?</h2>' +
+    '<p class="lead">Diese elf Aktivitäten stehen in der Projektinitialisierung an. Bring sie in die Reihenfolge, in der Du sie angehen willst – oben steht, womit Du beginnst. Für jede Aktivität legst Du fest, wie gründlich sie erledigt wird: Gründlicher bringt mehr Sicherheit, kostet aber Zeit und Geld.</p>' +
     '<p class="dnd-hint"><span class="dots6" aria-hidden="true"></span>Karte mit der Maus anfassen – auch am Titel – und an ihren Platz ziehen. Auf dem Tablet am Griff links ziehen; per Tastatur den Griff wählen und mit ↑ ↓ verschieben.</p>' +
-    '<p class="small muted">Das Vorprojekt selbst ist finanziert: Planungsteam und Startbudget stehen. Ressourcen, Budget und Business Case planst Du hier für das Hauptprojekt. Das Planungsteam arbeitet an den Themen in der <strong>von Dir vorgegebenen Reihenfolge</strong>. Ob dabei etwas begonnen wird, bevor vorliegt, worauf es aufbaut, zeigt sich erst, wenn Du die Planung festlegst.</p>';
+    '<p class="small muted">Die Projektinitialisierung selbst ist finanziert: Planungsteam und Startbudget stehen. Ressourcen, Budget und Business Case planst Du hier für das Hauptprojekt. Das Planungsteam arbeitet an den Themen in der <strong>von Dir vorgegebenen Reihenfolge</strong>. Ob dabei etwas begonnen wird, bevor vorliegt, worauf es aufbaut, zeigt sich erst, wenn Du die Planung festlegst.</p>';
   if (G.methodEffect) h += '<div class="hint"><b>Deine Methode:</b> ' + esc(G.methodEffect) + '</div>';
   h += '<ol class="sortlist" data-list="vp" aria-label="Reihenfolge der Aktivitäten">';
   order.forEach((id, i) => {
@@ -2971,9 +2971,9 @@ function renderVorprojekt() {
     h += '<li class="sortitem" data-sort="' + id + '"><button type="button" class="grip" data-grip="' + id + '" data-fk="grip-' + id + '" title="Ziehen, um die Reihenfolge zu ändern" aria-label="' + esc(a.t) + ', Position ' + (i + 1) + ' von ' + order.length + '. Mit Pfeil nach oben oder unten verschieben."><span class="pos num">' + (i + 1) + '</span><span class="dots6" aria-hidden="true"></span></button>' +
       '<div class="st"><b>' + tip(esc(a.t), a.d) + '</b>' + depthCtl(id, depth[id]) + '</div></li>';
   });
-  h += '</ol><h3>Dein Vorprojekt als Balkenplan</h3>' + vpGantt(sch, { endLabel: 'Ende' }) + vpTotals(sch, false);
+  h += '</ol><h3>Deine Projektinitialisierung als Balkenplan</h3>' + vpGantt(sch, { endLabel: 'Ende' }) + vpTotals(sch, false);
   if (sch.over) h += '<div class="msg bad">Das überschreitet das Startbudget um ' + fmtE(sch.over) + '. Der Vorstand müsste nachbewilligen – gleich zu Beginn kostet das Vertrauen.</div>';
-  if (sch.end > CFG.vpPlanWeeks) h += '<div class="msg warn">Der ' + term('Meilenstein') + ' „Ende Vorprojekt“ rutscht um ' + wk(sch.end - CFG.vpPlanWeeks) + '. Das Hauptprojekt startet dann in Monat ' + sch.months + ' – und der Vertrag mit dem Logistikkunden verlangt den Go-live in Monat ' + CFG.contract + '.</div>';
+  if (sch.end > CFG.vpPlanWeeks) h += '<div class="msg warn">Der ' + term('Meilenstein') + ' „Ende Projektinitialisierung“ rutscht um ' + wk(sch.end - CFG.vpPlanWeeks) + '. Das Hauptprojekt startet dann in Monat ' + sch.months + ' – und der Vertrag mit dem Logistikkunden verlangt den Go-live in Monat ' + CFG.contract + '.</div>';
   h += '<div class="actions"><button class="btn" data-go="order" data-fk="go-order">Planung festlegen</button><span class="small muted">Danach sind Reihenfolge und Gründlichkeit festgelegt.</span></div></div>';
   return h;
 }
@@ -2986,8 +2986,8 @@ function depText(r) {
 }
 function renderVorprojektResult() {
   const v = G.vorprojekt, ist = G.vpIst, k = v.k;
-  let h = '<div class="card fade"><p class="kicker">Vorprojekt · Ergebnis</p><h2>Ende in Woche ' + ist.end + ' · ' + (k ? k + (k === 1 ? ' Aktivität' : ' Aktivitäten') + ' nachgearbeitet' : 'ohne Nacharbeit') + '</h2>';
-  h += '<h3>So ist das Vorprojekt gelaufen</h3>' + vpGantt(ist, { rework: true, endLabel: 'Ist' }) + vpTotals(ist, true);
+  let h = '<div class="card fade"><p class="kicker">Projektinitialisierung · Ergebnis</p><h2>Ende in Woche ' + ist.end + ' · ' + (k ? k + (k === 1 ? ' Aktivität' : ' Aktivitäten') + ' nachgearbeitet' : 'ohne Nacharbeit') + '</h2>';
+  h += '<h3>So ist die Projektinitialisierung gelaufen</h3>' + vpGantt(ist, { rework: true, endLabel: 'Ist' }) + vpTotals(ist, true);
   h += '<h3>Was Dein Vorgehen im Spiel bewirkt</h3><ul class="notes">' + v.effects.map(e => '<li>' + esc(e) + '</li>').join('') + '</ul>';
   h += '<h3>Was worauf aufbaut</h3><p class="small muted">Ein Richtig oder Falsch im engeren Sinn gibt es hier nicht. Entscheidend ist, ob vorlag, worauf eine Aktivität aufbaut, als sie begann – sonst muss sie nachgearbeitet werden. Geprüft wird der tatsächliche Ablauf im Balkenplan oben, nicht die Position in Deiner Liste.</p>';
   h += '<ul class="rules">' + v.res.map(r => '<li class="' + (r.st === 'na' ? 'na' : r.st === 'ok' ? 'ok' : 'rw') + '"><span class="ic" aria-hidden="true">' + (r.st === 'na' ? '–' : r.st === 'ok' ? '✓' : '↻') + '</span><div><b>' + esc(r.t) + '</b><p class="dst">' + esc(depText(r)) + '</p><p>' + esc(r.x) + '</p></div></li>').join('');
@@ -2995,7 +2995,7 @@ function renderVorprojektResult() {
   h += '<li class="' + (v.early ? 'ok' : 'hint') + '"><span class="ic" aria-hidden="true">' + (v.early ? '✓' : '○') + '</span><div><b>Empfehlung: ' + esc(L.t) + '</b><p class="dst">' + (v.early ? 'Begonnen in Woche ' + (v.lessonsStart + 1) + '.' : 'Begonnen erst in Woche ' + (v.lessonsStart + 1) + ' – für die ersten Planungsschritte kamen die Erfahrungen zu spät.') + '</p><p>' + esc(L.x) + '</p></div></li></ul>';
   h += '<div class="two"><div><h3>Deine Reihenfolge</h3><ol class="small">' + v.order.map(id => '<li>' + esc(ACT[id].t) + (G.vpIst.rows[id].rw ? ' <span class="rwtag">Nacharbeit</span>' : '') + '</li>').join('') + '</ol></div>' +
     '<div><h3>Eine praktische Reihenfolge ohne Nacharbeit</h3><ol class="small">' + PS.MUSTER.map(id => '<li>' + esc(ACT[id].t) + '</li>').join('') + '</ol></div></div>';
-  h += '<p class="small muted">Mit Deiner Gründlichkeit wäre das Vorprojekt in dieser Reihenfolge Ende Woche ' + v.muster.end + ' fertig gewesen, für ' + fmtE(v.muster.cost) + '. Sie ist nicht die einzig mögliche: Wichtig ist, dass jede Aktivität erst beginnt, wenn vorliegt, worauf sie aufbaut – und dass lange Aktivitäten früh starten, damit beide Arbeitsstränge des Planungsteams ausgelastet sind.</p>';
+  h += '<p class="small muted">Mit Deiner Gründlichkeit wäre die Projektinitialisierung in dieser Reihenfolge Ende Woche ' + v.muster.end + ' fertig gewesen, für ' + fmtE(v.muster.cost) + '. Sie ist nicht die einzig mögliche: Wichtig ist, dass jede Aktivität erst beginnt, wenn vorliegt, worauf sie aufbaut – und dass lange Aktivitäten früh starten, damit beide Arbeitsstränge des Planungsteams ausgelastet sind.</p>';
   h += '<div class="actions"><button class="btn" data-go="toplan" data-fk="go-toplan">Weiter zur Projektplanung</button></div></div>';
   return h;
 }
@@ -3006,7 +3006,7 @@ function msSeq() { if (!ui.msSeq) ui.msSeq = G.ms0.slice(); return ui.msSeq; }
 function staffSel() { if (!ui.staff) { ui.staff = {}; PS.ROLES.forEach(r => { ui.staff[r.id] = [0, 0, 0]; }); } return ui.staff; }
 function renderPlanung() {
   const seq = msSeq(), st = staffSel();
-  let h = '<div class="card fade"><p class="kicker">Ende des Vorprojekts · Projektplanung</p><h2>Phasen, Meilensteine und Team</h2>' +
+  let h = '<div class="card fade"><p class="kicker">Ende der Projektinitialisierung · Projektplanung</p><h2>Phasen, Meilensteine und Team</h2>' +
     '<p class="lead">Bevor Du den ' + term('Business Case') + ' schreibst, planst Du das Hauptprojekt: Wann entscheidet der Lenkungsausschuss – und wer arbeitet in welcher Phase mit?</p>';
   h += '<h3>1. Meilensteine und Quality Gates einordnen</h3><p class="small muted">Die Phasen stehen fest. Zieh jeden ' + term('Meilenstein') + ' und jedes ' + term('Quality Gate') + ' an die Stelle im Ablauf, an die es gehört. Was unter einer Phase steht, gehört zu dieser Phase; innerhalb der Phasen kommt es auch auf die Reihenfolge an.</p>' +
     '<p class="dnd-hint"><span class="dots6" aria-hidden="true"></span>Karte mit der Maus anfassen und an ihren Platz ziehen. Auf dem Tablet am Griff links ziehen; per Tastatur den Griff wählen und mit ↑ ↓ verschieben.</p>';
@@ -3123,13 +3123,13 @@ function renderPlan() {
   const vp = G.vpMonths;
   const e = PS.computePlan({}, 25, vp, G.method), p = PS.computePlan(ui.planSel, ui.planImp, vp, G.method, G.staff);
   const pb = x => x.payback ? 'Monat ' + x.payback : 'nicht in ' + CFG.horizon + ' Monaten';
-  let h = '<div class="card fade"><p class="kicker">Ende des Vorprojekts · Meilenstein Projektfreigabe</p><h2>Der ' + term('Business Case') + ' für den Lenkungsausschuss</h2>' +
+  let h = '<div class="card fade"><p class="kicker">Ende der Projektinitialisierung · Meilenstein Projektfreigabe</p><h2>Der ' + term('Business Case') + ' für den Lenkungsausschuss</h2>' +
     '<p class="lead">Die Machbarkeitsanalyse enthält einen Erstentwurf in der Logik einer einfachen ROI-Vorlage (Return on Investment). Bevor der Lenkungsausschuss (LK) das Hauptprojekt freigibt, legst Du fest, was Dein überarbeiteter Business Case enthält. Der LK wird das Budget stufenweise freigeben: immer nur nachdem ein Quality Gate erfolgreich passiert bzw. ein Meilenstein erreicht wurde.</p>' + planungResult();
   if (G.hints.lessons) h += '<div class="hint"><b>Aus Deiner Lessons-Learned-Auswertung:</b> Im letzten Entwicklungsprojekt lagen Datenaufbereitung und Testflüge deutlich über Plan, und nach der Auslieferung fehlte das Geld für Nachbesserungen.' + (G.hints.lessons2 ? ' In den Interviews sagten zwei frühere Projektleitungen dasselbe: Die zweite Modellrunde stand in keinem Plan – gebraucht wurde sie immer.' : '') + '</div>';
   if (G.hints.reserve) h += '<div class="hint"><b>Aus Deinem Risikoregister:</b> Für ein Vorhaben mit diesem Neuheitsgrad empfiehlt sich eine Reserve für Unvorhergesehenes.</div>';
   if (G.hints.psp) h += '<div class="hint"><b>Aus Deinem Projektstrukturplan:</b> Datenaufbereitung und Modellentwicklung brauchen je ein eigenes Zeitfenster – im Erstentwurf sind sie zusammengequetscht.</div>';
   if (G.pocRange) h += '<div class="hint"><b>Aus Deinem ' + term('Proof of Concept') + ':</b> Ein einfaches Modell senkte die menschlichen Eingriffe um ' + G.pocRange[0] + ' bis ' + G.pocRange[1] + ' %' + (G.poc === 'a' ? ', auch im Stadtviertel.' : ' – nur am Stadtrand getestet.') + '</div>';
-  h += '<p class="small muted">Das Vorprojekt hat ' + fmtE(G.vpCost) + ' gekostet. Für die Entscheidung über das Budget im Hauptprojekt zählt das nicht - dieses muss neu aufgeplant werden. Alle Monatsangaben zählen ab Projektstart; das Hauptprojekt beginnt in Monat ' + vp + '. Enthalten: Dein Team aus der Projektplanung (je Person ' + fmtE(PS.ROLE_WEEK) + ' pro Einsatzwoche) und Projektmanagement nach Deiner Methode, ' + fmtE(PS.PM_WEEK[G.method]) + ' pro Woche bis zum Go-live. Der Erstentwurf rechnet nur mit einer Projektmanagerin und einem Data Scientist.</p>' +
+  h += '<p class="small muted">Die Projektinitialisierung hat ' + fmtE(G.vpCost) + ' gekostet. Für die Entscheidung über das Budget im Hauptprojekt zählt das nicht - dieses muss neu aufgeplant werden. Alle Monatsangaben zählen ab Projektstart; das Hauptprojekt beginnt in Monat ' + vp + '. Enthalten: Dein Team aus der Projektplanung (je Person ' + fmtE(PS.ROLE_WEEK) + ' pro Einsatzwoche) und Projektmanagement nach Deiner Methode, ' + fmtE(PS.PM_WEEK[G.method]) + ' pro Woche bis zum Go-live. Der Erstentwurf rechnet nur mit einer Projektmanagerin und einem Data Scientist.</p>' +
     '<table class="cmp"><thead><tr><th></th><th>Erstentwurf</th><th>Dein überarbeiteter Business Case</th></tr></thead><tbody>' +
     planRow('Go-live in Monat', e.goLive, p.goLive, p.goLive > CFG.contract ? 'bad' : '') +
     planRow('Investition Hauptprojekt bis Go-live', fmtE(e.invest), fmtE(p.invest)) +
@@ -3441,8 +3441,8 @@ function renderEnd() {
     '<div class="chartbox" id="chartbox">' + c.svg + '<div class="tt"></div></div>';
   const pb = x => x ? 'Monat ' + x : 'nicht in ' + CFG.horizon + ' Monaten';
   h += '<table class="cmp"><thead><tr><th></th><th>Soll</th><th>Ist</th></tr></thead><tbody>' +
-    planRow('Vorprojekt: Ende', 'Woche ' + CFG.vpPlanWeeks, 'Woche ' + s.vpWeeks, s.vpWeeks > CFG.vpPlanWeeks ? 'bad' : '') +
-    planRow('Vorprojekt: Kosten', 'Startbudget ' + fmtE(CFG.startBudget), fmtE(s.vpCost), s.vpCost > CFG.startBudget ? 'bad' : '') +
+    planRow('Projektinitialisierung: Ende', 'Woche ' + CFG.vpPlanWeeks, 'Woche ' + s.vpWeeks, s.vpWeeks > CFG.vpPlanWeeks ? 'bad' : '') +
+    planRow('Projektinitialisierung: Kosten', 'Startbudget ' + fmtE(CFG.startBudget), fmtE(s.vpCost), s.vpCost > CFG.startBudget ? 'bad' : '') +
     planRow('Go-live', 'Monat ' + p.goLive, s.goLive ? 'Monat ' + s.goLive : '–') +
     planRow('Vertragsmeilenstein', 'Monat ' + CFG.contract, s.goLive ? (s.contractLate ? s.contractLate + (s.contractLate === 1 ? ' Monat' : ' Monate') + ' Verzug · Strafe ' + fmtE(s.penaltyPaid) : 'gehalten') : '–', s.contractLate ? 'bad' : '') +
     planRow('Kosten Hauptprojekt bis Go-live', fmtE(p.invest), s.goLive ? fmtE(r.invest) : fmtE(r.invest) + ' (ohne Go-live)') +
@@ -3451,7 +3451,7 @@ function renderEnd() {
     planRow('Deckungsbeitrag im ersten Jahr nach dem Go-live', fmtE(r.planB1), r.benefitY1 !== null ? fmtE(r.benefitY1) : '–') +
     planRow('Amortisation', pb(p.payback), pb(r.payback)) +
     planRow('Ergebnis nach ' + CFG.horizon + ' Monaten', fmtE(r.pfin), fmtE(r.fin)) + '</tbody></table>';
-  h += '<p class="small muted">Ohne die ' + fmtE(s.vpCost) + ' des Vorprojekts – sie waren bei der Projektfreigabe bereits ausgegeben.</p>';
+  h += '<p class="small muted">Ohne die ' + fmtE(s.vpCost) + ' der Projektinitialisierung – sie waren bei der Projektfreigabe bereits ausgegeben.</p>';
   if (s.opsReport) {
     h += '<h3>Was nach dem Go-live geschah</h3><ul class="timeline">' +
       '<li><span>Monat ' + s.goLive + '</span>Go-live' + (s.excl ? ' zunächst ohne Innenstädte' : ' in allen Einsatzgebieten') + (s.custLost ? ', ohne den abgesprungenen Ankerkunden' : '') + '. ' + (s.ops.hc ? 'Ein Hypercare-Team betreut die ersten zwei Monate.' : 'Ohne eigenes Hypercare-Team.') + '</li>' +
@@ -3465,7 +3465,7 @@ function renderEnd() {
     '<table class="cmp kef"><tbody><tr class="grp"><th colspan="2">Erfolgsfaktoren</th></tr>' + K.factors.map(kefRow).join('') +
     '<tr class="grp"><th colspan="2">Erfolgskriterien</th></tr>' + K.criteria.map(kefRow).join('') + '</tbody></table>';
   if (MP.length) h += '<h3>Leistung des Modells</h3><table class="cmp kef"><tbody>' + MP.map(kefRow).join('') + '</tbody></table>';
-  h += '<details style="margin-top:14px"><summary>Logbuch des ganzen Spiels</summary><ol class="small muted" style="padding-left:20px;margin-top:8px">' + s.log.map(l => '<li>' + (l.vp ? 'Vorprojekt' : 'Monat ' + l.m) + ': ' + esc(l.t) + '</li>').join('') + '</ol></details>';
+  h += '<details style="margin-top:14px"><summary>Logbuch des ganzen Spiels</summary><ol class="small muted" style="padding-left:20px;margin-top:8px">' + s.log.map(l => '<li>' + (l.vp ? 'Projektinitialisierung' : 'Monat ' + l.m) + ': ' + esc(l.t) + '</li>').join('') + '</ol></details>';
   h += '<div class="actions"><button class="btn" data-go="report" data-fk="report">Projektbericht herunterladen</button><button class="btn ghost" data-go="print" data-fk="print">Drucken</button>' +
     '<button class="btn ghost" data-go="new" data-fk="new">' + (newConfirm ? 'Wirklich neu starten? Noch einmal klicken.' : 'Neues Spiel') + '</button>' +
     (ui.saved ? '<span class="copied">Heruntergeladen – im Download-Ordner Deines Browsers.</span>' : '') + '</div>';

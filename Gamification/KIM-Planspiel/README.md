@@ -12,7 +12,7 @@ Im Mittelpunkt steht die Frage, wie ein KI-Projekt geplant und gesteuert wird: R
 
 ## Ablauf
 
-1. **Vorprojekt:** SWOT-Analyse ordnen, Projektmethode wählen, Aktivitäten planen (Reihenfolge und Gründlichkeit), Team und Meilensteine für das Hauptprojekt festlegen.
+1. **Projektinitialisierung:** SWOT-Analyse ordnen, Projektmethode wählen, Aktivitäten planen (Reihenfolge und Gründlichkeit), Team und Meilensteine für das Hauptprojekt festlegen.
 2. **Projektfreigabe:** Business Case für den Lenkungsausschuss.
 3. **Hauptprojekt in drei Phasen:** Kapazität verteilen, auf Ereignisse reagieren, an den Quality Gates berichten. Phase 3 endet mit dem Go-live (kommerzielle Markteinführung), zwei Monaten Hypercare und dem Projektabschluss mit Lessons Learned.
 4. **Auswertung über drei Jahre:** Business Case gegen Ist, kritische Erfolgsfaktoren und Erfolgskriterien.
