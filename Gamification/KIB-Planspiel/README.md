@@ -15,10 +15,11 @@ Im Mittelpunkt steht die Frage, was eine KI-Beauftragte oder ein KI-Beauftragter
 ## Ablauf
 
 1. **Mandat:** Gespräch mit der Geschäftsführung über Deine Rolle.
-2. **Posteingang:** Anfragen aus den Fachbereichen gründlich, pragmatisch oder gar nicht bearbeiten. Die Zeit reicht nicht für alles.
-3. **Vorfälle:** kommen ungefragt und lassen sich nicht verschieben.
-4. **Rückblick** am Ende jedes Abschnitts: Einordnung jeder Entscheidung mit Erklärung und Rechtsgrundlage.
-5. **Zwischenbilanz** nach 50 Tagen mit Lagebild, als Bericht zum Herunterladen.
+2. **Posteingang am ersten Tag:** zehn E-Mails nach Wichtigkeit und Dringlichkeit in die Eisenhower-Matrix sortieren – sofort erledigen, einplanen, delegieren oder weglegen.
+3. **Aufgaben:** Anfragen aus den Fachbereichen gründlich, pragmatisch oder gar nicht bearbeiten. Die Zeit reicht nicht für alles.
+4. **Vorfälle:** kommen ungefragt und lassen sich nicht verschieben.
+5. **Rückblick** am Ende jedes Abschnitts: Einordnung jeder Entscheidung mit Erklärung und Rechtsgrundlage.
+6. **Zwischenbilanz** nach 50 Tagen mit Lagebild, als Bericht zum Herunterladen.
 
 Neben dem Spiel zeigen zwei Reiter das **Lagebild** (Rückhalt der Geschäftsführung, Akzeptanz der Fachbereiche, Reifegrad je Themenfeld, offene Risiken) und alle bisherigen **Entscheidungen**.
 
