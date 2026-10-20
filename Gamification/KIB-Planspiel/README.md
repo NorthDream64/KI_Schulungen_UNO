@@ -22,7 +22,7 @@ Im Mittelpunkt steht die Frage, was eine KI-Beauftragte oder ein KI-Beauftragter
 6. **Rückblick** am Ende jedes Abschnitts: Einordnung jeder Entscheidung mit Erklärung und Rechtsgrundlage.
 7. **Zwischenbilanz** nach 50 Tagen mit Lagebild, als Bericht zum Herunterladen.
 
-Neben dem Spiel zeigen zwei Reiter das **Lagebild** (Rückhalt der Geschäftsführung, Akzeptanz der Fachbereiche, Reifegrad je Themenfeld, offene Risiken) und alle bisherigen **Entscheidungen**.
+Neben dem Spiel zeigen drei Reiter Deinen **100-Tage-Plan** (sobald die Roadmap steht, als Referenz zum Nachschlagen), das **Lagebild** (Rückhalt der Geschäftsführung, Akzeptanz der Fachbereiche, Reifegrad je Themenfeld, offene Risiken) und alle bisherigen **Entscheidungen**.
 
 ## Grundlagen
 

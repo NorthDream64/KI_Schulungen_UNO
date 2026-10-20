@@ -168,7 +168,8 @@
           padding: 10px 8px 8px;
           font-size: 14px;
         }
-        .tab:not(.on) .chip {
+        .tab:not(.on) .chip,
+        .tab .lg {
           display: none;
         }
       }
@@ -1593,6 +1594,9 @@
         overflow-wrap: break-word;
         hyphens: auto;
       }
+      .rc.lab b {
+        hyphens: manual;
+      }
       .rc.lab small {
         color: var(--muted);
         font-size: 11.5px;
@@ -1688,6 +1692,45 @@
       }
       .rmnote {
         margin: 10px 0 0;
+      }
+      /* Reiter „100-Tage-Plan“: eigener Plan als Referenz */
+      .rc.hd.jetzt {
+        border-color: var(--accent);
+        background: #f3efe6;
+        background: color-mix(in srgb, var(--accent) 12%, var(--soft));
+      }
+      .rc.hd .hier {
+        align-self: flex-start;
+        padding: 1px 8px;
+        border-radius: 999px;
+        background: var(--accent);
+        color: #fff;
+        font-size: 11px;
+        font-weight: 700;
+      }
+      .rmt.ro.ref {
+        padding-right: 7px;
+        cursor: help;
+      }
+      .rmdet {
+        margin: 16px 0 0;
+      }
+      .rmdet summary {
+        cursor: pointer;
+        font-weight: 600;
+      }
+      .rmdet h4 {
+        margin: 14px 0 4px;
+        font-size: 14px;
+      }
+      .rmlist {
+        margin: 0;
+        padding-left: 18px;
+        font-size: 13.5px;
+        line-height: 1.45;
+      }
+      .rmlist li {
+        margin: 0 0 6px;
       }
       .rmt .tg {
         color: var(--muted);
@@ -7505,6 +7548,16 @@ function rmCap(l, k, f) {
 function rmTile(a, o) {
   const k = rmKa(a.ka),
     inner = '<span class="ph">' + esc(a.label) + '</span><span class="tg">' + tage(rmT(a, o.al)) + '</span>';
+  if (o.ref)
+    return (
+      '<span class="rmt ro ref" style="--k:' +
+      k[2] +
+      '" title="' +
+      esc(a.name + ': ' + a.text) +
+      '">' +
+      inner +
+      '</span>'
+    );
   if (o.ro)
     return (
       '<span class="rmt ro ' +
@@ -7538,7 +7591,7 @@ function rmTile(a, o) {
   );
 }
 // Kalender: Zeilen = Kernaufgaben, Spalten = Abschnitte. Am Smartphone stehen die Abschnitte untereinander.
-function rmGrid(s, plan, edit) {
+function rmGrid(s, plan, edit, ref) {
   const sel = edit ? ui.selRm : null,
     fix1 = edit ? s.spent[1] : s.roadmap.fix1,
     cols = edit ? [0, 1, 2, 3, 4, 5] : [1, 2, 3, 4, 5],
@@ -7561,6 +7614,7 @@ function rmGrid(s, plan, edit) {
   let h =
     '<div class="rmw"><div class="rm' +
     (edit ? ' edit' : ' ro') +
+    (ref ? ' refm' : '') +
     (sel ? ' armed' : '') +
     '" role="group" aria-label="Kalender der 100 Tage">' +
     cell('corner', 1, 1, 0, '');
@@ -7591,7 +7645,9 @@ function rmGrid(s, plan, edit) {
         '>' +
         inner +
         '</button>'
-      : cell('hd', 1, cpos(c), c * 10, inner);
+      : ref && ref.jetzt === c
+        ? cell('hd jetzt', 1, cpos(c), c * 10, '<span class="hier">Du bist hier</span>' + inner)
+        : cell('hd', 1, cpos(c), c * 10, inner);
   });
   const fix = rmFix(s);
   h += cell('lab', 2, 1, 0, '<b>Bereits verplant</b><small>Mandat und Posteingang</small>');
@@ -7622,7 +7678,9 @@ function rmGrid(s, plan, edit) {
         .map(a =>
           edit
             ? rmTile(a, { sel: sel === a.id, al: s.al })
-            : rmTile(a, { ro: true, al: s.al, bew: a.bew[plan[a.id]] })
+            : ref
+              ? rmTile(a, { ref: true, al: s.al })
+              : rmTile(a, { ro: true, al: s.al, bew: a.bew[plan[a.id]] })
         )
         .join('');
       h += cell(
@@ -7904,6 +7962,58 @@ function viewAfterRoadmap(s) {
     esc(RM.hinweis) +
     ' Die Begründung je Aktivität steht im Rückblick am Ende des Abschnitts.</p>' +
     '<div class="actions"><button class="btn" data-go="inbox">Zu den Aufgaben</button></div></div>'
+  );
+}
+// Eigener Reiter: der eigene Plan als Referenz – ohne Bewertung, aktueller Abschnitt markiert
+function viewPlan(s) {
+  const plan = s.roadmap.plan,
+    jetzt = s.phase === 'end' ? 0 : s.sec,
+    liste = RM.ka
+      .map(([ka, name, col]) => {
+        const as = rmMix(s.al)
+          .filter(a => a.ka === ka)
+          .sort((a, b) => plan[a.id] - plan[b.id]);
+        return (
+          '<h4 style="color:' +
+          col +
+          '">' +
+          esc(name) +
+          '</h4><ul class="rmlist">' +
+          as
+            .map(
+              a =>
+                '<li><b>' +
+                esc(a.name) +
+                '</b> <span class="muted">· ' +
+                esc(rmSp(plan[a.id])[1]) +
+                ' · ' +
+                tage(rmT(a, s.al)) +
+                '</span><br>' +
+                esc(a.text) +
+                '</li>'
+            )
+            .join('') +
+          '</ul>'
+        );
+      })
+      .join('');
+  return (
+    '<div class="card"><div class="cardhead">' +
+    badge('Grundstein') +
+    '<span class="muted">Deine Planung</span></div><h2 tabindex="-1">Dein 100-Tage-Plan</h2>' +
+    '<p>So hast Du am ersten Tag Deine 100 Tage geplant.' +
+    (jetzt
+      ? ' Du bist jetzt bei <b>' + esc(SEC[jetzt].tage) + '</b>.'
+      : ' Die ersten 50 Tage liegen hinter Dir.') +
+    '</p>' +
+    rmGrid(s, plan, false, { jetzt }) +
+    '<details class="rmdet"><summary>Alle Aktivitäten mit Beschreibung</summary>' +
+    liste +
+    '</details>' +
+    '<p class="small muted rmnote">' +
+    esc(RM.hinweis) +
+    '</p>' +
+    '<div class="actions"><button class="btn" data-tab="spiel">Zurück zum Spiel</button></div></div>'
   );
 }
 function rmReview(s) {
@@ -8389,6 +8499,7 @@ function render(focus) {
       '</span>' +
       (s.name ? '<span>' + esc(s.name) + '</span>' : '');
     tabs.hidden = false;
+    if (ui.tab === 'plan' && !s.roadmap) ui.tab = 'spiel';
     const T = [
       [
         'spiel',
@@ -8397,6 +8508,7 @@ function render(focus) {
           ? '<span class="chip' + (left(s) <= 0 ? ' bad' : '') + '">' + tage(Math.max(0, left(s))) + '</span>'
           : '',
       ],
+      ...(s.roadmap ? [['plan', '<span><span class="lg">100-Tage-</span>Plan</span>', '']] : []),
       ['lage', 'Lagebild', '<span class="chip ' + zoneT(s.T) + '">' + zoneT(s.T) + '</span>'],
       ['log', 'Entscheidungen', '<span class="chip">' + s.order.length + '</span>'],
     ];
@@ -8410,12 +8522,12 @@ function render(focus) {
         (ui.tab === k) +
         '">' +
         l +
-        ' ' +
-        c +
+        (c ? ' ' + c : '') +
         '</button>'
     ).join('');
     let main = '';
     if (ui.tab === 'lage') main = lageHtml(s);
+    else if (ui.tab === 'plan') main = viewPlan(s);
     else if (ui.tab === 'log') main = viewLog(s);
     else if (s.phase === 'review') main = viewReview(s);
     else if (s.phase === 'end') main = viewEnd(s);
