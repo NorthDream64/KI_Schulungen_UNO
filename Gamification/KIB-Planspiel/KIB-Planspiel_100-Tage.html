@@ -6571,22 +6571,20 @@ function render(focus) {
       ['lage', 'Lagebild', '<span class="chip ' + zoneT(s.T) + '">' + zoneT(s.T) + '</span>'],
       ['log', 'Entscheidungen', '<span class="chip">' + s.order.length + '</span>'],
     ];
-    document.getElementById('tabsIn').innerHTML =
-      T.map(
-        ([k, l, c]) =>
-          '<button class="tab' +
-          (ui.tab === k ? ' on' : '') +
-          '" data-tab="' +
-          k +
-          '" aria-current="' +
-          (ui.tab === k) +
-          '">' +
-          l +
-          ' ' +
-          c +
-          '</button>'
-      ).join('') +
-      '<span style="flex:1"></span><button class="tab" data-go="menu" title="Zur Startseite – der Spielstand bleibt gespeichert">Pause</button>';
+    document.getElementById('tabsIn').innerHTML = T.map(
+      ([k, l, c]) =>
+        '<button class="tab' +
+        (ui.tab === k ? ' on' : '') +
+        '" data-tab="' +
+        k +
+        '" aria-current="' +
+        (ui.tab === k) +
+        '">' +
+        l +
+        ' ' +
+        c +
+        '</button>'
+    ).join('');
     let main = '';
     if (ui.tab === 'lage') main = lageHtml(s);
     else if (ui.tab === 'log') main = viewLog(s);
@@ -6689,12 +6687,6 @@ document.addEventListener('click', e => {
     clearSaved();
     G = null;
     meta = null;
-    render(true);
-  } else if (go === 'menu') {
-    G = null;
-    ui.open = null;
-    ui.after = null;
-    ui.startAl = null;
     render(true);
   } else if (go === 'inbox') {
     ui.open = null;
