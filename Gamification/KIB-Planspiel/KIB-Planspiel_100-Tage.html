@@ -943,26 +943,121 @@
       ul.tight li {
         margin: 2px 0;
       }
-      dl.people {
+      /* Personen: sieben Boxen, Erläuterung beim Darüberfahren oder per Tastatur */
+      .hoverhint {
+        margin: 0 0 6px;
+      }
+      .people {
         display: grid;
-        grid-template-columns: auto 1fr;
-        gap: 4px 14px;
-        font-size: 14.5px;
-        margin: 8px 0;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 10px;
+        margin: 8px 0 12px;
       }
-      dl.people dt {
-        font-weight: 600;
-      }
-      dl.people dd {
-        margin: 0;
-        color: var(--muted);
+      @media (max-width: 900px) {
+        .people {
+          grid-template-columns: 1fr 1fr;
+        }
       }
       @media (max-width: 560px) {
-        dl.people {
+        .people {
           grid-template-columns: 1fr;
         }
-        dl.people dd {
-          margin-bottom: 6px;
+      }
+      .person {
+        position: relative;
+        display: grid;
+        grid-template-columns: 36px minmax(0, 1fr);
+        align-items: start;
+        gap: 0 10px;
+        min-height: 84px;
+        padding: 10px 12px;
+        border: 1px solid var(--rule);
+        border-radius: 10px;
+        background: var(--card);
+        font-size: 14px;
+        cursor: default;
+      }
+      .person:focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 2px;
+      }
+      .person .av {
+        flex: none;
+        display: grid;
+        place-items: center;
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: var(--accent-soft);
+        color: var(--accent);
+        font-weight: 700;
+        font-size: 13px;
+      }
+      .person .who b {
+        display: block;
+      }
+      .person .rolle {
+        display: block;
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.35;
+        margin-top: 2px;
+      }
+      .person .nw {
+        white-space: nowrap;
+      }
+      .person .info {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        min-height: 100%;
+        z-index: 2;
+        padding: 10px 12px;
+        border-radius: 10px;
+        background: var(--accent);
+        color: #fff;
+        font-size: 13.5px;
+        line-height: 1.4;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.15s ease;
+        box-shadow: 0 6px 18px rgba(10, 74, 122, 0.25);
+      }
+      .person .info b {
+        display: block;
+        margin-bottom: 3px;
+      }
+      .person:hover .info,
+      .person:focus .info {
+        opacity: 1;
+      }
+      @media (hover: none) {
+        .hoverhint {
+          display: none;
+        }
+        .person {
+          min-height: 0;
+        }
+        .person .info {
+          position: static;
+          grid-column: 1 / -1;
+          min-height: 0;
+          margin-top: 6px;
+          padding: 0;
+          background: none;
+          color: var(--muted);
+          font-size: 13px;
+          opacity: 1;
+          box-shadow: none;
+        }
+        .person .info b {
+          display: none;
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .person .info {
+          transition: none;
         }
       }
 
@@ -5537,6 +5632,32 @@ const bewChip = b => '<span class="bew ' + b + '">' + b + '</span>';
 const optText = o => (o.ll ? 'Liegen lassen – vorerst nicht bearbeiten' : o.text);
 
 /* ───────────── Ansichten ───────────── */
+// Personen auf der Startseite: Name, Funktion (immer sichtbar, HTML erlaubt), Erläuterung (beim Darüberfahren)
+const PERSONEN = [
+  [
+    'Henrike Sievers',
+    'Geschäftsführerin<br>Vertrieb, Marketing, <span class="nw">E-Commerce</span>',
+    '„Ich will, dass wir KI nutzen – aber ich will nicht in der Zeitung stehen.“',
+  ],
+  [
+    'Thomas Kühn',
+    'Geschäftsführer<br>Finanzen, IT, Personal',
+    '„Was kostet uns das – und was kostet es uns, wenn wir es falsch machen?“',
+  ],
+  [
+    'Marieke de Vries',
+    'Leiterin <span class="nw">E-Commerce</span> und Marketing',
+    'Treibt KI am stärksten.',
+  ],
+  ['Jens Wolter', 'Leiter Filialen', '„Ich brauche Lösungen für die Fläche, keine Richtlinien.“'],
+  ['Sabine Rehse', 'Personalleiterin', 'Testet gern neue Funktionen des Jobportals.'],
+  ['Arne Lüders', 'IT-Leiter', 'Sorgt sich um Schatten-IT und Daten außerhalb der EU.'],
+  [
+    'Dirk Bahr',
+    'Betriebsratsvorsitzender',
+    'Konstruktiv, aber wachsam bei Leistungs- und Verhaltenskontrolle.',
+  ],
+];
 function viewStart() {
   const saved = loadSaved();
   let h = '';
@@ -5565,28 +5686,26 @@ function viewStart() {
     '<h3>Deine Rolle</h3><div class="tasks"><div><b>Inventarisierung</b>Was haben wir, wo läuft es, wer ist zuständig?</div><div><b>Risikobewertung</b>Welche Risikoklasse, welche Pflichten?</div><div><b>Governance</b>Wer darf was, wie wird entschieden und dokumentiert?</div><div><b>Schulung</b>KI-Kompetenz der Beschäftigten fördern.</div></div>' +
     '<p class="small muted">Was die Rolle nicht ist: keine Entwicklungsaufgabe, keine Sonderhaftung – die Verantwortung bleibt bei der Geschäftsführung –, kein Ersatz für die Datenschutzbeauftragte oder die Informationssicherheit.</p>' +
     '<p>In diesem Spiel bist Du auch das <strong>"KI-Gewissen"</strong> des Unternehmens: Du denkst im Entscheidungsprozess diejenigen mit, die nicht am Tisch sitzen – Beschäftigte, Bewerberinnen und Bewerber, Kundinnen und Kunden, externe Auditorinnen, Aufsichtsbehörden, mitunter sogar die Öffentlichkeit.</p>' +
-    '<h3>Wer Dir begegnet</h3><dl class="people">' +
-    [
-      [
-        'Henrike Sievers',
-        'Geschäftsführerin (Vertrieb, Marketing, E-Commerce): „Ich will, dass wir KI nutzen – aber ich will nicht in der Zeitung stehen.“',
-      ],
-      [
-        'Thomas Kühn',
-        'Geschäftsführer (Finanzen, IT, Personal): „Was kostet uns das – und was kostet es uns, wenn wir es falsch machen?“',
-      ],
-      ['Marieke de Vries', 'Leiterin E-Commerce und Marketing, treibt KI am stärksten.'],
-      ['Jens Wolter', 'Leiter Filialen: „Ich brauche Lösungen für die Fläche, keine Richtlinien.“'],
-      ['Sabine Rehse', 'Personalleiterin, testet gern neue Funktionen des Jobportals.'],
-      ['Arne Lüders', 'IT-Leiter, sorgt sich um Schatten-IT und Daten außerhalb der EU.'],
-      [
-        'Dirk Bahr',
-        'Betriebsratsvorsitzender, konstruktiv, aber wachsam bei Leistungs- und Verhaltenskontrolle.',
-      ],
-    ]
-      .map(([a, b]) => '<dt>' + a + '</dt><dd>' + b + '</dd>')
-      .join('') +
-    '</dl>' +
+    '<h3>Wer Dir begegnet</h3><p class="small muted hoverhint">Fahre mit der Maus über eine Box, um mehr zu erfahren.</p><div class="people">' +
+    PERSONEN.map(
+      ([name, rolle, info]) =>
+        '<div class="person" tabindex="0"><span class="av" aria-hidden="true">' +
+        name
+          .split(' ')
+          .filter(w => w[0] === w[0].toUpperCase())
+          .map(w => w[0])
+          .join('') +
+        '</span><span class="who"><b>' +
+        name +
+        '</b><span class="rolle">' +
+        rolle +
+        '</span></span><span class="info"><b aria-hidden="true">' +
+        name +
+        '</b>' +
+        info +
+        '</span></div>'
+    ).join('') +
+    '</div>' +
     '<h3>So läuft das Spiel</h3><ul class="tight">' +
     '<li>Die 100 Tage sind in vier Abschnitte zu je 25 Tagen geteilt. In jedem Abschnitt hast Du ein begrenztes Zeitbudget für KI-Themen.</li>' +
     '<li>Anfragen landen in Deinem Posteingang. Du kannst sie gründlich, pragmatisch oder gar nicht bearbeiten – das kostet unterschiedlich viel Zeit. Alles schaffst Du nicht.</li>' +
@@ -5959,7 +6078,7 @@ function triageEinschaetzung(s, mitVergleich) {
     t.gut +
     ' von ' +
     TRI.mails.length +
-    ' E-Mails liegen im empfohlenen Feld, die Abarbeitung der als "sofort erledigen" eingestuften Aufgaben kostet Dich ' +
+    ' E-Mails liegen im empfohlenen Feld, die Abarbeitung der als „Sofort erledigen“ eingestuften Aufgaben kostet Dich ' +
     tage(t.tage) +
     '. ' +
     esc(STIL_SATZ[t.stil]) +
