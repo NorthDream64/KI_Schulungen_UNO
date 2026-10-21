@@ -1760,6 +1760,88 @@
         color: var(--muted);
         white-space: nowrap;
       }
+      /* Kleine Infoboxen im Kalender (Bereits verplant, Alltagsereignisse): voller Inhalt beim Überfahren oder Antippen */
+      .rc.cell.alltc {
+        min-height: 0;
+        border-color: transparent;
+        background: transparent;
+      }
+      /* Infoboxen liegen über den Zeilen darunter, damit der Inhalt beim Überfahren lesbar ist */
+      .rc.cell.fixc,
+      .rc.cell.alltc {
+        position: relative;
+        z-index: 3;
+      }
+      .iboxes {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 3px;
+      }
+      .ibox {
+        position: relative;
+        max-width: 100%;
+        padding: 1px 6px;
+        border: 1px solid var(--rule);
+        border-left: 4px solid var(--muted);
+        border-radius: 5px;
+        background: #fff;
+        color: var(--ink);
+        font-size: 11.5px;
+        font-weight: 400;
+        line-height: 1.5;
+        cursor: help;
+      }
+      .ibox .ct {
+        display: block;
+        max-width: 8.5em;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      .ibox.ok {
+        border-left-color: #2f6b3a;
+      }
+      .ibox.ver {
+        border-left-color: #d9a91f;
+      }
+      .ibox.vf {
+        border-color: #e7b9b5;
+        border-left-color: var(--vf);
+        background: #fbeeed;
+      }
+      .ibox::after {
+        content: attr(data-tip);
+        position: absolute;
+        top: calc(100% + 4px);
+        left: 0;
+        z-index: 30;
+        width: max-content;
+        max-width: 240px;
+        padding: 6px 8px;
+        border-radius: 6px;
+        background: var(--ink);
+        color: #fff;
+        font-size: 12px;
+        line-height: 1.35;
+        white-space: normal;
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+        transition: opacity 0.12s;
+      }
+      .ibox.r::after {
+        left: auto;
+        right: 0;
+      }
+      .ibox:hover::after,
+      .ibox:focus::after {
+        opacity: 1;
+        visibility: visible;
+      }
+      .ibox:focus {
+        outline: 2px solid var(--accent);
+        outline-offset: 1px;
+      }
       .cap2 {
         display: none;
         font-size: 11.5px;
@@ -12760,6 +12842,41 @@ const rmBest = a =>
     .filter(c => a.bew[c] === 'empfohlen')
     .map(Number);
 // Was aus dem Posteingang schon im Kalender steht: Sofort-Aufgaben und zugesagte Zeit (Abschnitt 1)
+// Kleine Infobox im Kalender: kurzer Text, voller Inhalt beim Überfahren oder Antippen (Uli, 21.10.2026)
+const ibox = (label, tip, cls) =>
+  '<span class="ibox' +
+  (cls ? ' ' + cls : '') +
+  '" tabindex="0" data-tip="' +
+  esc(tip) +
+  '" aria-label="' +
+  esc(tip) +
+  '"><span class="ct">' +
+  esc(label) +
+  '</span></span>';
+/* Alltagsereignisse im Plan-Reiter: was in einem Zeitraum an Anfragen und Vorfällen hereinkam und entschieden ist –
+   ohne Mandat (steht unter „Bereits verplant“) und ohne die Aufgaben aus dem Plan (stehen in ihrer Zeile) */
+function alltag(s, c) {
+  const out = [];
+  if (c === 1 && s.w2 && s.w2.tri)
+    W2.mails.forEach(m => {
+      if (s.w2.tri.map[m.id] === 'Q1')
+        out.push([m.betreff, m.betreff + ' – E-Mail am Montagmorgen, sofort erledigt', 'ok']);
+    });
+  s.order.forEach(k => {
+    const d = s.dec[k];
+    if (d.sec !== c || k === 'K01' || kartenAkt(k)) return;
+    const c0 = DATA.cards[k],
+      st = isVorfall(k)
+        ? ['vf', 'Vorfall']
+        : d.deleg
+          ? ['ok', 'delegiert']
+          : d.auto
+            ? ['ver', 'liegen geblieben']
+            : ['ok', 'entschieden'];
+    out.push([c0.titel, c0.titel + ' – ' + c0.absender + ' · ' + st[1], st[0]]);
+  });
+  return out;
+}
 function rmFix(s) {
   if (!s.triage) return [];
   const mandat = s.dec.K01 && s.dec.K01.cost ? [[DATA.cards.K01.titel, s.dec.K01.cost]] : [];
@@ -14290,24 +14407,40 @@ function rmGrid(s, plan, edit, ref) {
         ? cell('hd jetzt', 1, cpos(c), c * 10, '<span class="hier">Du bist hier</span>' + inner)
         : cell('hd', 1, cpos(c), c * 10, inner);
   });
-  const fix = rmFix(s);
-  h += cell('lab', 2, 1, 0, '<b>Bereits verplant</b><small>Mandat und Posteingang</small>');
+  const fix = rmFix(s),
+    rechts = c => (c >= 4 ? ' r' : ''),
+    zeile = ref && s.w2 ? 1 : 0; // Alltagsereignisse nur im Plan-Reiter
+  h += cell('lab', 2, 1, 0, '<b>Bereits verplant</b>');
   cols.forEach(c => {
-    const inner =
+    const ch =
       c === 1 && fix.length
-        ? '<span class="cap2">Bereits verplant</span>' +
-          fix
-            .map(([t, d]) => '<span class="fix">' + esc(t) + ' <small>' + tage(d) + '</small></span>')
-            .join('')
+        ? fix.map(([t]) => ibox(t, t, 'fx' + rechts(c))).join('')
         : c === 2 && fix2
-          ? '<span class="cap2">Bereits verplant</span><span class="fix">Von Tag 1–25 nach hinten geschoben <small>' +
-            tage(fix2) +
-            '</small></span>'
+          ? ibox(
+              'Von Tag 1–25 nach hinten geschoben',
+              'Von Tag 1–25 nach hinten geschoben: Vorfall oder Terminkonflikt',
+              'fx' + rechts(c)
+            )
           : '';
+    const inner = ch
+      ? '<span class="cap2">Bereits verplant</span><span class="iboxes">' + ch + '</span>'
+      : '';
     h += cell('cell fixc' + (inner ? '' : ' leer'), 2, cpos(c), c * 10 + 1, inner);
   });
+  if (zeile) {
+    h += cell('lab', 3, 1, 0, '<b>Alltags\u00adereignisse</b>');
+    cols.forEach(c => {
+      const ev = c >= 1 && c <= 4 ? alltag(s, c) : [];
+      const inner = ev.length
+        ? '<span class="cap2">Alltagsereignisse</span><span class="iboxes">' +
+          ev.map(([t, tip, st]) => ibox(t, tip, st + rechts(c))).join('') +
+          '</span>'
+        : '';
+      h += cell('cell alltc' + (inner ? '' : ' leer'), 3, cpos(c), c * 10 + 1, inner);
+    });
+  }
   RM.ka.forEach(([ka, name, col], i) => {
-    const r = i + 3;
+    const r = i + 3 + zeile;
     h += cell(
       'lab',
       r,
