@@ -647,7 +647,7 @@
         width: 100%;
         text-align: left;
         display: grid;
-        grid-template-columns: auto minmax(0, 1fr) auto;
+        grid-template-columns: 7.5rem minmax(0, 1fr);
         gap: 4px 14px;
         align-items: center;
         background: var(--card);
@@ -770,6 +770,51 @@
         font-weight: 700;
         color: var(--bad);
         margin-left: 6px;
+      }
+      .new.neu {
+        color: var(--accent);
+      }
+      /* Status im Posteingang: offen (weiß), entschieden (grün), verschoben (gelb), Vorfall (rot) */
+      .stb {
+        display: inline-block;
+        justify-self: start;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        border-radius: 6px;
+        padding: 2px 8px;
+        border: 1px solid transparent;
+        white-space: nowrap;
+      }
+      .stb.offen {
+        background: #fff;
+        color: var(--ink);
+        border-color: #b9b3a6;
+      }
+      .stb.ok {
+        background: #2f6b3a;
+        color: #fff;
+      }
+      .stb.ver {
+        background: #f2d27a;
+        color: #5a4200;
+      }
+      .stb.vf {
+        background: var(--vf);
+        color: #fff;
+      }
+      details.w2info {
+        margin: 6px 0 0;
+      }
+      details.w2info summary {
+        cursor: pointer;
+        font-size: 14px;
+        color: var(--accent);
+      }
+      details.w2info p {
+        margin: 6px 0 0;
+        color: var(--muted);
       }
 
       /* Karte */
@@ -9652,7 +9697,7 @@ const DATA = {
   "woche2": {
     "titel": "Woche 2 – Dein Posteingang am Montagmorgen",
     "intro": "In der ersten Woche hast Du wichtige Stakeholder kennengelernt und Deine ersten 100 Tage im Unternehmen geplant. Jetzt trifft Dein Plan auf die Wirklichkeit …",
-    "hinweis": "Im Posteingang liegt, was Du am ersten Tag sofort erledigen wolltest, dazu die Aufgaben, die Du für Tag 1–25 eingeplant hast. Was Du für später eingeplant hast, kommt in den nächsten Tagen dazu – Neues ebenfalls. Die Zeit reicht nicht für alles: Was Du nicht schaffst, kannst Du verschieben oder liegen lassen. Wird es eng, kannst Du auch andere Aufgaben nach hinten schieben – die Zeit fehlt Dir dann im nächsten Abschnitt.",
+    "hinweis": "Im Posteingang liegt, was Du am ersten Tag sofort erledigen wolltest, dazu die Aufgaben, die Du für Tag 1–25 eingeplant hast. Was Du für später eingeplant hast, kommt in den nächsten Tagen dazu – Neues ebenfalls. Mehr als drei offene Anfragen liegen nie gleichzeitig auf Deinem Tisch: Neues kommt, sobald Du etwas erledigt hast. Die Zeit reicht nicht für alles: Was Du nicht schaffst, kannst Du verschieben oder liegen lassen. Wird es eng, kannst Du auch andere Aufgaben nach hinten schieben – die Zeit fehlt Dir dann im nächsten Abschnitt.",
     "folge": {
       "E1": [
         "K02",
@@ -9768,6 +9813,7 @@ const DATA = {
       "K06",
       "K08"
     ],
+    "maxOffen": 3,
     "mails": [
       {
         "id": "D1",
@@ -10116,13 +10162,25 @@ function decide(s, k, nr, auto, deleg) {
       fx.kaskade = { t: tK, last: nachL };
     }
   }
-  // Woche 2: Nach jeder eigenen Entscheidung kommt eine Anfrage nach – erst die eingeplanten, dann neue
-  if (s.sec === 1 && s.w2 && !auto && s.w2.queue.length) {
-    const nk = s.w2.queue.shift();
-    s.w2.neu.push(nk);
-    if (entdecktOk(s, nk)) fx.nachgekommen = nk;
+  // Woche 2: Nach jeder eigenen Entscheidung kommt eine Anfrage nach – erst die eingeplanten, dann neue –,
+  // aber nie mehr als W2.maxOffen offene Anfragen neben den Roadmap-Aufgaben (gegen Überforderung)
+  if (s.sec === 1 && s.w2 && !auto) {
+    s.w2.zuletzt = [];
+    const i = s.w2.queue.findIndex(x => entdecktOk(s, x));
+    if (i >= 0 && offeneAnfragen(s) < W2.maxOffen) {
+      const nk = s.w2.queue.splice(i, 1)[0];
+      s.w2.neu.push(nk);
+      s.w2.zuletzt = [nk];
+      fx.nachgekommen = nk;
+    }
   }
   return fx;
+}
+// Offene Anfragen in Woche 2 – ohne Roadmap-Aufgaben, Mandat und Vorfall
+function offeneAnfragen(s) {
+  if (!s.w2) return 0;
+  return visible(s, 1).filter(k => !s.dec[k] && k !== 'K01' && !isVorfall(k) && s.w2.grund[k] !== 'roadmap')
+    .length;
 }
 /* Posteingang am ersten Tag: zehn E-Mails in die Eisenhower-Matrix */
 const TRI = DATA.triage;
@@ -10208,6 +10266,15 @@ function w2Start(s) {
   });
   spaeter.forEach(k => add(w.queue, k, 'eingeplant'));
   W2.neu.forEach(k => add(w.queue, k, 'neu'));
+  // Montagmorgen: höchstens W2.maxOffen Anfragen; was sofort erledigt werden sollte, kommt als Nächstes nach
+  const anfr = w.jetzt.filter(k => w.grund[k] !== 'roadmap'),
+    spaeterSofort = anfr
+      .filter(k => entdecktOk(s, k))
+      .slice(W2.maxOffen)
+      .concat(anfr.filter(k => !entdecktOk(s, k)));
+  w.jetzt = w.jetzt.filter(k => !spaeterSofort.includes(k));
+  w.queue = spaeterSofort.concat(w.queue);
+  w.zuletzt = [];
   s.w2 = w;
   s.rmIst = Object.assign({}, plan);
   Object.keys(w.deleg).forEach(k => {
@@ -10895,9 +10962,9 @@ function sectionHead(s) {
       S.tage +
       '</span></div><p class="lead" style="margin:6px 0 0">' +
       esc(W2.intro) +
-      '</p><p class="small muted" style="margin:6px 0 0">' +
+      '</p><details class="w2info"><summary>So läuft Woche 2</summary><p class="small">' +
       esc(W2.hinweis) +
-      '</p>'
+      '</p></details>'
     );
   return (
     '<div class="secHead"><h2 tabindex="-1">Abschnitt ' +
@@ -11013,40 +11080,29 @@ function w2Sorter(s) {
     ' einsortiert</span></div></div>'
   );
 }
-// Gruppen im Posteingang von Woche 2
-const W2_GRUPPEN = [
-  ['sofort', 'Sofort erledigen – vom ersten Tag'],
-  ['roadmap', 'Aus Deiner Roadmap · Tag 1–25'],
-  ['nach', 'Neue Anfragen'],
-  ['delegiert', 'Delegiert'],
-  ['weggelegt', 'Weggelegt'],
-  ['woche1', 'Erste Woche'],
-];
-function w2Gruppe(s, k) {
-  if (k === 'K01') return 'woche1';
-  const g = s.w2.grund[k];
-  return g === 'eingeplant' || g === 'neu' ? 'nach' : g || 'nach';
+// Status statt Kartentyp: offen (weiß), entschieden (grün), verschoben (gelb), Vorfall (rot)
+const kartenAkt = k => DATA.cards[k].akt || (RM.akt.find(a => a.karte === k) || {}).id;
+function stBadge(s, k) {
+  const d = s.dec[k],
+    akt = kartenAkt(k);
+  if (!d)
+    return isVorfall(k) ? '<span class="stb vf">Vorfall</span>' : '<span class="stb offen">offen</span>';
+  if (d.deleg) return '<span class="stb ok">delegiert</span>';
+  if (akt && (s.rmStatus[akt] === 'verschoben' || s.rmStatus[akt] === 'hinter100'))
+    return '<span class="stb ver">verschoben</span>';
+  if (d.auto) return '<span class="stb ver">liegen geblieben</span>';
+  return '<span class="stb ok">entschieden</span>';
 }
 function viewInbox(s) {
   const vis = visible(s),
     vf = vis.filter(k => isVorfall(k) && !s.dec[k]);
   const w2 = s.sec === 1 && s.w2,
     sperre = (w2 && !s.w2.tri) || s.rmOffen > 0;
-  const order = vf.concat(vis.filter(k => !vf.includes(k)));
+  const istRm = k => !!(w2 && s.w2.grund[k] === 'roadmap'),
+    neu = k => !!(w2 && (s.w2.zuletzt || []).includes(k));
   const item = k => {
     const c = DATA.cards[k],
       d = s.dec[k];
-    const akt = DATA.cards[k].akt,
-      versch = d && akt && s.rmStatus[akt] === 'verschoben';
-    const st = d
-      ? d.deleg
-        ? 'delegiert' + (d.cost ? ' · ' + tage(d.cost) : '')
-        : versch
-          ? 'verschoben'
-          : d.auto
-            ? 'liegen geblieben'
-            : 'entschieden · ' + tage(d.cost)
-      : 'offen';
     const blocked = ((vf.length && !vf.includes(k)) || sperre) && !d;
     return (
       '<li class="' +
@@ -11057,36 +11113,39 @@ function viewInbox(s) {
       '"' +
       (blocked ? ' disabled aria-disabled="true"' : '') +
       '>' +
-      badge(c.typ) +
+      stBadge(s, k) +
       '<span><span class="from">' +
       esc(c.absender) +
       '</span><br><span class="tt">' +
       esc(c.titel) +
       '</span>' +
-      (vf.includes(k) ? '<span class="new">eilt</span>' : '') +
-      '</span>' +
-      '<span class="st ' +
-      (d ? '' : 'open') +
-      '">' +
-      st +
+      (vf.includes(k)
+        ? '<span class="new">eilt</span>'
+        : neu(k) && !d
+          ? '<span class="new neu">neu</span>'
+          : '') +
       '</span></button></li>'
     );
   };
-  let lst = '';
-  if (w2) {
-    lst =
-      (vf.length ? '<ul class="inbox">' + vf.map(item).join('') + '</ul>' : '') +
-      W2_GRUPPEN.map(([g, titel]) => {
-        const ks = order.filter(k => !vf.includes(k) && w2Gruppe(s, k) === g);
-        return ks.length
-          ? '<h3 class="grp">' + esc(titel) + '</h3><ul class="inbox">' + ks.map(item).join('') + '</ul>'
-          : '';
-      }).join('');
-  } else lst = '<ul class="inbox">' + order.map(item).join('') + '</ul>';
+  // Offen: Vorfall, dann Anfragen, dann Roadmap-Aufgaben · Erledigt: zuletzt Entschiedenes oben
+  const offen = vf.concat(
+    vis.filter(k => !s.dec[k] && !vf.includes(k) && !istRm(k)),
+    vis.filter(k => !s.dec[k] && !vf.includes(k) && istRm(k))
+  );
+  const erledigt = s.order.filter(k => vis.includes(k)).reverse();
+  let lst =
+    '<h3 class="grp">Noch offen</h3>' +
+    (offen.length
+      ? '<ul class="inbox">' + offen.map(item).join('') + '</ul>'
+      : '<p class="muted" style="margin:6px 0 0">Nichts mehr offen.</p>') +
+    (w2 && s.w2.tri ? w2Sorter(s) : '') +
+    (erledigt.length
+      ? '<h3 class="grp">Erledigt</h3><ul class="inbox">' + erledigt.map(item).join('') + '</ul>'
+      : '');
   const open = openCards(s).length;
   let h = '<div class="card">' + sectionHead(s);
   h += kaskadeBox(s);
-  if (w2) h += w2Sorter(s);
+  if (w2 && !s.w2.tri) h += w2Sorter(s);
   if (ui.msg) {
     h += '<div class="note warn" style="margin-top:12px">' + ui.msg + '</div>';
   }
