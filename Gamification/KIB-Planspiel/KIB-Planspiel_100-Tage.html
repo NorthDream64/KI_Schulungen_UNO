@@ -1783,6 +1783,56 @@
       .rmt.st-verschoben .stand {
         color: var(--muted);
       }
+      .rmt.st-hinter100 {
+        border-style: dashed;
+        border-left-style: solid;
+        background: #fff;
+        opacity: 0.85;
+      }
+      .rmt.st-hinter100 .stand {
+        color: var(--bad);
+      }
+      /* Kalender läuft über: Wahl, was hinter Tag 100 rückt */
+      .kaskade {
+        margin: 14px 0 4px;
+        padding: 12px 14px;
+        border: 1px solid #e3c98f;
+        border-left: 4px solid #b07a12;
+        border-radius: 10px;
+        background: #fdf7ea;
+      }
+      .kaskade h3 {
+        margin: 0 0 4px;
+      }
+      .kaskade p {
+        margin: 0 0 8px;
+      }
+      .kaskwahl {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+      .kaskwahl .btn {
+        justify-content: flex-start;
+        text-align: left;
+        background: #fff;
+      }
+      .kaskwahl .ka {
+        display: inline-block;
+        width: 10px;
+        height: 10px;
+        margin-right: 8px;
+        border-radius: 2px;
+        flex: none;
+      }
+      .kaskwahl .btn b {
+        font-weight: 600;
+      }
+      .kaskwahl small {
+        display: block;
+        color: var(--muted);
+        font-weight: 400;
+      }
       .rmdet {
         margin: 16px 0 0;
       }
@@ -9944,7 +9994,8 @@ function newState(al, name) {
     closed: {},
     w2: null, // Woche 2: was am Montagmorgen im Posteingang liegt und was nachkommt
     rmIst: null, // Roadmap im Ist: Abschnitt je Aktivität nach Umsetzen und Verschieben
-    rmStatus: {}, // erledigt / schlank / verschoben
+    rmStatus: {}, // erledigt / schlank / verschoben / hinter100
+    rmOffen: 0, // Kalender läuft über: so oft muss die KIB noch wählen, was hinter Tag 100 rückt
   };
   TFK.forEach(t => {
     s.RG[t] = st.RG;
@@ -9999,7 +10050,9 @@ function visible(s, sec) {
   });
 }
 function decide(s, k, nr, auto, deleg) {
-  const o = optOf(s, k, nr);
+  const o = optOf(s, k, nr),
+    tK = s.sec + 1,
+    vorL = s.rmIst && tK <= 4 ? kalLast(s, tK) : 0;
   const c = deleg ? deleg.tage || 0 : auto ? 0 : cost(s, k, o);
   const fx = { neu: [], weg: [], entdeckt: [], geaendert: [] };
   s.spent[s.sec] += c;
@@ -10053,6 +10106,14 @@ function decide(s, k, nr, auto, deleg) {
     if (n >= DATA.vorfallNach) {
       s.vorfall = true;
       fx.vorfall = true;
+    }
+  }
+  // Kalender läuft über: Dann muss die KIB wählen, was hinter Tag 100 rückt
+  if (s.rmIst && tK <= 4) {
+    const nachL = kalLast(s, tK);
+    if (nachL > vorL && nachL > RM.kap && kaskadeKandidaten(s).length) {
+      s.rmOffen += 1;
+      fx.kaskade = { t: tK, last: nachL };
     }
   }
   // Woche 2: Nach jeder eigenen Entscheidung kommt eine Anfrage nach – erst die eingeplanten, dann neue
@@ -10207,6 +10268,26 @@ function rmFix(s) {
   );
 }
 const rmLast = (plan, c, al) => RM.akt.filter(a => plan[a.id] === c).reduce((n, a) => n + rmT(a, al), 0);
+/* Kalender im Ist (Entscheidung Uli, 21.10.2026): Wer verschiebt oder andere Aufgaben nach hinten schiebt, füllt den
+   nächsten Abschnitt. Ist er voll (mehr als RM.kap Arbeitstage), rückt eine Aktivität von Tag 76–100 hinter Tag 100 –
+   die KIB wählt, welche. Einfache Rechnung: Tag 51–75 wird dabei nicht geprüft. */
+const kalLast = (s, t) => rmLast(s.rmIst || s.roadmap.plan, t, s.al) + (t === s.sec + 1 ? ueberhang(s) : 0);
+function kaskadeKandidaten(s) {
+  const ist = s.rmIst || {};
+  for (const c of [4, 3]) {
+    if (c <= s.sec) continue;
+    const l = RM.akt.filter(a => ist[a.id] === c);
+    if (l.length) return l;
+  }
+  return [];
+}
+function kaskade(s, akt) {
+  if (!s.rmOffen || !kaskadeKandidaten(s).some(a => a.id === akt)) return null;
+  s.rmIst[akt] = 5;
+  s.rmStatus[akt] = 'hinter100';
+  s.rmOffen -= 1;
+  return { akt };
+}
 // Arbeitstage je Abschnitt; Tag 1–25: Mandat und Sofort-Aufgaben (fix1) sind schon verplant
 const rmKap = c => (c === 1 ? DATA.budget[1] : c <= 4 ? RM.kap : null);
 function rmPruefen(plan, fix1, al) {
@@ -10322,6 +10403,7 @@ function apply(s, a) {
     return fx;
   }
   if (a[0] === 'w') return triageW2(s, a[1]);
+  if (a[0] === 'p') return kaskade(s, a[1]);
   if (a[0] === 'v') {
     s.vorfall = true;
     return null;
@@ -10830,6 +10912,39 @@ function sectionHead(s) {
     '</p>'
   );
 }
+function kaskadeBox(s) {
+  if (!s.rmOffen) return '';
+  const t = s.sec + 1,
+    l = kalLast(s, t);
+  return (
+    '<div class="kaskade"><h3>Dein Kalender läuft über</h3><p>' +
+    esc(rmSp(t)[1]) +
+    ' ist mit <b>' +
+    zahl(l) +
+    ' von ' +
+    RM.kap +
+    ' Arbeitstagen</b> belegt. Alles rückt ein Stück nach hinten – eine Aktivität fällt aus Deinen ersten 100 Tagen heraus. <b>Welche rückt hinter Tag 100?</b></p><div class="kaskwahl">' +
+    kaskadeKandidaten(s)
+      .map(
+        a =>
+          '<button class="btn sm ghost" data-kask="' +
+          a.id +
+          '"><span class="ka" style="background:' +
+          rmKa(a.ka)[2] +
+          '"></span><span><b>' +
+          esc(a.name) +
+          '</b><small>' +
+          esc(rmKa(a.ka)[1]) +
+          ' · ' +
+          esc(rmSp(s.rmIst[a.id])[1]) +
+          ' · ' +
+          tage(rmT(a, s.al)) +
+          '</small></span></button>'
+      )
+      .join('') +
+    '</div></div>'
+  );
+}
 function w2Sorter(s) {
   const w = s.w2;
   if (w.tri)
@@ -10916,7 +11031,7 @@ function viewInbox(s) {
   const vis = visible(s),
     vf = vis.filter(k => isVorfall(k) && !s.dec[k]);
   const w2 = s.sec === 1 && s.w2,
-    sperre = w2 && !s.w2.tri;
+    sperre = (w2 && !s.w2.tri) || s.rmOffen > 0;
   const order = vf.concat(vis.filter(k => !vf.includes(k)));
   const item = k => {
     const c = DATA.cards[k],
@@ -10970,6 +11085,7 @@ function viewInbox(s) {
   } else lst = '<ul class="inbox">' + order.map(item).join('') + '</ul>';
   const open = openCards(s).length;
   let h = '<div class="card">' + sectionHead(s);
+  h += kaskadeBox(s);
   if (w2) h += w2Sorter(s);
   if (ui.msg) {
     h += '<div class="note warn" style="margin-top:12px">' + ui.msg + '</div>';
@@ -10989,17 +11105,19 @@ function viewInbox(s) {
     s.sec +
     ' abschließen</button>' +
     '<span class="small muted">' +
-    (sperre
-      ? 'Erst die zwei neuen E-Mails einsortieren.'
-      : vf.length
-        ? 'Erst den Vorfall bearbeiten.'
-        : open
-          ? open +
-            ' Karte' +
-            (open === 1 ? ' bleibt' : 'n bleiben') +
-            ' dann liegen.' +
-            (w2 && s.w2.queue.length ? ' Was noch nachkäme, bleibt ebenfalls liegen.' : '')
-          : 'Alles bearbeitet.') +
+    (s.rmOffen
+      ? 'Erst entscheiden, was hinter Tag 100 rückt.'
+      : sperre
+        ? 'Erst die zwei neuen E-Mails einsortieren.'
+        : vf.length
+          ? 'Erst den Vorfall bearbeiten.'
+          : open
+            ? open +
+              ' Karte' +
+              (open === 1 ? ' bleibt' : 'n bleiben') +
+              ' dann liegen.' +
+              (w2 && s.w2.queue.length ? ' Was noch nachkäme, bleibt ebenfalls liegen.' : '')
+            : 'Alles bearbeitet.') +
     '</span></div></div>';
   return h;
 }
@@ -11048,7 +11166,17 @@ function viewCard(s, k) {
     const cst = cost(s, k, o),
       tooMuch = !vf && cst > 0 && cst - L > luft,
       konflikt = !vf && cst > 0 && cst > L && !tooMuch,
-      over = vf && cst > L;
+      over = vf && cst > L,
+      versch = (o.ops || []).find(x => x[0] === 'rm' && x[2] === 'verschoben'),
+      dazu =
+        (versch && rmAkt(versch[1]) ? rmT(rmAkt(versch[1]), s.al) : 0) +
+        (konflikt || over ? cst - Math.max(0, L) : 0),
+      ueberlauf =
+        s.rmIst &&
+        s.sec + 1 <= 4 &&
+        dazu > 0 &&
+        kalLast(s, s.sec + 1) + dazu > RM.kap &&
+        kaskadeKandidaten(s).length > 0;
     const sel = ui.sel === o.nr;
     h +=
       '<label class="opt' +
@@ -11086,6 +11214,11 @@ function viewCard(s, k) {
               (cst - Math.max(0, L) === 1 ? ' geht' : ' gehen') +
               ' vom nächsten Abschnitt ab.</span>'
             : '') +
+      (ueberlauf && !tooMuch
+        ? '<span class="why konflikt">' +
+          esc(rmSp(s.sec + 1)[1]) +
+          ' läuft dann über – Du wählst, welche Aktivität hinter Tag 100 rückt.</span>'
+        : '') +
       '</label>';
   });
   h += '</div>';
@@ -11511,7 +11644,12 @@ function rmCap(l, k, f) {
     ' Arbeitstagen</small></span>'
   );
 }
-const RM_STAND = { erledigt: '✓ umgesetzt', schlank: '✓ schlank umgesetzt', verschoben: '↷ verschoben' };
+const RM_STAND = {
+  erledigt: '✓ umgesetzt',
+  schlank: '✓ schlank umgesetzt',
+  verschoben: '↷ verschoben',
+  hinter100: '⇥ hinter Tag 100 gerückt',
+};
 function rmTile(a, o) {
   const k = rmKa(a.ka),
     inner =
@@ -11986,7 +12124,7 @@ function viewPlan(s) {
     '<span class="muted">Deine Planung</span></div><h2 tabindex="-1">Dein 100-Tage-Plan</h2>' +
     '<p>' +
     (geaendert
-      ? 'So sieht Dein Plan jetzt aus: was Du schon umgesetzt hast (✓) und was Du verschoben hast (↷).'
+      ? 'So sieht Dein Plan jetzt aus: was Du schon umgesetzt hast (✓), was Du verschoben hast (↷) und was hinter Tag 100 gerückt ist (⇥).'
       : 'So hast Du am ersten Tag Deine 100 Tage geplant.') +
     (jetzt
       ? ' Du bist jetzt bei <b>' + esc(SEC[jetzt].tage) + '</b>.'
@@ -12031,6 +12169,14 @@ function rmReview(s) {
     '<p class="small muted">' +
     esc(RM.hinweis) +
     '</p>' +
+    (Object.keys(s.rmStatus).some(id => s.rmStatus[id] === 'hinter100')
+      ? '<p><b>Hinter Tag 100 gerückt:</b> ' +
+        RM.akt
+          .filter(a => s.rmStatus[a.id] === 'hinter100')
+          .map(a => esc(rmName(a)))
+          .join(' · ') +
+        '. Der Kalender ist übergelaufen – diese Aktivitäten fallen aus Deinen ersten 100 Tagen heraus.</p>'
+      : '') +
     RM.akt
       .map(a => {
         const c = t.plan[a.id],
@@ -12164,9 +12310,12 @@ function viewAfter(s) {
   if (fx.vorfall)
     h +=
       '<div class="note bad" style="margin-top:14px"><b>Eilt:</b> Im Posteingang wartet ein Vorfall. Er geht allem anderen vor.</div>';
+  h += kaskadeBox(s);
   h +=
     '<p class="small muted" style="margin-top:14px">Wie die Entscheidung einzuordnen ist, zeigt der Rückblick am Ende des Abschnitts.</p>' +
-    '<div class="actions"><button class="btn" data-go="inbox">' +
+    '<div class="actions"><button class="btn" data-go="inbox"' +
+    (s.rmOffen ? ' disabled' : '') +
+    '>' +
     (s.sec === 1 && !s.triage ? 'Weiter: Dein Posteingang am ersten Tag' : 'Zum Posteingang') +
     '</button></div></div>';
   return h;
@@ -12280,7 +12429,10 @@ function viewReview(s) {
     (s.sec === 1 ? triageReview(s) + rmReview(s) + w2Review(s) : '') +
     '<h3>Deine Entscheidungen</h3>' +
     reviewItems(s, s.sec) +
-    '<div class="actions"><button class="btn" data-go="next">' +
+    kaskadeBox(s) +
+    '<div class="actions"><button class="btn" data-go="next"' +
+    (s.rmOffen ? ' disabled' : '') +
+    '>' +
     (last ? 'Zur Zwischenbilanz' : 'Weiter zu Abschnitt ' + (s.sec + 1)) +
     '</button></div></div>';
   return h;
@@ -12366,6 +12518,12 @@ function viewEnd(s) {
     '</dd>' +
     '<dt>100-Tage-Roadmap</dt><dd>' +
     (s.roadmap ? s.roadmap.gut + ' von ' + RM.akt.length + ' wie empfohlen' : '–') +
+    '</dd>' +
+    '<dt>Hinter Tag 100 gerückt</dt><dd>' +
+    (RM.akt
+      .filter(a => s.rmStatus[a.id] === 'hinter100')
+      .map(a => esc(a.name))
+      .join(' · ') || '–') +
     '</dd>' +
     '<dt>Montagmorgen in Woche 2</dt><dd>' +
     (s.w2 && s.w2.tri ? s.w2.tri.gut + ' von ' + W2.mails.length + ' neuen E-Mails wie empfohlen' : '–') +
@@ -12628,9 +12786,14 @@ function resume() {
 }
 document.addEventListener('click', e => {
   const t = e.target.closest(
-    '[data-go],[data-open],[data-tab],[data-al],[data-mail],[data-quad],[data-rm],[data-col],[data-w2]'
+    '[data-go],[data-open],[data-tab],[data-al],[data-mail],[data-quad],[data-rm],[data-col],[data-w2],[data-kask]'
   );
   if (!t || t.disabled) return;
+  if (t.dataset.kask) {
+    if (G && G.rmOffen) act(['p', t.dataset.kask]);
+    renderKeep(G.rmOffen ? '[data-kask]' : '[data-go="inbox"],[data-go="next"],[data-go="close"]');
+    return;
+  }
   if (t.dataset.w2) {
     ui.w2[t.dataset.w2] = t.dataset.q;
     renderKeep('[data-w2="' + t.dataset.w2 + '"][data-q="' + t.dataset.q + '"]');
@@ -13027,6 +13190,7 @@ function testPfad(al, ziel) {
       const o = best(open[0]);
       if (!o) return;
       doA(['d', open[0], o.nr]);
+      while (s.rmOffen) doA(['p', kaskadeKandidaten(s).slice(-1)[0].id]);
     }
   };
   if (ziel === 'mandat') return hist;
@@ -13055,11 +13219,13 @@ function testPfad(al, ziel) {
     spielen(false);
   }
   doA(['c']);
+  while (s.rmOffen) doA(['p', kaskadeKandidaten(s).slice(-1)[0].id]);
   if (ziel === 'rueckblick1') return hist;
   doA(['n']);
   if (ziel === 'abschnitt2') return hist;
   spielen(false);
   doA(['c']);
+  while (s.rmOffen) doA(['p', kaskadeKandidaten(s).slice(-1)[0].id]);
   if (ziel === 'rueckblick2') return hist;
   doA(['n']);
   return hist;
