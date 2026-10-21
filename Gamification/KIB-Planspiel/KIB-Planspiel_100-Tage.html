@@ -178,6 +178,26 @@
           display: none;
         }
       }
+      /* Fünf Reiter (mit „Rückblick“) passen auch auf schmale Telefone */
+      @media (max-width: 420px) {
+        .tab {
+          padding: 10px 5px 8px;
+          font-size: 13px;
+        }
+        .tab .chip {
+          display: none;
+        }
+      }
+      @media (max-width: 370px) {
+        .tab {
+          padding: 10px 3px 8px;
+          font-size: 12.5px;
+        }
+      }
+      /* Reiter „Rückblick“: Sprungziel unter der festen Reiterleiste */
+      .card[id^='rb'] {
+        scroll-margin-top: 64px;
+      }
       .chip {
         font-size: 11.5px;
         font-weight: 700;
@@ -1759,6 +1779,118 @@
       .fix small {
         color: var(--muted);
         white-space: nowrap;
+      }
+      /* Zeit über dem Spiel (statt Seitenleiste) */
+      .panel.zeitl {
+        margin-bottom: 16px;
+      }
+      /* Kanban-Board im Posteingang: Sortierhilfe – Offen, In Arbeit, Erledigt */
+      .kbtipp {
+        margin: 14px 0 8px;
+      }
+      .kb {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 12px;
+        align-items: start;
+      }
+      .kbc {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        min-height: 180px;
+        padding: 8px;
+        border: 1px solid var(--rule);
+        border-radius: 10px;
+        background: var(--paper);
+      }
+      .kbc.ueber {
+        outline: 2px dashed var(--accent);
+        outline-offset: 2px;
+      }
+      .kbc h3 {
+        display: flex;
+        justify-content: space-between;
+        margin: 2px 4px 4px;
+        font-size: 12px;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+      .kbc.fertig {
+        background: transparent;
+        border-style: dashed;
+      }
+      .kbleer {
+        margin: 6px 4px;
+        font-size: 12.5px;
+        color: var(--muted);
+      }
+      .kbk {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        padding: 8px 10px;
+        border: 1px solid var(--rule);
+        border-left: 4px solid #b9b3a6;
+        border-radius: 8px;
+        background: #fff;
+        font-size: 13.5px;
+        line-height: 1.35;
+        cursor: grab;
+      }
+      .kbk:hover {
+        border-color: #9cb8d1;
+      }
+      .kbk:focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 1px;
+      }
+      .kbk .from {
+        font-size: 11.5px;
+        color: var(--muted);
+      }
+      .kbk .tt {
+        font-weight: 600;
+      }
+      .kbk.rm {
+        border-left-color: var(--k);
+      }
+      .kbk.vf {
+        border-color: #e7b9b5;
+        border-left-color: var(--vf);
+        background: #fbeeed;
+      }
+      .kbk.done {
+        cursor: pointer;
+        background: #faf9f6;
+      }
+      .kbk.done .stb {
+        align-self: flex-start;
+        margin-bottom: 2px;
+      }
+      .kbk.done .tt {
+        font-weight: 500;
+      }
+      .kbk.gesperrt {
+        opacity: 0.55;
+        cursor: not-allowed;
+      }
+      .kbk.zieht {
+        opacity: 0.4;
+      }
+      .kbph {
+        height: 4px;
+        border-radius: 2px;
+        background: var(--accent);
+      }
+      @media (max-width: 760px) {
+        .kb {
+          grid-template-columns: 1fr;
+        }
+        .kbc {
+          min-height: 0;
+        }
       }
       /* Kleine Infoboxen im Kalender (Bereits verplant, Alltagsereignisse): voller Inhalt beim Überfahren oder Antippen */
       .rc.cell.alltc {
@@ -12128,7 +12260,7 @@ const DATA = {
     "hinweis": "Für die Reihenfolge gibt es kein „richtig“ und kein „falsch“. Die Einschätzung orientiert sich an bewährten Vorgehensweisen – in einer anderen Organisation kann ein anderer Weg ebenso gut tragen."
   },
   "woche2": {
-    "titel": "Woche 2 – Dein Posteingang am Montagmorgen",
+    "titel": "Woche 2 – Dein Posteingang",
     "intro": "In der ersten Woche hast Du wichtige Stakeholder kennengelernt und Deine ersten 100 Tage im Unternehmen geplant. Jetzt trifft Dein Plan auf die Wirklichkeit …",
     "hinweis": "Im Posteingang liegt, was Du am ersten Tag sofort erledigen wolltest, dazu die Aufgaben, die Du für Tag 1–25 eingeplant hast. Was Du für später eingeplant hast, kommt in den nächsten Tagen dazu. Mehr als drei offene Anfragen liegen nie gleichzeitig auf Deinem Tisch: Neues kommt, sobald Du etwas erledigt hast. Die Zeit reicht nicht für alles: Was Du nicht schaffst, kannst Du verschieben oder liegen lassen. Wird es eng, kannst Du auch andere Aufgaben nach hinten schieben – die Zeit fehlt Dir dann in der nächsten Phase.",
     "folge": {
@@ -13334,6 +13466,18 @@ function strip(s) {
     '</span></button>'
   );
 }
+// Zeit über dem Spiel statt der Seitenleiste (Uli, 21.10.2026: Rückhalt, Akzeptanz und Risiken stehen im Lagebild)
+function zeitLeiste(s) {
+  return (
+    '<div class="panel zeitl"><div class="k"><span>Zeit · ' +
+    SEC[s.sec].tage +
+    '</span><span>' +
+    DATA.budget[s.sec] +
+    ' Tage</span></div>' +
+    timeBar(s) +
+    '</div>'
+  );
+}
 function sidePanels(s) {
   const kr = s.risks.filter(r => known(s, r));
   return (
@@ -13678,6 +13822,49 @@ function stBadge(s, k) {
   if (d.auto) return '<span class="stb ver">liegen geblieben</span>';
   return '<span class="stb ok">entschieden</span>';
 }
+/* Kanban-Board im Posteingang (Uli, 21.10.2026): Sortierhilfe mit „Offen“, „In Arbeit“, „Erledigt“ – oben steht das
+   Wichtigste. Führend bleibt der 100-Tage-Plan: Die Anordnung hat keine Wirkung im Spiel und gehört nicht zum Spielstand,
+   sie wird nur mit dem Spiel im Browser gespeichert. */
+function kbStand(s) {
+  if (!meta) return { o: [], a: [] };
+  meta.kanban = meta.kanban || {};
+  return (meta.kanban[s.sec] = meta.kanban[s.sec] || { o: [], a: [] });
+}
+// Offene Karten des Abschnitts in der Grundordnung: Vorfall, Anfragen, Aufgaben aus dem Plan
+function kbOffen(s) {
+  const vis = visible(s),
+    wk = woche(s),
+    istRm = k => !!(wk && wk.w.grund[k] === 'roadmap'),
+    offen = vis.filter(k => !s.dec[k]);
+  return offen.filter(isVorfall).concat(
+    offen.filter(k => !isVorfall(k) && !istRm(k)),
+    offen.filter(k => !isVorfall(k) && istRm(k))
+  );
+}
+// Spalten „Offen“ und „In Arbeit“: gespeicherte Reihenfolge; Neues kommt oben an, ein Vorfall steht immer ganz oben
+function kbSpalten(s) {
+  const kb = kbStand(s),
+    offen = kbOffen(s),
+    vfZuerst = (x, y) => isVorfall(y) - isVorfall(x);
+  const arbeit = kb.a.filter(k => offen.includes(k)),
+    rest = offen.filter(k => !arbeit.includes(k));
+  return {
+    offen: rest
+      .filter(k => !kb.o.includes(k))
+      .concat(kb.o.filter(k => rest.includes(k)))
+      .sort(vfZuerst),
+    arbeit: arbeit.sort(vfZuerst),
+  };
+}
+function kbSetze(s, k, spalte, i) {
+  const cur = kbSpalten(s),
+    o = cur.offen.filter(x => x !== k),
+    a = cur.arbeit.filter(x => x !== k);
+  (spalte === 'a' ? a : o).splice(Math.max(0, i), 0, k);
+  const kb = kbStand(s);
+  kb.o = o;
+  kb.a = a;
+}
 function viewInbox(s) {
   const vis = visible(s),
     vf = vis.filter(k => isVorfall(k) && !s.dec[k]);
@@ -13686,48 +13873,60 @@ function viewInbox(s) {
     sperre = (w2 && !s.w2.tri) || s.rmOffen > 0;
   const istRm = k => !!(wk && wk.w.grund[k] === 'roadmap'),
     neu = k => !!(wk && (wk.w.zuletzt || []).includes(k));
-  const item = k => {
+  const karte = k => {
     const c = DATA.cards[k],
-      d = s.dec[k];
-    const blocked = ((vf.length && !vf.includes(k)) || sperre) && !d;
+      d = s.dec[k],
+      akt = istRm(k) && kartenAkt(k),
+      ka = akt ? rmKa(rmAkt(akt).ka) : null,
+      blocked = ((vf.length && !vf.includes(k)) || sperre) && !d;
     return (
-      '<li class="' +
-      (d ? 'done' : '') +
+      '<div class="kbk' +
+      (d ? ' done' : '') +
       (vf.includes(k) ? ' vf' : '') +
-      '"><button data-open="' +
+      (ka ? ' rm' : '') +
+      (blocked ? ' gesperrt' : '') +
+      '"' +
+      (ka ? ' style="--k:' + ka[2] + '"' : '') +
+      (d ? '' : ' draggable="true" data-kb="' + k + '"') +
+      ' role="button" tabindex="0" data-open="' +
       k +
       '"' +
-      (blocked ? ' disabled aria-disabled="true"' : '') +
+      (blocked ? ' aria-disabled="true"' : '') +
       '>' +
-      stBadge(s, k) +
-      '<span><span class="from">' +
+      (d ? stBadge(s, k) : '') +
+      '<span class="from">' +
       esc(c.absender) +
-      '</span><br><span class="tt">' +
+      '</span><span class="tt">' +
       esc(c.titel) +
-      '</span>' +
       (vf.includes(k)
-        ? '<span class="new">eilt</span>'
+        ? ' <span class="new">eilt</span>'
         : neu(k) && !d
-          ? '<span class="new neu">neu</span>'
+          ? ' <span class="new neu">neu</span>'
           : '') +
-      '</span></button></li>'
+      '</span></div>'
     );
   };
-  // Offen: Vorfall, dann Anfragen, dann Roadmap-Aufgaben · Erledigt: zuletzt Entschiedenes oben
-  const offen = vf.concat(
-    vis.filter(k => !s.dec[k] && !vf.includes(k) && !istRm(k)),
-    vis.filter(k => !s.dec[k] && !vf.includes(k) && istRm(k))
-  );
-  const erledigt = s.order.filter(k => vis.includes(k)).reverse();
-  let lst =
-    '<h3 class="grp">Noch offen</h3>' +
-    (offen.length
-      ? '<ul class="inbox">' + offen.map(item).join('') + '</ul>'
-      : '<p class="muted" style="margin:6px 0 0">Nichts mehr offen.</p>') +
-    (w2 && s.w2.tri ? w2Sorter(s) : '') +
-    (erledigt.length
-      ? '<h3 class="grp">Erledigt</h3><ul class="inbox">' + erledigt.map(item).join('') + '</ul>'
-      : '');
+  const sp = kbSpalten(s),
+    erledigt = s.order.filter(k => vis.includes(k)).reverse();
+  const spalte = (id, titel, ks, leer) =>
+    '<div class="kbc' +
+    (id === 'e' ? ' fertig' : '') +
+    '" data-kbcol="' +
+    id +
+    '"><h3>' +
+    titel +
+    '<span>' +
+    ks.length +
+    '</span></h3>' +
+    (ks.length ? ks.map(karte).join('') : '<p class="kbleer">' + leer + '</p>') +
+    '</div>';
+  const board =
+    '<p class="small muted kbtipp">Ordne die Karten, wie es für Dich passt: oben das Wichtigste. Was Du gerade bearbeitest, ziehst Du nach „In Arbeit“. Ein Klick auf die Karte öffnet sie; mit Deiner Entscheidung wandert sie nach „Erledigt“.</p>' +
+    '<div class="kb">' +
+    spalte('o', 'Offen', sp.offen, 'Nichts mehr offen.') +
+    spalte('a', 'In Arbeit', sp.arbeit, 'Ziehe hierher, was Du gerade bearbeitest.') +
+    spalte('e', 'Erledigt', erledigt, 'Noch nichts entschieden.') +
+    '</div>';
   const open = openCards(s).length;
   let h = '<div class="card">' + sectionHead(s);
   h += kaskadeBox(s);
@@ -13740,7 +13939,7 @@ function viewInbox(s) {
       '<div class="note" style="margin-top:12px">Aus der letzten Phase ragt Arbeit herein – ein Vorfall oder Aufgaben, die Du nach hinten geschoben hast: ' +
       tage(s.carry[s.sec]) +
       ' fehlen Dir jetzt.</div>';
-  h += lst;
+  h += board + (w2 && s.w2.tri ? w2Sorter(s) : '');
   h +=
     '<div class="actions"><button class="btn' +
     (open ? ' ghost' : '') +
@@ -15066,13 +15265,19 @@ function bewCount(s, sec) {
   return n;
 }
 function viewReview(s) {
-  const n = bewCount(s, s.sec),
-    last = !DATA.mvp[s.sec + 1];
+  return rueckblickHtml(s, s.sec, true);
+}
+// Rückblick einer Phase – aktiv: im Spiel (Wahl „hinter Tag 100“, Weiter); sonst im Reiter „Rückblick“ zum Nachlesen
+function rueckblickHtml(s, sec, aktiv) {
+  const n = bewCount(s, sec),
+    last = !DATA.mvp[sec + 1];
   let h =
-    '<div class="card"><h2 tabindex="-1">Rückblick auf ' +
-    ersteZeit(s.sec) +
+    '<div class="card"' +
+    (aktiv ? '' : ' id="rb' + sec + '"') +
+    '><h2 tabindex="-1">Rückblick auf ' +
+    ersteZeit(sec) +
     '</h2><p class="muted">' +
-    SEC[s.sec].tage +
+    SEC[sec].tage +
     ' · ' +
     n.empfohlen +
     ' empfohlen, ' +
@@ -15081,22 +15286,53 @@ function viewReview(s) {
     n.problematisch +
     ' problematisch</p>' +
     gfReaction(s);
-  if (s.carry[s.sec + 1])
+  if (s.carry[sec + 1])
     h +=
       '<div class="note warn">Du hast mehr Zeit gebraucht, als vorhanden war – durch einen Vorfall oder weil Du andere Aufgaben nach hinten geschoben hast: ' +
-      tage(s.carry[s.sec + 1]) +
+      tage(s.carry[sec + 1]) +
       ' fehlen Dir in der nächsten Phase.</div>';
   h +=
-    (s.sec === 1 ? triageReview(s) + rmReview(s) + w2Review(s) : '') +
+    (sec === 1 ? triageReview(s) + rmReview(s) + w2Review(s) : '') +
     '<h3>Deine Entscheidungen</h3>' +
-    reviewItems(s, s.sec) +
+    reviewItems(s, sec);
+  if (!aktiv) return h + '</div>';
+  h +=
     kaskadeBox(s) +
     '<div class="actions"><button class="btn" data-go="next"' +
     (s.rmOffen ? ' disabled' : '') +
     '>' +
-    (last ? 'Zur Zwischenbilanz' : 'Weiter zu ' + (WO[s.sec + 1] ? WO[s.sec + 1].woche : 'nächsten Phase')) +
+    (last ? 'Zur Zwischenbilanz' : 'Weiter zu ' + (WO[sec + 1] ? WO[sec + 1].woche : 'nächsten Phase')) +
     '</button></div></div>';
   return h;
+}
+/* Reiter „Rückblick“ (Uli, 21.10.2026): ab dem Ende der ersten Phase zum Nachlesen. Jede abgeschlossene Phase erscheint
+   mit dem Stand an ihrem Ende – Spielstand bis zum Weiter-Knopf dieser Phase nachgespielt */
+function standBeiRueckblick(s, sec) {
+  if (s.sec === sec && s.phase === 'review') return s;
+  let n = 0;
+  const i = meta.hist.findIndex(a => a[0] === 'n' && ++n === sec);
+  return i >= 0 ? replay(meta.al, meta.name, meta.hist, i) : null;
+}
+function viewRueckblick(s) {
+  const secs = [1, 2, 3, 4].filter(sec => s.closed[sec]);
+  const nav =
+    secs.length > 1
+      ? '<p class="small muted rbnav">Springe zu: ' +
+        secs
+          .map(sec => '<button class="lnk" data-rb="' + sec + '">' + esc(ersteZeit(sec)) + '</button>')
+          .join(' · ') +
+        '</p>'
+      : '';
+  return (
+    nav +
+    secs
+      .map(sec => {
+        const st = standBeiRueckblick(s, sec);
+        return st ? rueckblickHtml(st, sec, false) : '';
+      })
+      .join('') +
+    '<div class="card"><div class="actions" style="margin-top:0"><button class="btn" data-tab="spiel">Zurück zum Spiel</button></div></div>'
+  );
 }
 function verdict(s) {
   const { p } = riskPoints(s),
@@ -15252,6 +15488,8 @@ function viewEnd(s) {
     '</div>';
   return h;
 }
+// So viele Zeilen hat die Tabelle „Entscheidungen“: Karten, Posteingang am ersten Tag, Roadmap, E-Mails in Woche 2
+const logAnzahl = s => s.order.length + (s.triage ? 1 : 0) + (s.roadmap ? 1 : 0) + (s.w2 && s.w2.tri ? 1 : 0);
 function viewLog(s) {
   const tri = s.triage
     ? '<tr><td class="num">1</td><td><b>Dein Posteingang am ersten Tag</b><br><span class="small muted">mehrere Absender</span></td><td>' +
@@ -15324,7 +15562,7 @@ function viewLog(s) {
   return (
     '<div class="card"><h2 tabindex="-1">Entscheidungen</h2>' +
     (rows
-      ? '<table class="log"><thead><tr><th>Abschn.</th><th>Karte</th><th>Entscheidung</th><th>Zeit</th><th>Bewertung</th></tr></thead><tbody>' +
+      ? '<table class="log"><thead><tr><th>Phase</th><th>Karte</th><th>Entscheidung</th><th>Zeit</th><th>Bewertung</th></tr></thead><tbody>' +
         rows +
         '</tbody></table>'
       : '<p class="muted">Noch keine Entscheidungen.</p>') +
@@ -15353,6 +15591,7 @@ function render(focus) {
       (s.name ? '<span>' + esc(s.name) + '</span>' : '');
     tabs.hidden = false;
     if (ui.tab === 'plan' && !s.roadmap) ui.tab = 'spiel';
+    if (ui.tab === 'rueck' && !s.closed[1]) ui.tab = 'spiel';
     const T = [
       [
         'spiel',
@@ -15363,7 +15602,8 @@ function render(focus) {
       ],
       ...(s.roadmap ? [['plan', '<span><span class="lg">100-Tage-</span>Plan</span>', '']] : []),
       ['lage', 'Lagebild', '<span class="chip ' + zoneT(s.T) + '">' + zoneT(s.T) + '</span>'],
-      ['log', 'Entscheidungen', '<span class="chip">' + s.order.length + '</span>'],
+      ['log', 'Entscheidungen', '<span class="chip">' + logAnzahl(s) + '</span>'],
+      ...(s.closed[1] ? [['rueck', 'Rückblick', '']] : []),
     ];
     document.getElementById('tabsIn').innerHTML = T.map(
       ([k, l, c]) =>
@@ -15382,6 +15622,7 @@ function render(focus) {
     if (ui.tab === 'lage') main = lageHtml(s);
     else if (ui.tab === 'plan') main = viewPlan(s);
     else if (ui.tab === 'log') main = viewLog(s);
+    else if (ui.tab === 'rueck') main = viewRueckblick(s);
     else if (s.phase === 'review') main = viewReview(s);
     else if (s.phase === 'end') main = viewEnd(s);
     else if (ui.after && ui.after.triage) main = viewAfterTriage(s);
@@ -15397,9 +15638,7 @@ function render(focus) {
       !(s.sec === 1 && s.dec.K01 && !s.triage && !ui.after && !ui.open) &&
       !(s.sec === 1 && s.triage && !s.roadmap && !ui.after && !ui.open) &&
       !(ui.after && (ui.after.triage || ui.after.roadmap));
-    app.innerHTML = side
-      ? '<div class="grid"><div>' + strip(s) + main + '</div>' + sidePanels(s) + '</div>'
-      : main;
+    app.innerHTML = side ? zeitLeiste(s) + main : main;
     ui.lastT = s.T;
   }
   animateGauges();
@@ -15447,9 +15686,14 @@ function resume() {
 }
 document.addEventListener('click', e => {
   const t = e.target.closest(
-    '[data-go],[data-open],[data-tab],[data-al],[data-mail],[data-quad],[data-rm],[data-col],[data-w2],[data-kask]'
+    '[data-go],[data-open],[data-tab],[data-al],[data-mail],[data-quad],[data-rm],[data-col],[data-w2],[data-kask],[data-rb]'
   );
-  if (!t || t.disabled) return;
+  if (!t || t.disabled || t.getAttribute('aria-disabled') === 'true') return;
+  if (t.dataset.rb) {
+    const ziel = document.getElementById('rb' + t.dataset.rb);
+    if (ziel) ziel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    return;
+  }
   if (t.dataset.kask) {
     if (G && G.rmOffen) act(['p', t.dataset.kask]);
     renderKeep(G.rmOffen ? '[data-kask]' : '[data-go="inbox"],[data-go="next"],[data-go="close"]');
@@ -15798,6 +16042,64 @@ function downloadReport() {
   if (m) m.textContent = 'Heruntergeladen – im Download-Ordner Deines Browsers.';
 }
 
+/* Kanban: Karten ziehen und ablegen (Maus). Die Marke zeigt, wo die Karte landet. */
+let kbZug = null;
+function kbMarke(col, vor) {
+  let m = document.querySelector('.kbph');
+  if (!col) {
+    if (m) m.remove();
+    return;
+  }
+  if (!m) {
+    m = document.createElement('div');
+    m.className = 'kbph';
+  }
+  if (vor) col.insertBefore(m, vor);
+  else col.appendChild(m);
+}
+function kbZiel(col, y) {
+  const ks = [...col.querySelectorAll('[data-kb]')].filter(x => x.dataset.kb !== kbZug);
+  const i = ks.findIndex(x => {
+    const r = x.getBoundingClientRect();
+    return y < r.top + r.height / 2;
+  });
+  return [i < 0 ? ks.length : i, ks];
+}
+document.addEventListener('dragstart', e => {
+  const t = e.target.closest && e.target.closest('[data-kb]');
+  if (!t) return;
+  kbZug = t.dataset.kb;
+  e.dataTransfer.effectAllowed = 'move';
+  e.dataTransfer.setData('text/plain', kbZug);
+  t.classList.add('zieht');
+});
+document.addEventListener('dragover', e => {
+  if (!kbZug) return;
+  const col = e.target.closest && e.target.closest('[data-kbcol]');
+  if (!col || col.dataset.kbcol === 'e') return;
+  e.preventDefault();
+  e.dataTransfer.dropEffect = 'move';
+  document.querySelectorAll('.kbc.ueber').forEach(x => x !== col && x.classList.remove('ueber'));
+  col.classList.add('ueber');
+  const [i, ks] = kbZiel(col, e.clientY);
+  kbMarke(col, ks[i] || null);
+});
+document.addEventListener('drop', e => {
+  if (!kbZug || !G) return;
+  const col = e.target.closest && e.target.closest('[data-kbcol]');
+  if (!col || col.dataset.kbcol === 'e') return;
+  e.preventDefault();
+  const [i] = kbZiel(col, e.clientY);
+  kbSetze(G, kbZug, col.dataset.kbcol, i);
+  kbZug = null;
+  save();
+  render(false);
+});
+document.addEventListener('dragend', () => {
+  kbZug = null;
+  document.querySelectorAll('.zieht, .kbc.ueber').forEach(x => x.classList.remove('zieht', 'ueber'));
+  kbMarke(null);
+});
 /* ════════ TESTMENÜ (nur für die Spielleitung) ════════
    Springt an eine Stelle des Spiels, ohne es von vorn durchzuspielen. Bis dahin wird mit den
    empfohlenen Entscheidungen gespielt. Aufruf: Spiel mit „#test“ am Ende der Adresse öffnen.
@@ -15806,7 +16108,7 @@ const TEST_ZIELE = [
   ['mandat', 'Dein Mandat (Start)'],
   ['posteingang', 'Posteingang am ersten Tag'],
   ['roadmap', '100-Tage-Roadmap'],
-  ['aufgaben', 'Woche 2: Posteingang am Montagmorgen'],
+  ['aufgaben', 'Woche 2: Posteingang'],
   ['vorfall', 'Vorfall (Tag 1–25)'],
   ['rueckblick1', 'Rückblick nach Tag 25'],
   ['abschnitt2', 'Woche 5: Posteingang'],
