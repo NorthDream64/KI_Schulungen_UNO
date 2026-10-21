@@ -949,6 +949,90 @@
       .rev .h b {
         font-size: 15.5px;
       }
+      /* Rückblick kompakt: Punkte zum Aufklappen, nach Bewertung gruppiert */
+      details.rev {
+        padding: 10px 0 6px;
+      }
+      details.rev > summary.h {
+        list-style: none;
+        cursor: pointer;
+      }
+      details.rev > summary.h::-webkit-details-marker {
+        display: none;
+      }
+      details.rev > summary.h::before {
+        content: '▸';
+        color: var(--muted);
+        font-size: 12px;
+        width: 10px;
+      }
+      details.rev[open] > summary.h::before {
+        content: '▾';
+      }
+      details.rev > summary.h:hover b {
+        color: var(--accent);
+      }
+      details.rev[open] {
+        padding-bottom: 12px;
+      }
+      details.rev > :not(summary) {
+        margin-left: 20px;
+      }
+      .bewgrp {
+        margin: 18px 0 2px;
+        padding-bottom: 4px;
+        border-bottom: 2px solid var(--rule);
+        font-size: 13px;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+      }
+      .bewgrp span {
+        color: var(--muted);
+        font-weight: 600;
+      }
+      .bewgrp.problematisch {
+        color: var(--bad);
+        border-bottom-color: var(--bad);
+      }
+      .bewgrp + .rev {
+        border-top: 0;
+      }
+      /* In Gruppen steht die Bewertung schon in der Überschrift */
+      .bewgrp ~ details.rev > summary .bew,
+      details.grpzu details.rev > summary .bew {
+        display: none;
+      }
+      details.grpzu > summary.bewgrp {
+        list-style: none;
+        cursor: pointer;
+      }
+      details.grpzu > summary.bewgrp::-webkit-details-marker {
+        display: none;
+      }
+      details.grpzu > summary.bewgrp::after {
+        content: ' – anzeigen ▸';
+        color: var(--accent);
+        font-weight: 600;
+        letter-spacing: 0;
+        text-transform: none;
+      }
+      details.grpzu[open] > summary.bewgrp::after {
+        content: ' – ausblenden ▾';
+      }
+      .sortz {
+        margin: 10px 0 2px;
+      }
+      details.abwd {
+        margin: 0 0 6px;
+      }
+      details.abwd > summary {
+        cursor: pointer;
+        color: var(--accent);
+        font-size: 14px;
+      }
+      details.abwd > .rev {
+        margin-left: 18px;
+      }
       .rev .ch {
         margin: 6px 0;
         padding: 8px 12px;
@@ -14409,17 +14493,41 @@ function viewAfterTriage(s) {
     '<div class="actions"><button class="btn" data-go="inbox">Weiter: Deine 100-Tage-Roadmap</button></div></div>'
   );
 }
+/* Rückblick kompakt (Uli, 21.10.2026): jeder Punkt zum Aufklappen, problematische als eigene Gruppe zuerst */
+const aufklapp = (bew, titel, wer, inhalt) =>
+  '<details class="rev"><summary class="h">' +
+  bewChip(bew) +
+  '<b>' +
+  esc(titel) +
+  '</b><span class="small muted">' +
+  esc(wer) +
+  '</span></summary>' +
+  inhalt +
+  '</details>';
+const BEW_GRUPPEN = [
+  ['problematisch', 'Problematisch'],
+  ['vertretbar', 'Vertretbar'],
+  ['empfohlen', 'Empfohlen'],
+];
+// zuEmpfohlen: die Gruppe „Empfohlen“ als Ganzes zum Aufklappen (beim 100-Tage-Plan, damit die Liste kurz bleibt)
+function gruppiert(punkte, zuEmpfohlen) {
+  return BEW_GRUPPEN.map(([b, t]) => {
+    const xs = punkte.filter(x => x[0] === b);
+    if (!xs.length) return '';
+    const kopf = t + ' <span>' + xs.length + '</span>';
+    return zuEmpfohlen && b === 'empfohlen'
+      ? '<details class="grpzu"><summary class="bewgrp empfohlen">' +
+          kopf +
+          '</summary>' +
+          xs.map(x => x[1]).join('') +
+          '</details>'
+      : '<h4 class="bewgrp ' + b + '">' + kopf + '</h4>' + xs.map(x => x[1]).join('');
+  }).join('');
+}
 function triRev(m, q) {
   const r = m.q[q],
     best = Object.keys(m.q).filter(k => m.q[k].bew === 'empfohlen');
   let h =
-    '<div class="rev"><div class="h">' +
-    bewChip(r.bew) +
-    '<b>' +
-    esc(m.betreff) +
-    '</b><span class="small muted">' +
-    esc(m.von) +
-    '</span></div>' +
     '<div class="ch">Dein Feld: <b>' +
     esc(quadName(q)) +
     '</b> <span class="muted">(' +
@@ -14430,31 +14538,33 @@ function triRev(m, q) {
   if (r.bew !== 'empfohlen')
     h += '<p class="alt"><b>Empfohlen:</b> ' + best.map(b => esc(quadName(b))).join(' oder ') + '</p>';
   if (m.recht) h += '<div class="src">Grundlage: ' + esc(m.recht) + '</div>';
-  return h + '</div>';
+  return aufklapp(r.bew, m.betreff, m.von, h);
+}
+// Sortierung im Rückblick: nur, wie viel wie empfohlen einsortiert ist – Abweichungen zum Aufklappen
+function sortierZeile(titel, mails, map) {
+  const abw = mails.filter(m => m.q[map[m.id]].bew !== 'empfohlen');
+  return (
+    '<p class="sortz"><b>' +
+    titel +
+    ':</b> ' +
+    (mails.length - abw.length) +
+    ' von ' +
+    mails.length +
+    ' wie empfohlen einsortiert.</p>' +
+    (abw.length
+      ? '<details class="abwd"><summary>' +
+        (abw.length === 1 ? 'Eine E-Mail' : abw.length + ' E-Mails') +
+        ' anders einsortiert</summary>' +
+        abw.map(m => triRev(m, map[m.id])).join('') +
+        '</details>'
+      : '')
+  );
 }
 function triageReview(s) {
-  if (!s.triage) return '';
-  const t = s.triage;
-  return (
-    '<h3>Dein Posteingang am ersten Tag</h3>' +
-    '<p class="muted" style="margin-top:0">' +
-    esc(STIL_SATZ[t.stil || 'gemischt']) +
-    '</p>' +
-    '<div class="pf empfohlen solo"><b>' +
-    esc(TRI.profile.empfohlen.name) +
-    '</b><p>' +
-    esc(TRI.profile.empfohlen.text) +
-    '</p><p class="small"><b>Faustregel:</b> ' +
-    esc(TRI.faustregel) +
-    '</p></div>' +
-    TRI.mails.map(m => triRev(m, t.map[m.id])).join('')
-  );
+  return s.triage ? sortierZeile('Posteingang am ersten Tag', TRI.mails, s.triage.map) : '';
 }
 function w2Review(s) {
-  if (!s.w2 || !s.w2.tri) return '';
-  return (
-    '<h3>Zwei neue E-Mails am Montagmorgen</h3>' + W2.mails.map(m => triRev(m, s.w2.tri.map[m.id])).join('')
-  );
+  return s.w2 && s.w2.tri ? sortierZeile('Zwei neue E-Mails in Woche 2', W2.mails, s.w2.tri.map) : '';
 }
 /* ───── 100-Tage-Roadmap: Kalender, Einschätzung, Rückblick ───── */
 const RM_STIL = {
@@ -15005,7 +15115,7 @@ function rmReview(s) {
   const t = s.roadmap,
     bef = rmBefunde(t.pruef);
   return (
-    '<h3>Deine 100-Tage-Roadmap</h3>' +
+    '<h3>Dein 100-Tage-Plan</h3>' +
     '<p class="muted" style="margin-top:0">' +
     esc(RM_STIL[t.stil]) +
     ' ' +
@@ -15025,10 +15135,6 @@ function rmReview(s) {
         bef.map(x => '<li>' + x + '</li>').join('') +
         '</ul>'
       : '') +
-    rmGrid(s, t.plan, false) +
-    '<p class="small muted">' +
-    esc(RM.hinweis) +
-    '</p>' +
     (Object.keys(s.rmStatus).some(id => s.rmStatus[id] === 'hinter100')
       ? '<p><b>Hinter Tag 100 gerückt:</b> ' +
         RM.akt
@@ -15037,18 +15143,11 @@ function rmReview(s) {
           .join(' · ') +
         '. Der Kalender ist übergelaufen – diese Aktivitäten fallen aus Deinen ersten 100 Tagen heraus.</p>'
       : '') +
-    RM.akt
-      .map(a => {
+    gruppiert(
+      RM.akt.map(a => {
         const c = t.plan[a.id],
           bw = a.bew[c];
         let h =
-          '<div class="rev"><div class="h">' +
-          bewChip(bw) +
-          '<b>' +
-          esc(rmName(a)) +
-          '</b><span class="small muted">' +
-          tage(rmT(a, s.al)) +
-          '</span></div>' +
           '<div class="ch">Dein Zeitraum: <b>' +
           esc(rmSp(c)[1]) +
           '</b></div><p style="margin:6px 0">' +
@@ -15062,9 +15161,13 @@ function rmReview(s) {
               .join(' oder ') +
             '</p>';
         if (a.recht) h += '<div class="src">Grundlage: ' + esc(a.recht) + '</div>';
-        return h + '</div>';
-      })
-      .join('')
+        return [bw, aufklapp(bw, rmName(a), tage(rmT(a, s.al)), h)];
+      }),
+      true
+    ) +
+    '<p class="small muted">' +
+    esc(RM.hinweis) +
+    '</p>'
   );
 }
 function consequences(before, s, k, fx) {
@@ -15212,6 +15315,9 @@ function gfReaction(s) {
   return q.map(([t, w]) => '<p class="quote">„' + esc(t) + '“<small>' + w + '</small></p>').join('');
 }
 function reviewItems(s, sec) {
+  return gruppiert(reviewPunkte(s, sec));
+}
+function reviewPunkte(s, sec) {
   return s.order
     .filter(k => s.dec[k].sec === sec)
     .map(k => {
@@ -15220,13 +15326,6 @@ function reviewItems(s, sec) {
         o = optOf(s, k, d.nr);
       const best = optList(k, s.al).filter(x => x.bew === 'empfohlen');
       let h =
-        '<div class="rev"><div class="h">' +
-        bewChip(o.bew) +
-        '<b>' +
-        esc(c.titel) +
-        '</b><span class="small muted">' +
-        esc(c.absender) +
-        '</span></div>' +
         '<div class="ch">' +
         (d.deleg
           ? '<i>Delegiert:</i> ' + esc(delegText(s, k))
@@ -15251,9 +15350,8 @@ function reviewItems(s, sec) {
           )
           .join('');
       if (o.recht) h += '<div class="src">Grundlage: ' + esc(o.recht) + '</div>';
-      return h + '</div>';
-    })
-    .join('');
+      return [o.bew, aufklapp(o.bew, c.titel, c.absender, h)];
+    });
 }
 function bewCount(s, sec) {
   const n = { empfohlen: 0, vertretbar: 0, problematisch: 0 };
@@ -15263,6 +15361,22 @@ function bewCount(s, sec) {
       n[optOf(s, k, s.dec[k].nr).bew] += 1;
     });
   return n;
+}
+function einschaetzungSatz(n) {
+  const sum = n.empfohlen + n.vertretbar + n.problematisch;
+  if (!sum) return '';
+  if (!n.problematisch)
+    return n.vertretbar <= 1
+      ? 'Deine Entscheidungen tragen: ' + n.empfohlen + ' von ' + sum + ' wie empfohlen, keine problematisch.'
+      : 'Keine Entscheidung ist problematisch. Bei ' +
+          n.vertretbar +
+          ' Entscheidungen gibt es einen besseren Weg – ein Blick unter „Vertretbar“ lohnt sich.';
+  return n.problematisch === 1
+    ? 'Eine Entscheidung ist problematisch – sie steht oben unter „Problematisch“. Die übrigen ' +
+        (sum - 1) +
+        ' tragen.'
+    : n.problematisch +
+        ' Entscheidungen sind problematisch – sie stehen oben unter „Problematisch“. Sieh sie Dir zuerst an.';
 }
 function viewReview(s) {
   return rueckblickHtml(s, s.sec, true);
@@ -15285,16 +15399,18 @@ function rueckblickHtml(s, sec, aktiv) {
     ' vertretbar, ' +
     n.problematisch +
     ' problematisch</p>' +
+    '<h3>Deine Entscheidungen</h3>' +
+    reviewItems(s, sec) +
+    '<h3>Gesamteinschätzung</h3><p>' +
+    esc(einschaetzungSatz(n)) +
+    '</p>' +
     gfReaction(s);
   if (s.carry[sec + 1])
     h +=
       '<div class="note warn">Du hast mehr Zeit gebraucht, als vorhanden war – durch einen Vorfall oder weil Du andere Aufgaben nach hinten geschoben hast: ' +
       tage(s.carry[sec + 1]) +
       ' fehlen Dir in der nächsten Phase.</div>';
-  h +=
-    (sec === 1 ? triageReview(s) + rmReview(s) + w2Review(s) : '') +
-    '<h3>Deine Entscheidungen</h3>' +
-    reviewItems(s, sec);
+  if (sec === 1) h += triageReview(s) + w2Review(s) + rmReview(s);
   if (!aktiv) return h + '</div>';
   h +=
     kaskadeBox(s) +
@@ -15477,12 +15593,12 @@ function viewEnd(s) {
           ': ' +
           SEC[sec].titel +
           '</h3>' +
+          reviewItems(s, sec) +
           (sec === 1
-            ? (triageReview(s) + rmReview(s) + '<h3>Deine Entscheidungen</h3>')
+            ? (triageReview(s) + w2Review(s) + rmReview(s))
                 .replace(/<h3>/g, '<h4>')
                 .replace(/<\/h3>/g, '</h4>')
-            : '') +
-          reviewItems(s, sec)
+            : '')
       )
       .join('') +
     '</div>';
@@ -15950,6 +16066,7 @@ document.addEventListener('pointerup', e => {
 function staticHtml(html) {
   const box = document.createElement('div');
   box.innerHTML = html;
+  box.querySelectorAll('details').forEach(d => d.setAttribute('open', ''));
   box.querySelectorAll('.actions, button').forEach(e => e.remove());
   box.querySelectorAll('.needle[data-to]').forEach(n => {
     n.style.transform = 'rotate(' + n.dataset.to + 'deg)';
