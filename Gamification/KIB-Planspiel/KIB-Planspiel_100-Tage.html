@@ -11903,7 +11903,7 @@ const DATA = {
       "hoch": "höher"
     },
     "rgText": "Wie lange die Aktivitäten dauern, hängt vom Reifegrad ab. Bei geringem Reifegrad findest Du wenig strukturierte Grundlagen vor und musst vieles neu konzipieren, abstimmen und aufsetzen. Bei höherem Reifegrad liegt manches schon vor, etwa ein KI-Verzeichnis und ein Risikomanagement – Planen und Umsetzen gehen schneller. Dafür brauchst Du mehr Zeit, um den Status quo zu analysieren und zu verstehen, warum ein bestimmter Lösungsweg gewählt wurde.",
-    "eineAktivitaet": "Zur Vereinfachung gilt – anders als im wahren Leben: Jeder Tag gehört genau einer Aktivität, an mehreren Dingen parallel arbeitest Du nicht. Ein Abschnitt umfasst 25 Kalendertage, das sind rund 18 Arbeitstage.",
+    "eineAktivitaet": "Zur Vereinfachung gilt – anders als im wahren Leben: Jeder Tag gehört genau einer Aktivität, an mehreren Dingen parallel arbeitest Du nicht. Ein Zeitraum umfasst 25 Kalendertage, das sind rund 18 Arbeitstage.",
     "abh": [
       [
         "risk_kvo",
@@ -11986,7 +11986,7 @@ const DATA = {
         "name": "Die forsche Linie",
         "text": "Will nach 50 Tagen fertig sein: Verzeichnis, Richtlinie und Schulungen laufen gleichzeitig an, umgesetzt wird parallel zur Analyse.",
         "staerke": "Schnell sichtbare Ergebnisse.",
-        "preis": "Abschnitt 1 ist überplant, Maßnahmen entstehen vor dem Lagebild – und für Anfragen und Vorfälle bleibt keine Zeit.",
+        "preis": "Tag 1–25 ist überplant, Maßnahmen entstehen vor dem Lagebild – und für Anfragen und Vorfälle bleibt keine Zeit.",
         "reaktion": [
           "Ein ehrgeiziger Plan. Ich frage mich nur, wann Du die Anfragen der Fachbereiche bearbeiten willst.",
           "Thomas Kühn"
@@ -14343,7 +14343,7 @@ function rmGrid(s, plan, edit, ref) {
 function rmPicker(s) {
   const id = ui.selRm;
   if (!id)
-    return '<div class="rmpick idle"><span class="small muted">Wähle eine Aktivität aus – dann den Abschnitt.</span></div>';
+    return '<div class="rmpick idle"><span class="small muted">Wähle eine Aktivität aus – dann den Zeitraum.</span></div>';
   const a = rmAkt(id),
     k = rmKa(a.ka),
     cur = ui.rm[id];
@@ -14367,7 +14367,7 @@ function rmPicker(s) {
       : '') +
     '</span><br><span class="small">' +
     esc(a.text) +
-    '</span></div><div class="qpick" role="group" aria-label="Abschnitt wählen">' +
+    '</span></div><div class="qpick" role="group" aria-label="Zeitraum wählen">' +
     RM.spalten
       .map(
         ([c, l]) =>
@@ -14415,9 +14415,9 @@ function viewRoadmap(s) {
     '<div class="card"><div class="cardhead">' +
     badge('Grundstein') +
     '<span class="muted">Deine Planung</span></div><h2 tabindex="-1">Deine 100-Tage-Roadmap</h2>' +
-    '<p>Der Posteingang ist sortiert, die ersten Tage sind verplant. Jetzt strukturierst Du Deine 100 Tage: Lege für jede der vier Kernaufgaben fest, in welchem Abschnitt Du welche Phase angehst.</p>' +
+    '<p>Der Posteingang ist sortiert, die ersten Tage sind verplant. Jetzt strukturierst Du Deine 100 Tage: Lege für jede der vier Kernaufgaben fest, in welchem Zeitraum Du welche Phase angehst.</p>' +
     rmInfo(s) +
-    '<p class="small muted">So geht’s: Aktivität anklicken und einen Abschnitt wählen – oder mit der Maus in den Kalender ziehen. Tastatur: Aktivität auswählen, dann 1 bis 5, mit 0 zurück. Unter jedem Abschnitt steht, wie viele Arbeitstage verplant sind – bei Tag 1–25 zählen Mandat und Sofort-Aufgaben mit (schraffiert). Der Strich zeigt, wie viel Du höchstens fest verplanen solltest; den Rest brauchst Du für Anfragen und Vorfälle.</p>' +
+    '<p class="small muted">So geht’s: Aktivität anklicken und einen Zeitraum wählen – oder mit der Maus in den Kalender ziehen. Tastatur: Aktivität auswählen, dann 1 bis 5, mit 0 zurück. Unter jedem Zeitraum steht, wie viele Arbeitstage verplant sind – bei Tag 1–25 zählen Mandat und Sofort-Aufgaben mit (schraffiert). Der Strich zeigt, wie viel Du höchstens fest verplanen solltest; den Rest brauchst Du für Anfragen und Vorfälle.</p>' +
     rmGrid(s, plan, true) +
     rmPicker(s) +
     '<p class="small muted rmnote">' +
@@ -14467,7 +14467,7 @@ function rmEinschaetzung(s, mitPlan) {
     t.gut +
     ' von ' +
     RM.akt.length +
-    ' Aktivitäten liegen im empfohlenen Abschnitt. ' +
+    ' Aktivitäten liegen im empfohlenen Zeitraum. ' +
     esc(RM_STIL[t.stil]) +
     '</p>';
   if (bef.length)
@@ -14499,7 +14499,7 @@ function rmEinschaetzung(s, mitPlan) {
           return (
             '<li><b>' +
             esc(rmName(a)) +
-            '</b><br><span class="muted">Dein Abschnitt: ' +
+            '</b><br><span class="muted">Dein Zeitraum: ' +
             esc(rmSp(t.plan[id])[1]) +
             ' · empfohlen: ' +
             rmBest(a)
@@ -14678,7 +14678,7 @@ function rmReview(s) {
     t.gut +
     ' von ' +
     RM.akt.length +
-    ' Aktivitäten liegen im empfohlenen Abschnitt.</p>' +
+    ' Aktivitäten liegen im empfohlenen Zeitraum.</p>' +
     '<div class="pf empfohlen solo"><b>' +
     esc(RM.profile.empfohlen.name) +
     '</b><p>' +
@@ -14715,7 +14715,7 @@ function rmReview(s) {
           '</b><span class="small muted">' +
           tage(rmT(a, s.al)) +
           '</span></div>' +
-          '<div class="ch">Dein Abschnitt: <b>' +
+          '<div class="ch">Dein Zeitraum: <b>' +
           esc(rmSp(c)[1]) +
           '</b></div><p style="margin:6px 0">' +
           esc(a.kurz) +
@@ -15672,10 +15672,10 @@ const TEST_ZIELE = [
   ['posteingang', 'Posteingang am ersten Tag'],
   ['roadmap', '100-Tage-Roadmap'],
   ['aufgaben', 'Woche 2: Posteingang am Montagmorgen'],
-  ['vorfall', 'Vorfall in Abschnitt 1'],
-  ['rueckblick1', 'Rückblick Abschnitt 1'],
+  ['vorfall', 'Vorfall (Tag 1–25)'],
+  ['rueckblick1', 'Rückblick nach Tag 25'],
   ['abschnitt2', 'Woche 5: Posteingang'],
-  ['rueckblick2', 'Rückblick Abschnitt 2'],
+  ['rueckblick2', 'Rückblick nach Tag 50'],
   ['ende', 'Zwischenbilanz'],
 ];
 function testPfad(al, ziel) {
