@@ -833,6 +833,9 @@
         font-size: 12.5px;
         color: var(--bad);
       }
+      .opt .why.konflikt {
+        color: #8a5a00;
+      }
       .opt.ll .t {
         color: var(--muted);
       }
@@ -8165,6 +8168,7 @@ const DATA = {
     "1": 18,
     "2": 10
   },
+  "konfliktMax": 3,
   "start": {
     "A": {
       "RG": 10,
@@ -9598,7 +9602,7 @@ const DATA = {
   "woche2": {
     "titel": "Woche 2 – Dein Posteingang am Montagmorgen",
     "intro": "In der ersten Woche hast Du wichtige Stakeholder kennengelernt und Deine ersten 100 Tage im Unternehmen geplant. Jetzt trifft Dein Plan auf die Wirklichkeit …",
-    "hinweis": "Im Posteingang liegt, was Du am ersten Tag sofort erledigen wolltest, dazu die Aufgaben, die Du für Tag 1–25 eingeplant hast. Was Du für später eingeplant hast, kommt in den nächsten Tagen dazu – Neues ebenfalls. Die Zeit reicht nicht für alles: Was Du nicht schaffst, kannst Du verschieben oder liegen lassen.",
+    "hinweis": "Im Posteingang liegt, was Du am ersten Tag sofort erledigen wolltest, dazu die Aufgaben, die Du für Tag 1–25 eingeplant hast. Was Du für später eingeplant hast, kommt in den nächsten Tagen dazu – Neues ebenfalls. Die Zeit reicht nicht für alles: Was Du nicht schaffst, kannst Du verschieben oder liegen lassen. Wird es eng, kannst Du auch andere Aufgaben nach hinten schieben – die Zeit fehlt Dir dann im nächsten Abschnitt.",
     "folge": {
       "E1": [
         "K02",
@@ -9962,6 +9966,9 @@ function cost(s, k, o) {
 }
 const budget = (s, sec) => DATA.budget[sec || s.sec] - s.carry[sec || s.sec];
 const left = s => budget(s) - s.spent[s.sec];
+// Terminkonflikt: So viele Tage darf ein Abschnitt insgesamt in den nächsten hineinragen (nur wenn es einen nächsten gibt)
+const konfliktLuft = s => (DATA.budget[s.sec + 1] !== undefined ? DATA.konfliktMax : 0);
+const ueberhang = s => Math.max(0, s.spent[s.sec] - budget(s));
 const isVorfall = k => DATA.cards[k].typ === 'Vorfall';
 const known = (s, r) => !r.alt || !!s.found[r.id];
 
@@ -10969,7 +10976,7 @@ function viewInbox(s) {
   }
   if (s.carry[s.sec])
     h +=
-      '<div class="note" style="margin-top:12px">Ein Vorfall im letzten Abschnitt hat mehr Zeit gekostet als geplant: ' +
+      '<div class="note" style="margin-top:12px">Aus dem letzten Abschnitt ragt Arbeit herein – ein Vorfall oder Aufgaben, die Du nach hinten geschoben hast: ' +
       tage(s.carry[s.sec]) +
       ' fehlen Dir jetzt.</div>';
   h += lst;
@@ -11032,11 +11039,15 @@ function viewCard(s, k) {
     return h + '</div>';
   }
   const L = left(s),
-    vf = isVorfall(k);
+    vf = isVorfall(k),
+    luft = konfliktLuft(s);
   h += '<h3>Was tust Du?</h3><div class="opts" role="radiogroup" aria-label="Optionen">';
   shuffled(k, s.al).forEach(o => {
+    // Was nichts kostet, geht immer. Reicht die freie Zeit nicht, kann die KIB andere Aufgaben nach hinten schieben
+    // (Terminkonflikt): Die fehlenden Tage gehen vom nächsten Abschnitt ab – höchstens DATA.konfliktMax Tage je Abschnitt.
     const cst = cost(s, k, o),
-      tooMuch = !vf && cst > L,
+      tooMuch = !vf && cst > 0 && cst - L > luft,
+      konflikt = !vf && cst > 0 && cst > L && !tooMuch,
       over = vf && cst > L;
     const sel = ui.sel === o.nr;
     h +=
@@ -11059,13 +11070,22 @@ function viewCard(s, k) {
       (cst !== o.tage ? '*' : '') +
       '</span>' +
       (tooMuch
-        ? '<span class="why">Dafür reicht die Zeit in diesem Abschnitt nicht mehr.</span>'
-        : over
-          ? '<span class="why">Ein Vorfall lässt sich nicht verschieben – ' +
+        ? '<span class="why">Dafür reicht die Zeit in diesem Abschnitt nicht mehr' +
+          (luft ? ' – auch nicht, wenn Du andere Aufgaben nach hinten schiebst' : '') +
+          '.</span>'
+        : konflikt
+          ? '<span class="why konflikt">Terminkonflikt: Dafür schiebst Du andere Aufgaben nach hinten – ' +
             tage(cst - Math.max(0, L)) +
-            (cst - Math.max(0, L) === 1 ? ' geht' : ' gehen') +
-            ' vom nächsten Abschnitt ab.</span>'
-          : '') +
+            (cst - Math.max(0, L) === 1 ? ' fehlt' : ' fehlen') +
+            ' Dir dann in ' +
+            esc(SEC[s.sec + 1].tage) +
+            '.</span>'
+          : over
+            ? '<span class="why">Ein Vorfall lässt sich nicht verschieben – ' +
+              tage(cst - Math.max(0, L)) +
+              (cst - Math.max(0, L) === 1 ? ' geht' : ' gehen') +
+              ' vom nächsten Abschnitt ab.</span>'
+            : '') +
       '</label>';
   });
   h += '</div>';
@@ -11214,6 +11234,7 @@ function viewTriage(s) {
   return (
     '<div class="card"><h2 tabindex="-1">Dein Posteingang am ersten Tag</h2>' +
     '<p>Das Mandat steht – und Dein Posteingang quillt über. Sortiere die zehn E-Mails nach <b>Wichtigkeit</b> und <b>Dringlichkeit</b>. Jede E-Mail, die Du <b>sofort erledigst</b>, kostet Dich einen Tag – wer alles für dringend hält, hat keine Zeit mehr für das Wichtige. Was Du sofort erledigst, liegt in der zweiten Woche als Aufgabe auf Deinem Tisch; was Du einplanst, kommt später wieder.</p>' +
+    '<p class="note" style="margin-top:10px"><b>Gut zu wissen:</b> Diese Aufgaben kosten Zeit aus demselben Budget wie Dein 100-Tage-Plan, den Du gleich anlegst. Wird es eng, musst Du Aktivitäten aus Deinem Plan verschieben – oder andere Aufgaben nach hinten schieben.</p>' +
     eisenhowerBox() +
     '<p class="small muted">So geht’s: E-Mail anklicken und ein Feld wählen – oder mit der Maus in die Matrix ziehen. Einsortierte E-Mails lassen sich wieder anklicken und verschieben. Tastatur: E-Mail auswählen, dann 1 bis 4.</p>' +
     '<div class="tri"><div class="inbox-col" data-quad="none"><h3>Posteingang <span class="chip">' +
@@ -11548,6 +11569,8 @@ function rmTile(a, o) {
 function rmGrid(s, plan, edit, ref) {
   const sel = edit ? ui.selRm : null,
     fix1 = edit ? s.spent[1] : s.roadmap.fix1,
+    // Im Plan-Reiter: was von Tag 1–25 nach hinten geschoben wurde (Terminkonflikt, Vorfall), belegt Tag 26–50
+    fix2 = ref ? (s.sec === 1 && s.phase !== 'end' ? ueberhang(s) : s.carry[2] || 0) : 0,
     cols = edit ? [0, 1, 2, 3, 4, 5] : [1, 2, 3, 4, 5],
     cpos = c => (edit ? c + 2 : c + 1),
     selKa = sel ? rmAkt(sel).ka : null;
@@ -11585,7 +11608,7 @@ function rmGrid(s, plan, edit, ref) {
       );
       return;
     }
-    const f = c === 1 ? fix1 : 0,
+    const f = c === 1 ? fix1 : c === 2 ? fix2 : 0,
       inner = '<b>' + esc(rmSp(c)[1]) + '</b>' + rmCap(f + rmLast(plan, c, s.al), rmKap(c), f);
     h += edit
       ? '<button class="rc hd" style="--r:1;--c:' +
@@ -11612,7 +11635,11 @@ function rmGrid(s, plan, edit, ref) {
           fix
             .map(([t, d]) => '<span class="fix">' + esc(t) + ' <small>' + tage(d) + '</small></span>')
             .join('')
-        : '';
+        : c === 2 && fix2
+          ? '<span class="cap2">Bereits verplant</span><span class="fix">Von Tag 1–25 nach hinten geschoben <small>' +
+            tage(fix2) +
+            '</small></span>'
+          : '';
     h += cell('cell fixc' + (inner ? '' : ' leer'), 2, cpos(c), c * 10 + 1, inner);
   });
   RM.ka.forEach(([ka, name, col], i) => {
@@ -12047,6 +12074,18 @@ function consequences(before, s, k, fx) {
       (left(s) < 0 ? ' · ' + tage(-left(s)) + ' Überhang für den nächsten Abschnitt' : ''),
   ]);
   if (o.folge) out.push(['→', esc(o.folge)]);
+  const b0 = DATA.budget[s.sec] - s.carry[s.sec],
+    neuUeber = Math.max(0, s.spent[s.sec] - b0) - Math.max(0, before.spent[s.sec] - b0);
+  if (neuUeber > 0 && !isVorfall(k) && SEC[s.sec + 1])
+    out.push([
+      '↷',
+      'Terminkonflikt: Andere Aufgaben rücken nach hinten – ' +
+        tage(neuUeber) +
+        (neuUeber === 1 ? ' fehlt' : ' fehlen') +
+        ' Dir in ' +
+        esc(SEC[s.sec + 1].tage) +
+        '.',
+    ]);
   TFK.forEach(t => {
     const d = s.RG[t] - before.RG[t];
     if (d)
@@ -12234,7 +12273,7 @@ function viewReview(s) {
     gfReaction(s);
   if (s.carry[s.sec + 1])
     h +=
-      '<div class="note warn">Der Vorfall hat mehr Zeit gekostet als vorhanden: ' +
+      '<div class="note warn">Du hast mehr Zeit gebraucht, als vorhanden war – durch einen Vorfall oder weil Du andere Aufgaben nach hinten geschoben hast: ' +
       tage(s.carry[s.sec + 1]) +
       ' fehlen Dir im nächsten Abschnitt.</div>';
   h +=
@@ -13044,8 +13083,8 @@ function testSprung(al, ziel) {
   ui.open = ziel === 'mandat' ? 'K01' : ziel === 'vorfall' ? openCards(G).find(isVorfall) || null : null;
   render(true);
 }
-(function testmenue() {
-  if (!/test/i.test(location.hash + location.search)) return;
+function testmenue() {
+  if (document.querySelector('.testmenue') || !/test/i.test(location.hash + location.search)) return;
   const box = document.createElement('div');
   box.className = 'testmenue';
   box.innerHTML =
@@ -13060,7 +13099,10 @@ function testSprung(al, ziel) {
     .addEventListener('click', () =>
       testSprung(document.getElementById('tmAl').value, document.getElementById('tmZiel').value)
     );
-})();
+}
+testmenue();
+// „#test“ an die Adresse eines schon geöffneten Spiels anhängen genügt – auch ohne Neuladen
+window.addEventListener('hashchange', testmenue);
 /* ════════ Ende TESTMENÜ ════════ */
 
 /* Start */
