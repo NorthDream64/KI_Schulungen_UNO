@@ -3359,7 +3359,7 @@ const DATA = {
           "T": 0,
           "AK": 0,
           "risiko": "bleibt: Kundendaten in freien KI-Diensten (Schwere 2)",
-          "folge": "Kann in Abschnitt 3 eine Datenpanne auslösen.",
+          "folge": "Kann in der dritten Phase (Tag 51–75) eine Datenpanne auslösen.",
           "bew": "problematisch",
           "erkl": "Jeder Tag ohne Regel ist ein Tag mit Kundendaten auf fremden Servern.",
           "recht": "Art. 28, 44 ff. DSGVO",
@@ -3455,7 +3455,7 @@ const DATA = {
           "T": 0,
           "AK": 0,
           "risiko": "bleibt: Kundendaten in freien KI-Diensten (Schwere 2)",
-          "folge": "Kann in Abschnitt 3 eine Datenpanne auslösen.",
+          "folge": "Kann in der dritten Phase (Tag 51–75) eine Datenpanne auslösen.",
           "bew": "problematisch",
           "erkl": "Jeder Tag ohne Regel ist ein Tag mit Kundendaten auf fremden Servern.",
           "recht": "Art. 28, 44 ff. DSGVO",
@@ -5400,7 +5400,7 @@ const DATA = {
           "T": 4,
           "AK": 5,
           "risiko": "",
-          "folge": "Richtlinie in Kraft: Freigaben in Abschnitt 3 und 4 gehen schneller.",
+          "folge": "Richtlinie in Kraft: Freigaben in der dritten und vierten Phase (ab Tag 51) gehen schneller.",
           "bew": "empfohlen",
           "erkl": "Bei mehreren parallelen KI-Vorhaben mit unterschiedlichem Risiko ist die risikobasierte Compliance der Standard: Aufwand dort, wo das Risiko liegt, schlanke Wege für den Rest. Die Norm verlangt eine KI-Politik der obersten Leitung. Bewährt hat sich ein einheitliches Eingangsformular für neue Vorhaben, das Akteursrolle, Risikostufe, Datenschutz-Folgenabschätzung und Betriebsrat abfragt, bevor jemand freigibt.",
           "recht": "DIN EN ISO/IEC 42001, Ausgabe 08-2026, Kap. 5.2 und Anhang A.2",
@@ -5532,7 +5532,7 @@ const DATA = {
           "T": 4,
           "AK": 5,
           "risiko": "",
-          "folge": "Richtlinie in Kraft: Freigaben in Abschnitt 3 und 4 gehen schneller.",
+          "folge": "Richtlinie in Kraft: Freigaben in der dritten und vierten Phase (ab Tag 51) gehen schneller.",
           "bew": "empfohlen",
           "erkl": "Bei mehreren parallelen KI-Vorhaben mit unterschiedlichem Risiko ist die risikobasierte Compliance der Standard: Aufwand dort, wo das Risiko liegt, schlanke Wege für den Rest. Die Norm verlangt eine KI-Politik der obersten Leitung. Bewährt hat sich ein einheitliches Eingangsformular für neue Vorhaben, das Akteursrolle, Risikostufe, Datenschutz-Folgenabschätzung und Betriebsrat abfragt, bevor jemand freigibt.",
           "recht": "DIN EN ISO/IEC 42001, Ausgabe 08-2026, Kap. 5.2 und Anhang A.2",
@@ -12047,7 +12047,7 @@ const DATA = {
   "woche2": {
     "titel": "Woche 2 – Dein Posteingang am Montagmorgen",
     "intro": "In der ersten Woche hast Du wichtige Stakeholder kennengelernt und Deine ersten 100 Tage im Unternehmen geplant. Jetzt trifft Dein Plan auf die Wirklichkeit …",
-    "hinweis": "Im Posteingang liegt, was Du am ersten Tag sofort erledigen wolltest, dazu die Aufgaben, die Du für Tag 1–25 eingeplant hast. Was Du für später eingeplant hast, kommt in den nächsten Tagen dazu. Mehr als drei offene Anfragen liegen nie gleichzeitig auf Deinem Tisch: Neues kommt, sobald Du etwas erledigt hast. Die Zeit reicht nicht für alles: Was Du nicht schaffst, kannst Du verschieben oder liegen lassen. Wird es eng, kannst Du auch andere Aufgaben nach hinten schieben – die Zeit fehlt Dir dann im nächsten Abschnitt.",
+    "hinweis": "Im Posteingang liegt, was Du am ersten Tag sofort erledigen wolltest, dazu die Aufgaben, die Du für Tag 1–25 eingeplant hast. Was Du für später eingeplant hast, kommt in den nächsten Tagen dazu. Mehr als drei offene Anfragen liegen nie gleichzeitig auf Deinem Tisch: Neues kommt, sobald Du etwas erledigt hast. Die Zeit reicht nicht für alles: Was Du nicht schaffst, kannst Du verschieben oder liegen lassen. Wird es eng, kannst Du auch andere Aufgaben nach hinten schieben – die Zeit fehlt Dir dann in der nächsten Phase.",
     "folge": {
       "E1": [
         "K02",
@@ -12452,6 +12452,9 @@ const isVorfall = k => DATA.cards[k].typ === 'Vorfall';
 const known = (s, r) => !r.alt || !!s.found[r.id];
 
 const W2 = DATA.woche2;
+// Wie die Spielenden die Zeit bis zum Ende eines Abschnitts nennen (Uli, 21.10.2026: nicht „Abschnitt“)
+const ZEITRAUM = { 1: 'dreieinhalb Wochen', 2: 'sieben Wochen', 3: 'zehn Wochen', 4: '100 Tage' };
+const ersteZeit = sec => 'Deine ersten ' + ZEITRAUM[sec];
 const WO = DATA.wochen;
 // Posteingang eines Abschnitts: Woche 2 (Abschnitt 1) oder ab Woche 5 (Abschnitt 2 …) – mit Regeln (cfg)
 const woche = (s, sec) => {
@@ -13118,7 +13121,7 @@ function timeBar(s) {
     b +
     ' Tagen frei">' +
     (carry
-      ? '<i class="extra" style="width:' + w(carry) + '" title="Vom letzten Abschnitt übernommen"></i>'
+      ? '<i class="extra" style="width:' + w(carry) + '" title="Aus der letzten Phase übernommen"></i>'
       : '') +
     '<i class="used" style="width:' +
     w(Math.min(used, b - carry)) +
@@ -13216,8 +13219,8 @@ function sidePanels(s) {
   const kr = s.risks.filter(r => known(s, r));
   return (
     '<aside class="side" aria-label="Lage auf einen Blick">' +
-    '<div class="panel"><div class="k"><span>Zeit · Abschnitt ' +
-    s.sec +
+    '<div class="panel"><div class="k"><span>Zeit · ' +
+    SEC[s.sec].tage +
     '</span><span>' +
     DATA.budget[s.sec] +
     ' Tage</span></div>' +
@@ -13331,7 +13334,7 @@ function viewStart() {
       ' „' +
       esc(AL[saved.al].name) +
       '“, ' +
-      (s.phase === 'end' ? 'abgeschlossen' : 'Abschnitt ' + s.sec) +
+      (s.phase === 'end' ? 'abgeschlossen' : SEC[s.sec].tage) +
       ', ' +
       n +
       ' Entscheidung' +
@@ -13368,10 +13371,10 @@ function viewStart() {
     ).join('') +
     '</div>' +
     '<h3>So läuft das Spiel</h3><ul class="tight">' +
-    '<li>Die 100 Tage sind in vier Abschnitte zu je 25 Tagen geteilt. In jedem Abschnitt hast Du ein begrenztes Zeitbudget für KI-Themen.</li>' +
+    '<li>Die 100 Tage sind in vier Phasen zu je 25 Tagen geteilt. In jeder Phase hast Du ein begrenztes Zeitbudget für KI-Themen.</li>' +
     '<li>Anfragen landen in Deinem Posteingang. Du kannst sie gründlich, pragmatisch oder gar nicht bearbeiten – das kostet unterschiedlich viel Zeit. Alles schaffst Du nicht.</li>' +
     '<li>Was Du liegen lässt, verschwindet nicht. Vorfälle kommen ungefragt und lassen sich nicht verschieben.</li>' +
-    '<li>Am Ende jedes Abschnitts zeigt Dir ein Rückblick, wie Deine Entscheidungen einzuordnen sind – mit Erklärung und Rechtsgrundlage.</li>' +
+    '<li>Am Ende jeder Phase zeigt Dir ein Rückblick, wie Deine Entscheidungen einzuordnen sind – mit Erklärung und Rechtsgrundlage.</li>' +
     '<li>Du kannst jederzeit unterbrechen. Der Spielstand bleibt in diesem Browser gespeichert.</li></ul>' +
     '<div class="note warn" style="margin-top:12px"><b>Testfassung:</b> der Posteingang in Woche 2 und Woche 5, also Tag 1 bis 50. Danach folgt eine Zwischenbilanz.</div>' +
     '<h3>Wähle die Ausgangslage</h3><div class="choose" role="radiogroup" aria-label="Ausgangslage">' +
@@ -13432,9 +13435,7 @@ function sectionHead(s) {
       '</p></details>'
     );
   return (
-    '<div class="secHead"><h2 tabindex="-1">Abschnitt ' +
-    s.sec +
-    ': ' +
+    '<div class="secHead"><h2 tabindex="-1">' +
     S.titel +
     '</h2><span class="muted">' +
     S.tage +
@@ -13617,7 +13618,7 @@ function viewInbox(s) {
   }
   if (s.carry[s.sec])
     h +=
-      '<div class="note" style="margin-top:12px">Aus dem letzten Abschnitt ragt Arbeit herein – ein Vorfall oder Aufgaben, die Du nach hinten geschoben hast: ' +
+      '<div class="note" style="margin-top:12px">Aus der letzten Phase ragt Arbeit herein – ein Vorfall oder Aufgaben, die Du nach hinten geschoben hast: ' +
       tage(s.carry[s.sec]) +
       ' fehlen Dir jetzt.</div>';
   h += lst;
@@ -13626,8 +13627,8 @@ function viewInbox(s) {
     (open ? ' ghost' : '') +
     '" data-go="close"' +
     (vf.length || sperre ? ' disabled' : '') +
-    '>Abschnitt ' +
-    s.sec +
+    '>' +
+    ersteZeit(s.sec) +
     ' abschließen</button>' +
     '<span class="small muted">' +
     (s.rmOffen
@@ -13674,8 +13675,8 @@ function viewCard(s, k) {
           (d.cost ? ' <span class="muted">(' + tage(d.cost) + ')</span>' : '')
         : d.auto
           ? c.akt
-            ? 'Nicht bearbeitet – die Aktivität rückt in den nächsten Abschnitt.'
-            : 'Liegen geblieben am Ende des Abschnitts.'
+            ? 'Nicht bearbeitet – die Aktivität rückt in die nächste Phase.'
+            : 'Liegen geblieben am Ende der Phase.'
           : esc(optText(o)) + ' <span class="muted">(' + tage(d.cost) + ')</span>') +
       '</div>';
     if (s.closed[d.sec]) h += '<p>' + bewChip(o.bew) + ' ' + esc(o.erkl) + '</p>';
@@ -13723,7 +13724,7 @@ function viewCard(s, k) {
       (cst !== o.tage ? '*' : '') +
       '</span>' +
       (tooMuch
-        ? '<span class="why">Dafür reicht die Zeit in diesem Abschnitt nicht mehr' +
+        ? '<span class="why">Dafür reicht die Zeit in dieser Phase nicht mehr' +
           (luft ? ' – auch nicht, wenn Du andere Aufgaben nach hinten schiebst' : '') +
           '.</span>'
         : konflikt
@@ -13737,7 +13738,7 @@ function viewCard(s, k) {
             ? '<span class="why">Ein Vorfall lässt sich nicht verschieben – ' +
               tage(cst - Math.max(0, L)) +
               (cst - Math.max(0, L) === 1 ? ' geht' : ' gehen') +
-              ' vom nächsten Abschnitt ab.</span>'
+              ' von der nächsten Phase ab.</span>'
             : '') +
       (ueberlauf && !tooMuch
         ? '<span class="why konflikt">' +
@@ -13755,7 +13756,7 @@ function viewCard(s, k) {
     (ui.sel == null ? ' disabled' : '') +
     '>Entscheiden</button><span class="small muted">Noch ' +
     tage(Math.max(0, L)) +
-    ' frei in diesem Abschnitt.</span></div></div>';
+    ' frei in dieser Phase.</span></div></div>';
   return h;
 }
 function mailById(id) {
@@ -14034,7 +14035,7 @@ function viewAfterTriage(s) {
         : '') +
       ' · noch ' +
       tage(Math.max(0, left(s))) +
-      ' frei in Abschnitt 1',
+      ' frei für Tag 1–25',
   ]);
   fx.zeilen.forEach(([m, q, f]) =>
     out.push([
@@ -14086,7 +14087,7 @@ function viewAfterTriage(s) {
     '<h3>Was daraus folgt</h3><ul class="cons">' +
     out.map(([i, t]) => '<li><span class="ic">' + i + '</span><span>' + t + '</span></li>').join('') +
     '</ul>' +
-    '<p class="small muted" style="margin-top:14px">Die ausführliche Begründung je E-Mail steht im Rückblick am Ende des Abschnitts.</p>' +
+    '<p class="small muted" style="margin-top:14px">Die ausführliche Begründung je E-Mail steht im Rückblick am Ende der Phase.</p>' +
     '<div class="actions"><button class="btn" data-go="inbox">Weiter: Deine 100-Tage-Roadmap</button></div></div>'
   );
 }
@@ -14604,7 +14605,7 @@ function viewAfterRoadmap(s) {
       : '') +
     '<p class="small muted" style="margin-top:14px">' +
     esc(RM.hinweis) +
-    ' Die Begründung je Aktivität steht im Rückblick am Ende des Abschnitts.</p>' +
+    ' Die Begründung je Aktivität steht im Rückblick am Ende der Phase.</p>' +
     '<div class="actions"><button class="btn" data-go="inbox">Zu den Aufgaben</button></div></div>'
   );
 }
@@ -14742,7 +14743,7 @@ function consequences(before, s, k, fx) {
       ' · noch ' +
       tage(Math.max(0, left(s))) +
       ' frei' +
-      (left(s) < 0 ? ' · ' + tage(-left(s)) + ' Überhang für den nächsten Abschnitt' : ''),
+      (left(s) < 0 ? ' · ' + tage(-left(s)) + ' Überhang für die nächste Phase' : ''),
   ]);
   if (o.folge) out.push(['→', esc(o.folge)]);
   const b0 = DATA.budget[s.sec] - s.carry[s.sec],
@@ -14837,7 +14838,7 @@ function viewAfter(s) {
       '<div class="note bad" style="margin-top:14px"><b>Eilt:</b> Im Posteingang wartet ein Vorfall. Er geht allem anderen vor.</div>';
   h += kaskadeBox(s);
   h +=
-    '<p class="small muted" style="margin-top:14px">Wie die Entscheidung einzuordnen ist, zeigt der Rückblick am Ende des Abschnitts.</p>' +
+    '<p class="small muted" style="margin-top:14px">Wie die Entscheidung einzuordnen ist, zeigt der Rückblick am Ende der Phase.</p>' +
     '<div class="actions"><button class="btn" data-go="inbox"' +
     (s.rmOffen ? ' disabled' : '') +
     '>' +
@@ -14897,7 +14898,7 @@ function reviewItems(s, sec) {
           ? '<i>Delegiert:</i> ' + esc(delegText(s, k))
           : d.auto
             ? c.akt
-              ? '<i>Nicht bearbeitet – die Aktivität rückt in den nächsten Abschnitt.</i>'
+              ? '<i>Nicht bearbeitet – die Aktivität rückt in die nächste Phase.</i>'
               : '<i>Liegen geblieben – nicht bearbeitet.</i>'
             : esc(optText(o))) +
         '</div><p style="margin:6px 0">' +
@@ -14933,8 +14934,8 @@ function viewReview(s) {
   const n = bewCount(s, s.sec),
     last = !DATA.mvp[s.sec + 1];
   let h =
-    '<div class="card"><h2 tabindex="-1">Rückblick auf Abschnitt ' +
-    s.sec +
+    '<div class="card"><h2 tabindex="-1">Rückblick auf ' +
+    ersteZeit(s.sec) +
     '</h2><p class="muted">' +
     SEC[s.sec].tage +
     ' · ' +
@@ -14949,7 +14950,7 @@ function viewReview(s) {
     h +=
       '<div class="note warn">Du hast mehr Zeit gebraucht, als vorhanden war – durch einen Vorfall oder weil Du andere Aufgaben nach hinten geschoben hast: ' +
       tage(s.carry[s.sec + 1]) +
-      ' fehlen Dir im nächsten Abschnitt.</div>';
+      ' fehlen Dir in der nächsten Phase.</div>';
   h +=
     (s.sec === 1 ? triageReview(s) + rmReview(s) + w2Review(s) : '') +
     '<h3>Deine Entscheidungen</h3>' +
@@ -14958,7 +14959,7 @@ function viewReview(s) {
     '<div class="actions"><button class="btn" data-go="next"' +
     (s.rmOffen ? ' disabled' : '') +
     '>' +
-    (last ? 'Zur Zwischenbilanz' : 'Weiter zu Abschnitt ' + (s.sec + 1)) +
+    (last ? 'Zur Zwischenbilanz' : 'Weiter zu ' + (WO[s.sec + 1] ? WO[s.sec + 1].woche : 'nächsten Phase')) +
     '</button></div></div>';
   return h;
 }
@@ -15100,8 +15101,8 @@ function viewEnd(s) {
     [1, 2]
       .map(
         sec =>
-          '<h3>Abschnitt ' +
-          sec +
+          '<h3>' +
+          SEC[sec].tage +
           ': ' +
           SEC[sec].titel +
           '</h3>' +
@@ -15212,7 +15213,7 @@ function render(focus) {
       '<span>Ausgangslage <b>' +
       s.al +
       '</b></span><span>' +
-      (s.phase === 'end' ? 'Tag 50' : 'Abschnitt <b>' + s.sec + '</b> · ' + SEC[s.sec].tage) +
+      (s.phase === 'end' ? 'Tag 50' : SEC[s.sec].tage) +
       '</span>' +
       (s.name ? '<span>' + esc(s.name) + '</span>' : '');
     tabs.hidden = false;
@@ -15398,7 +15399,9 @@ document.addEventListener('click', e => {
       ui.open = DATA.mvp[1].find(isVorfall);
       ui.sel = null;
       ui.cardMsg =
-        '<b>Bevor Du den Abschnitt abschließt, kommt noch etwas dazwischen.</b> Ein Vorfall lässt sich nicht verschieben.';
+        '<b>Bevor Du ' +
+        ersteZeit(s.sec) +
+        ' abschließt, kommt noch etwas dazwischen.</b> Ein Vorfall lässt sich nicht verschieben.';
       render(true);
       return;
     }
@@ -15609,8 +15612,8 @@ function reportHtml() {
     if (s1) {
       G = s1;
       body +=
-        '<section class="rep"><div class="rep-band">Lage nach Abschnitt 1 (Tag 25)</div>' +
-        staticHtml(lageHtml(s1, 'Lage nach Abschnitt 1')) +
+        '<section class="rep"><div class="rep-band">Lage nach Tag 25</div>' +
+        staticHtml(lageHtml(s1, 'Lage nach Tag 25')) +
         '</section>';
     }
   } finally {
