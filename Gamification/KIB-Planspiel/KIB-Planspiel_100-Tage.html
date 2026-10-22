@@ -1949,6 +1949,43 @@
         background: #e9eef3;
         background: color-mix(in srgb, var(--accent) 12%, var(--soft));
       }
+      .bh.jetzt {
+        flex-wrap: wrap;
+        row-gap: 6px;
+      }
+      .bh .jk {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      /* Zeitbudget der laufenden Phase – wie die Balken der späteren Zeiträume */
+      .bh.jetzt .cap.jcap {
+        flex: 1 1 15rem;
+        margin-left: 10px;
+      }
+      .cap.jcap .bar b {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        border-radius: 3px 0 0 3px;
+        background: var(--accent);
+      }
+      .cap.jcap .bar b.extra {
+        left: 0;
+        background: repeating-linear-gradient(135deg, #9d978a 0 3px, #cfc9bd 3px 6px);
+      }
+      .cap.jcap .bar i {
+        border-radius: 0;
+        background: repeating-linear-gradient(45deg, #9cb8d1 0 4px, #d4e2ee 4px 8px);
+      }
+      .cap.jcap small .frei {
+        color: var(--ink);
+        font-weight: 700;
+      }
+      .cap.jcap.eng small,
+      .cap.jcap.eng small .frei {
+        color: var(--bad);
+      }
       .bh .hier {
         padding: 1px 8px;
         border-radius: 999px;
@@ -18951,6 +18988,42 @@ function phKap(s) {
     '</span></div></div>'
   );
 }
+// Zeitbudget der laufenden Phase im Kopf „jetzt“ – wie die Balken der späteren Zeiträume (Uli, 22.10.2026:
+// die freien Tage gehören aufs Board, nicht in den Reiter)
+function jetztCap(s) {
+  const b = DATA.budget[s.sec],
+    carry = s.carry[s.sec],
+    gebucht = carry + s.spent[s.sec],
+    offen = offeneAkt(s).reduce((n, a) => n + rmT(a, s.al), 0),
+    frei = b - gebucht,
+    luft = frei - offen,
+    w = x => (b ? Math.max(0, Math.min(100, (x / b) * 100)) : 0).toFixed(1) + '%';
+  return (
+    '<span class="cap jcap' +
+    (frei <= 0 || luft < 0 ? ' eng' : '') +
+    '" title="' +
+    esc(zahl(gebucht) + ' von ' + b + ' Arbeitstagen gebucht, ' + zahl(offen) + ' offen im Plan') +
+    '"><span class="bar">' +
+    (carry ? '<b class="extra" style="width:' + w(carry) + '"></b>' : '') +
+    '<b style="left:' +
+    w(carry) +
+    ';width:' +
+    w(gebucht - carry) +
+    '"></b><i style="left:' +
+    w(gebucht) +
+    ';width:' +
+    w(Math.min(offen, Math.max(0, frei))) +
+    '"></i></span><small><span class="frei">' +
+    (frei > 0 ? tage(frei) + ' frei' : 'keine Tage mehr frei') +
+    '</span> · ' +
+    zahl(gebucht) +
+    ' von ' +
+    b +
+    ' Arbeitstagen gebucht' +
+    (luft < 0 && frei > 0 ? ' · der Plan braucht ' + tage(-luft) + ' mehr' : '') +
+    '</small></span>'
+  );
+}
 function boardGrid(s) {
   const sec = s.sec,
     sp = [];
@@ -18987,9 +19060,11 @@ function boardGrid(s) {
       h +=
         '<div class="bh jetzt" style="' +
         pos(1, col, 0, 3) +
-        '"><span class="hier">jetzt</span><b>' +
+        '"><span class="jk"><span class="hier">jetzt</span><b>' +
         esc(rmSp(x.c)[1]) +
-        '</b></div>';
+        '</b></span>' +
+        jetztCap(s) +
+        '</div>';
     if (x.t === 'o' || x.t === 'a' || x.t === 'e')
       h +=
         '<div class="bh sub z' +
@@ -20984,9 +21059,7 @@ function render(focus) {
       [
         'spiel',
         spielt ? '<span><span class="lg">100-Tage-</span>Plan</span>' : 'Spiel',
-        spielt
-          ? '<span class="chip' + (left(s) <= 0 ? ' bad' : '') + '">' + tage(Math.max(0, left(s))) + '</span>'
-          : '',
+        '', // freie Tage stehen im Kopf der laufenden Phase auf dem Board
       ],
       ['lage', 'Lagebild', '<span class="chip ' + zoneT(s.T) + '">' + zoneT(s.T) + '</span>'],
       ['log', 'Entscheidungen', '<span class="chip">' + logAnzahl(s) + '</span>'],
