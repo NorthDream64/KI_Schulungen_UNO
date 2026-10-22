@@ -4,7 +4,7 @@ Browserbasiertes Planspiel für den Kurs **KI-Beauftragte:r**. Du bist frisch er
 
 Im Mittelpunkt steht die Frage, was eine KI-Beauftragte oder ein KI-Beauftragter darf und muss: Mandat, KI-Inventar, Risikoklassen und Pflichten nach der KI-Verordnung, Datenschutz, Richtlinie und Managementsystem – und wie man mit begrenzter Zeit Prioritäten setzt.
 
-> **Testfassung:** Woche 2 und Woche 5 (Tag 1–50), danach eine Zwischenbilanz. Im vollständigen Spiel folgen der Posteingang in Woche 10 und in Woche 15 der Bericht an die Geschäftsführung.
+> **Testfassung:** Tag 1–25 und Tag 26–75 sind spielbar. Für Tag 76–100 stehen bisher nur die Aktivitäten aus Deinem Plan bereit – Bericht an die Geschäftsführung und Vorfälle folgen.
 
 ## Starten
 
@@ -16,14 +16,14 @@ Im Mittelpunkt steht die Frage, was eine KI-Beauftragte oder ein KI-Beauftragter
 
 1. **Mandat:** Gespräch mit der Geschäftsführung über Deine Rolle.
 2. **Posteingang am ersten Tag:** zehn E-Mails nach Wichtigkeit und Dringlichkeit in die Eisenhower-Matrix sortieren – sofort erledigen, einplanen, delegieren oder weglegen.
-3. **Deine 100-Tage-Roadmap:** ein Kalender über die 100 Tage. Für die vier Kernaufgaben – Inventarisierung, Risikobewertung, Governance/Compliance, KI-Kompetenz – legst Du fest, wann Du den Status quo ermittelst, Lücken identifizierst, Maßnahmen planst und umsetzt.
-4. **Woche 2 – Dein Posteingang:** Jetzt trifft der Plan auf die Wirklichkeit. Im Posteingang liegt, was Du am ersten Tag sofort erledigen wolltest, dazu die Aufgaben aus Deiner Roadmap für Tag 1–25 und zwei neue E-Mails zum Einsortieren. Was Du eingeplant hast, kommt später wieder, Delegiertes läuft ohne Dich – aber nie mehr als drei offene Anfragen auf einmal. Ein Kanban-Board mit „Offen“, „In Arbeit“ und „Erledigt“ hilft beim Sortieren: oben das Wichtigste. Aufgaben und Anfragen gründlich, pragmatisch oder gar nicht bearbeiten, Roadmap-Aufgaben notfalls verschieben – die Zeit reicht nicht für alles.
-5. **Woche 5 – Dein Posteingang:** die Aufgaben aus Deinem Plan für Tag 26–50 und neue Anfragen der Fachbereiche, wieder höchstens drei offene auf einmal.
+3. **Deine 100-Tage-Roadmap:** Für die vier Kernaufgaben – Inventarisierung, Risikobewertung, Governance/Compliance, KI-Kompetenz – legst Du fest, in welchem Zeitraum Du den Status quo ermittelst, Lücken identifizierst, Maßnahmen planst und umsetzt.
+4. **Drei Phasen auf Deinem 100-Tage-Plan:** Tag 1–25, Tag 26–75 und Tag 76–100. Der Plan ist Deine Spielfläche: In der laufenden Phase liegen Aktivitäten und Anfragen auf einem Board mit „Offen“, „In Arbeit“ und „Erledigt“. Was Du umsetzen willst, ziehst Du nach „In Arbeit“ – wie geplant oder schlank –, das bucht die Tage. Was Du in einen späteren Zeitraum ziehst, verschiebst Du. Der Plan rechnet mit: gebucht, offen im Plan, frei.
+5. **Neue Anfragen** kommen in einem eigenen Fenster, sobald Du etwas entschieden hast – nie mehr als drei offene auf einmal. Gründlich, pragmatisch oder gar nicht bearbeiten: Die Zeit reicht nicht für alles.
 6. **Vorfälle:** kommen ungefragt und lassen sich nicht verschieben.
-7. **Rückblick** am Ende jedes Abschnitts: Einordnung jeder Entscheidung mit Erklärung und Rechtsgrundlage.
-8. **Zwischenbilanz** nach 50 Tagen mit Lagebild, als Bericht zum Herunterladen.
+7. **Zwischenbilanz** nach Tag 25 und Tag 75: Rückmeldungen der Stakeholder und die Einordnung jeder Entscheidung mit Erklärung und Rechtsgrundlage.
+8. **Feed-back nach 100 Tagen** mit Lagebild, als Datei zum Herunterladen.
 
-Neben dem Spiel zeigen weitere Reiter Deinen **100-Tage-Plan** (sobald die Roadmap steht, als Referenz zum Nachschlagen – mit dem, was Du schon umgesetzt oder verschoben hast, und den Alltagsereignissen wie Anfragen und Vorfällen), das **Lagebild** (Rückhalt der Geschäftsführung, Akzeptanz der Fachbereiche, Reifegrad je Themenfeld, offene Risiken) alle bisherigen **Entscheidungen** und – ab dem Ende der ersten Phase – den **Rückblick** zum Nachlesen.
+Neben dem Plan zeigen weitere Reiter das **Lagebild** (Rückhalt der Geschäftsführung, Akzeptanz der Fachbereiche, Reifegrad je Themenfeld, offene Risiken), alle bisherigen **Entscheidungen** und – ab dem Ende der ersten Phase – den **Rückblick** zum Nachlesen.
 
 ## Grundlagen
 
