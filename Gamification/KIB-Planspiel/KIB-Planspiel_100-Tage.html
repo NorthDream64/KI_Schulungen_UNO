@@ -2130,6 +2130,11 @@
         background: var(--accent);
         color: #fff;
       }
+      /* Neue Nachricht (Uli, 22.10.2026): rot markiert, bis sie geöffnet wird */
+      .stb.nachr {
+        background: var(--bad);
+        color: #fff;
+      }
       /* Fenster für neue Anfragen und Entscheidungen */
       body.pop-offen {
         overflow: hidden;
@@ -17718,7 +17723,7 @@ const DATA = {
       ]
     },
     "maxOffen": 3,
-    "soGehts": "Ziehe eine Aktivität nach „In Arbeit“, um sie in dieser Phase umzusetzen – wie geplant oder schlank. Die Tage sind dann gebucht; am Ende der Phase ist sie erledigt. Ziehst Du sie in einen späteren Zeitraum, verschiebst Du sie. Anfragen öffnest Du mit einem Klick. Neue Anfragen kommen in einem eigenen Fenster, sobald Du etwas entschieden hast – höchstens drei offene Anfragen liegen gleichzeitig auf Deinem Tisch. Was am Ende der Phase in „Offen“ liegt: Aktivitäten rücken in die nächste Phase, Anfragen bleiben liegen."
+    "soGehts": "Ziehe eine Aktivität nach „In Arbeit“, um sie in dieser Phase umzusetzen. Im Fenster wählst Du das Vorgehen – erst damit steht fest, wie viele Tage sie braucht. Die Tage sind dann gebucht; am Ende der Phase ist die Aktivität erledigt. Ziehst Du sie in einen späteren Zeitraum, verschiebst Du sie. Sobald Du etwas entschieden hast, kann eine neue Anfrage eingehen: Sie liegt rot markiert als „Neue Nachricht“ in „Offen“ – Du öffnest sie mit einem Klick oder ziehst sie nach „In Arbeit“. Höchstens drei offene Anfragen liegen gleichzeitig auf Deinem Tisch. Was am Ende der Phase in „Offen“ liegt: Aktivitäten rücken in die nächste Phase, Anfragen bleiben liegen."
   },
   "phasen": {
     "1": {
@@ -18043,7 +18048,8 @@ function decide(s, k, nr, auto, deleg) {
     }
   }
   // Nach jeder eigenen Entscheidung kommt eine Anfrage nach – aber nie mehr als FK.maxOffen offene Anfragen
-  // (Uli, 21.10.2026: gegen Überforderung). Neue Anfragen erscheinen im Spiel in einem eigenen Fenster.
+  // (Uli, 21.10.2026: gegen Überforderung). Neue Anfragen landen im Spiel als „Neue Nachricht“ in „Offen“ (Uli, 22.10.2026) –
+  // die Spielerin oder der Spieler ordnet sie selbst auf dem Board zu.
   const P = !auto && s.ph[s.sec];
   if (P) {
     P.zuletzt = [];
@@ -18710,7 +18716,7 @@ function viewStart() {
     '<h3>So läuft das Spiel</h3><ul class="tight">' +
     '<li>Die 100 Tage sind in drei Phasen geteilt: Tag 1–25, Tag 26–75 und Tag 76–100. In jeder Phase hast Du ein begrenztes Zeitbudget für KI-Themen.</li>' +
     '<li>Am ersten Tag legst Du Deinen 100-Tage-Plan an. Er ist Deine Spielfläche: Was Du umsetzen willst, ziehst Du nach „In Arbeit“ – das bucht die Tage. Alles schaffst Du nicht.</li>' +
-    '<li>Neue Anfragen kommen in einem eigenen Fenster. Du kannst sie gründlich, pragmatisch oder gar nicht bearbeiten – das kostet unterschiedlich viel Zeit.</li>' +
+    '<li>Neue Anfragen landen als „Neue Nachricht“ auf Deinem Board. Du kannst sie gründlich, pragmatisch oder gar nicht bearbeiten – das kostet unterschiedlich viel Zeit.</li>' +
     '<li>Was Du liegen lässt, verschwindet nicht. Vorfälle kommen ungefragt und lassen sich nicht verschieben.</li>' +
     '<li>Nach Tag 25 und nach Tag 75 zieht eine Zwischenbilanz Bilanz – mit Erklärung und Rechtsgrundlage. Nach Tag 100 bekommst Du Dein Feed-back.</li>' +
     '<li>Du kannst jederzeit unterbrechen. Der Spielstand bleibt in diesem Browser gespeichert.</li></ul>' +
@@ -18783,7 +18789,8 @@ function viewAfter(s) {
 }
 /* ───── Spieloberfläche (Uli, 22.10.2026): der 100-Tage-Plan mit dem Board der laufenden Phase ─────
    Zeilen: Anfragen und Ereignisse, die vier Kernaufgaben. Spalten: abgeschlossene Phasen, die laufende Phase geteilt in
-   Offen | In Arbeit | Erledigt, spätere Zeiträume, nach Tag 100. Neue Anfragen kommen in einem eigenen Fenster. */
+   Offen | In Arbeit | Erledigt, spätere Zeiträume, nach Tag 100. Neue Anfragen landen als „Neue Nachricht“ in „Offen“.
+   Tage stehen auf einer Kachel erst, wenn das Vorgehen entschieden ist (In Arbeit, Erledigt) – oder als Planwert in späteren Zeiträumen. */
 const GRUND = {
   sofort: 'Am ersten Tag: sofort erledigen',
   plan: 'Kommt mit Deinem 100-Tage-Plan',
@@ -18855,12 +18862,16 @@ function aktTile(s, a, zone) {
     ' title="' +
     esc(a.name + ': ' + a.text) +
     '" aria-label="' +
-    esc(rmName(a) + ', ' + tage(rmT(a, s.al))) +
+    esc(rmName(a) + (zone === 'o' ? '' : ', ' + tage(gebucht != null ? gebucht : rmT(a, s.al)))) +
     '"><span class="ph">' +
     esc(a.label) +
-    '</span><span class="tg">' +
-    (gebucht != null ? tage(gebucht) + (st === 'schlank' ? ' · schlank' : '') : tage(rmT(a, s.al))) +
     '</span>' +
+    // Offen: Wie viele Tage es werden, hängt vom Vorgehen ab – das steht erst im Fenster (Uli, 22.10.2026)
+    (zone === 'o'
+      ? ''
+      : '<span class="tg">' +
+        (gebucht != null ? tage(gebucht) + (st === 'schlank' ? ' · schlank' : '') : tage(rmT(a, s.al))) +
+        '</span>') +
     (zone === 'p' || zone === 'h'
       ? '<span class="stand">' +
         esc(STAND[s.rmStatus[a.id]] || (zone === 'h' ? STAND.hinter100 : '')) +
@@ -18869,13 +18880,17 @@ function aktTile(s, a, zone) {
     '</button>'
   );
 }
+// Neue Nachricht: im Lauf der Phase eingegangen, noch nicht geöffnet und nicht entschieden
+const istNeu = (s, k) => {
+  const P = s.ph && s.ph[s.sec];
+  return !!P && !s.dec[k] && P.neu.includes(k) && !(meta && meta.gel && meta.gel.includes(k));
+};
 // Kachel einer Anfrage: offen (ziehen nach „In Arbeit“ oder anklicken) oder entschieden
 function anfTile(s, k) {
   const c = DATA.cards[k],
     d = s.dec[k],
     vf = isVorfall(k) && !d,
-    P = s.ph[s.sec],
-    neu = !d && P && (P.zuletzt || []).includes(k);
+    neu = istNeu(s, k);
   return (
     '<button class="bt anf' +
     (d ? ' done' : '') +
@@ -18892,7 +18907,7 @@ function anfTile(s, k) {
       : vf
         ? '<span class="stb vf">Vorfall · eilt</span>'
         : neu
-          ? '<span class="stb neu">neu</span>'
+          ? '<span class="stb nachr">Neue Nachricht</span>'
           : '') +
     '<span class="from">' +
     esc(c.absender) +
@@ -19101,6 +19116,14 @@ function viewBoard(s) {
     esc(FK.soGehts) +
     '</p></details>';
   if (ui.toast) h += '<div class="note toast" role="status">' + ui.toast + '</div>';
+  const nk = ui.nachricht;
+  if (nk && istNeu(s, nk))
+    h +=
+      '<div class="note bad toast nachricht" role="status"><b>Neue Nachricht</b> von ' +
+      esc(DATA.cards[nk].absender) +
+      ': „' +
+      esc(DATA.cards[nk].titel) +
+      '“ – sie liegt in „Offen“. Klicke sie an oder ziehe sie nach „In Arbeit“, wenn Du sie bearbeiten willst.</div>';
   if (s.carry[sec])
     h +=
       '<div class="note" style="margin-top:12px">Aus der vorigen Phase ragt Arbeit herein – ein Vorfall oder Aufgaben, die Du nach hinten geschoben hast: ' +
@@ -19247,7 +19270,7 @@ function popKarte(s, k, p) {
     d = s.dec[k],
     g = grundVon(s, k);
   let h =
-    kopf(c, p.neu && !d ? '<span class="stb neu">neu eingegangen</span>' : '') +
+    kopf(c, p.neu && !d ? '<span class="stb nachr">Neue Nachricht</span>' : '') +
     '<h2 id="popT" tabindex="-1">' +
     esc(c.titel) +
     '</h2>' +
@@ -19415,9 +19438,9 @@ function popFolge(s, p) {
       '<div class="note" style="margin-top:12px">Die Aktivität steht jetzt in „In Arbeit“ – am Ende der Phase ist sie erledigt.</div>';
   if (fx.nachgekommen)
     h +=
-      '<div class="note" style="margin-top:12px"><b>Neu eingegangen:</b> ' +
+      '<div class="note bad" style="margin-top:12px"><b>Neue Nachricht:</b> ' +
       esc(DATA.cards[fx.nachgekommen].titel) +
-      (fx.vorfall ? ' – sie wartet in „Offen“ auf Dich.</div>' : ' – sie öffnet sich als Nächstes.</div>');
+      ' – sie liegt jetzt in „Offen“ auf Deinem Board.</div>';
   if (fx.vorfall)
     h +=
       '<div class="note bad" style="margin-top:12px"><b>Eilt:</b> Ein Vorfall ist eingetreten. Er öffnet sich als Nächstes und geht allem anderen vor.</div>';
@@ -21020,6 +21043,7 @@ function uiNeu() {
     msg: '',
     cardMsg: '',
     toast: '',
+    nachricht: null, // zuletzt eingegangene Anfrage – roter Hinweis über dem Board
     pop: null,
     lastT: null,
     tri: {},
@@ -21048,8 +21072,14 @@ function resume() {
   render(true);
 }
 // Fenster öffnen: Anfrage (Karte), Aktivität (Beschreibung), Aktivität in Arbeit nehmen (start)
-function oeffne(k, neu) {
-  ui.pop = { art: 'karte', k, neu: !!neu };
+function oeffne(k) {
+  const neu = istNeu(G, k);
+  // geöffnet = gelesen; bleibt im Spielstand, damit die Marke nach dem Neuladen nicht wiederkommt
+  if (neu) {
+    meta.gel = (meta.gel || []).concat(k);
+    save();
+  }
+  ui.pop = { art: 'karte', k, neu };
   ui.open = G.dec[k] ? null : k;
   ui.sel = null;
 }
@@ -21064,12 +21094,13 @@ function popZu() {
   ui.sel = null;
   ui.cardMsg = '';
 }
-// Nach einer Entscheidung: Vorfall zuerst, dann was neu eingegangen ist
+// Nach einer Entscheidung: Ein Vorfall öffnet sich sofort. Eine neue Anfrage öffnet sich nicht von selbst –
+// sie liegt als „Neue Nachricht“ in „Offen“, und die Spielerin oder der Spieler ordnet sie zu (Uli, 22.10.2026).
 function nachEntscheidung(fx) {
   popZu();
+  if (fx && fx.nachgekommen && !G.dec[fx.nachgekommen]) ui.nachricht = fx.nachgekommen;
   const vf = openCards(G).find(isVorfall);
   if (vf) oeffne(vf);
-  else if (fx && fx.nachgekommen && !G.dec[fx.nachgekommen]) oeffne(fx.nachgekommen, true);
 }
 // Aktivität aus der laufenden Phase in einen späteren Zeitraum verschieben – eine Entscheidung
 function verschiebe(id, c) {
