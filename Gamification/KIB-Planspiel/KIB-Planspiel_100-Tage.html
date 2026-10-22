@@ -18965,18 +18965,18 @@ function phKap(s) {
     luft = frei - offen;
   return (
     '<div class="phkap" role="img" aria-label="' +
-    esc(zahl(carry + used) + ' von ' + b + ' Arbeitstagen gebucht, ' + zahl(offen) + ' offen im Plan') +
+    esc(zahl(carry + used) + ' von ' + b + ' Arbeitstagen verbucht, ' + zahl(offen) + ' offen im Plan') +
     '"><div class="phbar">' +
     (carry ? '<i class="extra" style="width:' + w(carry) + '" title="Aus der vorigen Phase"></i>' : '') +
     '<i class="used" style="width:' +
     w(used) +
-    '" title="gebucht"></i><i class="plan" style="width:' +
+    '" title="verbucht"></i><i class="plan" style="width:' +
     w(offen) +
     '" title="offen im Plan"></i></div><div class="phkap-l"><span><b>' +
     zahl(carry + used) +
     '</b> von ' +
     b +
-    ' Arbeitstagen gebucht</span><span class="pl">' +
+    ' Arbeitstagen verbucht</span><span class="pl">' +
     zahl(offen) +
     ' offen im Plan</span><span' +
     (luft < 0 ? ' class="eng"' : '') +
@@ -19002,7 +19002,7 @@ function jetztCap(s) {
     '<span class="cap jcap' +
     (frei <= 0 || luft < 0 ? ' eng' : '') +
     '" title="' +
-    esc(zahl(gebucht) + ' von ' + b + ' Arbeitstagen gebucht, ' + zahl(offen) + ' offen im Plan') +
+    esc(zahl(gebucht) + ' von ' + b + ' Arbeitstagen verbucht, ' + zahl(offen) + ' offen im Plan') +
     '"><span class="bar">' +
     (carry ? '<b class="extra" style="width:' + w(carry) + '"></b>' : '') +
     '<b style="left:' +
@@ -19014,12 +19014,11 @@ function jetztCap(s) {
     ';width:' +
     w(Math.min(offen, Math.max(0, frei))) +
     '"></i></span><small><span class="frei">' +
-    (frei > 0 ? tage(frei) + ' frei' : 'keine Tage mehr frei') +
-    '</span> · ' +
     zahl(gebucht) +
     ' von ' +
     b +
-    ' Arbeitstagen gebucht' +
+    ' Arbeitstagen verbucht</span> · ' +
+    (frei > 0 ? tage(frei) + ' frei' : 'keine Tage mehr frei') +
     (luft < 0 && frei > 0 ? ' · der Plan braucht ' + tage(-luft) + ' mehr' : '') +
     '</small></span>'
   );
@@ -19084,9 +19083,7 @@ function boardGrid(s) {
         pos(1, col, 2) +
         '"><b>' +
         esc(rmSp(x.c)[1]) +
-        '</b><small>abgeschlossen · ' +
-        tage(s.spent[x.c] + s.carry[x.c]) +
-        ' gebucht</small></div>';
+        '</b><small>abgeschlossen</small></div>';
     else
       h +=
         '<div class="bh fut" style="' +
@@ -20539,7 +20536,17 @@ function consequences(before, s, k, fx) {
 // Rückmeldungen der Stakeholder: [Name, Rückmeldung, Ton] – in Zwischenbilanz und Feed-back als Kästchen, Text beim
 // Darüberfahren (Uli, 22.10.2026). Der Ton zeigt, wie die Person Dich erlebt – nicht, wie die Entscheidung einzuordnen ist.
 // Texte für Lüders, Bahr und die Zwischentöne von Sievers, Kühn und de Vries: Entwurf 22.10.2026
-function stimmen(s) {
+/* Rückmeldungen der Stakeholder – je nach Zeitpunkt (Uli, 22.10.2026): nach Tag 25 vorsichtig, nach Tag 75 pointierter
+   und an den Ergebnissen der mittleren Phase gemessen, nach Tag 100 als Bilanz. sec 3 = Feed-back nach 100 Tagen. */
+function stimmen(s, sec) {
+  sec = sec || (s.phase === 'end' ? 3 : s.sec);
+  return sec >= 3 ? stimmen3(s) : sec === 2 ? stimmen2(s) : stimmen1(s);
+}
+// Gemeinsame Bausteine
+const bewVon = (s, k) => (s.dec[k] ? optOf(s, k, s.dec[k].nr).bew : null);
+const schwerOffen = s => s.risks.filter(r => known(s, r) && r.sev === 3);
+// Nach Tag 25: erste Eindrücke
+function stimmen1(s) {
   const z = zoneT(s.T),
     a = zoneA(s.AK),
     q = [];
@@ -20612,11 +20619,323 @@ function stimmen(s) {
   if (bahr) q.push(['Dirk Bahr', bahr[0], bahr[1]]);
   return q;
 }
+// Nach Tag 75: pointierter – gemessen an dem, was bis Tag 75 hätte entstehen sollen
+function stimmen2(s) {
+  const z = zoneT(s.T),
+    a = zoneA(s.AK),
+    u = id => umgesetzt(s, id),
+    q = [];
+  const nU = RM.akt.filter(x => u(x.id)).length;
+  q.push(
+    z !== 'gering' && nU < UMSETZ_KRIT
+      ? [
+          'Henrike Sievers',
+          'Die Anfragen hast Du im Griff. Von Deinem Plan sehe ich nach 75 Tagen aber kaum etwas – bis Tag 100 muss sich das ändern.',
+          'neutral',
+        ]
+      : z === 'hoch'
+        ? [
+            'Henrike Sievers',
+            'Drei Viertel der Zeit sind um, und ich kann zeigen, dass wir KI im Griff haben. Jetzt muss es auch ohne Dich im Alltag laufen.',
+            'gut',
+          ]
+        : z === 'normal'
+          ? [
+              'Henrike Sievers',
+              'Bis Tag 100 brauche ich Ergebnisse, die ich vorzeigen kann – Konzepte allein reichen mir nicht mehr.',
+              'neutral',
+            ]
+          : [
+              'Henrike Sievers',
+              'Ich sage es offen: Nach 75 Tagen hätte ich mehr erwartet. Wenn sich bis Tag 100 nichts ändert, müssen wir über Deine Rolle reden.',
+              'kritisch',
+            ]
+  );
+  const top = schwerOffen(s);
+  q.push(
+    top.length
+      ? [
+          'Thomas Kühn',
+          'Ich wiederhole mich ungern: „' +
+            riskLabel(top[0].lid) +
+            '“ ist noch immer offen. Das trage ich so nicht länger mit.',
+          'kritisch',
+        ]
+      : z === 'gering'
+        ? [
+            'Thomas Kühn',
+            'Viel Papier, wenig Wirkung. Ich will wissen, was uns das bisher gekostet hat – und was es gebracht hat.',
+            'kritisch',
+          ]
+        : u('risk_reg') && u('risk_proz')
+          ? [
+              'Thomas Kühn',
+              'Risikoregister und Risikoprozess stehen – damit kann ich bei jeder Prüfung etwas vorweisen. Als Nächstes will ich wissen, was uns das im Jahr kostet.',
+              'gut',
+            ]
+          : u('risk_reg')
+            ? [
+                'Thomas Kühn',
+                'Das Risikoregister steht. Aber wer hält es aktuell, wenn Du nicht hinschaust? Dafür brauchen wir einen festen Prozess.',
+                'neutral',
+              ]
+            : [
+                'Thomas Kühn',
+                'Wo bleibt das Risikoregister? Ohne belastbare Liste kann ich niemandem erklären, welche Risiken wir eingehen.',
+                'kritisch',
+              ]
+  );
+  q.push(
+    a === 'hoch'
+      ? [
+          'Marieke de Vries',
+          'Die Freigaben laufen, und meine Leute trauen sich wieder. Bitte jetzt keine neuen Hürden auf den letzten Metern.',
+          'gut',
+        ]
+      : a === 'gering'
+        ? [
+            'Marieke de Vries',
+            'Meine Leute nutzen KI inzwischen lieber, ohne zu fragen – fragen dauert zu lange. Das kann nicht Dein Ziel sein.',
+            'kritisch',
+          ]
+        : [
+            'Marieke de Vries',
+            'Wir kommen voran, aber jede Freigabe dauert. In der Zeit ziehen andere an uns vorbei.',
+            'neutral',
+          ]
+  );
+  q.push(
+    u('sch_multi')
+      ? [
+          'Jens Wolter',
+          'Seit es in den Filialen Ansprechpersonen für KI gibt, wissen meine Leute, wen sie fragen können. Das hat mehr gebracht als jede Rundmail.',
+          'gut',
+        ]
+      : a === 'gering'
+        ? [
+            'Jens Wolter',
+            'In den Filialen ist von Deiner Arbeit nichts angekommen. Meine Leute wissen nicht, was sie dürfen – also machen sie, was sie für richtig halten.',
+            'kritisch',
+          ]
+        : [
+            'Jens Wolter',
+            'In den Filialen kommt bisher wenig an. Meine Leute wissen nicht, wen sie bei KI-Fragen ansprechen sollen.',
+            'neutral',
+          ]
+  );
+  if (s.flags.inventar)
+    q.push(
+      s.flags.inventar === 'keins'
+        ? [
+            'Arne Lüders',
+            '75 Tage, und wir wissen immer noch nicht, welche KI im Haus läuft. Das ist Blindflug.',
+            'kritisch',
+          ]
+        : u('inv_mp') && u('inv_mu')
+          ? [
+              'Arne Lüders',
+              'Neue KI-Dienste landen jetzt im Verzeichnis, und wir sehen, was tatsächlich genutzt wird. So behalte ich den Überblick.',
+              'gut',
+            ]
+          : u('inv_mp')
+            ? [
+                'Arne Lüders',
+                'Der Weg für neue KI-Anwendungen steht. Was tatsächlich genutzt wird, sehe ich aber erst, wenn wir die Nutzung auch überwachen.',
+                'neutral',
+              ]
+            : [
+                'Arne Lüders',
+                'Das Verzeichnis veraltet schon wieder. Ohne festen Weg für neue KI-Dienste stehen wir bald wieder am Anfang.',
+                'kritisch',
+              ]
+    );
+  const bahr = bahrZuK12(s, 2) || bahrNachK38(s, 2);
+  if (bahr) q.push(['Dirk Bahr', bahr[0], bahr[1]]);
+  return q;
+}
+// Betriebsrat: Die Vorauswahl im Jobportal (K12) wiegt schwerer als das erste Gespräch (K38)
+function bahrZuK12(s, sec) {
+  const bw = bewVon(s, 'K12');
+  if (bw === 'empfohlen')
+    return [
+      'Dass die Vorauswahl im Jobportal erst geprüft wird, bevor sie über Bewerbungen mitentscheidet, rechne ich Dir hoch an.',
+      'gut',
+    ];
+  if (bw === 'problematisch')
+    return [
+      sec >= 3
+        ? 'Die Vorauswahl im Jobportal läuft, ohne dass wir zugestimmt haben. Das klären wir jetzt in der Einigungsstelle.'
+        : 'Die Vorauswahl im Jobportal entscheidet über Bewerbungen, und niemand hat uns gefragt. Bei der Personalauswahl reden wir mit – notfalls in der Einigungsstelle.',
+      'kritisch',
+    ];
+  if (bw === 'vertretbar' && sec === 2)
+    return [
+      'Dass die Personalabteilung wieder alle Bewerbungen sieht, ist ein Anfang. Über die Vorauswahl selbst hat uns aber niemand informiert.',
+      'neutral',
+    ];
+  return null;
+}
+function bahrNachK38(s, sec) {
+  const br = s.dec.K38 && !s.dec.K38.deleg ? s.dec.K38.nr : null;
+  return (
+    sec >= 3
+      ? {
+          1: [
+            'Der feste Weg zum Betriebsrat hat gehalten. Daraus sollten wir jetzt eine Betriebsvereinbarung machen.',
+            'gut',
+          ],
+          2: [
+            'Informiert wurden wir, wenn es konkret wurde – meistens. Für die Zukunft brauchen wir eine feste Regel.',
+            'neutral',
+          ],
+          3: [
+            'Du hast zugesagt, dass KI keine Leistung und kein Verhalten auswertet. Daran halten wir Dich auch nach Tag 100 fest.',
+            'neutral',
+          ],
+          4: ['100 Tage, und wir sind nie richtig einbezogen worden. Das wird Folgen haben.', 'kritisch'],
+        }
+      : {
+          1: [
+            'Der feste Weg zu uns funktioniert. Ich erwarte, dass das auch gilt, wenn es einmal schnell gehen muss.',
+            'gut',
+          ],
+          2: [
+            'Du wolltest Dich melden, sobald Vorhaben anstehen. Bisher erfahren wir davon eher über den Flurfunk.',
+            'neutral',
+          ],
+          3: [
+            'Du hast zugesagt, dass KI keine Leistung und kein Verhalten auswertet. Daran messen wir jedes Vorhaben – genau.',
+            'neutral',
+          ],
+          4: ['75 Tage und noch immer kein Gespräch. Ab jetzt gehen wir den formellen Weg.', 'kritisch'],
+        }
+  )[br];
+}
+// Nach Tag 100: Bilanz
+function stimmen3(s) {
+  const z = zoneT(s.T),
+    a = zoneA(s.AK),
+    u = id => umgesetzt(s, id),
+    q = [];
+  const nU = RM.akt.filter(x => u(x.id)).length;
+  q.push(
+    z !== 'gering' && nU < UMSETZ_KRIT
+      ? [
+          'Henrike Sievers',
+          'Die Anfragen hast Du ordentlich abgearbeitet. Von Deinem 100-Tage-Plan ist aber kaum etwas umgesetzt – einen Rahmen, der trägt, haben wir so nicht.',
+          'kritisch',
+        ]
+      : z === 'hoch' && nU < UMSETZ_OK
+        ? [
+            'Henrike Sievers',
+            'Vieles läuft gut. Ein Teil Deines Plans ist aber liegen geblieben – den will ich im nächsten Quartal nachgeholt sehen.',
+            'neutral',
+          ]
+        : z === 'hoch'
+          ? [
+              'Henrike Sievers',
+              '100 Tage – und wir haben einen Rahmen, der trägt. Genau das habe ich mir von der Rolle erhofft.',
+              'gut',
+            ]
+          : z === 'normal'
+            ? [
+                'Henrike Sievers',
+                'Ein solider Anfang. Im nächsten Quartal will ich sehen, dass die Regeln im Alltag gelebt werden.',
+                'neutral',
+              ]
+            : [
+                'Henrike Sievers',
+                'Nach 100 Tagen fehlt mir die Linie. Wir müssen grundsätzlich klären, wie es mit der Rolle weitergeht.',
+                'kritisch',
+              ]
+  );
+  const top = schwerOffen(s);
+  q.push(
+    top.length
+      ? [
+          'Thomas Kühn',
+          'Nach 100 Tagen ist „' +
+            riskLabel(top[0].lid) +
+            '“ noch immer offen. Das ist für mich der Maßstab – nicht die Zahl der Konzepte.',
+          'kritisch',
+        ]
+      : z === 'gering'
+        ? ['Thomas Kühn', 'Unterm Strich: viel Aufwand, wenig Ergebnis.', 'kritisch']
+        : u('risk_reg') && u('risk_proz')
+          ? [
+              'Thomas Kühn',
+              'Risiken sind erfasst, bewertet und werden verfolgt. Das kann ich gegenüber jeder Prüfung vertreten.',
+              'gut',
+            ]
+          : u('risk_reg')
+            ? [
+                'Thomas Kühn',
+                'Das Register gibt es – aber ein Risikomanagement, das nur auf dem Papier steht, hilft uns im Ernstfall nicht.',
+                'neutral',
+              ]
+            : [
+                'Thomas Kühn',
+                'Ein Risikoregister haben wir nach 100 Tagen immer noch nicht. Im Ernstfall können wir nichts belegen.',
+                'kritisch',
+              ]
+  );
+  q.push(
+    a === 'hoch'
+      ? [
+          'Marieke de Vries',
+          'Wir dürfen KI nutzen, und wir wissen, wie. Das hat uns mehr gebracht als jedes Verbot.',
+          'gut',
+        ]
+      : a === 'gering'
+        ? ['Marieke de Vries', 'Für uns waren die 100 Tage vor allem eines: warten.', 'kritisch']
+        : [
+            'Marieke de Vries',
+            'Die Richtung stimmt. Jetzt müssen die Freigaben schneller werden, sonst verlieren wir den Anschluss.',
+            'neutral',
+          ]
+  );
+  q.push(
+    u('sch_durch')
+      ? [
+          'Jens Wolter',
+          'Die Schulungen sind in den Filialen angekommen – auch bei denen, die mit KI bisher nichts zu tun hatten.',
+          'gut',
+        ]
+      : [
+          'Jens Wolter',
+          'In den Filialen ist bisher niemand geschult worden. Dabei arbeiten hier die meisten Leute.',
+          'kritisch',
+        ]
+  );
+  if (s.flags.inventar)
+    q.push(
+      s.flags.inventar === 'keins'
+        ? [
+            'Arne Lüders',
+            '100 Tage ohne Verzeichnis. Wenn jetzt jemand fragt, welche KI wir einsetzen, kann ich es nicht sagen.',
+            'kritisch',
+          ]
+        : u('inv_mp') && u('inv_mu')
+          ? [
+              'Arne Lüders',
+              'Das Verzeichnis lebt: Neues kommt hinzu, Altes fliegt raus. So können wir jederzeit Auskunft geben.',
+              'gut',
+            ]
+          : [
+              'Arne Lüders',
+              'Das Verzeichnis gibt es – gepflegt wird es aber nur, wenn jemand daran denkt.',
+              'neutral',
+            ]
+    );
+  const bahr = (bewVon(s, 'K12') === 'problematisch' && bahrZuK12(s, 3)) || bahrNachK38(s, 3);
+  if (bahr) q.push(['Dirk Bahr', bahr[0], bahr[1]]);
+  return q;
+}
 const TON = { gut: 'zufrieden', neutral: 'abwartend', kritisch: 'kritisch' };
-function stimmenHtml(s) {
+function stimmenHtml(s, sec) {
   return (
     '<div class="people stimmen">' +
-    stimmen(s)
+    stimmen(s, sec)
       .map(([name, text, ton]) => {
         const p = PERSONEN.find(x => x[0] === name) || [name, '', ''];
         return (
@@ -20721,6 +21040,58 @@ const bilanzTitel = sec =>
 function viewReview(s) {
   return rueckblickHtml(s, s.sec, true);
 }
+// Zeit einer Phase: verbucht (mit Hereinragendem aus der vorigen Phase) und ungenutzt
+function zeitPhase(s, sec) {
+  const b = DATA.budget[sec],
+    verbucht = s.carry[sec] + s.spent[sec];
+  return { b, verbucht, frei: Math.max(0, b - verbucht) };
+}
+// Rückblick (Uli, 22.10.2026): ungenutzte Tage nennen – im echten Leben in Ordnung (Einarbeitung, Abstimmungen …).
+// Sind zugleich Aktivitäten liegen geblieben oder verschoben worden, die zusammen in die freie Zeit gepasst hätten,
+// steht das als Hinweis dabei (die kleinsten zuerst, höchstens drei mit Namen).
+function zeitHtml(s, sec) {
+  const z = zeitPhase(s, sec);
+  let t = '<p><b>Zeit:</b> ' + zahl(z.verbucht) + ' von ' + z.b + ' Arbeitstagen verbucht';
+  if (z.frei <= 0) return t + '.</p>';
+  const alltag =
+    sec === 1
+      ? 'Einarbeitung, Kennenlernen und Abstimmungen'
+      : 'Abstimmungen, Routinearbeit und Unvorhergesehenes';
+  t += ' – ' + tage(z.frei) + (z.frei > 1 ? ' blieben' : ' blieb') + ' ungenutzt.';
+  let rest = z.frei;
+  const passt = RM.akt
+    .filter(a => {
+      const k = a.karte && s.dec[a.karte] && s.dec[a.karte].sec === sec ? a.karte : rid(sec, a.id),
+        d = s.dec[k],
+        o = d && d.sec === sec ? optOf(s, k, d.nr) : null;
+      return o && istVerschieben(o);
+    })
+    .sort((x, y) => rmT(x, s.al) - rmT(y, s.al))
+    .filter(a => {
+      const t0 = rmT(a, s.al);
+      if (t0 > rest) return false;
+      rest -= t0;
+      return true;
+    });
+  if (!passt.length)
+    return t + ' Das ist in Ordnung: Im echten Leben brauchen ' + alltag + ' ebenfalls Zeit.</p>';
+  const namen = passt.slice(0, 3).map(a => '„' + esc(a.label.replace(/­/g, '')) + '“');
+  return (
+    t +
+    ' Etwas Luft ist in Ordnung – im echten Leben brauchen ' +
+    alltag +
+    ' ebenfalls Zeit. Liegen geblieben oder verschoben ' +
+    (passt.length > 1 ? 'sind' : 'ist') +
+    ' aber ' +
+    (passt.length > 3
+      ? namen.join(', ') + ' und ' + (passt.length - 3) + ' weitere Aktivitäten, die zusammen'
+      : namen.length > 1
+        ? namen.slice(0, -1).join(', ') + ' und ' + namen[namen.length - 1] + ' – zusammen hätten sie'
+        : namen[0] + ' – sie hätte') +
+    (passt.length > 3 ? ' in die freie Zeit gepasst hätten.' : ' nach Plan in die freie Zeit gepasst.') +
+    '</p>'
+  );
+}
 // Bilanz einer Phase – aktiv: im Spiel (Weiter); sonst im Reiter „Rückblick“ zum Nachlesen
 function rueckblickHtml(s, sec, aktiv) {
   const n = bewCount(s, sec);
@@ -20739,12 +21110,13 @@ function rueckblickHtml(s, sec, aktiv) {
     n.problematisch +
     ' problematisch</p>' +
     '<h3>Was die anderen sagen</h3>' +
-    stimmenHtml(s) +
+    stimmenHtml(s, sec) +
     '<h3>Deine Entscheidungen</h3>' +
     reviewItems(s, sec) +
     '<h3>Gesamteinschätzung</h3><p>' +
     esc(einschaetzungSatz(n)) +
-    '</p>';
+    '</p>' +
+    zeitHtml(s, sec);
   if (s.carry[sec + 1])
     h +=
       '<div class="note warn">Du hast mehr Zeit gebraucht, als vorhanden war – durch einen Vorfall oder weil Du andere Aufgaben nach hinten geschoben hast: ' +
@@ -20869,7 +21241,7 @@ function viewEnd(s) {
     esc(why) +
     '</div>' +
     '<h3>Was die anderen sagen</h3>' +
-    stimmenHtml(s) +
+    stimmenHtml(s, 3) +
     '<dl class="kv" style="margin-top:14px">' +
     '<dt>Ausgangslage</dt><dd>' +
     s.al +
@@ -20889,6 +21261,21 @@ function viewEnd(s) {
     ' von ' +
     RM.akt.length +
     ' Aktivitäten</dd>' +
+    '<dt>Zeit</dt><dd>' +
+    [1, 2, 3]
+      .map(c => {
+        const z = zeitPhase(s, c);
+        return (
+          SEC[c].tage +
+          ': ' +
+          zahl(z.verbucht) +
+          ' von ' +
+          z.b +
+          (z.frei > 0 ? ' (' + tage(z.frei) + ' ungenutzt)' : '')
+        );
+      })
+      .join(' · ') +
+    '</dd>' +
     '<dt>Hinter Tag 100</dt><dd>' +
     (RM.akt
       .filter(a => s.rmIst && s.rmIst[a.id] > LETZTE)
