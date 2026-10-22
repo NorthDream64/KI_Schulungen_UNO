@@ -4,7 +4,7 @@ Browserbasiertes Planspiel für den Kurs **KI-Beauftragte:r**. Du bist frisch er
 
 Im Mittelpunkt steht die Frage, was eine KI-Beauftragte oder ein KI-Beauftragter darf und muss: Mandat, KI-Inventar, Risikoklassen und Pflichten nach der KI-Verordnung, Datenschutz, Richtlinie und Managementsystem – und wie man mit begrenzter Zeit Prioritäten setzt.
 
-> **Testfassung:** Tag 1–25 und Tag 26–75 sind spielbar. Für Tag 76–100 stehen bisher nur die Aktivitäten aus Deinem Plan bereit – Bericht an die Geschäftsführung und Vorfälle folgen.
+> **Testfassung:** Tag 1–25 und Tag 26–75 sind spielbar. Für Tag 76–100 stehen bisher die Aktivitäten aus Deinem Plan und der Bericht an die Geschäftsführung bereit – Anfragen und Vorfälle folgen.
 
 ## Starten
 
@@ -21,7 +21,8 @@ Im Mittelpunkt steht die Frage, was eine KI-Beauftragte oder ein KI-Beauftragter
 5. **Neue Anfragen** gehen ein, sobald Du etwas entschieden hast – rot markiert als „Neue Nachricht“ in „Offen“, nie mehr als drei offene auf einmal. Du öffnest sie mit einem Klick oder ziehst sie nach „In Arbeit“. Gründlich, pragmatisch oder gar nicht bearbeiten: Die Zeit reicht nicht für alles.
 6. **Vorfälle:** kommen ungefragt und lassen sich nicht verschieben.
 7. **Zwischenbilanz** nach Tag 25 und Tag 75: Rückmeldungen der Stakeholder und die Einordnung jeder Entscheidung mit Erklärung und Rechtsgrundlage.
-8. **Feed-back nach 100 Tagen** mit Lagebild, als Datei zum Herunterladen.
+8. **Bericht an die Geschäftsführung:** fest eingeplant am Ende von Tag 76–100. Nicht alles passt in die 100 Tage – im Bericht zeigst Du, was steht, was offen ist und warum manches erst danach kommt. Danach reagiert die Geschäftsführung.
+9. **Feed-back nach 100 Tagen** mit Lagebild, als Datei zum Herunterladen.
 
 Neben dem Plan zeigen weitere Reiter das **Lagebild** (Rückhalt der Geschäftsführung, Akzeptanz der Fachbereiche, Reifegrad je Themenfeld, offene Risiken), alle bisherigen **Entscheidungen** und – ab dem Ende der ersten Phase – den **Rückblick** zum Nachlesen.
 
