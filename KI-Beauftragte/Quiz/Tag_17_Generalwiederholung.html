@@ -178,8 +178,11 @@ a{color:var(--accent);}
 var APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyPs358GF_E1xsvTh08PpTpZcBDS1OvsU9XQ0qi0MkZoCCnAk4dyo3Aii0OYxILdvCRYA/exec';
 
 /* ═══════════════════════════════════════════════════════════════
-   QBANK — 50 Fragen · TÜV-Prüfungssimulation · Generalwiederholung
-   Verteilung: 50 Fragen aus dem TÜV Rheinland Fragenpool (Juni 2026)
+   QBANK — 75 Fragen · TÜV-Prüfungssimulation · Generalwiederholung
+   Grundlage: TÜV Rheinland Fragenpool KIB (Juni 2026, 66 Fragen)
+   Richtige Antworten wie im Pool: 3 × eine · 42 × zwei · 30 × drei
+   (Pool: 3 · 37 · 26). Eine richtige Antwort nur bei EU AI Act und
+   ISO 42001, wie im Pool. Keine verneinten Fragestämme (Stand 26.10.2026)
    ─────────────────────────────────────────────────────────────────
    WOCHE 1 (Q 0–11):  Rolle KI-BA · Rechtsgrundlagen · Prompting
    WOCHE 2 (Q12–24):  ISO 42001 · Konformitätsbewertung · Transparenz
@@ -191,7 +194,7 @@ var QBANK = [
 
 /* ─── WOCHE 1 (Q0–Q11) · Rolle · Recht · Prompting ─── */
 
-  /* Q0 · Rolle KI-BA · 3r */
+  /* Q0 · Rolle KI-BA · 2r */
   {
     week: 1, cat: 'Rolle KI-BA',
     q: 'Eine Personalabteilung fragt, worin sich die KI-Beauftragte von der IT-Sicherheitsbeauftragten unterscheidet. Welche Antworten sind korrekt?',
@@ -209,16 +212,16 @@ var QBANK = [
   /* Q1 · Rolle KI-BA · 2r */
   {
     week: 1, cat: 'Rolle KI-BA',
-    q: 'Welche der folgenden Tätigkeiten gehören NICHT zum Kernprofil einer KI-Beauftragten?',
+    q: 'Ein Unternehmen beschreibt das Kernprofil seiner künftigen KI-Beauftragten. Welche Tätigkeiten gehören dazu?',
     opts: [
       'KI-Modelle eigenständig programmieren und in Produktivsysteme deployen',
       'Regulatorische Anforderungen (EU AI Act, DSGVO) überwachen und Compliance sicherstellen',
       'Alle Entscheidungen der Geschäftsführung zu KI-Investitionen verantworten',
       'Als Bindeglied dafür sorgen, dass sich IT, Fachabteilungen und Datenschutz bei KI-Vorhaben abstimmen'
     ],
-    correct: [0,2],
-    exp: 'Programmierung und Deployment gehören in die Entwicklung, nicht zur KI-Beauftragten. Die alleinige Entscheidungsverantwortung verbleibt bei der Geschäftsführung. Zur Kernrolle gehören Compliance-Überwachung und Schnittstellenkoordination.',
-    src: 'EU AI Act Art. 4 · KIB Tag 1'
+    correct: [1,3],
+    exp: 'Zum Kernprofil gehören die Überwachung der regulatorischen Anforderungen und die Rolle als Bindeglied zwischen IT, Fachabteilungen und Datenschutz. Programmierung und Deployment sind Aufgabe der Entwicklung; die Verantwortung für Investitionsentscheidungen bleibt bei der Geschäftsführung.',
+    src: 'KIB Tag 1'
   },
 
   /* Q2 · Rolle KI-BA · 3r */
@@ -236,7 +239,7 @@ var QBANK = [
     src: 'EU AI Act Art. 4 · KIB Tag 1'
   },
 
-  /* Q3 · Rechtliche Grundlagen · 1r */
+  /* Q3 · Rechtliche Grundlagen · 2r */
   {
     week: 1, cat: 'Rechtliche Grundlagen',
     q: 'Welche Rechtsgrundlage reguliert in der EU primär den Umgang mit personenbezogenen Daten beim Einsatz von KI-Systemen?',
@@ -266,7 +269,7 @@ var QBANK = [
     src: 'EU AI Act Art. 3 · DSGVO Art. 22 · KIB Tag 4'
   },
 
-  /* Q5 · EU AI Act – Verbote · 3r */
+  /* Q5 · EU AI Act – Verbote · 2r */
   {
     week: 1, cat: 'EU AI Act – Verbote',
     q: 'Welche der folgenden KI-Anwendungen ist nach Art. 5 EU AI Act verboten?',
@@ -281,7 +284,7 @@ var QBANK = [
     src: 'EU AI Act Art. 5 · KIB Tag 4'
   },
 
-  /* Q6 · EU AI Act – Akteursrollen · 1r */
+  /* Q6 · EU AI Act – Akteursrollen · 2r */
   {
     week: 1, cat: 'EU AI Act – Akteursrollen',
     q: 'Ein mittelständisches Unternehmen kauft ein KI-Recruitingsystem von einem Software-Hersteller und setzt es in der eigenen Personalauswahl ein. Welche Rolle nimmt das Unternehmen nach EU AI Act ein?',
@@ -373,7 +376,7 @@ var QBANK = [
 
 /* ─── WOCHE 2 (Q12–Q24) · ISO 42001 · Konformität · Transparenz ─── */
 
-  /* Q12 · ISO 42001 · 2r */
+  /* Q12 · ISO 42001 · 1r */
   {
     week: 2, cat: 'ISO 42001',
     q: 'Eine Organisation prüft, ob sie ihr KI-Management an der ISO/IEC 42001 ausrichten soll, und sammelt dazu Aussagen über Charakter und Anwendungsbereich der Norm. Welche Aussage(n) ist oder sind korrekt?',
@@ -381,10 +384,10 @@ var QBANK = [
       'Sie ist ein verbindliches EU-Gesetz und verpflichtet alle Unternehmen ab 50 Mitarbeitenden zur Zertifizierung ihrer KI-Systeme.',
       'Sie ist ein freiwilliger internationaler Standard für Managementsysteme für künstliche Intelligenz und folgt dem Plan-Do-Check-Act-Zyklus.',
       'Sie schreibt technische Mindestwerte für die Genauigkeit von KI-Modellen vor, die jedes zertifizierte System einhalten muss.',
-      'Sie ist auf alle Organisationen anwendbar, die künstliche Intelligenz entwickeln, einsetzen oder nutzen — unabhängig von Größe, Branche und Sitz.'
+      'Sie gilt nur für Organisationen, die KI-Systeme selbst entwickeln; wer KI lediglich einsetzt oder nutzt, fällt nicht in ihren Anwendungsbereich.'
     ],
-    correct: [1,3],
-    exp: 'Die ISO/IEC 42001 ist ein freiwilliger Standard für Managementsysteme für künstliche Intelligenz und folgt wie die übrigen ISO-Managementsystemnormen dem Plan-Do-Check-Act-Zyklus — sie ist kein Gesetz und schreibt keine technischen Mindestwerte vor. Ihr Anwendungsbereich ist bewusst weit gefasst: Sie gilt für jede Organisation, die künstliche Intelligenz entwickelt, einsetzt oder nutzt, unabhängig von Größe, Branche und Sitz.',
+    correct: [1],
+    exp: 'Die ISO/IEC 42001 ist ein freiwilliger internationaler Standard für Managementsysteme für künstliche Intelligenz und folgt wie die übrigen ISO-Managementsystemnormen dem Plan-Do-Check-Act-Zyklus. Sie ist kein Gesetz und schreibt keine technischen Mindestwerte vor. Ihr Anwendungsbereich ist bewusst weit gefasst: Sie gilt für jede Organisation, die KI-Systeme entwickelt, bereitstellt oder nutzt, nicht nur für Entwickler.',
     src: 'ISO/IEC 42001:2023 · KIB Tag 7'
   },
 
@@ -448,18 +451,18 @@ var QBANK = [
     src: 'ISO/IEC 42001:2023 Kl. 6 · KIB Tag 7'
   },
 
-  /* Q17 · EU AI Act – Konformität · 1r */
+  /* Q17 · EU AI Act – Konformitätsbewertung · 1r */
   {
     week: 2, cat: 'EU AI Act – Konformitätsbewertung',
-    q: 'Welche Aussagen zur Konformitätsbewertung eines biometrischen Identifikationssystems gelten, wenn harmonisierte Normen nicht vollständig angewandt wurden?',
+    q: 'Ein Anbieter bringt ein biometrisches Fernidentifizierungssystem nach Anhang III Nr. 1 in Verkehr und hat die harmonisierten Normen nur teilweise angewandt. Welche Aussage(n) zur Konformitätsbewertung ist oder sind korrekt?',
     opts: [
-      'Eine notifizierte Stelle (akkreditierte Konformitätsbewertungsstelle) muss eingeschaltet werden — dies schreibt Art. 43 Abs. 1 EU AI Act für diesen Fall zwingend vor.',
-      'Selbstzertifizierung ist für biometrische Hochrisiko-KI-Systeme in Anhang III Nr. 1 ohne vollständige Normanwendung ausdrücklich ausgeschlossen.',
-      'Das Bundesamt für Sicherheit in der Informationstechnik (BSI)',
-      'Keine externe Stelle — Selbstzertifizierung ist bei Biometriesystemen immer ausreichend'
+      'Eine notifizierte Stelle muss beteiligt werden; sie bewertet das Qualitätsmanagementsystem und die technische Dokumentation (Anhang VII).',
+      'Eine interne Kontrolle durch den Anbieter genügt, sofern das Unternehmen als kleines oder mittleres Unternehmen gilt.',
+      'Für Hochrisiko-KI-Systeme aus Anhang III Nr. 4 (Beschäftigung) ist dasselbe Verfahren mit notifizierter Stelle vorgeschrieben.',
+      'In Deutschland übernimmt stets das BSI die Konformitätsbewertung; private Prüfstellen sind dafür nicht zugelassen.'
     ],
-    correct: [0,1],
-    exp: 'Art. 43 Abs. 1 EU AI Act schreibt für Hochrisiko-KI-Systeme in Anhang III Nr. 1 (Biometrie) ohne vollständige Normanwendung zwingend eine notifizierte Stelle vor. Selbstzertifizierung ist in diesem Fall ausdrücklich ausgeschlossen. Das BSI ist keine notifizierte Konformitätsbewertungsstelle nach EU AI Act.',
+    correct: [0],
+    exp: 'Für biometrische Hochrisiko-KI-Systeme nach Anhang III Nr. 1 schreibt Art. 43 Abs. 1 eine notifizierte Stelle vor, wenn harmonisierte Normen nicht oder nur teilweise angewandt wurden; geprüft werden Qualitätsmanagementsystem und technische Dokumentation nach Anhang VII. Für die Bereiche aus Anhang III Nr. 2 bis 8, etwa Beschäftigung, gilt die interne Kontrolle nach Anhang VI (Art. 43 Abs. 2). Die Unternehmensgröße ändert am Verfahren nichts; Erleichterungen für kleine und mittlere Unternehmen betreffen etwa die Form der technischen Dokumentation und die Gebühren. Notifizierte Stellen sind benannte, unabhängige Konformitätsbewertungsstellen, häufig private Prüforganisationen.',
     src: 'EU AI Act Art. 43 · KIB Tag 6'
   },
 
@@ -478,7 +481,7 @@ var QBANK = [
     src: 'EU AI Act Art. 11 · Art. 18 · Art. 19 · KIB Tag 6'
   },
 
-  /* Q19 · DSGVO und KI · 2r */
+  /* Q19 · DSGVO und KI · 3r */
   {
     week: 2, cat: 'DSGVO und KI',
     q: 'Ein Unternehmen setzt ein KI-System ein, das Mitarbeiterdaten verarbeitet. Welche DSGVO-Anforderungen greifen unmittelbar?',
@@ -508,7 +511,7 @@ var QBANK = [
     src: '§ 44b UrhG · EU AI Act Art. 53 · KIB Tag 3'
   },
 
-  /* Q21 · AI Act – Dokumentation · 2r */
+  /* Q21 · AI Act – Dokumentation · 3r */
   {
     week: 2, cat: 'AI Act – Dokumentationspflichten',
     q: 'Welche Dokumentationsmaßnahmen sind erforderlich, damit ein Anbieter die Anforderungen des AI Act für sein Hochrisiko-KI-System erfüllt?',
@@ -523,7 +526,7 @@ var QBANK = [
     src: 'EU AI Act Art. 9 · Art. 10 · KIB Tag 6'
   },
 
-  /* Q22 · AI Act – Transparenz · 2r */
+  /* Q22 · AI Act – Transparenz · 3r */
   {
     week: 2, cat: 'AI Act – Transparenzpflichten',
     q: 'Ein KI-Chatbot im Kundendienst ist nach Art. 50 EU AI Act kennzeichnungspflichtig. Welche Aussagen zur Transparenzpflicht sind korrekt?',
@@ -570,7 +573,7 @@ var QBANK = [
 
 /* ─── WOCHE 3 (Q25–Q36) · Risikomanagement · QS · Datenschutz ─── */
 
-  /* Q25 · Risikomanagement · 2r */
+  /* Q25 · Risikomanagement · 3r */
   {
     week: 3, cat: 'Risikomanagement – Risikoarten',
     q: 'Ein Finanzinstitut führt ein KI-gestütztes Kreditvergabesystem ein. Welche Risikoarten sind dabei aus Sicht der KIB besonders relevant?',
@@ -585,7 +588,7 @@ var QBANK = [
     src: 'EU AI Act Art. 9 · KIB Tag 9'
   },
 
-  /* Q26 · Risikomanagement · 1r */
+  /* Q26 · Risikomanagement · 2r */
   {
     week: 3, cat: 'Risikomanagement – Methodik',
     q: 'Welche Aussage(n) zu einer methodisch korrekten Risikobewertung ist oder sind korrekt?',
@@ -615,7 +618,7 @@ var QBANK = [
     src: 'KIB Tag 11 · FMEA-Methodik'
   },
 
-  /* Q28 · Risikomanagement · 3r */
+  /* Q28 · Risikomanagement · 2r */
   {
     week: 3, cat: 'Risikomanagement – Fehler',
     q: 'Das Risikoteam eines Unternehmens bewertet erstmals ein KI-System nach EU AI Act. Welche der beschriebenen Vorgehensweisen stellen methodische FEHLER dar?',
@@ -630,7 +633,7 @@ var QBANK = [
     src: 'EU AI Act Art. 9 · KIB Tag 9'
   },
 
-  /* Q29 · Datenschutz · 2r */
+  /* Q29 · Datenschutz · 3r */
   {
     week: 3, cat: 'Datenschutz – Datenpanne',
     q: 'Unbefugte haben in einem KI-Projekt möglicherweise auf personenbezogene Kundendaten zugegriffen. Welche Schritte schreibt die DSGVO jetzt vor?',
@@ -660,7 +663,7 @@ var QBANK = [
     src: 'DSGVO Art. 5 · KIB Tag 11'
   },
 
-  /* Q31 · Risikomanagement · 2r */
+  /* Q31 · Risikomanagement · 3r */
   {
     week: 3, cat: 'Risikomanagement – Risikomatrix',
     q: 'Welche Vorgehensweisen sind bei der Anwendung einer Risikomatrix für KI-Systeme methodisch korrekt?',
@@ -735,7 +738,7 @@ var QBANK = [
     src: 'KIB Tag 12 HandOut'
   },
 
-  /* Q36 · Qualitätssicherung · 2r */
+  /* Q36 · Qualitätssicherung · 3r */
   {
     week: 3, cat: 'Qualitätssicherung',
     q: 'Ein KI-System zeigt im Pilotbetrieb inkonsistente Ausgaben. Welche Schritte gehören zum QS-Prozess?',
@@ -767,7 +770,7 @@ var QBANK = [
     src: 'KIB Tag 13 HandOut'
   },
 
-  /* Q38 · Qualitätssicherung · 2r */
+  /* Q38 · Qualitätssicherung · 3r */
   {
     week: 4, cat: 'Qualitätssicherung – Fehler',
     q: 'Ein Softwarehaus nimmt ein neues KI-System ab. Welche Versäumnisse in der Testphase gefährden die Qualitätssicherung?',
@@ -782,7 +785,7 @@ var QBANK = [
     src: 'KIB Tag 12 HandOut'
   },
 
-  /* Q39 · Stakeholder · 2r */
+  /* Q39 · Stakeholder · 3r */
   {
     week: 4, cat: 'Stakeholder-Management – Analyse',
     q: 'Welche Schritte gehören methodisch in eine Stakeholder-Analyse für ein KI-Projekt?',
@@ -797,18 +800,18 @@ var QBANK = [
     src: 'KIB Tag 13 HandOut'
   },
 
-  /* Q40 · Kommunikation · 1r */
+  /* Q40 · Kommunikation · 2r */
   {
     week: 4, cat: 'Kommunikation',
-    q: 'Welche Kommunikationsstrategie SCHEITERT bei der Einführung von KI-Systemen typischerweise?',
+    q: 'Ein Projektteam plant, wie es die Belegschaft über die Einführung eines neuen KI-Systems informiert. Welche Ansätze fördern die Akzeptanz?',
     opts: [
       'Schon zu Beginn offen darlegen, was das Projekt erreichen soll, was es verändert und welche Risiken es birgt',
       'Nur in technischen Fachbegriffen informieren, damit das Projektteam besonders kompetent wirkt',
       'In festen Abständen über den Stand berichten, so formuliert, dass auch Nicht-Fachleute folgen können',
-      'Eine Roadmap, die zeigt, wie sich die Einführung auf den Arbeitsalltag auswirken wird'
+      'Erst informieren, wenn der Pilotbetrieb erfolgreich abgeschlossen ist, damit vorher keine Unruhe entsteht'
     ],
-    correct: [1],
-    exp: 'Fachjargon ohne Übersetzung schließt einen Großteil der Belegschaft aus und erzeugt Misstrauen statt Vertrauen. Frühe Transparenz, verständliche Updates und eine klare Roadmap sind wirksame Kommunikationsstrategien.',
+    correct: [0,2],
+    exp: 'Akzeptanz entsteht durch frühe Offenheit über Ziele, Veränderungen und Risiken und durch regelmäßige Berichte, denen auch Nicht-Fachleute folgen können. Fachjargon ohne Übersetzung schließt einen Großteil der Belegschaft aus. Wer erst nach dem Pilotbetrieb informiert, verhindert keine Unruhe, sondern überlässt sie den Gerüchten.',
     src: 'KIB Tag 13 HandOut'
   },
 
@@ -827,7 +830,7 @@ var QBANK = [
     src: 'EU AI Act Art. 4 · KIB Tag 14'
   },
 
-  /* Q42 · Schulungskonzepte · 2r */
+  /* Q42 · Schulungskonzepte · 3r */
   {
     week: 4, cat: 'Schulungskonzepte – Unsicherheiten',
     q: 'Mitarbeitende äußern Unsicherheiten und Widerstände gegenüber einem neuen KI-System. Welche Maßnahmen sind nachweislich wirksam?',
@@ -857,7 +860,7 @@ var QBANK = [
     src: 'KIB Tag 16 HandOut · Kotter · ADKAR'
   },
 
-  /* Q44 · Change Management · 2r */
+  /* Q44 · Change Management · 3r */
   {
     week: 4, cat: 'Change Management – Plan',
     q: 'Was muss ein professioneller Change-Management-Plan für eine KI-Einführung als "best practice" enthalten?',
@@ -887,22 +890,22 @@ var QBANK = [
     src: 'KIB Tag 16 HandOut · BCG (2025)'
   },
 
-  /* Q46 · Change Management · 1r */
+  /* Q46 · Change Management · 2r */
   {
     week: 4, cat: 'Change Management – Fehler',
-    q: 'Welches der folgenden Vorgehen im Change-Management bringt eine KI-Einführung am ehesten zum Scheitern?',
+    q: 'Eine Geschäftsführung will wissen, woran KI-Einführungen im Change-Management typischerweise scheitern. Welche Vorgehensweisen gefährden den Erfolg?',
     opts: [
       'Frühzeitige Einbindung von Schlüssel-Stakeholderinnen in den Planungsprozess',
       'Aufbau eines internen Multiplikatorinnen-Netzwerks aus Fachbereichen',
       'Feedback und Sorgen der Belegschaft systematisch ignorieren und nicht adressieren',
-      'Klare Kommunikation der Projektziele und der erwarteten Auswirkungen'
+      'Die Leitung überträgt das Vorhaben vollständig an das Projektteam und tritt selbst nicht mehr sichtbar in Erscheinung'
     ],
-    correct: [2],
-    exp: 'Feedback zu ignorieren ist der häufigste und folgenreichste Change-Fehler: Es erzeugt Misstrauen, Gerüchte und aktiven Widerstand. Frühzeitige Einbindung, Multiplikatoren und klare Zielkommunikation sind dagegen Erfolgsfaktoren.',
+    correct: [2,3],
+    exp: 'Zwei Fehler gefährden eine KI-Einführung besonders: Wer Feedback und Sorgen der Belegschaft ignoriert, erzeugt Misstrauen, Gerüchte und aktiven Widerstand. Und wenn die Leitung das Vorhaben vollständig abgibt und nicht mehr sichtbar dahintersteht, fehlt der Rückhalt, den Veränderung braucht. Frühzeitige Einbindung von Stakeholdern und ein Multiplikatoren-Netzwerk sind dagegen Erfolgsfaktoren.',
     src: 'KIB Tag 16 HandOut · Kotter'
   },
 
-  /* Q47 · Change Management · 2r */
+  /* Q47 · Change Management · 3r */
   {
     week: 4, cat: 'Change Management – Roadmap',
     q: 'Eine Geschäftsführung genehmigt die KI-Einführung ohne schriftliche Roadmap. Was sind die Konsequenzen?',
@@ -917,7 +920,7 @@ var QBANK = [
     src: 'KIB Tag 16 HandOut'
   },
 
-  /* Q48 · Rolle KI-BA im Organisationskontext · 1r */
+  /* Q48 · Rolle KI-BA im Organisationskontext · 2r */
   {
     week: 4, cat: 'Rolle KI-BA – Organisationskontext',
     q: 'In welchem Szenario ist die Unterstützung einer KI-Beauftragten am sinnvollsten?',
@@ -1191,11 +1194,11 @@ var QBANK = [
     opts: [
       "Unterschiedlich formulierte Prompts erzeugen unterschiedliche Ergebnisse; eine gemeinsame Vorlagensammlung vereinheitlicht die Qualität spürbar.",
       "Sprachmodelle liefern bei identischer Eingabe stets identische Ausgaben; Abweichungen gehen daher auf unterschiedliche Werkzeugversionen zurück.",
-      "Die Qualität hängt allein von der Länge des Prompts ab; ein längerer Prompt führt zu einem besseren Ergebnis.",
+      "Auch bei gleichem Prompt können Ergebnisse abweichen, weil das Modell das nächste Wort mit einem Zufallsanteil wählt; die Temperature bestimmt, wie stark.",
       "Abweichungen im Ergebnis sind ein Anzeichen für eine technische Fehlfunktion und sollten der Systembetreuung gemeldet werden.",
     ],
-    correct: [0],
-    exp: "Der wesentliche Unterschied liegt in der Formulierung — dieselbe Aufgabe, anders beschrieben, ergibt ein anderes Resultat. Eine geteilte Prompt-Bibliothek gleicht das aus. Identische Eingaben führen bei Sprachmodellen nicht zwingend zu identischen Ausgaben, weil die Textauswahl eine Zufallskomponente enthält. Die Länge allein sagt nichts über die Qualität. Und Abweichungen sind erwartbares Verhalten, keine Fehlfunktion.",
+    correct: [0, 2],
+    exp: "Zwei Ursachen wirken zusammen. Unterschiedlich formulierte Prompts führen zu unterschiedlichen Ergebnissen; eine geteilte Prompt-Bibliothek gleicht das aus. Und auch bei identischer Eingabe sind die Ausgaben nicht zwingend gleich, weil die Wortauswahl eine Zufallskomponente enthält, deren Stärke die Temperature steuert. Abweichungen sind deshalb erwartbares Verhalten, keine Fehlfunktion.",
     src: "Prompting Guide (DAIR.AI) · promptingguide.ai · KIB Tag 2"
   },
   {
