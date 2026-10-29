@@ -299,6 +299,7 @@ hr.divider{border:none;border-top:1px solid var(--rule);margin:1rem 0;}
   <div class="tb-spacer"></div>
   <div class="tb-actions">
     <button class="btn btn-ghost btn-sm" onclick="exportJSON()" title="Formularinhalt als .json-Datei herunterladen">⬇ Exportieren</button>
+      <button class="btn btn-ghost btn-sm" onclick="exportMD()" title="Ausgefüllte Felder als Markdown-Textdatei für die eigene Dokumentation — nicht re-importierbar">📄 Markdown</button>
     <label class="btn btn-ghost btn-sm" style="cursor:pointer;margin:0" title="Gespeicherte .json-Datei laden">⬆ Importieren<input type="file" accept=".json" style="display:none" onchange="importJSON(this)"></label>
     <button class="btn btn-ghost btn-sm" onclick="window.print()">🖨 Drucken</button>
     <button class="btn btn-ghost btn-sm" onclick="goTo(17)">☑ Vollständigkeit</button>
@@ -364,6 +365,7 @@ hr.divider{border:none;border-top:1px solid var(--rule);margin:1rem 0;}
     <h2>Anwendungsfall-Übersicht</h2>
     <p>Beschreiben Sie das KI-Vorhaben, das zu lösende Problem und die betroffenen Nutzerinnen und Nutzer präzise und verständlich.</p>
   </div>
+  <p class="hint" style="display:block;margin:.2rem 0 1rem;padding:.6rem .9rem;border:1px dashed var(--rule);border-radius:var(--radius);background:var(--soft);">💾 <strong>So sicherst Du Deine Stände.</strong> Der Canvas speichert Eingaben <strong>automatisch im Browser</strong> dieses Geräts — das geht verloren, wenn Browserdaten gelöscht werden. Dauerhaft sichern: oben <strong>„⬇ Exportieren"</strong> — das erzeugt eine <strong>.json-Datei</strong>, die Du ablegst und später über <strong>„Importieren"</strong> wieder einspielst (auch auf einem anderen Gerät; mehrere Dateien = mehrere Stände, z. B. je Version). <strong>„📄 Markdown"</strong> ist dagegen die <strong>Übergabe an Deine Dokumentation</strong>: eine lesbare Textdatei der ausgefüllten Felder zum Einfügen in Word, Confluence oder die Anhang-IV-Unterlagen. <em>Markdown lässt sich nicht re-importieren — zum Weiterarbeiten immer zusätzlich die .json-Datei sichern.</em></p>
   <div class="form-card">
     <div class="field-row">
       <div class="field-group">
@@ -637,6 +639,7 @@ hr.divider{border:none;border-top:1px solid var(--rule);margin:1rem 0;}
     </div>
   </div>
 
+  <p class="hint" style="display:block;margin:.2rem 0 1rem;padding:.6rem .9rem;border:1px dashed var(--rule);border-radius:var(--radius);background:var(--soft);">📎 <strong>Vertiefung im Haus:</strong> Für Agenten-Anwendungsfälle vertieft die Handreichung <strong>KI-Management (Standard und Agenten)</strong> Bauweise, Risiken, Bewertungs-Check und Agentenkarte — einschließlich der Frage, ob es überhaupt mehrere Agenten sein müssen. <em>Die Handreichungen werden im Kursverlauf ausgegeben — falls noch nicht erhalten, beim Dozenten erfragen.</em></p>
   <div class="section-nav">
     <button class="btn btn-outline" onclick="goTo(1)">← Zurück</button>
     <div class="section-counter">Abschnitt 2 von 16</div>
@@ -1023,6 +1026,8 @@ hr.divider{border:none;border-top:1px solid var(--rule);margin:1rem 0;}
           <option>Anhang III Nr. 4 — Beschäftigung und Personalmanagement (HR-Screening)</option>
           <option>Anhang III Nr. 5a — Zugang zu wesentlichen privaten Dienstleistungen</option>
           <option>Anhang III Nr. 5b — Kreditwürdigkeitsprüfung und Kreditscoring</option>
+          <option value="a3-5c">Anhang III Nr. 5c — Risikobewertung und Preisbildung bei Lebens- und Krankenversicherungen</option>
+          <option value="a3-5d">Anhang III Nr. 5d — Bewertung und Einstufung von Notrufen, Einsatzdisposition von Rettungsdiensten</option>
           <option>Anhang III Nr. 6 — Strafverfolgung</option>
           <option>Anhang III Nr. 7 — Migration, Asyl, Grenzkontrolle</option>
           <option>Anhang III Nr. 8 — Rechtspflege und demokratische Prozesse</option>
@@ -1093,6 +1098,43 @@ hr.divider{border:none;border-top:1px solid var(--rule);margin:1rem 0;}
     </div>
   </div>
 
+  <div class="form-card">
+    <label>Grundrechte-Folgenabschätzung (Art. 27 KI-VO) & nationale Aufsicht</label>
+    <p class="hint" style="display:block;margin:.3rem 0 .8rem;">Die FRIA (Fundamental Rights Impact Assessment) trifft <strong>Betreiber</strong> bestimmter Hochrisiko-Systeme <em>vor der ersten Verwendung</em>: Einrichtungen des öffentlichen Rechts, private Einrichtungen, die öffentliche Dienstleistungen erbringen, sowie Betreiber von Systemen nach Anhang III Nr. 5b (Kreditwürdigkeit) und Nr. 5c (Risikobewertung/Preisbildung Lebens- und Krankenversicherung). Sie ergänzt die DSFA, ersetzt sie nicht — und kann auf ihr aufbauen. Text: <a href="https://artificialintelligenceact.eu/article/27/" target="_blank">Art. 27 (Navigationshilfe)</a> — verbindlich ist EUR-Lex.</p>
+    <div class="field-row">
+      <div class="field-group">
+        <label>Fällt der Betreiber unter Art. 27?</label>
+        <select id="fria-scope">
+          <option value="">— Auswahl —</option>
+          <option>Ja — Einrichtung des öffentlichen Rechts</option>
+          <option>Ja — private Einrichtung mit öffentlicher Dienstleistung</option>
+          <option>Ja — Anhang III Nr. 5b oder 5c (Kredit / Versicherung)</option>
+          <option>Nein — keine der Betreibergruppen</option>
+          <option>Zu prüfen</option>
+        </select>
+      </div>
+      <div class="field-group">
+        <label>Stand der FRIA</label>
+        <select id="fria-status">
+          <option value="">— Auswahl —</option>
+          <option>Durchgeführt und dokumentiert</option>
+          <option>Geplant — vor erster Verwendung</option>
+          <option>Entfällt — Begründung im Feld rechts unten</option>
+        </select>
+      </div>
+    </div>
+    <div class="field-row">
+      <div class="field-group">
+        <label>Zuständige Marktüberwachungsbehörde <span class="hint">— in Deutschland regelmäßig die Bundesnetzagentur; sektoral abweichend (z. B. BaFin für Finanzdienstleistungen)</span></label>
+        <input type="text" id="nat-authority" placeholder="z. B. Bundesnetzagentur · BaFin">
+      </div>
+      <div class="field-group">
+        <label>Begründung / Anmerkungen <span class="hint">— auch: FRIA entfällt, weil …</span></label>
+        <textarea id="fria-notes" rows="2" placeholder="z. B. Betreiber ist kein Adressat des Art. 27; DSFA vom … deckt … ab"></textarea>
+      </div>
+    </div>
+    <p class="hint" style="display:block;margin-top:.5rem;"><strong>Nationale Ebene seit 29.07.2026:</strong> Das <strong>KI-Marktüberwachungsgesetz (KI-MIG)</strong> benennt die Bundesnetzagentur als zentrale Marktüberwachungsbehörde; § 15 KI-MIG enthält die Bußgeldtatbestände. Dieselbe Behörde betreibt das deutsche <strong>KI-Reallabor</strong> (Art. 57–59): Teilnahme-Dokumentation kann als Konformitätsnachweis dienen, der Zugang ist für KMU und Start-ups kostenfrei — als Chance in Abschnitt 10 mitdenken.</p>
+  </div>
   <div class="form-card">
     <h4>Haftung & Urheberrecht</h4>
     <div class="field-row">
@@ -1462,6 +1504,7 @@ hr.divider{border:none;border-top:1px solid var(--rule);margin:1rem 0;}
     </div>
   </div>
 
+  <p class="hint" style="display:block;margin:.2rem 0 1rem;padding:.6rem .9rem;border:1px dashed var(--rule);border-radius:var(--radius);background:var(--soft);">📎 <strong>Vertiefung im Haus:</strong> Datenherkunft, Pipelines und Datenqualität vertieft das <strong>Datenmanagement-Quartett</strong>. <em>Die Handreichungen werden im Kursverlauf ausgegeben — falls noch nicht erhalten, beim Dozenten erfragen.</em></p>
   <div class="section-nav">
     <button class="btn btn-outline" onclick="goTo(7)">← Zurück</button>
     <div class="section-counter">Abschnitt 8 von 16</div>
@@ -1718,6 +1761,7 @@ hr.divider{border:none;border-top:1px solid var(--rule);margin:1rem 0;}
 
     <div class="pf-group">
       <div class="pf-group-title">Pflichtenfeld 5 · Meldepflicht bei schwerwiegenden Vorfällen</div>
+    <p class="hint" style="display:block;margin:.3rem 0 .5rem;"><strong>Adressat in Deutschland:</strong> die Marktüberwachungsbehörde nach KI-MIG — regelmäßig die <strong>Bundesnetzagentur</strong>, sektoral abweichend (z. B. BaFin). Leitlinien und Meldeformular gelten seit dem 02.08.2026. Betreiber melden nicht selbst an die Behörde, sondern informieren Anbieter und Behörde nach Art. 26 Abs. 5 (siehe Abschnitt 6, Behördenfeld).</p>
 
       <div class="pf-item" data-pf="pf-16">
         <div class="pf-head">
@@ -1945,6 +1989,7 @@ hr.divider{border:none;border-top:1px solid var(--rule);margin:1rem 0;}
     </div>
   </div>
 
+  <p class="hint" style="display:block;margin:.2rem 0 1rem;padding:.6rem .9rem;border:1px dashed var(--rule);border-radius:var(--radius);background:var(--soft);">📎 <strong>Vertiefung im Haus:</strong> Kennzahlen und Netto-Wert-Rechnung vertieft die Handreichung <strong>Kennzahlen</strong>; die fünf regelmäßig vergessenen Kostenpositionen stehen im Kasten oben. <em>Die Handreichungen werden im Kursverlauf ausgegeben — falls noch nicht erhalten, beim Dozenten erfragen.</em></p>
   <div class="section-nav">
     <button class="btn btn-outline" onclick="goTo(9)">← Zurück</button>
     <div class="section-counter">Abschnitt 10 von 16</div>
@@ -2145,7 +2190,31 @@ hr.divider{border:none;border-top:1px solid var(--rule);margin:1rem 0;}
 
   <div class="form-card">
     <h4>ISO/IEC 42001 — KI-Managementsystem (AIMS)</h4>
-    <div class="alert alert-info"><p>ISO/IEC 42001 definiert Anforderungen an ein KI-Managementsystem (AIMS). Wie ISO 9001 für Qualität oder ISO 27001 für Informationssicherheit folgt es der High-Level-Structure (HLS) und ist dadurch integrierbar.</p></div>
+    <div class="alert alert-info"><p>ISO/IEC 42001 definiert Anforderungen an ein KI-Managementsystem (AIMS). Wie ISO 9001 für Qualität oder ISO 27001 für Informationssicherheit folgt es der High-Level-Structure (HLS) und ist dadurch integrierbar.</p>
+
+  <div class="form-card" style="border-left:4px solid var(--s3);">
+    <label>EN 18286:2026 — die harmonisierte Norm mit Rechtswirkung</label>
+    <p class="hint" style="display:block;margin:.3rem 0 .8rem;">Anders als die freiwilligen Standards oben erzeugt EN 18286 (Qualitätsmanagementsystem für KI, Art. 17 KI-VO) eine <strong>Rechtsfolge</strong>: Seit der Listung im EU-Amtsblatt am <strong>14.10.2026</strong> (Durchführungsbeschluss (EU) 2026/2274) begründet ihre Anwendung die <strong>Konformitätsvermutung nach Art. 40</strong> — wer sie anwendet, gilt für das Qualitätsmanagement insoweit als konform, und die Marktüberwachung müsste das Gegenteil darlegen. <strong>Die Vermutung gilt je Norm, nicht je Verordnung:</strong> Für Risikomanagement, Datenqualität, Transparenz, menschliche Aufsicht, Robustheit und Cybersicherheit gibt es sie noch nicht. Verhältnis zur ISO/IEC 42001: Die ISO-Norm beschreibt das Managementsystem und den Reifegrad, die EN-Norm trägt die Vermutung — beide können nebeneinander eingesetzt werden, ersetzen einander aber nicht.</p>
+    <div class="field-row">
+      <div class="field-group">
+        <label>EN 18286 — Status im Unternehmen</label>
+        <select id="en18286-status">
+          <option value="">— Auswahl —</option>
+          <option>Angewendet — Konformitätsvermutung Art. 40 wird in Anspruch genommen</option>
+          <option>Einführung geplant</option>
+          <option>Geprüft und verworfen — Begründung rechts</option>
+          <option>Noch nicht bewertet</option>
+          <option>Nicht relevant — kein Hochrisiko-System</option>
+        </select>
+      </div>
+      <div class="field-group">
+        <label>Anmerkung <span class="hint">— z. B. Verhältnis zur bestehenden ISO-42001-Umsetzung</span></label>
+        <input type="text" id="en18286-notes" placeholder="z. B. Lückenanalyse gegen bestehendes AIMS geplant">
+      </div>
+    </div>
+    <p class="hint" style="display:block;margin-top:.4rem;">Fundstellenprüfung immer auf EUR-Lex: <a href="https://eur-lex.europa.eu/eli/dec_impl/2026/2274/oj" target="_blank">Durchführungsbeschluss (EU) 2026/2274</a>. Der Anhang des Beschlusses listet genau eine Norm.</p>
+  </div>
+</div>
     <div class="field-row">
       <div class="field-group">
         <label>ISO/IEC 42001 Status im Unternehmen</label>
@@ -2860,6 +2929,7 @@ hr.divider{border:none;border-top:1px solid var(--rule);margin:1rem 0;}
     <div class="section-counter"></div>
     <div style="display:flex;gap:0.5rem">
       <button class="btn btn-ghost" style="background:var(--navy);color:#fff" onclick="exportJSON()" title="Formularinhalt als .json-Datei herunterladen">⬇ Exportieren</button>
+      <button class="btn btn-ghost" style="background:var(--navy);color:#fff" onclick="exportMD()" title="Ausgefüllte Felder als Markdown-Textdatei für die eigene Dokumentation — nicht re-importierbar">📄 Markdown</button>
       <label class="btn btn-ghost" style="background:var(--teal);color:#fff;cursor:pointer;margin:0" title="Gespeicherte .json-Datei laden">⬆ Importieren<input type="file" accept=".json" style="display:none" onchange="importJSON(this)"></label>
       <button class="btn btn-primary" onclick="window.print()">🖨 Drucken / PDF</button>
       <button class="btn btn-outline" onclick="goTo(18)">Anhang: ISO Readiness Check →</button>
@@ -2878,6 +2948,7 @@ hr.divider{border:none;border-top:1px solid var(--rule);margin:1rem 0;}
     <p>Selbstbewertung der Zertifizierungsreife nach dem Instrument von TÜV Rheinland. 22 Ja/Nein-Fragen in 6 Phasen. Auswertung: 0–9 = Grundarbeit erforderlich · 10–16 = auf dem Weg · 17–22 = zertifizierungsreif.</p>
     <div class="kursreferenz">Quelle: TÜV Rheinland — „Sind Sie bereit für Ihre ISO/IEC 42001-Zertifizierung?" (2025) · Einsatz: KI-Manager Tag 2</div>
   </div>
+  <p class="hint" style="display:block;margin:.4rem 0 .8rem;"><strong>Hinweis seit 14.10.2026:</strong> Diese Checkliste prüft die Reife gegen ISO/IEC 42001 — ein freiwilliges Managementsystem. Die <strong>Konformitätsvermutung nach Art. 40</strong> erzeugt nur die harmonisierte <strong>EN 18286:2026</strong> (Qualitätsmanagement, Art. 17); siehe Abschnitt 12.</p>
 
   <style>
     .tuev-phase{background:var(--white);border:1px solid var(--rule);border-radius:var(--radius);margin-bottom:1rem;overflow:hidden;}
@@ -3019,7 +3090,7 @@ hr.divider{border:none;border-top:1px solid var(--rule);margin:1rem 0;}
     <div class="section-tag">Anhang B · Einordnungshilfe</div>
     <h2>Checkliste Hochrisiko-KI — Scoring nach Art. 6 KI-VO</h2>
     <p>Beantworte die Prüffaktoren mit Ja, Nein oder Unklar. Hochrisiko-Indikatoren zahlen negativ, Filter-Bedingungen positiv auf den Score ein. Das Ergebnis ist eine Orientierungshilfe — es ersetzt nicht die abschließende rechtliche Bewertung.</p>
-    <div class="kursreferenz">Grundlage: <a href="https://digital-strategy.ec.europa.eu/en/library/draft-commission-guidelines-classification-high-risk-ai-systems" target="_blank" rel="noopener">Draft Guidelines on the Classification of High-Risk AI Systems</a> (EU-Kommission, 19.05.2026)</div>
+    <div class="kursreferenz"><span style="font-family:var(--font-mono);font-size:0.68rem;background:var(--navy);color:#fff;padding:0.15em 0.5em;border-radius:3px;margin-right:0.4em">Grundlage noch Entwurf · geprüft 29.10.2026 · nächste Prüfung: Januar 2027 (endgültige Leitlinien bis Jahresende 2026 erwartet)</span> Grundlage: <a href="https://digital-strategy.ec.europa.eu/en/library/draft-commission-guidelines-classification-high-risk-ai-systems" target="_blank" rel="noopener">Draft Guidelines on the Classification of High-Risk AI Systems</a> (EU-Kommission, 19.05.2026)</div>
   </div>
 
   <style>
@@ -3662,6 +3733,7 @@ const PFLICHTFELDER = [
   [4,'sh-br-vorhanden','Betriebsrat vorhanden','select'],
   [4,'sh-dsb','DSB eingebunden','select'],
   [5,'raci-uc-name','Use Case der RACI-Matrix','text'],
+  [6,'fria-scope','Grundrechte-Folgenabschätzung — Betreiber unter Art. 27?','select','hochrisiko'],
   [6,null,'EU AI Act Risikostufe','radio:ai-act-tier'],
   [6,'act-begruendung','Einordnungsbegründung','text'],
   [6,'gdpr-basis','DSGVO Rechtsgrundlage','select'],
@@ -4208,6 +4280,85 @@ function exportJSON() {
   n.textContent = '✓ Exportiert als ' + filename;
   n.classList.add('show');
   setTimeout(() => { n.classList.remove('show'); n.textContent = '✓ Gespeichert'; }, 3000);
+}
+
+// ── Markdown-Export: lesbare Übergabe in die eigene Dokumentation (nicht re-importierbar) ──
+function exportMD() {
+  const clean = t => (t || '').replace(/\s+/g, ' ').trim();
+  const lines = [];
+  const title = clean(document.getElementById('uc-title')?.value) || 'KI-Use-Case';
+  lines.push('# Steckbrief · ' + title, '');
+  lines.push('_Erstellt mit dem KI-Use-Case-Canvas · Markdown-Export vom ' +
+    new Date().toLocaleDateString('de-DE') + ' · Nur ausgefüllte Felder. ' +
+    'Zum Weiterbearbeiten die .json-Sicherung verwenden — Markdown lässt sich nicht re-importieren._', '');
+  for (let n = 1; n <= 16; n++) {
+    const sec = document.getElementById('section-' + n);
+    if (!sec) continue;
+    const secLines = [];
+    sec.querySelectorAll('label').forEach(lab => {
+      if (lab.classList.contains('radio-card')) return;
+      const labText = clean(Array.from(lab.childNodes)
+        .filter(x => !(x.classList && x.classList.contains('hint')))
+        .map(x => x.textContent).join(' '));
+      if (!labText) return;
+      const nxt = lab.nextElementSibling;
+      if (!nxt) return;
+      if (/^(INPUT|TEXTAREA|SELECT)$/.test(nxt.tagName)) {
+        if (nxt.type === 'radio' || nxt.type === 'checkbox') return;
+        let v = clean(nxt.value);
+        if (nxt.tagName === 'SELECT' && (v === '' || v.indexOf('—') === 0)) v = '';
+        if (v) secLines.push('- **' + labText + ':** ' + v.replace(/\n/g, ' · '));
+      } else if (nxt.classList && nxt.classList.contains('radio-grid')) {
+        const checked = nxt.querySelector('input[type=radio]:checked');
+        if (!checked) return;
+        const opt = clean(checked.closest('.radio-card')?.querySelector('strong')?.textContent) || checked.value;
+        secLines.push('- **' + labText + ':** ' + opt);
+      }
+    });
+    sec.querySelectorAll('input[type=checkbox]:checked').forEach(cb => {
+      const lab = clean(cb.closest('label')?.textContent) || cb.value;
+      secLines.push('- ☑ ' + lab);
+    });
+    if (n === 7 && typeof RISK_TBODIES !== 'undefined') {
+      RISK_TBODIES.forEach(tbId => {
+        const tbody = document.getElementById(tbId);
+        if (!tbody) return;
+        tbody.querySelectorAll('tr').forEach(tr => {
+          const tds = tr.querySelectorAll('td');
+          if (tds.length < 9) return;
+          const desc = clean(tds[0].querySelector('input')?.value);
+          if (!desc) return;
+          const g = (td, q) => clean(td?.querySelector(q)?.value);
+          const teile = ['**Risiko:** ' + desc];
+          if (g(tds[2],'input'))    teile.push('Maßnahme: ' + g(tds[2],'input'));
+          const score = [g(tds[3],'select'), g(tds[4],'select'), g(tds[5],'select')].filter(x => x && x !== '0');
+          if (score.length === 3)   teile.push('A×B×E: ' + score.join('×'));
+          if (g(tds[7],'select'))   teile.push('Status: ' + g(tds[7],'select'));
+          if (g(tds[8],'input'))    teile.push('Verantwortlich: ' + g(tds[8],'input'));
+          secLines.push('- ' + teile.join(' · '));
+        });
+      });
+    }
+    if (secLines.length) {
+      lines.push('## §' + n + ' · ' + abschnittName(n), '');
+      lines.push(...secLines, '');
+    }
+  }
+  if (lines.length <= 4) {
+    alert('Noch keine ausgefüllten Felder — der Markdown-Export enthält nur, was ausgefüllt ist.');
+    return;
+  }
+  const slug = title.replace(/[^a-zA-Z0-9\s\-]/g, '').replace(/\s+/g, '_').substring(0, 40) || 'Steckbrief';
+  const blob = new Blob([lines.join('\n')], { type: 'text/markdown' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = slug + '_Steckbrief.md';
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  const nEl = document.getElementById('save-notice');
+  nEl.textContent = '✓ Markdown exportiert — zum Weiterarbeiten zusätzlich die .json-Sicherung nutzen';
+  nEl.classList.add('show');
+  setTimeout(() => { nEl.classList.remove('show'); nEl.textContent = '✓ Gespeichert'; }, 4000);
 }
 
 function importJSON(input) {
