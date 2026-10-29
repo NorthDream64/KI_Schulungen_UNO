@@ -28,7 +28,7 @@ Neben dem Plan zeigen weitere Reiter das **Lagebild** (Rückhalt der Geschäftsf
 
 ## Grundlagen
 
-Die Quellen stehen in der Fußzeile des Spiels. Unternehmen und Personen sind fiktiv, alle Wirkungen didaktisch vereinfacht. Verbindlich ist der Normtext, nicht das Spiel.
+Die Quellen stehen in der Fußzeile des Spiels. Unternehmen und Personen sind fiktiv, alle Wirkungen didaktisch vereinfacht. NoHa setzt KI-Systeme anderer ein und ist im Sinne der KI-Verordnung Betreiberin, nicht Anbieterin – solange kein KI-Produkt unter der Eigenmarke in Verkehr kommt. Verbindlich ist der Normtext, nicht das Spiel.
 
 ## Für Dozierende
 
