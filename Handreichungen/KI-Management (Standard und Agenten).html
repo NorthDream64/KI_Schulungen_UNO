@@ -28,6 +28,15 @@ a{color:var(--accent);}a:hover{text-decoration:underline;}
 .card p{margin-bottom:.5rem;}.card p:last-child{margin-bottom:0;}
 .card ul,.card ol{padding-left:1.2rem;margin:.4rem 0;}.card li{margin-bottom:.3rem;}
 .tbl{width:100%;border-collapse:collapse;font-size:13px;margin:.5rem 0;}
+details.mehr{border:1px dashed var(--rule);border-radius:6px;padding:.55rem .85rem;margin-top:.7rem;background:var(--phase);}
+details.mehr>summary{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1.4px;text-transform:uppercase;color:var(--accent);cursor:pointer;list-style:none;}
+details.mehr>summary::-webkit-details-marker{display:none;}
+details.mehr>summary::before{content:'\25B8\00A0';}
+details.mehr[open]>summary::before{content:'\25BE\00A0';}
+details.mehr[open]>summary{margin-bottom:.55rem;padding-bottom:.4rem;border-bottom:1px solid var(--rule);}
+details.mehr p{margin-bottom:.5rem;font-size:13px;}details.mehr p:last-child{margin-bottom:0;}
+details.mehr ul{padding-left:1.2rem;margin:.35rem 0;font-size:13px;}details.mehr li{margin-bottom:.3rem;}
+details.mehr .tbl{font-size:12.5px;}
 .tbl th{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;background:var(--phase);padding:.5rem .7rem;text-align:left;border-bottom:2px solid var(--rule);color:var(--muted);}
 .tbl td{padding:.5rem .7rem;border-bottom:1px solid var(--rule);vertical-align:top;}
 .tbl tr:last-child td{border-bottom:none;}
@@ -157,6 +166,8 @@ a{color:var(--accent);}a:hover{text-decoration:underline;}
  a{color:inherit;text-decoration:none;}
  .src-chip{border:1px solid #ccc;}
  .werkbank textarea.ausgabe{display:none;}
+ details.mehr{background:none;border:1px solid #ddd;break-inside:avoid;}
+ details.mehr>summary{color:#000;}
 }
 </style>
 </head>
@@ -314,6 +325,33 @@ a{color:var(--accent);}a:hover{text-decoration:underline;}
 </div>
 
 <div class="section">
+ <div class="section-title">Wie viele Agenten? — die Vorgabe ist einer</div>
+ <div class="card">
+  <p>Die naheliegende Bauweise für eine größere Aufgabe ist: mehrere spezialisierte Teilagenten, darüber ein Koordinator. Sie wirkt ordentlich, weil sie aussieht wie eine Organisation. <strong>Der Hersteller der derzeit meistgenutzten Modelle rät davon inzwischen ab</strong> und berichtet, dass <em>eine</em> Schleife mit gut beschriebenen Fähigkeiten und wenigen Werkzeugen in Unternehmensinstallationen häufig besser abschnitt — bei geringeren Kosten und kürzeren Laufzeiten.</p>
+  <div class="note"><strong>Mehr Agenten ist nicht die reifere Architektur.</strong> Die Vorgabe ist <strong>eine Schleife</strong>; Teilagenten sind die begründete Ausnahme. Wer sie wählt, muss sagen, welche der drei Bedingungen unten vorliegt.</div>
+  <p style="margin-top:.6rem;"><strong>Die drei Bedingungen, unter denen Teilagenten richtig sind.</strong></p>
+  <table class="tbl">
+   <thead><tr><th style="width:38%;">Bedingung</th><th>Woran Ihr sie erkennt</th></tr></thead>
+   <tbody>
+    <tr><td><strong>Gemessene Überlastung</strong></td><td>Die Einzelschleife wird <em>nachweislich</em> schlechter, weil zu viel Zusammenhang gleichzeitig mitgeführt wird — gemessen, nicht vermutet</td></tr>
+    <tr><td><strong>Echte Parallelarbeit</strong></td><td>Mehrere Teilaufgaben laufen gleichzeitig und brauchen je einen eigenen, danach verwerfbaren Zusammenhang</td></tr>
+    <tr><td><strong>Widersprüchliche Anweisungen</strong></td><td>Ein Agent wählt die Werkzeuge schlecht, oder die Anweisungen in einer Schleife widersprechen sich und lassen sich nicht auflösen</td></tr>
+   </tbody>
+  </table>
+  <p style="margin-top:.5rem;">Alles andere wird besser zu <strong>beschriebenem Vorgehen</strong> und <strong>Werkzeugen</strong> in derselben Schleife — beides wird erst geladen, wenn es gebraucht wird, und belastet den Zusammenhang vorher nicht.</p>
+  <details class="mehr">
+   <summary>Vertiefung · Wenn Ihr doch teilt: nach Zusammenhang, nicht nach Problemtyp</summary>
+   <p><strong>Die Zerlegungsregel.</strong> Gib jedem Teilagenten ein Stück Arbeit, das vom Rest des Systems <em>wenig braucht</em>, und lass ihn ein kompaktes Ergebnis zurückgeben. Gute Kandidaten: unabhängige Recherchepfade, abgegrenzte Bestandteile mit klarer Schnittstelle, eine Nachkontrolle, die das Ergebnis ohne Kenntnis des Weges beurteilt.</p>
+   <p><strong>Das Telefonspiel.</strong> Wird dagegen nach <em>Problemtyp</em> geteilt — hier der Vertragsagent, dort der Preisagent —, dann reden die Teilagenten miteinander, und <strong>jede Übergabe verliert Treue</strong>. Was ankommt, ist eine Zusammenfassung einer Zusammenfassung. Derselbe Mechanismus steht in der Risikoliste des nächsten Reiters unter <em>Mehrere Agenten</em>: Missverständnis bei der Übergabe ist dort kein Betriebsunfall, sondern die vorhersehbare Folge der Schnittform.</p>
+   <p><strong>Warum geteilter Zusammenhang bessere Antworten gibt.</strong> Ein Agent, der die Ergebnisse aller vorangegangenen Schritte gesehen hat, kann sie verbinden. Teilagenten liefern Zusammenfassungen zurück — und was in ihnen fehlt, kann niemand später wieder hineinlegen. Für länger laufende Vorgänge ist das der Hauptgrund, alles in einer Schleife zu halten.</p>
+   <p><strong>Und eine Beobachtung zur Modellentwicklung.</strong> Ein Teil der Bauteile um das Modell herum war eine Antwort auf <em>damalige</em> Modellschwächen: feste Ablaufketten, Absichtserkennung vorab, Zuordnungsregeln. Mit jeder Modellgeneration wird mehr davon überflüssig — und starre Mehr-Agenten-Strukturen waren bei berichteten Umstellungen regelmäßig genau das, was den Wechsel auf ein neues Modell aufgehalten hat. <strong>Für die Vorlage heißt das: Je weniger Bauwerk, desto billiger der nächste Modellwechsel.</strong></p>
+  </details>
+  <div class="src-row"><span class="src-chip"><a href="https://claude.com/resources/articles/building-agents-when-to-fold-subagents-into-your-main-agent-loop" target="_blank" rel="noopener">Sarkis (Anthropic, 22.10.2026) — Teilagenten in die Hauptschleife einfalten</a></span></div>
+  <p class="einordnung">Anbieterveröffentlichung über das eigene Produkt, <strong>Belegstufe C</strong> — ohne Methodik und Fallzahlen. <strong>Aufwertungsgrund:</strong> Der Beitrag rät zu <em>weniger</em> Agenten und damit zu weniger Modellaufrufen, also gegen das eigene kurzfristige Umsatzinteresse. Nur halb: Beworben werden zugleich andere Funktionen desselben Hauses. Verwendbar sind die <em>Richtungsaussagen und Entwurfsregeln</em>, nicht die Vergleichszahlen.</p>
+ </div>
+</div>
+
+<div class="section">
  <div class="section-title">Welcher Agententyp — und welche Kontrolltiefe?</div>
  <div class="konzept-card k-purple">
   <div class="konzept-tag">Einordnung nach IMDA Singapur</div>
@@ -342,6 +380,8 @@ a{color:var(--accent);}a:hover{text-decoration:underline;}
   <p class="einordnung">Herstellerangabe zu einem Recherchesystem mit parallelen Teilagenten: als Größenordnung belastbar, nicht als allgemeiner Faktor.</p>
   <p style="margin-top:.6rem;"><strong>Eine zweite, vollständig offengelegte Größenordnung — für den Fall, dass Agenten über Wochen autonom arbeiten.</strong> Ein Forscher ließ ein Team von <strong>16 Agenten zwei Wochen lang</strong> an einem umfangreichen Softwarevorhaben arbeiten: rund <strong>2.000 Sitzungen, 2 Milliarden eingelesene und 140 Millionen erzeugte Token, knapp 20.000 US-Dollar.</strong> Das Ergebnis war beeindruckend und <em>trotzdem nicht einsatzfähig</em>: kein Ersatz für das vorhandene Werkzeug, das Erzeugnis deutlich schwächer als das etablierte Produkt — und an einer Stelle ruft es schlicht das alte Werkzeug auf.</p>
   <p class="einordnung"><strong>Zwei Lehren für die Vorlage.</strong> Erstens gehört die Frage „<em>Was kostet ein Monat Dauerbetrieb, nicht ein Aufruf?</em>" in jeden Business Case — Agentenkosten entstehen in Sitzungen, nicht in Anfragen. Zweitens: <strong>Ein beeindruckendes Ergebnis ist kein einsatzfähiges Produkt.</strong> Darüber entscheidet die Abnahme, nicht die Vorführung.</p>
+  <p style="margin-top:.6rem;"><strong>Die Architektur ist selbst ein Kostentreiber.</strong> Jeder Teilagent ist eine <em>verschachtelte</em> Modellschleife: Sie addiert eigene Aufrufe, eigenen Zusammenhang und eigene Wartezeit. Ein Anbieter berichtet von einem Kunden, dessen Einzelschleife gegenüber der Mehr-Agenten-Fassung <strong>rund doppelt so schnell</strong> lief. <strong>Die Frage an jeden Entwurf lautet deshalb nicht nur „welches Modell?", sondern „wie viele Schleifen?"</strong> — die Antwort steht im Angebot meist nicht, weil sie als technische Nebensache gilt.</p>
+  <p class="einordnung">Einzelner, nicht nachprüfbarer Kundenbericht eines Anbieters — als Größenordnung verwendbar, nicht als Faktor. Belastbar ist der Mechanismus, nicht die Zahl.</p>
   <p style="margin-top:.6rem;"><strong>Abhängigkeit.</strong> Ob sich das Modell austauschen lässt, entscheidet die Anbindung der Werkzeuge. Offene Verfahren wie <strong>MCP</strong> (Model Context Protocol, Agent ↔ Werkzeug) und <strong>A2A</strong> (Agent ↔ Agent) halten den Wechsel möglich; herstellereigene Anbindungen müssen neu gebaut werden. Keine Theorie: Im Juni 2026 wurden zwei Modelle eines großen Anbieters auf Anordnung der US-Handelsbehörde für internationale Kunden abgeschaltet, knapp drei Wochen lang.</p>
   <p><strong>Die Frage an jeden Anbieter:</strong> Was genau müssen wir neu bauen, wenn wir das Modell wechseln — und wem gehören die Anbindungen, die wir bezahlen? Die Antwort gehört in den Vertrag.</p>
   <div class="src-row">
@@ -396,6 +436,19 @@ a{color:var(--accent);}a:hover{text-decoration:underline;}
    </tbody>
   </table>
   <p style="margin-top:.5rem;">Das Leitprinzip dahinter heißt <strong>Least Agency</strong>: nur so viel Autonomie, Werkzeuge und Rechte, wie die Aufgabe erfordert.</p>
+  <details class="mehr">
+   <summary>Vertiefung · Berechtigungen gehören ins Werkzeug, nicht in einen eigenen Agenten je Rechtestufe</summary>
+   <p><strong>Der verbreitete Entwurf, der teuer wird.</strong> Weil verschiedene Personengruppen Verschiedenes sehen dürfen, wird je Rechtestufe ein eigener Agent gebaut: einer für den Kundendienst, einer für die Teamleitung, einer für die Revision. Damit vervielfacht sich alles, was gepflegt werden muss — Anweisungen, Werkzeuge, Prüfbestände — und bei jeder Rechteänderung müssen mehrere Stellen angepasst werden. Das ist derselbe Mechanismus wie bei <em>ASI03</em> oben: Rechte, die in der Bauform stecken statt in einer prüfbaren Regel.</p>
+   <p><strong>Die saubere Form.</strong> <em>Eine</em> Schleife bedient alle Rechtestufen. <strong>Jedes Werkzeug prüft bei jedem Aufruf selbst, was die aufrufende Person sehen oder tun darf</strong>, und gibt bei fehlender Berechtigung eine <em>lesbare Ablehnung</em> zurück — einen Satz, mit dem das Modell weiterarbeiten kann, statt eines technischen Fehlers. Der Agent erfährt damit nicht, <em>was</em> er nicht sehen durfte, sondern nur, <em>dass</em> er es nicht durfte.</p>
+   <p><strong>Dasselbe gilt für Reihenfolgen.</strong> Wenn Schritt B die Ausgabe von Schritt A braucht, gehört diese Bedingung in das Werkzeug zu B: Es sieht nach, ob A vorliegt, und gibt andernfalls die Anweisung zurück, zuerst A zu holen. <strong>Reihenfolgen, die nur in der Anweisung stehen, sind Bitten; Reihenfolgen im Werkzeug sind Bedingungen.</strong> Das ist unser Satz „eine Anweisung im Prompt ist eine Bitte, keine Grenze" — angewandt auf Abläufe statt auf Sicherheit.</p>
+   <p><strong>Drei Vorteile für die Aufsicht.</strong></p>
+   <ul>
+    <li><strong>Eine Stelle für die Rechteprüfung.</strong> Wer wissen will, ob die Rechte stimmen, sieht in die Werkzeuge — nicht in mehrere Agentenanweisungen.</li>
+    <li><strong>Der Prüfpfad bleibt zusammen.</strong> Ein Vorgang über mehrere Rechtestufen hinweg liegt in einem Protokoll statt verteilt über mehrere Agenten.</li>
+    <li><strong>Rechteänderungen sind eine Änderung, nicht n Änderungen.</strong> Das senkt die Wahrscheinlichkeit, dass eine Stufe vergessen wird — der häufigste Befund bei Rechte-Nachschauen.</li>
+   </ul>
+   <p><strong>Noch eine Zahl zur Werkzeugmenge, weil sie hierher gehört:</strong> Der Anbieter nennt als Faustregel, dass die Werkzeugwahl ab etwa <strong>30 bis 50 beschriebenen Werkzeugen</strong> schlechter wird. Daraus folgt: Werkzeuge <strong>nach Nutzerabsicht</strong> bündeln, nicht eines je Schnittstelle. <em>Faustregel eines Anbieters ohne veröffentlichte Messung — als Größenordnung für die Entwurfsprüfung verwendbar, nicht als Grenzwert in einer Anforderung.</em></p>
+  </details>
   <div class="src-row">
    <span class="src-chip"><a href="https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications-for-2026/" target="_blank" rel="noopener">OWASP — Top 10 for Agentic Applications</a></span>
   </div>
@@ -448,6 +501,38 @@ a{color:var(--accent);}a:hover{text-decoration:underline;}
   <p style="margin-top:.6rem;">Der Hugging-Face-Vorfall oben liefert für die linke Spalte das Anschauungsstück: Die Agenten beseitigten Spuren für eine Prüfung, die die Bewertungssoftware nie durchführte. Getäuscht wurde ein Prüfer, den es so nicht gab.</p>
  </div>
  <div class="note"><strong>Zweite Unterscheidung — Fähigkeit ist nicht Häufigkeit.</strong> Ein Experiment, das ein solches Verhalten hervorbringt, zeigt: <em>Es ist möglich.</em> Es zeigt <strong>nicht</strong>, wie oft es vorkommt oder wie wahrscheinlich es in Deinem Aufbau ist. Beide Sätze werden regelmäßig vertauscht — in Schlagzeilen nach oben, in Verkaufsgesprächen nach unten.<br><br><strong>Was daraus für die Vorlage folgt:</strong> Die Häufigkeit ist für die Entscheidung gar nicht nötig. Maßgeblich ist, <em>was ein einzelner Fall anrichten könnte</em> — und das steht in Rechten, Laufzeitgrenzen und unabhängigen Kontrollen, nicht in einer Wahrscheinlichkeit. Umgekehrt gilt dasselbe in die andere Richtung: <strong>„Es ist noch nie passiert" ist kein Beleg dafür, dass es nicht vorkommt</strong> — es kann auch heißen, dass niemand hingesehen hat. Ein Protokoll ohne Auffälligkeit ist eine Aussage über das Protokoll.<div class="src-row" style="margin-top:.5rem;"><span class="src-chip"><a href="https://sage.cs.princeton.edu/trends/" target="_blank" rel="noopener">Chen u.&nbsp;a. (2026) — Emerging Trends in AI Agent Evaluation, Princeton u.&nbsp;a.</a></span></div></div>
+</div>
+
+<div class="section">
+ <div class="section-title">Wenn die Architektur das Organigramm abbildet</div>
+ <div class="konzept-card k-purple">
+  <div class="konzept-tag">Diagnose · Conways Gesetz im Agentenbau</div>
+  <div class="konzept-name">Jedes Team baut seinen Agenten — und am Ende hat die Maschine Eure Abteilungen</div>
+  <div class="konzept-text">
+   <p>Der übliche Weg in großen Häusern: Jede Fachabteilung baut einen Agenten für ihren Bereich, eine zentrale Stelle setzt einen Koordinator darüber. Das Ergebnis ist eine Architektur, die <strong>das Organigramm nachbaut statt der Aufgabe</strong> — benannt nach Conways Gesetz, wonach Systeme die Kommunikationsstruktur ihrer Erbauer annehmen.</p>
+   <p><strong>Warum das eine Managementfrage ist und keine technische:</strong> Niemand hat diese Architektur entschieden. Sie ist das Nebenprodukt davon, wer das Budget hatte. Und sie lässt sich später nicht technisch reparieren, sondern nur über Eigentümerschaft.</p>
+  </div>
+ </div>
+ <div class="card">
+  <p><strong>Vier Fehlerbilder, die daraus entstehen.</strong> Sie treten gemeinsam auf und verstärken sich.</p>
+  <table class="tbl">
+   <thead><tr><th style="width:28%;">Fehlerbild</th><th>Was im Haus passiert</th></tr></thead>
+   <tbody>
+    <tr><td><strong>Wildwuchs an Teilagenten</strong></td><td>Jedes Team liefert seinen eigenen; am Ende stehen überlappende Agenten ohne verbindlichen Standard und ohne benannten Eigentümer</td></tr>
+    <tr><td><strong>Flickenanweisung</strong></td><td>Jedes Team schreibt einen Satz in die gemeinsame Anweisung. Die Regeln widersprechen sich, und das System hat keine einheitliche Stimme mehr</td></tr>
+    <tr><td><strong>Zu lokale Kennzahlen</strong></td><td>Jeder misst seinen Teilschritt und optimiert darauf. Niemand verantwortet das Gesamtmaß — die Leitung entscheidet auf verwässerten Werten</td></tr>
+    <tr><td><strong>Verlust bei der Übergabe</strong></td><td>Was zwischen Agenten ausgetauscht wird, muss festgelegt werden; im Hin und Her gehen regelmäßig Einzelheiten verloren. Dazu addiert jede Übergabe Wartezeit</td></tr>
+   </tbody>
+  </table>
+  <details class="mehr">
+   <summary>Vertiefung · Woran Ihr jedes der vier Bilder im eigenen Haus erkennt</summary>
+   <p><strong>Wildwuchs an Teilagenten.</strong> Die Frage, die es sichtbar macht: <em>Wie viele Agenten laufen bei uns, und wer kann das beantworten, ohne nachzufragen?</em> Gibt es keine Stelle mit dieser Antwort, ist das Inventar der erste Bau, nicht der nächste Agent. Dieser Punkt ist derselbe wie <em>Wildwuchs</em> in der Liste unten — hier ist er Entwurfsfolge, dort Betriebsrisiko.</p>
+   <p><strong>Flickenanweisung.</strong> Erkennbar daran, dass die gemeinsame Anweisung nur noch wächst und niemand Sätze <em>entfernt</em>. Praktischer Nebenbefund: Regeln, die für eine ältere Modellgeneration geschrieben wurden, machen das System später langsamer und starrer, bleiben aber stehen, weil keiner sich traut, sie zu löschen. <strong>In die Vorlage gehört deshalb eine benannte Zuständigkeit für das <em>Streichen</em>, nicht nur für das Ergänzen.</strong></p>
+   <p><strong>Zu lokale Kennzahlen.</strong> Das ist derselbe Stufenfehler, den wir bei Nutzungsquoten und Teilnahmelisten kennen: Eine Vorstufe wird gemessen und als Ergebnis ausgegeben. Hier kommt die Organisationsfolge hinzu — wenn jede Abteilung ihr eigenes Maß mitbringt, sieht die Leitung einen Mittelwert über Maße, die Verschiedenes messen. <strong>Ein Gesamtmaß, das jemandem gehört, schlägt zehn Teilmaße, die niemandem gehören.</strong></p>
+   <p><strong>Verlust bei der Übergabe.</strong> Die Leitfrage an den Entwurf: <em>Welche Angaben gehen über die Grenze zwischen zwei Agenten — und wer hat festgelegt, was dabei wegfallen darf?</em> Ist das nirgends festgelegt, entscheidet es der Zufall des jeweiligen Laufs. Daraus folgt ein verbindliches Rückgabeformat für alle Teilagenten; ohne das lässt sich ein Ergebnis später nicht gegen die echten Daten prüfen.</p>
+  </details>
+ </div>
+ <div class="note"><strong>Die Gegenmaßnahme ist eine Eigentümerschaftsentscheidung, keine technische.</strong><br><br><strong>Ein kleines zentrales Team</strong> besitzt die gemeinsame Anweisung und die Gesamtqualität. Es prüft jedes neue Werkzeug und jede neue Kennzahl, <em>bevor</em> sie in Betrieb gehen. Klein zu bleiben ist Teil der Aufgabe: Je größer diese Stelle, desto höher der Abstimmungsaufwand im Haus und desto langsamer die Verbesserung.<br><br><strong>Die Fachteams besitzen nicht mehr Agenten, sondern Vorgehensbeschreibungen und Werkzeuge.</strong> Ihr Fachwissen bleibt bei ihnen — es wandert nur aus einem eigenen Agenten in Bausteine, die die gemeinsame Schleife bei Bedarf lädt. Jeder Baustein hat eine namentlich benannte verantwortliche Person und wird mit seiner eigenen kleinen Erfolgsmessung geliefert.<div class="src-row" style="margin-top:.5rem;"><span class="src-chip"><a href="https://claude.com/resources/articles/building-agents-when-to-fold-subagents-into-your-main-agent-loop" target="_blank" rel="noopener">Sarkis (Anthropic, 22.10.2026)</a></span></div></div>
 </div>
 
 <div class="section">
@@ -682,6 +767,19 @@ a{color:var(--accent);}a:hover{text-decoration:underline;}
   <li>Geprüft wird die <strong>tatsächliche Umsetzung</strong>, nicht die Selbstauskunft des Agenten. <span class="tag-agent" title="Kommt bei Agenten hinzu">Agent</span></li>
   <li>Der Anbieter erklärt, wie die <strong>Testsituation für das Modell unerkennbar</strong> bleibt. <span class="tag-agent" title="Kommt bei Agenten hinzu">Agent</span></li>
  </ul>
+ <div class="note"><strong>Vor jeder Änderung an der Architektur: messen, eines ändern, vergleichen.</strong><br><br>Wird ein Teilagent eingefaltet, ein Werkzeug zusammengelegt oder das Modell gewechselt, gilt dieselbe Folge: <strong>① Zuerst eine kleine Ende-zu-Ende-Messung anlegen</strong> — <em>zehn gut gewählte Beispiele genügen zum Anfangen</em>, es muss kein Prüfwerk sein. <strong>② Genau eine Sache ändern.</strong> <strong>③ Beim Vergleich nicht auf den Gesamtwert sehen, sondern darauf, welche Aufgaben gekippt sind.</strong> <strong>④ Jede Aufgabe mehrfach laufen lassen</strong> — ein Bruch zeigt sich oft nur in einem von zwei Läufen.<div class="src-row" style="margin-top:.5rem;"><span class="src-chip"><a href="https://claude.com/resources/articles/building-agents-when-to-fold-subagents-into-your-main-agent-loop" target="_blank" rel="noopener">Sarkis (Anthropic, 22.10.2026)</a></span></div></div>
+ <details class="mehr">
+  <summary>Vertiefung · Der Fall, der zeigt, warum der Gesamtwert täuscht</summary>
+  <p>Berichtet wird von einem Versuch an einem Kundendienst-Agenten. Ein Teilagent wurde in einen anderen eingefaltet. <strong>Das Ergebnis: Die Wartezeit sank — und gleichzeitig brach ein Vorgang, der vorher durchgelaufen war.</strong></p>
+  <p>Die Ursache ist lehrreich, weil sie nach Fortschritt aussieht: Der Hauptagent hatte das Werkzeug zur Auftragsauskunft selbst und beantwortete die Frage nach dem Liefertermin nun <em>allein</em>, statt den Versandfachteil zu fragen. Er wirkte dadurch schneller und selbstständiger. Nur stand im Ergebnis eine Angabe, die vorher aus der Versandquelle kam — <strong>aus einer Quelle geholt, die dafür nicht zuständig ist.</strong></p>
+  <p><strong>Und der Punkt, der die Abnahme verändert:</strong> Der Bruch trat nur in <em>einem von zwei</em> Läufen auf. Ein einmaliger Testlauf hätte ihn nicht gefunden — und der Gesamtwert sah nach der Änderung besser aus als vorher.</p>
+  <p><strong>Zwei Regeln für den Prüfbestand, die daraus folgen.</strong></p>
+  <ul>
+   <li>Für <strong>jede Kette von Bausteinen, die im Betrieb gemeinsam läuft</strong>, gehört eine eigene Testaufgabe in den Bestand — nicht nur für jeden Baustein einzeln. Genau an den Nahtstellen bricht es.</li>
+   <li>Für <strong>jede Regel, die der Agent nicht verletzen darf</strong>, gehört eine Testaufgabe in den Bestand, und sie läuft <strong>mehrfach</strong>. Eine Regel, die in einem von zwei Läufen hält, ist keine Regel.</li>
+  </ul>
+  <p>Das ist derselbe Gedanke, der oben bei der Wiederholungsklasse des Prüfbestands steht — hier mit einem Fall belegt, der zeigt, was ohne ihn durchgeht: <strong>„funktioniert" und „funktioniert jedes Mal" sind zwei verschiedene Abnahmeaussagen.</strong> Welche von beiden ein Anbieter zeigt, steht selten im Angebot; die Frage danach gehört ins Gespräch.</p>
+ </details>
  <p class="einordnung">In 1.601 überwachten Agentenläufen versuchten 2,4 %, die eigene Freigabe zu umgehen; gestoppt wurden sie durch Prüfung der Umsetzung. Spitzenmodelle erkennen Prüfsituationen besser als zufällig.</p>
  <div class="note"><strong>Die Prüfung ist die eigentliche Obergrenze.</strong> Wer Agenten lange ohne Aufsicht laufen lässt, erfährt: <em>„Der Prüfer muss nahezu perfekt sein, sonst löst der Agent das falsche Problem."</em> Die Qualität autonomer Arbeit ist nicht durch die Fähigkeit des Modells begrenzt, sondern durch die Qualität dessen, was als „fertig" gilt. Im selben Versuch kam ein zweiter Befund hinzu: Gegen Projektende <strong>brach jede neue Funktion regelmäßig bestehende</strong> — behoben erst durch eine automatische Regressionsprüfung, die neue Stände blockiert, wenn sie Vorhandenes beschädigen. <strong>Für die Vorlage heißt das: Die Testklasse „Regression" ist kein Pflichtfeld zum Abhaken, sondern der Punkt, an dem Dauerbetrieb scheitert.</strong></div>
  <div class="src-row"><span class="src-chip"><a href="https://www-cdn.anthropic.com/7b1c44894e980876479947dcdd40716278aeeffd/automated-alignment-researchers-august-2026.pdf" target="_blank" rel="noopener">Chen, Wen &amp; Kirchner (2026)</a></span><span class="src-chip"><a href="https://www.un.org/independent-international-scientific-panel-ai/en/thematic-briefs/ai-agents-misalignment-risks" target="_blank" rel="noopener">UN-Gremium (Vorabfassung)</a></span></div>
@@ -867,6 +965,7 @@ a{color:var(--accent);}a:hover{text-decoration:underline;}
  <div class="card">
   <div class="feld-gruppe">Bauweise, Kosten, Betrieb · Anbieter- und Praxisberichte</div>
   <ul>
+   <li><a href="https://claude.com/resources/articles/building-agents-when-to-fold-subagents-into-your-main-agent-loop" target="_blank" rel="noopener">Sarkis, D. — Building agents: When to fold subagents into your main agent loop</a> (Anthropic, 22.10.2026) · Anbieterbeitrag über das eigene Produkt, Belegstufe C · Grundlage der Abschnitte „Wie viele Agenten?", „Wenn die Architektur das Organigramm abbildet" und der Vertiefungen zu Abnahme und Berechtigungen · <em>Hinweis:</em> Der Text ist englisch, auch unter der deutschen Adresse; die Abbildungen des Beitrags sind nicht freigegeben und hier nicht übernommen</li>
    <li><a href="https://www.anthropic.com/engineering/building-effective-agents" target="_blank" rel="noopener">Anthropic — Building Effective Agents</a> (2024) · Workflow und Agent</li>
    <li><a href="https://openai.com/business/guides-and-resources/a-practical-guide-to-building-ai-agents/" target="_blank" rel="noopener">OpenAI — A Practical Guide to Building Agents</a> · Eignungssignale, drei Bausteine</li>
    <li><a href="https://www.anthropic.com/engineering/multi-agent-research-system" target="_blank" rel="noopener">Anthropic — How we built our multi-agent research system</a> (13.06.2025) · Tokenverbrauch, Herstellerangabe</li>
@@ -1078,6 +1177,21 @@ var AV = {
     AV.binden('ck_clear', leeren);
     zeigen();
   });
+})();
+</script>
+
+<script>
+// Ausklappbare Vertiefungen: beim Drucken und beim Druckknopf vollständig geöffnet ausgeben.
+(function () {
+  function alle() { return document.querySelectorAll('details.mehr'); }
+  function oeffnen() {
+    alle().forEach(function (d) { d.dataset.vorher = d.open ? '1' : '0'; d.open = true; });
+  }
+  function zuruecksetzen() {
+    alle().forEach(function (d) { if (d.dataset.vorher === '0') { d.open = false; } delete d.dataset.vorher; });
+  }
+  window.addEventListener('beforeprint', oeffnen);
+  window.addEventListener('afterprint', zuruecksetzen);
 })();
 </script>
 </body>
