@@ -1,0 +1,950 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Technische KI-Risiken · Bias, Drift, Out-of-Distribution</title>
+<style>
+:root{--ink:#1a1a18;--paper:#f8f6f1;--card:#ffffff;--rule:#d5d0c5;--muted:#6b6b60;--accent:#0a4a7a;--teal:#0a6b6b;--green:#2a5c3f;--amber:#7a4a00;--red:#8a2a2a;--blue:#1a3a7a;--purple:#5a3a7a;--phase:#f2f0eb;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'DM Sans',system-ui,sans-serif;background:var(--paper);color:var(--ink);font-size:14px;line-height:1.6;}
+.page{max-width:920px;margin:0 auto;padding:2.2rem 1.6rem 5rem;}
+
+.head{border-bottom:3px solid var(--ink);padding-bottom:1.1rem;margin-bottom:1.2rem;}
+.eyebrow{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-bottom:.4rem;}
+h1{font-family:'Playfair Display',Georgia,serif;font-size:clamp(1.6rem,4vw,2.2rem);line-height:1.15;}
+h1 em{font-style:italic;color:var(--teal);}
+.lead{margin-top:.6rem;color:var(--muted);font-size:13.5px;line-height:1.6;}
+
+/* NAV */
+.nav{display:flex;gap:.5rem;margin-bottom:1.5rem;flex-wrap:wrap;}
+.nav button{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:1px;padding:.5rem 1rem;border:2px solid var(--rule);border-radius:100px;background:var(--card);color:var(--muted);cursor:pointer;transition:all .2s;}
+.nav button.active{background:var(--accent);color:#fff;border-color:var(--accent);}
+.nav button:hover:not(.active){border-color:var(--accent);color:var(--accent);}
+.tab-section{display:none;}
+.tab-section.active{display:block;}
+
+/* CONTENT BLOCKS */
+.sec{background:var(--card);border:1px solid var(--rule);border-radius:10px;padding:1.2rem 1.3rem;margin-bottom:1.3rem;}
+.sec-t{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--rule);padding-bottom:.4rem;margin-bottom:1rem;}
+.sec-t b{color:var(--teal);}
+h3.block-title{font-family:'Playfair Display',serif;font-weight:600;font-size:1.1rem;margin:0 0 .6rem;color:var(--accent);}
+.body{font-size:13.5px;line-height:1.65;color:var(--ink);margin-bottom:.6rem;}
+
+/* DEF ROWS */
+.def-row{display:flex;gap:.8rem;align-items:flex-start;padding:.45rem 0;border-bottom:1px solid var(--rule);font-size:13px;}
+.def-row:last-child{border-bottom:none;}
+.def-term{font-weight:600;min-width:140px;flex-shrink:0;color:var(--teal);}
+.def-body{flex:1;line-height:1.55;color:var(--ink);}
+
+/* BAR CHARTS */
+.bar-pair{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:.8rem 0;}
+@media(max-width:600px){.bar-pair{grid-template-columns:1fr;}}
+.bar-col{background:var(--phase);border:1px solid var(--rule);border-radius:8px;padding:.8rem 1rem;}
+.bar-col-t{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:.6rem;}
+.bar-group{margin-bottom:.5rem;}
+.bar-label{font-size:11.5px;color:var(--muted);margin-bottom:.15rem;display:flex;justify-content:space-between;font-family:'DM Mono',monospace;}
+.bar-track{background:#e8e6e0;border:1px solid var(--rule);border-radius:100px;height:16px;overflow:hidden;}
+.bar-fill{height:100%;border-radius:100px;transition:width .4s ease;}
+.bar-india{background:var(--blue);opacity:.75;}
+.bar-de{background:var(--teal);}
+.bar-mismatch{background:var(--red);opacity:.7;}
+
+/* CALLOUT / NOTE / MERKSATZ */
+.callout{background:#faf3ea;border:1px solid #e6cfa8;border-left:4px solid var(--amber);border-radius:0 8px 8px 0;padding:.7rem .9rem;font-size:12.5px;margin:.8rem 0;line-height:1.6;}
+.callout b{color:var(--amber);}
+.note{background:var(--card);border:1px solid var(--rule);border-left:4px solid var(--teal);border-radius:0 8px 8px 0;padding:.7rem .9rem;font-size:12.5px;margin:.8rem 0;line-height:1.6;}
+.note b{color:var(--teal);}
+.note-red{border-left-color:var(--red);}
+.note-red b{color:var(--red);}
+.merksatz{background:#0a4a7a;color:#fff;border-radius:8px;padding:.8rem 1rem;margin:1rem 0;font-size:13.5px;line-height:1.6;}
+.merksatz .ms-l{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;opacity:.7;display:block;margin-bottom:.35rem;}
+
+/* CONFIDENCE METER */
+.conf-meter{display:flex;align-items:center;gap:.8rem;padding:.6rem 1rem;background:var(--phase);border:1px solid var(--rule);border-radius:8px;margin:.6rem 0;}
+.conf-meter .label{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);min-width:80px;}
+.conf-bar{flex:1;height:20px;background:#e8e6e0;border-radius:100px;overflow:hidden;position:relative;}
+.conf-fill{height:100%;border-radius:100px;transition:width .5s ease;}
+.conf-fill.high{background:var(--red);}
+.conf-fill.mid{background:var(--amber);}
+.conf-fill.low{background:var(--green);}
+.conf-val{font-family:'DM Mono',monospace;font-size:14px;font-weight:700;min-width:45px;text-align:right;}
+
+/* SCENARIO CARDS */
+.scenario{background:var(--card);border:1.5px solid var(--rule);border-radius:8px;padding:1rem 1.2rem;margin:.8rem 0;transition:border-color .3s;}
+.scenario.danger{border-color:var(--red);background:#fef9f6;}
+.sc-head{display:flex;align-items:center;gap:.6rem;margin-bottom:.5rem;}
+.sc-icon{font-size:1.4rem;width:2rem;text-align:center;}
+.sc-role{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);}
+.sc-title{font-size:14px;font-weight:600;margin-top:.1rem;}
+.sc-body{font-size:13px;line-height:1.6;color:var(--ink);}
+.sc-result{margin-top:.5rem;padding:.5rem .7rem;border-radius:6px;font-size:12.5px;line-height:1.5;}
+.sc-result.bad{background:#faeaea;border-left:3px solid var(--red);color:var(--red);}
+.sc-result.warn{background:#fdf6ea;border-left:3px solid var(--amber);color:var(--amber);}
+
+/* RED FLAGS */
+.flag-list{display:flex;flex-direction:column;gap:.5rem;margin:.6rem 0;}
+.flag-item{display:flex;gap:.7rem;align-items:flex-start;background:var(--card);border:1px solid var(--rule);border-radius:7px;padding:.6rem .9rem;font-size:13px;line-height:1.55;}
+.flag-nr{font-family:'DM Mono',monospace;font-size:10px;color:var(--red);min-width:20px;margin-top:.1rem;font-weight:700;}
+.flag-item strong{color:var(--ink);}
+
+/* PEEK BOX */
+.peek-box{background:#f3eef8;border:1.5px solid var(--purple);border-radius:8px;padding:1.2rem 1.4rem;margin:.8rem 0;}
+.peek-label{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--purple);font-weight:700;margin-bottom:.5rem;}
+.peek-text{font-size:13px;color:var(--ink);line-height:1.65;}
+
+/* FOOTER */
+.foot{margin-top:1.5rem;font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);border-top:1px solid var(--rule);padding-top:.8rem;display:flex;justify-content:space-between;flex-wrap:wrap;gap:.5rem;}
+
+/* QUIZ-STYLE BUTTONS */
+.quiz-row{display:flex;gap:.5rem;margin-top:.5rem;flex-wrap:wrap;}
+.quiz-btn{font-family:'DM Mono',monospace;font-size:11px;padding:5px 14px;border:1.5px solid var(--rule);border-radius:100px;background:var(--card);color:var(--muted);cursor:pointer;transition:all .2s;}
+.quiz-btn:hover{border-color:var(--accent);color:var(--accent);}
+.quiz-btn.sel{background:var(--accent);color:#fff;border-color:var(--accent);}
+.quiz-reveal{display:none;margin-top:.6rem;padding:.6rem .8rem;border-radius:8px;font-size:12.5px;line-height:1.5;background:#eaf5ea;border-left:3px solid var(--green);color:var(--green);}
+.quiz-reveal.open{display:block;}
+
+/* ─── DRIFT-DEMO (eingebettet aus Tag 6) ─── */
+.drift-section{display:none;}
+.drift-section.active{display:block;}
+.dd-nav{display:flex;gap:.5rem;margin-bottom:1.5rem;flex-wrap:wrap;}
+.dd-nav button{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:1px;padding:.5rem 1rem;border:2px solid var(--rule);border-radius:100px;background:var(--card);color:var(--muted);cursor:pointer;transition:all .2s;}
+.dd-nav button.active{background:var(--accent);color:#fff;border-color:var(--accent);}
+.dd-nav button:hover:not(.active){border-color:var(--accent);color:var(--accent);}
+.ctrl{display:flex;align-items:center;gap:1rem;flex-wrap:wrap;margin-bottom:.6rem;}
+.ctrl label{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);}
+input[type=range]{flex:1;min-width:200px;accent-color:var(--teal);cursor:pointer;}
+.pill{font-family:'DM Mono',monospace;font-size:14px;background:var(--phase);border:1px solid var(--rule);border-radius:100px;padding:3px 14px;min-width:90px;text-align:center;font-weight:700;}
+.events{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.3rem;}
+.ev{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.5px;border-radius:100px;padding:3px 10px;border:1px solid var(--rule);color:var(--muted);transition:all .25s;}
+.ev.active{color:#fff;border-color:transparent;}
+.ev.ev-ok.active{background:var(--green);}
+.ev.ev-a.active{background:var(--purple);}
+.ev.ev-b.active{background:var(--blue);}
+.thresh-ctrl{display:flex;align-items:center;gap:.5rem;margin-bottom:.4rem;padding:.35rem .7rem;background:var(--phase);border:1px solid var(--rule);border-radius:8px 8px 0 0;font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);}
+.thresh-input{width:52px;padding:2px 6px;border:1px solid var(--rule);border-radius:4px;font-family:'DM Mono',monospace;font-size:12px;text-align:center;background:#fff;}
+.thresh-unit{font-weight:700;}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:1.1rem;}
+@media(max-width:680px){.grid2{grid-template-columns:1fr;}}
+.prod{border:1px solid var(--rule);border-radius:0 0 8px 8px;padding:.9rem 1rem;background:#fff;transition:border-color .3s;}
+.prod.no-thresh{border-radius:8px;}
+.prod.drift-warn{border-color:var(--amber);border-width:2px;}
+.prod.drift-crit{border-color:var(--red);border-width:2px;}
+.prod-t{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:.6rem;}
+.prod-icon{font-size:24px;margin-right:.4rem;vertical-align:middle;}
+#sec-drift .bar-track{height:18px;background:var(--phase);}
+.bar-pred{background:var(--blue);opacity:.75;}
+.bar-ist{background:var(--teal);}
+.bar-danger{background:var(--red);opacity:.6;}
+.bar-good{background:var(--green);opacity:.7;}
+.delta{font-family:'DM Mono',monospace;font-size:11px;margin-top:.3rem;padding:3px 10px;border-radius:100px;display:inline-block;font-weight:600;}
+.delta.over{background:#faeaea;color:var(--red);}
+.delta.under{background:#fdf6ea;color:var(--amber);}
+.delta.ok{background:#eaf5ea;color:var(--green);}
+.met-row{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.7rem;}
+.met{flex:1;min-width:70px;background:var(--phase);border:1px solid var(--rule);border-radius:8px;padding:.5rem .5rem;text-align:center;transition:background .3s,border-color .3s;}
+.met .v{font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;color:var(--accent);transition:color .3s;}
+.met .k{font-family:'DM Mono',monospace;font-size:7.5px;letter-spacing:.8px;text-transform:uppercase;color:var(--muted);margin-top:.1rem;}
+.met.warn{background:#fdf6ea;border-color:var(--amber);}
+.met.warn .v{color:var(--amber);}
+.met.crit{background:#faeaea;border-color:var(--red);}
+.met.crit .v{color:var(--red);}
+.drift-ind{margin-top:.8rem;padding:.6rem .8rem;border-radius:8px;font-size:12.5px;line-height:1.5;transition:all .3s;}
+.drift-ind.ok{background:#eaf5ea;border:1px solid #c8ddcd;color:var(--green);}
+.drift-ind.warn{background:#fdf6ea;border:1px solid #e6cfa8;color:var(--amber);}
+.drift-ind.crit{background:#faeaea;border:1px solid #e3cfcf;color:var(--red);}
+.drift-ind b{display:block;font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:.2rem;}
+.expl{border-left:4px solid var(--purple);background:#f5f0fa;border-radius:0 8px 8px 0;padding:.7rem .9rem;margin-top:.8rem;font-size:12.5px;line-height:1.6;}
+.expl b{color:var(--purple);}
+
+.rechtevermerk{display:block;margin-top:.7rem;padding-top:.6rem;border-top:1px solid var(--rule);font-family:'DM Sans',sans-serif;font-size:10px;line-height:1.5;letter-spacing:0;text-transform:none;color:var(--muted);}
+</style>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=DM+Mono:wght@400&family=Playfair+Display:ital,wght@0,600;1,600&display=swap" rel="stylesheet">
+</head>
+<body>
+<div class="page">
+
+<div class="head">
+ <div class="eyebrow">Zertifikatskurs KI-Beauftragte:r · Vertiefung</div>
+ <h1>Technische KI-Risiken <em>— was schiefgehen kann<br>und wie Du es erkennst</em></h1>
+ <p class="lead">Vier Risikokategorien, die Du im Umgang mit KI kennen solltest — plus ein Reiter zur Erkennung. Alle Beispiele stammen aus einem Krankenhaus-Kontext.</p>
+</div>
+
+<div class="nav">
+ <button class="active" onclick="showTab('bias')">① Bias</button>
+ <button onclick="showTab('drift')">② Drift</button>
+ <button onclick="showTab('ood')">③ Out-of-Distribution</button>
+ <button onclick="showTab('peek')">④ Erkennung</button>
+ <button onclick="showTab('quellen')">⑤ Quellen</button>
+</div>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- TAB 1: BIAS                                     -->
+<!-- ═══════════════════════════════════════════════ -->
+<div class="tab-section active" id="sec-bias">
+
+<div class="sec">
+ <div class="sec-t"><b>① Bias</b> — Systematische Verzerrungen in drei Schichten</div>
+ <p class="body">Bias in KI-Systemen entsteht nicht an einer einzigen Stelle, sondern kann in jeder Phase des Lebenszyklus auftreten: bei der Datenerhebung, beim Modelltraining und beim Einsatz. Alle drei Formen können gleichzeitig wirken — und sich gegenseitig verstärken. Bevor wir die drei Bias-Formen anschauen, brauchen wir zwei Begriffe.</p>
+</div>
+
+<!-- FALSE POSITIVES / FALSE NEGATIVES -->
+<div class="sec">
+ <h3 class="block-title">Zwei Begriffe, die Du kennen musst</h3>
+ <p class="body">Wenn eine KI eine Diagnose stellt, gibt es vier mögliche Ergebnisse. Zwei davon sind korrekt — und zwei sind Fehler:</p>
+
+ <div class="bar-pair">
+  <div class="bar-col" style="border:2px solid var(--green);">
+   <div class="bar-col-t" style="color:var(--green);">Korrekte Ergebnisse</div>
+   <div class="def-row" style="border:none;padding:.3rem 0;"><span class="def-term" style="color:var(--green);min-width:110px;">True Positive</span><span class="def-body">Die KI erkennt ein Karzinom — und es <strong>ist</strong> ein Karzinom. Treffer.</span></div>
+   <div class="def-row" style="border:none;padding:.3rem 0;"><span class="def-term" style="color:var(--green);min-width:110px;">True Negative</span><span class="def-body">Die KI sagt „unauffällig" — und es <strong>ist</strong> unauffällig. Korrekter Ausschluss.</span></div>
+  </div>
+  <div class="bar-col" style="border:2px solid var(--red);">
+   <div class="bar-col-t" style="color:var(--red);">Fehler</div>
+   <div class="def-row" style="border:none;padding:.3rem 0;"><span class="def-term" style="color:var(--red);min-width:110px;">False Positive</span><span class="def-body">Die KI meldet „verdächtig" — aber es ist <strong>kein</strong> Karzinom. Falscher Alarm → unnötige Biopsie, Angst, Kosten.</span></div>
+   <div class="def-row" style="border:none;padding:.3rem 0;"><span class="def-term" style="color:var(--red);min-width:110px;">False Negative</span><span class="def-body">Die KI sagt „unauffällig" — aber es <strong>ist</strong> ein Karzinom. Übersehener Befund → verspätete Behandlung.</span></div>
+  </div>
+ </div>
+
+ <div class="callout"><b>Welcher Fehler ist schlimmer?</b> In der Mammografie ist ein False Negative dramatisch: Ein Karzinom wird übersehen, die Patientin verliert Monate. Ein False Positive ist belastend (unnötige Biopsie), aber medizinisch korrigierbar. Bias verschiebt die Häufigkeit dieser Fehler — und zwar nicht gleichmäßig, sondern <em>systematisch für bestimmte Patientengruppen</em>.</div>
+
+ <div class="note"><b>Fachbegriffe (Vertiefung im KIM):</b> Die Fähigkeit einer KI, alle tatsächlich erkrankten Patientinnen zu erkennen, heißt <strong>Recall</strong> (Sensitivität). Die Fähigkeit, bei einem Alarm auch wirklich recht zu haben, heißt <strong>Precision</strong> (Präzision). Beide stehen in einem Spannungsverhältnis — ein System, das vorsichtshalber alles als verdächtig meldet, hat hohen Recall, aber niedrige Precision. Im Kurs KI-Manager arbeiten wir mit den konkreten Formeln und Metriken.</div>
+</div>
+
+<!-- DATENBIAS -->
+<div class="sec">
+ <h3 class="block-title">Datenbias — Die Trainingsdaten spiegeln nicht die Realität</h3>
+
+ <div class="scenario danger">
+  <div class="sc-head"><div class="sc-icon">🩻</div><div><div class="sc-role">Fallbeispiel · Mammografie-Screening</div><div class="sc-title">Samira, 30 Jahre, aus dem Sudan</div></div></div>
+  <div class="sc-body">Samira lebt seit drei Jahren in Deutschland und nimmt am Brustkrebs-Screening teil. Ihre Mammografie wird von einer KI vorausgewertet, die auf einem großen amerikanisch-europäischen Datensatz trainiert wurde. Dieser Datensatz besteht überwiegend aus Aufnahmen von Frauen über 40 Jahren mit hellem Hauttyp.</div>
+ </div>
+
+ <p class="body" style="margin-top:.8rem;">Das Problem liegt in mindestens drei Dimensionen:</p>
+
+ <div class="bar-pair">
+  <div class="bar-col">
+   <div class="bar-col-t">Trainingsdaten</div>
+   <div class="bar-group">
+    <div class="bar-label"><span>Alter &gt; 40</span><span>92 %</span></div>
+    <div class="bar-track"><div class="bar-fill bar-india" style="width:92%"></div></div>
+   </div>
+   <div class="bar-group">
+    <div class="bar-label"><span>Heller Hauttyp</span><span>78 %</span></div>
+    <div class="bar-track"><div class="bar-fill bar-india" style="width:78%"></div></div>
+   </div>
+   <div class="bar-group">
+    <div class="bar-label"><span>Dichtes Brustgewebe</span><span>35 %</span></div>
+    <div class="bar-track"><div class="bar-fill bar-india" style="width:35%"></div></div>
+   </div>
+  </div>
+  <div class="bar-col">
+   <div class="bar-col-t">Samiras Profil</div>
+   <div class="bar-group">
+    <div class="bar-label"><span>Alter</span><span>30 Jahre</span></div>
+    <div class="bar-track"><div class="bar-fill bar-mismatch" style="width:15%"></div></div>
+   </div>
+   <div class="bar-group">
+    <div class="bar-label"><span>Dunkler Hauttyp</span><span>unterrepräsentiert</span></div>
+    <div class="bar-track"><div class="bar-fill bar-mismatch" style="width:8%"></div></div>
+   </div>
+   <div class="bar-group">
+    <div class="bar-label"><span>Dichtes Brustgewebe</span><span>typisch &lt; 40</span></div>
+    <div class="bar-track"><div class="bar-fill bar-mismatch" style="width:70%"></div></div>
+   </div>
+  </div>
+ </div>
+
+ <div class="callout"><b>Was passiert bei Samira?</b> Jüngere Frauen haben in der Regel dichteres Brustgewebe. In dichtem Gewebe sind Läsionen auf der Mammografie schwerer zu erkennen — sowohl für Menschen als auch für KI. Aber: Die KI wurde überwiegend auf Aufnahmen älterer Frauen mit weniger dichtem Gewebe trainiert. Sie hat nie gelernt, wie ein beginnendes Karzinom in dichtem, jungem Gewebe mit dunklem Hauttyp aussieht. Ergebnis: Die KI stuft Samiras Mammografie als „unauffällig" ein — ein <strong>False Negative</strong>.</div>
+
+ <p class="body">Eine RSNA-Studie (2024) bestätigt diesen Effekt: KI-Algorithmen erzeugen bei schwarzen Patientinnen und bei Frauen mit extrem dichtem Brustgewebe signifikant mehr Fehlklassifikationen. Schwarze Frauen hatten ein 50 % höheres Risiko für False Positives als weiße Frauen, ältere Frauen (71–80) ein 90 % höheres Risiko.</p>
+
+</div>
+
+<!-- MODELLBIAS -->
+<div class="sec">
+ <h3 class="block-title">Modellbias — Das Modell optimiert am Ziel vorbei</h3>
+
+ <div class="scenario danger">
+  <div class="sc-head"><div class="sc-icon">🩻</div><div><div class="sc-role">Fallbeispiel · Mammografie-Screening (Fortsetzung)</div><div class="sc-title">Samira — jetzt mit besseren Daten, aber gleichem Problem</div></div></div>
+  <div class="sc-body">Das Krankenhaus hat das Datenbias-Problem erkannt und reagiert: Der Trainingsdatensatz wird um tausende Mammografien jüngerer Frauen mit dunklem Hauttyp und dichtem Gewebe ergänzt. Die Daten sind jetzt repräsentativ — kein Datenbias mehr. Das Modell wird neu trainiert. Aber Samiras Problem bleibt.</div>
+ </div>
+
+ <p class="body" style="margin-top:.8rem;">Warum? Das Modell wird auf <strong>Gesamtgenauigkeit</strong> optimiert — also darauf, bei möglichst vielen Patientinnen die richtige Diagnose zu liefern. Schauen wir uns an, was das für Samira bedeutet:</p>
+
+ <div class="bar-pair">
+  <div class="bar-col" style="border:2px solid var(--green);">
+   <div class="bar-col-t" style="color:var(--green);">Mehrheitsgruppe (85 % der Screenings)</div>
+   <div class="def-row" style="border:none;padding:.3rem 0;"><span class="def-term" style="color:var(--green);min-width:80px;">Profil</span><span class="def-body">Frauen über 50, heller Hauttyp, weniger dichtes Gewebe. Kontrastreiche Aufnahmen, Muster gut erkennbar.</span></div>
+   <div class="def-row" style="border:none;padding:.3rem 0;"><span class="def-term" style="color:var(--green);min-width:80px;">Genauigkeit</span><span class="def-body"><strong>97 %</strong> — das Modell investiert seine Kapazität dort, wo es den größten Gewinn an Gesamtgenauigkeit erzielt.</span></div>
+  </div>
+  <div class="bar-col" style="border:2px solid var(--red);">
+   <div class="bar-col-t" style="color:var(--red);">Samiras Gruppe (≈ 5 % der Screenings)</div>
+   <div class="def-row" style="border:none;padding:.3rem 0;"><span class="def-term" style="color:var(--red);min-width:80px;">Profil</span><span class="def-body">Jüngere Frauen, dunkler Hauttyp, dichtes Gewebe. Geringerer Kontrast, komplexere Muster — die Diagnose ist objektiv schwieriger.</span></div>
+   <div class="def-row" style="border:none;padding:.3rem 0;"><span class="def-term" style="color:var(--red);min-width:80px;">Genauigkeit</span><span class="def-body"><strong>83 %</strong> — jeder Fehler hier kostet das Modell nur 0,05 % Gesamtgenauigkeit. Der Optimierer „lohnt sich nicht" für diese Gruppe.</span></div>
+  </div>
+ </div>
+
+ <p class="body" style="margin-top:.8rem;">Das Modell meldet stolz: <strong>Gesamtgenauigkeit 96,3 %</strong>. Das klingt hervorragend. Aber hinter dieser Zahl versteckt sich ein systematischer Nachteil für Samiras Gruppe</p>
+ <div class="callout"><b>Warum ist das Modellbias und nicht Datenbias?</b> Die Daten sind jetzt repräsentativ — Samiras Gruppe ist proportional vertreten. Das Problem entsteht im Modell selbst: Die Verlustfunktion belohnt Gesamtgenauigkeit, nicht Fairness pro Gruppe. Die Architektur bevorzugt kontrastreiche Merkmale. Und die Evaluation misst nur den Durchschnitt. Selbst mit perfekten Daten produziert dieses Modell systematisch schlechtere Ergebnisse für Samira.</div>
+
+ <div class="note"><b>Modellbias ≠ Datenbias — zwei Probleme, zwei Gegenmaßnahmen:</b> Datenbias behebst Du, indem Du die Trainingsdaten verbesserst (repräsentativer, diverser). Modellbias behebst Du, indem Du das Modell selbst veränderst: andere Verlustfunktion (z. B. gewichteter Recall pro Subgruppe), gezielte Evaluation nach demografischen Gruppen (Fairness-Metriken), oder Architekturanpassungen für schwierigere Fälle. Beide Bias-Formen können gleichzeitig auftreten — und sich gegenseitig verstärken.</div>
+
+</div>
+
+<!-- ANWENDUNGSBIAS -->
+<div class="sec">
+ <h3 class="block-title">Anwendungsbias — Das System wird falsch eingesetzt</h3>
+ <p class="body">Anwendungsbias entsteht, wenn ein KI-System in einem Kontext eingesetzt wird, für den es nicht entwickelt oder validiert wurde. Das System selbst funktioniert korrekt — es wird nur falsch verwendet.</p>
+
+ <div class="scenario danger">
+  <div class="sc-head"><div class="sc-icon">🏥</div><div><div class="sc-role">Fallbeispiel · Krankenhausabrechnung</div><div class="sc-title">GKV-Prüftool für PKV-Abrechnungen</div></div></div>
+  <div class="sc-body">Eine gesetzliche Krankenversicherung (GKV 1) stellt dem Krankenhaus eine KI-Anwendung zur Verfügung. Das Tool liest Fallnummern aus, sucht die passenden Abrechnungsrichtlinien der GKV 1 heraus, erstellt eine kurze Zusammenfassung und weist darauf hin, bei welchen Fällen der Medizinische Dienst (MD) voraussichtlich nachfragen wird. Für die Abrechnung mit der GKV 1 funktioniert das gut — das System kennt die Kodierrichtlinien, die Prüfprioritäten und die Vertragsbedingungen dieser Kasse.</div>
+ </div>
+
+ <p class="body" style="margin-top:.8rem;">Das Krankenhaus setzt das Tool jetzt auch für andere Kostenträger ein:</p>
+
+ <div class="bar-pair">
+  <div class="bar-col" style="border:2px solid var(--amber);">
+   <div class="bar-col-t" style="color:var(--amber);">GKV 1 → GKV 2</div>
+   <div class="def-row" style="border:none;padding:.3rem 0;"><span class="def-term" style="color:var(--amber);min-width:80px;">Subtil</span><span class="def-body">Gleiches Abrechnungssystem (DRG-Fallpauschalen), aber andere Prüfprioritäten, andere Vertragsbedingungen, andere Schwellwerte beim MD. Das Tool gibt Entwarnung, wo die GKV 2 nachfragen würde — oder warnt vor Prüfungen, die bei der GKV 2 gar nicht stattfinden.</span></div>
+  </div>
+  <div class="bar-col" style="border:2px solid var(--red);">
+   <div class="bar-col-t" style="color:var(--red);">GKV → PKV</div>
+   <div class="def-row" style="border:none;padding:.3rem 0;"><span class="def-term" style="color:var(--red);min-width:80px;">Massiv</span><span class="def-body">Komplett anderes Abrechnungssystem: GKV rechnet nach <strong>DRG-Fallpauschalen</strong> (ein Betrag pro Fall), PKV nach <strong>GOÄ</strong> (Gebührenordnung für Ärzte — jede Leistung einzeln, mit Steigerungssätzen). Ein DRG-Prüftool auf GOÄ-Abrechnungen loszulassen ist eine "artfremde" Verwendung — andere Daten, andere Logik, andere Regeln - mit entsprechenden Verzerrungen.</span></div>
+  </div>
+ </div>
+
+ <div class="callout"><b>Warum ist das gefährlich?</b> Die GKV-Variante erzeugt falsche Sicherheit: Das Krankenhaus glaubt, die Abrechnung sei geprüft — aber die Prüfung basiert auf den falschen Regeln. Bei der PKV kommt hinzu, dass das Tool die abrechnungsrelevanten Informationen nicht einmal korrekt identifizieren kann, weil es GOÄ-Ziffern und Steigerungssätze nie gelernt hat. Beide Fälle können zu Abrechnungsfehlern führen — mit finanziellen und rechtlichen Folgen für das Krankenhaus.</div>
+
+ <div class="sc-result bad" style="margin:.8rem 0;"><b>Art. 9 EU AI Act:</b> Der Intended Purpose ist „Abrechnungsprüfung für GKV 1 nach DRG-Kodierrichtlinien". Der Einsatz für andere Kostenträger — insbesondere für die PKV mit einem völlig anderen Abrechnungssystem — ist eine Zweckentfremdung. Die Verantwortung liegt beim Betreiber (Art. 26).</div>
+
+</div>
+
+</div><!-- /sec-bias -->
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- TAB 2: DRIFT                                    -->
+<!-- ═══════════════════════════════════════════════ -->
+<div class="tab-section" id="sec-drift">
+
+<!-- ═══ ALLTAGSBEISPIEL: PIZZA-ANALOGIE ═══ -->
+<div class="sec">
+ <div class="sec-t"><b>② Drift</b> — Wenn das Modell die Welt nicht mehr versteht</div>
+ <p class="body"><strong>Model Drift</strong> (oder Distribution Drift) bedeutet: Ein Modell, das bei der Einführung gut funktionierte, liefert nach 12–18 Monaten spürbar schlechtere Ergebnisse — ohne dass jemand am Modell selbst etwas geändert hat. Die Welt hat sich verändert, aber das Modell weiß es nicht.</p>
+</div>
+
+<div class="sec">
+ <h3 class="block-title">Alltagsbeispiel — Wenn die Pizzeria ihre Kunden nicht mehr kennt</h3>
+ <p class="body">Stell Dir vor, Du trainierst ein KI-Modell, das aus der Bestellhistorie vorhersagt, welche Pizza ein Gast bestellen wird. Trainiert auf Daten von 2023: Margherita, Salami, Tonno — die üblichen Verdächtigen. Das Modell kennt seine Kunden, trifft gute Vorhersagen, Deine Pizzeria kauft die richtigen Mengen ein, die Küchenplanung ist optimiert — alle sind zufrieden.</p>
+ <p class="body" style="margin-top:.6rem;">Dann passieren drei Dinge:</p>
+
+ <div class="def-row"><span class="def-term" style="color:var(--purple);">① Neue Zutaten</span><span class="def-body"><strong>Daten Drift</strong> (auch Feature Drift oder Covariate Drift) — Die Pizzeria führt Rucola, Burrata und Trüffelöl ein. Die Eingangsdaten verändern sich schleichend: Bestellungen enthalten jetzt Begriffe und Kombinationen, die das Modell nie gesehen hat. Es kann sie zwar noch irgendwie einordnen, aber die Qualität der Vorhersagen sinkt — ohne dass das Modell es „merkt".</span></div>
+ <div class="def-row"><span class="def-term" style="color:var(--blue);">② Neue Pizzen</span><span class="def-body"><strong>Konzept Drift</strong> — Es gibt jetzt eine „Pizza della Casa" mit wechselnden Saisonzutaten. Was eine Pizza ist, hat sich konzeptuell verändert. Das Modell hat eine starre Vorstellung von Pizza-Kategorien — diese Realität passt da nicht mehr rein.</span></div>
+ <div class="def-row"><span class="def-term" style="color:var(--red);">③ Kinderpizza</span><span class="def-body"><strong>Population Drift</strong> — Eine komplett neue Kundengruppe: Familien mit Kindern, die kleinere Portionen, andere Geschmäcker und andere Bestellmuster haben. Das Modell wurde nie auf diese Gruppe trainiert. Seine Vorhersagen für Kinder sind schlicht falsch. Das kommt dem folgenden Beispiel mit Kitteln im Krankenhaus am nächsten, weil kleinere Größen da zunächst ja gar nicht bestellt werden.</span></div>
+ <div class="def-row"><span class="def-term" style="color:var(--teal);">④ Pizza Mondiale</span><span class="def-body"><strong>Lerndrift</strong> — Zur WM bringt die Pizzeria eine „Pizza Mondiale" heraus und nutzt Online-Bewertungen als Feedback für ihr Vorhersagemodell. Problem: Die Bewertungen sind voller Sarkasmus und Ironie. <em>„Die Pizza schmeckt wie Deutschland spielt"</em> — ist das ein Lob oder eine Beleidigung? <em>„Beste WM-Pizza — wenn man auf Pappe steht"</em> — 1 Stern, aber positive Formulierung. Das Modell liest die Signale und meint: Diese Pizza ist beliebt → mehr bestellen. Es verschlechtert sich von innen heraus, weil sein Feedback vergiftet ist.</span></div>
+
+ <div class="callout" style="margin-top:.8rem;"><b>Das Kernproblem:</b> Das Modell arbeitet weiter, gibt weiter Vorhersagen aus — aber die Welt hat sich verändert. Die Fehlerquote steigt, oft unbemerkt, weil niemand systematisch prüft. Im KI-Betrieb ist Model Drift einer der häufigsten Gründe, warum ein Modell, das bei der Einführung gut funktionierte, nach 12–18 Monaten spürbar schlechtere Ergebnisse liefert.</div>
+</div>
+
+<div class="sec">
+ <h3 class="block-title">Von der Pizzeria ins Krankenhaus — dieselben Drift-Formen, andere Konsequenzen</h3>
+ <p class="body">In der Pizzeria kostet Drift zu viel Rucola oder zu wenig Kinderpizza. Im Krankenhaus kostet Drift Patientensicherheit und Geld. Die folgende interaktive Demo zeigt Drift-Formen an einem Krankenhaus-Szenario:</p>
+
+</div>
+
+<!-- ═══ DRIFT-DEMO (eingebettet aus Tag 6) ═══ -->
+<div class="sec">
+ <div class="sec-t"><b>Interaktive Demo</b> — Drei Drift-Szenarien im Krankenhaus</div>
+ <p class="body">Navigiere mit den Reitern zwischen den drei Drift-Formen. Jedes Szenario hat einen Zeitregler (18 Monate) und konfigurierbare Alarm-Schwellwerte — schiebe den Regler nach rechts und beobachte, wie sich die Prognosequalität verändert.</p>
+</div>
+
+<div class="dd-nav">
+ <button class="active" data-drift="dd">① Datendrift</button>
+ <button data-drift="kd">② Konzeptdrift</button>
+ <button data-drift="ld">③ Lerndrift</button>
+</div>
+
+<!-- DATENDRIFT -->
+<div class="drift-section active" id="sec-dd">
+
+<div class="sec">
+ <div class="sec-t"><b>① Datendrift</b> — Die Eingangsdaten ändern sich</div>
+ <p style="font-size:13px;margin-bottom:.5rem;">Das KI-System prognostiziert den monatlichen Bedarf an Verbrauchsmaterial. Trainiert auf 18 Monaten historischer Daten:</p>
+ <ul style="font-size:13px;padding-left:1.3rem;margin-bottom:.5rem;">
+  <li><strong>Nordan 10 mg Filmtabletten</strong> — Blutdruckmedikament, 2× täglich (~320 Packungen/Monat)</li>
+  <li><strong>Patientenkittel</strong> — ausschließlich Erwachsenengrößen M/L (~480 Stück/Monat)</li>
+ </ul>
+ <p style="font-size:12.5px;color:var(--muted);">Das Modell kennt nur diese Welt. Es hat nie etwas anderes gesehen.</p>
+</div>
+
+<div class="sec">
+ <div class="sec-t"><b>Zeitregler</b></div>
+ <div class="ctrl">
+  <label>Monat</label>
+  <input type="range" id="dd_month" min="1" max="18" value="1" step="1">
+  <span class="pill" id="dd_monthLabel">Monat 1</span>
+ </div>
+ <div class="events">
+  <span class="ev ev-ok active" id="dd_ev0">Monat 1–5 · Normalzustand</span>
+  <span class="ev ev-a" id="dd_ev1">Monat 6 · Nordan SR (Slow Release) verfügbar</span>
+  <span class="ev ev-b" id="dd_ev2">Monat 12 · Kinder-Ambulanz eröffnet</span>
+ </div>
+</div>
+
+<div class="grid2">
+ <div>
+  <div class="thresh-ctrl">
+   <label>Alarm-Schwellwert:</label>
+   <input type="number" id="dd_thMed" min="50" max="99" value="90" class="thresh-input">
+   <span class="thresh-unit">%</span>
+  </div>
+  <div class="prod" id="dd_prodMed">
+   <div class="prod-t"><span class="prod-icon">💊</span> Nordan Filmtabletten</div>
+   <div class="bar-group"><div class="bar-label"><span>Prognose</span><span id="dd_medPredV"></span></div><div class="bar-track"><div class="bar-fill bar-pred" id="dd_medPredBar"></div></div></div>
+   <div class="bar-group"><div class="bar-label"><span>Tatsächlicher Bedarf</span><span id="dd_medActV"></span></div><div class="bar-track"><div class="bar-fill bar-ist" id="dd_medActBar"></div></div></div>
+   <div id="dd_medDelta"></div>
+   <div class="met-row">
+    <div class="met" id="dd_metMedAcc"><div class="v" id="dd_medAccV">100%</div><div class="k">Prognosegenauigkeit</div></div>
+   </div>
+   <div class="drift-ind ok" id="dd_stMed"><b>Status</b><span id="dd_stMedT">Kein Drift.</span></div>
+  </div>
+ </div>
+ <div>
+  <div class="thresh-ctrl">
+   <label>Alarm-Schwellwert:</label>
+   <input type="number" id="dd_thKit" min="50" max="99" value="90" class="thresh-input">
+   <span class="thresh-unit">%</span>
+  </div>
+  <div class="prod" id="dd_prodKit">
+   <div class="prod-t"><span class="prod-icon">👔</span> Patientenkittel</div>
+   <div class="bar-group"><div class="bar-label"><span>Prognose</span><span id="dd_kitPredV"></span></div><div class="bar-track"><div class="bar-fill bar-pred" id="dd_kitPredBar"></div></div></div>
+   <div class="bar-group"><div class="bar-label"><span>Tatsächlicher Bedarf</span><span id="dd_kitActV"></span></div><div class="bar-track"><div class="bar-fill bar-ist" id="dd_kitActBar"></div></div></div>
+   <div id="dd_kitDelta"></div>
+   <div class="met-row">
+    <div class="met" id="dd_metKitAcc"><div class="v" id="dd_kitAccV">100%</div><div class="k">Prognosegenauigkeit</div></div>
+   </div>
+   <div class="drift-ind ok" id="dd_stKit"><b>Status</b><span id="dd_stKitT">Kein Drift.</span></div>
+  </div>
+ </div>
+</div>
+
+<div class="sec" id="dd_expl"><div class="sec-t"><b>Was passiert hier?</b></div><div id="dd_explC"><p style="font-size:13px;">Schiebe den Zeitregler nach rechts.</p></div></div>
+
+<div class="merksatz">
+ <span class="ms-l">Datendrift — Kernaussage</span>
+ Nicht das Modell hat sich verändert — die Eingangsdaten haben sich verändert. Neue Darreichungsform, neue Patientengruppe = neue Verteilungen, die im Trainingsdatensatz nicht vorkamen. Datendrift ist kein Modellfehler, sondern ein Monitoring-Fehler.
+</div>
+</div>
+
+<!-- KONZEPTDRIFT -->
+<div class="drift-section" id="sec-kd">
+
+<div class="sec">
+ <div class="sec-t"><b>② Konzeptdrift</b> — Was als „richtig" gilt, ändert sich</div>
+ <p style="font-size:13px;margin-bottom:.5rem;">Das KI-System steuert die Bettenplanung der orthopädischen Ambulanz. Trainiert auf historischen Daten:</p>
+ <ul style="font-size:13px;padding-left:1.3rem;margin-bottom:.5rem;">
+  <li><strong>40 Betten</strong>, Zielauslastung mindestens 85%</li>
+  <li><strong>Durchschnittliche Verweildauer: 3 Tage</strong> — darauf basiert die gesamte Kapazitätsplanung</li>
+  <li><strong>Personalplanung:</strong> Das System plant Pflegepersonal passend zur prognostizierten Belegung</li>
+ </ul>
+ <p style="font-size:12.5px;color:var(--muted);">Die Verweildauer war 3 Tage, weil die Kassen 3 Tage erstattet haben. Das Modell hat diesen Zusammenhang gelernt.</p>
+</div>
+
+<div class="sec">
+ <div class="sec-t"><b>Zeitregler</b></div>
+ <div class="ctrl">
+  <label>Monat</label>
+  <input type="range" id="kd_month" min="1" max="18" value="1" step="1">
+  <span class="pill" id="kd_monthLabel">Monat 1</span>
+ </div>
+ <div class="events">
+  <span class="ev ev-ok active" id="kd_ev0">Monat 1–5 · GKV erstattet 3 Tage</span>
+  <span class="ev ev-a" id="kd_ev1">Monat 6 · GKV senkt auf 2,5 Tage</span>
+ </div>
+</div>
+
+<div class="grid2">
+ <div>
+  <div class="thresh-ctrl">
+   <label>Alarm-Schwellwert:</label>
+   <input type="number" id="kd_thBett" min="50" max="99" value="90" class="thresh-input">
+   <span class="thresh-unit">%</span>
+  </div>
+  <div class="prod" id="kd_prodBett">
+   <div class="prod-t"><span class="prod-icon">🛏️</span> Bettenauslastung</div>
+   <div class="bar-group"><div class="bar-label"><span>Prognose</span><span id="kd_bettPredV"></span></div><div class="bar-track"><div class="bar-fill bar-pred" id="kd_bettPredBar"></div></div></div>
+   <div class="bar-group"><div class="bar-label"><span>Tatsächliche Auslastung</span><span id="kd_bettActV"></span></div><div class="bar-track"><div class="bar-fill bar-ist" id="kd_bettActBar"></div></div></div>
+   <div id="kd_bettDelta"></div>
+   <div class="met-row">
+    <div class="met" id="kd_metBettAcc"><div class="v" id="kd_bettAccV">100%</div><div class="k">Prognosegenauigkeit</div></div>
+    <div class="met" id="kd_metLeer"><div class="v" id="kd_leerV">0</div><div class="k">Leere Betten</div></div>
+   </div>
+   <div class="drift-ind ok" id="kd_stBett"><b>Status</b><span id="kd_stBettT">Kein Drift.</span></div>
+  </div>
+ </div>
+ <div>
+  <div class="thresh-ctrl">
+   <label>Alarm-Schwellwert:</label>
+   <input type="number" id="kd_thFin" min="50" max="99" value="90" class="thresh-input">
+   <span class="thresh-unit">%</span>
+  </div>
+  <div class="prod" id="kd_prodFin">
+   <div class="prod-t"><span class="prod-icon">💶</span> Finanzieller Impact</div>
+   <div class="bar-group"><div class="bar-label"><span>Geplanter Erlös/Monat</span><span id="kd_finPredV"></span></div><div class="bar-track"><div class="bar-fill bar-pred" id="kd_finPredBar"></div></div></div>
+   <div class="bar-group"><div class="bar-label"><span>Tatsächlicher Erlös/Monat</span><span id="kd_finActV"></span></div><div class="bar-track"><div class="bar-fill bar-ist" id="kd_finActBar"></div></div></div>
+   <div id="kd_finDelta"></div>
+   <div class="met-row">
+    <div class="met" id="kd_metVerlust"><div class="v" id="kd_verlustV">0 €</div><div class="k">Entgangener Erlös/Mt.</div></div>
+    <div class="met" id="kd_metPersonal"><div class="v" id="kd_personalV">—</div><div class="k">Personal-Effizienz</div></div>
+   </div>
+   <div class="drift-ind ok" id="kd_stFin"><b>Status</b><span id="kd_stFinT">Erlöse im Plan.</span></div>
+  </div>
+ </div>
+</div>
+
+<div class="sec"><div class="sec-t"><b>Was passiert hier?</b></div><div id="kd_explC"><p style="font-size:13px;">Schiebe den Zeitregler nach rechts.</p></div></div>
+
+<div class="merksatz">
+ <span class="ms-l">Konzeptdrift — Kernaussage</span>
+ Die Eingangsdaten haben sich nicht verändert — es kommen dieselben Patienten mit denselben Diagnosen. Aber was als „richtig" gilt, hat sich geändert: Die GKV erstattet weniger Tage, also werden Patienten früher entlassen. Das Modell wurde auf eine Welt trainiert, in der andere Regeln galten. Konzeptdrift kommt oft von außen — durch Regulierung, Leitlinien oder Marktveränderungen.
+</div>
+</div>
+
+<!-- LERNDRIFT -->
+<div class="drift-section" id="sec-ld">
+
+<div class="sec">
+ <div class="sec-t"><b>③ Lerndrift</b> — Das Modell lernt das Falsche</div>
+ <p style="font-size:13px;margin-bottom:.5rem;">Das Krankenhaus betreibt die Patienten-App <strong>„Im Krankenhaus zu Haus"</strong>. Über Sternebewertungen (1–5) und Kommentare geben Patienten und Angehörige Feedback zu Verpflegung, Sauberkeit, Öffnungszeiten und Freundlichkeit des Personals. Eine KI wertet die Kommentare automatisch aus und leitet Handlungsempfehlungen ab. Im Laufe der Zeit häufen sich sarkastische oder ironische Bemerkungen ("Der Fraß in der Kantine war heute mega lecker" oder "Sauberkeit wird hier groß geschrieben, aber nur auf den Schildern"), dazu gab es Bewertungen von ein oder zwei Sternen.</p>
+ <ul style="font-size:13px;padding-left:1.3rem;margin-bottom:.5rem;">
+  <li><strong>Das Modell lernt Stimmung aus dem Text</strong> — es verknüpft Wortwahl mit Sternebewertung</li>
+  <li>Startgenauigkeit: <strong>93%</strong> korrekte Stimmungserkennung</li>
+  <li>Sarkasmus-Anteil im Feedback: anfangs <strong>5%</strong></li>
+ </ul>
+ <p style="font-size:12.5px;color:var(--muted);">Das Problem: Manche Patienten schreiben ironisch — „Der Fraß in der Kantine war heute wieder <em>schmackhaft</em>" — und geben nur einen Stern. Die KI lernt daraus, dass positiv klingende Wörter auch negativ gemeint sein können.</p>
+</div>
+
+<div class="sec">
+ <div class="sec-t"><b>Zeitregler</b></div>
+ <div class="ctrl">
+  <label>Monat</label>
+  <input type="range" id="ld_month" min="1" max="18" value="1" step="1">
+  <span class="pill" id="ld_monthLabel">Monat 1</span>
+ </div>
+ <div class="events">
+  <span class="ev ev-ok active" id="ld_ev0">Monat 1–3 · Wenig Sarkasmus</span>
+  <span class="ev ev-a" id="ld_ev1">Monat 4+ · Sarkasmus-Anteil steigt</span>
+ </div>
+</div>
+
+<div class="grid2">
+ <div>
+  <div class="thresh-ctrl">
+   <label>Alarm-Schwellwert:</label>
+   <input type="number" id="ld_thAcc" min="50" max="99" value="85" class="thresh-input">
+   <span class="thresh-unit">%</span>
+  </div>
+  <div class="prod" id="ld_prodAcc">
+   <div class="prod-t"><span class="prod-icon">🎯</span> Stimmungserkennung</div>
+   <div class="bar-group"><div class="bar-label"><span>Erkennungsgenauigkeit</span><span id="ld_accV"></span></div><div class="bar-track"><div class="bar-fill bar-ist" id="ld_accBar"></div></div></div>
+   <div class="met-row">
+    <div class="met" id="ld_metAcc"><div class="v" id="ld_accMet">93%</div><div class="k">Erkennungsgenauigkeit</div></div>
+    <div class="met" id="ld_metFalse"><div class="v" id="ld_falseV">2%</div><div class="k">Fehlalarm-Quote</div></div>
+   </div>
+   <div class="drift-ind ok" id="ld_stAcc"><b>Stimmungsanalyse</b><span id="ld_stAccT">System klassifiziert Feedback korrekt.</span></div>
+  </div>
+ </div>
+ <div>
+  <div class="thresh-ctrl">
+   <label>Alarm wenn Sarkasmus &gt;</label>
+   <input type="number" id="ld_thSark" min="5" max="50" value="15" class="thresh-input">
+   <span class="thresh-unit">%</span>
+  </div>
+  <div class="prod" id="ld_prodSark">
+   <div class="prod-t"><span class="prod-icon">😏</span> Sarkasmus im Feedback</div>
+   <div class="bar-group"><div class="bar-label"><span>Sarkasmus-Anteil</span><span id="ld_sarkV"></span></div><div class="bar-track"><div class="bar-fill bar-danger" id="ld_sarkBar"></div></div></div>
+   <div class="met-row">
+    <div class="met" id="ld_metMiss"><div class="v" id="ld_missV">1%</div><div class="k">Übersehene Beschwerden</div></div>
+    <div class="met" id="ld_metSark"><div class="v" id="ld_sarkMet">5%</div><div class="k">Sarkasmus-Anteil</div></div>
+   </div>
+   <div class="drift-ind ok" id="ld_stSark"><b>Datenqualität</b><span id="ld_stSarkT">Sarkasmus-Anteil im unkritischen Bereich.</span></div>
+  </div>
+ </div>
+</div>
+
+<div class="sec"><div class="sec-t"><b>Was passiert hier?</b></div><div id="ld_explC"><p style="font-size:13px;">Schiebe den Zeitregler nach rechts.</p></div></div>
+
+<div class="merksatz">
+ <span class="ms-l">Lerndrift — Kernaussage</span>
+ Das Modell lernt aus den Daten, die es bekommt — auch wenn diese Daten irreführend sind. Sarkasmus, Ironie und Mehrdeutigkeit in natürlicher Sprache erzeugen ein verzerrtes Signal: Der Text klingt positiv, die Bewertung ist negativ. Das Modell kann beides nicht mehr zuverlässig trennen. Lerndrift entsteht nicht durch einen externen Auslöser, sondern durch die Daten selbst — und bleibt oft unbemerkt, weil kein einzelnes Ereignis den Fehler sichtbar macht.
+</div>
+</div>
+
+<!-- GOVERNANCE-BOX -->
+<div class="callout" style="margin-top:1.5rem;">
+ <b>Art. 72 EU AI Act — Post-Market-Monitoring:</b> Der Anbieter muss ein System zur laufenden Leistungsüberwachung betreiben und Schwellwerte für Eingriff, Warnung und Abschaltung vorab definieren. Die Frage „Ab welcher Abweichung wird gehandelt?" ist keine technische, sondern eine Governance-Entscheidung — sie muss dokumentiert und von einer verantwortlichen Person (z. B. KI-Beauftragter) freigegeben werden.
+</div>
+<!-- ═══ /DRIFT-DEMO ═══ -->
+
+<div class="sec" style="margin-top:1.3rem;">
+ <h3 class="block-title">Drift aus der Perspektive des Risikomanagers</h3>
+ <p class="body">An Tag 6 hast Du Drift im Kontext von Konformität und Marktüberwachung (Art. 72 EU AI Act) kennengelernt. Hier ergänzend die Risikomanagement-Perspektive:</p>
+
+ <div class="def-row"><span class="def-term" style="color:var(--accent);">Konformitäts-Perspektive (Tag 6)</span><span class="def-body">Drift kann eine <strong>wesentliche Veränderung</strong> nach Art. 3(23) EU AI Act darstellen → neue Konformitätsbewertung erforderlich. Frage: <em>„Ist das System noch konform?"</em></span></div>
+ <div class="def-row"><span class="def-term" style="color:var(--red);">Risiko-Perspektive (Tag 9)</span><span class="def-body">Drift verändert das <strong>Risikoprofil</strong> des Systems: Was bei der Erstbewertung ein „mittleres Risiko" war, kann durch Drift zum hohen Risiko werden — ohne dass jemand einen Schalter umgelegt hat. Frage: <em>„Wie gefährlich ist das System heute?"</em></span></div>
+
+ <div class="callout"><b>Drift ist unsichtbar ohne Monitoring.</b> Kein Benutzer bemerkt, dass die Accuracy (Genauigkeit) von 94 % auf 87 % gefallen ist — weil niemand jede KI-Entscheidung nachprüft. Drift wird erst sichtbar durch systematisches Post-Market-Monitoring: Leistungsmetriken auf einem Dashboard, regelmäßige Stichproben, Schwellwert-Alarme.</div>
+</div>
+
+</div><!-- /sec-drift -->
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- TAB 3: OUT-OF-DISTRIBUTION                      -->
+<!-- ═══════════════════════════════════════════════ -->
+<div class="tab-section" id="sec-ood">
+
+<div class="sec">
+ <div class="sec-t"><b>③ Out-of-Distribution</b> — Wenn das Modell etwas sieht, das es nie gelernt hat</div>
+ <p class="body">Out-of-Distribution (OOD) bezeichnet Eingaben, die <em>außerhalb</em> der Verteilung der Trainingsdaten liegen. Das klingt harmlos — ist es aber nicht. Das Problem: Die meisten KI-Modelle <strong>wissen nicht, dass sie etwas nicht wissen</strong>. Sie geben trotzdem eine Diagnose aus — oft sogar mit hoher Konfidenz.</p>
+</div>
+
+<div class="sec">
+ <h3 class="block-title">Beispiel — Patientin außerhalb der Trainingsverteilung</h3>
+ <div class="scenario danger">
+  <div class="sc-head"><div class="sc-icon">🔬</div><div><div class="sc-role">Urologie / Vorsorge</div><div class="sc-title">Trans Frau — Prostatakrebs-Screening</div></div></div>
+  <div class="sc-body">Eine 58-jährige trans Frau (Mann-zu-Frau-Transition) lebt seit 15 Jahren unter Hormontherapie und ist in der elektronischen Patientenakte als „weiblich" geführt. Sie hat weiterhin eine Prostata — aber kein Screening-Algorithmus des Krankenhauses schlägt eine PSA-Messung vor, weil die Indikation „Prostatakrebs-Vorsorge" nur bei Geschlechtsmerkmal „männlich" ausgelöst wird.</div>
+ </div>
+
+ <p class="body" style="margin-top:.6rem;">Was macht das Modell?</p>
+
+ <div class="conf-meter">
+  <span class="label">KI-Ausgabe</span>
+  <div class="conf-bar"><div class="conf-fill low" style="width:0%"></div></div>
+  <span class="conf-val" style="color:var(--muted);">— %</span>
+ </div>
+ <p class="body" style="font-size:12.5px;color:var(--red);font-weight:500;">Keine Ausgabe — der Algorithmus wird gar nicht erst ausgelöst.</p>
+
+ <div class="note-red note"><b>Das OOD-Problem:</b> Das System wurde auf „weibliche" Patientendaten trainiert. In diesen Daten gibt es exakt null Prostatafälle — biologische Frauen haben keine Prostata. Die Datenkombination „Geschlecht = F + Prostata vorhanden" existiert in der Trainingsverteilung nicht. Es ist kein Bias (schlechtere Leistung), sondern echtes Out-of-Distribution: Der Input liegt komplett außerhalb dessen, was das Modell je gesehen hat.</div>
+
+ <div class="callout"><b>Medizinischer Hintergrund:</b> Hormontherapie senkt den PSA-Wert bei trans Frauen auf etwa ein Fünfzigstel des typischen Männerwerts. Die Standard-Schwellwerte für PSA-Screening sind deshalb viel zu hoch — selbst wenn ein Test durchgeführt würde, könnte ein Karzinom im Frühstadium durchrutschen. Die University of California San Francisco (UCSF) dokumentierte 2024, dass aktuelle PSA-Tests bei trans Frauen Prostatakrebs systematisch im Frühstadium übersehen.</div>
+
+</div>
+
+</div><!-- /sec-ood -->
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- TAB 5: ERKENNUNG (PEEK PREVIEW)                 -->
+<!-- ═══════════════════════════════════════════════ -->
+<div class="tab-section" id="sec-peek">
+
+<div class="sec">
+ <div class="sec-t"><b>④ Erkennung</b> — Wie Du technische Risiken erkennen kannst</div>
+ <p class="body">Du musst kein Data Scientist sein, um technische Risiken zu erkennen. Aber Du musst die richtigen Fragen stellen — und die Warnsignale kennen.</p>
+</div>
+
+<div class="sec">
+ <h3 class="block-title">Sechs Red Flags — Warnsignale im Gespräch mit Fachbereichen</h3>
+
+ <div class="flag-list">
+  <div class="flag-item"><span class="flag-nr">①</span><div><strong>„Die Demografie der Trainingsdaten? Keine Ahnung."</strong> Wenn niemand weiß, auf welchen Daten das System trainiert wurde, kann niemand beurteilen, ob Datenbias vorliegt. Frage den Anbieter — Art. 13 EU AI Act verlangt Transparenz über Trainingsdaten.</div></div>
+  <div class="flag-item"><span class="flag-nr">②</span><div><strong>„Das Modell wurde seit 18 Monaten nicht nachtrainiert."</strong> In 18 Monaten können sich Geräte, Protokolle, Leitlinien und Patientenpopulation geändert haben. Ohne Nachtraining läuft das System in eine Drift — unbemerkt.</div></div>
+  <div class="flag-item"><span class="flag-nr">③</span><div><strong>„Die KI liegt eigentlich immer richtig."</strong> Wenn das Fachpersonal die KI nicht mehr hinterfragt, ist Automation Bias wahrscheinlich bereits eingetreten. Je höher das Vertrauen, desto größer das Risiko.</div></div>
+  <div class="flag-item"><span class="flag-nr">④</span><div><strong>„Wir nutzen das System jetzt auch in der Pädiatrie."</strong> Jede Erweiterung des Einsatzbereichs über den vom Anbieter definierten Intended Purpose hinaus ist ein potenzieller Anwendungsbias — und ein Compliance-Risiko.</div></div>
+  <div class="flag-item"><span class="flag-nr">⑤</span><div><strong>„Wir haben letzten Monat den Scanner getauscht."</strong> Neue Hardware = neue Datenverteilung. Das KI-System muss auf Kompatibilität geprüft werden — durch den Anbieter, nicht durch die Fachabteilung.</div></div>
+  <div class="flag-item"><span class="flag-nr">⑥</span><div><strong>„Ein Leistungs-Dashboard? Haben wir nicht."</strong> Ohne Monitoring gibt es keinen Drift-Alarm, keine Trends bei der Genauigkeit, keine Stichproben-Auswertung. Art. 72 EU AI Act verlangt Post-Market-Monitoring — ein Dashboard ist das Minimum.</div></div>
+ </div>
+</div>
+
+<div class="sec">
+ <h3 class="block-title">Drei Fragen für jede Hochrisiko-KI</h3>
+ <p class="body">Diese drei Fragen sollte der KI-Beauftragte bei jedem Hochrisiko-KI-System stellen können — und eine dokumentierte Antwort erhalten:</p>
+
+ <div class="def-row"><span class="def-term" style="color:var(--accent);">① Trainingsdaten</span><span class="def-body">„Auf welchen Daten wurde das System trainiert — und wie unterscheiden sich diese von unserer Population?" (→ Datenbias)</span></div>
+ <div class="def-row"><span class="def-term" style="color:var(--accent);">② Veränderungen</span><span class="def-body">„Was hat sich seit der Inbetriebnahme an Geräten, Protokollen, Leitlinien oder Patientenstruktur geändert?" (→ Drift + OOD)</span></div>
+ <div class="def-row"><span class="def-term" style="color:var(--accent);">③ Vertrauen</span><span class="def-body">„Wie oft widersprechen Fachkräfte der KI-Empfehlung — und sinkt diese Zahl?" (→ Automation Bias)</span></div>
+
+ <div class="note"><b>Dokumentation:</b> Die Antworten gehören ins Risikoregister (Spalte „Risikoindikatoren") und in den Quartals-Review des 100-Tage-Plans.</div>
+</div>
+
+<div class="peek-box">
+ <div class="peek-label">Peek Preview · Kurs KI-Manager</div>
+ <div class="peek-text">Im Kurs <strong>KI-Manager</strong> vertiefen wir diese Themen systematisch: Du baust ein vollständiges Risikoregister mit quantitativer Bewertung (Schadensschwere × Eintrittswahrscheinlichkeit × Entdeckungswahrscheinlichkeit), definierst Schwellwerte für Drift-Alarme, erstellst eine Monitoring-Architektur und entwickelst Gegenmaßnahmen nach dem ALARP-Prinzip. Die hier vorgestellten Red Flags werden dort zu formalen Risikoindikatoren mit Messmethodik und Verantwortlichkeitsmatrix.</div>
+</div>
+
+<div class="merksatz">
+ <span class="ms-l">Kernaussage</span>
+ Technische Risiken sind nicht das Problem des Data Scientists allein. Der KI-Beauftragte erkennt sie nicht durch Code-Review, sondern durch die richtigen Fragen im Gespräch: Wer hat die Trainingsdaten zusammengestellt? Was hat sich verändert? Wie hoch ist das Vertrauen? Die Antworten entscheiden, ob das Risikoregister die Realität abbildet — oder eine Wunschvorstellung.
+</div>
+
+</div><!-- /sec-peek -->
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- TAB 5: QUELLEN                                  -->
+<!-- ═══════════════════════════════════════════════ -->
+<div class="tab-section" id="sec-quellen">
+
+<div class="sec" style="border-left:4px solid var(--teal);border-radius:0 10px 10px 0;">
+ <div class="sec-t"><b>⑤ Quellenverzeichnis</b></div>
+
+ <p style="font-size:12.5px;line-height:1.6;color:var(--ink);margin-bottom:.4rem;"><strong>Datenbias — Mammografie</strong></p>
+ <p style="font-size:12px;line-height:1.6;color:var(--muted);">
+  RSNA News — <a href="https://www.rsna.org/news/2024/may/ai-performance-on-digital-mammograms" target="_blank">„Age, Race Impact AI Performance on Digital Mammograms", Mai 2024</a><br>
+  RSNA News — <a href="https://www.rsna.org/news/2025/october/ai-false-negatives-in-breast-cancer" target="_blank">„AI False Negatives in Breast Cancers", Oktober 2025</a>
+ </p>
+
+ <p style="font-size:12.5px;line-height:1.6;color:var(--ink);margin-bottom:.4rem;margin-top:.8rem;"><strong>Modellbias — Patientenidentifikation</strong></p>
+ <p style="font-size:12px;line-height:1.6;color:var(--muted);">
+  ECRI Institute — <a href="https://www.ecri.org/Resources/HIT/Patient%20ID/Patient_Identification_Evidence_Based_Literature_final.pdf" target="_blank">„Patient Identification — Evidence-Based Literature Review"</a><br>
+  Fierce Healthcare — <a href="https://www.fiercehealthcare.com/healthcare/patient-identification-errors-a-common-and-potentially-fatal-issue" target="_blank">„Patient identification errors — common and potentially fatal"</a>
+ </p>
+
+ <p style="font-size:12.5px;line-height:1.6;color:var(--ink);margin-bottom:.4rem;margin-top:.8rem;"><strong>Anwendungsbias — KI-Kodierung</strong></p>
+ <p style="font-size:12px;line-height:1.6;color:var(--muted);">
+  Medcontroller — <a href="https://www.medcontroller.de/2026/07/30/kann-ki-die-erloesoptimierung-im-krankenhaus-regulatorisch-sicher-unterstuetzen/" target="_blank">„Kann KI die Erlösoptimierung im Krankenhaus regulatorisch sicher unterstützen?", Juli 2026</a><br>
+  Medcontroller — <a href="https://www.medcontroller.de/2026/07/15/ist-ki-gestuetzte-kodierung-im-krankenhaus-rechtssicher-einsetzbar/" target="_blank">„Ist KI-gestützte Kodierung im Krankenhaus rechtssicher einsetzbar?", Juli 2026</a>
+ </p>
+
+ <p style="font-size:12.5px;line-height:1.6;color:var(--ink);margin-bottom:.4rem;margin-top:.8rem;"><strong>Out-of-Distribution</strong></p>
+ <p style="font-size:12px;line-height:1.6;color:var(--muted);">
+  UCSF — <a href="https://www.ucsf.edu/news/2024/06/427966/prostate-cancer-test-missing-early-disease-transgender-women" target="_blank">„Prostate Cancer Test Is Missing Early Disease in Transgender Women", Juni 2024</a><br>
+  Cirrincione et al. — <a href="https://www.nature.com/articles/s41416-022-01989-y" target="_blank">British Journal of Cancer: „Prostate cancer in transgender women", 2022</a><br>
+  Weng et al. — <a href="https://ascpt.onlinelibrary.wiley.com/doi/10.1111/cts.70132" target="_blank">Clinical and Translational Science: „First, Do No Harm: AI's Challenges With OOD Data in Medicine", 2025</a>
+ </p>
+</div>
+
+</div><!-- /sec-quellen -->
+
+<div class="foot">
+ <span>Zertifikatskurs KI-Beauftragte:r · Technische KI-Risiken</span>
+
+  <span class="rechtevermerk">&copy; 2026 Ulrich Nord &middot; Alle Rechte vorbehalten. Teilnehmerinnen und Teilnehmer d&uuml;rfen dieses Material f&uuml;r die eigene berufliche Nutzung sowie innerhalb ihres Unternehmens verwenden, speichern, ausf&uuml;llen, ausdrucken und weitergeben. Ver&ouml;ffentlichung und Verwendung in eigenen Schulungs- oder Beratungsangeboten bed&uuml;rfen der schriftlichen Zustimmung.</span>
+ </div>
+
+</div><!-- /page -->
+
+<script>
+function showTab(id){
+ document.querySelectorAll('.tab-section').forEach(s=>s.classList.remove('active'));
+ document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));
+ document.getElementById('sec-'+id).classList.add('active');
+ // find the button by matching text
+ const labels={bias:'① Bias',drift:'② Drift',ood:'③ Out-of-Distribution',peek:'④ Erkennung',quellen:'⑤ Quellen'};
+ document.querySelectorAll('.nav button').forEach(b=>{
+  if(b.textContent===labels[id]) b.classList.add('active');
+ });
+}
+
+// ─── DRIFT-DEMO (eingebettet aus Tag 6) ───
+(function(){
+const $=id=>document.getElementById(id);
+
+// Navigation between drift sub-tabs
+document.querySelectorAll('.dd-nav button').forEach(btn=>{
+ btn.addEventListener('click',function(){
+  document.querySelectorAll('.drift-section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.dd-nav button').forEach(b=>b.classList.remove('active'));
+  $('sec-'+this.dataset.drift).classList.add('active');
+  this.classList.add('active');
+ });
+});
+
+// Helpers
+function pct(v,max){return Math.min(100,(v/max)*100);}
+function setMet(el,acc,th){el.classList.remove('warn','crit');if(acc<th-5)el.classList.add('crit');else if(acc<th)el.classList.add('warn');}
+const noise=[0,5,-8,12,-3,7,-10,4,8,-6,2,11,-5,9,-7,3,6,-4];
+
+// ═══ DATENDRIFT ═══
+function renderDD(){
+  const m=parseInt($('dd_month').value);
+  const n=noise[(m-1)%18], kn=noise[(m+3)%18];
+  const thMed=parseInt($('dd_thMed').value), thKit=parseInt($('dd_thKit').value);
+
+  $('dd_monthLabel').textContent='Monat '+m;
+  $('dd_ev0').classList.toggle('active',m<=5);
+  $('dd_ev1').classList.toggle('active',m>=6);
+  $('dd_ev2').classList.toggle('active',m>=12);
+
+  const medPred=320;
+  let medAct=320+n;
+  if(m>=6){const sw=Math.min(0.50,(m-5)*0.07);medAct=Math.round((320+n)*(1-sw*0.5));}
+  const medAcc=medAct>0?Math.max(0,Math.round((1-Math.abs(medPred-medAct)/medAct)*100)):100;
+
+  $('dd_medPredBar').style.width=pct(medPred,400)+'%';
+  $('dd_medActBar').style.width=pct(medAct,400)+'%';
+  $('dd_medPredV').textContent=medPred+' Pkg.';
+  $('dd_medActV').textContent=medAct+' Pkg.';
+  const md=medPred-medAct;
+  $('dd_medDelta').innerHTML=Math.abs(md)<=15?'<span class="delta ok">± im Rahmen</span>':md>0?'<span class="delta over">▲ Überkauf: +'+md+' Pkg.</span>':'<span class="delta under">▼ Unterkauf: '+md+' Pkg.</span>';
+  $('dd_medAccV').textContent=medAcc+'%';
+  setMet($('dd_metMedAcc'),medAcc,thMed);
+
+  const stMed=$('dd_stMed'),stMedT=$('dd_stMedT');
+  if(medAcc>=thMed){stMed.className='drift-ind ok';stMedT.textContent='Kein signifikanter Drift. Prognose und Bedarf stimmen überein.';}
+  else if(medAcc>=thMed-15){stMed.className='drift-ind warn';stMedT.innerHTML='<strong>Schwellwert unterschritten (< '+thMed+'%).</strong> Die neue galenische Darreichungsform (Retardkapsel) senkt die Einnahmehäufigkeit. Das Krankenhaus kauft möglicherweise zu viel. → Re-Training-Prüfung empfohlen.';}
+  else{stMed.className='drift-ind crit';stMedT.innerHTML='<strong>Kritischer Drift.</strong> Die Überbestellung bindet Budget und Lagerfläche. → Sofortige Intervention erforderlich.';}
+  $('dd_prodMed').className='prod'+(medAcc<thMed-5?' drift-crit':medAcc<thMed?' drift-warn':'');
+
+  const kitPred=480;
+  let kitAct=480+kn;
+  if(m>=12){const r=Math.min(1,(m-11)*0.2);kitAct=Math.round((480+kn)*(1-r*0.06))+Math.round(140*r+kn*0.3);}
+  const kitAcc=kitAct>0?Math.max(0,Math.round((1-Math.abs(kitPred-kitAct)/kitAct)*100)):100;
+  const kitDr=kitAct>0?Math.abs(kitPred-kitAct)/kitAct:0;
+
+  $('dd_kitPredBar').style.width=pct(kitPred,620)+'%';
+  $('dd_kitActBar').style.width=pct(kitAct,620)+'%';
+  $('dd_kitPredV').textContent=kitPred+' Stk.';
+  $('dd_kitActV').textContent=kitAct+' Stk.';
+  const kd=kitPred-kitAct;
+  $('dd_kitDelta').innerHTML=Math.abs(kd)<=15?'<span class="delta ok">± im Rahmen</span>':kd>0?'<span class="delta over">▲ Überkauf: +'+kd+' Stk.</span>':'<span class="delta under">▼ Unterkauf: '+kd+' Stk.</span>';
+  $('dd_kitAccV').textContent=kitAcc+'%';
+  setMet($('dd_metKitAcc'),kitAcc,thKit);
+
+  const stKit=$('dd_stKit'),stKitT=$('dd_stKitT');
+  if(kitAcc>=thKit){stKit.className='drift-ind ok';stKitT.textContent='Kein signifikanter Drift. Prognose und Bedarf stimmen überein.';}
+  else if(kitDr<=0.3){stKit.className='drift-ind warn';stKitT.innerHTML='<strong>Schwellwert unterschritten (< '+thKit+'%).</strong> Zusätzlich zu den Erwachsenenkitteln werden jetzt Kittel in Kindergrößen benötigt. Das System kann diesen Bedarf nicht vorhersagen. Das Krankenhaus ist möglicherweise „blank“. → Re-Training-Prüfung empfohlen.';}
+  else{stKit.className='drift-ind crit';stKitT.innerHTML='<strong>Kritischer Drift.</strong> Der tatsächliche Gesamtbedarf übersteigt die Prognose deutlich. Patienten erhalten möglicherweise keine passenden Kittel. → Sofortige Intervention erforderlich.';}
+  $('dd_prodKit').className='prod'+(kitAcc<thKit-5?' drift-crit':kitAcc<thKit?' drift-warn':'');
+
+  const c=$('dd_explC');
+  if(m<=5) c.innerHTML='<div class="expl"><b>Monat 1–5: Normalzustand.</b> Prognose und tatsächlicher Bedarf stimmen überein (± natürliche Schwankung). Das System funktioniert wie vorgesehen.</div>';
+  else if(m<=11) c.innerHTML='<div class="expl"><b>Ab Monat 6: Nordan SR verfügbar.</b> Gleicher Wirkstoff, gleiche Dosis — aber eine andere galenische Darreichungsform (Langsame Dosierung über den Tag hinweg statt 2× täglich als Tablette). Ärzte stellen schrittweise um. Das Krankenhaus braucht weniger Packungen.</div><div class="callout" style="margin-top:.5rem"><b>Das Modell sieht nur „Nordan“.</b> Die Kapsel ist keine eigene Kategorie. Das Modell prognostiziert weiterhin ~320 Packungen → <strong>Überkauf</strong>.</div>';
+  else c.innerHTML='<div class="expl"><b>Ab Monat 12: Kinder-Ambulanz eröffnet.</b> Jetzt werden auch Kittel in Kindergrößen gebraucht. Das System führt nur „Patientenkittel“ — ohne Unterscheidung nach Größe.</div><div class="callout" style="margin-top:.5rem"><b>Gegenläufiger Drift.</b> Medikament: Überkauf. Kittel: Unterkauf. Das Modell irrt in beide Richtungen.</div><div class="expl" style="margin-top:.5rem;border-color:var(--teal);background:#f0f7f7;"><b style="color:var(--teal)">Datendrift</b> = Die statistische Verteilung der realen Daten weicht von der Trainingsverteilung ab. Neue Darreichungsform + neue Patientengruppe = neue Verteilungen.</div>';
+}
+
+// ═══ KONZEPTDRIFT ═══
+function renderKD(){
+  const m=parseInt($('kd_month').value);
+  const n=noise[(m-1)%18];
+  const thBett=parseInt($('kd_thBett').value), thFin=parseInt($('kd_thFin').value);
+
+  $('kd_monthLabel').textContent='Monat '+m;
+  $('kd_ev0').classList.toggle('active',m<=5);
+  $('kd_ev1').classList.toggle('active',m>=6);
+
+  const beds=40;
+  const predOcc=85+n*0.3;
+  let actStay=3;
+  if(m>=6){actStay=Math.max(2.3, 3-((m-5)*0.08));}
+  const stayRatio=actStay/3;
+  const actOcc=Math.round((predOcc*stayRatio)*10)/10;
+  const bettAcc=Math.max(0,Math.round((1-Math.abs(predOcc-actOcc)/actOcc)*100));
+  const leerBetten=Math.round(beds*(predOcc-actOcc)/100);
+
+  $('kd_bettPredBar').style.width=predOcc+'%';
+  $('kd_bettActBar').style.width=actOcc+'%';
+  $('kd_bettPredV').textContent=Math.round(predOcc)+'%';
+  $('kd_bettActV').textContent=Math.round(actOcc)+'%';
+
+  const bDiff=Math.round(predOcc-actOcc);
+  $('kd_bettDelta').innerHTML=Math.abs(bDiff)<=2?'<span class="delta ok">± im Rahmen</span>':'<span class="delta over">▲ Schein-Belegung: '+bDiff+' Prozentpunkte</span>';
+  $('kd_bettAccV').textContent=bettAcc+'%';
+  $('kd_leerV').textContent=Math.max(0,leerBetten);
+  setMet($('kd_metBettAcc'),bettAcc,thBett);
+  $('kd_metLeer').classList.remove('warn','crit');
+  if(leerBetten>4)$('kd_metLeer').classList.add('crit');else if(leerBetten>2)$('kd_metLeer').classList.add('warn');
+
+  const stB=$('kd_stBett'),stBT=$('kd_stBettT');
+  if(bettAcc>=thBett){stB.className='drift-ind ok';stBT.textContent='Bettenauslastung im Plan. Prognose und Realität stimmen überein.';}
+  else{stB.className='drift-ind warn';stBT.innerHTML='<strong>Schwellwert unterschritten (< '+thBett+'%).</strong> Das Modell prognostiziert eine Verweildauer von 3 Tagen, aber die GKV erstattet nur noch 2,5 Tage. Patienten werden früher entlassen → Betten stehen leer, obwohl das System „belegt“ meldet.';}
+  $('kd_prodBett').className='prod'+(bettAcc<thBett-5?' drift-crit':bettAcc<thBett?' drift-warn':'');
+
+  const dailyRate=800;
+  const predRevenue=Math.round(beds*predOcc/100*30*dailyRate/1000);
+  const actRevenue=Math.round(beds*actOcc/100*30*dailyRate/1000);
+  const maxRev=1200;
+  const verlust=(predRevenue-actRevenue)*1000;
+  const finAcc=actRevenue>0?Math.max(0,Math.round((1-Math.abs(predRevenue-actRevenue)/actRevenue)*100)):100;
+  const personalEff=m>=6?Math.round(actOcc/predOcc*100)+'%':'100%';
+
+  $('kd_finPredBar').style.width=pct(predRevenue,maxRev)+'%';
+  $('kd_finActBar').style.width=pct(actRevenue,maxRev)+'%';
+  $('kd_finPredV').textContent=predRevenue+' T€';
+  $('kd_finActV').textContent=actRevenue+' T€';
+  $('kd_finDelta').innerHTML=verlust<=5000?'<span class="delta ok">± im Rahmen</span>':'<span class="delta over">▲ Entgangener Erlös: '+Math.round(verlust/1000)+' T€/Monat</span>';
+  $('kd_verlustV').textContent=verlust>0?Math.round(verlust/1000)+' T€':'0 €';
+  $('kd_personalV').textContent=personalEff;
+  setMet($('kd_metVerlust'),finAcc,thFin);
+  $('kd_metPersonal').classList.remove('warn','crit');
+  if(m>=6 && actOcc/predOcc<0.85)$('kd_metPersonal').classList.add('warn');
+
+  const stF=$('kd_stFin'),stFT=$('kd_stFinT');
+  if(verlust<=5000){stF.className='drift-ind ok';stFT.textContent='Erlöse im Plan. Keine finanzielle Abweichung.';}
+  else{stF.className='drift-ind warn';stFT.innerHTML='<strong>Erlösabweichung: '+Math.round(verlust/1000)+' T€/Monat.</strong> Das Modell blockiert Neuaufnahmen, weil es „volle Belegung“ meldet. Gleichzeitig ist das Personal auf die prognostizierte Auslastung geplant → Überbesetzung bei Unterbelegung.';}
+  $('kd_prodFin').className='prod'+(verlust>50000?' drift-crit':verlust>5000?' drift-warn':'');
+
+  const c=$('kd_explC');
+  if(m<=5) c.innerHTML='<div class="expl"><b>Monat 1–5: Normalzustand.</b> Die GKV erstattet 3 Tage Verweildauer für orthopädische Eingriffe. Das Modell prognostiziert korrekt ~85% Auslastung. Personal und Belegung stimmen überein.</div>';
+  else c.innerHTML='<div class="expl"><b>Ab Monat 6: GKV senkt die Erstattung auf 2,5 Tage.</b> Die Klinik entlässt Patienten jetzt im Schnitt nach '+actStay.toFixed(1)+' Tagen statt 3. Die Betten werden schneller frei — aber das Modell weiß davon nichts.</div><div class="callout" style="margin-top:.5rem"><b>Dieselben Patienten, dieselben Diagnosen, andere Regeln.</b> Die Eingangsdaten (Patientenaufnahmen) haben sich nicht verändert. Was sich geändert hat: die <em>Definition</em> von „korrekter Verweildauer“. Das Modell wurde auf 3 Tage trainiert, die Realität ist jetzt 2,5 Tage. Es prognostiziert weiterhin volle Betten — und blockiert Neuaufnahmen für Betten, die längst frei sind.</div><div class="expl" style="margin-top:.5rem;border-color:var(--teal);background:#f0f7f7;"><b style="color:var(--teal)">Konzeptdrift</b> = Die Beziehung zwischen Input und Output hat sich verändert. Die „richtige Antwort“ ist eine andere als im Training. Der Auslöser kam nicht aus der Technik, sondern aus der Regulierung (GKV-Erstattungssätze).</div>';
+}
+
+// ═══ LERNDRIFT ═══
+function renderLD(){
+  const m=parseInt($('ld_month').value);
+  const thAcc=parseInt($('ld_thAcc').value), thSark=parseInt($('ld_thSark').value);
+
+  $('ld_monthLabel').textContent='Monat '+m;
+  $('ld_ev0').classList.toggle('active',m<=3);
+  $('ld_ev1').classList.toggle('active',m>=4);
+
+  const baseAcc=93, baseSark=5;
+  let sark=baseSark, acc=baseAcc;
+  if(m>3){
+    sark=Math.min(32, baseSark + (m-3)*2.2);
+    acc=Math.max(58, baseAcc - (m-3)*2.5);
+  }
+  acc=Math.round(acc); sark=Math.round(sark);
+  const falseAlarm=Math.min(35, Math.round(2 + sark*0.9));
+  const missed=Math.min(25, Math.round(1 + sark*0.6));
+
+  $('ld_accBar').style.width=acc+'%';
+  $('ld_accV').textContent=acc+'%';
+  $('ld_accMet').textContent=acc+'%';
+  $('ld_falseV').textContent=falseAlarm+'%';
+  setMet($('ld_metAcc'),acc,thAcc);
+  $('ld_metFalse').classList.remove('warn','crit');
+  if(falseAlarm>15)$('ld_metFalse').classList.add('crit');else if(falseAlarm>8)$('ld_metFalse').classList.add('warn');
+
+  $('ld_sarkBar').style.width=sark+'%';
+  $('ld_sarkV').textContent=sark+'%';
+  $('ld_sarkMet').textContent=sark+'%';
+  $('ld_missV').textContent=missed+'%';
+  $('ld_metSark').classList.remove('warn','crit');
+  if(sark>thSark+10)$('ld_metSark').classList.add('crit');else if(sark>thSark)$('ld_metSark').classList.add('warn');
+  $('ld_metMiss').classList.remove('warn','crit');
+  if(missed>12)$('ld_metMiss').classList.add('crit');else if(missed>5)$('ld_metMiss').classList.add('warn');
+
+  const stA=$('ld_stAcc'),stAT=$('ld_stAccT');
+  if(acc>=thAcc){stA.className='drift-ind ok';stAT.textContent='Stimmungserkennung im akzeptablen Bereich.';}
+  else if(acc>=thAcc-10){stA.className='drift-ind warn';stAT.innerHTML='<strong>Erkennungsrate unter '+thAcc+'%.</strong> Das System verwechselt zunehmend ironische mit echten Aussagen. Positive Wörter wie „schmackhaft“ oder „wunderbar“ werden nicht mehr zuverlässig als Lob erkannt, weil sie in sarkastischen Bewertungen auch für Kritik stehen. → Prüfung des Lernmechanismus empfohlen.';}
+  else{stA.className='drift-ind crit';stAT.innerHTML='<strong>Kritischer Qualitätsverlust.</strong> '+falseAlarm+'% Fehlalarme und '+missed+'% übersehene Beschwerden. Das System kann Lob nicht mehr von Kritik unterscheiden. → Sofortige Deaktivierung des Lern-Feedbacks, manuelle Auswertung.';}
+  $('ld_prodAcc').className='prod'+(acc<thAcc-10?' drift-crit':acc<thAcc?' drift-warn':'');
+
+  const stS=$('ld_stSark'),stST=$('ld_stSarkT');
+  if(sark<=thSark){stS.className='drift-ind ok';stST.textContent='Sarkasmus-Anteil im unkritischen Bereich.';}
+  else{stS.className='drift-ind warn';stST.innerHTML='<strong>Sarkasmus-Anteil: '+sark+'% (Schwellwert: '+thSark+'%).</strong> Die Trainingsdaten enthalten zu viele ironische Bewertungen. Das Modell kann Text-Sentiment und Sternebewertung nicht mehr konsistent verknüpfen. → Datenbereinigung oder Sarkasmus-Filter erforderlich.';}
+  $('ld_prodSark').className='prod'+(sark>thSark+10?' drift-crit':sark>thSark?' drift-warn':'');
+
+  const c=$('ld_explC');
+  if(m<=3) c.innerHTML='<div class="expl"><b>Monat 1–3: System arbeitet zuverlässig.</b> Die Stimmungserkennung liegt bei ~93%. Der Sarkasmus-Anteil im Feedback ist gering (~5%). Das Modell verknüpft Wortwahl und Sternebewertung korrekt.</div>';
+  else if(m<=9) c.innerHTML='<div class="expl"><b>Ab Monat 4: Sarkasmus-Anteil steigt.</b> Immer mehr Patienten und Angehörige nutzen ironische Formulierungen — „<em>Der Fraß in der Kantine war heute wieder schmackhaft</em>“ mit einem Stern. Das Modell lernt daraus, dass Wörter wie „schmackhaft“ auch negativ sein können.</div><div class="callout" style="margin-top:.5rem"><b>Die Ironie-Falle.</b> Das Modell sieht: positiver Text + schlechte Bewertung. Es passt seine Gewichte an. Folge: Wenn jemand die Kantine aufrichtig lobt — „Das Essen war heute wirklich gut“ + fünf Sterne — ist das Modell unsicher: Ist das ernst gemeint oder ironisch?</div>';
+  else c.innerHTML='<div class="expl"><b>Fortgeschrittene Lerndrift.</b> Erkennungsrate bei '+acc+'%, Sarkasmus-Anteil bei '+sark+'%. Das Modell hat die Zuordnung von Wörtern zu Stimmungen so stark verändert, dass es weder Lob noch Kritik zuverlässig erkennt.</div><div class="callout" style="margin-top:.5rem"><b>Doppelter Schaden.</b> '+falseAlarm+'% Fehlalarme — echtes Lob wird als Beschwerde gewertet. '+missed+'% übersehene Beschwerden — echte Kritik wird ignoriert, weil der Text neutral klingt. Das System ist als Entscheidungsgrundlage unbrauchbar.</div><div class="expl" style="margin-top:.5rem;border-color:var(--teal);background:#f0f7f7;"><b style="color:var(--teal)">Lerndrift (Behavioral Drift)</b> = Das Modell lernt aus verzerrtem Feedback und passt seine internen Gewichtungen an. Das Problem liegt weder in den Eingangsdaten noch in einer externen Regeländerung — das Modell selbst hat sich verändert, weil es von fehlerhaft gelabelten Daten gelernt hat.</div>';
+}
+
+// Event listeners
+$('dd_month').addEventListener('input',renderDD);
+$('dd_thMed').addEventListener('input',renderDD);
+$('dd_thKit').addEventListener('input',renderDD);
+$('kd_month').addEventListener('input',renderKD);
+$('kd_thBett').addEventListener('input',renderKD);
+$('kd_thFin').addEventListener('input',renderKD);
+$('ld_month').addEventListener('input',renderLD);
+$('ld_thAcc').addEventListener('input',renderLD);
+$('ld_thSark').addEventListener('input',renderLD);
+
+// Init
+renderDD(); renderKD(); renderLD();
+})();
+</script>
+</body>
+</html>
