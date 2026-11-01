@@ -850,6 +850,103 @@
         line-height: 1.6;
         margin: 12px 0 4px;
       }
+      /* Compliance-Matrix (01.11.2026) */
+      .mxgrid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+        gap: 8px;
+        margin-top: 10px;
+      }
+      .mxk {
+        display: flex;
+        gap: 9px;
+        align-items: flex-start;
+        border: 1px solid var(--rule);
+        border-radius: 10px;
+        padding: 9px 11px;
+        background: #fff;
+        cursor: pointer;
+        font-size: 14px;
+      }
+      .mxk:has(input:checked) {
+        border-color: var(--accent);
+        box-shadow: 0 0 0 1px var(--accent) inset;
+        background: #f7fafd;
+      }
+      .mxk input {
+        margin-top: 4px;
+        accent-color: var(--accent);
+      }
+      .mxk small {
+        display: block;
+        color: var(--muted);
+        font-size: 12.5px;
+        line-height: 1.4;
+        margin-top: 2px;
+      }
+      .mxres {
+        border: 1px solid var(--rule);
+        border-radius: 10px;
+        padding: 8px 12px;
+        margin: 12px 0;
+        background: #fff;
+      }
+      .mxres summary {
+        cursor: pointer;
+        font-size: 14px;
+      }
+      .mxr {
+        display: inline-block;
+        font-size: 12px;
+        font-weight: 700;
+        padding: 1px 8px;
+        border-radius: 999px;
+        white-space: nowrap;
+      }
+      .mxr.ja {
+        background: var(--bad-bg);
+        color: var(--bad);
+      }
+      .mxr.pr {
+        background: var(--warn-bg);
+        color: var(--warn);
+      }
+      .mxr.nein {
+        background: var(--ok-bg);
+        color: var(--ok);
+      }
+      table.mxtab tr.mxmiss td {
+        background: var(--bad-bg);
+      }
+      table.mxtab tr.mxzu td {
+        background: var(--soft);
+      }
+      .mxlist {
+        margin: 4px 0 8px 18px;
+        font-size: 14px;
+      }
+      .mxlist li {
+        margin: 4px 0;
+      }
+      .mxalle summary {
+        font-size: 13.5px;
+        color: var(--accent);
+      }
+      .mxw {
+        color: var(--bad);
+      }
+      .mxsteps li {
+        margin: 6px 0;
+      }
+      .mxmerk {
+        font-family: var(--serif);
+        font-style: italic;
+        font-size: 1.1rem;
+        color: var(--accent);
+        border-left: 4px solid var(--accent);
+        padding: 6px 0 6px 14px;
+        margin: 14px 0 4px;
+      }
       .opts {
         display: flex;
         flex-direction: column;
@@ -2752,7 +2849,7 @@
    Erzeugt aus dem Drehbuch des Spiels. Texte bitte dort ändern –
    Änderungen in diesem Block gehen beim nächsten Bau verloren. */
 const DATA = {
-  "stand": "31.10.2026",
+  "stand": "01.11.2026",
   "tf": {
     "P": "Professionelle KI-Kommunikation",
     "R": "Rolle, Recht und Compliance",
@@ -19317,6 +19414,322 @@ const DATA = {
     "tage": 3,
     "phase": 3,
     "kalender": "Bericht an die Geschäftsführung"
+  },
+  "matrix": {
+    "gebiete": [
+      {
+        "id": "kivo",
+        "name": "KI-Verordnung",
+        "grundlage": "VO (EU) 2024/1689 in der Fassung des Digital Omnibus",
+        "frage": "Welche Rolle hat NoHa – und welche Einstufung und welche Pflichten folgen daraus?",
+        "merkmal": "Fast immer, sobald ein KI-System vorliegt. Die Rolle entscheidet über alles Weitere – bei NoHa ist es in der Regel die der Betreiberin."
+      },
+      {
+        "id": "ds",
+        "name": "Datenschutz",
+        "grundlage": "DSGVO, BDSG",
+        "frage": "Werden personenbezogene Daten verarbeitet – in Eingaben, Trainingsdaten oder Protokollen? Auf welcher Rechtsgrundlage?",
+        "merkmal": "Sobald Menschen vorkommen. Prüfmarken: automatisierte Einzelentscheidung, Folgenabschätzung vor dem Einsatz, Daten von Beschäftigten – auch Nutzungsprotokolle."
+      },
+      {
+        "id": "br",
+        "name": "Betriebsverfassung",
+        "grundlage": "BetrVG",
+        "frage": "Ist der Betriebsrat zu beteiligen – und ab wann?",
+        "merkmal": "Bei technischen Einrichtungen, die zur Überwachung von Verhalten oder Leistung geeignet sind – auf die Absicht kommt es nicht an. Bei Hochrisiko-KI am Arbeitsplatz sind Beschäftigte und ihre Vertretung zudem vorher zu unterrichten."
+      },
+      {
+        "id": "urh",
+        "name": "Urheberrecht",
+        "grundlage": "UrhG",
+        "frage": "Woher stammen Trainings- und Eingabedaten? Wem gehören die Ausgaben?",
+        "merkmal": "Bei generativen Systemen und immer, wenn fremde Inhalte als Eingabe dienen."
+      },
+      {
+        "id": "gg",
+        "name": "Geschäftsgeheimnisse",
+        "grundlage": "GeschGehG",
+        "frage": "Was verlässt bei der Nutzung das Haus – und bleiben angemessene Geheimhaltungsmaßnahmen gewahrt?",
+        "merkmal": "Sobald eigene Unterlagen in ein fremdes System gehen. Ohne angemessene Maßnahmen entfällt der Schutz – und lässt sich nicht wiederherstellen. Die am häufigsten übersehene Spalte."
+      },
+      {
+        "id": "its",
+        "name": "IT-Sicherheitsrecht",
+        "grundlage": "NIS-2, KRITIS-Recht",
+        "frage": "Fällt NoHa oder dieser Prozess unter besondere Sicherheits- und Meldepflichten?",
+        "merkmal": "Abhängig von Sektor und Größe. Wenn ja, kommen eigene Meldepflichten mit eigenen Fristen hinzu."
+      },
+      {
+        "id": "prod",
+        "name": "Produkt- und Haftungsrecht",
+        "grundlage": "Produkthaftung, Maschinenverordnung",
+        "frage": "Ist das KI-System Teil eines Produkts, das NoHa in Verkehr bringt?",
+        "merkmal": "Sobald Software in ein Gerät eingebettet ist oder Sicherheitsfunktionen übernimmt – bei NoHa etwa unter der Eigenmarke."
+      },
+      {
+        "id": "sek",
+        "name": "Sektorrecht",
+        "grundlage": "Branchenrecht, z. B. Lebensmittelrecht",
+        "frage": "Gibt es für den Vorgang eine eigene Aufsicht mit eigenen Anforderungen?",
+        "merkmal": "Die zuverlässigste Frage: Gäbe es für den Vorgang auch ohne KI eine Aufsicht? Sektorrecht kommt zur KI-Verordnung hinzu, es tritt nicht zurück."
+      },
+      {
+        "id": "agg",
+        "name": "Antidiskriminierung",
+        "grundlage": "AGG",
+        "frage": "Kann das System Menschen mittelbar wegen eines geschützten Merkmals schlechter stellen?",
+        "merkmal": "Überall, wo über Menschen entschieden oder vorsortiert wird. Es genügt, dass ein Stellvertretermerkmal dieselbe Wirkung hat."
+      },
+      {
+        "id": "ver",
+        "name": "Vertrag und Beschaffung",
+        "grundlage": "Auftragsverarbeitung, Leistungen, Ausstieg",
+        "frage": "Was schuldet der Anbieter, was schuldet NoHa – und wie kommt NoHa wieder heraus?",
+        "merkmal": "Bei jedem fremden System: Auftragsverarbeitung, Unterauftragnehmer, Modellwechsel, Zugang zu Protokollen, Ausstieg."
+      }
+    ],
+    "lead": "Die häufigste Lücke bei KI-Vorhaben entsteht nicht dadurch, dass eine Pflicht falsch erfüllt wird – sondern dadurch, dass <strong>ein ganzes Rechtsgebiet nicht geprüft wurde</strong>. Die Matrix erzwingt den vollständigen Durchgang: <strong>Jede Zeile ist ein Anwendungsfall, jede Spalte ein Rechtsgebiet, jede Zelle eine Entscheidung.</strong> Auch „nicht einschlägig“ ist eine Entscheidung – und eine dokumentierte.",
+    "nicht": "Die Matrix ordnet die Prüfung, sie ersetzt sie nicht. Sie zeigt, wo Du hinsehen musst und wo eine Antwort fehlt – die rechtliche Beurteilung im Einzelfall gehört in die Rechtsabteilung oder zu einer Anwältin.",
+    "aufbau": [
+      [
+        "Zeilen festlegen",
+        "Nicht „KI bei NoHa“, sondern der einzelne Anwendungsfall – so eng, dass sich jede Zelle eindeutig beantworten lässt. Ein System mit zwei sehr unterschiedlichen Einsätzen bekommt zwei Zeilen."
+      ],
+      [
+        "Alle Spalten durchgehen",
+        "Der Wert liegt in den Spalten, an die man von selbst nicht denkt. Deshalb wird jede Spalte beantwortet, auch mit „nicht einschlägig“."
+      ],
+      [
+        "Je Zelle vier Angaben",
+        "Relevanz (einschlägig, zu prüfen, nicht einschlägig) → Anforderung → Maßnahme → Verantwortung (eine Person, kein Bereich). Ein Nachweis lohnt sich, sobald eine Aufsichtsbehörde ins Spiel kommen kann."
+      ],
+      [
+        "Offene Zellen sind das Ergebnis",
+        "Eine Matrix ohne Lücken ist meist zu oberflächlich ausgefüllt. Die unbeantworteten Zellen sind die Arbeitsliste – mit Termin und Verantwortung."
+      ]
+    ],
+    "pyramide": "Die Darstellung der KI-Verordnung als Pyramide mit vier Risikoklassen legt nahe, es gebe <em>eine</em> Einstufung und daraus folge <em>ein</em> Pflichtenpaket. Pflichten aus verschiedenen Rechtsgebieten <strong>stapeln sich</strong> aber, und mehrere greifen unabhängig von der Risikoklasse – Transparenzpflichten ebenso wie Datenschutz, Mitbestimmung und Geschäftsgeheimnisschutz.",
+    "fragen": [
+      [
+        "Verlässt bei der Nutzung etwas das Haus, das NoHa selbst als vertraulich behandelt?",
+        "Geschäftsgeheimnisse · Datenschutz · Vertrag"
+      ],
+      [
+        "Entsteht aus der Nutzung ein Datum über eine bestimmte Person – auch über eine eigene Beschäftigte?",
+        "Datenschutz · Betriebsverfassung – auch Nutzungs-, Zeit- und Verbrauchsdaten"
+      ],
+      [
+        "Kann das System etwas bewirken, statt nur etwas vorzuschlagen?",
+        "Produkt- und Haftungsrecht · Sektorrecht · menschliche Aufsicht nach der KI-Verordnung"
+      ],
+      [
+        "Gäbe es für den Vorgang auch ohne KI eine Aufsicht oder eine Genehmigungspflicht?",
+        "Sektorrecht – die zuverlässigste der vier Fragen"
+      ]
+    ],
+    "regeln": [
+      [
+        "Sie altert.",
+        "Ein Modellwechsel beim Anbieter, ein neuer Einsatzzweck oder eine Rechtsänderung kann Zellen umwerfen. Je Zeile gehören ein fester Überprüfungstermin und ein Anlass dazu: neue Funktion, neuer Datenbestand, neuer Adressatenkreis."
+      ],
+      [
+        "„Nicht einschlägig“ braucht einen Satz Begründung.",
+        "Ohne ihn ist nicht unterscheidbar, ob geprüft oder übersehen wurde."
+      ]
+    ],
+    "merksatz": "Die teuerste Lücke ist nicht die falsch beantwortete Frage, sondern die nicht gestellte.",
+    "checks": {
+      "K12": {
+        "fall": "Vorauswahl im Jobportal",
+        "zellen": {
+          "kivo": [
+            "ja",
+            "Systeme zur Auswahl von Bewerbungen sind Hochrisiko (Anhang III Nr. 4 KI-VO). NoHa ist Betreiberin – mit menschlicher Aufsicht, Kontrolle der Eingabedaten, Überwachung und Protokollen."
+          ],
+          "ds": [
+            "ja",
+            "Bewerberdaten: Rechtsgrundlage, Prüfung einer automatisierten Einzelentscheidung (Art. 22 DSGVO), Folgenabschätzung vor dem Einsatz (Art. 35 DSGVO)."
+          ],
+          "br": [
+            "ja",
+            "Vor der Inbetriebnahme sind Beschäftigtenvertretung und betroffene Beschäftigte zu unterrichten (Art. 26 Abs. 7 KI-VO); die Protokolle zeigen zudem, wie die Personalabteilung mit dem System arbeitet."
+          ],
+          "urh": [
+            "nein",
+            "Das System bewertet Bewerbungen, es erzeugt keine Inhalte – Rechte an Ein- oder Ausgaben sind kein Thema."
+          ],
+          "gg": [
+            "pr",
+            "Zu prüfen: Gelangen mit den Stellenprofilen interne Stellenbeschreibungen oder Projektangaben in das System des Anbieters?"
+          ],
+          "its": [
+            "nein",
+            "Aus der Vorauswahl folgen keine besonderen Sicherheits- oder Meldepflichten. Ob NoHa insgesamt unter NIS-2 fällt, klärt die IT-Sicherheit einmal für das ganze Haus."
+          ],
+          "prod": [
+            "nein",
+            "Kein Produkt, das NoHa in Verkehr bringt."
+          ],
+          "sek": [
+            "nein",
+            "Für die Personalauswahl im Handel gibt es keine eigene Branchenaufsicht."
+          ],
+          "agg": [
+            "ja",
+            "Die Vorauswahl sortiert Menschen: Auch Stellvertretermerkmale wie Lücken im Lebenslauf oder die Postleitzahl können mittelbar benachteiligen (§ 3 Abs. 2 AGG)."
+          ],
+          "ver": [
+            "ja",
+            "Mit dem Anbieter des Jobportals: Auftragsverarbeitung, Zugang zu den Protokollen, Ankündigung von Modellwechseln, Ausstieg."
+          ]
+        }
+      },
+      "K45": {
+        "fall": "KI-App der Filialen",
+        "zellen": {
+          "kivo": [
+            "ja",
+            "NoHa ist Betreiberin eines Systems ohne hohes Risiko. Die KI-Verordnung verlangt, die KI-Kompetenz der Nutzenden zu unterstützen (Art. 4 KI-VO)."
+          ],
+          "ds": [
+            "ja",
+            "Namen und Schichtpläne sind personenbezogene Daten der Beschäftigten – in einem Werkzeug ohne Freigabe und ohne Vertrag zur Auftragsverarbeitung."
+          ],
+          "br": [
+            "pr",
+            "Zu prüfen: Mit Namen und Schichtplänen kann die App Verhalten oder Leistung erkennbar machen – vor dem Einsatz in allen Filialen mit dem Betriebsrat klären."
+          ],
+          "urh": [
+            "pr",
+            "Zu prüfen: Generative App – wem gehören Texte und Bilder, und dienen fremde Inhalte wie Herstellerfotos als Vorlage? Bei kurzen Aushängen meist unkritisch."
+          ],
+          "gg": [
+            "ja",
+            "Angebote vor dem Start und interne Team-Infos landen in einer fremden App – ohne Vertrag fehlen angemessene Geheimhaltungsmaßnahmen."
+          ],
+          "its": [
+            "nein",
+            "Aushänge begründen keine besonderen Sicherheits- oder Meldepflichten; ob die App sicher ist, klärt der Freigabeweg."
+          ],
+          "prod": [
+            "nein",
+            "Kein Produkt, das NoHa in Verkehr bringt."
+          ],
+          "sek": [
+            "pr",
+            "Zu prüfen: Angebotsschilder unterliegen auch ohne KI Regeln, etwa zu Preisangaben und zu Angaben über Lebensmittel."
+          ],
+          "agg": [
+            "nein",
+            "Die App schreibt Texte, sie entscheidet nicht über Menschen. Würde sie Schichten verteilen, wäre die Spalte neu zu prüfen."
+          ],
+          "ver": [
+            "ja",
+            "Es gibt keinen Vertrag: Nutzungsbedingungen, Training mit den Eingaben, Auftragsverarbeitung und Ausstieg sind ungeklärt."
+          ]
+        }
+      },
+      "K28": {
+        "fall": "Kundenservice-KI",
+        "zellen": {
+          "kivo": [
+            "ja",
+            "NoHa ist Betreiberin, kein Hochrisiko. Spricht die KI direkt mit der Kundschaft, muss erkennbar sein, dass es eine KI ist (Art. 50 Abs. 1 KI-VO) – darauf achtet NoHa bei der Auswahl."
+          ],
+          "ds": [
+            "ja",
+            "Kundendaten: Vertrag zur Auftragsverarbeitung, bei Betrieb außerhalb der EU eine Grundlage für die Übermittlung (Art. 28, 44 ff. DSGVO)."
+          ],
+          "br": [
+            "ja",
+            "Das Werkzeug zeigt, wer welche Anfrage wie bearbeitet – damit ist es zur Leistungs- und Verhaltenskontrolle geeignet (§ 87 Abs. 1 Nr. 6 BetrVG)."
+          ],
+          "urh": [
+            "pr",
+            "Zu prüfen: Generatives System – an den Antworten braucht NoHa keine Rechte, aber dürfen fremde Inhalte wie Herstellerangaben als Wissensbasis einfließen?"
+          ],
+          "gg": [
+            "pr",
+            "Zu prüfen: Welche internen Unterlagen – Kulanzregeln, Konditionen – bekommt das System als Wissensbasis, und darf der Anbieter die Eingaben für sein Training nutzen?"
+          ],
+          "its": [
+            "nein",
+            "Durch den Kundenservice entstehen keine besonderen Sicherheits- oder Meldepflichten; die Sicherheit der Kundendaten regeln Datenschutz und Vertrag."
+          ],
+          "prod": [
+            "nein",
+            "Kein Produkt, das NoHa in Verkehr bringt. Dass Auskünfte der KI NoHa zugerechnet werden, ändert daran nichts."
+          ],
+          "sek": [
+            "pr",
+            "Zu prüfen: Beantwortet die KI Fragen zu Zutaten und Allergenen, gelten die Regeln des Lebensmittelrechts – mit eigener Überwachung."
+          ],
+          "agg": [
+            "nein",
+            "Die KI beantwortet Anfragen, sie entscheidet nicht über Menschen. Soll sie später über Kulanz mitentscheiden, wird die Spalte neu geprüft."
+          ],
+          "ver": [
+            "ja",
+            "Kern der Auswahl: Auftragsverarbeitung, Datenstandort, Unterauftragnehmer, Ankündigung von Modellwechseln, Ausstieg und Rückgabe der Daten."
+          ]
+        }
+      }
+    },
+    "beispiel": {
+      "fall": "Vorauswahl im Jobportal",
+      "karte": "K12",
+      "zeilen": [
+        [
+          "KI-Verordnung",
+          "ja",
+          "Betreiberin eines Hochrisiko-Systems: Betriebsanleitung befolgen, Eingabedaten relevant und hinreichend repräsentativ, Überwachung, Protokolle mindestens sechs Monate, menschliche Aufsicht",
+          "Betriebsanleitung eingeholt und geprüft; Aufsichtsperson in der Personalabteilung benannt und geschult; Protokollierung vertraglich zugesichert",
+          "Du"
+        ],
+        [
+          "Datenschutz",
+          "ja",
+          "Rechtsgrundlage für Bewerberdaten; Folgenabschätzung vor dem Einsatz; Betroffenenrechte; keine automatisierte Einzelentscheidung",
+          "Folgenabschätzung erstellt; Vorauswahl ohne abschließende Entscheidung ausgestaltet; Auskunftsweg festgelegt",
+          "Sabine Rehse (Personal), beraten von der Datenschutzbeauftragten"
+        ],
+        [
+          "Betriebsverfassung",
+          "ja",
+          "Mitbestimmung bei Einrichtungen, die zur Überwachung geeignet sind; Unterrichtung der Beschäftigten und ihrer Vertretung vor der Inbetriebnahme",
+          "Betriebsvereinbarung mit dem Betriebsrat geschlossen; Unterrichtung dokumentiert und datiert",
+          "Sabine Rehse (Personal)"
+        ],
+        [
+          "Antidiskriminierung",
+          "ja",
+          "Keine mittelbare Benachteiligung wegen eines geschützten Merkmals",
+          "Stellvertretermerkmale geprüft (Postleitzahl, Lücken im Lebenslauf, Herkunft des Namens); Verteilung der Vorauswahl quartalsweise ausgewertet",
+          "Du"
+        ],
+        [
+          "Geschäftsgeheimnisse",
+          "pr",
+          "Gelangen interne Stellenbeschreibungen oder Projektangaben in das System des Anbieters?",
+          "Offen – die Eingabefelder werden gesichtet",
+          "Personal, Termin gesetzt"
+        ],
+        [
+          "Vertrag und Beschaffung",
+          "ja",
+          "Auftragsverarbeitung; Zugang zu den Protokollen; Ankündigung von Modellwechseln; Ausstieg",
+          "Vertrag um Ankündigungspflicht und Protokollzugang ergänzt; Ausstieg noch offen",
+          "Thomas Kühn (Geschäftsführung)"
+        ],
+        [
+          "Urheberrecht · IT-Sicherheit · Produktrecht · Sektorrecht",
+          "nein",
+          "Begründung jeweils in einem Satz festhalten – das ist der Unterschied zwischen „geprüft“ und „nicht daran gedacht“.",
+          "",
+          "Du"
+        ]
+      ]
+    }
   }
 };
 
@@ -19387,6 +19800,7 @@ function newState(al, name) {
     vor: { 2: [], 3: [] }, // Anfragen, die in einer späteren Phase kommen
     rmIst: null, // Plan im Ist: Zeitraum je Aktivität nach Umsetzen und Verschieben
     rmStatus: {}, // erledigt / schlank / verschoben / hinter100
+    matrix: {}, // Compliance-Matrix: angekreuzte Rechtsgebiete je Karte (Matrix-Check vor der Entscheidung)
   };
   TFK.forEach(t => {
     s.RG[t] = st.RG;
@@ -19850,6 +20264,12 @@ function apply(s, a) {
   if (a[0] === 'm') return planMove(s, a[1], a[2]);
   if (a[0] === 'b') {
     s.bericht = true;
+    return null;
+  }
+  if (a[0] === 'x') {
+    // Matrix-Check: kostet keine Zeit, wirkt nur auf die Rückmeldung
+    s.matrix = s.matrix || {};
+    s.matrix[a[1]] = a[2].slice();
     return null;
   }
   if (a[0] === 'v') {
@@ -20851,6 +21271,214 @@ function berichtStand(s) {
     '.</li></ul></div>'
   );
 }
+/* ───── Compliance-Matrix (Uli, 01.11.2026): eigener Reiter und Matrix-Check vor drei Entscheidungen ───── */
+const MX = DATA.matrix;
+const MXREL = { ja: 'einschlägig', pr: 'zu prüfen', nein: 'nicht einschlägig' };
+const mxName = id => MX.gebiete.find(g => g.id === id).name;
+const mxCheck = k => !!MX.checks[k];
+// Was angekreuzt sein sollte: einschlägig oder zu prüfen – beides gehört auf die Arbeitsliste
+const mxSoll = k => MX.gebiete.filter(g => MX.checks[k].zellen[g.id][0] !== 'nein').map(g => g.id);
+function mxErgebnis(s, k) {
+  const an = s.matrix && s.matrix[k];
+  if (!an || !mxCheck(k)) return null;
+  const soll = mxSoll(k);
+  return {
+    soll,
+    an,
+    treffer: soll.filter(id => an.includes(id)),
+    ueber: soll.filter(id => !an.includes(id)),
+    zuviel: an.filter(id => !soll.includes(id)),
+  };
+}
+const mxRel = r => '<span class="mxr ' + r + '">' + MXREL[r] + '</span>';
+function mxCheckHtml(k) {
+  return (
+    '<h3>Compliance-Matrix: Welche Rechtsgebiete musst Du hier prüfen?</h3>' +
+    '<p class="small muted">Kreuze an, was für „' +
+    esc(MX.checks[k].fall) +
+    '“ einschlägig ist oder geprüft werden muss. Der Check kostet keine Zeit; Du siehst das Ergebnis sofort, danach entscheidest Du.</p>' +
+    '<div class="mxgrid">' +
+    MX.gebiete
+      .map(
+        g =>
+          '<label class="mxk"><input type="checkbox" name="mx" value="' +
+          g.id +
+          '"><span><b>' +
+          esc(g.name) +
+          '</b><small>' +
+          esc(g.frage) +
+          '</small></span></label>'
+      )
+      .join('') +
+    '</div>'
+  );
+}
+function mxTabelle(s, k) {
+  const e = mxErgebnis(s, k),
+    z = MX.checks[k].zellen;
+  return (
+    '<table class="log mxtab"><thead><tr><th>Rechtsgebiet</th><th>Einschätzung</th><th>Dein Kreuz</th><th>Warum</th></tr></thead><tbody>' +
+    MX.gebiete
+      .map(g => {
+        const an = e && e.an.includes(g.id),
+          cls =
+            e && e.ueber.includes(g.id)
+              ? ' class="mxmiss"'
+              : e && e.zuviel.includes(g.id)
+                ? ' class="mxzu"'
+                : '';
+        return (
+          '<tr' +
+          cls +
+          '><td><b>' +
+          esc(g.name) +
+          '</b></td><td>' +
+          mxRel(z[g.id][0]) +
+          '</td><td>' +
+          (e ? (an ? '✓ angekreuzt' : '–') : '') +
+          (e && e.ueber.includes(g.id) ? ' <b class="mxw">übersehen</b>' : '') +
+          '</td><td>' +
+          esc(z[g.id][1]) +
+          '</td></tr>'
+        );
+      })
+      .join('') +
+    '</tbody></table>'
+  );
+}
+function mxKurz(e) {
+  return (
+    e.treffer.length +
+    ' von ' +
+    e.soll.length +
+    ' Rechtsgebieten erkannt' +
+    (e.ueber.length ? ' · übersehen: ' + e.ueber.map(mxName).join(', ') : ' · keines übersehen') +
+    (e.zuviel.length ? ' · zusätzlich angekreuzt: ' + e.zuviel.map(mxName).join(', ') : '')
+  );
+}
+function mxErgebnisHtml(s, k, offen) {
+  const e = mxErgebnis(s, k);
+  if (!e) return '';
+  const z = MX.checks[k].zellen,
+    liste = ids =>
+      '<ul class="mxlist">' +
+      ids
+        .map(id => '<li><b>' + esc(mxName(id)) + '</b> ' + mxRel(z[id][0]) + ' – ' + esc(z[id][1]) + '</li>')
+        .join('') +
+      '</ul>';
+  return (
+    '<details class="mxres"' +
+    (offen ? ' open' : '') +
+    '><summary><b>Compliance-Matrix „' +
+    esc(MX.checks[k].fall) +
+    '“:</b> ' +
+    e.treffer.length +
+    ' von ' +
+    e.soll.length +
+    ' erkannt' +
+    (e.ueber.length ? ' · ' + e.ueber.length + ' übersehen' : ' · keines übersehen') +
+    (e.zuviel.length ? ' · ' + e.zuviel.length + ' zusätzlich' : '') +
+    '</summary>' +
+    (e.ueber.length
+      ? '<p class="small"><b>Übersehen</b> – schlimmer als zu viel geprüft: Eine Spalte, an die niemand denkt, landet auf keiner Arbeitsliste.</p>' +
+        liste(e.ueber)
+      : '<p class="small">Vollständig – keine Spalte vergessen.</p>') +
+    (e.zuviel.length
+      ? '<p class="small"><b>Zusätzlich angekreuzt</b> – kostet in der Praxis nur Prüfzeit:</p>' +
+        liste(e.zuviel)
+      : '') +
+    '<details class="mxalle"><summary>Alle zehn Rechtsgebiete mit Begründung</summary>' +
+    mxTabelle(s, k) +
+    '</details></details>'
+  );
+}
+// Bilanz für das Feed-back nach 100 Tagen
+function mxBilanz(s) {
+  const z = Object.keys(MX.checks)
+    .filter(k => s.matrix && s.matrix[k])
+    .map(k => MX.checks[k].fall + ': ' + mxKurz(mxErgebnis(s, k)));
+  return z.length ? z.map(esc).join('<br>') : 'kein Matrix-Check';
+}
+function viewMatrix(s) {
+  const checks = Object.keys(MX.checks).filter(k => s.matrix && s.matrix[k]);
+  let h =
+    '<div class="card"><h2 tabindex="-1">Compliance-Matrix – kein Rechtsgebiet übersehen</h2>' +
+    '<p class="lead">' +
+    MX.lead +
+    '</p><div class="note bad" style="margin-top:10px"><b>Was die Matrix nicht ist.</b> ' +
+    esc(MX.nicht) +
+    '</div>' +
+    '<h3>So gehst Du vor</h3><ol class="mxsteps">' +
+    MX.aufbau.map(([t, b]) => '<li><b>' + esc(t) + '.</b> ' + esc(b) + '</li>').join('') +
+    '</ol>' +
+    '<h3>Die Spalten – zehn Rechtsgebiete</h3>' +
+    '<table class="log"><thead><tr><th>Rechtsgebiet</th><th>Die Frage je Anwendungsfall</th><th>Woran Du merkst, dass es einschlägig ist</th></tr></thead><tbody>' +
+    MX.gebiete
+      .map(
+        g =>
+          '<tr><td><b>' +
+          esc(g.name) +
+          '</b><br><span class="small muted">' +
+          esc(g.grundlage) +
+          '</span></td><td>' +
+          esc(g.frage) +
+          '</td><td>' +
+          esc(g.merkmal) +
+          '</td></tr>'
+      )
+      .join('') +
+    '</tbody></table>' +
+    '<p class="small muted">Die Auswahl ist nicht abschließend: Branchen mit eigener Aufsicht ergänzen ihre Spalte.</p>' +
+    '<div class="note warn" style="margin-top:12px"><b>Warum es die Matrix braucht.</b> ' +
+    MX.pyramide +
+    '</div></div>';
+  h +=
+    '<div class="card"><h2>Deine Matrix-Checks</h2>' +
+    (checks.length
+      ? checks.map(k => mxErgebnisHtml(s, k, false)).join('')
+      : '<p>Noch keiner. Bei drei Anfragen prüfst Du mit der Matrix, bevor Du entscheidest.</p>') +
+    '</div>';
+  h +=
+    '<div class="card"><h2>Vier Fragen, die eine fehlende Spalte sichtbar machen</h2>' +
+    '<table class="log"><thead><tr><th>Frage</th><th>Worauf sie zeigt</th></tr></thead><tbody>' +
+    MX.fragen.map(([f, w]) => '<tr><td><b>' + esc(f) + '</b></td><td>' + esc(w) + '</td></tr>').join('') +
+    '</tbody></table>' +
+    '<h3>Zwei Regeln für den Betrieb</h3><ul>' +
+    MX.regeln.map(([t, b]) => '<li><b>' + esc(t) + '</b> ' + esc(b) + '</li>').join('') +
+    '</ul><p class="mxmerk">' +
+    esc(MX.merksatz) +
+    '</p></div>';
+  // Durchgerechnetes Beispiel erst nach der Entscheidung über die Vorauswahl – sonst verrät es die Antwort
+  const B = MX.beispiel;
+  h +=
+    '<div class="card"><h2>Ein durchgerechnetes Beispiel</h2>' +
+    (s.dec[B.karte]
+      ? '<p>Anwendungsfall <b>' +
+        esc(B.fall) +
+        '</b> – so könnte die Zeile bei NoHa aussehen, unabhängig davon, wie Du entschieden hast.</p>' +
+        '<table class="log"><thead><tr><th>Rechtsgebiet</th><th>Relevanz</th><th>Anforderung</th><th>Maßnahme</th><th>Verantwortung</th></tr></thead><tbody>' +
+        B.zeilen
+          .map(
+            ([n, r, a, m, v]) =>
+              '<tr><td><b>' +
+              esc(n) +
+              '</b></td><td>' +
+              mxRel(r) +
+              '</td><td>' +
+              esc(a) +
+              '</td><td>' +
+              esc(m) +
+              '</td><td>' +
+              esc(v) +
+              '</td></tr>'
+          )
+          .join('') +
+        '</tbody></table>' +
+        '<p class="small">Von zehn Spalten sind sechs einschlägig, eine zu prüfen, drei nicht einschlägig. Am ehesten vergessen werden Geschäftsgeheimnisse und Vertrag – beide stehen in keiner Checkliste zur KI-Verordnung.</p>'
+      : '<p class="muted">Ein durchgerechnetes Beispiel aus NoHa erscheint hier im Lauf des Spiels.</p>') +
+    '</div>';
+  return h;
+}
 function popKarte(s, k, p) {
   const c = DATA.cards[k],
     d = s.dec[k],
@@ -20878,10 +21506,20 @@ function popKarte(s, k, p) {
           : esc(optText(o)) + ' <span class="muted">(' + tage(d.cost) + ')</span>') +
       '</div>';
     if (s.closed[d.sec]) h += '<p>' + bewChip(o.bew) + ' ' + esc(o.erkl) + '</p>';
+    h += mxErgebnisHtml(s, k, false);
     return h + '<div class="actions"><button class="btn" data-go="popzu">Schließen</button></div>';
   }
+  // Compliance-Matrix: erst prüfen, dann entscheiden
+  if (mxCheck(k) && !mxErgebnis(s, k))
+    return (
+      h +
+      mxCheckHtml(k) +
+      '<div class="actions"><button class="btn" data-go="mcheck">Prüfen</button>' +
+      '<button class="btn ghost" data-go="popzu">Später</button></div>'
+    );
   return (
     h +
+    mxErgebnisHtml(s, k, ui.mxOffen === k) +
     (isBericht(k) ? berichtStand(s) : '') +
     '<h3>' +
     (isBericht(k) ? 'Wie berichtest Du?' : 'Was tust Du?') +
@@ -22935,6 +23573,9 @@ function viewEnd(s) {
       .map(a => esc(a.name))
       .join(' · ') || '–') +
     '</dd>' +
+    '<dt>Compliance-Matrix</dt><dd>' +
+    mxBilanz(s) +
+    '</dd>' +
     '<dt>Entscheidungen</dt><dd>' +
     n.empfohlen +
     ' empfohlen · ' +
@@ -23104,6 +23745,7 @@ function render(focus) {
       ],
       ['lage', 'Lagebild', '<span class="chip ' + zoneT(s.T) + '">' + zoneT(s.T) + '</span>'],
       ['log', 'Entscheidungen', '<span class="chip">' + logAnzahl(s) + '</span>'],
+      ['matrix', '<span><span class="lg">Compliance-</span>Matrix</span>', ''],
       ...(s.closed[1] ? [['rueck', 'Rückblick', '']] : []),
     ];
     document.getElementById('tabsIn').innerHTML = T.map(
@@ -23123,6 +23765,7 @@ function render(focus) {
     if (ui.tab === 'lage') main = lageHtml(s);
     else if (ui.tab === 'log') main = viewLog(s);
     else if (ui.tab === 'rueck') main = viewRueckblick(s);
+    else if (ui.tab === 'matrix') main = viewMatrix(s);
     else if (s.phase === 'review') main = viewReview(s);
     else if (s.phase === 'end') main = viewEnd(s);
     else if (ui.after && ui.after.triage) main = viewAfterTriage(s);
@@ -23158,6 +23801,7 @@ function uiNeu() {
     cardMsg: '',
     toast: '',
     nachricht: null, // zuletzt eingegangene Anfrage – roter Hinweis über dem Board
+    mxOffen: null, // Karte, deren Matrix-Check gerade ausgewertet wurde (Ergebnis aufgeklappt)
     pop: null,
     lastT: null,
     tri: {},
@@ -23348,6 +23992,12 @@ document.addEventListener('click', e => {
     render(true);
   } else if (go === 'popzu') {
     popZu();
+    renderKeep();
+  } else if (go === 'mcheck') {
+    if (!ui.open) return;
+    const ids = [...document.querySelectorAll('.pop input[name="mx"]:checked')].map(x => x.value);
+    act(['x', ui.open, ids]);
+    ui.mxOffen = ui.open;
     renderKeep();
   } else if (go === 'decide') {
     if (ui.sel == null || !ui.open) return;
