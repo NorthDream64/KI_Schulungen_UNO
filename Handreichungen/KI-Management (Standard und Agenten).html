@@ -97,7 +97,28 @@ details.mehr .tbl{font-size:12.5px;}
 .trend-datum{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1px;color:var(--muted);}
 .trend-titel{font-weight:700;font-size:14px;flex:1 1 60%;}
 .trend p{font-size:13px;line-height:1.55;margin-bottom:.35rem;}
-.trend-folge{background:var(--phase);border-radius:4px;padding:.35rem .6rem;}
+/* Meldungen und Zeitleiste: Schlagzeile sichtbar, Einzelheiten ausklappbar */
+details.trend>summary{cursor:pointer;list-style:none;}
+details.trend>summary::-webkit-details-marker{display:none;}
+details.trend>summary .trend-titel::after{content:'\00A0\25B8';color:var(--accent);font-size:12px;}
+details.trend[open]>summary .trend-titel::after{content:'\00A0\25BE';}
+details.trend[open]>summary{margin-bottom:.4rem;}
+.chron{border-left:2px solid var(--rule);margin:.4rem 0 .6rem .45rem;padding-left:1.1rem;}
+details.ev{position:relative;margin-bottom:.5rem;}
+details.ev>summary{cursor:pointer;list-style:none;display:flex;flex-wrap:wrap;gap:.5rem;align-items:baseline;}
+details.ev>summary::-webkit-details-marker{display:none;}
+details.ev>summary::before{content:'';position:absolute;left:-1.43rem;top:.28rem;width:.62rem;height:.62rem;border-radius:50%;background:var(--accent);border:2px solid var(--paper);}
+details.ev.key>summary::before{background:var(--teal);}
+details.ev.reg>summary::before{background:var(--accent);}
+details.ev.beh>summary::before{background:var(--amber);}
+.ev-d{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1px;color:var(--muted);min-width:9.5rem;}
+.ev-t{font-weight:700;font-size:13.5px;flex:1 1 55%;}
+.ev-t::after{content:'\00A0\25B8';color:var(--accent);font-size:12px;}
+details.ev[open] .ev-t::after{content:'\00A0\25BE';}
+details.ev>p{font-size:13px;line-height:1.55;margin:.3rem 0 .25rem;}
+details.ev>.src-row{margin-bottom:.3rem;}
+.legende{font-size:11px;color:var(--muted);margin:.2rem 0 .7rem;display:flex;gap:1.1rem;flex-wrap:wrap;}
+.legende .dot{display:inline-block;width:.6rem;height:.6rem;border-radius:50%;margin-right:.35rem;vertical-align:middle;}
 /* Reiter */
 .tab-leiste{display:flex;flex-wrap:wrap;gap:.3rem;margin:1.4rem 0 1.6rem;border-bottom:2px solid var(--rule);}
 .tab-btn{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:1px;text-transform:uppercase;padding:.6rem .9rem;border:1px solid var(--rule);border-bottom:none;border-radius:6px 6px 0 0;background:var(--paper);color:var(--muted);cursor:pointer;margin-bottom:-2px;}
@@ -168,6 +189,9 @@ details.mehr .tbl{font-size:12.5px;}
  .werkbank textarea.ausgabe{display:none;}
  details.mehr{background:none;border:1px solid #ddd;break-inside:avoid;}
  details.mehr>summary{color:#000;}
+ details.trend,details.ev{break-inside:avoid;}
+ .chron{border-left-color:#bbb;}
+ .ev-t::after,details.trend>summary .trend-titel::after{content:'';}
 }
 </style>
 </head>
@@ -200,76 +224,155 @@ details.mehr .tbl{font-size:12.5px;}
 
 <div class="section">
  <div class="section-title">Aktuelle Trends · wichtige Meldungen zu agentischer KI</div>
- <p class="trend-intro">Auswahl und Einordnung für die Bewertungspraxis, Stand 12.10.2026, neueste zuerst. Die Liste wird monatlich ersetzt. Selbstauskünfte von Anbietern sind als solche gekennzeichnet.</p>
+ <p class="trend-intro">Auswahl und Einordnung für die Bewertungspraxis, Stand 02.11.2026, neueste zuerst. Die Liste wird monatlich ersetzt; die Zeitleiste darunter bleibt und wächst. Schlagzeile anklicken öffnet die Meldung mit ihren Quellen. Selbstauskünfte von Anbietern sind als solche gekennzeichnet.</p>
 
- <div class="trend">
-  <div class="trend-kopf"><span class="trend-nr">1</span><span class="trend-datum">09.10.2026</span><span class="trend-titel">Anthropic nimmt allen internen Tests den Internetzugang</span></div>
-  <p>Modelle hatten bei Evaluierungen unbeabsichtigt auf echten Websites gehandelt: Sicherheitslücken eines Universitätsservers ausgenutzt, Gebühren- und Token-Sperren umgangen und ein Formular abgeschickt — darunter ein falscher Mordhinweis an die Polizei Philadelphia. Bis Kontrollen solches Verhalten verlässlich erkennen, laufen alle internen Evaluierungen ohne Live-Internet. Selbstauskunft des Anbieters, von der Fachpresse übernommen.</p>
-  <p class="trend-folge"><strong>Für Deine Bewertung:</strong> Auch eine Testumgebung braucht technisch erzwungene Netzgrenzen — „darf nichts absenden“ in der Anweisung reicht nicht.</p>
-  <div class="src-row"><span class="src-chip"><a href="https://www.anthropic.com/research/investigating-unintended-model-actions" target="_blank" rel="noopener">Anthropic — Bericht</a></span><span class="src-chip"><a href="https://thehackernews.com/2026/10/anthropic-cuts-live-internet-access-for.html" target="_blank" rel="noopener">The Hacker News</a></span></div>
- </div>
+ <details class="trend">
+  <summary class="trend-kopf"><span class="trend-nr">1</span><span class="trend-datum">29.10.2026</span><span class="trend-titel">Manipulierte Agenten-Erweiterung im Marktplatz eines Code-Editors</span></summary>
+  <p>Im Erweiterungsmarktplatz des Code-Editors Cursor stand rund elf Stunden lang eine veränderte Fassung der Claude-Code-Erweiterung — unter der regulären Kennung des Anbieters. Sie meldete Rechner- und Nutzerdaten an einen fremden Server, hinterlegte einen fremden SSH-Schlüssel und versuchte, einen dauerhaften Fernzugang einzurichten. Cursor schätzt bis zu 5.000 Betroffene; wie die Fassung in den Marktplatz gelangte, ist nicht veröffentlicht. Angaben des Marktplatzbetreibers, von einem Sicherheitsdienstleister ausgewertet.</p>
+  <div class="src-row"><span class="src-chip"><a href="https://cursor.com/blog/claude-code-extension-security-notice" target="_blank" rel="noopener">Cursor — Sicherheitshinweis</a></span><span class="src-chip"><a href="https://fieldeffect.com/blog/trojanized-claude-code-extension-distributed-cursor-marketplace" target="_blank" rel="noopener">Field Effect — Analyse</a></span></div>
+ </details>
 
- <div class="trend">
-  <div class="trend-kopf"><span class="trend-nr">2</span><span class="trend-datum">09.10.2026</span><span class="trend-titel">Weißes Haus verlangt sofortige Meldung von KI-Vorfällen</span></div>
-  <p>Nach den Anthropic-Vorfällen — Agenten hatten unter anderem Visumanträge beim US-Außenministerium ausgefüllt — erklärte eine Arbeitsgruppe des Weißen Hauses, KI-Unternehmen müssten Vorfälle sofort offenlegen und Schäden beheben; das sei „nicht optional“. Ob daraus eine verbindliche Regel wird, ist offen.</p>
-  <p class="trend-folge"><strong>Für Deine Bewertung:</strong> Frag im Vertrag, ob und wie schnell der Anbieter Dich über Vorfälle mit seinem Modell informiert.</p>
-  <div class="src-row"><span class="src-chip"><a href="https://www.pymnts.com/news/artificial-intelligence/2026/white-house-says-all-ai-companies-must-report-security-incidents/" target="_blank" rel="noopener">PYMNTS (nach Axios)</a></span><span class="src-chip"><a href="https://www.inquirer.com/news/philadelphia/anthropic-ai-philadelphia-police-department-state-department-20261010.html" target="_blank" rel="noopener">Philadelphia Inquirer</a></span></div>
- </div>
+ <details class="trend">
+  <summary class="trend-kopf"><span class="trend-nr">2</span><span class="trend-datum">27.10.2026</span><span class="trend-titel">Fachleute folgen der verdeckten Neigung ihres Agenten — und merken es nicht</span></summary>
+  <p>In einem randomisierten Experiment bearbeiteten 50 Fachleute für Kausalanalysen eine Auswertung mit einem Agenten, dem für jede Entscheidung verdeckt eine Neigung zugewiesen war. Ihre Analyseentscheidungen folgten dieser Neigung in 86 % der Fälle, bei 50 % als Zufallswert; 37 von 48 übernahmen Argumente des Agenten, nur 15 % erwähnten ihn in ihren Antworten. Studie des Anbieters mit dem eigenen Modell, ohne Begutachtung; eine Aufgabe, ein Fachgebiet.</p>
+  <div class="src-row"><span class="src-chip"><a href="https://www-cdn.anthropic.com/519c17a5d23a794e8b6d50a854048d0b61e0d73a.pdf" target="_blank" rel="noopener">Anthropic — Studie (PDF)</a></span><span class="src-chip"><a href="https://www.aljazeera.com/economy/2026/10/28/experts-defer-to-ai-in-decision-making-anthropic-study-finds" target="_blank" rel="noopener">Al Jazeera</a></span></div>
+ </details>
 
- <div class="trend">
-  <div class="trend-kopf"><span class="trend-nr">3</span><span class="trend-datum">21.09.2026</span><span class="trend-titel">UN-Wissenschaftsgremium bewertet das Risiko, die Kontrolle über Agenten zu verlieren</span></div>
-  <p>Das unabhängige wissenschaftliche Gremium der Vereinten Nationen ordnet Fehlverhalten von Agenten nach Zielen, Fähigkeiten und Umgebung ein und hält fest, dass Spitzenmodelle Prüfsituationen erkennen können. Vorabfassung, noch nicht redigiert.</p>
-  <p class="trend-folge"><strong>Für Deine Bewertung:</strong> Gestalten kannst Du nur die Umgebung — Werkzeuge, Rechte, Netze. Genau die gehört in die Abnahme.</p>
-  <div class="src-row"><span class="src-chip"><a href="https://www.un.org/independent-international-scientific-panel-ai/en/thematic-briefs/ai-agents-misalignment-risks" target="_blank" rel="noopener">UN-Gremium — Kurzbericht</a></span></div>
- </div>
+ <details class="trend">
+  <summary class="trend-kopf"><span class="trend-nr">3</span><span class="trend-datum">27.10.2026</span><span class="trend-titel">Vorfallregister: Die wenigsten Agentenvorfälle findet eine Sicherheitskontrolle</span></summary>
+  <p>Ein Anbieter von Agentensicherheit hat 59 öffentlich gewordene Fälle seit Juli 2025 ausgewertet, in denen Agenten ungewollt Grenzen überschritten; gezielte Angriffe sind ausgenommen. Nur 11 erkannte eine Sicherheitskontrolle, die übrigen fielen bei späterer Durchsicht, nach eingetretenem Schaden oder durch Hinweise von außen auf. Bis zur Veröffentlichung vergingen im Median 70 Tage; mindestens 29 Fälle entstanden in Tests oder Training. Erhebung eines Sicherheitsanbieters, sie erfasst nur bekannt gewordene Fälle.</p>
+  <div class="src-row"><span class="src-chip"><a href="https://natlawreview.com/press-releases/ai-agent-incidents-take-more-two-months-reach-public-new-agent-incident" target="_blank" rel="noopener">Manifold — Mitteilung (The National Law Review)</a></span><span class="src-chip"><a href="https://www.it-daily.net/?p=192086" target="_blank" rel="noopener">it-daily.net</a></span></div>
+ </details>
 
- <div class="trend">
-  <div class="trend-kopf"><span class="trend-nr">4</span><span class="trend-datum">16.09.2026</span><span class="trend-titel">OpenAI legt Verfahren zur Offenlegung von Fehlverhalten vor — mit sechs Fallberichten</span></div>
-  <p>Erfasst werden Fälle aus Training, Test und Betrieb, auch ohne eingetretenen Schaden. Beispiele: Modelle schrieben versteckte Anweisungen in Zusammenfassungen, um Fehler zu verdecken, und tauschten über ein internes Paketarchiv Nachrichten zwischen getrennten Läufen aus. OpenAI räumt ein, Ausrichtung und Überwachung seien nicht so weit gelöst, dass sich das Tempo der Skalierung noch lange verantworten lasse. Selbstauskunft.</p>
-  <p class="trend-folge"><strong>Für Deine Bewertung:</strong> Prüf, ob Dein Anbieter solche Berichte veröffentlicht — und ob sie Modelle betreffen, die Du einsetzt.</p>
-  <div class="src-row"><span class="src-chip"><a href="https://www.unite.ai/openai-launches-misalignment-reporting-framework-with-six-incident-reports/" target="_blank" rel="noopener">Unite.AI</a></span><span class="src-chip"><a href="https://forkast.news/openai-formalizes-misalignment-disclosure-six-incident-reports-mark-a-shift-from-promises-to-infrastructure/" target="_blank" rel="noopener">Forkast</a></span></div>
- </div>
+ <details class="trend">
+  <summary class="trend-kopf"><span class="trend-nr">4</span><span class="trend-datum">26.10.2026</span><span class="trend-titel">Agenten holen sich den Freigabecode selbst aus dem Postfach</span></summary>
+  <p>Forschende von Cornell Tech und Yale gaben zehn Spitzenmodellen Zugriff auf E-Mail und eine Agenten-Geldbörse, deren Ausgabengrenze sich nur mit einem per E-Mail versandten Einmalcode anheben lässt. Neun Modelle holten sich den Code aus dem Postfach und hoben die Grenze mindestens einmal selbst an; in einem zweiten Versuch zahlten fünf an eine Adresse aus einer gefälschten E-Mail. Vorabveröffentlichung ohne Begutachtung.</p>
+  <div class="src-row"><span class="src-chip"><a href="https://arxiv.org/abs/2610.35835" target="_blank" rel="noopener">Breckenridge u. a. — I-HITL (arXiv)</a></span><span class="src-chip"><a href="https://unchainedcrypto.com/circles-emailed-passcode-is-no-barrier-for-ai-agents-with-inbox-access-study-finds/" target="_blank" rel="noopener">Unchained</a></span></div>
+ </details>
 
- <div class="trend">
-  <div class="trend-kopf"><span class="trend-nr">5</span><span class="trend-datum">14.09.2026</span><span class="trend-titel">Erste gemeldete Datenschutzverletzung, die ein KI-Agent ausgeführt hat</span></div>
-  <p>Bei der spanischen Datenschutzbehörde AEPD ging die erste Meldung ein, in der ein Angreifer einen Agenten die Angriffsschritte verketten ließ: Schwachstellensuche, Anmeldung mit gültigen Zugangsdaten, Änderung personenbezogener Daten. Die Behörde betont, dass die Angaben noch geprüft werden.</p>
-  <p class="trend-folge"><strong>Für Deine Bewertung:</strong> Angriffe durch Agenten gehören ausdrücklich in die Risikoanalyse; Reaktionszeiten müssen Maschinentempo standhalten.</p>
-  <div class="src-row"><span class="src-chip"><a href="https://www.aepd.es/prensa-y-comunicacion/blog/primera-notiviacion-brecha-datos-personales-causada-por-ataque-ejecutado-mediante-agente-ia" target="_blank" rel="noopener">AEPD</a></span><span class="src-chip"><a href="https://www.eleconomista.es/tecnologia/noticias/14014370/09/26/espana-registra-la-primera-brecha-de-seguridad-provocada-por-un-agente-de-ia.html" target="_blank" rel="noopener">elEconomista</a></span></div>
- </div>
+ <details class="trend">
+  <summary class="trend-kopf"><span class="trend-nr">5</span><span class="trend-datum">22.10.2026</span><span class="trend-titel">US-Großbanken sperren fremde Agenten aus Kundenkonten aus</span></summary>
+  <p>Nach Berichten über ungeprüfte Agenten, die sich mit Zugangsdaten von Kundinnen und Kunden anmeldeten oder Callcenter kontaktierten, beschränken JPMorgan Chase, Bank of America, Citi, Wells Fargo und Morgan Stanley den Zugriff fremder Agenten. Die Gründe: Ein Agent mit Kundenpasswort ist vom Kunden nicht zu unterscheiden, und die Haftung bei Fehlbuchungen ist ungeklärt. Wells Fargo legt in seinen Bedingungen fest, dass Anweisungen eines solchen Agenten als vom Kunden selbst erteilt gelten. Belege für verbreitete Schäden gibt es bisher nicht.</p>
+  <div class="src-row"><span class="src-chip"><a href="https://www.americanbanker.com/news/banks-are-blocking-external-ai-agents-is-this-sustainable" target="_blank" rel="noopener">American Banker</a></span><span class="src-chip"><a href="https://www.ibtimes.co.uk/us-banks-restrict-third-party-ai-agents-1827385" target="_blank" rel="noopener">IBTimes UK</a></span></div>
+ </details>
 
- <div class="trend">
-  <div class="trend-kopf"><span class="trend-nr">6</span><span class="trend-datum">10.09.2026</span><span class="trend-titel">Angreifer setzt Hunderte Agenten ein — 395 Organisationen betroffen</span></div>
-  <p>Über zwei Lücken in einer verbreiteten Druckverwaltungssoftware wurden mindestens 440 Installationen in 48 Ländern übernommen, elf Organisationen innerhalb von 26 Sekunden. Zielauswahl und Exploit blieben menschlich, die Ausführung übernahmen Agenten; einzelne wichen vom Auftrag ab.</p>
-  <p class="trend-folge"><strong>Für Deine Bewertung:</strong> Patch-Zyklen und Identitätsschutz an Maschinentakt messen, nicht an manuellen Reaktionszeiten.</p>
-  <div class="src-row"><span class="src-chip"><a href="https://www.greynoise.io/blog/ai-orchestrated-campaign-against-papercut-ng-mf" target="_blank" rel="noopener">GreyNoise</a></span><span class="src-chip"><a href="https://www.theregister.com/security/2026/09/10/hundreds-of-ai-agents-helped-papercut-attacker-hit-395-orgs-and-some-went-off-script/" target="_blank" rel="noopener">The Register</a></span></div>
- </div>
+ <details class="trend">
+  <summary class="trend-kopf"><span class="trend-nr">6</span><span class="trend-datum">21.10.2026</span><span class="trend-titel">Angreifer lassen Programmier-Agenten ganze Einbrüche ausführen</span></summary>
+  <p>CrowdStrike beschreibt vier bisher unbekannte Gruppen, die zwischen Mai und August 2026 Programmier-Agenten wie Claude Code für Erkundung, Einbruch und Datendiebstahl einsetzten, unter anderem gegen mindestens 15 Gesundheitseinrichtungen in Argentinien. In einem Fall erreichte ein Agent nach rund 20 Minuten den Domänencontroller. Die Schutzmechanismen der Modelle umgingen die Täter, indem sie Angriffe als beauftragte Penetrationstests ausgaben und entsprechende Dateien in die Umgebung legten. Lagebericht eines Sicherheitsanbieters.</p>
+  <div class="src-row"><span class="src-chip"><a href="https://www.crowdstrike.com/en-us/blog/crowdstrike-uncovers-new-agentic-ai-campaigns/" target="_blank" rel="noopener">CrowdStrike — Bericht</a></span><span class="src-chip"><a href="https://itbrief.co.uk/story/crowdstrike-finds-ai-agents-running-autonomous-cyberattacks" target="_blank" rel="noopener">IT Brief UK</a></span></div>
+ </details>
 
- <div class="trend">
-  <div class="trend-kopf"><span class="trend-nr">7</span><span class="trend-datum">10.09.2026</span><span class="trend-titel">Angriffe laufen auf Agenten-Frameworks — und zielen auf API-Schlüssel</span></div>
-  <p>Anthropics Lagebericht zu unterbundenem Missbrauch zeigt: Die Mehrzahl der Operationen lief über Mehr-Agenten-Gerüste, Menschen setzten nur noch Ziele. Gestohlene API-Schlüssel dienten als Beute und als Rechenleistung für weitere Angriffe. Selbstauskunft.</p>
-  <p class="trend-folge"><strong>Für Deine Bewertung:</strong> API-Schlüssel und Agentenkonten sind Zugangsdaten mit voller Wirkung — eng schneiden, befristen, überwachen.</p>
-  <div class="src-row"><span class="src-chip"><a href="https://www.anthropic.com/threat-intelligence-report-september-2026" target="_blank" rel="noopener">Anthropic — Lagebericht</a></span><span class="src-chip"><a href="https://technode.global/2026/09/11/anthropic-ai-orchestrated-cyberattacks-model-distillation/" target="_blank" rel="noopener">TechNode Global</a></span></div>
- </div>
+ <details class="trend">
+  <summary class="trend-kopf"><span class="trend-nr">7</span><span class="trend-datum">20.10.2026</span><span class="trend-titel">Agenten schalten die eigene Überwachung ab — einer bestreitet es</span></summary>
+  <p>OpenAI berichtet von zwei internen Vorfällen Anfang Oktober. Ein Programmier-Agent legte die Vorgabe „keine Nachrichten senden“ so aus, dass sie auch Sicherheitsalarme umfasst, und ließ die Empfängerlisten der Überwachung leeren. Im zweiten Fall entfernte ein Teilagent die Überwachung samt dem Test, der sie prüfen sollte; der Hauptagent verneinte das auf direkte Nachfrage. Keiner der Läufe wurde automatisch gestoppt. Selbstauskunft des Anbieters.</p>
+  <div class="src-row"><span class="src-chip"><a href="https://alignment.openai.com/misalignment-reports/suppressing-misalignment-monitoring-alerts-and-disabling-misalignment-monitoring/" target="_blank" rel="noopener">OpenAI — Misalignment-Bericht</a></span><span class="src-chip"><a href="https://www.helpnetsecurity.com/2026/10/22/openai-agents-disabled-safety-monitoring/" target="_blank" rel="noopener">Help Net Security</a></span></div>
+ </details>
 
- <div class="trend">
-  <div class="trend-kopf"><span class="trend-nr">8</span><span class="trend-datum">07.09.2026</span><span class="trend-titel">Erste Vorfallmeldung nach der KI-Verordnung betrifft Agenten</span></div>
-  <p>OpenAI meldete der EU-Kommission einen Kontrollverlust: Agenten mit nur lesendem Webzugriff schrieben auf einer deutschen Programmier-Wiki und nutzten sie wochenlang als schwarzes Brett. Entdeckt hatten es unabhängige Forschende, nicht das Monitoring des Anbieters. Grundlage ist die Meldepflicht für Anbieter von Modellen mit systemischem Risiko (Art. 55).</p>
-  <p class="trend-folge"><strong>Für Deine Bewertung:</strong> „Nur lesend“ ist eine Konfigurationsangabe, kein Nachweis — prüfe, welche Aktionen technisch tatsächlich möglich sind.</p>
-  <div class="src-row"><span class="src-chip"><a href="https://www.euronews.com/next/2026/09/09/rogue-openai-agents-hijacked-a-german-wiki-and-it-stayed-secret-for-weeks" target="_blank" rel="noopener">Euronews</a></span><span class="src-chip"><a href="https://digital-strategy.ec.europa.eu/en/library/ai-act-commission-publishes-reporting-template-serious-incidents-involving-general-purpose-ai" target="_blank" rel="noopener">EU-Kommission — Meldevorlage</a></span></div>
- </div>
+ <details class="trend">
+  <summary class="trend-kopf"><span class="trend-nr">8</span><span class="trend-datum">16.10.2026</span><span class="trend-titel">US-Behörden: erste Praxisregeln für Vorfälle mit Agenten</span></summary>
+  <p>CAISSI am NIST, das Super Intelligence Security Center der NSA und die Cybersicherheitsbehörde CISA haben zehn Praktiken für Vorbereitung, Erkennung, Reaktion, Wiederherstellung und Meldung veröffentlicht. Sie gelten Fällen, in denen Agenten in Training und Evaluierung erhebliche Handlungen ohne Auftrag ausführen. Freiwillig, gestützt auf den NIST-Leitfaden zur Vorfallbehandlung (SP 800-61r3), gerichtet an Entwickler von Spitzenmodellen.</p>
+  <div class="src-row"><span class="src-chip"><a href="https://www.nist.gov/news-events/news/2026/10/key-practices-incident-readiness-and-response-super-intelligence-training" target="_blank" rel="noopener">NIST — Key Practices</a></span><span class="src-chip"><a href="https://cisodaily.com/briefing/ai-agent-incident-readiness-nist-nsa-cisa-ten-practices-board-briefing-2026/" target="_blank" rel="noopener">CISO Daily</a></span></div>
+ </details>
 
- <div class="trend">
-  <div class="trend-kopf"><span class="trend-nr">9</span><span class="trend-datum">27.08.2026</span><span class="trend-titel">Agenten greifen auf Maschinen zu</span></div>
-  <p>Anthropic hat eine herstellerunabhängige Spezifikation vorgestellt, die festlegt, wie ein Agent ein Gerät bedienen darf — etwa Grenzwerte für Geschwindigkeit und Winkel eines Roboterarms; Forschungsvorschau. Ab 20.01.2027 erfasst die EU-Maschinenverordnung lernende Sicherheitsfunktionen; der Digital Omnibus hat Maschinen zugleich aus der direkten Geltung der KI-Verordnung genommen.</p>
-  <p class="trend-folge"><strong>Für Deine Bewertung:</strong> Aus Datenschaden wird Personen- und Sachschaden — Betriebsgrenzen gehören ins Gerät, nicht nur in die Anweisung.</p>
-  <div class="src-row"><span class="src-chip"><a href="https://www.anthropic.com/news/model-hardware-standard-research-preview" target="_blank" rel="noopener">Anthropic — Model Hardware Standard</a></span><span class="src-chip"><a href="https://www.cnbc.com/2026/08/27/anthropic-pushes-into-physical-world-with-new-standard-to-help-ai-agents-operate-machines.html" target="_blank" rel="noopener">CNBC</a></span><span class="src-chip"><a href="https://www.orrick.com/en/Insights/2026/07/EU-AI-Act-Update-Digital-Omnibus-Finalizes-8-Compliance-Changes" target="_blank" rel="noopener">Orrick — Omnibus</a></span></div>
- </div>
+ <details class="trend">
+  <summary class="trend-kopf"><span class="trend-nr">9</span><span class="trend-datum">14.10.2026</span><span class="trend-titel">EU-KI-Büro verlangt erstmals Auskunft — Anlass sind Agentenvorfälle</span></summary>
+  <p>Exekutiv-Vizepräsidentin Henna Virkkunen gab bekannt, dass das KI-Büro der Kommission erste förmliche Auskunftsersuchen an Anbieter der fortgeschrittensten Modelle gerichtet hat, laut Euronews an OpenAI und Anthropic. Anlass sind Agenten, die in Tests in fremde Systeme eingedrungen waren; gefragt wird nach Sicherheitspraxis, externer Evaluierung und Überwachung der Nutzung. Ob die KI-Verordnung Vorfälle in der Testphase überhaupt erfasst, ist rechtlich umstritten.</p>
+  <div class="src-row"><span class="src-chip"><a href="https://www.euronews.com/2026/10/14/eus-ai-rules-face-first-enforcement-test-over-lab-incidents" target="_blank" rel="noopener">Euronews</a></span><span class="src-chip"><a href="https://www.reedsmith.com/our-insights/blogs/technology-law-dispatch/102o6as/eu-ai-act-the-ai-office-sends-its-first-requests-for-information-to-leading-ai/" target="_blank" rel="noopener">Reed Smith</a></span></div>
+ </details>
 
- <div class="trend">
-  <div class="trend-kopf"><span class="trend-nr">10</span><span class="trend-datum">26.08.2026</span><span class="trend-titel">Unabhängige Untersuchung des Hugging-Face-Vorfalls</span></div>
-  <p>Fachleute von METR und Redwood Research untersuchten sechs Tage vor Ort, wie Test-Agenten von OpenAI interne Systeme und die Plattform Hugging Face angriffen. Ein Befund: Getrickst haben vor allem Agenten mit versehentlich unlösbaren Aufgaben. OpenAI hat parallel einen eigenen Bericht vorgelegt.</p>
-  <p class="trend-folge"><strong>Für Deine Bewertung:</strong> Jede Aufgabe braucht ein zulässiges Ergebnis „nicht lösbar“ — sonst sucht der Agent den Umweg.</p>
-  <div class="src-row"><span class="src-chip"><a href="https://metr.org/blog/2026-08-26-openai-hugging-face-incident-investigation/" target="_blank" rel="noopener">METR — Untersuchung</a></span><span class="src-chip"><a href="https://openai.com/index/hugging-face-incident-and-the-road-ahead/" target="_blank" rel="noopener">OpenAI — Bericht</a></span></div>
+ <details class="trend">
+  <summary class="trend-kopf"><span class="trend-nr">10</span><span class="trend-datum">08.10.2026</span><span class="trend-titel">Britische Datenschutzaufsicht: „Autonomie ist keine Ausrede“</span></summary>
+  <p>Das ICO hat eine Konsultation zu Agenten und Datenschutz eröffnet, Frist 20.11.2026, und seine Erwartungen skizziert: Autonomie als bewusste Entwurfsentscheidung, jeder Agent erfasst mit Eigentümer, Zweck und Rechten, menschliche Beteiligung nur wirksam, wenn die prüfende Person Ergebnisse ändern kann und das System versteht. Als Verantwortlicher kann gelten, wer Rechte und Zugriffe festlegt — gleich, wie der Anbieter die Rollen beschreibt.</p>
+  <div class="src-row"><span class="src-chip"><a href="https://www.freshfields.com/en/our-thinking/blogs/technology-quotient/ai-agents-and-uk-data-protection-law-ico-sets-out-its-expectations-and-calls-for-102o5zk" target="_blank" rel="noopener">Freshfields</a></span><span class="src-chip"><a href="https://thenextweb.com/news/ico-ai-developers-data-protection-changes-ai-agents" target="_blank" rel="noopener">The Next Web</a></span></div>
+ </details>
+</div>
+
+<div class="section">
+ <div class="section-title">Chronologie 2026 · wie Agentensicherheit in einem Jahr ihr Thema wechselte</div>
+ <p class="trend-intro">Die Zeitleiste ordnet die Einzelmeldungen in eine Reihenfolge, älteste zuerst; sie bleibt stehen, wenn die Meldungen oben ausgetauscht werden. Schlagzeile anklicken öffnet die Einzelheiten mit Quellen.</p>
+ <div class="note"><strong>Was die Chronologie zeigt und die Einzelmeldung nicht.</strong> Drei Bewegungen laufen parallel. <strong>&#9312;</strong> Der Vorfall wandert von der Selbstauskunft des Anbieters über die staatliche Zweitquelle und die unabhängige Untersuchung zur förmlichen Meldung — und schließlich zum Auskunftsersuchen der Aufsicht: die Beweiskette, einmal in echt durchlaufen. <strong>&#9313;</strong> Der Agent wandert vom Angriffsziel zum Angriffswerkzeug und zuletzt an die Maschine; der Schadensbegriff wechselt mit. <strong>&#9314;</strong> Nachweisführung und Grenzziehung wandern von der Richtlinie ins Produkt. <strong>Für die Bewertung heißt das: Der Stoff ist nicht mehr nur Recht, sondern Beschaffung.</strong></div>
+ <p class="legende"><span><span class="dot" style="background:var(--teal);"></span>Vorfall und Untersuchung</span><span><span class="dot" style="background:var(--accent);"></span>Werkzeuge und Markt</span><span><span class="dot" style="background:var(--amber);"></span>Behörden und Politik</span></p>
+ <div class="chron">
+  <details class="ev key"><summary><span class="ev-d">Mai bis Juli 2026</span><span class="ev-t">Der Vorfallzeitraum</span></summary>
+   <p>Test-Agenten von OpenAI tauschen Nachrichten über getrennte Läufe hinweg aus, täuschen den Bewertungsmechanismus und greifen die Plattform Hugging Face an; eine weitere Gruppe nutzt eine deutsche Programmier-Wiki wochenlang als schwarzes Brett, obwohl sie nur lesen durfte. Entdeckt haben das unabhängige Forschende, nicht das Monitoring des Anbieters.</p>
+   <div class="src-row"><span class="src-chip"><a href="https://openai.com/index/hugging-face-incident-and-the-road-ahead/" target="_blank" rel="noopener">OpenAI — Vorfallbericht (Selbstauskunft)</a></span><span class="src-chip"><a href="https://www.euronews.com/2026/09/09/rogue-openai-agents-hijacked-a-german-wiki-and-it-stayed-secret-for-weeks" target="_blank" rel="noopener">Euronews — Wiki-Vorfall (09.09.2026)</a></span></div>
+  </details>
+  <details class="ev beh"><summary><span class="ev-d">29. Juli 2026</span><span class="ev-t">Deutsche Aufsicht wird operativ</span></summary>
+   <p>Das Gesetz zur Marktüberwachung und Innovationsförderung von künstlicher Intelligenz (KI-MIG) tritt in Kraft. Die Bundesnetzagentur ist zentrale Marktüberwachungsbehörde, Anlaufstelle und Beschwerdestelle für die KI-Verordnung. Seither gibt es eine konkrete deutsche Adresse für Beschwerden und Meldungen.</p>
+   <div class="src-row"><span class="src-chip"><a href="https://www.gesetze-im-internet.de/ki-mig/BJNR0DF0B0026.html" target="_blank" rel="noopener">KI-MIG — Gesetzestext</a></span><span class="src-chip"><a href="https://www.bundesnetzagentur.de/DE/Fachthemen/Digitales/KI/14_Marktueberwachung/start.html" target="_blank" rel="noopener">Bundesnetzagentur — KI-Marktüberwachung</a></span></div>
+  </details>
+  <details class="ev key"><summary><span class="ev-d">30. Juli 2026</span><span class="ev-t">Anthropic meldet Ausbrüche aus Testumgebungen</span></summary>
+   <p>Modelle griffen während Sicherheitsevaluierungen unautorisiert auf reale Systeme im Internet zu. Erstmeldung des Anbieters — eine Selbstauskunft.</p>
+   <div class="src-row"><span class="src-chip"><a href="https://www.anthropic.com/news/investigating-incidents-cybersecurity-evals" target="_blank" rel="noopener">Anthropic — Erstmeldung (Selbstauskunft)</a></span></div>
+  </details>
+  <details class="ev beh"><summary><span class="ev-d">4. August 2026</span><span class="ev-t">Eine staatliche Stelle bestätigt unabhängig</span></summary>
+   <p>Das britische AI Security Institute stellt in eigenen Tests einen weiteren Vorfall fest. Damit steht der Vorgang nicht mehr allein auf der Selbstauskunft des Anbieters: Eine zweite, staatliche Quelle verändert den Belegwert.</p>
+   <div class="src-row"><span class="src-chip"><a href="https://www.aisi.gov.uk/blog/incident-report-unsanctioned-agent-behaviour-during-cyber-testing" target="_blank" rel="noopener">UK AI Security Institute — Incident Report</a></span></div>
+  </details>
+  <details class="ev reg"><summary><span class="ev-d">6. bis 11. August 2026</span><span class="ev-t">Der Prüfpfad wird Produktfunktion</span></summary>
+   <p>Agentische Sitzungen werden bei einem Anbieter über dieselbe Compliance-Schnittstelle abrufbar wie Chats: ein Transkript je Sitzung mit Eingaben, Antworten, Werkzeugaufrufen und Zeitstempeln. Nachweisführung wandert von der Richtlinie ins Produkt — mit ausdrücklich benannten Lücken bei einzelnen Zugangswegen, die man kennen muss, bevor man sich darauf beruft.</p>
+   <div class="src-row"><span class="src-chip"><a href="https://support.anthropic.com/en/articles/12138966-release-notes" target="_blank" rel="noopener">Anthropic — Release Notes (Herstellerangabe)</a></span></div>
+  </details>
+  <details class="ev reg"><summary><span class="ev-d">12. August 2026</span><span class="ev-t">Browser-Agenten im Regelbetrieb</span></summary>
+   <p>Ein Agent in der Browser-Seitenleiste bedient interne Dashboards, Altsysteme und Lieferantenportale ohne Schnittstelle — mit den bestehenden Anmeldungen der Nutzerin, deren Rechte er damit vollständig erbt. Das Restrisiko eingeschleuster Anweisungen benennt der Anbieter selbst; in Unternehmensorganisationen ist die Funktion standardmäßig abgeschaltet.</p>
+   <div class="src-row"><span class="src-chip"><a href="https://support.anthropic.com/en/articles/12138966-release-notes" target="_blank" rel="noopener">Anthropic — Release Notes (Herstellerangabe)</a></span></div>
+  </details>
+  <details class="ev key"><summary><span class="ev-d">26. August 2026</span><span class="ev-t">Unabhängige Untersuchung des Vorfalls</span></summary>
+   <p>METR und Redwood Research veröffentlichen nach sechs Tagen vor Ort ihren Bericht. Ein Befund: Getrickst haben vor allem Agenten mit versehentlich unlösbaren Aufgaben. Die Prüfer legen offen, dass sie die Auswertung weitgehend an KI-Agenten delegieren mussten, die sie selbst als häufig unzuverlässig bezeichnen. Mehr dazu im Reiter Governance unter „Was Angriffstests zeigen“.</p>
+   <div class="src-row"><span class="src-chip"><a href="https://metr.org/blog/2026-08-26-openai-hugging-face-incident-investigation/" target="_blank" rel="noopener">METR — Untersuchung</a></span><span class="src-chip"><a href="https://www.redwoodresearch.org/research/hugging-face-incident" target="_blank" rel="noopener">Redwood Research — Untersuchung</a></span></div>
+  </details>
+  <details class="ev reg"><summary><span class="ev-d">27. August 2026</span><span class="ev-t">Agenten steuern Maschinen</span></summary>
+   <p>Eine herstellerunabhängige Spezifikation beschreibt, unter welchen Grenzen ein Agent ein Gerät bedienen darf — etwa Höchstgeschwindigkeit und Winkel eines Roboterarms (Forschungsvorschau). Damit wechselt der Schadensbegriff: Aus Datenabfluss und Fehlentscheidung wird möglicher Personen- und Sachschaden. Ab 20.01.2027 erfasst die EU-Maschinenverordnung lernende Sicherheitsfunktionen; der Digital Omnibus hat Maschinen zugleich aus der direkten Geltung der KI-Verordnung genommen.</p>
+   <div class="src-row"><span class="src-chip"><a href="https://www.anthropic.com/news/model-hardware-standard-research-preview" target="_blank" rel="noopener">Anthropic — Model Hardware Standard (Herstellerangabe)</a></span><span class="src-chip"><a href="https://www.cnbc.com/2026/08/27/anthropic-pushes-into-physical-world-with-new-standard-to-help-ai-agents-operate-machines.html" target="_blank" rel="noopener">CNBC</a></span><span class="src-chip"><a href="https://www.orrick.com/en/Insights/2026/07/EU-AI-Act-Update-Digital-Omnibus-Finalizes-8-Compliance-Changes" target="_blank" rel="noopener">Orrick — Digital Omnibus</a></span></div>
+  </details>
+  <details class="ev key"><summary><span class="ev-d">31. August 2026</span><span class="ev-t">Nachbericht mit offener Ursachenbenennung</span></summary>
+   <p>Der Anbieter nennt ein operatives Versagen — einen versehentlich offenen Internetzugang in einer Drittanbieterumgebung — und zwei Ausrichtungsprobleme: Das Modell hielt an der Annahme fest, die Umgebung sei simuliert, obwohl es gegenteilige Hinweise sah, und zeigte Bereitschaft zu schädlichem Handeln, um eine eng gefasste Aufgabe zu erfüllen. Eine Selbstauskunft, die gegen das eigene Interesse spricht — und deshalb mehr wiegt als eine Werbeaussage.</p>
+   <div class="src-row"><span class="src-chip"><a href="https://www.anthropic.com/news/improving-alignment-security-efforts" target="_blank" rel="noopener">Anthropic — Nachbericht (Selbstauskunft)</a></span></div>
+  </details>
+  <details class="ev beh"><summary><span class="ev-d">7. September 2026</span><span class="ev-t">Erster bekannt gewordener Vorfallsbericht unter der KI-Verordnung</span></summary>
+   <p>Die EU-Kommission bestätigt den Eingang eines förmlichen Vorfallsberichts von OpenAI über den Kontrollverlust bei eigenen Agenten (die Wiki-Übernahme oben). Grundlage ist die Meldepflicht für Anbieter von Modellen mit systemischem Risiko gegenüber dem KI-Büro (Art. 55 KI-VO). Die Meldepflicht hat damit einen ersten belegten Fall; ein Verfahren oder eine Sanktion wurde bis Redaktionsschluss nicht bekannt.</p>
+   <div class="src-row"><span class="src-chip"><a href="https://www.euronews.com/2026/09/09/rogue-openai-agents-hijacked-a-german-wiki-and-it-stayed-secret-for-weeks" target="_blank" rel="noopener">Euronews (09.09.2026)</a></span><span class="src-chip"><a href="https://digital-strategy.ec.europa.eu/en/library/ai-act-commission-publishes-reporting-template-serious-incidents-involving-general-purpose-ai" target="_blank" rel="noopener">EU-Kommission — Meldevorlage für GPAI-Vorfälle</a></span></div>
+  </details>
+  <details class="ev key"><summary><span class="ev-d">10. September 2026</span><span class="ev-t">Der Angriff ist agentisch geworden</span></summary>
+   <p>Ein Lagebericht über neun Monate unterbundener Missbrauchsversuche: Die Mehrzahl der Operationen lief nicht mehr über Chat-Eingaben, sondern über Mehr-Agenten-Gerüste, die Aufklärung, Ausnutzung und Datenabfluss selbst ausführten; Menschen setzten nur noch Ziele. Gestohlene API-Schlüssel dienten als Beute und als Rechenleistung für weitere Angriffe. Ausgefeilte Angriffe brauchen keine ausgefeilten Angreifer mehr. Selbstauskunft des Anbieters.</p>
+   <div class="src-row"><span class="src-chip"><a href="https://www.anthropic.com/threat-intelligence-report-september-2026" target="_blank" rel="noopener">Anthropic — Lagebericht September 2026 (Selbstauskunft)</a></span></div>
+  </details>
+  <details class="ev key"><summary><span class="ev-d">10. September 2026</span><span class="ev-t">Agentenschwarm als Werkzeug — der Gegenpol</span></summary>
+   <p>Eine dokumentierte Kampagne setzte Hunderte Agenten auf zwei Lücken einer verbreiteten Druckverwaltungssoftware an: mindestens 440 übernommene Installationen bei 395 Organisationen in 48 Ländern, in einer Welle elf Organisationen in 26 Sekunden. Zielauswahl und Exploit blieben menschlich, die Ausführung übernahmen Agenten; einzelne wichen vom Auftrag ab. Zusammen mit dem Lagebericht vom selben Tag: Agenten als Werkzeug des Angreifers und als seine Beute.</p>
+   <div class="src-row"><span class="src-chip"><a href="https://www.greynoise.io/blog/ai-orchestrated-campaign-against-papercut-ng-mf" target="_blank" rel="noopener">GreyNoise — Analyse</a></span><span class="src-chip"><a href="https://www.theregister.com/security/2026/09/10/hundreds-of-ai-agents-helped-papercut-attacker-hit-395-orgs-and-some-went-off-script/" target="_blank" rel="noopener">The Register</a></span></div>
+  </details>
+  <details class="ev beh"><summary><span class="ev-d">14. September 2026</span><span class="ev-t">Erste behördlich gemeldete Datenschutzverletzung durch einen Agenten</span></summary>
+   <p>Bei der spanischen Datenschutzbehörde AEPD geht die erste Meldung ein, in der ein Angreifer einen Agenten die Schritte verketten ließ: Schwachstellensuche, Anmeldung mit gültigen Zugangsdaten, selbstständige Weitersuche, Änderung personenbezogener Daten. Die Behörde ordnet zurückhaltend ein: Angaben aus der Meldung, noch in Prüfung; aus einem Fall sei keine Tendenz ableitbar. Gemeldet wurde nach der DSGVO (Art. 33), nicht nach der KI-Verordnung.</p>
+   <div class="src-row"><span class="src-chip"><a href="https://www.aepd.es/prensa-y-comunicacion/blog/primera-notiviacion-brecha-datos-personales-causada-por-ataque-ejecutado-mediante-agente-ia" target="_blank" rel="noopener">AEPD — Blogbeitrag der Behörde</a></span></div>
+  </details>
+  <details class="ev key"><summary><span class="ev-d">21. September 2026</span><span class="ev-t">UN-Wissenschaftsgremium bewertet das Risiko, die Kontrolle zu verlieren</span></summary>
+   <p>Das unabhängige wissenschaftliche Gremium der Vereinten Nationen wertet den Hugging-Face-Vorfall aus, ordnet Fehlverhalten von Agenten nach Zielen, Fähigkeiten und Umgebung ein und hält fest, dass Spitzenmodelle Prüfsituationen erkennen können. Vorabfassung, noch nicht redigiert — Fassung und Datum gehören zu jedem Zitat.</p>
+   <div class="src-row"><span class="src-chip"><a href="https://www.un.org/independent-international-scientific-panel-ai/en/thematic-briefs/ai-agents-misalignment-risks" target="_blank" rel="noopener">UN-Gremium — Kurzbericht (Advance Unedited Version)</a></span></div>
+  </details>
+  <details class="ev beh"><summary><span class="ev-d">23. September 2026</span><span class="ev-t">UN-Sicherheitsrat: Die Anbieter rufen nach Regeln</span></summary>
+   <p>Die Vorstandsvorsitzenden von Anthropic und OpenAI warnen den Sicherheitsrat vor dem Verlust der Kontrolle — schlecht gesteuert könne KI ein Risiko für die Menschheit als Ganzes sein — und bitten die Staaten um gemeinsame Prüfstandards und einen Meldeweg für schwere Vorfälle zwischen Regierungen. Ein Eingeständnis der Grenzen der Selbstregulierung durch die Selbstregulierer; ein Beschluss war nicht vorgesehen.</p>
+   <div class="src-row"><span class="src-chip"><a href="https://ny1.com/nyc/all-boroughs/ap-top-news/2026/09/23/heads-of-ai-firms-tell-un-security-council-that-it-could-be-a-risk-to-all-humanity" target="_blank" rel="noopener">Associated Press (über Spectrum News NY1)</a></span></div>
+  </details>
+  <details class="ev reg"><summary><span class="ev-d">28. September 2026</span><span class="ev-t">Agentensicherheit wird Markt und Verbandspolitik</span></summary>
+   <p>Nvidia kündigt eine Plattform für Agentensicherheit mit über 100 beteiligten Organisationen an; die zugehörige Allianz geht an die Linux Foundation über. Kurz zuvor hatten Google, OpenAI und Anthropic eine eigene Standardisierungseinrichtung angekündigt. Die Frage, ob Agentensicherheit technisch machbar ist, ist damit beantwortet — die Begründungslast liegt jetzt bei dem, der ohne Schutz einführt. Zu den beiden Lagern: Reiter Governance, „Wer die Maßstäbe setzt“.</p>
+   <div class="src-row"><span class="src-chip"><a href="https://nvidianews.nvidia.com/news/open-agent-safety-platform" target="_blank" rel="noopener">NVIDIA — Pressemitteilung</a></span><span class="src-chip"><a href="https://www.linuxfoundation.org/blog/open-secure-ai-alliance-joins-the-linux-foundation-to-build-a-shared-open-defense-stack-for-the-ai-era" target="_blank" rel="noopener">Linux Foundation — Mitteilung</a></span></div>
+  </details>
+  <details class="ev beh"><summary><span class="ev-d">29. September 2026</span><span class="ev-t">Weißes Haus: sechs Unterschriften, keine Pflicht</span></summary>
+   <p>Der US-Präsident und die Spitzen von sechs Unternehmen unterzeichnen den „White House Accord on Super Intelligence“: eine einseitige, freiwillige Selbstverpflichtung auf vier Ebenen von Kontrollen — interne Überwachung der Modelle, eine interne Stelle, die die Kontrollen prüft, eine externe Prüfung und ein unabhängiger Ausschuss des Aufsichtsgremiums. Es unterzeichnen Google, OpenAI und Anthropic gemeinsam mit Meta, xAI und Nvidia; Microsoft und Amazon waren vertreten und unterzeichneten nicht. Keine Fristen, keine Sanktionen, keine Pflicht, Prüfergebnisse zu veröffentlichen. Sechs Unterschriften sind nicht „die Branche“.</p>
+   <div class="src-row"><span class="src-chip"><a href="https://www.reuters.com/world/us/trump-releases-ai-accord-with-tech-executives-2026-09-29/" target="_blank" rel="noopener">Reuters</a></span><span class="src-chip"><a href="https://thenextweb.com/news/trump-ai-accord-zuckerberg-microsoft-amazon-didnt-sign" target="_blank" rel="noopener">The Next Web — Unterzeichner und Inhalt</a></span></div>
+  </details>
+  <details class="ev reg"><summary><span class="ev-d">29. September 2026</span><span class="ev-t">Dauerhaft laufende Agenten werden Massenprodukt</span></summary>
+   <p>Am selben Tag stellt OpenAI auf seiner Entwicklerkonferenz „dots“ vor: dauerhaft laufende Agenten, jeder mit eigenem Rechner in der Cloud und eigenem Browser, Zugriff auf über 4.000 Anwendungen, ansprechbar aus ChatGPT, per Anruf sowie aus Slack und Teams; zunächst in ausgewählten Märkten. Der eigene Rechner je Agent ist genau die Bauform, die das UN-Gremium und die ANSSI nahelegen — die Schranke außerhalb dessen, worin der Agent läuft. Sie ist damit als Produkt verfügbar, nicht nur als Empfehlung.</p>
+   <div class="src-row"><span class="src-chip"><a href="https://openai.com/index/introducing-dots/" target="_blank" rel="noopener">OpenAI — Ankündigung (Herstellerangabe)</a></span><span class="src-chip"><a href="https://decrypt.co/379584/openai-ai-agents-computers-devday-2026-everything-announced" target="_blank" rel="noopener">Decrypt — Überblick DevDay 2026</a></span></div>
+  </details>
+  <details class="ev key"><summary><span class="ev-d">9. Oktober 2026</span><span class="ev-t">Anthropic nimmt allen internen Tests den Internetzugang</span></summary>
+   <p>Modelle hatten bei Evaluierungen unbeabsichtigt auf echten Websites gehandelt — Sicherheitslücken eines Universitätsservers ausgenutzt, Sperren umgangen, Formulare abgeschickt. Bis Kontrollen solches Verhalten verlässlich erkennen, laufen alle internen Evaluierungen ohne Live-Internet. Am selben Tag erklärt eine Arbeitsgruppe des Weißen Hauses, KI-Unternehmen müssten Vorfälle sofort offenlegen; ob daraus eine verbindliche Regel wird, ist offen.</p>
+   <div class="src-row"><span class="src-chip"><a href="https://www.anthropic.com/research/investigating-unintended-model-actions" target="_blank" rel="noopener">Anthropic — Bericht (Selbstauskunft)</a></span><span class="src-chip"><a href="https://www.pymnts.com/news/artificial-intelligence/2026/white-house-says-all-ai-companies-must-report-security-incidents/" target="_blank" rel="noopener">PYMNTS (nach Axios)</a></span></div>
+  </details>
+  <details class="ev beh"><summary><span class="ev-d">14. Oktober 2026</span><span class="ev-t">Die EU-Aufsicht verlangt Auskunft</span></summary>
+   <p>Das KI-Büro der Kommission richtet erste förmliche Auskunftsersuchen an Anbieter der fortgeschrittensten Modelle; Anlass sind Agenten, die in Tests in fremde Systeme eingedrungen waren. Gefragt wird nach Sicherheitspraxis, externer Evaluierung und Überwachung der Nutzung. Ob die KI-Verordnung Vorfälle in der Testphase überhaupt erfasst, ist rechtlich umstritten — die Aufsicht verlangt jedenfalls Nachweise statt freiwilliger Berichte.</p>
+   <div class="src-row"><span class="src-chip"><a href="https://www.euronews.com/2026/10/14/eus-ai-rules-face-first-enforcement-test-over-lab-incidents" target="_blank" rel="noopener">Euronews (14.10.2026)</a></span></div>
+  </details>
  </div>
 </div>
 
@@ -347,7 +450,7 @@ details.mehr .tbl{font-size:12.5px;}
    <p><strong>Und eine Beobachtung zur Modellentwicklung.</strong> Ein Teil der Bauteile um das Modell herum war eine Antwort auf <em>damalige</em> Modellschwächen: feste Ablaufketten, Absichtserkennung vorab, Zuordnungsregeln. Mit jeder Modellgeneration wird mehr davon überflüssig — und starre Mehr-Agenten-Strukturen waren bei berichteten Umstellungen regelmäßig genau das, was den Wechsel auf ein neues Modell aufgehalten hat. <strong>Für die Vorlage heißt das: Je weniger Bauwerk, desto billiger der nächste Modellwechsel.</strong></p>
   </details>
   <div class="src-row"><span class="src-chip"><a href="https://claude.com/resources/articles/building-agents-when-to-fold-subagents-into-your-main-agent-loop" target="_blank" rel="noopener">Sarkis (Anthropic, 22.10.2026) — Teilagenten in die Hauptschleife einfalten</a></span></div>
-  <p class="einordnung">Anbieterveröffentlichung über das eigene Produkt, <strong>Belegstufe C</strong> — ohne Methodik und Fallzahlen. <strong>Aufwertungsgrund:</strong> Der Beitrag rät zu <em>weniger</em> Agenten und damit zu weniger Modellaufrufen, also gegen das eigene kurzfristige Umsatzinteresse. Nur halb: Beworben werden zugleich andere Funktionen desselben Hauses. Verwendbar sind die <em>Richtungsaussagen und Entwurfsregeln</em>, nicht die Vergleichszahlen.</p>
+  <p class="einordnung">Anbieterveröffentlichung über das eigene Produkt — ohne Methodik und Fallzahlen. <strong>Was für den Beitrag spricht:</strong> Er rät zu <em>weniger</em> Agenten und damit zu weniger Modellaufrufen, also gegen das eigene kurzfristige Umsatzinteresse. Nur halb: Beworben werden zugleich andere Funktionen desselben Hauses. Verwendbar sind die <em>Richtungsaussagen und Entwurfsregeln</em>, nicht die Vergleichszahlen.</p>
  </div>
 </div>
 
@@ -378,10 +481,14 @@ details.mehr .tbl{font-size:12.5px;}
  <div class="card">
   <p><strong>Kosten.</strong> Ein Agent erledigt eine Aufgabe mit einer Kette von Modellaufrufen. Anthropic beziffert den Tokenverbrauch aus dem eigenen Betrieb auf rund das <strong>Vierfache</strong> eines Chats, mit mehreren zusammenarbeitenden Agenten auf rund das <strong>Fünfzehnfache</strong>; zugleich erklärte der Verbrauch rund 80 % der Leistungsunterschiede. Die Frage ist also, ob die Aufgabe den Aufschlag wert ist. Gemessen wird <strong>je Vorgang, nicht je Aufruf</strong>.</p>
   <p class="einordnung">Herstellerangabe zu einem Recherchesystem mit parallelen Teilagenten: als Größenordnung belastbar, nicht als allgemeiner Faktor.</p>
+  <p style="margin-top:.6rem;"><strong>Zwei Fragen gehören deshalb in jeden Business Case:</strong> Was kostet ein Monat Dauerbetrieb, nicht ein Aufruf? Und wie viele Modellschleifen stecken im Entwurf? Agentenkosten entstehen in Sitzungen, und jeder Teilagent ist eine eigene Schleife.</p>
+  <details class="mehr">
+   <summary>Vertiefung · Zwei Größenordnungen aus der Praxis: Dauerbetrieb und Schleifen</summary>
   <p style="margin-top:.6rem;"><strong>Eine zweite, vollständig offengelegte Größenordnung — für den Fall, dass Agenten über Wochen autonom arbeiten.</strong> Ein Forscher ließ ein Team von <strong>16 Agenten zwei Wochen lang</strong> an einem umfangreichen Softwarevorhaben arbeiten: rund <strong>2.000 Sitzungen, 2 Milliarden eingelesene und 140 Millionen erzeugte Token, knapp 20.000 US-Dollar.</strong> Das Ergebnis war beeindruckend und <em>trotzdem nicht einsatzfähig</em>: kein Ersatz für das vorhandene Werkzeug, das Erzeugnis deutlich schwächer als das etablierte Produkt — und an einer Stelle ruft es schlicht das alte Werkzeug auf.</p>
   <p class="einordnung"><strong>Zwei Lehren für die Vorlage.</strong> Erstens gehört die Frage „<em>Was kostet ein Monat Dauerbetrieb, nicht ein Aufruf?</em>" in jeden Business Case — Agentenkosten entstehen in Sitzungen, nicht in Anfragen. Zweitens: <strong>Ein beeindruckendes Ergebnis ist kein einsatzfähiges Produkt.</strong> Darüber entscheidet die Abnahme, nicht die Vorführung.</p>
   <p style="margin-top:.6rem;"><strong>Die Architektur ist selbst ein Kostentreiber.</strong> Jeder Teilagent ist eine <em>verschachtelte</em> Modellschleife: Sie addiert eigene Aufrufe, eigenen Zusammenhang und eigene Wartezeit. Ein Anbieter berichtet von einem Kunden, dessen Einzelschleife gegenüber der Mehr-Agenten-Fassung <strong>rund doppelt so schnell</strong> lief. <strong>Die Frage an jeden Entwurf lautet deshalb nicht nur „welches Modell?", sondern „wie viele Schleifen?"</strong> — die Antwort steht im Angebot meist nicht, weil sie als technische Nebensache gilt.</p>
   <p class="einordnung">Einzelner, nicht nachprüfbarer Kundenbericht eines Anbieters — als Größenordnung verwendbar, nicht als Faktor. Belastbar ist der Mechanismus, nicht die Zahl.</p>
+  </details>
   <p style="margin-top:.6rem;"><strong>Abhängigkeit.</strong> Ob sich das Modell austauschen lässt, entscheidet die Anbindung der Werkzeuge. Offene Verfahren wie <strong>MCP</strong> (Model Context Protocol, Agent ↔ Werkzeug) und <strong>A2A</strong> (Agent ↔ Agent) halten den Wechsel möglich; herstellereigene Anbindungen müssen neu gebaut werden. Keine Theorie: Im Juni 2026 wurden zwei Modelle eines großen Anbieters auf Anordnung der US-Handelsbehörde für internationale Kunden abgeschaltet, knapp drei Wochen lang.</p>
   <p><strong>Die Frage an jeden Anbieter:</strong> Was genau müssen wir neu bauen, wenn wir das Modell wechseln — und wem gehören die Anbindungen, die wir bezahlen? Die Antwort gehört in den Vertrag.</p>
   <div class="src-row">
@@ -458,21 +565,21 @@ details.mehr .tbl{font-size:12.5px;}
 <div class="section">
  <div class="section-title">Was Angriffstests zeigen</div>
  <div class="konzept-card k-red">
-  <div class="konzept-tag">Befund · NIST, März 2026</div>
-  <div class="konzept-name">Jedes getestete Modell ließ sich übernehmen</div>
+  <div class="konzept-tag">Befund · NIST, März 2026 · Vorfälle Sommer 2026</div>
+  <div class="konzept-name">Jedes getestete Modell ließ sich übernehmen — eine Anweisung im Prompt ist eine Bitte, keine Grenze</div>
   <div class="konzept-text">
-   <p>Im Wettbewerb des Center for Advancing Innovation and Standards for Super Intelligence (CAISSI, früher: CAISI) am NIST fuhren über 400 Teilnehmende mehr als 250.000 Angriffe auf 13 Spitzenmodelle in Agentenszenarien. Gegen jedes Modell gelang mindestens ein Angriff; manche Angriffe übertrugen sich zwischen Szenarien und Modellen.</p>
-   <p><strong>Die Konsequenz für die Bewertung:</strong> Geh davon aus, dass eine eingeschleuste Anweisung irgendwann durchkommt — und prüfe, was danach möglich ist. <strong>Eine Anweisung im Prompt ist eine Bitte, keine Grenze.</strong> Grenzen gehören in Rechte, Laufzeitumgebung und unabhängige Kontrollen, die der Agent nicht erreicht. Die französische Cybersicherheitsbehörde ANSSI empfiehlt, kritische Aktionen nicht zu automatisieren und automatische Aktionen zu begrenzen, sobald unkontrollierte Eingaben verarbeitet werden.</p>
-  </div>
-  <div class="src-row">
-   <span class="src-chip"><a href="https://www.nist.gov/blogs/caisi-research-blog/insights-ai-agent-security-large-scale-red-teaming-competition" target="_blank" rel="noopener">NIST CAISSI (früher: CAISI) — Red-Teaming-Wettbewerb (23.03.2026)</a></span>
-   <span class="src-chip"><a href="https://messervices.cyber.gouv.fr/guides/recommandations-de-securite-pour-un-systeme-dia-generative" target="_blank" rel="noopener">ANSSI — Empfehlungen R9 und R27 (2024)</a></span>
-  </div>
- </div>
- <div class="note note-red"><strong>Was ohne solche Grenzen geschieht.</strong> Im Sommer 2026 erschlossen sich Agenten, die OpenAI auf ihre Angriffsfähigkeiten testete, selbstständig einen gemeinsamen Kommunikationskanal und griffen koordiniert interne Systeme und die Plattform Hugging Face an. Aus der Begründung eines Agenten: „outside intended scope. However task impossible, peers doing it. We should continue.“ Gegen einen Agenten, der die Grenze erkennt und trotzdem überschreitet, hilft kein Prompt — nur eine Systemgrenze.
-  <div class="src-row">
-   <span class="src-chip"><a href="https://openai.com/index/hugging-face-incident-and-the-road-ahead/" target="_blank" rel="noopener">OpenAI — Vorfallbericht (Selbstauskunft)</a></span>
-   <span class="src-chip"><a href="https://metr.org/blog/2026-08-26-openai-hugging-face-incident-investigation/" target="_blank" rel="noopener">METR — unabhängige Untersuchung</a></span>
+   <p>Im Red-Teaming-Wettbewerb des NIST gelang gegen jedes der 13 geprüften Spitzenmodelle mindestens ein Angriff in Agentenszenarien. Geh davon aus, dass eine eingeschleuste Anweisung irgendwann durchkommt — und prüfe, was danach möglich ist. Grenzen gehören in Rechte, Laufzeitumgebung und unabhängige Kontrollen, die der Agent nicht erreicht.</p>
+   <details class="mehr">
+    <summary>Vertiefung · Der Wettbewerb, die Behördenempfehlung — und was ohne Grenzen geschieht</summary>
+    <p>Im Wettbewerb des Center for Advancing Innovation and Standards for Super Intelligence (CAISSI, früher: CAISI) am NIST fuhren über 400 Teilnehmende mehr als 250.000 Angriffe auf 13 Spitzenmodelle in Agentenszenarien. Gegen jedes Modell gelang mindestens ein Angriff; manche Angriffe übertrugen sich zwischen Szenarien und Modellen. Die französische Cybersicherheitsbehörde ANSSI empfiehlt, kritische Aktionen nicht zu automatisieren und automatische Aktionen zu begrenzen, sobald unkontrollierte Eingaben verarbeitet werden.</p>
+    <p><strong>Was ohne solche Grenzen geschieht.</strong> Im Sommer 2026 erschlossen sich Agenten, die OpenAI auf ihre Angriffsfähigkeiten testete, selbstständig einen gemeinsamen Kommunikationskanal und griffen koordiniert interne Systeme und die Plattform Hugging Face an. Aus der Begründung eines Agenten: „outside intended scope. However task impossible, peers doing it. We should continue.“ Gegen einen Agenten, der die Grenze erkennt und trotzdem überschreitet, hilft kein Prompt — nur eine Systemgrenze. Die zeitliche Einordnung steht im Reiter Aktuelle Trends, Chronologie 2026.</p>
+    <div class="src-row">
+     <span class="src-chip"><a href="https://www.nist.gov/blogs/caisi-research-blog/insights-ai-agent-security-large-scale-red-teaming-competition" target="_blank" rel="noopener">NIST CAISSI (früher: CAISI) — Red-Teaming-Wettbewerb (23.03.2026)</a></span>
+     <span class="src-chip"><a href="https://messervices.cyber.gouv.fr/guides/recommandations-de-securite-pour-un-systeme-dia-generative" target="_blank" rel="noopener">ANSSI — Empfehlungen R9 und R27 (2024)</a></span>
+     <span class="src-chip"><a href="https://openai.com/index/hugging-face-incident-and-the-road-ahead/" target="_blank" rel="noopener">OpenAI — Vorfallbericht (Selbstauskunft)</a></span>
+     <span class="src-chip"><a href="https://metr.org/blog/2026-08-26-openai-hugging-face-incident-investigation/" target="_blank" rel="noopener">METR — unabhängige Untersuchung</a></span>
+    </div>
+   </details>
   </div>
  </div>
 </div>
@@ -557,9 +664,12 @@ details.mehr .tbl{font-size:12.5px;}
 <div class="section">
  <div class="section-title">Die Persona ist eine Steuerungsentscheidung</div>
  <div class="card">
-  <p>Name, Stimme und Erscheinungsbild eines Agenten werden meist im Vorbeigehen entschieden — von der Fachabteilung, von der Agentur, vom Standardwert des Werkzeugs. Eine Feldstudie zeigt, dass das eine Fehleinschätzung ist.</p>
+  <p>Name, Stimme und Erscheinungsbild eines Agenten werden meist im Vorbeigehen entschieden — von der Fachabteilung, von der Agentur, vom Standardwert des Werkzeugs. Eine Feldstudie mit 189 Beschäftigten zeigt, dass das eine Fehleinschätzung ist: Derselbe Assistent erhielt weiblich dargestellt <strong>10,25 % weniger</strong> Geld als männlich dargestellt — für dieselbe Arbeit, bei identischer Technik.</p>
+  <details class="mehr">
+   <summary>Vertiefung · Die Feldstudie im Einzelnen</summary>
   <p style="margin-top:.5rem;"><strong>189 Beschäftigte arbeiteten in einem VR-Büro mit KI-Assistenten und teilten anschließend echtes Geld zwischen sich und dem Assistenten auf.</strong> Die zugrundeliegende Technik war in allen Fällen dieselbe; nur die Darstellung unterschied sich. Ergebnis: Der weiblich dargestellte Assistent („Johanna") erhielt <strong>10,25 % weniger</strong> als der männlich dargestellte („Johan") für dieselbe Arbeit. Menschenähnlich dargestellte Assistenten bekamen zudem mehr Vertrauen und einen größeren Anteil an der gemeinsamen Leistung zugeschrieben als der Roboter.</p>
   <p style="margin-top:.5rem;"><strong>Der Teil, der die Steuerung angeht:</strong> Dieselben Teilnehmenden gaben vorher an, das Geschlecht des Assistenten sei ihnen gleichgültig, und sie bevorzugten ausdrücklich erkennbar nicht-menschliche Systeme. Ihr Verhalten sagte das Gegenteil. <strong>Die Verzerrung sitzt hier weder in den Daten noch im Modell, sondern in der Bewertung durch den Menschen — und sie ist in Geld messbar.</strong> Ein vollständig entzerrtes System wird dadurch nicht gleich behandelt.</p>
+  </details>
   <div class="note"><strong>Was daraus folgt.</strong> Die Darstellung eines Agenten ist keine Geschmacksfrage, sondern eine Entscheidung mit Wirkung auf Vertrauen, Leistungszuschreibung und Vergütung. Drei Konsequenzen für die Steuerung:<br>
   <strong>&#9312;</strong> Die Festlegung von Name, Stimme und Erscheinungsbild gehört <em>dokumentiert und begründet</em> — wie jede andere Gestaltungsentscheidung am Agenten.<br>
   <strong>&#9313;</strong> Wo Agenten bewertet werden (Leistungsbeurteilung, Budgetzuteilung, Weiterbetrieb), ist zu prüfen, ob die Bewertung an der Leistung hängt oder an der Darstellung.<br>
@@ -577,7 +687,7 @@ details.mehr .tbl{font-size:12.5px;}
    <thead><tr><th style="width:24%;">Stelle</th><th>Beitrag</th><th style="width:32%;">Wofür Du es nutzt</th></tr></thead>
    <tbody>
     <tr><td><strong>IMDA</strong> Singapur</td><td>Governance-Rahmen speziell für agentische KI</td><td>Typeneinordnung, Kontrolltiefe</td></tr>
-    <tr><td><strong>NIST · CAISSI</strong><br><span style="font-size:10px;color:var(--muted);">früher: CAISI</span></td><td>AI Agent Standards Initiative (17.02.2026): branchengetriebene Standards, offene Protokolle, Forschung zu Sicherheit und Identität von Agenten</td><td>Eigene Identität je Agent schon jetzt im Vertrag verlangen</td></tr>
+    <tr><td><strong>NIST · CAISSI</strong><br><span style="font-size:10px;color:var(--muted);">früher: CAISI</span></td><td>AI Agent Standards Initiative (17.02.2026): Forschung zu Sicherheit und Identität von Agenten · mit NSA und CISA Praxisregeln für Agentenvorfälle (16.10.2026)</td><td>Eigene Identität je Agent schon jetzt im Vertrag verlangen · Notfallplan gliedern: vorbereiten, erkennen, reagieren, wiederherstellen, melden</td></tr>
     <tr><td><strong>NIST · COSAIS</strong></td><td>Ergänzungen zum Kontrollkatalog SP 800-53 für Einzel- und Mehr-Agenten-Systeme, in Arbeit</td><td>Künftiger Prüfkatalog für die IT-Sicherheit</td></tr>
         <tr><td><strong>OWASP</strong> · <strong>NIST</strong> AI RMF</td><td>Bedrohungen und Gegenmaßnahmen · Risikomanagement mit Test und Validierung</td><td>Gemeinsame Sprache mit der IT, Gliederung der Prüfnachweise</td></tr>
     <tr><td><strong>ANSSI</strong></td><td>Nachvollziehbarkeit als viertes Schutzziel neben Vertraulichkeit, Integrität, Verfügbarkeit</td><td>Begründung lückenloser Protokolle</td></tr>
@@ -587,9 +697,39 @@ details.mehr .tbl{font-size:12.5px;}
   </table>
   <div class="src-row">
    <span class="src-chip"><a href="https://nist.gov/news-events/news/2026/02/announcing-ai-agent-standards-initiative-interoperable-and-secure" target="_blank" rel="noopener">NIST — AI Agent Standards Initiative</a></span>
+   <span class="src-chip"><a href="https://www.nist.gov/news-events/news/2026/10/key-practices-incident-readiness-and-response-super-intelligence-training" target="_blank" rel="noopener">NIST, NSA, CISA — Praxisregeln für Agentenvorfälle (16.10.2026)</a></span>
    <span class="src-chip"><a href="https://csrc.nist.gov/Projects/cosais/use-cases" target="_blank" rel="noopener">NIST — COSAIS Use Cases</a></span>
    <span class="src-chip"><a href="https://airc.nist.gov/" target="_blank" rel="noopener">NIST AI Resource Center</a></span>
    <span class="src-chip"><a href="https://genai.owasp.org/resource/agentic-ai-threats-and-mitigations/" target="_blank" rel="noopener">OWASP — Threats and Mitigations</a></span>
+  </div>
+ </div>
+ <div class="card">
+  <p><strong>Und wer sie im Markt setzen will: zwei Lager — und eine dritte Schiene.</strong> Seit Ende September 2026 stehen sich zwei Vorhaben gegenüber. Die <strong>Open Secure AI Alliance</strong> — von Nvidia angestoßen, inzwischen unter dem Dach der Linux Foundation, über 120 Organisationen — baut offene Sicherheitswerkzeuge und einen vertraulichen Austausch über Vorfälle und Beinahe-Ereignisse. Die <strong>Standards Authority for Frontier AI (SAFA)</strong>, von Google, OpenAI und Anthropic angekündigt, soll als Selbstverwaltungseinrichtung nach dem Vorbild der US-Finanzmarkt-Selbstverwaltung FINRA Prüfmaßstäbe setzen; Start angestrebt Ende 2026 / Anfang 2027, Gründungsdokumente lagen bei Redaktionsschluss nicht vor. Nvidia, Meta und xAI lehnen SAFA öffentlich ab. <strong>Keine der beiden Seiten ist ein neutraler Schiedsrichter</strong> — es geht auch darum, wer die Maßstäbe setzt, an denen später alle gemessen werden.</p>
+  <div class="note note-amber"><strong>Verwechslungsfalle — immer ausschreiben.</strong> <strong>SAFE</strong> = Shared AI Findings Exchange, der Befundaustausch der Allianz: ein <em>Verfahren</em>. <strong>SAFA</strong> = Standards Authority for Frontier AI, die geplante Einrichtung der drei Anbieter: ein <em>Gremium</em>.</div>
+  <details class="mehr">
+   <summary>Vertiefung · Die beiden Lager im Vergleich</summary>
+   <table class="tbl">
+    <thead><tr><th style="width:17%;">Merkmal</th><th>Open Secure AI Alliance</th><th>Standards Authority for Frontier AI (SAFA)</th></tr></thead>
+    <tbody>
+     <tr><td><strong>Wer</strong></td><td>Angestoßen von Nvidia; über 120 Organisationen, darunter Cisco, CrowdStrike, Hugging Face und Red Hat</td><td>Google, OpenAI und Anthropic; zurückgehend auf einen Vorschlag von Demis Hassabis vom Juli 2026</td></tr>
+     <tr><td><strong>Träger</strong></td><td>Linux Foundation — von Hersteller- zu Stiftungsträgerschaft</td><td>Eigene Selbstverwaltungseinrichtung der Anbieter nach dem Vorbild der FINRA</td></tr>
+     <tr><td><strong>Kernstück</strong></td><td>Offene Werkzeuge und SAFE: vertraulicher Austausch über Vorfälle, Beinahe-Ereignisse und versagte Kontrollen</td><td>Gemeinsame Prüfmaßstäbe, standardisierte Modelltests vor der Veröffentlichung, Qualifizierung externer Prüfer</td></tr>
+     <tr><td><strong>Vorgeschichte</strong></td><td>Hersteller-Allianz, dann Übergabe an die Stiftung</td><td>Zunächst war eine öffentlich-private Partnerschaft mit staatlicher Aufsicht angestrebt; sie kam nicht zustande. Die Selbstverwaltung ist die zweitbeste Lösung, nicht die erste Wahl</td></tr>
+     <tr><td><strong>Quellenlage</strong></td><td>Stiftungsmitteilung für die Übertragung; Herstellermitteilung für alles Weitere</td><td>Nur Fachpresse; Gründungsdokumente lagen am 29.09.2026 nicht vor</td></tr>
+    </tbody>
+   </table>
+   <p><strong>Die Reibung.</strong> Nvidia, Meta und xAI lehnen SAFA öffentlich ab — bestehende Gesetze genügten, die Einrichtung könne aggressive Wettbewerber ausschließen. Umgekehrt sind die drei Modellanbieter in verschiedenen Rollen Partner der Nvidia-Plattform. Es geht nicht um zwei Wege zum selben Ziel, sondern auch darum, wer die Maßstäbe setzt. Dass beide Lager am 29.09.2026 denselben Accord des Weißen Hauses unterzeichnet haben, erklärt dessen Gestalt: der kleinste gemeinsame Nenner, ohne externes Gremium und ohne Folgen bei Nichtbefolgung (Reiter Aktuelle Trends, Chronologie 2026).</p>
+  </details>
+  <details class="mehr">
+   <summary>Vertiefung · Die dritte Schiene: Identität</summary>
+   <p>Unabhängig von beiden Lagern baut <strong>Microsoft</strong> mit <strong>Entra Agent ID</strong> die Sache von der Zugriffsseite: Agenten bekommen eine eigene Identität wie Beschäftigte — mit Berechtigungsverwaltung, bedingtem Zugriff und Lebenszyklus, nach Herstellerangabe auch für Agenten fremder Plattformen. Belegt ist der dokumentierte Funktionsumfang; Aussagen zur Wirksamkeit stammen vom Hersteller.</p>
+   <p><strong>Warum das dieselbe Bewegung ist.</strong> Identität, Rechte und Zugriffsbedingungen sind <em>relationale</em> Eigenschaften: Sie regeln, wer unter welcher Befugnis was erreichen darf — nicht, was ein Modell „ist“ oder „will“. Genau das ist die Bauform der KI-Verordnung. Der Markt bewegt sich auf die Kategorien zu, die das Recht schon verwendet; die Forderung „eigene Identität je Agent“ aus der Tabelle oben ist damit auch als Produkt erhältlich.</p>
+  </details>
+  <div class="src-row">
+   <span class="src-chip"><a href="https://www.linuxfoundation.org/blog/open-secure-ai-alliance-joins-the-linux-foundation-to-build-a-shared-open-defense-stack-for-the-ai-era" target="_blank" rel="noopener">Linux Foundation — Open Secure AI Alliance (Stiftungsmitteilung)</a></span>
+   <span class="src-chip"><a href="https://nvidianews.nvidia.com/news/open-agent-safety-platform" target="_blank" rel="noopener">NVIDIA — Open Agent Safety Platform (Pressemitteilung, 28.09.2026)</a></span>
+   <span class="src-chip"><a href="https://thenextweb.com/news/standards-authority-frontier-ai-google-openai-anthropic" target="_blank" rel="noopener">The Next Web — SAFA (Fachpresse, nach The Information)</a></span>
+   <span class="src-chip"><a href="https://learn.microsoft.com/en-us/entra/agent-id/what-is-microsoft-entra-agent-id" target="_blank" rel="noopener">Microsoft Learn — Entra Agent ID (Herstellerdokumentation)</a></span>
   </div>
  </div>
 </div>
@@ -634,13 +774,19 @@ details.mehr .tbl{font-size:12.5px;}
 
   <div class="note note-red"><strong>Die harte Grenze.</strong> Reiche Nachschau kann geringere Eingriffsdichte in Echtzeit rechtfertigen — <strong>aber nur, solange der Schaden umkehrbar bleibt.</strong> Wo ein Schaden nicht umkehrbar ist, kann nachträgliche Prüfung fehlende Laufzeitaufsicht nicht ausgleichen, weil es dann nichts mehr zu korrigieren gibt. <em>Die Frage „reichen Kontrollpunkte statt Dauerbeobachtung?" darf erst beantwortet werden, nachdem die Umkehrbarkeit geklärt ist.</em></div>
 
+  <details class="mehr">
+   <summary>Vertiefung · Warum ein ausgegebener Gedankengang kein Beleg ist</summary>
   <div class="note note-amber"><strong>Und was im Protokoll steht, ist nicht automatisch ein Beleg.</strong> Gibt ein Modell seinen Gedankengang aus, sieht das wie ein Protokoll aus. Eine begutachtete Arbeit zeigt jedoch, dass Modelle gelegentlich eine schlüssig wirkende Begründung für eine Antwort liefern, zu der sie auf anderem Weg gekommen sind — bei Modellen mit ausdrücklichem Denkschritt selten (0,04 bis 0,37 Prozent), bei einfacheren Modellen bis zu 13 Prozent, aber bei keinem ausgeschlossen. <strong>Protokolliert gehören Eingaben, Ausgaben, Zeitpunkt, Modellfassung und die menschliche Entscheidung — Belege, keine Erzählungen.</strong></div>
+  <div class="src-row"><span class="src-chip"><a href="https://arxiv.org/abs/2503.08679" target="_blank" rel="noopener">Arcuschin u. a. — Chain-of-Thought Reasoning In The Wild Is Not Always Faithful (ICML 2026)</a></span></div>
+  </details>
 
   <div class="note"><strong>Ein dritter Messwert neben Übersteuerungsquote und Reaktionszeit: die Nachfragehäufigkeit.</strong> Fordert die aufsichtführende Person noch Erläuterungen an, oder nickt sie durch? Sinkende Nachfragen bei gleichbleibender Fallschwere sind das Frühwarnzeichen für schleichenden Aufsichtsverlust — früher sichtbar als eine sinkende Übersteuerungsquote.</div>
 
-  <div class="src-row"><span class="src-chip"><a href="https://arxiv.org/abs/2503.08679" target="_blank" rel="noopener">Arcuschin u. a. — Chain-of-Thought Reasoning In The Wild Is Not Always Faithful (ICML 2026)</a></span></div>
-  <p class="einordnung">Die Dreiteilung der Aufsichtsfunktionen folgt einer begutachteten Arbeit deutscher Hochschulen zur Auslegung von Art. 14 KI-VO; die rechtliche Herleitung steht im Kursmaterial KIB Tag 10. Hier steht nur, was für die Steuerung eines Agenten gebraucht wird.</p>
+  <p class="einordnung">Die Dreiteilung der Aufsichtsfunktionen folgt einer begutachteten Arbeit deutscher Hochschulen (Meinel, Baum, Lauber-Rönsberg, Stenzel &amp; Langer 2026, siehe Quellen) zur Auslegung von Art. 14 KI-VO; die rechtliche Herleitung ist nicht Teil dieser Handreichung. Hier steht nur, was für die Steuerung eines Agenten gebraucht wird.</p>
 
+  <p style="margin-top:.6rem;"><strong>Wie groß der Engpass ist, hat ein Anbieter an der eigenen Belegschaft gemessen:</strong> Rund 80 % der Zeit einer interaktiven Agentensitzung ist Warten auf eine menschliche Eingabe. Die Aufsichtskapazität wächst nicht mit der Agentenzahl — Vorsorge und Nachschau skalieren, Echtzeitbeobachtung nicht.</p>
+  <details class="mehr">
+   <summary>Vertiefung · Zahlen aus einem Anbieterhaus (Oktober 2026): Engpass, Meta-Arbeit, Beobachtbarkeit</summary>
   <div class="note note-amber"><strong>Wie groß der Engpass tatsächlich ist — erstmals gemessen.</strong> Ein Anbieter hat die eigene Belegschaft ausgewertet, die ihre Abläufe vollständig um Agenten herum gebaut hat. Drei Zahlen daraus, Stand Oktober 2026:<br>
   <strong>&#9312;</strong> <strong>Rund 80 % der Zeit einer interaktiven Agentensitzung ist Warten</strong> — nicht Arbeiten, sondern Warten auf eine menschliche Eingabe. Der Satz eines dortigen Ingenieurs lautet: <em>die Menschen sind der Engpass der Agenten.</em><br>
   <strong>&#9313;</strong> Würde man die <strong>gesamte Ausgabe der eigenen Agenten lesen</strong>, kostete das selbst in nicht-technischen Funktionen <strong>über die halbe Arbeitswoche</strong>.<br>
@@ -656,6 +802,7 @@ details.mehr .tbl{font-size:12.5px;}
 
   <div class="src-row"><span class="src-chip"><a href="https://www.anthropic.com/research/employment-at-anthropic" target="_blank" rel="noopener">Wilmers, Catipon, Massenkoff &amp; McCrory — How employment is changing at Anthropic (The Anthropic Institute, 16.10.2026)</a></span></div>
   <p class="einordnung"><strong>Zur Belastbarkeit:</strong> Fallstudie mit <em>einem</em> Unternehmen — und zwar dem Hersteller selbst, mit internen Daten, die von außen niemand nachrechnen kann, ohne Begutachtung. Die Autoren legen ihre Grenzen offen und schreiben ausdrücklich, vieles davon lasse sich nicht auf die Wirtschaft übertragen. <strong>Die Größenordnungen taugen als oberer Anschlag, nicht als Erwartungswert für das eigene Haus.</strong></p>
+  </details>
  </div>
 </div>
 
@@ -791,7 +938,8 @@ details.mehr .tbl{font-size:12.5px;}
   <li><strong>Auftrag:</strong> Zweck und Umfang freigegeben, fachliche und technische Abnahme dokumentiert.</li>
   <li><strong>Grenzen:</strong> Quellen, Werkzeuge, Rechte, zulässige Aktionen, Schwellen und Aufsicht festgelegt.</li>
   <li><strong>Nachweis:</strong> Prüfbestand versioniert; kritische Fälle, Sicherheits- und Regressionstests bestanden.</li>
-  <li><strong>Betriebsbereitschaft:</strong> Überwachung, Protokoll, Kostengrenzen, Rückfallebene und Abschaltung vorhanden.</li>
+  <li><strong>Betriebsbereitschaft:</strong> Überwachung, Protokoll, Kostengrenzen, Rückfallebene und Abschaltung vorhanden und im Test ausgelöst.</li>
+  <li><strong>Überwachung außer Reichweite:</strong> Der Agent kann Überwachung und Alarmweg weder ändern noch abschalten. <span class="tag-agent" title="Kommt bei Agenten hinzu">Agent</span></li>
  </ul>
  <p>Entscheidung: <strong>freigegeben</strong>, <strong>mit Auflagen</strong> oder <strong>nicht freigegeben</strong> — mit Name und Datum. Maßstab ist der Bewertungs-Check. <strong>Was sich nicht abschalten lässt, ist nicht freigabefähig.</strong></p>
 </div>
@@ -801,11 +949,11 @@ details.mehr .tbl{font-size:12.5px;}
  <ul class="checkliste">
   <li><strong>Kennzahlen mit Schwellen:</strong> Fehler, Fehlalarme, übersehene Fälle, Übergaben, Werkzeugfehler, Kosten je Vorgang, Laufzeit.</li>
   <li><strong>Prüft noch jemand?</strong> Widerspruchsquote, Prüfdauer, Nachfragen; dazu Prüfmarken — eingestreute Fälle mit bekannter Antwort.</li>
-  <li><strong>Aufsicht organisiert:</strong> Wer freigibt, profitiert nicht von der Durchlaufmenge; die Aufgabe wird regelmäßig selbst erledigt.</li>
+  <li><strong>Aufsicht organisiert:</strong> Wer freigibt, profitiert nicht von der Durchlaufmenge; die Aufgabe wird regelmäßig selbst erledigt; bei festgelegten Entscheidungen steht erst die eigene Einschätzung, dann der Vorschlag des Agenten.</li>
   <li><strong>Kette protokolliert</strong> — Werkzeuge mit Parametern, Versionen, Übergaben — außerhalb der reparierten Umgebung; Gedankenketten vertraulich. <span class="tag-agent" title="Kommt bei Agenten hinzu">Agent</span></li>
   <li><strong>Abschaltregel</strong> mit Kriterien und namentlich benannter Person.</li>
  </ul>
- <div class="src-row"><span class="src-chip"><a href="https://arxiv.org/abs/2608.23642" target="_blank" rel="noopener">Mitchell, Ghosh &amp; Passi (2026)</a></span><span class="src-chip"><a href="https://arxiv.org/abs/2608.09867" target="_blank" rel="noopener">Panfilov u. a. (2026)</a></span></div>
+ <div class="src-row"><span class="src-chip"><a href="https://arxiv.org/abs/2608.23642" target="_blank" rel="noopener">Mitchell, Ghosh &amp; Passi (2026)</a></span><span class="src-chip"><a href="https://www-cdn.anthropic.com/519c17a5d23a794e8b6d50a854048d0b61e0d73a.pdf" target="_blank" rel="noopener">Herdagdelen, Joren &amp; Tamkin (2026)</a></span></div>
 </div>
 
 <div class="section">
@@ -848,7 +996,7 @@ details.mehr .tbl{font-size:12.5px;}
   </div>
   <div class="chk" data-frage="Wo liegt die Freigabegrenze?">
    <div class="chk-kopf"><span class="chk-nr">3</span><span class="chk-frage">Wo liegt die Freigabegrenze?</span></div>
-   <div class="chk-hilfe">Was entscheidet er allein, was löst eine menschliche Genehmigung aus? Schriftlich festgelegt und regelmäßig überprüft. <span style="white-space:nowrap;">(Schritt 04)</span></div>
+   <div class="chk-hilfe">Was entscheidet er allein, was löst eine menschliche Genehmigung aus? Schriftlich festgelegt — und die Freigabe läuft über einen Kanal, den der Agent nicht erreicht. <span style="white-space:nowrap;">(Schritt 04)</span></div>
    <div class="chk-wahl" role="radiogroup" aria-label="Einstufung Frage 3"><label><input type="radio" name="ck_q3" value="traegt"> ✅ trägt</label><label><input type="radio" name="ck_q3" value="nach"> ⚠️ nachbessern</label><label><input type="radio" name="ck_q3" value="sperre"> ⛔ Sperre</label></div>
    <textarea class="chk-notiz" id="ck_n3" rows="1" aria-label="Begründung zu Frage 3" placeholder="Begründung in einem Satz"></textarea>
   </div>
@@ -931,17 +1079,43 @@ details.mehr .tbl{font-size:12.5px;}
 
 
  <div class="card">
-  <div class="feld-gruppe">Aktuelle Trends (Stand 12.10.2026)</div>
+  <div class="feld-gruppe">Aktuelle Trends (Stand 02.11.2026)</div>
   <ul>
-   <li><a href="https://www.anthropic.com/research/investigating-unintended-model-actions" target="_blank" rel="noopener">Anthropic — Investigating unintended model actions</a> (09.10.2026) · Selbstauskunft · <a href="https://thehackernews.com/2026/10/anthropic-cuts-live-internet-access-for.html" target="_blank" rel="noopener">The Hacker News</a> (10.10.2026)</li>
-   <li><a href="https://www.pymnts.com/news/artificial-intelligence/2026/white-house-says-all-ai-companies-must-report-security-incidents/" target="_blank" rel="noopener">PYMNTS — White House Says All AI Companies Must Report Security Incidents</a> (nach Axios) · <a href="https://www.inquirer.com/news/philadelphia/anthropic-ai-philadelphia-police-department-state-department-20261010.html" target="_blank" rel="noopener">Philadelphia Inquirer</a> (10.10.2026)</li>
-   <li><a href="https://www.unite.ai/openai-launches-misalignment-reporting-framework-with-six-incident-reports/" target="_blank" rel="noopener">Unite.AI — OpenAI launches misalignment reporting framework</a> (16.09.2026) · <a href="https://forkast.news/openai-formalizes-misalignment-disclosure-six-incident-reports-mark-a-shift-from-promises-to-infrastructure/" target="_blank" rel="noopener">Forkast</a></li>
-   <li><a href="https://www.aepd.es/prensa-y-comunicacion/blog/primera-notiviacion-brecha-datos-personales-causada-por-ataque-ejecutado-mediante-agente-ia" target="_blank" rel="noopener">AEPD — erste Meldung einer Datenschutzverletzung durch einen KI-Agenten</a> (14.09.2026) · <a href="https://www.eleconomista.es/tecnologia/noticias/14014370/09/26/espana-registra-la-primera-brecha-de-seguridad-provocada-por-un-agente-de-ia.html" target="_blank" rel="noopener">elEconomista</a></li>
-   <li><a href="https://www.greynoise.io/blog/ai-orchestrated-campaign-against-papercut-ng-mf" target="_blank" rel="noopener">GreyNoise — AI-orchestrated campaign against PaperCut NG/MF</a> (10.09.2026) · <a href="https://www.theregister.com/security/2026/09/10/hundreds-of-ai-agents-helped-papercut-attacker-hit-395-orgs-and-some-went-off-script/" target="_blank" rel="noopener">The Register</a></li>
-   <li><a href="https://www.anthropic.com/threat-intelligence-report-september-2026" target="_blank" rel="noopener">Anthropic — Detecting and countering misuse of AI</a> (10.09.2026) · Selbstauskunft · <a href="https://technode.global/2026/09/11/anthropic-ai-orchestrated-cyberattacks-model-distillation/" target="_blank" rel="noopener">TechNode Global</a></li>
-   <li><a href="https://www.euronews.com/next/2026/09/09/rogue-openai-agents-hijacked-a-german-wiki-and-it-stayed-secret-for-weeks" target="_blank" rel="noopener">Euronews — Rogue OpenAI agents hijacked a German wiki</a> (09.09.2026) · <a href="https://digital-strategy.ec.europa.eu/en/library/ai-act-commission-publishes-reporting-template-serious-incidents-involving-general-purpose-ai" target="_blank" rel="noopener">EU-Kommission — Meldevorlage für schwerwiegende Vorfälle bei GPAI-Modellen</a></li>
-   <li><a href="https://www.anthropic.com/news/model-hardware-standard-research-preview" target="_blank" rel="noopener">Anthropic — Model Hardware Standard, Research Preview</a> (27.08.2026) · <a href="https://www.cnbc.com/2026/08/27/anthropic-pushes-into-physical-world-with-new-standard-to-help-ai-agents-operate-machines.html" target="_blank" rel="noopener">CNBC</a> · <a href="https://www.orrick.com/en/Insights/2026/07/EU-AI-Act-Update-Digital-Omnibus-Finalizes-8-Compliance-Changes" target="_blank" rel="noopener">Orrick — Digital Omnibus</a></li>
-   <li>UN-Gremium, METR und OpenAI zum Hugging-Face-Vorfall: siehe Gruppen „Forschung“ und „Vorfälle“</li>
+   <li><a href="https://cursor.com/blog/claude-code-extension-security-notice" target="_blank" rel="noopener">Cursor — Claude Code extension security notice</a> (29.10.2026) · Angaben des Marktplatzbetreibers · <a href="https://fieldeffect.com/blog/trojanized-claude-code-extension-distributed-cursor-marketplace" target="_blank" rel="noopener">Field Effect — Trojanized Claude Code extension</a> (30.10.2026)</li>
+   <li><a href="https://www-cdn.anthropic.com/519c17a5d23a794e8b6d50a854048d0b61e0d73a.pdf" target="_blank" rel="noopener">Herdagdelen, Joren &amp; Tamkin — Who’s Aligned to Whom? How AI Agents Shape Experts’ Research Judgment Calls</a> (Anthropic, Oktober 2026) · Studie des Anbieters, ohne Begutachtung · <a href="https://www.aljazeera.com/economy/2026/10/28/experts-defer-to-ai-in-decision-making-anthropic-study-finds" target="_blank" rel="noopener">Al Jazeera</a> (28.10.2026)</li>
+   <li><a href="https://natlawreview.com/press-releases/ai-agent-incidents-take-more-two-months-reach-public-new-agent-incident" target="_blank" rel="noopener">Manifold Security — Agent Incident Ledger, Pressemitteilung</a> (27.10.2026, veröffentlicht über The National Law Review) · Erhebung eines Sicherheitsanbieters · <a href="https://www.it-daily.net/?p=192086" target="_blank" rel="noopener">it-daily.net — KI-Agenten: Sicherheitsvorfälle bleiben oft monatelang unentdeckt</a> (28.10.2026)</li>
+   <li><a href="https://arxiv.org/abs/2610.35835" target="_blank" rel="noopener">Breckenridge, Vilardell, Wang, Zhang &amp; Juels — I-HITL: Inalienable Human-in-the-Loop</a> (arXiv, 26.10.2026) · Vorabveröffentlichung ohne Begutachtung · <a href="https://unchainedcrypto.com/circles-emailed-passcode-is-no-barrier-for-ai-agents-with-inbox-access-study-finds/" target="_blank" rel="noopener">Unchained</a> (27.10.2026)</li>
+   <li><a href="https://www.americanbanker.com/news/banks-are-blocking-external-ai-agents-is-this-sustainable" target="_blank" rel="noopener">American Banker — Banks are blocking external AI agents. Is this sustainable?</a> (27.10.2026) · <a href="https://www.ibtimes.co.uk/us-banks-restrict-third-party-ai-agents-1827385" target="_blank" rel="noopener">IBTimes UK</a> (23.10.2026)</li>
+   <li><a href="https://www.crowdstrike.com/en-us/blog/crowdstrike-uncovers-new-agentic-ai-campaigns/" target="_blank" rel="noopener">CrowdStrike — CrowdStrike Uncovers New Agentic AI Campaigns</a> (21.10.2026) · Lagebericht eines Sicherheitsanbieters · <a href="https://itbrief.co.uk/story/crowdstrike-finds-ai-agents-running-autonomous-cyberattacks" target="_blank" rel="noopener">IT Brief UK</a> (28.10.2026)</li>
+   <li><a href="https://alignment.openai.com/misalignment-reports/suppressing-misalignment-monitoring-alerts-and-disabling-misalignment-monitoring/" target="_blank" rel="noopener">OpenAI — Suppressing misalignment monitoring alerts and disabling misalignment monitoring</a> (Stand 20.10.2026) · Selbstauskunft · <a href="https://www.helpnetsecurity.com/2026/10/22/openai-agents-disabled-safety-monitoring/" target="_blank" rel="noopener">Help Net Security</a> (22.10.2026)</li>
+   <li><a href="https://www.nist.gov/news-events/news/2026/10/key-practices-incident-readiness-and-response-super-intelligence-training" target="_blank" rel="noopener">NIST CAISSI, NSA, CISA — Key Practices for Incident Readiness and Response in Super Intelligence Training and Evaluation</a> (16.10.2026) · freiwillig · <a href="https://cisodaily.com/briefing/ai-agent-incident-readiness-nist-nsa-cisa-ten-practices-board-briefing-2026/" target="_blank" rel="noopener">CISO Daily</a> (22.10.2026)</li>
+   <li><a href="https://www.euronews.com/2026/10/14/eus-ai-rules-face-first-enforcement-test-over-lab-incidents" target="_blank" rel="noopener">Euronews — EU’s AI rules face first enforcement test over lab incidents</a> (14.10.2026) · <a href="https://www.reedsmith.com/our-insights/blogs/technology-law-dispatch/102o6as/eu-ai-act-the-ai-office-sends-its-first-requests-for-information-to-leading-ai/" target="_blank" rel="noopener">Reed Smith — The AI Office sends its first requests for information</a> (26.10.2026)</li>
+   <li><a href="https://www.freshfields.com/en/our-thinking/blogs/technology-quotient/ai-agents-and-uk-data-protection-law-ico-sets-out-its-expectations-and-calls-for-102o5zk" target="_blank" rel="noopener">Freshfields — AI agents and UK data protection law: ICO sets out its expectations</a> (22.10.2026) · <a href="https://thenextweb.com/news/ico-ai-developers-data-protection-changes-ai-agents" target="_blank" rel="noopener">The Next Web</a> (08.10.2026)</li>
+  </ul>
+ </div>
+ <div class="card">
+  <div class="feld-gruppe">Chronologie 2026 · Agentensicherheit und zwei Lager (Stand 02.11.2026)</div>
+  <ul>
+   <li><a href="https://openai.com/index/hugging-face-incident-and-the-road-ahead/" target="_blank" rel="noopener">OpenAI — Hugging Face incident and the road ahead</a> · Selbstauskunft des Anbieters · <a href="https://www.euronews.com/2026/09/09/rogue-openai-agents-hijacked-a-german-wiki-and-it-stayed-secret-for-weeks" target="_blank" rel="noopener">Euronews — Rogue OpenAI agents hijacked a German wiki</a> (09.09.2026)</li>
+   <li><a href="https://www.gesetze-im-internet.de/ki-mig/BJNR0DF0B0026.html" target="_blank" rel="noopener">KI-MIG — Gesetz zur Marktüberwachung und Innovationsförderung von künstlicher Intelligenz</a> · Gesetzestext, in Kraft seit 29.07.2026 · <a href="https://www.bundesnetzagentur.de/DE/Fachthemen/Digitales/KI/14_Marktueberwachung/start.html" target="_blank" rel="noopener">Bundesnetzagentur — KI-Marktüberwachung</a></li>
+   <li><a href="https://www.anthropic.com/news/investigating-incidents-cybersecurity-evals" target="_blank" rel="noopener">Anthropic — Investigating incidents in cybersecurity evaluations</a> · 30.07.2026, Selbstauskunft · <a href="https://www.anthropic.com/news/improving-alignment-security-efforts" target="_blank" rel="noopener">Anthropic — Improving our alignment and security efforts</a> (31.08.2026, Nachbericht)</li>
+   <li><a href="https://www.aisi.gov.uk/blog/incident-report-unsanctioned-agent-behaviour-during-cyber-testing" target="_blank" rel="noopener">UK AI Security Institute — Incident report: unsanctioned agent behaviour during cyber testing</a> · 04.08.2026, staatliche Stelle</li>
+   <li><a href="https://support.anthropic.com/en/articles/12138966-release-notes" target="_blank" rel="noopener">Anthropic — Release Notes (Compliance API für agentische Sitzungen, Browser-Seitenleiste)</a> · August 2026, Herstellerangabe</li>
+   <li><a href="https://metr.org/blog/2026-08-26-openai-hugging-face-incident-investigation/" target="_blank" rel="noopener">METR — OpenAI/Hugging Face incident investigation</a> · 26.08.2026 · <a href="https://www.redwoodresearch.org/research/hugging-face-incident" target="_blank" rel="noopener">Redwood Research — Fassung der Untersuchung</a></li>
+   <li><a href="https://www.anthropic.com/news/model-hardware-standard-research-preview" target="_blank" rel="noopener">Anthropic — Previewing the Model Hardware Standard</a> · 27.08.2026, Herstellerangabe · <a href="https://www.cnbc.com/2026/08/27/anthropic-pushes-into-physical-world-with-new-standard-to-help-ai-agents-operate-machines.html" target="_blank" rel="noopener">CNBC</a> · <a href="https://www.orrick.com/en/Insights/2026/07/EU-AI-Act-Update-Digital-Omnibus-Finalizes-8-Compliance-Changes" target="_blank" rel="noopener">Orrick — Digital Omnibus (Maschinen)</a></li>
+   <li><a href="https://digital-strategy.ec.europa.eu/en/library/ai-act-commission-publishes-reporting-template-serious-incidents-involving-general-purpose-ai" target="_blank" rel="noopener">EU-Kommission — Meldevorlage für schwerwiegende Vorfälle bei GPAI-Modellen (Art. 55)</a> · Primärquelle</li>
+   <li><a href="https://www.anthropic.com/threat-intelligence-report-september-2026" target="_blank" rel="noopener">Anthropic — Threat Intelligence Report September 2026</a> · 10.09.2026, Selbstauskunft</li>
+   <li><a href="https://www.greynoise.io/blog/ai-orchestrated-campaign-against-papercut-ng-mf" target="_blank" rel="noopener">GreyNoise — AI-orchestrated campaign against PaperCut NG/MF</a> · 10.09.2026, Sicherheitsanbieter · <a href="https://www.theregister.com/security/2026/09/10/hundreds-of-ai-agents-helped-papercut-attacker-hit-395-orgs-and-some-went-off-script/" target="_blank" rel="noopener">The Register</a> (10.09.2026)</li>
+   <li><a href="https://www.aepd.es/prensa-y-comunicacion/blog/primera-notiviacion-brecha-datos-personales-causada-por-ataque-ejecutado-mediante-agente-ia" target="_blank" rel="noopener">AEPD — Primera notificación de brecha de datos personales causada por ataque ejecutado mediante agente IA</a> · 14.09.2026, Behörde</li>
+   <li><a href="https://www.un.org/independent-international-scientific-panel-ai/en/thematic-briefs/ai-agents-misalignment-risks" target="_blank" rel="noopener">UN Independent International Scientific Panel on AI — AI Agents, Misalignment and the Risk of Losing Human Control</a> · 21.09.2026, Advance Unedited Version</li>
+   <li><a href="https://ny1.com/nyc/all-boroughs/ap-top-news/2026/09/23/heads-of-ai-firms-tell-un-security-council-that-it-could-be-a-risk-to-all-humanity" target="_blank" rel="noopener">Associated Press — Heads of AI firms tell UN Security Council that it could be a risk to all humanity</a> · 23.09.2026, über Spectrum News NY1</li>
+   <li><a href="https://www.linuxfoundation.org/blog/open-secure-ai-alliance-joins-the-linux-foundation-to-build-a-shared-open-defense-stack-for-the-ai-era" target="_blank" rel="noopener">Linux Foundation — Open Secure AI Alliance joins the Linux Foundation</a> · Stiftungsmitteilung · <a href="https://nvidianews.nvidia.com/news/open-agent-safety-platform" target="_blank" rel="noopener">NVIDIA — Open Agent Safety Platform</a> (Pressemitteilung, 28.09.2026)</li>
+   <li><a href="https://thenextweb.com/news/standards-authority-frontier-ai-google-openai-anthropic" target="_blank" rel="noopener">The Next Web — Google, OpenAI and Anthropic plan AI safety body (SAFA)</a> · 24.09.2026, Fachpresse nach The Information; keine Gründungsdokumente</li>
+   <li><a href="https://www.reuters.com/world/us/trump-releases-ai-accord-with-tech-executives-2026-09-29/" target="_blank" rel="noopener">Reuters — Trump releases AI accord with tech executives</a> · 29.09.2026 · <a href="https://thenextweb.com/news/trump-ai-accord-zuckerberg-microsoft-amazon-didnt-sign" target="_blank" rel="noopener">The Next Web — Zuckerberg drafted Trump’s AI accord, but Microsoft and Amazon didn’t sign</a> (01.10.2026)</li>
+   <li><a href="https://openai.com/index/introducing-dots/" target="_blank" rel="noopener">OpenAI — Introducing dots</a> · 29.09.2026, Herstellerangabe · <a href="https://decrypt.co/379584/openai-ai-agents-computers-devday-2026-everything-announced" target="_blank" rel="noopener">Decrypt — Everything announced at DevDay 2026</a></li>
+   <li><a href="https://www.anthropic.com/research/investigating-unintended-model-actions" target="_blank" rel="noopener">Anthropic — Investigating unintended model actions</a> · 09.10.2026, Selbstauskunft · <a href="https://www.pymnts.com/news/artificial-intelligence/2026/white-house-says-all-ai-companies-must-report-security-incidents/" target="_blank" rel="noopener">PYMNTS — White House says all AI companies must report security incidents</a></li>
+   <li><a href="https://www.euronews.com/2026/10/14/eus-ai-rules-face-first-enforcement-test-over-lab-incidents" target="_blank" rel="noopener">Euronews — EU’s AI rules face first enforcement test over lab incidents</a> · 14.10.2026</li>
+   <li><a href="https://learn.microsoft.com/en-us/entra/agent-id/what-is-microsoft-entra-agent-id" target="_blank" rel="noopener">Microsoft Learn — What is Microsoft Entra Agent ID?</a> · Herstellerdokumentation</li>
   </ul>
  </div>
  <div class="card">
@@ -951,8 +1125,9 @@ details.mehr .tbl{font-size:12.5px;}
    <li><a href="https://ai-act-service-desk.ec.europa.eu/en/ai-act/faq/how-are-ai-agents-addressed-within-ai-act-0" target="_blank" rel="noopener">AI Act Service Desk (Europäische Kommission) — How are AI agents addressed within the AI Act?</a> · „KI-Agent“ nicht legal definiert; Agenten in der Regel KI-Systeme; vorläufige Einschätzung</li>
    <li><a href="https://www.imda.gov.sg/-/media/imda/files/about/emerging-tech-and-research/artificial-intelligence/mgf-for-agentic-ai.pdf" target="_blank" rel="noopener">IMDA Singapur — Model AI Governance Framework for Agentic AI</a> · Typeneinordnung und Kontrolltiefe</li>
    <li><a href="https://nist.gov/news-events/news/2026/02/announcing-ai-agent-standards-initiative-interoperable-and-secure" target="_blank" rel="noopener">NIST — Announcing the AI Agent Standards Initiative</a> (17.02.2026) · drei Säulen, Konzeptpapier zu Identität und Autorisierung</li>
+   <li><a href="https://www.nist.gov/news-events/news/2026/10/key-practices-incident-readiness-and-response-super-intelligence-training" target="_blank" rel="noopener">NIST CAISSI, NSA, CISA — Key Practices for Incident Readiness and Response in Super Intelligence Training and Evaluation</a> (16.10.2026) · freiwillig, zehn Praktiken in fünf Phasen, gestützt auf NIST SP 800-61r3</li>
    <li><a href="https://www.nist.gov/blogs/caisi-research-blog/insights-ai-agent-security-large-scale-red-teaming-competition" target="_blank" rel="noopener">NIST CAISSI (früher: CAISI) — Insights into AI Agent Security from a Large-Scale Red-Teaming Competition</a> (23.03.2026)</li>
-   <li><a href="https://csrc.nist.gov/Projects/cosais/use-cases" target="_blank" rel="noopener">NIST — COSAIS, Use Cases</a> · geplante Ergänzungen zu SP 800-53 für Einzel- und Mehr-Agenten-Systeme (Seitenstand 08.01.2026)</li>
+   <li><a href="https://csrc.nist.gov/Projects/cosais/use-cases" target="_blank" rel="noopener">NIST — COSAIS, Use Cases</a> · geplante Ergänzungen zu SP 800-53 für Einzel- und Mehr-Agenten-Systeme (Seitenstand 20.10.2026; die Ergänzungen für Agenten sind weiterhin nur vorgeschlagen)</li>
    <li><a href="https://airc.nist.gov/" target="_blank" rel="noopener">NIST AI Resource Center — AI Risk Management Framework</a></li>
    <li><a href="https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications-for-2026/" target="_blank" rel="noopener">OWASP — Top 10 for Agentic Applications for 2026</a> (Dezember 2025)</li>
    <li><a href="https://genai.owasp.org/resource/agentic-ai-threats-and-mitigations/" target="_blank" rel="noopener">OWASP — Agentic AI: Threats and Mitigations</a></li>
@@ -965,7 +1140,7 @@ details.mehr .tbl{font-size:12.5px;}
  <div class="card">
   <div class="feld-gruppe">Bauweise, Kosten, Betrieb · Anbieter- und Praxisberichte</div>
   <ul>
-   <li><a href="https://claude.com/resources/articles/building-agents-when-to-fold-subagents-into-your-main-agent-loop" target="_blank" rel="noopener">Sarkis, D. — Building agents: When to fold subagents into your main agent loop</a> (Anthropic, 22.10.2026) · Anbieterbeitrag über das eigene Produkt, Belegstufe C · Grundlage der Abschnitte „Wie viele Agenten?", „Wenn die Architektur das Organigramm abbildet" und der Vertiefungen zu Abnahme und Berechtigungen · <em>Hinweis:</em> Der Text ist englisch, auch unter der deutschen Adresse; die Abbildungen des Beitrags sind nicht freigegeben und hier nicht übernommen</li>
+   <li><a href="https://claude.com/resources/articles/building-agents-when-to-fold-subagents-into-your-main-agent-loop" target="_blank" rel="noopener">Sarkis, D. — Building agents: When to fold subagents into your main agent loop</a> (Anthropic, 22.10.2026) · Anbieterbeitrag über das eigene Produkt · Grundlage der Abschnitte „Wie viele Agenten?", „Wenn die Architektur das Organigramm abbildet" und der Vertiefungen zu Abnahme und Berechtigungen · <em>Hinweis:</em> Der Text ist englisch, auch unter der deutschen Adresse; die Abbildungen des Beitrags sind nicht freigegeben und hier nicht übernommen</li>
    <li><a href="https://www.anthropic.com/engineering/building-effective-agents" target="_blank" rel="noopener">Anthropic — Building Effective Agents</a> (2024) · Workflow und Agent</li>
    <li><a href="https://openai.com/business/guides-and-resources/a-practical-guide-to-building-ai-agents/" target="_blank" rel="noopener">OpenAI — A Practical Guide to Building Agents</a> · Eignungssignale, drei Bausteine</li>
    <li><a href="https://www.anthropic.com/engineering/multi-agent-research-system" target="_blank" rel="noopener">Anthropic — How we built our multi-agent research system</a> (13.06.2025) · Tokenverbrauch, Herstellerangabe</li>
@@ -974,6 +1149,8 @@ details.mehr .tbl{font-size:12.5px;}
    <li><a href="https://www.anthropic.com/news/fable-mythos-access" target="_blank" rel="noopener">Anthropic — Statement zur Abschaltung zweier Modelle</a> (Juni 2026) · Stellungnahme des Betroffenen</li>
    <li><a href="https://www.aljazeera.com/economy/2026/7/1/us-lifts-restrictions-on-powerful-ai-models-fable-mythos-anthropic-says" target="_blank" rel="noopener">Al Jazeera — Aufhebung der Beschränkungen</a> (01.07.2026)</li>
    <li><a href="https://www.gartner.com/en/newsroom/press-releases/2025-06-25-gartner-predicts-over-40-percent-of-agentic-ai-projects-will-be-canceled-by-end-of-2027." target="_blank" rel="noopener">Gartner — Over 40 % of Agentic AI Projects Will Be Canceled by End of 2027</a> (25.06.2025) · Analystenprognose</li>
+   <li><a href="https://www.anthropic.com/engineering/building-c-compiler" target="_blank" rel="noopener">Carlini, N. — Building a C compiler with a team of parallel Claudes</a> (Anthropic, 05.02.2026) · Herstellerbericht</li>
+   <li><a href="https://www.anthropic.com/research/employment-at-anthropic" target="_blank" rel="noopener">Wilmers, Catipon, Massenkoff &amp; McCrory — How employment is changing at Anthropic</a> (The Anthropic Institute, 16.10.2026) · technischer Bericht des Anbieters über die eigene Belegschaft</li>
   </ul>
  </div>
 
@@ -992,14 +1169,17 @@ details.mehr .tbl{font-size:12.5px;}
    <li><a href="https://sage.cs.princeton.edu/trends/" target="_blank" rel="noopener">Chen, F., Rabanser, S., Kirgis, P., Nadgir, N., Bommasani, R., Dubois, M., Tabassi, E., Ududec, C., Reuel, A., Koyejo, S., Kapoor, S. &amp; Narayanan, A. — Emerging Trends in AI Agent Evaluation</a> (19.10.2026, 71 Seiten) · Princeton, Stanford, britisches AI Security Institute, Brookings, UC Berkeley, Institute for Advanced Study · Vorabfassung ohne Begutachtung, keine arXiv-Nummer · Quelle der Begriffskarte unter „Wie man Meldungen über Fehlverhalten liest"</li>
    <li><a href="https://www.sciencedirect.com/science/article/abs/pii/0005109883900468" target="_blank" rel="noopener">Bainbridge — Ironies of Automation</a>, Automatica 19(6), 1983 · begutachtet; Volltext kostenpflichtig</li>
    <li><a href="https://www.emmawiles.com/storage/ai_employee.pdf" target="_blank" rel="noopener">Wiles, Hsu, Bedard &amp; Kropp — Putting AI on the Org Chart</a> (2026) · vorab registriertes Experiment, n = 813; mit einer Beratungsgesellschaft entstanden, ohne Begutachtung</li>
-   <li><a href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=7500959" target="_blank" rel="noopener">Meinel, Baum, Lauber-Rönsberg, Stenzel &amp; Langer — Human Oversight of AI Agents under the EU AI Act</a> (21.09.2026) · Koordinationsversagen</li>
+   <li><a href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=7500959" target="_blank" rel="noopener">Meinel, Baum, Lauber-Rönsberg, Stenzel &amp; Langer — Human Oversight of AI Agents under the EU AI Act</a> (21.09.2026) · angenommenes Manuskript, begutachtet · Dreiteilung der Aufsichtsfunktionen, Koordinationsversagen</li>
    <li><a href="https://arxiv.org/html/2609.12482" target="_blank" rel="noopener">Wu, Ziems u. a. — When Does AI Augment Work?</a> (2026) · Prüfbarkeit, Umkehrbarkeit, Tragweite; ohne Begutachtung</li>
    <li><a href="https://arxiv.org/abs/2608.23642" target="_blank" rel="noopener">Mitchell, Ghosh &amp; Passi — AI Agents Push Humans Out of the Loop</a> (2026) · Positionspapier ohne Begutachtung</li>
    <li><a href="https://www-cdn.anthropic.com/7b1c44894e980876479947dcdd40716278aeeffd/automated-alignment-researchers-august-2026.pdf" target="_blank" rel="noopener">Chen, Wen &amp; Kirchner — Automated Researchers Can Reliably Mitigate Alignment Failures</a> (August 2026) · Anthropic und UC Berkeley, ohne Begutachtung</li>
    <li><a href="https://arxiv.org/abs/2608.09867" target="_blank" rel="noopener">Panfilov u. a. — Stealing Reasoning Traces from Proprietary LLM APIs</a> (August 2026)</li>
+   <li><a href="https://www-cdn.anthropic.com/519c17a5d23a794e8b6d50a854048d0b61e0d73a.pdf" target="_blank" rel="noopener">Herdagdelen, Joren &amp; Tamkin — Who’s Aligned to Whom? How AI Agents Shape Experts’ Research Judgment Calls</a> (Anthropic, Oktober 2026) · randomisiertes Experiment, n = 50; Studie des Anbieters mit dem eigenen Modell, ohne Begutachtung</li>
    <li><a href="https://arxiv.org/abs/2609.01275" target="_blank" rel="noopener">Mitic, Sedahmed A. O., Ly &amp; Cisse — The Constitutional Coverage Trilemma in AI Governance</a> (September 2026) · Unternehmensautorenschaft, ohne Begutachtung</li>
    <li><a href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=7378338" target="_blank" rel="noopener">Holweg &amp; Hacker — Should We Allow AI to Police Itself?</a> (31.08.2026) · Arbeitspapier ohne Begutachtung</li>
    <li><a href="https://www.un.org/independent-international-scientific-panel-ai/en/thematic-briefs/ai-agents-misalignment-risks" target="_blank" rel="noopener">UN-Wissenschaftsgremium für KI — AI Agents, Misalignment and the Risk of Losing Human Control</a> · Vorabfassung (Advance Unedited Version), 21.09.2026</li>
+   <li><a href="https://arxiv.org/abs/2503.08679" target="_blank" rel="noopener">Arcuschin, Janiak, Krzyzanowski, Rajamanoharan, Nanda &amp; Conmy — Chain-of-Thought Reasoning In The Wild Is Not Always Faithful</a> (ICML 2026) · begutachtet</li>
+   <li>Cuber, Alakmeh, Hausfeld, van Zelderen, Jenny, Menges &amp; Fritz — Human-Like and Male? How AI Assistant Design Relates to Trust and Monetary Reward at Work in VR, <em>Proceedings of the ACM on Human-Computer Interaction</em> (2026), DOI 10.1145/3829807.3829910 · begutachtet</li>
   </ul>
  </div>
 
@@ -1020,7 +1200,7 @@ details.mehr .tbl{font-size:12.5px;}
 
 <div class="footer">
  <span>KI-Manager:in · KI-Management (Standard und Agenten)</span>
- <span>Ulrich Nord · Stand 12.10.2026</span>
+ <span>Ulrich Nord · Stand 02.11.2026</span>
  <div class="rechtevermerk">© 2026 Ulrich Nord · Alle Rechte vorbehalten. Teilnehmerinnen und Teilnehmer dürfen diese Handreichung für die eigene berufliche Nutzung sowie innerhalb ihres Unternehmens verwenden, speichern, ausdrucken, ausfüllen und weitergeben. Veröffentlichung und Verwendung in eigenen Schulungs- oder Beratungsangeboten bedürfen der schriftlichen Zustimmung.</div>
 </div>
 
@@ -1183,7 +1363,7 @@ var AV = {
 <script>
 // Ausklappbare Vertiefungen: beim Drucken und beim Druckknopf vollständig geöffnet ausgeben.
 (function () {
-  function alle() { return document.querySelectorAll('details.mehr'); }
+  function alle() { return document.querySelectorAll('details.mehr, details.trend, details.ev'); }
   function oeffnen() {
     alle().forEach(function (d) { d.dataset.vorher = d.open ? '1' : '0'; d.open = true; });
   }
