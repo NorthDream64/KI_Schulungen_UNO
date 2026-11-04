@@ -39,7 +39,7 @@ h3.block-title{font-family:'Playfair Display',serif;font-weight:600;font-size:1.
 
 /* BAR CHARTS */
 .bar-pair{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:.8rem 0;}
-@media(max-width:600px){.bar-pair{grid-template-columns:1fr;}}
+@media(max-width:600px){.bar-pair{grid-template-columns:1fr;}.def-row{flex-direction:column;gap:.2rem;}.def-term{min-width:0 !important;}}
 .bar-col{background:var(--phase);border:1px solid var(--rule);border-radius:8px;padding:.8rem 1rem;}
 .bar-col-t{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:.6rem;}
 .bar-group{margin-bottom:.5rem;}
@@ -620,29 +620,44 @@ input[type=range]{flex:1;min-width:200px;accent-color:var(--teal);cursor:pointer
 
 <div class="sec">
  <div class="sec-t"><b>③ Out-of-Distribution</b> — Wenn das Modell etwas sieht, das es nie gelernt hat</div>
- <p class="body">Out-of-Distribution (OOD) bezeichnet Eingaben, die <em>außerhalb</em> der Verteilung der Trainingsdaten liegen. Das klingt harmlos — ist es aber nicht. Das Problem: Die meisten KI-Modelle <strong>wissen nicht, dass sie etwas nicht wissen</strong>. Sie geben trotzdem eine Diagnose aus — oft sogar mit hoher Konfidenz.</p>
+ <p class="body">Out-of-Distribution (OOD) bezeichnet Eingaben, die <em>außerhalb</em> der Verteilung der Trainingsdaten liegen — ein Wert, eine Kombination von Merkmalen oder eine Gruppe, die im Training nicht vorkam. Das klingt harmlos — ist es aber nicht. Das Problem: Die meisten KI-Modelle <strong>wissen nicht, dass sie etwas nicht wissen</strong>. Sie geben trotzdem eine Antwort aus — oft sogar mit hoher Konfidenz.</p>
 </div>
 
 <div class="sec">
- <h3 class="block-title">Beispiel — Patientin außerhalb der Trainingsverteilung</h3>
+ <h3 class="block-title">Beispiel — eine Patientin, zwei Fehler</h3>
  <div class="scenario danger">
-  <div class="sc-head"><div class="sc-icon">🔬</div><div><div class="sc-role">Urologie / Vorsorge</div><div class="sc-title">Trans Frau — Prostatakrebs-Screening</div></div></div>
-  <div class="sc-body">Eine 58-jährige trans Frau lebt seit 15 Jahren unter Hormontherapie und ist in der elektronischen Patientenakte als „weiblich" geführt. Sie hat weiterhin eine Prostata — aber das KI-gestützte Vorsorgesystem des Krankenhauses schlägt keine PSA-Messung vor. Es hat aus seinen Trainingsdaten gelernt, Prostatakrebs-Vorsorge nur Patienten mit dem Merkmal „männlich“ zu empfehlen.</div>
+  <div class="sc-head"><div class="sc-icon">🔬</div><div><div class="sc-role">Urologie / Vorsorge</div><div class="sc-title">Trans Frau — Prostatakrebs-Früherkennung</div></div></div>
+  <div class="sc-body">Eine 58-jährige trans Frau lebt seit 15 Jahren unter Hormontherapie und ist in der elektronischen Patientenakte als „weiblich“ geführt. Sie hat weiterhin eine Prostata. Das KI-gestützte Vorsorgesystem des Krankenhauses liest aus der Akte Alter, Geschlechtseintrag, Diagnosen und Laborwerte. Ein Merkmal „Prostata vorhanden“ gibt es nicht.</div>
  </div>
 
- <p class="body" style="margin-top:.6rem;">Was macht das Modell?</p>
-
+ <p class="body" style="margin-top:.8rem;"><strong>Schritt 1 — Vorsorgevorschlag.</strong> Das System schlägt keine PSA-Messung vor.</p>
  <div class="conf-meter">
-  <span class="label">KI-Ausgabe</span>
-  <div class="conf-bar"><div class="conf-fill low" style="width:0%"></div></div>
-  <span class="conf-val" style="color:var(--muted);">— %</span>
+  <span class="label">Konfidenz</span>
+  <div class="conf-bar"><div class="conf-fill high" style="width:97%"></div></div>
+  <span class="conf-val" style="color:var(--red);">97 %</span>
  </div>
- <p class="body" style="font-size:12.5px;color:var(--red);font-weight:500;">Keine Empfehlung — eine PSA-Messung taucht im Vorschlag gar nicht auf.</p>
+ <p class="body" style="font-size:12.5px;color:var(--red);font-weight:500;">„Keine Prostata-Früherkennung vorgesehen.“</p>
+ <div class="note-red note"><b>Kein OOD, sondern ein Proxy:</b> Für das System ist „weiblich, 58“ eine vertraute Eingabe — es hat sie im Training tausendfach gesehen. Gelernt hat es: Das Merkmal „männlich“ steht für „Prostata vorhanden“. Der Geschlechtseintrag ist hier ein Proxy (Stellvertretermerkmal) für das, was eigentlich entscheidet — das Organ. Weil die Eingabe vertraut aussieht, ist sich das System sicher. Eine OOD-Erkennung schlägt nicht an.</div>
 
- <div class="note-red note"><b>Das OOD-Problem:</b> Unter den Patientinnen mit dem Merkmal „weiblich“ gab es in den Trainingsdaten keinen einzigen Prostatafall — biologische Frauen haben keine Prostata. Die Datenkombination „Geschlecht = F + Prostata vorhanden" existiert in der Trainingsverteilung nicht. Es ist kein Bias (schlechtere Leistung), sondern echtes Out-of-Distribution: Der Input liegt komplett außerhalb dessen, was das Modell je gesehen hat.</div>
+ <p class="body" style="margin-top:.8rem;"><strong>Schritt 2 — Laborwert.</strong> Die Ärztin ordnet die PSA-Messung trotzdem an. Das System soll den Wert einordnen.</p>
+ <div class="conf-meter">
+  <span class="label">Konfidenz</span>
+  <div class="conf-bar"><div class="conf-fill high" style="width:94%"></div></div>
+  <span class="conf-val" style="color:var(--red);">94 %</span>
+ </div>
+ <p class="body" style="font-size:12.5px;color:var(--red);font-weight:500;">„PSA unauffällig — kein Handlungsbedarf.“</p>
+ <div class="note-red note"><b>Jetzt OOD:</b> Die Kombination „Geschlechtseintrag weiblich + PSA-Wert“ kam in den Trainingsdaten praktisch nicht vor, PSA-Werte unter langjähriger Östrogentherapie ebenso wenig. Das System antwortet trotzdem mit hoher Konfidenz — es weiß nicht, dass es das nicht weiß. Ob der Wert für diese Patientin unauffällig ist, kann es aus seinen Trainingsdaten gar nicht ableiten.</div>
+ <p class="body" style="font-size:12px;color:var(--muted);">Konfidenzwerte zur Veranschaulichung.</p>
 
- <div class="callout"><b>Medizinischer Hintergrund:</b> Hormontherapie senkt den PSA-Wert bei trans Frauen auf etwa ein Fünfzigstel des typischen Männerwerts. Die Standard-Schwellwerte für PSA-Screening sind deshalb viel zu hoch — selbst wenn ein Test durchgeführt würde, könnte ein Karzinom im Frühstadium durchrutschen. Eine Studie der University of California San Francisco (UCSF, <em>JAMA</em>, Juni 2024) fand bei trans Frauen unter Östrogentherapie rund 50-mal niedrigere PSA-Werte. Die üblichen Grenzwerte sind für sie deshalb vermutlich zu hoch — Krebs kann erst spät auffallen.</div>
+ <div class="callout"><b>Medizinischer Hintergrund — unabhängig von der KI:</b> Eine Studie der University of California San Francisco (UCSF, <em>JAMA</em>, Juni 2024) fand bei trans Frauen unter Östrogentherapie rund 50-mal niedrigere PSA-Werte. Die üblichen Grenzwerte sind für sie deshalb vermutlich zu hoch — Krebs kann erst spät auffallen. Das ist ein Problem der Grenzwerte und bestünde auch ohne KI-System.</div>
+</div>
 
+<div class="sec">
+ <h3 class="block-title">OOD oder Proxy? — Die Unterscheidung entscheidet über die Gegenmaßnahme</h3>
+ <div class="def-row"><span class="def-term" style="min-width:200px;">Proxy (Stellvertretermerkmal)</span><span class="def-body">Die Eingabe ist vertraut. Das Modell stützt sich auf ein Merkmal, das für das eigentlich Entscheidende steht — hier der Geschlechtseintrag für das Organ. Eine OOD-Erkennung hilft nicht. <em>Gegenmaßnahme:</em> die Merkmale erfassen, die tatsächlich entscheiden, und mit dem Fachbereich klären, wofür ein Merkmal stellvertretend steht.</span></div>
+ <div class="def-row"><span class="def-term" style="min-width:200px;">Out-of-Distribution</span><span class="def-body">Die Eingabe — ein Wert, eine Merkmalskombination, eine Gruppe — kam im Training nicht vor. Das Modell antwortet trotzdem, oft mit hoher Konfidenz. Häufige Ursache: Einsatz außerhalb der Zweckbestimmung (Anwendungsbias, Tab ①). <em>Gegenmaßnahme:</em> den Einsatzbereich festlegen, unbekannte Eingaben erkennen und an Menschen übergeben.</span></div>
+ <div class="def-row"><span class="def-term" style="min-width:200px;">Datenbias</span><span class="def-body">Die Gruppe ist in den Trainingsdaten unterrepräsentiert. Das Modell kennt sie, liefert für sie aber schlechtere Ergebnisse (Tab ①). <em>Gegenmaßnahme:</em> repräsentativere Trainingsdaten.</span></div>
+ <div class="note"><b>Für die Praxis:</b> Fachleute empfehlen, in der Patientenakte Geschlecht bei Geburt, rechtliches Geschlecht und Geschlechtsidentität getrennt zu erfassen — und darüber hinaus ein Organinventar zu führen, damit sich die Vorsorge an den vorhandenen Organen orientiert. Das Problem ist nicht auf KI beschränkt: Auch eine einfache Regel schickt einer Patientin, die als „weiblich“ geführt ist, aber keinen Gebärmutterhals hat, die Einladung zum Abstrich.</div>
 </div>
 
 </div><!-- /sec-ood -->
@@ -674,7 +689,7 @@ input[type=range]{flex:1;min-width:200px;accent-color:var(--teal);cursor:pointer
  <h3 class="block-title">Drei Fragen für jede Hochrisiko-KI</h3>
  <p class="body">Diese drei Fragen sollte der KI-Beauftragte bei jedem Hochrisiko-KI-System stellen können — und eine dokumentierte Antwort erhalten:</p>
 
- <div class="def-row"><span class="def-term" style="color:var(--accent);">① Trainingsdaten</span><span class="def-body">„Auf welchen Daten wurde das System trainiert — und wie unterscheiden sich diese von unserer Population?" (→ Datenbias)</span></div>
+ <div class="def-row"><span class="def-term" style="color:var(--accent);">① Trainingsdaten</span><span class="def-body">„Auf welchen Daten wurde das System trainiert — und wie unterscheiden sich diese von unserer Population?" (→ Datenbias, OOD)</span></div>
  <div class="def-row"><span class="def-term" style="color:var(--accent);">② Veränderungen</span><span class="def-body">„Was hat sich seit der Inbetriebnahme an Geräten, Protokollen, Leitlinien oder Patientenstruktur geändert?" (→ Drift + OOD)</span></div>
  <div class="def-row"><span class="def-term" style="color:var(--accent);">③ Vertrauen</span><span class="def-body">„Wie oft widersprechen Fachkräfte der KI-Empfehlung — und sinkt diese Zahl?" (→ Automation Bias)</span></div>
 
@@ -716,7 +731,9 @@ input[type=range]{flex:1;min-width:200px;accent-color:var(--teal);cursor:pointer
  <p style="font-size:12px;line-height:1.6;color:var(--muted);">
   UCSF — <a href="https://cancer.ucsf.edu/news/2024/07/01/prostate-cancer-test-is-missing-early-disease-in-transgender-women" target="_blank">„Prostate Cancer Test Is Missing Early Disease in Transgender Women", Juni 2024</a><br>
   Cirrincione et al. — <a href="https://www.nature.com/articles/s41416-022-01989-y" target="_blank">British Journal of Cancer: „Prostate cancer in transgender women", 2022</a><br>
-  Weng et al. — <a href="https://ascpt.onlinelibrary.wiley.com/doi/10.1111/cts.70132" target="_blank">Clinical and Translational Science: „First, Do No Harm: AI's Challenges With OOD Data in Medicine", 2025</a>
+  Weng et al. — <a href="https://ascpt.onlinelibrary.wiley.com/doi/10.1111/cts.70132" target="_blank">Clinical and Translational Science: „First, Do No Harm: Addressing AI's Challenges With Out-of-Distribution Data in Medicine", Januar 2025</a><br>
+  Hein, Andriushchenko, Bitterwolf — <a href="https://publikationen.uni-tuebingen.de/xmlui/handle/10900/107479" target="_blank">CVPR 2019: „Why ReLU networks yield high-confidence predictions far away from the training data and how to mitigate the problem“</a><br>
+  Healthcare IT News — <a href="https://www.healthcareitnews.com/news/more-inclusive-ehrs-can-help-extend-welcome-save-transgender-lives" target="_blank">„More inclusive EHRs can help extend welcome, save transgender lives“</a> (Organinventar, getrennte Geschlechtsfelder)
  </p>
 </div>
 
