@@ -311,26 +311,26 @@ input[type=range]{flex:1;min-width:200px;accent-color:var(--teal);cursor:pointer
  <p class="body">Anwendungsbias entsteht, wenn ein KI-System in einem Kontext eingesetzt wird, für den es nicht entwickelt oder validiert wurde. Das System selbst funktioniert korrekt — es wird nur falsch verwendet.</p>
 
  <div class="scenario danger">
-  <div class="sc-head"><div class="sc-icon">🏥</div><div><div class="sc-role">Fallbeispiel · Krankenhausabrechnung</div><div class="sc-title">GKV-Prüftool für PKV-Abrechnungen</div></div></div>
-  <div class="sc-body">Eine gesetzliche Krankenversicherung (GKV 1) stellt dem Krankenhaus eine KI-Anwendung zur Verfügung. Das Tool liest Fallnummern aus, sucht die passenden Abrechnungsrichtlinien der GKV 1 heraus, erstellt eine kurze Zusammenfassung und weist darauf hin, bei welchen Fällen der Medizinische Dienst (MD) voraussichtlich nachfragen wird. Für die Abrechnung mit der GKV 1 funktioniert das gut — das System kennt die Kodierrichtlinien, die Prüfprioritäten und die Vertragsbedingungen dieser Kasse.</div>
+  <div class="sc-head"><div class="sc-icon">🏥</div><div><div class="sc-role">Fallbeispiel · Krankenhausabrechnung</div><div class="sc-title">Prüfwerkzeug einer Krankenkasse — eingesetzt für andere Kostenträger</div></div></div>
+  <div class="sc-body">Eine gesetzliche Krankenkasse (Kasse A) stellt dem Krankenhaus eine KI-Anwendung zur Verfügung. Das Werkzeug liest die Fälle aus, prüft die Verschlüsselung gegen die Deutschen Kodierrichtlinien, erstellt eine kurze Zusammenfassung und sagt voraus, bei welchen Rechnungen Kasse A voraussichtlich den Medizinischen Dienst (MD) einschaltet. Diese Vorhersage hat es aus den Prüfentscheidungen von Kasse A der letzten Jahre gelernt. Für Kasse A funktioniert das gut.</div>
  </div>
 
  <p class="body" style="margin-top:.8rem;">Das Krankenhaus setzt das Tool jetzt auch für andere Kostenträger ein:</p>
 
  <div class="bar-pair">
   <div class="bar-col" style="border:2px solid var(--amber);">
-   <div class="bar-col-t" style="color:var(--amber);">GKV 1 → GKV 2</div>
-   <div class="def-row" style="border:none;padding:.3rem 0;"><span class="def-term" style="color:var(--amber);min-width:80px;">Subtil</span><span class="def-body">Gleiches Abrechnungssystem (DRG-Fallpauschalen), aber andere Prüfprioritäten, andere Vertragsbedingungen, andere Schwellwerte beim MD. Das Tool gibt Entwarnung, wo die GKV 2 nachfragen würde — oder warnt vor Prüfungen, die bei der GKV 2 gar nicht stattfinden.</span></div>
+   <div class="bar-col-t" style="color:var(--amber);">Kasse A → Kasse B</div>
+   <div class="def-row" style="border:none;padding:.3rem 0;"><span class="def-term" style="color:var(--amber);min-width:80px;">Subtil</span><span class="def-body">Die Regeln der Abrechnung sind bundesweit einheitlich: ICD-10-GM, OPS, der Fallpauschalen-Katalog und die Deutschen Kodierrichtlinien, die Krankenhausgesellschaft, GKV-Spitzenverband und PKV-Verband gemeinsam vereinbaren. Dieser Teil des Werkzeugs passt also auch für Kasse B. <strong>Nicht übertragbar ist die Vorhersage:</strong> Welche Rechnungen eine Kasse vom MD prüfen lässt, entscheidet jede Kasse selbst — begrenzt durch eine Prüfquote je Krankenhaus und Quartal (§ 275c SGB V). Das Werkzeug gibt Entwarnung, wo Kasse B prüfen lässt, und warnt, wo sie es nicht tut.</span></div>
   </div>
   <div class="bar-col" style="border:2px solid var(--red);">
-   <div class="bar-col-t" style="color:var(--red);">GKV → PKV</div>
-   <div class="def-row" style="border:none;padding:.3rem 0;"><span class="def-term" style="color:var(--red);min-width:80px;">Massiv</span><span class="def-body">Komplett anderes Abrechnungssystem: GKV rechnet nach <strong>DRG-Fallpauschalen</strong> (ein Betrag pro Fall), PKV nach <strong>GOÄ</strong> (Gebührenordnung für Ärzte — jede Leistung einzeln, mit Steigerungssätzen). Ein DRG-Prüftool auf GOÄ-Abrechnungen loszulassen ist eine "artfremde" Verwendung — andere Daten, andere Logik, andere Regeln - mit entsprechenden Verzerrungen.</span></div>
+   <div class="bar-col-t" style="color:var(--red);">DRG → GOÄ</div>
+   <div class="def-row" style="border:none;padding:.3rem 0;"><span class="def-term" style="color:var(--red);min-width:80px;">Massiv</span><span class="def-body">Das Krankenhaus prüft mit dem Werkzeug auch die Rechnungen für wahlärztliche Leistungen (etwa Chefarztbehandlung) bei Privatversicherten. Die werden nicht nach <strong>DRG-Fallpauschalen</strong> (ein Betrag pro Fall) abgerechnet, sondern nach der <strong>GOÄ</strong> (Gebührenordnung für Ärzte — jede Leistung einzeln, mit Steigerungssätzen); einen MD gibt es dort nicht. Das ist eine „artfremde“ Verwendung — andere Daten, andere Logik, andere Regeln. Die allgemeinen Krankenhausleistungen werden übrigens auch für Privatversicherte nach DRG abgerechnet.</span></div>
   </div>
  </div>
 
- <div class="callout"><b>Warum ist das gefährlich?</b> Die GKV-Variante erzeugt falsche Sicherheit: Das Krankenhaus glaubt, die Abrechnung sei geprüft — aber die Prüfung basiert auf den falschen Regeln. Bei der PKV kommt hinzu, dass das Tool die abrechnungsrelevanten Informationen nicht einmal korrekt identifizieren kann, weil es GOÄ-Ziffern und Steigerungssätze nie gelernt hat. Beide Fälle können zu Abrechnungsfehlern führen — mit finanziellen und rechtlichen Folgen für das Krankenhaus.</div>
+ <div class="callout"><b>Warum ist das gefährlich?</b> Im ersten Fall erzeugt die Vorhersage falsche Sicherheit: Das Krankenhaus glaubt zu wissen, welche Rechnungen geprüft werden — aber das Wissen stammt aus dem Verhalten einer anderen Kasse. Im zweiten Fall kann das Werkzeug die abrechnungsrelevanten Angaben nicht einmal korrekt erkennen, weil es GOÄ-Ziffern und Steigerungssätze nie gelernt hat. Beide Fälle können zu Abrechnungsfehlern führen — mit finanziellen und rechtlichen Folgen für das Krankenhaus.</div>
 
- <div class="sc-result bad" style="margin:.8rem 0;"><b>Zweckbestimmung (Art. 3 Nr. 12 EU AI Act):</b> Sie lautet hier „Abrechnungsprüfung für GKV 1 nach DRG-Kodierrichtlinien“. Der Einsatz für andere Kostenträger — insbesondere für die PKV mit einem völlig anderen Abrechnungssystem — liegt außerhalb der Zweckbestimmung. Die Verantwortung dafür trägt der Betreiber; bei Hochrisiko-KI muss er das System gemäß Betriebsanleitung verwenden (Art. 26 Abs. 1).</div>
+ <div class="sc-result bad" style="margin:.8rem 0;"><b>Zweckbestimmung (Art. 3 Nr. 12 EU AI Act):</b> Sie lautet hier „Abrechnungsprüfung für Kasse A nach DRG und Deutschen Kodierrichtlinien“. Der Einsatz für andere Kostenträger und erst recht für GOÄ-Rechnungen liegt außerhalb der Zweckbestimmung. Die Verantwortung dafür trägt der Betreiber; bei Hochrisiko-KI muss er das System gemäß Betriebsanleitung verwenden (Art. 26 Abs. 1).</div>
 
 </div>
 
@@ -705,6 +705,9 @@ input[type=range]{flex:1;min-width:200px;accent-color:var(--teal);cursor:pointer
 
  <p style="font-size:12.5px;line-height:1.6;color:var(--ink);margin-bottom:.4rem;margin-top:.8rem;"><strong>Anwendungsbias — KI-Kodierung</strong></p>
  <p style="font-size:12px;line-height:1.6;color:var(--muted);">
+  GKV-Spitzenverband — <a href="https://www.gkv-spitzenverband.de/media/dokumente/krankenversicherung_1/krankenhaeuser/drg/drg_2026/DKR_2026_20.11.2025.pdf" target="_blank">„Deutsche Kodierrichtlinien, Version 2026“</a> (vereinbart von DKG, GKV-Spitzenverband, PKV-Verband und InEK)<br>
+  § 275c SGB V — <a href="https://www.gesetze-im-internet.de/sgb%5F5/__275c.html" target="_blank">„Durchführung und Umfang von Prüfungen bei Krankenhausbehandlung durch den Medizinischen Dienst“</a><br>
+  privat-patienten.de — <a href="https://www.privat-patienten.de/im-krankenhaus/krankenhausrechnung/allgemeine-krankenhausleistungen/" target="_blank">„Abrechnung der allgemeinen Krankenhausleistungen“</a><br>
   Medcontroller — <a href="https://www.medcontroller.de/2026/07/30/kann-ki-die-erloesoptimierung-im-krankenhaus-regulatorisch-sicher-unterstuetzen/" target="_blank">„Kann KI die Erlösoptimierung im Krankenhaus regulatorisch sicher unterstützen?", Juli 2026</a><br>
   Medcontroller — <a href="https://www.medcontroller.de/2026/07/15/ist-ki-gestuetzte-kodierung-im-krankenhaus-rechtssicher-einsetzbar/" target="_blank">„Ist KI-gestützte Kodierung im Krankenhaus rechtssicher einsetzbar?", Juli 2026</a>
  </p>

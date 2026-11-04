@@ -179,14 +179,14 @@ var QUESTIONS = [
     set: 'KI-Beauftragte:r',
     q: 'Ein KI-System liefert in einem Pilotbetrieb unerwartete Ergebnisse. Du erklärst als KI-Beauftragte:r, welche technischen Fehlerquellen bei KI-Systemen typischerweise auftreten. Welche Aussage(n) sind korrekt?',
     opts: [
-      'Verteilungsverschiebung (Distribution Shift) tritt auf, wenn die Daten im Betrieb signifikant von den Trainingsdaten abweichen.',
+      'Data Drift (Input-Drift) tritt auf, wenn sich die Eingabedaten im Betrieb deutlich von den Trainingsdaten unterscheiden.',
       'Halluzinationen bei generativen KI-Systemen können plausibel klingende, aber faktisch falsche Ausgaben erzeugen.',
       'KI-Systeme mit ausreichend großen Trainingsdaten produzieren nie fehlerhafte Ausgaben.',
       'Kaskadenfehler können entstehen, wenn mehrere KI-Systeme miteinander verkoppelt sind und ein Fehler sich verstärkt fortpflanzt.'
     ],
     correct: [0,1,3],
-    exp: 'KI-Systeme haben spezifische Fehlertypen: Distribution Shift (Trainingsdaten ≠ Produktionsdaten), Halluzinationen (plausible aber falsche Ausgaben bei LLMs), Kaskadenfehler (verkoppelte Systeme verstärken Fehler). Kein KI-System — unabhängig von der Trainingsdatenmenge — ist fehlerfrei. Größere Trainingsmengen reduzieren bestimmte Fehler, eliminieren sie aber nicht.',
-    src: 'EU AI Act Art. 9 · ISO/IEC 42001:2023', url: 'https://artificialintelligenceact.eu/article/9/'
+    exp: 'KI-Systeme haben spezifische Fehlertypen: Data Drift (Input-Drift: Eingabedaten im Betrieb ≠ Trainingsdaten), Halluzinationen (plausible aber falsche Ausgaben bei LLMs), Kaskadenfehler (verkoppelte Systeme verstärken Fehler). Kein KI-System — unabhängig von der Trainingsdatenmenge — ist fehlerfrei. Größere Trainingsmengen reduzieren bestimmte Fehler, eliminieren sie aber nicht.',
+    src: 'EU AI Act Art. 9 · DIN EN ISO/IEC 42001:2026-08', url: 'https://artificialintelligenceact.eu/article/9/'
   },
   {
     set: 'KI-Beauftragte:r',
@@ -244,16 +244,16 @@ var QUESTIONS = [
   /* ═══ SET 2: Projektmanagerin (Fragen 6–10) ═══ */
   {
     set: 'Projektmanagerin',
-    q: 'Als Projektmanagerin planst du ein Projekt zur Einführung eines KI-Systems. Du wirst gefragt, welche projektspezifischen Risiken beim KI-Einsatz besonders zu beachten sind. Welche Aussage(n) sind korrekt?',
+    q: 'Als Projektmanagerin stimmst du die Risikomethodik deines KI-Projekts mit der oder dem KI-Beauftragten ab. Es geht darum, wie sich das NIST AI RMF zur ISO/IEC 42001 verhält. Welche Aussage(n) sind korrekt?',
     opts: [
-      'Datenqualität und -verfügbarkeit sind kritische Projektrisiken — schlechte Daten führen zu schlechten Modellergebnissen.',
-      'Bei KI-Projekten gelten keine besonderen regulatorischen Risiken — die normale Projektplanung reicht aus.',
-      'Stakeholder-Akzeptanz ist ein zentrales Risiko: Widerstände im Team können die Einführung scheitern lassen.',
-      'KI-Systeme sind so flexibel, dass eine detaillierte Anforderungsdefinition zu Projektbeginn unnötig ist — das Modell passt sich automatisch an.'
+      'Das NIST AI RMF ist ein freiwilliges US-Rahmenwerk (keine ISO-Norm) mit vier Kernfunktionen: Govern, Map, Measure, Manage.',
+      'ISO/IEC 42001 und NIST AI RMF verfolgen ähnliche Ziele, sind aber unterschiedlich aufgebaut — Gegenüberstellungen (Crosswalks) helfen bei der Verbindung.',
+      'Das NIST AI RMF kann in der EU die KI-Verordnung bei den technischen Anforderungen ersetzen.',
+      'Das NIST AI RMF kann die ISO/IEC 42001 vollständig ersetzen, da beide identische Anforderungen abbilden.'
     ],
-    correct: [0,2],
-    exp: 'KI-Projekte haben spezifische Risiken: Datenqualität (Garbage in, Garbage out) und Stakeholder-Akzeptanz (menschliche Aufsicht, Change Management) sind zwei der kritischsten. Regulatorische Risiken (EU AI Act, DSGVO) sind bei KI-Projekten ein eigener Risikobereich — klassische Projektplanung greift zu kurz. Und: ML-Modelle brauchen scharfe Anforderungsdefinitionen, weil sie nur scheinbar „alles können" — fehlende Spezifikation führt zu Scope Creep und unbrauchbaren Ergebnissen.',
-    src: 'EU AI Act Art. 9 · ISO/IEC 42001:2023', url: 'https://artificialintelligenceact.eu/article/9/'
+    correct: [0,1],
+    exp: 'Das NIST AI RMF (2023) ist ein freiwilliges US-Rahmenwerk mit vier Kernfunktionen: Govern, Map, Measure, Manage. Es ist kein EU-Recht und ersetzt keine Pflicht der KI-Verordnung. ISO/IEC 42001 und NIST AI RMF sind verwandt, aber unterschiedlich aufgebaut — NIST veröffentlicht Gegenüberstellungen (Crosswalks), unter anderem zu ISO-Normen. Die ISO/IEC 42001 ist ein zertifizierbares Managementsystem, das NIST AI RMF eine Methodensammlung ohne Zertifizierung. Sie ergänzen sich, ersetzen einander aber nicht. NIST überarbeitet das AI RMF 1.0 derzeit; einen Termin für die neue Fassung nennt NIST nicht.',
+    src: 'NIST AI RMF 1.0 · DIN EN ISO/IEC 42001:2026-08', url: 'https://www.nist.gov/itl/ai-risk-management-framework'
   },
   {
     set: 'Projektmanagerin',
@@ -291,7 +291,7 @@ var QUESTIONS = [
       'Das Risikoregister wird einmalig vor Inbetriebnahme erstellt und bedarf danach keiner Aktualisierung.'
     ],
     correct: [1],
-    exp: 'Das Risikoregister ist ein Pflicht-Artefakt pro KI-Use-Case. Es dokumentiert alle identifizierten Risiken mit Bewertung, Maßnahmen und Verantwortlichkeiten und hat drei Funktionen: Sichtbarkeit (implizites Wissen wird explizit), Priorisierung (Bewertungsskalen machen Risiken vergleichbar) und Nachweis (Aufsichtsbehörden und Auditoren können nachvollziehen, was wann gewusst und entschieden wurde). Nach EU AI Act Art. 9 muss das Risikomanagementsystem kontinuierlich betrieben werden — ein einmaliges Register reicht nicht.',
+    exp: 'Das Risikoregister ist ein Kernartefakt jedes KI-Vorhabens. Es dokumentiert alle identifizierten Risiken mit Bewertung, Maßnahmen und Verantwortlichkeiten und hat drei Funktionen: Sichtbarkeit (implizites Wissen wird explizit), Priorisierung (Bewertungsskalen machen Risiken vergleichbar) und Nachweis (Aufsichtsbehörden und Auditoren können nachvollziehen, was wann gewusst und entschieden wurde). Nach EU AI Act Art. 9 muss das Risikomanagementsystem kontinuierlich betrieben werden — ein einmaliges Register reicht nicht.',
     src: 'EU AI Act Art. 9', url: 'https://artificialintelligenceact.eu/article/9/'
   },
   {
