@@ -104,10 +104,12 @@ h3.block-title{font-family:'Playfair Display',serif;font-weight:600;font-size:1.
 /* ─── DRIFT-DEMO (eingebettet aus Tag 6) ─── */
 .drift-section{display:none;}
 .drift-section.active{display:block;}
-.dd-nav{display:flex;gap:.5rem;margin-bottom:1.5rem;flex-wrap:wrap;}
-.dd-nav button{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:1px;padding:.5rem 1rem;border:2px solid var(--rule);border-radius:100px;background:var(--card);color:var(--muted);cursor:pointer;transition:all .2s;}
-.dd-nav button.active{background:var(--accent);color:#fff;border-color:var(--accent);}
-.dd-nav button:hover:not(.active){border-color:var(--accent);color:var(--accent);}
+.bias-section{display:none;}
+.bias-section.active{display:block;}
+.dd-nav,.bias-nav{display:flex;gap:.5rem;margin-bottom:1.5rem;flex-wrap:wrap;}
+.dd-nav button,.bias-nav button{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:1px;padding:.5rem 1rem;border:2px solid var(--rule);border-radius:100px;background:var(--card);color:var(--muted);cursor:pointer;transition:all .2s;}
+.dd-nav button.active,.bias-nav button.active{background:var(--accent);color:#fff;border-color:var(--accent);}
+.dd-nav button:hover:not(.active),.bias-nav button:hover:not(.active){border-color:var(--accent);color:var(--accent);}
 .ctrl{display:flex;align-items:center;gap:1rem;flex-wrap:wrap;margin-bottom:.6rem;}
 .ctrl label{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);}
 input[type=range]{flex:1;min-width:200px;accent-color:var(--teal);cursor:pointer;}
@@ -163,8 +165,8 @@ input[type=range]{flex:1;min-width:200px;accent-color:var(--teal);cursor:pointer
  body{background:#fff;}
  *{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
  .page{max-width:none;padding:0;}
- .nav,.dd-nav,.ctrl,.thresh-ctrl{display:none!important;}
- .tab-section,.drift-section{display:block!important;}
+ .nav,.dd-nav,.bias-nav,.ctrl,.thresh-ctrl{display:none!important;}
+ .tab-section,.drift-section,.bias-section{display:block!important;}
  #sec-drift,#sec-ood,#sec-peek,#sec-quellen{break-before:page;}
  .print-hinweis{display:block;font-size:12px;color:var(--muted);font-style:italic;margin-top:.4rem;}
  h1,h3,.sec-t,.block-title{break-after:avoid-page;}
@@ -199,9 +201,17 @@ input[type=range]{flex:1;min-width:200px;accent-color:var(--teal);cursor:pointer
 <div class="sec">
  <div class="sec-t"><b>① Bias</b> — Systematische Verzerrungen in drei Schichten</div>
  <p class="body">Bias in KI-Systemen entsteht nicht an einer einzigen Stelle, sondern kann in jeder Phase des Lebenszyklus auftreten: bei der Datenerhebung, beim Modelltraining und beim Einsatz. Alle drei Formen können gleichzeitig wirken — und sich gegenseitig verstärken. Oft ist allgemein von <strong>algorithmischem Bias</strong> die Rede: gemeint sind verzerrte Ergebnisse eines KI-Systems. Seine häufigste Ursache sind Trainingsdaten, die nicht repräsentativ sind oder historische Ungleichheiten widerspiegeln — also Datenbias.</p>
+ <p class="print-hinweis">Wähle unten eine der drei Schichten. Im Ausdruck erscheinen alle drei nacheinander.</p>
+</div>
+
+<div class="bias-nav">
+ <button class="active" data-bias="dbias">① Datenbias</button>
+ <button data-bias="mbias">② Modellbias</button>
+ <button data-bias="abias">③ Anwendungsbias</button>
 </div>
 
 <!-- DATENBIAS -->
+<div class="bias-section active" id="sec-dbias">
 <div class="sec">
  <h3 class="block-title">Datenbias — Die Trainingsdaten spiegeln nicht die Realität</h3>
 
@@ -250,8 +260,10 @@ input[type=range]{flex:1;min-width:200px;accent-color:var(--teal);cursor:pointer
  <p class="body">Studien stützen das Muster: Eine Studie der Duke University (<em>Radiology</em>, 2024) fand bei einem KI-Algorithmus für die Brust-Tomosynthese signifikant häufiger unbegründete Verdachtsbefunde bei Schwarzen und bei älteren Patientinnen (71–80 Jahre). Eine weitere Studie (<em>Radiology</em>, 2025) zeigt: Die KI übersah 14 % der Karzinome — häufiger kleine, wenig aggressive und solche in dichtem Brustgewebe.</p>
 
 </div>
+</div><!-- /sec-dbias -->
 
 <!-- MODELLBIAS -->
+<div class="bias-section" id="sec-mbias">
 <div class="sec">
  <h3 class="block-title">Modellbias — Das Modell optimiert am Ziel vorbei</h3>
 
@@ -281,8 +293,10 @@ input[type=range]{flex:1;min-width:200px;accent-color:var(--teal);cursor:pointer
  <div class="note"><b>Modellbias ≠ Datenbias — zwei Probleme, zwei Gegenmaßnahmen:</b> Datenbias behebst Du, indem Du die Trainingsdaten verbesserst (repräsentativer, diverser). Modellbias behebst Du, indem Du das Modell selbst veränderst: andere Verlustfunktion (z. B. stärkere Gewichtung übersehener Fälle je Subgruppe), gezielte Evaluation nach demografischen Gruppen (Fairness-Metriken), oder Architekturanpassungen für schwierigere Fälle. Beide Bias-Formen können gleichzeitig auftreten — und sich gegenseitig verstärken.</div>
 
 </div>
+</div><!-- /sec-mbias -->
 
 <!-- ANWENDUNGSBIAS -->
+<div class="bias-section" id="sec-abias">
 <div class="sec">
  <h3 class="block-title">Anwendungsbias — Das System wird falsch eingesetzt</h3>
  <p class="body">Anwendungsbias entsteht, wenn ein KI-System in einem Kontext eingesetzt wird, für den es nicht entwickelt oder validiert wurde. Das System selbst funktioniert korrekt — es wird nur falsch verwendet.</p>
@@ -310,6 +324,7 @@ input[type=range]{flex:1;min-width:200px;accent-color:var(--teal);cursor:pointer
  <div class="sc-result bad" style="margin:.8rem 0;"><b>Zweckbestimmung (Art. 3 Nr. 12 EU AI Act):</b> Sie lautet hier „Abrechnungsprüfung für Kasse A nach DRG und Deutschen Kodierrichtlinien“. Der Einsatz für andere Kostenträger und erst recht für GOÄ-Rechnungen liegt außerhalb der Zweckbestimmung. Die Verantwortung dafür trägt der Betreiber; bei Hochrisiko-KI muss er das System gemäß Betriebsanleitung verwenden (Art. 26 Abs. 1).</div>
 
 </div>
+</div><!-- /sec-abias -->
 
 </div><!-- /sec-bias -->
 
@@ -739,6 +754,16 @@ function showTab(id){
 // ─── DRIFT-DEMO (eingebettet aus Tag 6) ───
 (function(){
 const $=id=>document.getElementById(id);
+
+// Navigation between bias sub-tabs
+document.querySelectorAll('.bias-nav button').forEach(btn=>{
+ btn.addEventListener('click',function(){
+  document.querySelectorAll('.bias-section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.bias-nav button').forEach(b=>b.classList.remove('active'));
+  $('sec-'+this.dataset.bias).classList.add('active');
+  this.classList.add('active');
+ });
+});
 
 // Navigation between drift sub-tabs
 document.querySelectorAll('.dd-nav button').forEach(btn=>{
