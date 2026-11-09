@@ -239,7 +239,7 @@ Falls Quiz existiert: Aktualität der Antworten prüfen (Fristen, Zahlen, regula
 
 - **Keine Schwierigkeitsstufen.** Pro Quiz **2 × 5 Fragen**: ein Set für die Primärrolle des Kurses (KI-Manager:in bzw. KI-Beauftragte:r) und ein zweites für eine pro Kurstag festzulegende Rolle (z. B. Datenschutzbeauftragte:r, Betriebsrat, IT-Leitung, Geschäftsführer:in — je nach Thema des Tages).
 - Vor der Erstellung eines neuen Quizzes: **Zweite Rolle erfragen**, sofern nicht bereits vorgegeben.
-- Format: Multiple Choice, 4 Antwortoptionen. **1–3 richtige Antworten** je Frage — Verteilung ca. 20 % eine, 40 % zwei, 40 % drei richtige; **nie vier**. (Maßgeblich ist der KIM-Fragenpool; ersetzt die frühere Vorgabe „eine korrekte Antwort".)
+- Format: Multiple Choice, 4 Antwortoptionen. **1–3 richtige Antworten** je Frage, **nie vier** (ersetzt die frühere Vorgabe „eine korrekte Antwort"). **Die Verteilung hängt davon ab, was das Quiz nachbildet.** Tagesquizze (Tag 1–16, beide Kurse): rund **20 % eine · 40 % zwei · 40 % drei** richtige Antworten. Die **Prüfungssimulation an Tag 17** bildet dagegen den jeweiligen TÜV-Fragenpool nach und hat deshalb je Kurs eine eigene Verteilung — **KIB rund 5 % / 56 % / 39 %**, **KIM rund 12,5 % / 12,5 % / 75 %**. Die 20/40/40-Regel gilt dort **nicht** (Weisung des Dozenten, 09.11.2026).
 - **Tonalität wie die TÜV-Prüfungsfragen:** Jede Frage beginnt mit einer knappen, konkreten Situationsschilderung (1–3 Sätze, generisch/anonym, **kein benannter Use Case**) und schließt mit „Welche Aussage(n) … ist/sind korrekt?". Die Situation ist **in die Frage eingewoben** — kein separater, dauerhaft eingeblendeter Use-Case-Block. Beispiel: „Ein Unternehmen will Belege anhand optischer Merkmale auf Betrug prüfen; die zugehörige Projektnummer wird oft handschriftlich eingetragen, sodass die KI mit verschiedenen Schriftbildern umgehen muss. Welche Aussage(n) über bildverarbeitende KI (Computer Vision) ist/sind korrekt?"
 
 ### 5.2 Formulierungsregeln
@@ -270,7 +270,7 @@ Veraltete Antworten müssen korrigiert werden, bevor das Quiz verwendet wird.
 
 - Alle Antworten einer Überprüfung unterziehen: Ist die als „richtig" markierte Antwort tatsächlich korrekt?
 - Distraktoren (falsche Antworten) müssen plausibel aber eindeutig falsch sein — keine Trick-Fragen
-- Antwortzahl-Verteilung prüfen: Mix aus Fragen mit einer, zwei und drei richtigen Antworten (ca. 20/40/40); nie vier richtige
+- Antwortzahl-Verteilung prüfen: **Tagesquizze ca. 20/40/40**; **Prüfungssimulation Tag 17 nach dem jeweiligen Pool — KIB ca. 5/56/39, KIM ca. 12,5/12,5/75**; nie vier richtige
 - Nach Quiz-Erstellung: Korrektheit aller Antworten verifizieren, bevor abgeliefert wird
 
 ---
