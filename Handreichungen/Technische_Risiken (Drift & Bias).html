@@ -460,7 +460,7 @@ input[type=range]{flex:1;min-width:200px;accent-color:var(--teal);cursor:pointer
   <li><strong>Durchschnittliche Verweildauer: 3 Tage</strong> — darauf basiert die gesamte Kapazitätsplanung</li>
   <li><strong>Personalplanung:</strong> Das System plant Pflegepersonal passend zur prognostizierten Belegung</li>
  </ul>
- <p style="font-size:12.5px;color:var(--muted);">Die Verweildauer war 3 Tage, weil die Kassen 3 Tage erstattet haben. Das Modell hat diesen Zusammenhang gelernt.</p>
+ <p style="font-size:12.5px;color:var(--muted);">Die durchschnittliche Verweildauer lag bei 3 Tagen. Das Modell hat diesen Wert aus der Historie gelernt und plant Betten und Personal danach. Abgerechnet wird nach DRG — ein fester Betrag je Fall, unabhängig davon, wie lange der Patient liegt.</p>
 </div>
 
 <div class="sec">
@@ -471,8 +471,8 @@ input[type=range]{flex:1;min-width:200px;accent-color:var(--teal);cursor:pointer
   <span class="pill" id="kd_monthLabel">Monat 1</span>
  </div>
  <div class="events">
-  <span class="ev ev-ok active" id="kd_ev0">Monat 1–5 · GKV erstattet 3 Tage</span>
-  <span class="ev ev-a" id="kd_ev1">Monat 6 · GKV senkt auf 2,5 Tage</span>
+  <span class="ev ev-ok active" id="kd_ev0">Monat 1–5 · Verweildauer 3 Tage</span>
+  <span class="ev ev-a" id="kd_ev1">Monat 6 · Neue Leitlinie: frühe Mobilisierung</span>
  </div>
 </div>
 
@@ -503,11 +503,11 @@ input[type=range]{flex:1;min-width:200px;accent-color:var(--teal);cursor:pointer
   </div>
   <div class="prod" id="kd_prodFin">
    <div class="prod-t"><span class="prod-icon">💶</span> Finanzieller Impact</div>
-   <div class="bar-group"><div class="bar-label"><span>Geplanter Erlös/Monat</span><span id="kd_finPredV"></span></div><div class="bar-track"><div class="bar-fill bar-pred" id="kd_finPredBar"></div></div></div>
-   <div class="bar-group"><div class="bar-label"><span>Tatsächlicher Erlös/Monat</span><span id="kd_finActV"></span></div><div class="bar-track"><div class="bar-fill bar-ist" id="kd_finActBar"></div></div></div>
+   <div class="bar-group"><div class="bar-label"><span>Möglicher Erlös/Monat (DRG)</span><span id="kd_finPredV"></span></div><div class="bar-track"><div class="bar-fill bar-pred" id="kd_finPredBar"></div></div></div>
+   <div class="bar-group"><div class="bar-label"><span>Tatsächlicher Erlös/Monat (DRG)</span><span id="kd_finActV"></span></div><div class="bar-track"><div class="bar-fill bar-ist" id="kd_finActBar"></div></div></div>
    <div id="kd_finDelta"></div>
    <div class="met-row">
-    <div class="met" id="kd_metVerlust"><div class="v" id="kd_verlustV">0 €</div><div class="k">Entgangener Erlös/Mt.</div></div>
+    <div class="met" id="kd_metVerlust"><div class="v" id="kd_verlustV">0 €</div><div class="k" title="Fallpauschalen der Fälle, die mit der frei gewordenen Kapazität zusätzlich möglich wären">Entgangener Erlös/Mt.*</div></div>
     <div class="met" id="kd_metPersonal"><div class="v" id="kd_personalV">—</div><div class="k">Personal-Effizienz</div></div>
    </div>
    <div class="drift-ind ok" id="kd_stFin"><b>Status</b><span id="kd_stFinT">Erlöse im Plan.</span></div>
@@ -519,7 +519,7 @@ input[type=range]{flex:1;min-width:200px;accent-color:var(--teal);cursor:pointer
 
 <div class="merksatz">
  <span class="ms-l">Concept Drift — Kernaussage</span>
- Die Eingabedaten haben sich nicht verändert — es kommen dieselben Patienten mit denselben Diagnosen. Aber was als „richtig" gilt, hat sich geändert: Die GKV erstattet weniger Tage, also werden Patienten früher entlassen. Das Modell wurde auf eine Welt trainiert, in der andere Regeln galten. Concept Drift kommt oft von außen — durch Regulierung, Leitlinien oder Marktveränderungen.
+ Die Eingabedaten haben sich nicht verändert — es kommen dieselben Patienten mit denselben Diagnosen. Aber was als „richtig" gilt, hat sich geändert: Eine neue Leitlinie zur frühen Mobilisierung verkürzt die Verweildauer, also werden Patienten früher entlassen. Das Modell wurde auf eine Welt trainiert, in der andere Regeln galten. Concept Drift kommt oft von außen — durch Regulierung, Leitlinien oder Marktveränderungen.
 </div>
 </div>
 
@@ -888,12 +888,14 @@ function renderKD(){
 
   const stB=$('kd_stBett'),stBT=$('kd_stBettT');
   if(bettAcc>=thBett){stB.className='drift-ind ok';stBT.textContent='Bettenauslastung im Plan. Prognose und Realität stimmen überein.';}
-  else{stB.className='drift-ind warn';stBT.innerHTML='<strong>Schwellwert unterschritten (< '+thBett+'%).</strong> Das Modell prognostiziert eine Verweildauer von 3 Tagen, aber die GKV erstattet nur noch 2,5 Tage. Patienten werden früher entlassen → Betten stehen leer, obwohl das System „belegt“ meldet.';}
+  else{stB.className='drift-ind warn';stBT.innerHTML='<strong>Schwellwert unterschritten (< '+thBett+'%).</strong> Das Modell prognostiziert eine Verweildauer von 3 Tagen, die Realität liegt darunter. Patienten werden früher entlassen → Betten stehen leer, obwohl das System „belegt“ meldet.';}
   $('kd_prodBett').className='prod'+(bettAcc<thBett-5?' drift-crit':bettAcc<thBett?' drift-warn':'');
 
-  const dailyRate=800;
-  const predRevenue=Math.round(beds*predOcc/100*30*dailyRate/1000);
-  const actRevenue=Math.round(beds*actOcc/100*30*dailyRate/1000);
+  const caseRate=2400;
+  const moeglicheFaelle=beds*predOcc/100*30/actStay;
+  const tatsaechlicheFaelle=beds*actOcc/100*30/actStay;
+  const predRevenue=Math.round(moeglicheFaelle*caseRate/1000);
+  const actRevenue=Math.round(tatsaechlicheFaelle*caseRate/1000);
   const maxRev=1200;
   const verlust=(predRevenue-actRevenue)*1000;
   const finAcc=actRevenue>0?Math.max(0,Math.round((1-Math.abs(predRevenue-actRevenue)/actRevenue)*100)):100;
@@ -911,13 +913,13 @@ function renderKD(){
   if(m>=6 && actOcc/predOcc<0.85)$('kd_metPersonal').classList.add('warn');
 
   const stF=$('kd_stFin'),stFT=$('kd_stFinT');
-  if(verlust<=5000){stF.className='drift-ind ok';stFT.textContent='Erlöse im Plan. Keine finanzielle Abweichung.';}
-  else{stF.className='drift-ind warn';stFT.innerHTML='<strong>Erlösabweichung: '+Math.round(verlust/1000)+' T€/Monat.</strong> Das Modell blockiert Neuaufnahmen, weil es „volle Belegung“ meldet. Gleichzeitig ist das Personal auf die prognostizierte Auslastung geplant → Überbesetzung bei Unterbelegung.';}
+  if(verlust<=5000){stF.className='drift-ind ok';stFT.textContent='Kapazität und Fallzahl im Plan. Keine finanzielle Abweichung.';}
+  else{stF.className='drift-ind warn';stFT.innerHTML='<strong>Entgangener Erlös: '+Math.round(verlust/1000)+' T€/Monat.</strong> Kürzere Liegezeiten senken den Erlös je Fall nicht — die DRG-Pauschale bleibt. Das Modell blockiert aber Neuaufnahmen, weil es „volle Belegung“ meldet, und die frei gewordene Kapazität bleibt ungenutzt. Gleichzeitig ist das Personal auf die prognostizierte Auslastung geplant → Überbesetzung bei Unterbelegung.';}
   $('kd_prodFin').className='prod'+(verlust>50000?' drift-crit':verlust>5000?' drift-warn':'');
 
   const c=$('kd_explC');
-  if(m<=5) c.innerHTML='<div class="expl"><b>Monat 1–5: Normalzustand.</b> Die GKV erstattet 3 Tage Verweildauer für orthopädische Eingriffe. Das Modell prognostiziert korrekt ~85% Auslastung. Personal und Belegung stimmen überein.</div>';
-  else c.innerHTML='<div class="expl"><b>Ab Monat 6: GKV senkt die Erstattung auf 2,5 Tage.</b> Die Klinik entlässt Patienten jetzt im Schnitt nach '+actStay.toFixed(1)+' Tagen statt 3. Die Betten werden schneller frei — aber das Modell weiß davon nichts.</div><div class="callout" style="margin-top:.5rem"><b>Dieselben Patienten, dieselben Diagnosen, andere Regeln.</b> Die Eingabedaten (Patientenaufnahmen) haben sich nicht verändert. Was sich geändert hat: die <em>Definition</em> von „korrekter Verweildauer“. Das Modell wurde auf 3 Tage trainiert, die Realität ist jetzt 2,5 Tage. Es prognostiziert weiterhin volle Betten — und blockiert Neuaufnahmen für Betten, die längst frei sind.</div><div class="expl" style="margin-top:.5rem;border-color:var(--teal);background:#f0f7f7;"><b style="color:var(--teal)">Concept Drift</b> = Die Beziehung zwischen Input und Output hat sich verändert. Die „richtige Antwort“ ist eine andere als im Training. Der Auslöser kam nicht aus der Technik, sondern aus der Regulierung (GKV-Erstattungssätze).</div>';
+  if(m<=5) c.innerHTML='<div class="expl"><b>Monat 1–5: Normalzustand.</b> Die Verweildauer liegt bei 3 Tagen. Das Modell prognostiziert korrekt ~85% Auslastung. Personal und Belegung stimmen überein.</div>';
+  else c.innerHTML='<div class="expl"><b>Ab Monat 6: Neue Leitlinie zur frühen Mobilisierung.</b> Die Klinik entlässt Patienten jetzt im Schnitt nach '+actStay.toFixed(1)+' Tagen statt 3. Die Betten werden schneller frei — aber das Modell weiß davon nichts.</div><div class="callout" style="margin-top:.5rem"><b>Dieselben Patienten, dieselben Diagnosen, andere Regeln.</b> Die Eingabedaten (Patientenaufnahmen) haben sich nicht verändert. Was sich geändert hat: die <em>Definition</em> von „korrekter Verweildauer“. Das Modell wurde auf 3 Tage trainiert, die Realität ist jetzt 2,5 Tage. Es prognostiziert weiterhin volle Betten — und blockiert Neuaufnahmen für Betten, die längst frei sind. <b>Und genau hier entsteht der Schaden:</b> Die DRG-Fallpauschale fällt je <em>Fall</em> an. Kürzere Liegezeiten kosten also nichts — sie machen Kapazität frei. Verloren geht der Erlös der Fälle, die das Haus zusätzlich behandeln könnte, aber nicht aufnimmt.</div><div class="expl" style="margin-top:.5rem;border-color:var(--teal);background:#f0f7f7;"><b style="color:var(--teal)">Concept Drift</b> = Die Beziehung zwischen Input und Output hat sich verändert. Die „richtige Antwort“ ist eine andere als im Training. Der Auslöser kam nicht aus der Technik, sondern aus der Regulierung (GKV-Erstattungssätze).</div>';
 }
 
 // ═══ LERNDRIFT ═══
