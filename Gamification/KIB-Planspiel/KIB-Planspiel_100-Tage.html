@@ -20531,7 +20531,7 @@ const DATA = {
     ],
     "regeln": [
       [
-        "Sie altert.",
+        "Die Matrix altert.",
         "Ein Modellwechsel beim Anbieter, ein neuer Einsatzzweck oder eine Rechtsänderung kann Zellen umwerfen. Je Zeile gehören ein fester Überprüfungstermin und ein Anlass dazu: neue Funktion, neuer Datenbestand, neuer Adressatenkreis."
       ],
       [
@@ -23372,7 +23372,7 @@ function viewMatrix(s) {
     '</div>';
   h += viewIso(s);
   h +=
-    '<div class="card"><h2>Zwei Regeln für den Betrieb</h2><ul>' +
+    '<div class="card"><ul>' +
     MX.regeln.map(([t, b]) => '<li><b>' + esc(t) + '</b> ' + esc(b) + '</li>').join('') +
     '</ul><p class="mxmerk">' +
     esc(MX.merksatz) +
@@ -25668,13 +25668,13 @@ function einschaetzungSatz(n) {
       ? 'Deine Entscheidungen tragen: ' + n.empfohlen + ' von ' + sum + ' wie empfohlen, keine problematisch.'
       : 'Keine Entscheidung ist problematisch. Bei ' +
           n.vertretbar +
-          ' Entscheidungen gibt es einen besseren Weg – ein Blick unter „Vertretbar“ lohnt sich.';
+          ' Entscheidungen gibt es einen besseren Weg – welche, zeigt der Reiter „Entscheidungen“.';
   return n.problematisch === 1
-    ? 'Eine Entscheidung ist problematisch – sie steht oben unter „Problematisch“. Die übrigen ' +
+    ? 'Eine Entscheidung ist problematisch – welche, zeigt der Reiter „Entscheidungen“. Die übrigen ' +
         (sum - 1) +
         ' tragen.'
     : n.problematisch +
-        ' Entscheidungen sind problematisch – sie stehen oben unter „Problematisch“. Sieh sie Dir zuerst an.';
+        ' Entscheidungen sind problematisch – welche, zeigt der Reiter „Entscheidungen“. Die Erklärungen folgen im Feed-back nach Tag 100.';
 }
 // Überschrift der Bilanz einer Phase (Uli, 22.10.2026): Zwischenbilanz nach Tag 25 und Tag 75
 const bilanzTitel = sec =>
@@ -25758,8 +25758,6 @@ function rueckblickHtml(s, sec, aktiv) {
     ' problematisch</p>' +
     '<h3>Was die anderen sagen</h3>' +
     stimmenHtml(s, sec) +
-    '<h3>Deine Entscheidungen</h3>' +
-    reviewItems(s, sec) +
     '<h3>Gesamteinschätzung</h3><p>' +
     esc(einschaetzungSatz(n)) +
     '</p>' +
