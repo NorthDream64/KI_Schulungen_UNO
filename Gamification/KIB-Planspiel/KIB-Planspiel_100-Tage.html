@@ -1019,6 +1019,44 @@
         font-size: 13.5px;
         color: var(--accent);
       }
+      .mxkopf {
+        position: relative;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: baseline;
+        column-gap: 14px;
+      }
+      details.mxtip > summary {
+        cursor: help;
+        font-size: 13.5px;
+        color: var(--accent);
+        list-style: none;
+      }
+      details.mxtip > summary::-webkit-details-marker {
+        display: none;
+      }
+      details.mxtip > .mxpop {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 100%;
+        z-index: 30;
+        background: var(--card);
+        border: 1px solid var(--rule);
+        border-radius: 8px;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.14);
+        padding: 4px 14px 10px;
+      }
+      @media (hover: hover) {
+        details.mxtip > .mxpop::before {
+          content: '';
+          position: absolute;
+          left: 0;
+          right: 0;
+          top: -10px;
+          height: 10px;
+        }
+      }
       .mxw {
         color: var(--bad);
       }
@@ -2900,12 +2938,12 @@
           2026/1744 · Verordnung (EU) 2016/679 (DSGVO) · Betriebsverfassungsgesetz · Allgemeines
           Gleichbehandlungsgesetz · Urheberrechtsgesetz · Geschäftsgeheimnisgesetz · Bürgerliches Gesetzbuch ·
           Produkthaftungsgesetz und Richtlinie (EU) 2024/2853 (Produkthaftung) · Verordnung (EU) Nr. 1169/2011
-          (Lebensmittelinformation) · DIN EN ISO/IEC 42001:2026-08. Rechtsprechung: EuGH C-634/21
-          (SCHUFA) · EuGH C-413/23 P · BGH X ZR 37/12 · AG München 142 C 9786/25 · Moffatt v. Air Canada, 2024
-          BCCRT 149. Change: John P. Kotter, „Leading Change: Why Transformation Efforts Fail“, Harvard
-          Business Review 1995, und Buch „Leading Change“ (1996) · ADKAR-Modell von Prosci. Verbindlich ist
-          der Normtext, nicht das Spiel. Das Planspiel vermittelt allgemeine Informationen und ersetzt keine
-          Rechtsberatung im Einzelfall.
+          (Lebensmittelinformation) · DIN EN ISO/IEC 42001:2026-08. Rechtsprechung: EuGH C-634/21 (SCHUFA) ·
+          EuGH C-413/23 P · BGH X ZR 37/12 · AG München 142 C 9786/25 · Moffatt v. Air Canada, 2024 BCCRT 149.
+          Change: John P. Kotter, „Leading Change: Why Transformation Efforts Fail“, Harvard Business Review
+          1995, und Buch „Leading Change“ (1996) · ADKAR-Modell von Prosci. Verbindlich ist der Normtext,
+          nicht das Spiel. Das Planspiel vermittelt allgemeine Informationen und ersetzt keine Rechtsberatung
+          im Einzelfall.
         </p>
         <p>
           Der Spielstand bleibt nur in Deinem Browser gespeichert. Keine Anmeldung, keine Übertragung an einen
@@ -20454,8 +20492,6 @@ const DATA = {
         "merkmal": "Bei jedem fremden System: Auftragsverarbeitung, Unterauftragnehmer, Modellwechsel, Zugang zu Protokollen, Ausstieg."
       }
     ],
-    "lead": "Die häufigste Lücke bei KI-Vorhaben entsteht nicht dadurch, dass eine Pflicht falsch erfüllt wird – sondern dadurch, dass <strong>ein ganzes Rechtsgebiet nicht geprüft wurde</strong>. Die Matrix erzwingt den vollständigen Durchgang: <strong>Jede Zeile ist ein Anwendungsfall, jede Spalte ein Rechtsgebiet, jede Zelle eine Entscheidung.</strong> Auch „nicht einschlägig“ ist eine Entscheidung – und eine dokumentierte.",
-    "nicht": "Die Matrix ordnet die Prüfung, sie ersetzt sie nicht. Sie zeigt, wo Du hinsehen musst und wo eine Antwort fehlt – die rechtliche Beurteilung im Einzelfall gehört in die Rechtsabteilung oder zu einer Anwältin.",
     "aufbau": [
       [
         "Zeilen festlegen",
@@ -23299,15 +23335,15 @@ function viewMatrix(s) {
   const checks = Object.keys(MX.checks).filter(k => s.matrix && s.matrix[k]);
   let h =
     '<div class="card"><h2 tabindex="-1">Compliance-Matrix – kein Rechtsgebiet übersehen</h2>' +
-    '<p class="lead">' +
-    MX.lead +
-    '</p><div class="note bad" style="margin-top:10px"><b>Was die Matrix nicht ist.</b> ' +
-    esc(MX.nicht) +
-    '</div>' +
     '<h3>So gehst Du vor</h3><ol class="mxsteps">' +
     MX.aufbau.map(([t, b]) => '<li><b>' + esc(t) + '.</b> ' + esc(b) + '</li>').join('') +
     '</ol>' +
-    '<h3>Die Spalten – zehn Rechtsgebiete</h3>' +
+    '<div class="mxkopf"><h3>Zehn mögliche rechtliche und Compliance-Aspekte</h3>' +
+    '<details class="mxtip"><summary>ⓘ Vier Kontrollfragen</summary><div class="mxpop">' +
+    '<p class="small">Stell sie Dir zu jedem Anwendungsfall. Lautet eine Antwort „ja“, gehört der genannte Aspekt in die Prüfung – auch wenn Du ihn bisher nicht im Blick hattest.</p>' +
+    '<table class="log"><thead><tr><th>Frage</th><th>Worauf sie zeigt</th></tr></thead><tbody>' +
+    MX.fragen.map(([f, w]) => '<tr><td><b>' + esc(f) + '</b></td><td>' + esc(w) + '</td></tr>').join('') +
+    '</tbody></table></div></details></div>' +
     '<table class="log"><thead><tr><th>Rechtsgebiet</th><th>Die Frage je Anwendungsfall</th><th>Woran Du merkst, dass es einschlägig ist</th></tr></thead><tbody>' +
     MX.gebiete
       .map(
@@ -23336,11 +23372,7 @@ function viewMatrix(s) {
     '</div>';
   h += viewIso(s);
   h +=
-    '<div class="card"><h2>Vier Fragen, die eine fehlende Spalte sichtbar machen</h2>' +
-    '<table class="log"><thead><tr><th>Frage</th><th>Worauf sie zeigt</th></tr></thead><tbody>' +
-    MX.fragen.map(([f, w]) => '<tr><td><b>' + esc(f) + '</b></td><td>' + esc(w) + '</td></tr>').join('') +
-    '</tbody></table>' +
-    '<h3>Zwei Regeln für den Betrieb</h3><ul>' +
+    '<div class="card"><h2>Zwei Regeln für den Betrieb</h2><ul>' +
     MX.regeln.map(([t, b]) => '<li><b>' + esc(t) + '</b> ' + esc(b) + '</li>').join('') +
     '</ul><p class="mxmerk">' +
     esc(MX.merksatz) +
@@ -26243,6 +26275,40 @@ function lege(id, c) {
           : 'liegt jetzt in ' + esc(rmSp(c)[1]) + '.');
   popZu();
 }
+// Infobox (Compliance-Matrix): öffnet beim Überfahren mit der Maus; Klick, Tippen oder Tastatur öffnen sie fest
+document.addEventListener('pointerover', e => {
+  const d = e.pointerType === 'mouse' && e.target.closest && e.target.closest('details.mxtip');
+  if (d && !d.open) {
+    d.open = true;
+    d.dataset.hover = '1';
+  }
+});
+document.addEventListener('pointerout', e => {
+  const d = e.pointerType === 'mouse' && e.target.closest && e.target.closest('details.mxtip');
+  if (d && d.dataset.hover && !d.contains(e.relatedTarget)) {
+    d.open = false;
+    delete d.dataset.hover;
+  }
+});
+function mxtipZu(ausser) {
+  document.querySelectorAll('details.mxtip[open]').forEach(d => {
+    if (d !== ausser) {
+      d.open = false;
+      delete d.dataset.hover;
+    }
+  });
+}
+document.addEventListener('click', e => {
+  const sm = e.target.closest && e.target.closest('details.mxtip > summary');
+  if (sm && sm.parentNode.dataset.hover) {
+    e.preventDefault();
+    delete sm.parentNode.dataset.hover;
+  }
+  mxtipZu(e.target.closest && e.target.closest('details.mxtip'));
+});
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') mxtipZu(null);
+});
 document.addEventListener('click', e => {
   if (e.target.classList && e.target.classList.contains('pop-bg') && e.target.classList.contains('zu')) {
     popZu();
