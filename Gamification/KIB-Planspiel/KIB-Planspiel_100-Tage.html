@@ -2140,6 +2140,34 @@
       .note.toast {
         margin-top: 12px;
       }
+      .begriffe {
+        margin-top: 18px;
+        padding-top: 10px;
+        border-top: 1px solid var(--rule);
+        font-size: 12.5px;
+        color: var(--muted);
+      }
+      .begriffe dl {
+        display: grid;
+        grid-template-columns: max-content minmax(0, 1fr);
+        gap: 3px 14px;
+        margin: 6px 0 0;
+      }
+      .begriffe dt {
+        color: var(--ink);
+        font-weight: 600;
+      }
+      .begriffe dd {
+        margin: 0;
+      }
+      @media (max-width: 560px) {
+        .begriffe dl {
+          grid-template-columns: 1fr;
+        }
+        .begriffe dd {
+          margin-bottom: 4px;
+        }
+      }
       .brdw {
         margin: 16px 0 6px;
         padding-bottom: 6px;
@@ -20430,7 +20458,7 @@ const DATA = {
       },
       {
         "id": "ds",
-        "name": "Datenschutz",
+        "name": "Datenschutz (DSGVO)",
         "grundlage": "DSGVO, BDSG",
         "frage": "Werden personenbezogene Daten verarbeitet – in Eingaben, Trainingsdaten oder Protokollen? Auf welcher Rechtsgrundlage?",
         "merkmal": "Sobald Menschen vorkommen. Prüfmarken: automatisierte Einzelentscheidung, Folgenabschätzung vor dem Einsatz, Daten von Beschäftigten – auch Nutzungsprotokolle."
@@ -20471,27 +20499,15 @@ const DATA = {
         "merkmal": "Sobald Software in ein Gerät eingebettet ist oder Sicherheitsfunktionen übernimmt – bei NoHa etwa unter der Eigenmarke."
       },
       {
-        "id": "sek",
-        "name": "Sektorrecht",
-        "grundlage": "Branchenrecht, z. B. Lebensmittelrecht",
-        "frage": "Gibt es für den Vorgang eine eigene Aufsicht mit eigenen Anforderungen?",
-        "merkmal": "Die zuverlässigste Frage: Gäbe es für den Vorgang auch ohne KI eine Aufsicht? Sektorrecht kommt zur KI-Verordnung hinzu, es tritt nicht zurück."
-      },
-      {
         "id": "agg",
         "name": "Antidiskriminierung",
         "grundlage": "AGG",
         "frage": "Kann das System Menschen mittelbar wegen eines geschützten Merkmals schlechter stellen?",
         "merkmal": "Überall, wo über Menschen entschieden oder vorsortiert wird. Es genügt, dass ein Stellvertretermerkmal dieselbe Wirkung hat."
-      },
-      {
-        "id": "ver",
-        "name": "Vertrag und Beschaffung",
-        "grundlage": "Auftragsverarbeitung, Leistungen, Ausstieg",
-        "frage": "Was schuldet der Anbieter, was schuldet NoHa – und wie kommt NoHa wieder heraus?",
-        "merkmal": "Bei jedem fremden System: Auftragsverarbeitung, Unterauftragnehmer, Modellwechsel, Zugang zu Protokollen, Ausstieg."
       }
     ],
+    "anzahl": "acht",
+    "anzahlFragen": "drei",
     "aufbau": [
       [
         "Zeilen festlegen",
@@ -20514,7 +20530,7 @@ const DATA = {
     "fragen": [
       [
         "Verlässt bei der Nutzung etwas das Haus, das NoHa selbst als vertraulich behandelt?",
-        "Geschäftsgeheimnisse · Datenschutz · Vertrag"
+        "Geschäftsgeheimnisse · Datenschutz"
       ],
       [
         "Entsteht aus der Nutzung ein Datum über eine bestimmte Person – auch über eine eigene Beschäftigte?",
@@ -20522,11 +20538,7 @@ const DATA = {
       ],
       [
         "Kann das System etwas bewirken, statt nur etwas vorzuschlagen?",
-        "Produkt- und Haftungsrecht · Sektorrecht · menschliche Aufsicht nach der KI-Verordnung"
-      ],
-      [
-        "Gäbe es für den Vorgang auch ohne KI eine Aufsicht oder eine Genehmigungspflicht?",
-        "Sektorrecht – die zuverlässigste der vier Fragen"
+        "Produkt- und Haftungsrecht · menschliche Aufsicht nach der KI-Verordnung"
       ]
     ],
     "regeln": [
@@ -20572,17 +20584,9 @@ const DATA = {
             "nein",
             "Kein Produkt, das NoHa in Verkehr bringt."
           ],
-          "sek": [
-            "nein",
-            "Für die Personalauswahl im Handel gibt es keine eigene Branchenaufsicht."
-          ],
           "agg": [
             "ja",
             "Die Vorauswahl sortiert Menschen: Auch Stellvertretermerkmale wie Lücken im Lebenslauf oder die Postleitzahl können mittelbar benachteiligen (§ 3 Abs. 2 AGG)."
-          ],
-          "ver": [
-            "ja",
-            "Mit dem Anbieter des Jobportals: Auftragsverarbeitung, Zugang zu den Protokollen, Ankündigung von Modellwechseln, Ausstieg."
           ]
         }
       },
@@ -20617,17 +20621,9 @@ const DATA = {
             "nein",
             "Kein Produkt, das NoHa in Verkehr bringt."
           ],
-          "sek": [
-            "pr",
-            "Zu prüfen: Angebotsschilder unterliegen auch ohne KI Regeln, etwa zu Preisangaben und zu Angaben über Lebensmittel."
-          ],
           "agg": [
             "nein",
             "Die App schreibt Texte, sie entscheidet nicht über Menschen. Würde sie Schichten verteilen, wäre die Spalte neu zu prüfen."
-          ],
-          "ver": [
-            "ja",
-            "Es gibt keinen Vertrag: Nutzungsbedingungen, Training mit den Eingaben, Auftragsverarbeitung und Ausstieg sind ungeklärt."
           ]
         }
       },
@@ -20662,17 +20658,9 @@ const DATA = {
             "nein",
             "Kein Produkt, das NoHa in Verkehr bringt. Dass Auskünfte der KI NoHa zugerechnet werden, ändert daran nichts."
           ],
-          "sek": [
-            "pr",
-            "Zu prüfen: Beantwortet die KI Fragen zu Zutaten und Allergenen, gelten die Regeln des Lebensmittelrechts – mit eigener Überwachung."
-          ],
           "agg": [
             "nein",
             "Die KI beantwortet Anfragen, sie entscheidet nicht über Menschen. Soll sie später über Kulanz mitentscheiden, wird die Spalte neu geprüft."
-          ],
-          "ver": [
-            "ja",
-            "Kern der Auswahl: Auftragsverarbeitung, Datenstandort, Unterauftragnehmer, Ankündigung von Modellwechseln, Ausstieg und Rückgabe der Daten."
           ]
         }
       }
@@ -20689,7 +20677,7 @@ const DATA = {
           "Du"
         ],
         [
-          "Datenschutz",
+          "Datenschutz (DSGVO)",
           "ja",
           "Rechtsgrundlage für Bewerberdaten; Folgenabschätzung vor dem Einsatz; Betroffenenrechte; keine automatisierte Einzelentscheidung",
           "Folgenabschätzung erstellt; Vorauswahl ohne abschließende Entscheidung ausgestaltet; Auskunftsweg festgelegt",
@@ -20717,21 +20705,14 @@ const DATA = {
           "Personal, Termin gesetzt"
         ],
         [
-          "Vertrag und Beschaffung",
-          "ja",
-          "Auftragsverarbeitung; Zugang zu den Protokollen; Ankündigung von Modellwechseln; Ausstieg",
-          "Vertrag um Ankündigungspflicht und Protokollzugang ergänzt; Ausstieg noch offen",
-          "Thomas Kühn (Geschäftsführung)"
-        ],
-        [
-          "Urheberrecht · IT-Sicherheit · Produktrecht · Sektorrecht",
+          "Urheberrecht · IT-Sicherheit · Produktrecht",
           "nein",
           "Begründung jeweils in einem Satz festhalten – das ist der Unterschied zwischen „geprüft“ und „nicht daran gedacht“.",
           "",
           "Du"
         ]
       ],
-      "zahl": "Von zehn Spalten sind fünf einschlägig, eine zu prüfen, vier nicht einschlägig."
+      "zahl": "Von acht Spalten sind vier einschlägig, eine zu prüfen, drei nicht einschlägig."
     },
     "iso": {
       "lead": "Anhang A der ISO-Norm listet 38 Steuerungen – Maßnahmen, mit denen eine Organisation ihre KI-Ziele erreicht und Risiken behandelt. Umsetzen muss NoHa nicht alle: In der Erklärung zur Anwendbarkeit steht, welche Steuerungen gelten und warum andere entfallen. Eine Betreiberin braucht andere als ein Entwickler.",
@@ -22674,7 +22655,10 @@ function anfTile(s, k) {
     '</span></button>'
   );
 }
-// Tage der laufenden Phase: übernommen | gebucht | offen im Plan | frei
+// Begriffe zur Zeit (Uli, 13.11.2026: „frei“ und „offen im Plan“ waren unverständlich) – Hinweis beim Darüberfahren
+const KAP_HINWEIS =
+  'Verbraucht: entschiedene Anfragen und begonnene Aktivitäten. Noch kommende Anfragen sind nicht eingerechnet.';
+// Tage der laufenden Phase: übernommen | verbraucht | im Plan vorgesehen | noch verfügbar
 function phKap(s) {
   const b = DATA.budget[s.sec],
     carry = s.carry[s.sec],
@@ -22686,28 +22670,39 @@ function phKap(s) {
     luft = frei - offen;
   return (
     '<div class="phkap" role="img" aria-label="' +
-    esc(zahl(carry + used) + ' von ' + b + ' Arbeitstagen verbucht, ' + zahl(offen) + ' offen im Plan') +
+    esc(
+      b +
+        ' Arbeitstage, ' +
+        zahl(carry + used) +
+        ' verbraucht, ' +
+        zahl(Math.max(0, frei)) +
+        ' noch verfügbar, im Plan noch ' +
+        tage(offen) +
+        ' vorgesehen'
+    ) +
+    '" title="' +
+    esc(KAP_HINWEIS) +
     '"><div class="phbar">' +
     (carry ? '<i class="extra" style="width:' + w(carry) + '" title="Aus der vorigen Phase"></i>' : '') +
     '<i class="used" style="width:' +
     w(used) +
-    '" title="verbucht"></i><i class="plan" style="width:' +
+    '" title="verbraucht"></i><i class="plan" style="width:' +
     w(offen) +
-    '" title="offen im Plan"></i></div><div class="phkap-l"><span><b>' +
-    zahl(carry + used) +
-    '</b> von ' +
+    '" title="im Plan vorgesehen, noch nicht begonnen"></i></div><div class="phkap-l"><span>' +
     b +
-    ' Arbeitstagen verbucht</span><span class="pl">' +
-    zahl(offen) +
-    ' offen im Plan</span><span' +
-    (luft < 0 ? ' class="eng"' : '') +
-    '><b>' +
+    ' Arbeitstage · <b>' +
+    zahl(carry + used) +
+    '</b> verbraucht</span><span><b>' +
     zahl(Math.max(0, frei)) +
-    '</b> frei' +
+    '</b> noch verfügbar</span><span class="pl' +
+    (luft < 0 ? ' eng' : '') +
+    '">Dein Plan sieht hier noch ' +
+    tage(offen) +
+    ' vor' +
     (luft < 0
-      ? ' – ' +
-        tage(-luft) +
-        ' mehr, als frei ist. Was am Ende offen bleibt, rückt ' +
+      ? ' – <b>' +
+        zahl(-luft) +
+        ' mehr, als verfügbar sind</b>. Was am Ende nicht begonnen ist, rückt ' +
         (s.sec < LETZTE ? 'in die nächste Phase.' : 'automatisch hinter Tag 100.')
       : '') +
     (frei < 0 ? ' · ' + tage(-frei) + ' Überhang' : '') +
@@ -22728,7 +22723,7 @@ function jetztCap(s) {
     '<span class="cap jcap' +
     (frei <= 0 || luft < 0 ? ' eng' : '') +
     '" title="' +
-    esc(zahl(gebucht) + ' von ' + b + ' Arbeitstagen verbucht, ' + zahl(offen) + ' offen im Plan') +
+    esc(KAP_HINWEIS) +
     '"><span class="bar">' +
     (carry ? '<b class="extra" style="width:' + w(carry) + '"></b>' : '') +
     '<b style="left:' +
@@ -22739,14 +22734,14 @@ function jetztCap(s) {
     w(gebucht) +
     ';width:' +
     w(Math.min(offen, Math.max(0, frei))) +
-    '"></i></span><small><span class="frei">' +
-    zahl(gebucht) +
-    ' von ' +
+    '"></i></span><small>' +
     b +
-    ' Arbeitstagen verbucht</span> · ' +
-    (frei > 0 ? tage(frei) + ' frei' : 'keine Tage mehr frei') +
+    ' Arbeitstage · <span class="frei">' +
+    zahl(gebucht) +
+    ' verbraucht</span> · ' +
+    (frei > 0 ? zahl(frei) + ' noch verfügbar' : 'keine Tage mehr verfügbar') +
     (luft < 0 && frei > 0
-      ? ' · offen im Plan: ' + tage(offen) + ' – ' + tage(-luft) + ' mehr, als frei ist'
+      ? ' · Dein Plan sieht hier noch ' + tage(offen) + ' vor – ' + zahl(-luft) + ' mehr, als verfügbar sind'
       : '') +
     '</small></span>'
   );
@@ -22961,8 +22956,42 @@ function viewBoard(s) {
           : '')) +
     '</span></div>' +
     rmListe(s) +
+    begriffeHtml() +
     '</div>';
   return h;
+}
+// Fußzeile unter dem Board (Uli, 13.11.2026): die Begriffe zur Zeit erklärt
+function begriffeHtml() {
+  const B = [
+    [
+      'Arbeitstage',
+      'Zeit für KI-Themen je Phase – ' +
+        [1, 2, 3].map(c => SEC[c].tage + ': ' + DATA.budget[c]).join(' · ') +
+        '. Vereinfacht: Das Spiel rechnet so, als arbeitetest Du in dieser Zeit nur an diesen Aufgaben.',
+    ],
+    [
+      'Verbraucht',
+      'Tage, die schon gebunden sind: entschiedene Anfragen, begonnene Aktivitäten, am ersten Tag sofort erledigte E-Mails, fest Eingeplantes wie der Bericht an die Geschäftsführung und ein Überhang aus der vorigen Phase.',
+    ],
+    ['Noch verfügbar', 'Arbeitstage der Phase minus Verbrauchtes.'],
+    [
+      'Im Plan vorgesehen',
+      'Aufwand der Aktivitäten, die Dein 100-Tage-Plan für diese Phase vorsieht und die Du noch nicht begonnen hast. Anfragen, die noch kommen, sind nicht eingerechnet – es wird also eher knapper.',
+    ],
+    [
+      'Mehr, als verfügbar',
+      'Der Plan passt nicht in die verbleibende Zeit. Was am Ende der Phase nicht begonnen ist, rückt in die nächste Phase – in der letzten Phase hinter Tag 100.',
+    ],
+    [
+      'Überhang',
+      'Mehr Tage verbraucht, als die Phase hat – etwa durch einen Vorfall. Sie fehlen Dir in der nächsten Phase.',
+    ],
+  ];
+  return (
+    '<div class="begriffe"><b>Begriffe im Spiel</b><dl>' +
+    B.map(([t, d]) => '<dt>' + esc(t) + '</dt><dd>' + esc(d) + '</dd>').join('') +
+    '</dl></div>'
+  );
 }
 // Alle Aktivitäten mit Beschreibung – zum Nachlesen unter dem Plan
 function rmListe(s) {
@@ -23215,7 +23244,9 @@ function mxErgebnisHtml(s, k, offen) {
       ? '<p class="small"><b>Zusätzlich angekreuzt</b> – kostet in der Praxis nur Prüfzeit:</p>' +
         liste(e.zuviel)
       : '') +
-    '<details class="mxalle"><summary>Alle zehn Rechtsgebiete mit Begründung</summary>' +
+    '<details class="mxalle"><summary>Alle ' +
+    MX.anzahl +
+    ' Rechtsgebiete mit Begründung</summary>' +
     mxTabelle(s, k) +
     '</details></details>'
   );
@@ -23331,6 +23362,7 @@ function mxBilanz(s) {
   if (iso) z.push('ISO 42001, Anhang A: ' + isoKurz(iso));
   return z.length ? z.map(esc).join('<br>') : 'kein Matrix-Check';
 }
+const gross = w => w.charAt(0).toUpperCase() + w.slice(1);
 function viewMatrix(s) {
   const checks = Object.keys(MX.checks).filter(k => s.matrix && s.matrix[k]);
   let h =
@@ -23338,8 +23370,12 @@ function viewMatrix(s) {
     '<h3>So gehst Du vor</h3><ol class="mxsteps">' +
     MX.aufbau.map(([t, b]) => '<li><b>' + esc(t) + '.</b> ' + esc(b) + '</li>').join('') +
     '</ol>' +
-    '<div class="mxkopf"><h3>Zehn mögliche rechtliche und Compliance-Aspekte</h3>' +
-    '<details class="mxtip"><summary>ⓘ Vier Kontrollfragen</summary><div class="mxpop">' +
+    '<div class="mxkopf"><h3>' +
+    gross(MX.anzahl) +
+    ' mögliche rechtliche und Compliance-Aspekte</h3>' +
+    '<details class="mxtip"><summary>ⓘ ' +
+    gross(MX.anzahlFragen) +
+    ' Kontrollfragen</summary><div class="mxpop">' +
     '<p class="small">Stell sie Dir zu jedem Anwendungsfall. Lautet eine Antwort „ja“, gehört der genannte Aspekt in die Prüfung – auch wenn Du ihn bisher nicht im Blick hattest.</p>' +
     '<table class="log"><thead><tr><th>Frage</th><th>Worauf sie zeigt</th></tr></thead><tbody>' +
     MX.fragen.map(([f, w]) => '<tr><td><b>' + esc(f) + '</b></td><td>' + esc(w) + '</td></tr>').join('') +
@@ -23360,7 +23396,7 @@ function viewMatrix(s) {
       )
       .join('') +
     '</tbody></table>' +
-    '<p class="small muted">Die Auswahl ist nicht abschließend: Branchen mit eigener Aufsicht ergänzen ihre Spalte.</p>' +
+    '<p class="small muted">Die Auswahl ist nicht abschließend: Je nach Fall kommen weitere Gebiete hinzu – etwa Branchenrecht mit eigener Aufsicht oder der Vertrag mit dem Anbieter.</p>' +
     '<div class="note warn" style="margin-top:12px"><b>Warum es die Matrix braucht.</b> ' +
     MX.pyramide +
     '</div></div>';
@@ -23405,7 +23441,7 @@ function viewMatrix(s) {
         '</tbody></table>' +
         '<p class="small">' +
         esc(B.zahl) +
-        ' Am ehesten vergessen werden Geschäftsgeheimnisse und Vertrag – beide stehen in keiner Checkliste zur KI-Verordnung.</p>'
+        ' Am ehesten vergessen werden die Geschäftsgeheimnisse – sie stehen in keiner Checkliste zur KI-Verordnung.</p>'
       : '<p class="muted">Ein durchgerechnetes Beispiel aus NoHa erscheint hier im Lauf des Spiels.</p>') +
     '</div>';
   return h;
@@ -25101,11 +25137,11 @@ function consequences(before, s, k, fx) {
       tage(s.dec[k].cost) +
       ' · noch ' +
       tage(Math.max(0, left(s))) +
-      ' frei' +
+      ' verfügbar' +
       (left(s) < 0
         ? ' · ' +
           tage(-left(s)) +
-          (SEC[s.sec + 1] ? ' Überhang für die nächste Phase' : ' mehr, als bis Tag 100 frei ist')
+          (SEC[s.sec + 1] ? ' Überhang für die nächste Phase' : ' mehr, als bis Tag 100 verfügbar ist')
         : ''),
   ]);
   if (o.folge) out.push(['→', esc(o.folge)]);
@@ -25693,7 +25729,7 @@ function zeitPhase(s, sec) {
 // steht das als Hinweis dabei (die kleinsten zuerst, höchstens drei mit Namen).
 function zeitHtml(s, sec) {
   const z = zeitPhase(s, sec);
-  let t = '<p><b>Zeit:</b> ' + zahl(z.verbucht) + ' von ' + z.b + ' Arbeitstagen verbucht';
+  let t = '<p><b>Zeit:</b> ' + zahl(z.verbucht) + ' von ' + z.b + ' Arbeitstagen verbraucht';
   if (z.frei <= 0) return t + '.</p>';
   const alltag =
     sec === 1

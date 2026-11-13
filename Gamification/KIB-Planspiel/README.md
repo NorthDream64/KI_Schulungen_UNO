@@ -24,7 +24,7 @@ Im Mittelpunkt steht die Frage, was eine KI-Beauftragte oder ein KI-Beauftragter
 8. **Bericht an die Geschäftsführung:** fest eingeplant am Ende von Tag 76–100. Nicht alles passt in die 100 Tage – was am Ende offen ist, rückt automatisch dahinter. Im Bericht zeigst Du, was steht, was offen ist und warum manches erst danach kommt. Danach reagiert die Geschäftsführung.
 9. **Feed-back nach 100 Tagen** mit Lagebild, als Datei zum Herunterladen.
 
-Neben dem Plan zeigen weitere Reiter das **Lagebild** (Rückhalt der Geschäftsführung, Akzeptanz der Fachbereiche, Reifegrad je Themenfeld, offene Risiken), alle bisherigen **Entscheidungen**, die **Compliance-Matrix** – zehn Rechtsgebiete, mit denen Du vor drei Entscheidungen prüfst, dass Du keines übersiehst, dazu ein Check, welche Steuerungen der ISO/IEC 42001 NoHa braucht – und ab dem Ende der ersten Phase den **Rückblick** zum Nachlesen.
+Neben dem Plan zeigen weitere Reiter das **Lagebild** (Rückhalt der Geschäftsführung, Akzeptanz der Fachbereiche, Reifegrad je Themenfeld, offene Risiken), alle bisherigen **Entscheidungen**, die **Compliance-Matrix** – acht Rechtsgebiete, mit denen Du vor drei Entscheidungen prüfst, dass Du keines übersiehst, dazu ein Check, welche Steuerungen der ISO/IEC 42001 NoHa braucht – und ab dem Ende der ersten Phase den **Rückblick** zum Nachlesen.
 
 ## Grundlagen
 
