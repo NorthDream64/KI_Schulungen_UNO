@@ -20289,7 +20289,7 @@ const DATA = {
     "3": {
       "tage": "Tag 76–100",
       "titel": "Phase 3 – Tag 76–100",
-      "intro": "Die Zielgerade: Bis Tag 100 soll Dein Rahmen stehen. Auf dem Board liegt, was Du für Tag 76–100 eingeplant hast – und es kommen noch Anfragen dazu. Zum Schluss berichtest Du der Geschäftsführung; drei Tage dafür sind fest verbucht. Was nicht mehr passt, rückt hinter Tag 100.",
+      "intro": "Die Zielgerade: Bis Tag 100 soll Dein Rahmen stehen. Auf dem Board liegt, was Du für Tag 76–100 eingeplant hast – und es kommen noch Anfragen dazu. Zum Schluss berichtest Du der Geschäftsführung; drei Tage dafür sind fest eingeplant und zählen schon als verbraucht. Was nicht mehr passt, rückt hinter Tag 100.",
       "anfragen": {
         "A": [
           "K28",
@@ -21632,6 +21632,21 @@ const umgesetzt = (s, id) => s.rmStatus[id] === 'erledigt' || s.rmStatus[id] ===
 const aktIn = (s, c) => RM.akt.filter(a => s.rmIst && s.rmIst[a.id] === c);
 // Offen: in der laufenden Phase geplant, noch nicht begonnen
 const offeneAkt = s => aktIn(s, s.sec).filter(a => !umgesetzt(s, a.id));
+// Letzte Phase (Uli, 13.11.2026): Offene Aktivitäten, für die selbst die günstigste Umsetzung nicht mehr in die
+// verbleibende Zeit passt, stehen schon jetzt unter „nach Tag 100“. Nur Anzeige – rücken tun sie beim Abschließen.
+function passtNicht(s) {
+  if (s.sec !== LETZTE) return [];
+  const L = left(s);
+  return offeneAkt(s).filter(a => {
+    const k = aktKarte(s, a);
+    return optList(k, s.al)
+      .filter(o => !o.nurAuto && !istVerschieben(o))
+      .every(o => {
+        const c = cost(s, k, o);
+        return c > 0 && c > L;
+      });
+  });
+}
 // In Arbeit: in der laufenden Phase umgesetzt – erledigt, sobald die Phase abgeschlossen ist
 const inArbeit = s => aktIn(s, s.sec).filter(a => umgesetzt(s, a.id) && !s.closed[s.sec]);
 // Anfragen einer Phase: Mandat (Phase 1), was zu Beginn auf dem Board lag, was nachgekommen ist, Delegiertes,
@@ -22487,7 +22502,7 @@ function viewCard(s, k) {
     (ui.sel == null ? ' disabled' : '') +
     '>Entscheiden</button><span class="small muted">Noch ' +
     tage(Math.max(0, left(s))) +
-    ' frei in dieser Phase.</span></div></div>'
+    ' verfügbar in dieser Phase.</span></div></div>'
   );
 }
 function viewAfter(s) {
@@ -22596,7 +22611,11 @@ function aktTile(s, a, zone) {
         '</span>') +
     (zone === 'p' || zone === 'h'
       ? '<span class="stand">' +
-        esc(STAND[s.rmStatus[a.id]] || (zone === 'h' ? STAND.hinter100 : '')) +
+        esc(
+          zone === 'h' && s.rmIst[a.id] <= LETZTE
+            ? '⇥ passt nicht mehr in die 100 Tage'
+            : STAND[s.rmStatus[a.id]] || (zone === 'h' ? STAND.hinter100 : '')
+        ) +
         '</span>'
       : '') +
     '</button>'
@@ -22776,10 +22795,12 @@ function boardGrid(s) {
     berichtFest = sec === BER.phase && !s.dec[BER.karte],
     anfErledigt = s.order.filter(k => s.dec[k].sec === sec && !kartenAkt(k)).reverse();
   const anzahl = {
-    o: anfOffen.length + offeneAkt(s).length,
+    o: anfOffen.length + offeneAkt(s).length - passtNicht(s).length,
     a: inArbeit(s).length + (berichtFest ? 1 : 0),
     e: anfErledigt.length,
   };
+  const pn = passtNicht(s),
+    nH = aktIn(s, LETZTE + 1).length + pn.length;
   sp.forEach((x, i) => {
     const col = i + 2;
     if (x.t === 'o')
@@ -22823,9 +22844,7 @@ function boardGrid(s) {
         (x.t === 'f'
           ? rmCap(kalLast(s, x.c), rmKap(x.c), rmFest(x.c))
           : '<small>' +
-            (aktIn(s, x.c).length
-              ? aktIn(s, x.c).length + ' Aktivität' + (aktIn(s, x.c).length === 1 ? '' : 'en')
-              : 'nur, was bis Tag 100 offen bleibt') +
+            (nH ? nH + ' Aktivität' + (nH === 1 ? '' : 'en') : 'nur, was bis Tag 100 offen bleibt') +
             '</small>') +
         '</div>';
   });
@@ -22881,7 +22900,16 @@ function boardGrid(s) {
       wbr(name) +
       '</b></div>';
     sp.forEach((x, i) => {
-      const as = x.t === 'o' ? offeneAkt(s) : x.t === 'a' ? inArbeit(s) : x.t === 'e' ? [] : aktIn(s, x.c);
+      const as =
+        x.t === 'o'
+          ? offeneAkt(s).filter(a => !pn.includes(a))
+          : x.t === 'a'
+            ? inArbeit(s)
+            : x.t === 'e'
+              ? []
+              : x.t === 'h'
+                ? aktIn(s, x.c).concat(pn)
+                : aktIn(s, x.c);
       const inner = as
         .filter(a => a.ka === ka)
         .map(a => aktTile(s, a, x.t))
@@ -22980,7 +23008,7 @@ function begriffeHtml() {
     ],
     [
       'Mehr, als verfügbar',
-      'Der Plan passt nicht in die verbleibende Zeit. Was am Ende der Phase nicht begonnen ist, rückt in die nächste Phase – in der letzten Phase hinter Tag 100.',
+      'Der Plan passt nicht in die verbleibende Zeit. Was am Ende der Phase nicht begonnen ist, rückt in die nächste Phase – in der letzten Phase hinter Tag 100. Was dort nicht mehr passt, steht schon vorher unter „nach Tag 100“.',
     ],
     [
       'Überhang',
@@ -23083,7 +23111,7 @@ function optsHtml(s, k, nur) {
               tage(cst - Math.max(0, L)) +
               (SEC[s.sec + 1]
                 ? (cst - Math.max(0, L) === 1 ? ' geht' : ' gehen') + ' von der nächsten Phase ab.'
-                : ' mehr, als bis Tag 100 frei ist: Dafür bleibt anderes liegen.') +
+                : ' mehr, als bis Tag 100 verfügbar ist: Dafür bleibt anderes liegen.') +
               '</span>'
             : '') +
       '</label>';
@@ -23118,11 +23146,20 @@ function berichtStand(s) {
     RM.akt.length +
     ' Aktivitäten.</li>' +
     '<li>Nach Tag 100: ' +
-    (hinter.length ? hinter.map(lab).join(', ') : 'nichts geplant') +
+    (hinter.length || offen.length
+      ? [
+          hinter.length ? hinter.map(lab).join(', ') + ' (so geplant)' : '',
+          offen.length
+            ? offen.map(lab).join(', ') +
+              ' (nicht begonnen – ' +
+              (offen.length === 1 ? 'rückt' : 'rücken') +
+              ' beim Abschließen dorthin)'
+            : '',
+        ]
+          .filter(Boolean)
+          .join('; ')
+      : 'nichts – alles ist umgesetzt oder in Arbeit') +
     '.</li>' +
-    (offen.length
-      ? '<li>Noch offen – rückt beim Abschließen hinter Tag 100: ' + offen.map(lab).join(', ') + '.</li>'
-      : '') +
     '<li>Offene Risiken: ' +
     (risiken.length ? risiken.map(r => esc(riskLabel(r.lid))).join(', ') : 'keine') +
     '.</li></ul></div>'
@@ -23498,10 +23535,10 @@ function popKarte(s, k, p) {
     (istPflicht(k) ? '' : '<button class="btn ghost" data-go="popzu">Später</button>') +
     '<span class="small muted">' +
     (isBericht(k)
-      ? 'Die ' + tage(BER.tage) + ' für den Bericht sind schon verbucht.'
+      ? 'Die ' + tage(BER.tage) + ' für den Bericht zählen schon als verbraucht.'
       : 'Noch ' +
         tage(Math.max(0, left(s))) +
-        ' frei in dieser Phase.' +
+        ' verfügbar in dieser Phase.' +
         (isVorfall(k) ? ' Ein Vorfall geht allem anderen vor.' : '')) +
     '</span></div>'
   );
@@ -23915,7 +23952,7 @@ function popStart(s, id) {
           (ui.sel == null ? ' disabled' : '') +
           '>In Arbeit nehmen</button><button class="btn ghost" data-go="popzu">Abbrechen</button><span class="small muted">Noch ' +
           tage(Math.max(0, left(s))) +
-          ' frei in dieser Phase.</span></div>')
+          ' verfügbar in dieser Phase.</span></div>')
   );
 }
 // Vorgänger noch nicht umgesetzt (Review 12.11.2026): Hinweis, bevor die Aktivität in Arbeit geht
@@ -24447,7 +24484,7 @@ function viewAfterTriage(s) {
         : '') +
       ' · noch ' +
       tage(Math.max(0, left(s))) +
-      ' frei für Tag 1–25',
+      ' verfügbar für Tag 1–25',
   ]);
   fx.zeilen.forEach(([m, q, f]) =>
     out.push([
@@ -26371,7 +26408,7 @@ document.addEventListener('click', e => {
           esc(SEC[BER.phase].tage) +
           ' abschließt. Die ' +
           tage(BER.tage) +
-          ' dafür sind schon verbucht.';
+          ' dafür zählen schon als verbraucht.';
     } else ui.pop = { art: 'akt', id };
     render(true);
     return;
