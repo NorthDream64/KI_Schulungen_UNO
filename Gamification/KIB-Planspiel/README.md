@@ -4,13 +4,13 @@ Browserbasiertes Planspiel für den Kurs **KI-Beauftragte:r**. Du bist frisch er
 
 Im Mittelpunkt steht die Frage, was eine KI-Beauftragte oder ein KI-Beauftragter darf und muss: Mandat, KI-Inventar, Risikoklassen und Pflichten nach der KI-Verordnung, Datenschutz, Richtlinie und Managementsystem – und wie man mit begrenzter Zeit Prioritäten setzt.
 
-> **Testfassung:** Alle drei Phasen sind spielbar. Tag 76–100 bringt bisher zwei Anfragen, einen Vorfall und zum Schluss den Bericht an die Geschäftsführung – weitere Themen folgen.
+> **Testfassung:** Alle drei Phasen sind spielbar. Tag 76–100 bringt bis zu vier Anfragen, einen Vorfall und zum Schluss den Bericht an die Geschäftsführung – weitere Themen folgen.
 
 ## Starten
 
 - [KIB-Planspiel_100-Tage.html](KIB-Planspiel_100-Tage.html) im Browser öffnen. Herunterladen und lokal öffnen genügt.
 - Das Spiel läuft vollständig offline: keine Anmeldung, keine Übertragung an einen Server. Der Spielstand bleibt nur im eigenen Browser gespeichert; ein unterbrochenes Spiel lässt sich fortsetzen.
-- Zwei Ausgangslagen: **A „KI auf der grünen Wiese“** und **B „Initiale KI-Governance“**. Auf der grünen Wiese musst Du vieles neu aufsetzen; bei initialer KI-Governance liegt manches schon vor – dafür kostet es mehr Zeit, den Status quo zu verstehen.
+- Zwei Ausgangslagen: **A „KI auf der grünen Wiese“** und **B „Initiale KI-Governance“**. Auf der grünen Wiese musst Du vieles neu aufsetzen; bei initialer KI-Governance liegt manches schon vor – das Inventar geht schneller, dafür kostet es mehr Zeit, die vorhandenen Regeln zu verstehen.
 
 ## Ablauf
 
@@ -28,7 +28,7 @@ Neben dem Plan zeigen weitere Reiter das **Lagebild** (Rückhalt der Geschäftsf
 
 ## Grundlagen
 
-Die Quellen stehen in der Fußzeile des Spiels. Unternehmen und Personen sind fiktiv, alle Wirkungen didaktisch vereinfacht. NoHa setzt KI-Systeme anderer ein und ist im Sinne der KI-Verordnung Betreiberin, nicht Anbieterin – solange kein KI-Produkt unter der Eigenmarke in Verkehr kommt. Verbindlich ist der Normtext, nicht das Spiel. Das Planspiel vermittelt allgemeine Informationen und ersetzt keine Rechtsberatung im Einzelfall.
+Die Quellen stehen in der Fußzeile des Spiels. Unternehmen und Personen sind fiktiv, alle Wirkungen didaktisch vereinfacht. NoHa setzt KI-Systeme anderer ein und ist im Sinne der KI-Verordnung Betreiberin, nicht Anbieterin – solange NoHa kein KI-System entwickeln lässt und unter eigenem Namen oder eigener Marke in Verkehr bringt oder in Betrieb nimmt. Verbindlich ist der Normtext, nicht das Spiel. Das Planspiel vermittelt allgemeine Informationen und ersetzt keine Rechtsberatung im Einzelfall.
 
 ## Für Dozierende
 
