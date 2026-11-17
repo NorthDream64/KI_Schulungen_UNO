@@ -1,5 +1,5 @@
 ---
-name: "bewertung-projektarbeit"
+name: „bewertung-projektarbeit“
 description: "Bewertet die Projektarbeit einer namentlich genannten Kursteilnehmerin/eines Teilnehmers für die Abschlussurkunde, füllt den offiziellen Bewertungsbogen (docx + PDF) aus und schreibt die zentrale Bewertungsübersicht fort. Auslösen, wenn der Dozent sagt „Bewerte die Projektarbeit von [Name]“, „Bewertung für die Urkunde“, „trag das in die Übersicht ein“, „Stand der Projektarbeiten“ o. Ä."
 ---
 

@@ -63,12 +63,12 @@ PM-AIgent's price point (~2–3× the AI-scheduling category leaders) reflects t
 
 ## 4 · Business Parameters & Growth Potential
 
-### Demand drivers ("why now")
+### Demand drivers („why now“)
 
 Three forces converge to make 2026–2029 the defining window for agentic PM tools:
 
 - **Adoption inflection.** PMI's *Pulse of the Profession 2025* reports that **more than 70 % of project organisations are already using or actively exploring AI**, but **only ~20 % of project managers rate their own AI skills as strong** — a demand pull created by organisations, not by the profession itself. High-adopter organisations report performance gains of 91 % (quality), 87 % (scope), 86 % (cost), 85 % (schedule).
-- **Agentic maturity.** Gartner projects 40 % of enterprise applications will have embedded, purpose-built AI agents by 2026 (vs. < 5 % in 2025). Motion has already shipped its "Automated Project Manager" that re-prioritises entire roadmaps on a single schedule slip — proof that agentic PM is technically viable today.
+- **Agentic maturity.** Gartner projects 40 % of enterprise applications will have embedded, purpose-built AI agents by 2026 (vs. < 5 % in 2025). Motion has already shipped its „Automated Project Manager“ that re-prioritises entire roadmaps on a single schedule slip — proof that agentic PM is technically viable today.
 - **Cost pressure on PMO headcount.** Enterprises are under active pressure to reduce PMO staffing; an agentic layer that keeps quality/coverage steady at 30–50 % of the current PMO cost is directly board-relevant.
 
 ### Market sizing (TAM → SAM → SOM)
@@ -108,7 +108,7 @@ Adding the outcome-based add-on (~15 % attach rate at avg. EUR 45 k / customer /
 
 **Differentiation PM-AIgent must prove.** (1) An agentic execution layer that owns the *end-to-end* project cycle — not just scheduling or documentation. (2) Deep integration with the customer's *own* skills-and-resources database and past-project archive (the moat is the customer's data, not the model). (3) Measurable PMO-cost displacement — a defensible metric agents can be judged on quarterly. (4) Certifiable EU AI Act compliance path — see § 5.
 
-**Defensibility open questions.** Does PM-AIgent's differentiation hold once Copilot ships full agentic Project/Planner, or once Motion scales its "Automated PM" upward into programme scope? Where does the moat sit — model, data, workflow depth, or governance evidence?
+**Defensibility open questions.** Does PM-AIgent's differentiation hold once Copilot ships full agentic Project/Planner, or once Motion scales its „Automated PM“ upward into programme scope? Where does the moat sit — model, data, workflow depth, or governance evidence?
 
 ---
 
@@ -123,7 +123,7 @@ Adding the outcome-based add-on (~15 % attach rate at avg. EUR 45 k / customer /
 
 **Regulatory & compliance**
 
-- **EU AI Act.** Any PM-AIgent function that allocates work to specific individuals based on behaviour or personal characteristics falls under **Annex III Nr. 4 (employment / worker management) — high-risk AI**. Compliance obligations: risk-management system, data-governance, transparency, human oversight, logging, post-market monitoring. Obligations for Annex III high-risk systems apply from **2 December 2027** — confirmed by BaFin in its press release of 29 July 2026 on the German implementing act (KI-MIG), which names that date for high-risk requirements such as credit scoring and insurance risk assessment. Transparency obligations already apply from 2 August 2026. AI-literacy obligations (Art. 4) apply from 2 February 2025. Design decision: keep resource-allocation "recommend-only" (Limited Risk) or accept high-risk classification and compliance overhead in exchange for autonomous scope.
+- **EU AI Act.** Any PM-AIgent function that allocates work to specific individuals based on behaviour or personal characteristics falls under **Annex III Nr. 4 (employment / worker management) — high-risk AI**. Compliance obligations: risk-management system, data-governance, transparency, human oversight, logging, post-market monitoring. Obligations for Annex III high-risk systems apply from **2 December 2027** — confirmed by BaFin in its press release of 29 July 2026 on the German implementing act (KI-MIG), which names that date for high-risk requirements such as credit scoring and insurance risk assessment. Transparency obligations already apply from 2 August 2026. AI-literacy obligations (Art. 4) apply from 2 February 2025. Design decision: keep resource-allocation „recommend-only“ (Limited Risk) or accept high-risk classification and compliance overhead in exchange for autonomous scope.
 - **GDPR.** Meeting recordings, email/chat parsing and personnel-skill profiles are all personal data. Art. 6 legal basis, Art. 9 for special-category data, Art. 22 for automated individual decisions with legal or similarly significant effect (assignment/promotion recommendations often qualify), Art. 35 DPIA mandatory in most deployments. Design decision: on-device summarisation vs. cloud inference, and where the training-data pipeline lives.
 - **Works-council mitbestimmung.** In DACH markets, § 87 BetrVG (technische Überwachung) forces active co-determination for tools that monitor worker performance. Sales cycle and rollout must plan for co-determination negotiations — often a 3–9-month delay if not scoped early.
 - **Confidentiality & IP.** Project data is typically the most sensitive commercial data a company holds (M&A, R&D, restructuring). Enterprise contract must ring-fence customer data from model retraining and cross-tenant leakage.

@@ -23,7 +23,7 @@ Der Ansatz des Krankenhauses ist:
 
 **Drittens: Kosten erheben, bevor gekauft wird.** Vor der Anschaffung einer kamerabasierten Beobachtung wurden 90 Tage Sitzwachen-Stunden, Sturzereignisse je 1.000 Behandlungstage, Eskalationszeiten und der Aufwand der Datenschutzprüfung veranschlagt. Erst dann folgte ein Pilot mit einer Risikogruppe und einer Vergleichsstation.
 
-Die Daten, auf denen im Krankenhaus KI-Modelle trainiert werden, spiegeln teilweise eine verzerrte Realität wider. Trainingsdaten aus 2020–2024 zeigen ein in Zeiten der Covid-Epidemie überlastetes System als "normal". Der medizinische Fokus hat sich seit 2020 verschoben: 2021 kam die Pädiatrie, 2023 die Gerontologie hinzu.
+Die Daten, auf denen im Krankenhaus KI-Modelle trainiert werden, spiegeln teilweise eine verzerrte Realität wider. Trainingsdaten aus 2020–2024 zeigen ein in Zeiten der Covid-Epidemie überlastetes System als „normal“. Der medizinische Fokus hat sich seit 2020 verschoben: 2021 kam die Pädiatrie, 2023 die Gerontologie hinzu.
 
 St. Ulrich verzichtete zunächst **bewusst** auf eine eigene KI-Leitungsfunktion und band KI in bestehende IT- und Klinikgremien ein. Damit wollte man eine parallele Bürokratie vermeiden und Entscheidungen nah an der klinischen Praxis halten. Offen ist jedoch die Frage, ob Ablauf, Belege und Verantwortung des KI-Programms noch funktionieren würden, wenn am Montag, nachdem die Wissensträger in der IT das Unternehmen verlassen haben. Für jeden produktiven KI-Ablauf gehören deshalb fünf Angaben schriftlich vor:
 
@@ -37,10 +37,10 @@ St. Ulrich verzichtete zunächst **bewusst** auf eine eigene KI-Leitungsfunktion
 Seit 6 Monaten im Amt. Betriebswirtin mit Gesundheitsmanagement-Hintergrund. Unter Druck der Gesellschafter, die Verluste zu stoppen. Sieht KI als Werkzeug zur Effizienzsteigerung — nicht als Selbstzweck. Pragmatisch und entscheidungsfreudig, aber wenig Erfahrung mit Compliance-Fragen.
 
 **Prof. Dr. Heinrich Sommer — Ärztlicher Direktor**  
-Kardiologe, 30 Jahre Klinik-Erfahrung. Skeptisch gegenüber KI in der Diagnose ("Die Haftung liegt beim Arzt, nicht beim Algorithmus"). Unterstützt administrative Automatisierung, wenn sie ihm und seinen Kollegen Zeit spart.
+Kardiologe, 30 Jahre Klinik-Erfahrung. Skeptisch gegenüber KI in der Diagnose („Die Haftung liegt beim Arzt, nicht beim Algorithmus“). Unterstützt administrative Automatisierung, wenn sie ihm und seinen Kollegen Zeit spart.
 
 **Birgit Klassen — Pflegedienstleiterin**  
-Erfahrene Krankenpflegerin, seit 20 Jahren im Haus. Repräsentiert den größten Personalblock. Burnout im Team ist ihr Hauptthema. Offen für KI, wenn sie echte Entlastung bringt — misstrauisch gegenüber "Technik, die uns überwachen soll".
+Erfahrene Krankenpflegerin, seit 20 Jahren im Haus. Repräsentiert den größten Personalblock. Burnout im Team ist ihr Hauptthema. Offen für KI, wenn sie echte Entlastung bringt — misstrauisch gegenüber „Technik, die uns überwachen soll“.
 
 **Peter Miese — IT-Leiter**  
 Zuständig für SAP, Krankenhausinformationssystem (KIS) und die neue EPA-Anbindung. Überlastet. Hat Bedenken zur Cybersicherheit — Krankenhäuser sind häufiges Angriffsziel. Kein Datenschutzbeauftragter im Haus (extern beauftragt).
@@ -48,7 +48,7 @@ Zuständig für SAP, Krankenhausinformationssystem (KIS) und die neue EPA-Anbind
 **Sie — KI-Beauftragter:in (neue Stelle)**  
 Direkt der Geschäftsführerin zugeordnet. Kein eigenes Budget. Beratende Funktion. Der Betriebsrat hat die Stelle mit gemischten Gefühlen zur Kenntnis genommen.
 
-> **Hinweis Digital Omnibus (VO 2026/1744, in Kraft 27.7.2026):** Art. 4 KI-VO wurde von „sicherstellen" auf „unterstützen" geändert. Die Pflicht zur KI-Kompetenz ist jetzt eine **Bemühenspflicht** (Best Effort), keine Ergebnispflicht. Für die Rolle im St. Ulrich heißt das: Ein 100-Tage-Plan muss keinen lückenlosen Kompetenznachweis zusagen, sondern einen nachvollziehbaren Lernpfad belegen. Das verändert auch die Argumentation gegenüber Geschäftsführung und Betriebsrat.
+> **Hinweis Digital Omnibus (VO 2026/1744, in Kraft 27.7.2026):** Art. 4 KI-VO wurde von „sicherstellen“ auf „unterstützen“ geändert. Die Pflicht zur KI-Kompetenz ist jetzt eine **Bemühenspflicht** (Best Effort), keine Ergebnispflicht. Für die Rolle im St. Ulrich heißt das: Ein 100-Tage-Plan muss keinen lückenlosen Kompetenznachweis zusagen, sondern einen nachvollziehbaren Lernpfad belegen. Das verändert auch die Argumentation gegenüber Geschäftsführung und Betriebsrat.
 
 ---
 
@@ -93,7 +93,7 @@ Die folgenden Fälle sind öffentlich dokumentierte Entsprechungen zu den Initia
 
 ### Exkurs: Artsight und die Frage der Emotionserkennung
 
-Birgit Klassen ist misstrauisch gegenüber „Technik, die uns überwachen soll." Die Artsight-Kameras erkennen Sturzrisiken und Bewegungsmuster — erfassen sie damit Emotionen im Sinne des EU AI Act?
+Birgit Klassen ist misstrauisch gegenüber „Technik, die uns überwachen soll.“ Die Artsight-Kameras erkennen Sturzrisiken und Bewegungsmuster — erfassen sie damit Emotionen im Sinne des EU AI Act?
 
 **Nein.** Erwägungsgrund 18 und Art. 3 Nr. 39 KI-VO stellen klar: Ein Emotionserkennungssystem schließt auf emotionale Zustände aus **biometrischen Daten** (Mimik, Stimme, Gangart). Physische Zustände wie Müdigkeit, Schmerz oder Sturzgefahr sind **ausdrücklich keine Emotionen** im Sinne der Verordnung. Artsight erfasst Bewegungsmuster zur Sturzerkennung — das fällt nicht unter die Definition der Emotionserkennung und ist daher weder nach Art. 5 verboten noch nach Art. 50 Abs. 3 als Emotionserkennungssystem transparenzpflichtig.
 
@@ -101,7 +101,7 @@ Das ändert nichts an Birgit Klassens Bedenken — Kameraüberwachung am Arbeits
 
 ### Die Vorgehenslogik — das eigentlich Übertragbare
 
-Memorial beschrieb sich selbst als **„fast follower"**: keine Eigenentwicklung, sondern eingekaufte Spezialwerkzeuge, angebunden an das bestehende Klinikinformationssystem. Alle Fälle folgen derselben Reihenfolge — ein sichtbares betriebliches Problem benennen, eine etablierte Lösung kaufen, sie in den vorhandenen Arbeitsablauf integrieren, und **erst dann** fragen, ob das veröffentlichte Ergebnis sich vor Ort reproduzieren lässt.
+Memorial beschrieb sich selbst als **„fast follower“**: keine Eigenentwicklung, sondern eingekaufte Spezialwerkzeuge, angebunden an das bestehende Klinikinformationssystem. Alle Fälle folgen derselben Reihenfolge — ein sichtbares betriebliches Problem benennen, eine etablierte Lösung kaufen, sie in den vorhandenen Arbeitsablauf integrieren, und **erst dann** fragen, ob das veröffentlichte Ergebnis sich vor Ort reproduzieren lässt.
 
 ### Quellenkritischer Hinweis — wichtig für die Bewertung
 
@@ -115,7 +115,7 @@ Eine vierte Kategorie ist ausdrücklich **unbrauchbar**: Zu Memorial kursiert im
 
 **Und die Grenze der Übertragbarkeit:** Memorial arbeitet im US-Gesundheitssystem — anderes Abrechnungswesen, philanthropische Medikamentenhilfe, kein Betriebsrat, keine DSGVO, kein EU AI Act. Die Vorgehenslogik überträgt sich auf St. Ulrich, die Zahlen nicht.
 
-**Quelle:** Kamil Banc / AI Adopters Club — „Inside Memorial Healthcare System's AI Adoption", Report AIAC-CSR-2026-016, Rev. 14. August 2026. Die Fallstudie stützt sich auf Fachpresse (Chief Healthcare Executive 27.08.2024, HFM Magazine 09.04.2025, Becker's Hospital Review 15.09.2025 und 29.06.2026), Pressemitteilungen von Memorial (28.10.2024, 12.05.2022) sowie herstellerpublizierte Kundenstories. Einzelautor, kein Peer Review, kein eigenes Interview mit Memorial. Registereintrag: Neue_Quellen_Intake #65.
+**Quelle:** Kamil Banc / AI Adopters Club — „Inside Memorial Healthcare System's AI Adoption“, Report AIAC-CSR-2026-016, Rev. 14. August 2026. Die Fallstudie stützt sich auf Fachpresse (Chief Healthcare Executive 27.08.2024, HFM Magazine 09.04.2025, Becker's Hospital Review 15.09.2025 und 29.06.2026), Pressemitteilungen von Memorial (28.10.2024, 12.05.2022) sowie herstellerpublizierte Kundenstories. Einzelautor, kein Peer Review, kein eigenes Interview mit Memorial. Registereintrag: Neue_Quellen_Intake #65.
 
 ---
 
@@ -143,7 +143,7 @@ Der Memorial-Fall endet an einer Grenze: US-Gesundheitssystem, kein Betriebsrat,
 
 ### Übung 1 · Der Anbieter-Rechner
 
-Die Website stellt einen **Einsparungspotentialrechner** bereit: Eingabe von Bettenzahl, Fällen pro Jahr und Ärztezahl, Ausgabe eines Euro-Betrags mit dem Zusatz „Kosten von myScribe einberechnet".
+Die Website stellt einen **Einsparungspotentialrechner** bereit: Eingabe von Bettenzahl, Fällen pro Jahr und Ärztezahl, Ausgabe eines Euro-Betrags mit dem Zusatz „Kosten von myScribe einberechnet“.
 
 St. Ulrich hat 800 Betten und 2.200 Mitarbeitende. Die Teilnehmenden füttern den Rechner mit den eigenen Eckdaten und beantworten anschließend die Fragen aus dem Memorial-Abschnitt oben:
 
@@ -156,8 +156,8 @@ St. Ulrich hat 800 Betten und 2.200 Mitarbeitende. Die Teilnehmenden füttern de
 
 Zwei Angaben derselben Website:
 
-- **„ca. 2 Stunden Zeitersparnis pro Ärzt*in pro Tag"**
-- Ein namentlich genannter Facharzt für Orthopädie am Universitätsklinikum Mannheim: **„Für einen langen Arztbrief benötige ich ca. 45 Minuten — mit myScribe brauche ich höchstens 15 Minuten für den gleichen Brief."**
+- **„ca. 2 Stunden Zeitersparnis pro Ärzt*in pro Tag“**
+- Ein namentlich genannter Facharzt für Orthopädie am Universitätsklinikum Mannheim: **„Für einen langen Arztbrief benötige ich ca. 45 Minuten — mit myScribe brauche ich höchstens 15 Minuten für den gleichen Brief.“**
 
 Aus der zweiten Aussage folgt eine Ersparnis von rund 30 Minuten je langem Arztbrief. Für zwei Stunden täglich wären demnach etwa **vier lange Arztbriefe pro Arzt und Tag** nötig.
 
@@ -193,7 +193,7 @@ Die Kommission hat am 19. Mai 2026 Leitlinien-Entwürfe zu Art. 6 Abs. 3 KI-VO v
 |---|---|---|---|---|
 | A 1 — Verbrauchsmaterial | ? | ? | ? | Keine personenbezogene Entscheidung — aber woher kommen die Verbrauchsdaten? |
 | A 2 — Onboarding-App | ? | ? | ? | Chatfunktion mit FAQ — aber was passiert, wenn Patienten Symptome schildern? |
-| A 3 — Entlassbriefe (Epikrise) | ? | ? | ? | Medizinisches Dokument mit Rechtswirkung — trifft das „ersetzt menschliche Tätigkeit"? |
+| A 3 — Entlassbriefe (Epikrise) | ? | ? | ? | Medizinisches Dokument mit Rechtswirkung — trifft das „ersetzt menschliche Tätigkeit“? |
 | A 4 — Diagnoseunterstützung | ? | ? | ? | Bilddaten, Hosting in Indien, Gesundheitsentscheidung |
 
 Die Tabelle soll **nicht** vorab ausgefüllt werden — sie ist eine offene Praxisübung. Die Kommissions-Leitlinien geben kein Ja/Nein-Raster vor, sondern verlangen eine dokumentierte Einzelfallbewertung. Die vierte Spalte gehört zum folgenden Abschnitt.
@@ -220,7 +220,7 @@ Für rein administrative KI-Systeme, die weder Medizinprodukt noch Sicherheitsba
 
 **Bereits geringfügige Änderungen an der Software oder ihrer Zweckbestimmung können dazu führen, dass das Krankenhaus vom Betreiber zum Hersteller wird.** Ausdrücklich genannt wird dabei: **die Weiterentwicklung mit hausinternen Patientendaten.**
 
-Das ist für St. Ulrich keine theoretische Konstellation, sondern die naheliegendste nächste Handlung. Der Satz „Wir trainieren das Diagnosesystem mit unseren eigenen Fällen nach, dann wird es besser" klingt nach einer technischen Verbesserung. Er ist ein **Rollenwechsel mit vollen Herstellerpflichten**: Zertifizierungserfordernis, Aufbau eigener Risiko- und Qualitätsmanagementsysteme, behördliche Meldepflichten.
+Das ist für St. Ulrich keine theoretische Konstellation, sondern die naheliegendste nächste Handlung. Der Satz „Wir trainieren das Diagnosesystem mit unseren eigenen Fällen nach, dann wird es besser“ klingt nach einer technischen Verbesserung. Er ist ein **Rollenwechsel mit vollen Herstellerpflichten**: Zertifizierungserfordernis, Aufbau eigener Risiko- und Qualitätsmanagementsysteme, behördliche Meldepflichten.
 
 > **Übung — Rollenspiel.** Dr. Weiss möchte das Diagnosesystem (A 4) mit den eigenen CT-Befunden der letzten drei Jahre nachtrainieren, weil die Genauigkeit bei der hiesigen Patientenstruktur schlechter ist als beim Anbieter versprochen. Fachlich ein guter Gedanke. **Was antwortest Du als KI-Beauftragte:r — und was schlägst Du stattdessen vor?**
 
@@ -249,7 +249,7 @@ Das ist der bewusst offengelassene Innovationspfad: intern entwickeln, im klinis
 
 **Ein Blick über den Zaun — noch nichts zum Anwenden.** In den USA hat NIST am **7. April 2026** eine **Konzeptnote** veröffentlicht und damit die Entwicklung eines *AI RMF Profile on Trustworthy AI in Critical Infrastructure* gestartet. Ein Profil in der NIST-Systematik übersetzt das allgemeine Rahmenwerk in sektorspezifische Praxis — genau die Übersetzungsleistung, die im deutschen KRITIS-Kontext der B3S erbringt. Genannt sind IT, Betriebstechnik und industrielle Steuerungssysteme; NIST lädt ausdrücklich alle Sektoren zur Mitwirkung ein und hat dafür eine Community of Interest eingerichtet.
 
-> **Wichtig für die didaktische Verwendung:** **Das Profil existiert noch nicht.** Es gibt eine Ankündigung mit Beteiligungsaufruf, Projektstatus „laufend" (Stand der Seite 17.07.2026). Zudem wird das zugrundeliegende AI RMF 1.0 derzeit selbst überarbeitet. Der Punkt taugt daher **als Ausblick, nicht als Handlungsanleitung** — und er ist ein brauchbarer Anlass, im Gespräch zu zeigen, dass sektorspezifische Übersetzung überall gebraucht wird, in Deutschland über den B3S, in den USA über Profile. Vor Verwendung im Unterricht den Stand prüfen: <https://www.nist.gov/programs-projects/concept-note-ai-rmf-profile-trustworthy-ai-critical-infrastructure>
+> **Wichtig für die didaktische Verwendung:** **Das Profil existiert noch nicht.** Es gibt eine Ankündigung mit Beteiligungsaufruf, Projektstatus „laufend“ (Stand der Seite 17.07.2026). Zudem wird das zugrundeliegende AI RMF 1.0 derzeit selbst überarbeitet. Der Punkt taugt daher **als Ausblick, nicht als Handlungsanleitung** — und er ist ein brauchbarer Anlass, im Gespräch zu zeigen, dass sektorspezifische Übersetzung überall gebraucht wird, in Deutschland über den B3S, in den USA über Profile. Vor Verwendung im Unterricht den Stand prüfen: <https://www.nist.gov/programs-projects/concept-note-ai-rmf-profile-trustworthy-ai-critical-infrastructure>
 
 **Föderaler Datenschutz.** Neben der DSGVO gelten je nach Trägerschaft zusätzlich kirchliche, landeskrankenhaus- oder hochschulrechtliche Regelungen. In der Praxis führt das häufig zu Unsicherheit — und dazu, dass Häuser aus Vorsicht zurückhaltender agieren, als sie müssten. Das **Gesundheitsdatennutzungsgesetz (GDNG)** schafft für Forschungszwecke Erleichterungen: Pseudonymisierte Daten dürfen auch von externen Dienstleistern als Auftragsverarbeiter weiterverarbeitet werden, landesrechtliche Regelungen werden insoweit verdrängt.
 
@@ -259,8 +259,8 @@ Der Anstoß für diesen Abschnitt stammt aus einem Fachbeitrag von **Sebastian R
 
 Der Beitrag wird deshalb **nicht zitiert**. Zitiert werden MDR, KI-VO, § 393 und § 391 SGB V sowie das NIS2-Umsetzungsgesetz. Drei Abweichungen sind bei der Prüfung aufgefallen und hier korrigiert:
 
-1. Der Beitrag bezeichnet NIS2 als **„Verordnung"**. NIS2 ist eine **Richtlinie** (EU) 2022/2555 — der Unterschied ist gerade hier wesentlich, weil sie nationaler Umsetzung bedurfte.
-2. Er erwartet das deutsche Umsetzungsgesetz „frühestens Ende 2025". Es ist seit dem **6. Dezember 2025 in Kraft**.
+1. Der Beitrag bezeichnet NIS2 als **„Verordnung“**. NIS2 ist eine **Richtlinie** (EU) 2022/2555 — der Unterschied ist gerade hier wesentlich, weil sie nationaler Umsetzung bedurfte.
+2. Er erwartet das deutsche Umsetzungsgesetz „frühestens Ende 2025“. Es ist seit dem **6. Dezember 2025 in Kraft**.
 3. Er legt nahe, bei C5-testierten Anbietern sei **keine ergänzende Prüfung des Krankenhauses erforderlich**. **Das steht so nicht im Gesetz** — § 393 Abs. 3 Nr. 3 verlangt ausdrücklich die Umsetzung der Kundenkriterien aus dem Prüfbericht.
 
 Die dritte Abweichung entlastet das Krankenhaus. Ob Vereinfachung oder Interesse — für die Kursarbeit gilt: **Bei Aussagen, die einen entlasten, lohnt der Blick in den Gesetzestext besonders.**

@@ -260,7 +260,7 @@ a{color:var(--accent);}
       <div class="unit">Stunden/Vorgang</div>
     </div>
     <div class="field">
-      <label>Vollkosten Analyst:in <span class="hint">inkl. Lohnnebenkosten</span></label>
+      <label>Vollkosten Analyst:in <span class="hint">inkl. Lohnnebenkosten — vom Controlling bestätigen lassen</span></label>
       <input type="number" id="rate" value="120" min="1" step="5">
       <div class="unit">€/Stunde</div>
     </div>
@@ -344,6 +344,11 @@ a{color:var(--accent);}
       <input type="number" id="c_train" value="5000" min="0" step="500">
       <div class="unit">€</div>
     </div>
+    <div class="field">
+      <label>Interne Personalzeit (PoC, Projektmanagement, Compliance-Setup)</label>
+      <input type="number" id="c_intern" value="0" min="0" step="1000">
+      <div class="unit">€</div>
+<div class="unit" style="font-size:10.5px;color:var(--muted);">Stunden × Vollkostensatz — eine echte Ressource, kein Nulltarif</div>    </div>
 
     <div class="cf-divider"></div>
     <div class="section-label">Laufende Aufwendungen (OPEX)</div>
@@ -357,7 +362,49 @@ a{color:var(--accent);}
       <input type="number" id="c_maint" value="2500" min="0" step="500">
       <div class="unit">€/Jahr</div>
     </div>
+    <div class="field">
+      <label>Nutzungsabhängige Modellkosten</label>
+      <input type="number" id="c_token" value="0" min="0" step="0.01">
+      <div class="unit">€/Vorgang</div>
+<div class="unit" style="font-size:10.5px;color:var(--muted);">Token- oder API-Preis je Vorgang — als Annahme mit Bandbreite prüfen</div>    </div>
+    <div class="field">
+      <label>Monitoring, Evaluation &amp; Qualitätssicherung</label>
+      <input type="number" id="c_monitor" value="0" min="0" step="500">
+      <div class="unit">€/Jahr</div>
+    </div>
+    <div class="field">
+      <label>Support, Audit &amp; Compliance</label>
+      <input type="number" id="c_support" value="0" min="0" step="500">
+      <div class="unit">€/Jahr</div>
+    </div>
+    <div class="field">
+      <label>Exit- und Wechselkosten</label>
+      <input type="number" id="c_exit" value="0" min="0" step="1000">
+      <div class="unit">€</div>
+<div class="unit" style="font-size:10.5px;color:var(--muted);">einmalig am Ende des Betrachtungszeitraums</div>    </div>
 
+    <div class="cf-divider"></div>
+    <div class="section-label">Belastbarkeit des Nutzens</div>
+    <div class="field">
+      <label>davon <strong>budgetwirksam</strong></label>
+      <input type="number" id="cash_share" value="100" min="0" step="5">
+      <div class="unit">%</div>
+<div class="unit" style="font-size:10.5px;color:var(--muted);">Gesparte Stunden sind zunächst Kapazität. Geld wird daraus nur, soweit Stellen abgebaut, Fremdleistung ersetzt oder messbar Mehrvolumen bewältigt wird.</div>    </div>
+    <div class="field">
+      <label>Dis-Benefits: Fehler- und Nacharbeitskosten</label>
+      <input type="number" id="dis_benefit" value="0" min="0" step="500">
+      <div class="unit">€/Jahr</div>
+<div class="unit" style="font-size:10.5px;color:var(--muted);">Was das Vorhaben an anderer Stelle kostet — Nachprüfung, Korrekturen</div>    </div>
+    <div class="field">
+      <label>Nutzungsgrad im Einführungsjahr</label>
+      <input type="number" id="ramp" value="25" min="0" step="5">
+      <div class="unit">%</div>
+<div class="unit" style="font-size:10.5px;color:var(--muted);">Hochlauf: Der Nutzen fällt im Jahr 0 nicht voll an</div>    </div>
+    <div class="field">
+      <label>Kalkulationszins für den Kapitalwert</label>
+      <input type="number" id="zins" value="0" min="0" step="0.5">
+      <div class="unit">%</div>
+<div class="unit" style="font-size:10.5px;color:var(--muted);">von Finance vorgeben lassen; 0 % ergibt die undiskontierte Übersicht</div>    </div>
     <div class="cf-divider"></div>
     <div class="section-label">Zurechnung</div>
     <div class="field">
@@ -370,6 +417,25 @@ a{color:var(--accent);}
       <input type="number" id="capex_years" value="3" min="1" max="10" step="1">
       <div class="unit">Jahre</div>
     </div>
+    <div class="cf-divider"></div>
+    <div class="section-label">Nachweis — wird mitgedruckt</div>
+    <div class="field">
+      <label>Herkunft der Ausgangswerte</label>
+      <input type="text" id="n_quelle" value="" placeholder="gemessen im Ticketsystem, Q4 2026 / geschätzt im Workshop">
+    </div>
+    <div class="field">
+      <label>Basis der Zeitersparnis-Annahme</label>
+      <input type="text" id="n_basis" value="" placeholder="Pilot, Benchmark mit Quelle, Schätzung — bitte benennen">
+    </div>
+    <div class="field">
+      <label>Nutzenverantwortliche:r</label>
+      <input type="text" id="n_owner" value="" placeholder="Name und Rolle">
+    </div>
+    <div class="field">
+      <label>Messzeitpunkt / Gate</label>
+      <input type="text" id="n_gate" value="" placeholder="Datum, an dem nachgerechnet wird — mit Stoppkriterium">
+    </div>
+
 
     <div class="cf-divider"></div>
 
@@ -439,8 +505,28 @@ a{color:var(--accent);}
   </div>
   <div class="kpi-card kpi-main">
     <div class="kpi-label">ROI im ersten vollen Jahr</div>
-    <div class="kpi-value green" id="kpi_roi1">—</div>
+    <div class="kpi-value green" id="kpi_roi_ho">—</div>
+    <div class="kpi-sub">Nettonutzen ÷ Investition &middot; wie im Hand-Out</div>
+  </div>
+  <div class="kpi-card">
+    <div class="kpi-label">ROI nach Abschreibung</div>
+    <div class="kpi-value" id="kpi_roi1">—</div>
     <div class="kpi-sub">Jahr 1 &middot; Ergebnissicht</div>
+  </div>
+  <div class="kpi-card">
+    <div class="kpi-label">Kapazitätsgewinn, bewertet</div>
+    <div class="kpi-value" id="kpi_kap">—</div>
+    <div class="kpi-sub" id="kpi_kap_sub">—</div>
+  </div>
+  <div class="kpi-card">
+    <div class="kpi-label">Kapitalwert</div>
+    <div class="kpi-value" id="kpi_npv">—</div>
+    <div class="kpi-sub" id="kpi_npv_sub">—</div>
+  </div>
+  <div class="kpi-card kpi-warn">
+    <div class="kpi-label">Break-even der Zeitersparnis</div>
+    <div class="kpi-value amber" id="kpi_be">—</div>
+    <div class="kpi-sub">Anteil der angenommenen Zeitersparnis, ab dem der Fall nach Abschreibung trägt</div>
   </div>
   <div class="kpi-card">
     <div class="kpi-label">Umgelegte CAPEX</div>
@@ -485,7 +571,7 @@ a{color:var(--accent);}
 <!-- ─── FOOTER ────────────────────────────────────────── -->
 <div class="note-box" style="margin-top:1.2rem;">
   <strong>Methodische Hinweise</strong>
-  Dieses Modell arbeitet ohne Diskontierung (kein NPV/DCF) und ist auf Plausibilitätsbewertung ausgelegt.
+  Dieses Modell rechnet die Zahlungsreihe standardmässig <strong>ohne Diskontierung</strong> und ist auf Plausibilitätsbewertung ausgelegt. Für eine Investitionsentscheidung trägst Du oben den von Finance vorgegebenen Kalkulationszins ein — dann weist der Rechner den <strong>Kapitalwert</strong> aus. Der Jahres-ROI bleibt in jedem Fall eine Grösse je Periode und ist mit einer Mindestrendite nicht unmittelbar vergleichbar.
   Berücksichtigt werden direkte Personalzeitersparnisse auf Basis des <em>aktuellen</em> Vorgangsvolumens.
   Der <em>Umlagefaktor</em> bildet ab, dass CAPEX und OPEX einer KI-Plattform meist mehreren Vorhaben zugutekommen —
   nur der zugerechnete Anteil belastet diesen Business Case.<br>
@@ -533,6 +619,15 @@ function getInputs(){
     c_maint:     v('c_maint'),
     alloc:       v('alloc')/100,
     capex_years: Math.max(1, Math.round(v('capex_years'))),
+    c_intern:    v('c_intern'),
+    c_token:     v('c_token'),
+    c_monitor:   v('c_monitor'),
+    c_support:   v('c_support'),
+    c_exit:      v('c_exit'),
+    cash_share:  v('cash_share')/100,
+    dis_benefit: v('dis_benefit'),
+    ramp:        v('ramp')/100,
+    zins:        v('zins')/100,
   };
 }
 
@@ -552,8 +647,10 @@ function compute(p){
   const sv_fte         = (sv_h_total_mo * 12) / (220 * 8) * 100;
 
   // ── ③ Expenditure ──
-  const capex_total    = p.c_dev + p.c_data + p.c_train;
-  const opex_total_yr  = p.c_infra + p.c_maint;
+  const capex_total    = p.c_dev + p.c_data + p.c_train + p.c_intern;
+  const token_yr       = p.c_token * p.vol * 12;
+  const opex_total_yr  = p.c_infra + p.c_maint + p.c_monitor + p.c_support + token_yr;
+  const exit_alloc     = p.c_exit * p.alloc;
   const capex_alloc    = capex_total   * p.alloc;
   const opex_alloc_yr  = opex_total_yr * p.alloc;
   const capex_alloc_mo = capex_alloc / (p.capex_years * 12);
@@ -574,15 +671,21 @@ function compute(p){
   // Ergebnissicht: CAPEX als lineare Abschreibung über die Nutzungsdauer → Gewinn und ROI je Jahr.
   // Zahlungssicht: CAPEX als Auszahlung in Jahr 0 und als Ersatzinvestition nach Ablauf der
   //                Nutzungsdauer → kumulierter Zahlungsüberschuss und Amortisation.
-  const saving_gross_yr = sv_value_mo * 12;
+  // Kapazitaetsgewinn (bewertet) -> budgetwirksamer Anteil -> abzueglich Dis-Benefits.
+  const kapazitaet_yr   = sv_value_mo * 12;
+  const budget_yr       = kapazitaet_yr * p.cash_share;
+  const saving_gross_yr = Math.max(0, budget_yr - p.dis_benefit);
   const saving_net_yr   = saving_gross_yr - opex_alloc_yr;
   const afa_yr          = capex_alloc / p.capex_years;
+  // Break-even: Anteil der angenommenen Zeitersparnis, bei dem der Nettonutzen null wird.
+  const be_anteil = (budget_yr > 0)
+    ? (opex_alloc_yr + p.dis_benefit + afa_yr) / (kapazitaet_yr * p.cash_share) * 100 : Infinity;
 
   // ── Zeitreihe ──
   // Jahr 0 ist das Einführungsjahr: Die Lösung läuft noch nicht das volle Jahr.
   // Deshalb werden dort nur anteilige Werte angesetzt (Annahmen, siehe Fußnote):
   const Y0_OPEX_ANTEIL = 0.50;  // 50 % der umgelegten OPEX
-  const Y0_NUTZEN_ANTEIL = 0.25;  // 25 % der jährlichen Personalersparnis
+  const Y0_NUTZEN_ANTEIL = p.ramp;  // Hochlauf im Einführungsjahr, Eingabefeld
   const years        = [0,1,2,3,4,5];
   const running_disp = years.map(y => y===0 ? opex_alloc_yr  * Y0_OPEX_ANTEIL   : opex_alloc_yr);
   const bens         = years.map(y => y===0 ? saving_gross_yr * Y0_NUTZEN_ANTEIL : saving_gross_yr);
@@ -590,7 +693,12 @@ function compute(p){
   // Ergebnissicht. Die Nutzungsdauer beginnt mit Jahr 0; nach ihrem Ablauf wird ersetzt,
   // die Abschreibung läuft deshalb in jedem Jahr des Zeitraums weiter.
   const afa_disp     = years.map(() => afa_yr);
-  const gewinn       = years.map((y,i) => bens[i] - running_disp[i] - afa_disp[i]);
+  // Exit-Kosten: in der Ergebnissicht gleichmaessig verteilt, in der Zahlungssicht am Ende.
+  const exit_erg     = exit_alloc / years.length;
+  const gewinn       = years.map((y,i) => bens[i] - running_disp[i] - afa_disp[i] - exit_erg);
+  // ROI nach der Formel des Hand-Outs: Nettonutzen vor Abschreibung je Investitionssumme.
+  const roi_ho       = years.map((y,i) => capex_alloc > 0
+    ? (bens[i] - running_disp[i]) / capex_alloc * 100 : 0);
 
   // ── ROI je Jahr ──
   // Klassische BWL-Definition (DuPont): Gewinn ÷ investiertes Kapital × 100.
@@ -600,7 +708,9 @@ function compute(p){
 
   // Zahlungssicht. Erstinvestition in Jahr 0, Ersatzinvestition in Jahr N, 2N … (innerhalb des Zeitraums).
   const invest_disp  = years.map(y => (y % p.capex_years === 0) ? capex_alloc : 0);
-  const cash         = years.map((y,i) => bens[i] - running_disp[i] - invest_disp[i]);
+  const cash         = years.map((y,i) => bens[i] - running_disp[i] - invest_disp[i]
+                                          - (i === years.length - 1 ? exit_alloc : 0));
+  const npv          = cash.reduce((a,c,i) => a + c / Math.pow(1 + p.zins, i), 0);
   const cumul        = [];
   years.forEach((y,i) => cumul.push((cumul[i-1]||0) + cash[i]));
 
@@ -623,6 +733,8 @@ function compute(p){
     bl_h_gross_mo, bl_h_detail_mo, bl_h_mo, bl_cost_mo, bl_cost_case,
     sv_h_gross_mo, sv_h_detail_mo, sv_h_total_mo, sv_value_mo, sv_fte,
     capex_total, opex_total_yr, capex_alloc, opex_alloc_yr,
+    kapazitaet_yr, budget_yr, be_anteil, roi_ho, npv, exit_alloc, token_yr,
+    jahre_n: years.length - 1,
     capex_alloc_mo, opex_alloc_mo, ki_cost_mo,
     fs_h_gross_case, fs_h_detail_case, fs_h_mo, fs_personal_mo, fs_cost_mo, fs_cost_case, fs_delta_mo,
     saving_gross_yr, saving_net_yr, afa_yr, payback_mo,
@@ -691,6 +803,14 @@ function calculate(){
   // ── KPIs ──
   const jahre = n => n + (n === 1 ? ' Jahr' : ' Jahre');
   set('kpi_payback', isFinite(r.payback_mo) ? fmtMo(r.payback_mo) : 'nach Jahr 5');
+  set('kpi_roi_ho', fmtPct(r.roi_ho[1]));
+  set('kpi_kap',     fmtEur(r.kapazitaet_yr));
+  set('kpi_kap_sub', 'davon budgetwirksam: ' + fmtEur(r.budget_yr) + ' je Jahr');
+  set('kpi_npv',     fmtEur(r.npv));
+  set('kpi_npv_sub', p.zins > 0
+    ? 'bei ' + fmt(p.zins*100,1) + ' % über ' + r.jahre_n + ' Jahre'
+    : 'ohne Diskontierung — Zinssatz oben eintragen');
+  set('kpi_be',      isFinite(r.be_anteil) ? fmt(r.be_anteil,0) + ' %' : '—');
   set('kpi_invest',  fmtEur(r.capex_alloc));
   set('kpi_invest_sub', p.capex_years > 5 ? 'einmalig im Betrachtungszeitraum' : 'je Investition · Ersatz nach ' + p.capex_years + (p.capex_years === 1 ? ' Jahr' : ' Jahren'));
   set('kpi_afa',     fmtEur(r.afa_yr));

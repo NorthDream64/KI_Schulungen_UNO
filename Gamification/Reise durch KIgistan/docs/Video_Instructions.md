@@ -4,4 +4,4 @@ Erstelle eine ca. 90-sekündige Einführung für Kursteilnehmende (KI-Manager im
 
 Für schwieriger abzugrenzende Begriffe (z.B. Halluzination vs. Fehler):
 
-Füge zwischen Situation und Lösung einen kurzen "Was es NICHT ist"-Einschub ein: maximal zwei Sätze, die einen häufigen Irrtum direkt adressieren.
+Füge zwischen Situation und Lösung einen kurzen „Was es NICHT ist“-Einschub ein: maximal zwei Sätze, die einen häufigen Irrtum direkt adressieren.

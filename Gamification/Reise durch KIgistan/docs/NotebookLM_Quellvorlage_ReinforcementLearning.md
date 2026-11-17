@@ -16,7 +16,7 @@ Die Roboter lernen durch Simulation: In einer virtuellen Lagerumgebung probieren
 Amazon Robotics und Ocado nutzen Reinforcement Learning, um Lagerroboter zu trainieren. Die Systeme entwickeln Strategien, die menschliche Planer nicht entworfen hätten — z. B. dynamische Umlagerungen in Niedriglastzeiten, die die Spitzenstunden-Kommissionierung um 15–20 % beschleunigen.
 
 **Häufiger Irrtum:**
-Reinforcement Learning ist kein universelles Optimierungswerkzeug. Es funktioniert gut, wenn eine klare Belohnungsfunktion definierbar ist. Ist das Ziel schwer messbar (z. B. "Kundenzufriedenheit"), kann das System auf Wege trainieren, die die Kennzahl optimieren, aber das eigentliche Ziel verfehlen — ein bekanntes Problem namens "Reward Hacking".
+Reinforcement Learning ist kein universelles Optimierungswerkzeug. Es funktioniert gut, wenn eine klare Belohnungsfunktion definierbar ist. Ist das Ziel schwer messbar (z. B. „Kundenzufriedenheit“), kann das System auf Wege trainieren, die die Kennzahl optimieren, aber das eigentliche Ziel verfehlen — ein bekanntes Problem namens „Reward Hacking“.
 
 ---
 

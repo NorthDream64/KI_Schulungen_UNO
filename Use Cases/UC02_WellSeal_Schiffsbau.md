@@ -22,11 +22,11 @@ Hersteller von Wellenkomponenten und Abdichtungssystemen für die maritime Indus
 
 ## Personen
 
-### Heinrich ("Henry") Mäurer jun. — Geschäftsführer
-Hat vor 6 Monaten die Leitung übernommen. Betriebswirt, MBA, 38 Jahre alt. Hat in den USA studiert und gearbeitet — ist mit modernen digitalen Arbeitsweisen und KI-Tools vertraut. Empfindet das Unternehmen als technologisch rückständig ("Digitalisierungsstau"). Möchte schnell Ergebnisse zeigen, ist dabei aber auf die Unterstützung der alten Garde angewiesen. Er möchte "frischen Wind" und neue Technologien wie KI in das Unternehmen bringen und hat deshalb die Rolle eines "KI-Integrators" geschaffen und Dich dafür eingestellt. Er schätzt die "alte Garde", die mit seinem Vater das Unternehmen groß gemacht haben, versucht sie einzubeziehen, spürt aber auch das Spannungsverhältnis zwischen Innovation und Tradition.
+### Heinrich („Henry“) Mäurer jun. — Geschäftsführer
+Hat vor 6 Monaten die Leitung übernommen. Betriebswirt, MBA, 38 Jahre alt. Hat in den USA studiert und gearbeitet — ist mit modernen digitalen Arbeitsweisen und KI-Tools vertraut. Empfindet das Unternehmen als technologisch rückständig („Digitalisierungsstau“). Möchte schnell Ergebnisse zeigen, ist dabei aber auf die Unterstützung der alten Garde angewiesen. Er möchte „frischen Wind“ und neue Technologien wie KI in das Unternehmen bringen und hat deshalb die Rolle eines „KI-Integrators“ geschaffen und Dich dafür eingestellt. Er schätzt die „alte Garde“, die mit seinem Vater das Unternehmen groß gemacht haben, versucht sie einzubeziehen, spürt aber auch das Spannungsverhältnis zwischen Innovation und Tradition.
 
 ### Heinrich Mäurer Sen. — Seniorchef (nicht mehr aktiv)
-Hat das Unternehmen aufgebaut. Vertraut dem Junior, ist aber informal weiterhin präsent. Hat bewusst ein konservatives Führungsteam hinterlassen ("Das schützt uns vor Schnellschüssen").
+Hat das Unternehmen aufgebaut. Vertraut dem Junior, ist aber informal weiterhin präsent. Hat bewusst ein konservatives Führungsteam hinterlassen („Das schützt uns vor Schnellschüssen“).
 
 ### Dr. Petra Schreiber — Chief Information Security Officer (CISO)
 15 Jahre im Unternehmen. Tiefes Vertrauen des Seniors. Geprägt durch einen Sicherheitsvorfall 2019 (Ransomware-Angriff auf die Produktionssteuerung). Betrachtet KI grundsätzlich als Angriffsfläche. Wird keine Initiative absegnen, die nicht vollständig dokumentiert und risikobewertet ist. **Nicht zu unterschätzen:** Ihre Skepsis ist fachlich begründet, nicht nur politisch.
@@ -38,10 +38,10 @@ Extern bestellt, Rechtsanwalt. Sehr DSGVO-konservativ. Hat in der Vergangenheit 
 Seit 12 Jahren im Unternehmen. Hat SAP eingeführt und pflegt es. Versteht M365 als Infrastruktur, nicht als Werkzeug. Hat kein Budget für neue Projekte und wenig Kapazität. Sieht KI-Initiativen als zusätzliche Last für sein Team.
 
 ### Roxanne Aubieu — Leiterin Controlling
-Seit 1 Jahr im Unternehmen. Kommt ursprünglich aus der Unternehmensberatung und ist ein "Zahlenmensch", kennt aber das Geschäft noch nicht in der Tiefe. Sie orientiert sich stark an Heinrich Mäurer jun. und sieht sich in der Rolle, seine Ideen und Initiativen auf ihren strategischen und operativen Geschäftswert hin zu validieren.
+Seit 1 Jahr im Unternehmen. Kommt ursprünglich aus der Unternehmensberatung und ist ein „Zahlenmensch“, kennt aber das Geschäft noch nicht in der Tiefe. Sie orientiert sich stark an Heinrich Mäurer jun. und sieht sich in der Rolle, seine Ideen und Initiativen auf ihren strategischen und operativen Geschäftswert hin zu validieren.
 
 ### Alfons Brockmann — Teamleiter Service
-Seit 30 Jahren im Unternehmen, praktisch zusammen mit Heinrich Mäurer Sr. einer der "Gründer". Die "graue Eminenz" im Unternehmen: Hoher Einfluss auf die Serviceingenieure, bei den meisten Kunden seit Jahren bekannt, hat an allen Standorten gearbeitet. Heinrich Mäurer Sr. hört auf ihn; zu Henry Mäurer hat er ein väterliches, aber nicht ganz spannungsfreies Verhältnis.
+Seit 30 Jahren im Unternehmen, praktisch zusammen mit Heinrich Mäurer Sr. einer der „Gründer“. Die „graue Eminenz“ im Unternehmen: Hoher Einfluss auf die Serviceingenieure, bei den meisten Kunden seit Jahren bekannt, hat an allen Standorten gearbeitet. Heinrich Mäurer Sr. hört auf ihn; zu Henry Mäurer hat er ein väterliches, aber nicht ganz spannungsfreies Verhältnis.
 
 ### Bernd Kruse — Werkleuter Busan
 Zögling Brockmanns. Wurde nach einem Korruptionsfall, wegen dessen die frühere, koreanische Leiterin des Standorts abgelöst werden mußte, kurzfrisitg nach Busan entsendet. Kennt das Geschäft und die koreanischen Kunden (Hyundai Heavy Industries, Daewoo Shipbuilding & Marine Engineering, Samsung Heavy Industries) gut, spricht aber kein Koreanisch und nur gebrochen Englisch. Als Führungskraft ist Busan für ihn die erste Station.
@@ -91,11 +91,11 @@ Der KI-Beauftragte navigiert zwischen drei Polen:
 
 | Pol | Vertreter | Haltung |
 |---|---|---|
-| **Innovationsdruck** | Junior, externe Wettbewerber | "Wir müssen schneller werden" |
-| **Skepsis / Compliance** | CISO, DSB, IT-Leiter | "Erst prüfen, dann handeln" |
+| **Innovationsdruck** | Junior, externe Wettbewerber | „Wir müssen schneller werden“ |
+| **Skepsis / Compliance** | CISO, DSB, IT-Leiter | „Erst prüfen, dann handeln“ |
 | **Regulierung** | EU AI Act, DSGVO, PIPL, APPI | Externe, nicht verhandelbare Rahmenbedingungen |
 
-Die Kernaufgabe des KI-Beauftragten ist nicht technische Umsetzung, sondern **strukturierte Entscheidungsvorbereitung**: Aus einem diffusen "wir wollen KI" einen priorisierten, rechtlich abgesicherten Fahrplan machen — der alle drei Pole respektiert.
+Die Kernaufgabe des KI-Beauftragten ist nicht technische Umsetzung, sondern **strukturierte Entscheidungsvorbereitung**: Aus einem diffusen „wir wollen KI“ einen priorisierten, rechtlich abgesicherten Fahrplan machen — der alle drei Pole respektiert.
 
 ---
 

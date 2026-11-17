@@ -44,16 +44,16 @@ Bevorzugt Börsengänge (IPO) — auch Verkäufe an strategische Erwerber oder a
 ## Personen
 
 ### Dr. Miriam Vogt — Geschäftsführerin (Managing Partner)
-42 Jahre. Ex-McKinsey, dann CFO eines mittelständischen SaaS-Unternehmens. Hat die AI GmbH mit ihrem Eigenkapital gegründet. Strategische Denkerin, ungeduldig bei Prozessfragen. Will Skalierung: „In drei Jahren wollen wir 50 Proposals pro Monat scouten — das schaffen wir nicht mit dem gleichen Team." Technikaffin, aber keine Entwicklerin. Hat das Mandat gegeben, KI für den Investment-Prozess zu evaluieren.
+42 Jahre. Ex-McKinsey, dann CFO eines mittelständischen SaaS-Unternehmens. Hat die AI GmbH mit ihrem Eigenkapital gegründet. Strategische Denkerin, ungeduldig bei Prozessfragen. Will Skalierung: „In drei Jahren wollen wir 50 Proposals pro Monat scouten — das schaffen wir nicht mit dem gleichen Team.“ Technikaffin, aber keine Entwicklerin. Hat das Mandat gegeben, KI für den Investment-Prozess zu evaluieren.
 
 ### Sophie Krane — Portfoliomanager:in (die Kursrolle)
-34 Jahre. Betriebswirtschaftlerin mit Schwerpunkt Corporate Finance. 4 Jahre Investmentbanking, dann 2 Jahre bei einem Berliner VC-Fonds. Bei der AI GmbH seit 9 Monaten. Sitzt täglich mit 2–4 Proposals auf dem Schreibtisch, schätzt strukturierte Entscheidungsrahmen, ist skeptisch gegenüber KI-Hype, aber offen für gut begründete Automatisierung. Sie ist die Kursrolle: *„Ich brauche ein Verfahren, das mir bei der Vorauswahl hilft — ohne dass ich die Kontrolle über die Entscheidung verliere."*
+34 Jahre. Betriebswirtschaftlerin mit Schwerpunkt Corporate Finance. 4 Jahre Investmentbanking, dann 2 Jahre bei einem Berliner VC-Fonds. Bei der AI GmbH seit 9 Monaten. Sitzt täglich mit 2–4 Proposals auf dem Schreibtisch, schätzt strukturierte Entscheidungsrahmen, ist skeptisch gegenüber KI-Hype, aber offen für gut begründete Automatisierung. Sie ist die Kursrolle: *„Ich brauche ein Verfahren, das mir bei der Vorauswahl hilft — ohne dass ich die Kontrolle über die Entscheidung verliere.“*
 
 ### Ben Fischer — Senior Analyst
-28 Jahre. Data-Science-Hintergrund (M.Sc. Data Engineering). Kann Python und SQL, hat erste ML-Erfahrungen. Verbringt aktuell ~40 % seiner Zeit mit manuellen Recherchen zu Proposals (Marktdaten, Wettbewerber, Gründer-Backgrounds). Wäre der natürliche technische Projektleiter für ein KI-Screening-System. Enthusiastisch, aber warnt: *„Wir müssen aufpassen, dass wir nicht Bias in den Algorithmus einbauen — gute Gründer werden oft von Standard-Screening-Systemen aussortiert."*
+28 Jahre. Data-Science-Hintergrund (M.Sc. Data Engineering). Kann Python und SQL, hat erste ML-Erfahrungen. Verbringt aktuell ~40 % seiner Zeit mit manuellen Recherchen zu Proposals (Marktdaten, Wettbewerber, Gründer-Backgrounds). Wäre der natürliche technische Projektleiter für ein KI-Screening-System. Enthusiastisch, aber warnt: *„Wir müssen aufpassen, dass wir nicht Bias in den Algorithmus einbauen — gute Gründer werden oft von Standard-Screening-Systemen aussortiert.“*
 
 ### Julia Romberg — CFO / Investor Relations
-46 Jahre. Verantwortet LP-Reporting (quartalsweise), Fondscontrolling und Compliance. Erwartet konsistente Messbarkeit der Portfoliounternehmen. Hat die Rule-of-40-Metrik eingeführt und möchte sie im Portfoliomonitoring automatisiert sehen. *„Ich will bei jedem Quartalsbericht sofort sehen, welche Beteiligungen Alarm schlagen — ohne händische Pivot-Tabellen."*
+46 Jahre. Verantwortet LP-Reporting (quartalsweise), Fondscontrolling und Compliance. Erwartet konsistente Messbarkeit der Portfoliounternehmen. Hat die Rule-of-40-Metrik eingeführt und möchte sie im Portfoliomonitoring automatisiert sehen. *„Ich will bei jedem Quartalsbericht sofort sehen, welche Beteiligungen Alarm schlagen — ohne händische Pivot-Tabellen.“*
 
 ### Private Anleger (LPs — beschränkt haftende Gesellschafter)
 Hauptsächlich Family Offices und vermögende Privatpersonen. Erwarten quartalsweises Reporting, Transparenz zu Portfolio-Performance und Einhaltung der Investitionsstrategie. Mehrere LPs haben explizit nach KI-getriebener Effizienzverbesserung im Portfoliomanagement gefragt.

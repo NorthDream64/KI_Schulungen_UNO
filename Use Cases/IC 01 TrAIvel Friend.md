@@ -8,7 +8,7 @@
 
 The following proposal has been submitted to AktivInvest for consideration and funding:
 
-**TrAIvel Friend** is an AI-based travel companion. It organises the entire journey — "the experience" — for the user: from the first vague idea of a destination, through the booking of flights, hotels, theatre or museum tickets and restaurant tables, to the handling of claims and the post-trip feedback and recommendations for other travellers. It is built around a **personal AI agent**.
+**TrAIvel Friend** is an AI-based travel companion. It organises the entire journey — „the experience“ — for the user: from the first vague idea of a destination, through the booking of flights, hotels, theatre or museum tickets and restaurant tables, to the handling of claims and the post-trip feedback and recommendations for other travellers. It is built around a **personal AI agent**.
 
 ---
 
@@ -72,7 +72,7 @@ The AI trip-planning space is crowded and moving fast:
 
 | Player | Positioning |
 |---|---|
-| **Mindtrip** | "Most Innovative Company" 2025; strong map integration and collaborative planning |
+| **Mindtrip** | „Most Innovative Company“ 2025; strong map integration and collaborative planning |
 | **Layla** | 4.9★, 1.1 m+ trips planned; live pricing across flights, hotels, trains, activities |
 | **MonkeyTravel** | ~350 k monthly US visitors; group planning with built-in voting |
 | **Wonderplan / Wanderlog / iMean AI / Travo** | itinerary builders adding real-time, agentic features |
@@ -100,10 +100,10 @@ The second is not obviously worse. It should be priced before the first is funde
 
 ## 5 · Open items — to develop step by step
 
-- ~~Problem statement & "why now"~~ — first evidence now in §4; still needs the customer problem stated in the founders' own words
+- ~~Problem statement & „why now“~~ — first evidence now in §4; still needs the customer problem stated in the founders' own words
 - Traction / pilots (currently none)
 - Go-to-market & distribution (critical in a crowded market)
-- Unit economics: customer acquisition cost, lifetime value, take rate, and "Return on Token" (LLM cost per completed booking)
+- Unit economics: customer acquisition cost, lifetime value, take rate, and „Return on Token“ (LLM cost per completed booking)
 - Financial projections (3–5 years)
 - Fit with the AIktivInvest thesis and target ticket size
 
@@ -113,17 +113,17 @@ The second is not obviously worse. It should be priced before the first is funde
 
 **Product risk 1 · The model invents places that do not exist.** Daniel Paül i Agustí (University of Lleida) collected 10,000 ChatGPT recommendations for Barcelona. They covered **215 distinct locations** — against roughly **1,300** locations represented in a comparable set of tourist photographs from Instagram. Among the recommendations were **38 attractions that appeared to be fabricated**.
 
-For a planner this is an annoyance. For TrAIvel Friend — which books tables, buys tickets and charges a stored card — it is a direct liability exposure. This turns the existing "liability for faulty bookings" line from a legal abstraction into a measured failure rate that diligence can size. **Required:** a verification layer between recommendation and booking, and an explicit answer to who pays when a booking is made against a place that does not exist.
+For a planner this is an annoyance. For TrAIvel Friend — which books tables, buys tickets and charges a stored card — it is a direct liability exposure. This turns the existing „liability for faulty bookings“ line from a legal abstraction into a measured failure rate that diligence can size. **Required:** a verification layer between recommendation and booking, and an explicit answer to who pays when a booking is made against a place that does not exist.
 
 **Product risk 2 · The same question does not produce the same answer.** An analysis by Evertune found that Gemini's jointly most-recommended pizzerias in Rome appeared in **91 %** of its responses — meaning close to one user in ten never sees the top pick at all. Across all responses it named **24 different** establishments.
 
-Consequences for this business model, in order of severity: itineraries are not reproducible, so complaints cannot be reconstructed; quality assurance has no stable baseline to test against; and the "sponsored placements" revenue layer sketched in §3 is hard to sell and harder to disclose honestly if placement cannot be guaranteed.
+Consequences for this business model, in order of severity: itineraries are not reproducible, so complaints cannot be reconstructed; quality assurance has no stable baseline to test against; and the „sponsored placements“ revenue layer sketched in §3 is hard to sell and harder to disclose honestly if placement cannot be guaranteed.
 
 **Product risk 3 · Recommendation quality is inherited, not owned.** ChatGPT's answers rest largely on online guides and Reddit threads; Google's AI Mode on Google Maps reviews. The core asset — knowing where to send someone — belongs to whichever model TrAIvel Friend sits on. A model change, a licensing change or an outage moves the product's quality without the company touching its own code. **Required:** name the model dependency, the substitution plan, and what is owned independently of it.
 
-**Market risk 1 · Service recovery is where humans currently win.** Evan Frank, co-founder of Fora: *"You can't call your AI if your room is wrong or you missed your transfer."* §2 lists claims handling as a feature. The market evidence says this is precisely the moment travellers reach for a human. **Required:** state what happens at 23:00 when the hotel has no reservation — and cost it.
+**Market risk 1 · Service recovery is where humans currently win.** Evan Frank, co-founder of Fora: *„You can't call your AI if your room is wrong or you missed your transfer.“* §2 lists claims handling as a feature. The market evidence says this is precisely the moment travellers reach for a human. **Required:** state what happens at 23:00 when the hotel has no reservation — and cost it.
 
-**Market risk 2 · Demand for humans is counter-cyclical.** Travellers are *more* likely to book through an adviser during geopolitical disruption or extreme weather, when booking feels risky. A pure-AI product may therefore lose demand exactly when travel is most disrupted — a correlation that undercuts the usual "travel always recovers" argument.
+**Market risk 2 · Demand for humans is counter-cyclical.** Travellers are *more* likely to book through an adviser during geopolitical disruption or extreme weather, when booking feels risky. A pure-AI product may therefore lose demand exactly when travel is most disrupted — a correlation that undercuts the usual „travel always recovers“ argument.
 
 **Market risk 3 · The high-value segment is moving the other way.** At the top end, clients pay a **$100,000 annual subscription** on top of seven-figure travel budgets for a human fixer. Advisers are chosen for taste, judgment, country knowledge and access to closed hotel networks. If the willingness to pay concentrates where TrAIvel Friend is weakest, the realistic segment is the mid-market — which lowers both the take rate and the defensibility assumed in §4.
 
@@ -174,14 +174,14 @@ xxxx *(to be developed)*
 
 ### Demand, AI recommendation quality & the human-adviser counter-trend
 
-- *"Can AI save tourists from the TikTok herd?"* — **The Economist**, August 2026. Source of the McKinsey adoption figures, the Tripadvisor traffic estimate, and the Evertune consistency analysis.
-- *"Travel agents are in demand—especially for luxury trips"* — **The Economist**, 13 August 2026. Source of the ABTA and ASTA membership figures, the Fora model, and the LinkedIn / Bureau of Labour Statistics conflict.
+- *„Can AI save tourists from the TikTok herd?“* — **The Economist**, August 2026. Source of the McKinsey adoption figures, the Tripadvisor traffic estimate, and the Evertune consistency analysis.
+- *„Travel agents are in demand—especially for luxury trips“* — **The Economist**, 13 August 2026. Source of the ABTA and ASTA membership figures, the Fora model, and the LinkedIn / Bureau of Labour Statistics conflict.
 
 **Primary sources named in those articles — cite these directly where possible, they are stronger than the reporting:**
 
 - **Daniel Paül i Agustí** (University of Lleida) — comparison of ChatGPT recommendations against geocoded tourist photography for Barcelona: 215 recommended locations vs ~1,300 photographed, including 38 apparently fabricated attractions. *Academic author, named institution — the strongest single finding for our product-risk section.*
 - **Dante Donati** (Columbia Business School) — 2017 EU roaming-charge abolition, mobile Tripadvisor consultation and a 5 % revenue uplift for Rome's tourist restaurants.
-- **University of Westminster** — finding that ChatGPT shows "a marked preference for well-established tourist hubs".
+- **University of Westminster** — finding that ChatGPT shows „a marked preference for well-established tourist hubs“.
 - **ABTA** (British travel trade association) and **ASTA** (American Society of Travel Advisers) — membership and booking-channel figures; trade bodies, so directionally useful but not disinterested.
 - **US Bureau of Labour Statistics** — occupational growth projection to 2034.
 - **Evertune** — AI analytics firm, commissioned by the publication for the chatbot comparison. Vendor-adjacent; use the consistency finding as an illustration, not as a measurement.

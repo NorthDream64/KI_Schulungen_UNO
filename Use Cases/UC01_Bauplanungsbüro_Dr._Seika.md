@@ -27,7 +27,7 @@ Das Büro hat ein KI-System aufgebaut, das automatisiert **Gefährdungsbeurteilu
 ---
 ## UC 01 c: KI-gestützte Projektplanung
 
-Ein zugekauftes Programm für die Projektplanung wird durch ein KI-Modul erweitert. Dieses Modul erlaubt es zum einen, gezielt Voranfragen an Lieferanten (aus dem CRM-System) hinsichtlich Verfügbarkeiten von Materialien und Lieferterminen zu stellen, als auch eine vorläufige erste Ressourcenplanung vorzunehmen. Für diese Ressourcenplanung soll sowohl auf interne Kalender (Urlaub, längere geplante Abwesenheiten) als auch auf eine Skill-Datenbank als auch auf eine Wissensdatenbank mit den Parametern der bisherigen Projekte zugegriffen werden, um die Planungsgenauigkeit und Verlässlichkeit der späteren "echten" Angebote zu erhöhen.
+Ein zugekauftes Programm für die Projektplanung wird durch ein KI-Modul erweitert. Dieses Modul erlaubt es zum einen, gezielt Voranfragen an Lieferanten (aus dem CRM-System) hinsichtlich Verfügbarkeiten von Materialien und Lieferterminen zu stellen, als auch eine vorläufige erste Ressourcenplanung vorzunehmen. Für diese Ressourcenplanung soll sowohl auf interne Kalender (Urlaub, längere geplante Abwesenheiten) als auch auf eine Skill-Datenbank als auch auf eine Wissensdatenbank mit den Parametern der bisherigen Projekte zugegriffen werden, um die Planungsgenauigkeit und Verlässlichkeit der späteren „echten“ Angebote zu erhöhen.
 
 ---
 ## UC 01 d: Vermarktung der Lösung

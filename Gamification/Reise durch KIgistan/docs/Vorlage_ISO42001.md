@@ -16,7 +16,7 @@ ISO 42001 gibt diesem Unternehmen einen strukturierten Rahmen — ein sogenannte
 Eine Versicherungsgruppe mit Niederlassungen in der EU bereitet sich auf den EU AI Act vor. Ihr Kreditscoring-Modell fällt unter die Hochrisiko-Kategorie des Gesetzes und erfordert umfangreiche Dokumentation, Protokollierung und menschliche Kontrollmechanismen. Statt diese Anforderungen ad hoc umzusetzen, führt das Unternehmen ISO 42001 ein: Die Norm strukturiert den Prozess, und die Zertifizierung durch einen akkreditierten Auditor dient als nachweisbarer Beleg gegenüber der BaFin und Geschäftspartnern, dass KI-Governance nicht nur versprochen, sondern gelebt wird.
 
 **Häufiger Irrtum:**
-ISO 42001 zertifiziert kein einzelnes KI-System als "sicher" oder "ethisch korrekt". Die Norm zertifiziert den Managementprozess einer Organisation — also die Art und Weise, wie sie mit KI umgeht. Ein Unternehmen kann ISO-42001-zertifiziert sein und trotzdem ein problematisches KI-Modell betreiben, wenn das Modell selbst nicht ordentlich bewertet wurde. Die Norm ist ein Steuerungsrahmen, kein inhaltliches Qualitätssiegel für KI-Ausgaben.
+ISO 42001 zertifiziert kein einzelnes KI-System als „sicher“ oder „ethisch korrekt“. Die Norm zertifiziert den Managementprozess einer Organisation — also die Art und Weise, wie sie mit KI umgeht. Ein Unternehmen kann ISO-42001-zertifiziert sein und trotzdem ein problematisches KI-Modell betreiben, wenn das Modell selbst nicht ordentlich bewertet wurde. Die Norm ist ein Steuerungsrahmen, kein inhaltliches Qualitätssiegel für KI-Ausgaben.
 
 ---
 

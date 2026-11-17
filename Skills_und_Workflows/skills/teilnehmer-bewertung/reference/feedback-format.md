@@ -10,7 +10,7 @@
 - Bestehende Datei gleichen Namens wird **überschrieben**.
 
 ## Fortschrittsbanner
-Erstellungsdatum + Balken + Text „X % des Kurses absolviert (nach Woche N von 4)":
+Erstellungsdatum + Balken + Text „X % des Kurses absolviert (nach Woche N von 4)“:
 
 | Zeitpunkt | Prozent |
 |-----------|---------|
@@ -21,12 +21,12 @@ Erstellungsdatum + Balken + Text „X % des Kurses absolviert (nach Woche N von 
 
 ## HTML-Struktur — 5 Sektionen (verbindlich)
 
-1. **Header** — Name · „Kurs-Feed-back" · „Zertifikatskurs KI-Beauftragte(r)".
+1. **Header** — Name · „Kurs-Feed-back“ · „Zertifikatskurs KI-Beauftragte(r)“.
    Kein TÜV Rheinland, keine Kurs-Nummer.
 2. **Quiz-Ergebnisse** — nur **Gesamt: X % (n von m Fragen richtig)**, keine
    Wochen-Aufschlüsselung. Einzelne Kurstage nur anzeigen, wenn unter 60 %
    (roter Hinweisblock „Unter 60 % — Nacharbeiten empfohlen: Tag N · Thema —
-   X % (n/m)"). **Keine Selbsteinschätzungs-Werte (SE).**
+   X % (n/m)“). **Keine Selbsteinschätzungs-Werte (SE).**
 3. **Besondere Stärken** — 2–4 Items, 2-Spalten-Layout, je personenspezifischer
    Titel + 1–2 Sätze. Bezug auf Quiz **und** eingereichte Unterlagen.
 4. **Auszubauende Schwächen** — 2–4 Items, gleiche Struktur, konstruktiv und
@@ -41,8 +41,8 @@ Plus **Anhang** — vollständige, flache Liste aller eingereichten Dokumente
 - **Du-Form**, kein Name im Fließtext.
 - W1/W2-Unterscheidung **nur beim Quiz**; sonst kein zeitlicher Split.
 - **Keine** Selbsteinschätzungs-Werte, **keine** KI/Mensch-Ratio, **keine**
-  „Persönliche Note"-Sektion.
+  „Persönliche Note“-Sektion.
 - **Keine Zertifizierungsaussagen**, keine Prüfungsmarker.
 - **Präzision:** Inhalte exakt wie im Dokument beschreiben; im Zweifel zitieren.
 - Abkürzungen ausschreiben (Level 1/2/3; SE beim ersten Auftreten erklären).
-- „Tage", nicht „Tags".
+- „Tage“, nicht „Tags“.

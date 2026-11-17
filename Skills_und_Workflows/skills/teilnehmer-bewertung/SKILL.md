@@ -1,11 +1,11 @@
 ---
 name: teilnehmer-bewertung
 description: >
-  Wertet die im lokalen Ordner "Arbeitsproben/[Vollname]/" eingereichten Dateien
-  einer Kursteilnehmerin oder eines Kursteilnehmers aus. Drei Modi: (1) "feedback"
-  erzeugt das laufende, formative Kurs-Feed-back als HTML; (2) "bewertung" erstellt
+  Wertet die im lokalen Ordner „Arbeitsproben/[Vollname]/“ eingereichten Dateien
+  einer Kursteilnehmerin oder eines Kursteilnehmers aus. Drei Modi: (1) „feedback“
+  erzeugt das laufende, formative Kurs-Feed-back als HTML; (2) „bewertung“ erstellt
   einen beschwerdesicheren Bewertungs-Entwurf der Projektarbeit (0–100 je Aufgabe,
-  Gesamtzensur) zur Freigabe durch den Dozenten; (3) "profil" erstellt auf Wunsch
+  Gesamtzensur) zur Freigabe durch den Dozenten; (3) „profil“ erstellt auf Wunsch
   ein neutrales Referenzdokument der geleisteten Arbeiten für Bewerbungsunterlagen.
   Auslösen, wenn der Dozent ein Feed-back, eine Projektarbeits-Bewertung oder ein
   Arbeits-Profil für eine namentlich genannte Person anfordert.
@@ -21,7 +21,7 @@ Auftrag des Dozenten** — im Zweifel nachfragen, nicht raten.
 
 **Eingabeordner:** `Schulungsmaterial/KI-Beauftragte/Arbeitsproben/[Vollname]/`
 (analog für KIM/MAT, sobald dort Ordner existieren). Der Vollname ist der
-Ordnername; Sonderfälle siehe Memory (z. B. „Abdelrahman Mekki", Richard Leyser =
+Ordnername; Sonderfälle siehe Memory (z. B. „Abdelrahman Mekki“, Richard Leyser =
 nur Woche 2).
 
 > **Achtung, zwei Ordner gleichen Namens.** `Schulungsmaterial/Kursmaterialien/` (lokal,
@@ -39,8 +39,8 @@ nur Woche 2).
 - **Präzision vor Aufwertung:** Inhalte exakt so beschreiben, wie sie im Dokument
   erscheinen. Im Zweifel **zitieren statt interpretieren**. Keine Fachbegriffe
   erfinden, die das Original nicht verwendet.
-- **Keine Zertifizierungsdruck-Aussagen** („prüfungsrelevant", „für die
-  Zertifizierung zählt") und keine TÜV-/Prüfungsmarker.
+- **Keine Zertifizierungsdruck-Aussagen** („prüfungsrelevant“, „für die
+  Zertifizierung zählt“) und keine TÜV-/Prüfungsmarker.
 - **Abkürzungen** beim ersten Auftreten ausschreiben (Level 1/2/3, nie L1/L2/L3).
 - **Use Cases** im Feed-back nicht namentlich nennen, wo es um wiederverwendbare
   Inhalte geht; in der Bewertung ist der konkrete Use-Case-Bezug zulässig, weil die
@@ -50,7 +50,7 @@ nur Woche 2).
 
 **Der Mensch entscheidet.** Dieser Skill erzeugt in allen Modi **Entwürfe**. Noten,
 Zensuren und Profiltexte werden vom Dozenten geprüft und freigegeben, bevor sie
-nach außen gehen. Kein Output wird als „endgültig" deklariert.
+nach außen gehen. Kein Output wird als „endgültig“ deklariert.
 
 ---
 
@@ -80,8 +80,8 @@ Begründungstiefe nach Punktzahl ein (81–97 knapp · > 97 und < 81 ausführlic
 beschwerdesicher) und füllt den offiziellen Bewertungsbogen
 `Schulungsmaterial/Kursmaterialien/Vorlage_Projektarbeit.docx` als **docx + PDF** aus.
 
-Bei einem Auftrag „Bewerte die Projektarbeit von [Name]" bzw. „Bewertung für die
-Urkunde" diesen Skill verwenden.
+Bei einem Auftrag „Bewerte die Projektarbeit von [Name]“ bzw. „Bewertung für die
+Urkunde“ diesen Skill verwenden.
 
 **Die Detailrubrik `reference/bewertungs-rubrik.md` ist seit 25.08.2026 abgelöst** und
 enthält nur noch einen Wegweiser. Skala, Gewichtung, Leitprinzip und Begründungstiefe

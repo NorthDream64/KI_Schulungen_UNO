@@ -15,7 +15,7 @@
 >
 > `OneDrive\Schulungsmaterial\Zentrale Referenzdokumente\`
 >
-> In demselben Ordner liegen seither auch die Referenz-PDFs, die zuvor unter „Interessante Dokumente" geführt wurden — KI-Verordnung, DSGVO/BDSG, DIN EN ISO/IEC 42001:2026-08, NIST-Rahmenwerk, ICB 4 und weitere.
+> In demselben Ordner liegen seither auch die Referenz-PDFs, die zuvor unter „Interessante Dokumente“ geführt wurden — KI-Verordnung, DSGVO/BDSG, DIN EN ISO/IEC 42001:2026-08, NIST-Rahmenwerk, ICB 4 und weitere.
 >
 > **Zwei Folgen, die zu beachten sind:**
 > 1. **Im öffentlichen Repositorium fehlen beide Dateien nach dem nächsten Commit.** Wer sie über GitHub Pages verlinkt hatte, muss den Verweis anpassen oder entfernen.
@@ -84,7 +84,7 @@
 
 ### 1e · DIN EN ISO/IEC 42001:2026-08 (lokal — Normtext im Volltext)
 
-**Pfad:** `Schulungsmaterial/Zentrale Referenzdokumente/Norm DIN ISO-IEC 42001 Künstliche Intelligenz_08-2026.pdf` *(seit 17.09.2026; zuvor „Interessante Dokumente")*  
+**Pfad:** `Schulungsmaterial/Zentrale Referenzdokumente/Norm DIN ISO-IEC 42001 Künstliche Intelligenz_08-2026.pdf` *(seit 17.09.2026; zuvor „Interessante Dokumente“)*  
 **Vollständiger Titel:** DIN EN ISO/IEC 42001:2026-08 — *Informationstechnik – Künstliche Intelligenz – Managementsystem*  
 **Ausgabe:** E-Book-Sonderausgabe 2026 (alfatraining), 72 Seiten
 
@@ -110,12 +110,12 @@
 
 > ### ⚠️ Die Regel, die aus einem Fehler vom 17.09.2026 stammt
 >
-> An diesem Tag wurde gemeldet, zwei Quellen zur Datendokumentation (Gebru „Datasheets for Datasets"; „Data Statements") seien **nicht** in unseren Beständen. Geprüft worden waren Register und Intake. **Beide standen längst im Quellenverzeichnis von KIB Tag 15**, eine dritte (Data Cards) war seit Monaten in einer Praxisaufgabe in KIM Tag 7 im Einsatz — **ohne je im Register zu stehen**.
+> An diesem Tag wurde gemeldet, zwei Quellen zur Datendokumentation (Gebru „Datasheets for Datasets“; „Data Statements“) seien **nicht** in unseren Beständen. Geprüft worden waren Register und Intake. **Beide standen längst im Quellenverzeichnis von KIB Tag 15**, eine dritte (Data Cards) war seit Monaten in einer Praxisaufgabe in KIM Tag 7 im Einsatz — **ohne je im Register zu stehen**.
 >
 > **Daraus folgt:**
-> 1. **Das Register ist gegenüber den Hand-Outs unvollständig.** Es ist damit **keine hinreichende** Prüfinstanz für die Frage „haben wir das schon?".
+> 1. **Das Register ist gegenüber den Hand-Outs unvollständig.** Es ist damit **keine hinreichende** Prüfinstanz für die Frage „haben wir das schon?“.
 > 2. **Der Prüfumfang bei jeder Quellenfrage lautet: Register + Intake + Hand-Outs.** Nicht zwei von dreien.
-> 3. Ein **Negativbefund** („diese Quelle ist neu") darf erst ausgesprochen werden, wenn alle drei geprüft sind — sonst wird er als „geprüft" gelesen, obwohl er es nicht ist.
+> 3. Ein **Negativbefund** („diese Quelle ist neu“) darf erst ausgesprochen werden, wenn alle drei geprüft sind — sonst wird er als „geprüft“ gelesen, obwohl er es nicht ist.
 
 **Nachgelagerte Aufgabe, noch offen:** Ein systematischer Abgleich **Hand-Outs → Register**. Alle Quellen, die in einem Hand-Out-Quellenverzeichnis stehen, aber nicht im Register, sind nachzutragen. Der Umfang ist unbekannt; die drei oben waren ein Zufallsfund.
 
@@ -177,9 +177,9 @@ Tagesinhalte (Hand-Out, Gamma, Quiz) dürfen nie ohne Adaption der Perspektive u
 
 ## 4 · Tages-Review-Workflow (Pflichtschritte)
 
-Wird ein Kurstag (z.B. „KIB Tag 7") reviewed oder aktualisiert, gelten folgende vier Schritte in dieser Reihenfolge:
+Wird ein Kurstag (z.B. „KIB Tag 7“) reviewed oder aktualisiert, gelten folgende vier Schritte in dieser Reihenfolge:
 
-> **Seit 23.09.2026 als Skill hinterlegt: `kurstag-review`.** Der Workflow in diesem Abschnitt ist die inhaltliche Grundlage; der Skill ist die ausführbare Fassung mit fester Phasenfolge und Token-Disziplin. Aufruf: „Schau Dir KIM Tag 9 an" oder `/kurstag-review`. Diese Datei bleibt die Referenz für die *Regeln*, der Skill regelt den *Ablauf*. Ändert sich hier etwas Grundsätzliches, muss der Skill nachgezogen werden — er liegt nicht in diesem Repositorium, sondern im Konto und wird über `save_skill` aktualisiert.
+> **Seit 23.09.2026 als Skill hinterlegt: `kurstag-review`.** Der Workflow in diesem Abschnitt ist die inhaltliche Grundlage; der Skill ist die ausführbare Fassung mit fester Phasenfolge und Token-Disziplin. Aufruf: „Schau Dir KIM Tag 9 an“ oder `/kurstag-review`. Diese Datei bleibt die Referenz für die *Regeln*, der Skill regelt den *Ablauf*. Ändert sich hier etwas Grundsätzliches, muss der Skill nachgezogen werden — er liegt nicht in diesem Repositorium, sondern im Konto und wird über `save_skill` aktualisiert.
 
 ### Schritt 1 — Quellenrecherche (immer zuerst)
 
@@ -209,7 +209,7 @@ Das **Hand-Out ist das führende Tagesdokument** und wird auf Basis der Quellenr
 - Neue relevante Inhalte aus Intake/Wochenberichten einbauen
 - Stilregeln (Abschnitt 6) einhalten
 
-Die **Gamma-Präsentation speist sich aus dem Hand-Out** (Zusammenfassung in separatem Chat) und wird nicht parallel doppelt gepflegt. Ein eigenständiges Dozenten-„Labor" wird nicht mehr geführt.
+Die **Gamma-Präsentation speist sich aus dem Hand-Out** (Zusammenfassung in separatem Chat) und wird nicht parallel doppelt gepflegt. Ein eigenständiges Dozenten-„Labor“ wird nicht mehr geführt.
 
 #### Schritt 3a — Formatprüfung nach jedem HTML-Einbau (Pflicht)
 
@@ -239,22 +239,22 @@ Falls Quiz existiert: Aktualität der Antworten prüfen (Fristen, Zahlen, regula
 
 - **Keine Schwierigkeitsstufen.** Pro Quiz **2 × 5 Fragen**: ein Set für die Primärrolle des Kurses (KI-Manager:in bzw. KI-Beauftragte:r) und ein zweites für eine pro Kurstag festzulegende Rolle (z. B. Datenschutzbeauftragte:r, Betriebsrat, IT-Leitung, Geschäftsführer:in — je nach Thema des Tages).
 - Vor der Erstellung eines neuen Quizzes: **Zweite Rolle erfragen**, sofern nicht bereits vorgegeben.
-- Format: Multiple Choice, 4 Antwortoptionen. **1–3 richtige Antworten** je Frage, **nie vier** (ersetzt die frühere Vorgabe „eine korrekte Antwort"). **Die Verteilung hängt davon ab, was das Quiz nachbildet.** Tagesquizze (Tag 1–16, beide Kurse): rund **20 % eine · 40 % zwei · 40 % drei** richtige Antworten. Die **Prüfungssimulation an Tag 17** bildet dagegen den jeweiligen TÜV-Fragenpool nach und hat deshalb je Kurs eine eigene Verteilung — **KIB rund 5 % / 56 % / 39 %**, **KIM rund 12,5 % / 12,5 % / 75 %**. Die 20/40/40-Regel gilt dort **nicht** (Weisung des Dozenten, 09.11.2026).
-- **Tonalität wie die TÜV-Prüfungsfragen:** Jede Frage beginnt mit einer knappen, konkreten Situationsschilderung (1–3 Sätze, generisch/anonym, **kein benannter Use Case**) und schließt mit „Welche Aussage(n) … ist/sind korrekt?". Die Situation ist **in die Frage eingewoben** — kein separater, dauerhaft eingeblendeter Use-Case-Block. Beispiel: „Ein Unternehmen will Belege anhand optischer Merkmale auf Betrug prüfen; die zugehörige Projektnummer wird oft handschriftlich eingetragen, sodass die KI mit verschiedenen Schriftbildern umgehen muss. Welche Aussage(n) über bildverarbeitende KI (Computer Vision) ist/sind korrekt?"
+- Format: Multiple Choice, 4 Antwortoptionen. **1–3 richtige Antworten** je Frage, **nie vier** (ersetzt die frühere Vorgabe „eine korrekte Antwort“). **Die Verteilung hängt davon ab, was das Quiz nachbildet.** Tagesquizze (Tag 1–16, beide Kurse): rund **20 % eine · 40 % zwei · 40 % drei** richtige Antworten. Die **Prüfungssimulation an Tag 17** bildet dagegen den jeweiligen TÜV-Fragenpool nach und hat deshalb je Kurs eine eigene Verteilung — **KIB rund 5 % / 56 % / 39 %**, **KIM rund 12,5 % / 12,5 % / 75 %**. Die 20/40/40-Regel gilt dort **nicht** (Weisung des Dozenten, 09.11.2026).
+- **Tonalität wie die TÜV-Prüfungsfragen:** Jede Frage beginnt mit einer knappen, konkreten Situationsschilderung (1–3 Sätze, generisch/anonym, **kein benannter Use Case**) und schließt mit „Welche Aussage(n) … ist/sind korrekt?“. Die Situation ist **in die Frage eingewoben** — kein separater, dauerhaft eingeblendeter Use-Case-Block. Beispiel: „Ein Unternehmen will Belege anhand optischer Merkmale auf Betrug prüfen; die zugehörige Projektnummer wird oft handschriftlich eingetragen, sodass die KI mit verschiedenen Schriftbildern umgehen muss. Welche Aussage(n) über bildverarbeitende KI (Computer Vision) ist/sind korrekt?“
 
 ### 5.2 Formulierungsregeln
 
 - **Niemals identische Formulierungen** zu den tatsächlichen TÜV-Prüfungsfragen verwenden — weder in Fragestellung noch in Antwortoptionen. Eigene Wortwahl ist Pflicht.
 - **Du-Form** durchgehend (Fragestellung, Antwortoptionen, Erklärungen)
-- **Keine Optionsbuchstaben in Erklärungen:** Erklärungsfelder (`explanation`/`exp`) dürfen niemals auf „A", „B", „C" oder „D" verweisen. Der Shuffle-Mechanismus macht Buchstaben bedeutungslos. Stattdessen inhaltlich erklären, warum die richtige Antwort korrekt ist.
-- **Keine Zertifizierungsaussagen:** Nie formulieren „für die Prüfung wichtig", „für die Zertifizierung zählt" o.ä. — das erzeugt unnötigen Druck. Stattdessen inhaltliche Bedeutung betonen.
+- **Keine Optionsbuchstaben in Erklärungen:** Erklärungsfelder (`explanation`/`exp`) dürfen niemals auf „A“, „B“, „C“ oder „D“ verweisen. Der Shuffle-Mechanismus macht Buchstaben bedeutungslos. Stattdessen inhaltlich erklären, warum die richtige Antwort korrekt ist.
+- **Keine Zertifizierungsaussagen:** Nie formulieren „für die Prüfung wichtig“, „für die Zertifizierung zählt“ o.ä. — das erzeugt unnötigen Druck. Stattdessen inhaltliche Bedeutung betonen.
 - **Abkürzungen ausschreiben:** Fachbegriffe wie Schutzbedarfsfeststellung (SBF), Datenschutz-Folgenabschätzung (DSFA), Risikoprioritätszahl (RPZ) beim ersten Auftreten ausschreiben.
 - **Erklärungen gehören an eine shuffle-sichere Position.** Antwortoptionen werden bei jedem Durchlauf neu gemischt — eine Option darf deshalb nie voraussetzen, dass eine andere Option vorher gelesen wurde. Konkret: Die Auflösung einer Abkürzung, eine Legende oder eine Definition steht **im Szenario (`sc`) oder im Fragestamm (`q`)**, nicht in einer Antwortoption. Beide Felder werden nicht gemischt und erscheinen immer oberhalb der Optionen.
-  - Zulässig: Abkürzung und Auflösung stehen **innerhalb derselben Option** („Der Population Stability Index (PSI) misst …").
+  - Zulässig: Abkürzung und Auflösung stehen **innerhalb derselben Option** („Der Population Stability Index (PSI) misst …“).
   - Zulässig: Auflösung steht im Erklärungsfeld (`exp`) — dieses erscheint erst nach der Auswertung und ist daher unkritisch.
   - Unzulässig: Auflösung in Option A, Abkürzung in Option C.
-  - Bei mehreren Kürzeln aus einem System (z. B. Mendelow-Matrix) gehört eine **Legende in den Fragestamm**: „… korrekt? (HI = hohes Interesse, GI = geringes Interesse, HM = hohe Macht, GM = geringe Macht)".
-- **Jede Frage steht für sich.** Weil auch die Fragenreihenfolge gemischt wird, greift „beim ersten Auftreten erklären" nicht auf Quiz-Ebene, sondern **je Frage**. Was in Frage 3 erklärt wurde, ist in Frage 71 nicht vorausgesetzt.
+  - Bei mehreren Kürzeln aus einem System (z. B. Mendelow-Matrix) gehört eine **Legende in den Fragestamm**: „… korrekt? (HI = hohes Interesse, GI = geringes Interesse, HM = hohe Macht, GM = geringe Macht)“.
+- **Jede Frage steht für sich.** Weil auch die Fragenreihenfolge gemischt wird, greift „beim ersten Auftreten erklären“ nicht auf Quiz-Ebene, sondern **je Frage**. Was in Frage 3 erklärt wurde, ist in Frage 71 nicht vorausgesetzt.
 
 ### 5.3 Aktualitätsprüfung bei bestehenden Quizzen
 
@@ -268,7 +268,7 @@ Veraltete Antworten müssen korrigiert werden, bevor das Quiz verwendet wird.
 
 ### 5.4 Qualitätssicherung
 
-- Alle Antworten einer Überprüfung unterziehen: Ist die als „richtig" markierte Antwort tatsächlich korrekt?
+- Alle Antworten einer Überprüfung unterziehen: Ist die als „richtig“ markierte Antwort tatsächlich korrekt?
 - Distraktoren (falsche Antworten) müssen plausibel aber eindeutig falsch sein — keine Trick-Fragen
 - Antwortzahl-Verteilung prüfen: **Tagesquizze ca. 20/40/40**; **Prüfungssimulation Tag 17 nach dem jeweiligen Pool — KIB ca. 5/56/39, KIM ca. 12,5/12,5/75**; nie vier richtige
 - Nach Quiz-Erstellung: Korrektheit aller Antworten verifizieren, bevor abgeliefert wird
@@ -282,28 +282,28 @@ Diese Regeln gelten für Hand-Outs, Gamma-Präsentationen, Quizze, Übungsblätt
 | Regel | Beschreibung |
 |-------|-------------|
 | **Du-Form** | Alle Materialien verwenden die Du-Form (nicht Sie) |
-| **Abkürzungen** | Beim ersten Auftreten ausschreiben, danach Kurzform. Level 1/2/3 (nie L1/L2/L3). In Quizzen gilt „erstes Auftreten" **je Frage**, nicht je Quiz — und die Auflösung gehört ins Szenario oder den Fragestamm, nie in eine einzelne Antwortoption (siehe 5.2) |
-| **Keine Zertifizierungsdruck-Aussagen** | Nie „für die Prüfung wichtig" o.ä. — inhaltliche Bedeutung betonen |
+| **Abkürzungen** | Beim ersten Auftreten ausschreiben, danach Kurzform. Level 1/2/3 (nie L1/L2/L3). In Quizzen gilt „erstes Auftreten“ **je Frage**, nicht je Quiz — und die Auflösung gehört ins Szenario oder den Fragestamm, nie in eine einzelne Antwortoption (siehe 5.2) |
+| **Keine Zertifizierungsdruck-Aussagen** | Nie „für die Prüfung wichtig“ o.ä. — inhaltliche Bedeutung betonen |
 | **Optionsbuchstaben** | In Quiz-Erklärungen nie A/B/C/D referenzieren |
 | **Quellenbelege** | Jede inhaltliche Aussage muss belegbar sein; keine konstruierten URLs |
 | **Kursseparation** | Inhalte nie 1:1 zwischen KIB, KIM und MAT übertragen |
 | **Nur Tier-1 in offiziellen Materialien** | In Hand-Outs und Gamma ausschließlich verifizierte Quellen |
-| **Use Cases nicht im Hand-Out** | Use Cases werden im Hand-Out **nicht namentlich genannt** (keine Firmennamen, keine fallspezifischen Kennzahlen). Sie wohnen im Ordner `Use Cases/` (GitHub) und werden live durch den Dozenten eingeführt. Übungen im Hand-Out bleiben **use-case-neutral** formuliert (z. B. „das heute vorgestellte Unternehmen"). Vorteil: Hand-Out bleibt wiederverwendbar und kursübergreifend konfliktfrei. |
-| **Keine Zeitangaben in Gamma** | Uhrzeiten und Zeitblöcke (z. B. „11:50–12:35 Uhr") gehören nicht in Gamma-Folien — weder als Folientitel noch als Unterzeile. Zeitplanung liegt beim Dozenten, nicht in der Präsentation. |
-| **Tagesordnung → „Was uns heute erwartet?"** | Die Tagesstruktur-Folie heißt immer „Was uns heute erwartet?" und enthält eine einfache Bullet-Liste der Themenblöcke — keine Kernfragen-Spalte, keine Uhrzeiten. |
-| **Übungsformat: immer „Praxisübung"** | Statt „Gruppenarbeit", „Einzelarbeit" oder „Partnerarbeit" wird einheitlich „Praxisübung" verwendet. Ob Einzel- oder Gruppenformat, entscheidet der Dozent situativ — das gehört nicht in die Folie. |
+| **Use Cases nicht im Hand-Out** | Use Cases werden im Hand-Out **nicht namentlich genannt** (keine Firmennamen, keine fallspezifischen Kennzahlen). Sie wohnen im Ordner `Use Cases/` (GitHub) und werden live durch den Dozenten eingeführt. Übungen im Hand-Out bleiben **use-case-neutral** formuliert (z. B. „das heute vorgestellte Unternehmen“). Vorteil: Hand-Out bleibt wiederverwendbar und kursübergreifend konfliktfrei. |
+| **Keine Zeitangaben in Gamma** | Uhrzeiten und Zeitblöcke (z. B. „11:50–12:35 Uhr“) gehören nicht in Gamma-Folien — weder als Folientitel noch als Unterzeile. Zeitplanung liegt beim Dozenten, nicht in der Präsentation. |
+| **Tagesordnung → „Was uns heute erwartet?“** | Die Tagesstruktur-Folie heißt immer „Was uns heute erwartet?“ und enthält eine einfache Bullet-Liste der Themenblöcke — keine Kernfragen-Spalte, keine Uhrzeiten. |
+| **Übungsformat: immer „Praxisübung“** | Statt „Gruppenarbeit“, „Einzelarbeit“ oder „Partnerarbeit“ wird einheitlich „Praxisübung“ verwendet. Ob Einzel- oder Gruppenformat, entscheidet der Dozent situativ — das gehört nicht in die Folie. |
 
 ---
 
 ## 7 · Quiz-Auswertung: Quelle & Score-Definition
 
-Für alle Auswertungen von Teilnehmer-Quizzen (Tagesquizze **und** Tag-17-„Prüfungssimulation"):
+Für alle Auswertungen von Teilnehmer-Quizzen (Tagesquizze **und** Tag-17-„Prüfungssimulation“):
 
-- **Einzige verbindliche Quelle:** das Live-Google-Sheet **„KI_Beauftragter_Quiz_Auswertung"**, Reiter „KI-Beauftragter" (bzw. „KI-Manager"). Immer **als XLSX** exportieren (alle Reiter) und **frisch** ziehen — die Stände ändern sich täglich, auch morgens.
+- **Einzige verbindliche Quelle:** das Live-Google-Sheet **„KI_Beauftragter_Quiz_Auswertung“**, Reiter „KI-Beauftragter“ (bzw. „KI-Manager“). Immer **als XLSX** exportieren (alle Reiter) und **frisch** ziehen — die Stände ändern sich täglich, auch morgens.
 - **Nicht verwenden:** `Auswertung_*.pbix` (statischer, oft veralteter/unvollständiger Stand) und der CSV-Export (liefert nur einen Reiter — Tag 17 fehlt dabei). Beides nur als Notbehelf, nie als Wahrheit.
-- **Score-Definition (deckt sich mit dem Power BI des Dozenten):** **alle Antwortzeilen** werten — richtig / gesamt über sämtliche Antworten, **inklusive Wiederholungen**. Nicht „Erstantwort je Frage", nicht „Letztantwort". Bestehensgrenze **60 %**.
+- **Score-Definition (deckt sich mit dem Power BI des Dozenten):** **alle Antwortzeilen** werten — richtig / gesamt über sämtliche Antworten, **inklusive Wiederholungen**. Nicht „Erstantwort je Frage“, nicht „Letztantwort“. Bestehensgrenze **60 %**.
 - **Teilabbrüche kenntlich machen:** Wer weniger als die volle Fragenzahl (Tag 17 = 51) beantwortet hat, wird als unvollständig markiert — sein Prozentwert ist nicht mit einem vollen Durchlauf vergleichbar.
-- **Datenhygiene:** „Anonym"-Einträge und offensichtliche Doppelerfassungen (uneinheitliche Namensschreibung) vor der Auswertung prüfen bzw. ausschließen.
+- **Datenhygiene:** „Anonym“-Einträge und offensichtliche Doppelerfassungen (uneinheitliche Namensschreibung) vor der Auswertung prüfen bzw. ausschließen.
 
 ---
 

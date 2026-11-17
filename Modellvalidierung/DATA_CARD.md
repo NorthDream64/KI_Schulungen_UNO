@@ -50,7 +50,7 @@ rund **36 %**.
 | `geschlecht` | binäre Vereinfachung für das Lab | 0 = weiblich, 1 = männlich |
 | `alter_monate` | Lebensalter, kontinuierlich | 240–780 (≈ 20–65 Jahre) |
 | `fachscore` | fachliche Passung aus den Unterlagen | 0–100 |
-| `interview` | „passt ins Team", weiche Faktoren | 0–100 |
+| `interview` | „passt ins Team“, weiche Faktoren | 0–100 |
 | `erfahrung_jahre` | Berufsjahre laut Lebenslauf | 0–40 |
 | `karriere_luecke_monate` | Unterbrechung ohne Erwerbstätigkeit | 0–60 |
 | `eingestellt` | historische Entscheidung — die Zielgröße | 0 / 1 |

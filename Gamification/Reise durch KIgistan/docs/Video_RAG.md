@@ -16,7 +16,7 @@ RAG verbindet das Sprachmodell mit einer aktuellen Dokumentenbasis (z. B. dem in
 Ein Versicherungsunternehmen nutzt RAG, um Sachbearbeitenden Fragen zu Vertragsbedingungen zu beantworten. Das System durchsucht automatisch die aktuellen Tarifunterlagen und gibt eine belegbare Antwort mit Quellenangabe zurück — anstatt auf veraltete Trainingsdaten zu verweisen.
 
 **Häufiger Irrtum:**
-RAG ist kein "schlaueres" Sprachmodell — es ist ein smarter Arbeitsprozess. Das Modell selbst bleibt unverändert; was sich ändert, ist die Qualität und Aktualität der Informationen, die es zur Verfügung gestellt bekommt.
+RAG ist kein „schlaueres“ Sprachmodell — es ist ein smarter Arbeitsprozess. Das Modell selbst bleibt unverändert; was sich ändert, ist die Qualität und Aktualität der Informationen, die es zur Verfügung gestellt bekommt.
 
 ---
 

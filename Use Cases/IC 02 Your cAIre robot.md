@@ -14,9 +14,9 @@ The following proposal has been submitted to AktivInvest for consideration and f
 
 ## 2 · Product / Features
 
-- **Remind me** informs the recipient of care ("human partner") if and when medication or exercide needs to be taken. The signal is voice as well as optical and haptic.
+- **Remind me** informs the recipient of care („human partner“) if and when medication or exercide needs to be taken. The signal is voice as well as optical and haptic.
 - **Talk to me** provides the human partner with conversation, reads favourite stories or recounts experiences from the human partner's past which have been programmed into the AI
-- **Fetch me something** can fetch particular objects (glass of water, newspaper, glasses etc.) for the human partner; cAIre has an understanding of the different parameter of "fetching", for example if it is a fragile or dangerous object it is asked to fetch
+- **Fetch me something** can fetch particular objects (glass of water, newspaper, glasses etc.) for the human partner; cAIre has an understanding of the different parameter of „fetching“, for example if it is a fragile or dangerous object it is asked to fetch
 - **Help me** calls for assistance or even emergency help based on either the human partner's request or a certain pattern of their vital signs (heart beat, breathing, loss of balance etc.)
 
 All features are available in English, Spanish, Japanese, French, Italian, Portugese and Polish as a standard. Further language by request at extra cost.
@@ -41,9 +41,9 @@ All features are available in English, Spanish, Japanese, French, Italian, Portu
 | Full home-humanoid (1X NEO, US) | USD 20,000 early access | USD 499 / month |
 | Advanced healthcare humanoid (Fourier GR-3, CN) | not yet publicly priced | pilot deployments |
 
-cAIre positions in the *"advanced companion + light-assistive"* segment — targeted list price **EUR 12,000–18,000 purchase** or **EUR 350–450 / month rental**, including service contract, software updates and secure telemetry.
+cAIre positions in the *„advanced companion + light-assistive“* segment — targeted list price **EUR 12,000–18,000 purchase** or **EUR 350–450 / month rental**, including service contract, software updates and secure telemetry.
 
-**Reimbursement pathway.** In Japan, care-robot procurement by nursing homes is subsidised by MHLW/METI under the *"Priority Areas for the Use of Caregiving Technology"* (revised June 2024, operational since April 2025), with public insurance covering up to 70–90 % of eligible devices. Korea's Hyodol programme is government-funded. In Germany, no comparable dedicated subsidy exists yet; reimbursement via SGB XI ("Pflegehilfsmittel") is limited and would require case-by-case classification. This is a key market-access lever cAIre must plan for.
+**Reimbursement pathway.** In Japan, care-robot procurement by nursing homes is subsidised by MHLW/METI under the *„Priority Areas for the Use of Caregiving Technology“* (revised June 2024, operational since April 2025), with public insurance covering up to 70–90 % of eligible devices. Korea's Hyodol programme is government-funded. In Germany, no comparable dedicated subsidy exists yet; reimbursement via SGB XI („Pflegehilfsmittel“) is limited and would require case-by-case classification. This is a key market-access lever cAIre must plan for.
 
 **Existing developments — competitive baseline.** The AI-care-robot space is no longer greenfield; several serious players are already deployed at scale:
 
@@ -66,7 +66,7 @@ cAIre positions in the *"advanced companion + light-assistive"* segment — targ
 
 ## 4 · Business Parameters & Growth Potential
 
-### Demand drivers ("why now")
+### Demand drivers („why now“)
 
 Three converging forces make 2026–2030 the defining window for AI-based caregiving robots:
 
@@ -114,7 +114,7 @@ The AI care-robot space has moved from research to deployment in three regional 
 
 **Frontier trend (2026):** convergence of *agentic world models* + *soft-skin humanoid hardware* + *edge multimodal AI*. cAIre sits exactly at this intersection.
 
-**Differentiation cAIre must prove.** (1) An agentic world model that reliably handles the messy realities of a care setting — spilled liquids, unmarked objects, non-cooperative patients, cross-language interaction. (2) Measurable outcomes: falls prevented, medication-adherence uplift, staff-minutes recovered per resident-day, reduction of emergency-call latency. (3) Certifiable safety envelope — the difference between "companion" and "physically-interacting" is regulatory (see § 5).
+**Differentiation cAIre must prove.** (1) An agentic world model that reliably handles the messy realities of a care setting — spilled liquids, unmarked objects, non-cooperative patients, cross-language interaction. (2) Measurable outcomes: falls prevented, medication-adherence uplift, staff-minutes recovered per resident-day, reduction of emergency-call latency. (3) Certifiable safety envelope — the difference between „companion“ and „physically-interacting“ is regulatory (see § 5).
 
 **Defensibility open questions.** Does cAIre's differentiation hold once Hyodol enters institutional segments, or LG/Samsung launch Q9/Ballie at scale? Where does the moat sit — model, data, hardware, or clinical-outcome evidence?
 
@@ -132,7 +132,7 @@ The AI care-robot space has moved from research to deployment in three regional 
 **Regulatory & compliance**
 
 - **EU AI Act classification.** cAIre is almost certainly a **high-risk AI system** — its physical-safety component and medical-adjacent functions bring it under Annex III + MDR overlap. Compliance obligations: risk-management system, data-governance, transparency, human oversight, logging, post-market monitoring. Deadline: **August 2027** for AI systems embedded in MDR-notified-body devices.
-- **MDR / IVDR.** If "Help me" (vital-signs monitoring, emergency escalation) is a medical function, cAIre requires CE-marking as at least Class IIa medical device — notified-body conformity assessment, technical file, clinical evaluation. Path length: typically 18–30 months from readiness to CE.
+- **MDR / IVDR.** If „Help me“ (vital-signs monitoring, emergency escalation) is a medical function, cAIre requires CE-marking as at least Class IIa medical device — notified-body conformity assessment, technical file, clinical evaluation. Path length: typically 18–30 months from readiness to CE.
 - **GDPR.** Care recipient data (voice, video, biometric, medical) is Art. 9 special-category data → explicit consent, DPIA (Art. 35) mandatory, purpose-limitation. Design decision: on-device inference vs. cloud, and where the training-data pipeline lives.
 - **Product liability + Product-Liability Directive revision (2024).** The revised EU PLD explicitly extends strict liability to software and AI systems — this changes the risk-profile for cAIre from typical hardware to a software-plus-hardware liability model.
 

@@ -16,7 +16,7 @@ Das Unternehmen nutzt seine historischen Schadensdaten: Tausende von Fällen, be
 Allianz und andere Versicherer setzen Supervised-Learning-Modelle zur Betrugserkennung ein. Das Ergebnis: Hochrisiko-Fälle landen sofort bei spezialisierten Prüfern, klare Standardfälle werden automatisch freigegeben. Die manuelle Prüfzeit sinkt um bis zu 60 %, die Erkennungsrate für Betrug steigt.
 
 **Häufiger Irrtum:**
-Das Modell kann nur so gut sein wie die Trainingsdaten. Waren in der Vergangenheit bestimmte Betrugsformen unterrepräsentiert oder wurden sie systematisch übersehen, lernt das Modell diese blinden Flecken mit. "Garbage in, garbage out" gilt hier besonders — die Qualität der Beschriftungen ist entscheidend.
+Das Modell kann nur so gut sein wie die Trainingsdaten. Waren in der Vergangenheit bestimmte Betrugsformen unterrepräsentiert oder wurden sie systematisch übersehen, lernt das Modell diese blinden Flecken mit. „Garbage in, garbage out“ gilt hier besonders — die Qualität der Beschriftungen ist entscheidend.
 
 ---
 

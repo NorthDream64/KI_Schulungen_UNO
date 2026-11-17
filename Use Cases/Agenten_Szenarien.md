@@ -1,6 +1,6 @@
 # UC08 · KI-Agenten-Szenarien 
 
-> Fünf spezifizierte Agenten-Prompts als Übungsmaterial für den Praxisblock „Bau von Agenten".
+> Fünf spezifizierte Agenten-Prompts als Übungsmaterial für den Praxisblock „Bau von Agenten“.
 ---
 
 ## 1 · Agent für Freelance-Aufträge
