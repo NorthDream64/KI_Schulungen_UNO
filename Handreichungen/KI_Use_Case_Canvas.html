@@ -289,6 +289,9 @@ hr.divider{border:none;border-top:1px solid var(--rule);margin:1rem 0;}
 
 
 .rechtevermerk-block{max-width:1100px;margin:2rem auto 1rem;padding:.9rem 1.1rem 0;border-top:1px solid #d5d0c5;font-size:.72rem;line-height:1.55;color:#777;}
+.tuev-rel-btn.ja{background:#2f6b4f;color:#fff;border-color:#2f6b4f;}
+.tuev-rel-btn.nein{background:#9c3b32;color:#fff;border-color:#9c3b32;}
+.tuev-rel-btn.pruefen{background:#b8860b;color:#fff;border-color:#b8860b;}
 </style>
 </head>
 <body>
@@ -2966,7 +2969,10 @@ hr.divider{border:none;border-top:1px solid var(--rule);margin:1rem 0;}
     .tuev-rel-btn.rel-ja{border-color:var(--teal);background:#e0f2f1;color:var(--teal);}
     .tuev-rel-btn.rel-nein{border-color:#999;background:#f5f5f5;color:#999;}
     .tuev-rel-btn.rel-pruefen{border-color:var(--amber);background:#fff8e1;color:var(--amber);}
-  </style>
+  .tuev-rel-btn.ja{background:#2f6b4f;color:#fff;border-color:#2f6b4f;}
+.tuev-rel-btn.nein{background:#9c3b32;color:#fff;border-color:#9c3b32;}
+.tuev-rel-btn.pruefen{background:#b8860b;color:#fff;border-color:#b8860b;}
+</style>
 
   <!-- Score-Anzeige -->
   <div class="tuev-score-bar">
@@ -3124,7 +3130,10 @@ hr.divider{border:none;border-top:1px solid var(--rule);margin:1rem 0;}
     .hr-rscore{font-family:var(--font-mono);font-size:.68rem;color:#999;margin-top:.6rem;}
     .hr-reset{font-family:var(--font-mono);font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;padding:5px 14px;border:1px solid var(--rule);border-radius:4px;background:none;color:#999;cursor:pointer;margin-top:.8rem;}
     .hr-reset:hover{border-color:var(--teal);color:var(--teal);}
-  </style>
+  .tuev-rel-btn.ja{background:#2f6b4f;color:#fff;border-color:#2f6b4f;}
+.tuev-rel-btn.nein{background:#9c3b32;color:#fff;border-color:#9c3b32;}
+.tuev-rel-btn.pruefen{background:#b8860b;color:#fff;border-color:#b8860b;}
+</style>
 
   <!-- VORPRÜFUNG -->
   <div class="form-card">
@@ -3342,10 +3351,10 @@ hr.divider{border:none;border-top:1px solid var(--rule);margin:1rem 0;}
         }
       });
 
-      const pb=(h2==='ja');
+      const pb=(h2==='ja'), pbUnklar=(h2==='unklar');
       ['hrf-f1','hrf-f2','hrf-f3','hrf-f4'].forEach(id=>{
         const e=document.getElementById(id);
-        if(pb)e.classList.add('hr-disabled');else e.classList.remove('hr-disabled');
+        if(pb||pbUnklar)e.classList.add('hr-disabled');else e.classList.remove('hr-disabled');
       });
 
       ['hrdot-hr','hrdot-phr','hrdot-gz','hrdot-pnhr','hrdot-nhr'].forEach(id=>{
@@ -3353,9 +3362,15 @@ hr.divider{border:none;border-top:1px solid var(--rule);margin:1rem 0;}
       });
 
       if(v1==='nein'){setHR(rBox,rL,rD,rS,'','Kein KI-System','Das System erfüllt nicht die Definition eines KI-Systems nach Art. 3 Abs. 1 KI-VO. Die Verordnung ist nicht anwendbar.','—');return;}
-      if(v2==='nein'&&v3==='nein'){setHR(rBox,rL,rD,rS,'hr-lv-nhr','Kein Hochrisiko-System','Weder Anhang III noch Anhang I mit Drittkonformitätsbewertung. Art. 6 greift nicht.','');actDot('hrdot-nhr','hr-d-nhr');return;}
-      if(v3==='ja'&&v2!=='ja'){setHR(rBox,rL,rD,rS,'hr-lv-hr','Hochrisiko nach Art. 6 Abs. 1 (Anhang I)','Produkt oder Sicherheitskomponente mit Drittkonformitätsbewertung. Filter nach Art. 6 Abs. 3 gilt hier nicht.','Anhang-I-Route');actDot('hrdot-hr','hr-d-hr');return;}
-      if(pb&&v2==='ja'){setHR(rBox,rL,rD,rS,'hr-lv-hr','Eindeutig Hochrisiko — Profiling','Profiling natürlicher Personen: Art. 6 Abs. 3 Filter greift nie (Art. 6 Abs. 3 UAbs. 3).','Profiling blockiert alle Filter');actDot('hrdot-hr','hr-d-hr');return;}
+      // Pruefreihenfolge: Definition → Anhang I → Anhang III → Profiling → Filter.
+      // Anhang I geht allen Filtern vor, auch wenn zusaetzlich Anhang III vorliegt.
+      if(v1==='unklar'){setHR(rBox,rL,rD,rS,'hr-lv-gz','Definition noch offen','Ob überhaupt ein KI-System nach Art. 3 Nr. 1 KI-VO vorliegt, ist nicht geklärt. Bis zur Klärung wie ein KI-System behandeln.','Definition offen');actDot('hrdot-gz','hr-d-gz');return;}
+      if(v3==='ja'){setHR(rBox,rL,rD,rS,'hr-lv-hr','Hochrisiko nach Art. 6 Abs. 1 (Anhang I)','Produkt oder Sicherheitskomponente mit Drittkonformitätsbewertung. Der Filter nach Art. 6 Abs. 3 gilt hier nicht — auch dann nicht, wenn zusätzlich ein Anwendungsfall nach Anhang III vorliegt.','Anhang-I-Route');actDot('hrdot-hr','hr-d-hr');return;}
+      if(v3==='unklar'){setHR(rBox,rL,rD,rS,'hr-lv-gz','Anhang-I-Prüfung offen','Ob das System unter Anhang I mit Drittkonformitätsbewertung fällt, ist nicht geklärt. Diese Frage geht allen Filtern vor und ist zuerst zu beantworten.','Anhang I offen');actDot('hrdot-gz','hr-d-gz');return;}
+      if(v2==='nein'){setHR(rBox,rL,rD,rS,'hr-lv-nhr','Kein Hochrisiko-System','Weder Anhang III noch Anhang I mit Drittkonformitätsbewertung. Art. 6 greift nicht.','');actDot('hrdot-nhr','hr-d-nhr');return;}
+      if(v2==='unklar'){setHR(rBox,rL,rD,rS,'hr-lv-gz','Anhang-III-Prüfung offen','Ob ein Anwendungsfall nach Anhang III vorliegt, ist nicht geklärt. Der Filter nach Art. 6 Abs. 3 ist erst danach zu prüfen.','Anhang III offen');actDot('hrdot-gz','hr-d-gz');return;}
+      if(pb){setHR(rBox,rL,rD,rS,'hr-lv-hr','Eindeutig Hochrisiko — Profiling','Profiling natürlicher Personen: Art. 6 Abs. 3 Filter greift nie (Art. 6 Abs. 3 UAbs. 3).','Profiling blockiert alle Filter');actDot('hrdot-hr','hr-d-hr');return;}
+      if(pbUnklar){setHR(rBox,rL,rD,rS,'hr-lv-hr','Hochrisiko bis zur Klärung — Profiling unklar','Solange offen ist, ob das System ein Profiling natürlicher Personen durchführt, greift der Filter nach Art. 6 Abs. 3 nicht (Art. 6 Abs. 3 UAbs. 3). Erst klären, dann einstufen.','Profiling unklar');actDot('hrdot-hr','hr-d-hr');return;}
 
       let pts=0,unk=0,ans=0;
       ['h1','h2','h3','h4'].forEach(n=>{const v=hrVal(n);if(v==='ja'){pts+=W[n];ans++;}else if(v==='nein')ans++;else if(v==='unklar'){unk++;ans++;}});
@@ -3367,8 +3382,8 @@ hr.divider{border:none;border-top:1px solid var(--rule);margin:1rem 0;}
       if(pts<=-5){lv='hr-lv-hr';lb='Eindeutig Hochrisiko';dt='Mehrere Hochrisiko-Indikatoren treffen zu, keine Filterbedingung greift. Anforderungen aus Kapitel III KI-VO vollständig erfüllen.';actDot('hrdot-hr','hr-d-hr');}
       else if(pts<=-2){lv='hr-lv-phr';lb='Wahrscheinlich Hochrisiko';dt='Die Hochrisiko-Indikatoren überwiegen. Vertiefte Prüfung empfohlen, Dokumentation vorbereiten.';actDot('hrdot-phr','hr-d-phr');}
       else if(pts<=2){lv='hr-lv-gz';lb='Grauzone — vertiefte Prüfung nötig';dt='Hochrisiko-Indikatoren und Filter-Bedingungen halten sich die Waage'+(unk>0?' — '+unk+' Faktor(en) unklar':'')+'. Einzelfallbewertung mit juristischer Unterstützung erforderlich.';actDot('hrdot-gz','hr-d-gz');}
-      else if(pts<=5){lv='hr-lv-pnhr';lb='Filter greift wahrscheinlich';dt='Mindestens eine Filterbedingung greift. Einordnung vor Inverkehrbringen dokumentieren und in EU-Datenbank registrieren (Art. 6 Abs. 4).';actDot('hrdot-pnhr','hr-d-pnhr');}
-      else{lv='hr-lv-nhr';lb='Kein Hochrisiko — Filter greift klar';dt='Filterbedingungen greifen deutlich. Dokumentation + Registrierung in EU-Datenbank dennoch Pflicht (Art. 6 Abs. 4).';actDot('hrdot-nhr','hr-d-nhr');}
+      else if(pts<=5){lv='hr-lv-pnhr';lb='Filter greift wahrscheinlich';dt='Mindestens eine Filterbedingung greift. Der Punktwert ist eine Orientierung, nicht der Prüfmaßstab des Art. 6 Abs. 3: Dort ist einzeln festzustellen, ob eine der Bedingungen lit. a bis d vorliegt und kein erhebliches Risiko besteht. Die Einstufung dokumentiert der Anbieter; als Betreiber die Anbieterangaben prüfen. Einordnung vor Inverkehrbringen dokumentieren und in EU-Datenbank registrieren (Art. 6 Abs. 4).';actDot('hrdot-pnhr','hr-d-pnhr');}
+      else{lv='hr-lv-nhr';lb='Kein Hochrisiko — Filter greift klar';dt='Filterbedingungen greifen deutlich. Der Punktwert ist eine Orientierung, nicht der Prüfmaßstab des Art. 6 Abs. 3: Dort ist einzeln festzustellen, ob eine der Bedingungen lit. a bis d vorliegt und kein erhebliches Risiko besteht. Die Einstufung dokumentiert der Anbieter; als Betreiber die Anbieterangaben prüfen. Dokumentation + Registrierung in EU-Datenbank dennoch Pflicht (Art. 6 Abs. 4).';actDot('hrdot-nhr','hr-d-nhr');}
       setHR(rBox,rL,rD,rS,lv,lb,dt,'Score: '+(pts>0?'+':'')+pts+' · Unklar: '+unk+' · Beantwortet: '+ans+'/8');
     };
 
@@ -3411,7 +3426,10 @@ hr.divider{border:none;border-top:1px solid var(--rule);margin:1rem 0;}
     .iso-field select,.iso-field textarea{width:100%;font-size:.85rem;border:1.5px solid var(--rule);border-radius:4px;padding:.4rem .6rem;font-family:inherit;background:var(--paper);}
     .iso-field textarea{resize:vertical;}
     .iso-field select{max-width:320px;}
-  </style>
+  .tuev-rel-btn.ja{background:#2f6b4f;color:#fff;border-color:#2f6b4f;}
+.tuev-rel-btn.nein{background:#9c3b32;color:#fff;border-color:#9c3b32;}
+.tuev-rel-btn.pruefen{background:#b8860b;color:#fff;border-color:#b8860b;}
+</style>
 
   <!-- ── Rahmen (Kl. 4–5) ── -->
   <div class="iso-phase">
@@ -4140,7 +4158,7 @@ function restoreExtra(data) {
 
 function gatherFormData() {
   const data = {};
-  document.querySelectorAll('input[type=text],input[type=email],input[type=date],input[type=number],textarea').forEach(el => { if (el.id) data[el.id] = el.value; });
+  document.querySelectorAll('input[type=text],input[type=email],input[type=date],input[type=number],input[type=hidden],textarea').forEach(el => { if (el.id) data[el.id] = el.value; });
   document.querySelectorAll('select').forEach(el => { if (el.id) data['sel_' + el.id] = el.value; });
   document.querySelectorAll('input[type=radio]:checked').forEach(el => { data['radio_' + el.name] = el.value; });
   document.querySelectorAll('input[type=checkbox]').forEach(el => { data['cb_' + el.name + '_' + el.value] = el.checked; });
@@ -4295,6 +4313,10 @@ function exportMD() {
         let v = clean(nxt.value);
         if (nxt.tagName === 'SELECT' && (v === '' || v.indexOf('—') === 0)) v = '';
         if (v) secLines.push('- **' + labText + ':** ' + v.replace(/\n/g, ' · '));
+      } else if (nxt.classList && nxt.classList.contains('rec-grid')) {
+        const recEl = document.getElementById('out-recommendation');
+        const recV = recEl && recEl.value ? recEl.value : '';
+        if (recV) secLines.push('- **' + labText + ':** ' + recV);
       } else if (nxt.classList && nxt.classList.contains('radio-grid')) {
         const checked = nxt.querySelector('input[type=radio]:checked');
         if (!checked) return;
@@ -4373,6 +4395,59 @@ function importJSON(input) {
 let saveTimer;
 document.addEventListener('input', () => { clearTimeout(saveTimer); saveTimer = setTimeout(saveForm, 1500); });
 document.addEventListener('change', () => { clearTimeout(saveTimer); saveTimer = setTimeout(saveForm, 800); });
+</script>
+
+<script>
+/* Nachtrag 17.11.2026 — Befunde CR-70, CR-71, CR-73 des Gutachtens zum Canvas. */
+(function () {
+  var REL = ['rel-a2','rel-a3','rel-a4','rel-a5','rel-a6','rel-a7','rel-a8','rel-a9','rel-a10'];
+
+  /* CR-71: Die Relevanz-Schaltflaechen riefen eine Funktion auf, die es nicht gab.
+     Dadurch liessen sich neun Pflichtfelder nie befuellen. */
+  function relFelderAnlegen() {
+    REL.forEach(function (id) {
+      if (document.getElementById(id)) return;
+      var i = document.createElement('input');
+      i.type = 'hidden'; i.id = id; i.value = '';
+      document.body.appendChild(i);
+    });
+  }
+
+  window.relVote = function (btn, val) {
+    var box = btn.closest('.tuev-rel');
+    if (box) box.querySelectorAll('.tuev-rel-btn')
+      .forEach(function (b) { b.classList.remove('ja', 'nein', 'pruefen'); });
+    btn.classList.add(val);
+    var h = document.getElementById(btn.dataset.rel);
+    if (h) h.value = val;
+    if (typeof runCompletion === 'function') runCompletion();
+    if (typeof saveForm === 'function') saveForm();
+  };
+
+  /* Nach dem Laden gespeicherter Werte die Schaltflaechen wieder einfaerben. */
+  function relZustandHerstellen() {
+    REL.forEach(function (id) {
+      var h = document.getElementById(id);
+      if (!h || !h.value) return;
+      document.querySelectorAll('.tuev-rel-btn[data-rel="' + id + '"]').forEach(function (b) {
+        b.classList.remove('ja', 'nein', 'pruefen');
+        if (b.getAttribute('onclick').indexOf("'" + h.value + "'") > -1) b.classList.add(h.value);
+      });
+    });
+  }
+
+  /* CR-73: Der Hinweis versprach automatisches Speichern, aber loadForm wurde beim
+     Oeffnen nie aufgerufen — das Formular war jedes Mal leer. */
+  function start() {
+    relFelderAnlegen();
+    try { if (typeof loadForm === 'function') loadForm(); } catch (e) {}
+    relZustandHerstellen();
+    if (typeof runCompletion === 'function') { try { runCompletion(); } catch (e) {} }
+  }
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start);
+  else start();
+})();
 </script>
 </body>
 </html>
