@@ -288,12 +288,12 @@ a{color:var(--accent);}
     <div class="field">
       <label>Zeitersparnis Grobprüfung</label>
       <input type="number" id="eff_gross" value="70" min="0" max="95" step="5">
-      <div class="unit">% Reduktion (realistisch: 60–80 %)</div>
+      <div class="unit">% Reduktion — Annahme, im Pilot messen</div>
     </div>
     <div class="field">
       <label>Zeitersparnis Feinprüfung</label>
       <input type="number" id="eff_detail" value="50" min="0" max="95" step="5">
-      <div class="unit">% Reduktion (realistisch: 40–60 %)</div>
+      <div class="unit">% Reduktion — Annahme, im Pilot messen</div>
     </div>
 
     <div class="cf-divider"></div>
@@ -346,7 +346,7 @@ a{color:var(--accent);}
     </div>
     <div class="field">
       <label>Interne Personalzeit (PoC, Projektmanagement, Compliance-Setup)</label>
-      <input type="number" id="c_intern" value="0" min="0" step="1000">
+      <input type="number" id="c_intern" value="30000" min="0" step="1000">
       <div class="unit">€</div>
 <div class="unit" style="font-size:10.5px;color:var(--muted);">Stunden × Vollkostensatz — eine echte Ressource, kein Nulltarif</div>    </div>
 
@@ -364,22 +364,22 @@ a{color:var(--accent);}
     </div>
     <div class="field">
       <label>Nutzungsabhängige Modellkosten</label>
-      <input type="number" id="c_token" value="0" min="0" step="0.01">
+      <input type="number" id="c_token" value="2" min="0" step="0.01">
       <div class="unit">€/Vorgang</div>
 <div class="unit" style="font-size:10.5px;color:var(--muted);">Token- oder API-Preis je Vorgang — als Annahme mit Bandbreite prüfen</div>    </div>
     <div class="field">
       <label>Monitoring, Evaluation &amp; Qualitätssicherung</label>
-      <input type="number" id="c_monitor" value="0" min="0" step="500">
+      <input type="number" id="c_monitor" value="6000" min="0" step="500">
       <div class="unit">€/Jahr</div>
     </div>
     <div class="field">
       <label>Support, Audit &amp; Compliance</label>
-      <input type="number" id="c_support" value="0" min="0" step="500">
+      <input type="number" id="c_support" value="4000" min="0" step="500">
       <div class="unit">€/Jahr</div>
     </div>
     <div class="field">
       <label>Exit- und Wechselkosten</label>
-      <input type="number" id="c_exit" value="0" min="0" step="1000">
+      <input type="number" id="c_exit" value="10000" min="0" step="1000">
       <div class="unit">€</div>
 <div class="unit" style="font-size:10.5px;color:var(--muted);">einmalig am Ende des Betrachtungszeitraums</div>    </div>
 
@@ -387,12 +387,12 @@ a{color:var(--accent);}
     <div class="section-label">Belastbarkeit des Nutzens</div>
     <div class="field">
       <label>davon <strong>budgetwirksam</strong></label>
-      <input type="number" id="cash_share" value="100" min="0" step="5">
+      <input type="number" id="cash_share" value="50" min="0" step="5">
       <div class="unit">%</div>
-<div class="unit" style="font-size:10.5px;color:var(--muted);">Gesparte Stunden sind zunächst Kapazität. Geld wird daraus nur, soweit Stellen abgebaut, Fremdleistung ersetzt oder messbar Mehrvolumen bewältigt wird.</div>    </div>
+<div class="unit" style="font-size:10.5px;color:var(--muted);">Gesparte Stunden sind zunächst Kapazität. Geld wird daraus nur, soweit Stellen abgebaut, Fremdleistung ersetzt oder messbar Mehrvolumen bewältigt wird. <strong>Trage hier nur ein, wofür Du die Maßnahme benennen kannst</strong> — die Vorgabe 50 % ist eine Beispielannahme, kein Erfahrungswert.</div>    </div>
     <div class="field">
       <label>Dis-Benefits: Fehler- und Nacharbeitskosten</label>
-      <input type="number" id="dis_benefit" value="0" min="0" step="500">
+      <input type="number" id="dis_benefit" value="5000" min="0" step="500">
       <div class="unit">€/Jahr</div>
 <div class="unit" style="font-size:10.5px;color:var(--muted);">Was das Vorhaben an anderer Stelle kostet — Nachprüfung, Korrekturen</div>    </div>
     <div class="field">
@@ -495,6 +495,8 @@ a{color:var(--accent);}
   </div>
 </div>
 
+<p id="vs_hinweis" style="font-size:12px;color:var(--muted);margin:.4rem 0 1.1rem;"></p>
+
 <!-- ─── KPI RESULTS ───────────────────────────────────── -->
 <div class="section-label" style="margin-bottom:.8rem;">Kernergebnisse</div>
 <div class="results-grid">
@@ -506,17 +508,22 @@ a{color:var(--accent);}
   <div class="kpi-card kpi-main">
     <div class="kpi-label">ROI im ersten vollen Jahr</div>
     <div class="kpi-value green" id="kpi_roi_ho">—</div>
-    <div class="kpi-sub">Nettonutzen ÷ Investition &middot; wie im Hand-Out</div>
+    <div class="kpi-sub">Nettonutzen ÷ Investition &middot; die einzige ROI-Formel dieses Kurses</div>
   </div>
   <div class="kpi-card">
-    <div class="kpi-label">ROI nach Abschreibung</div>
-    <div class="kpi-value" id="kpi_roi1">—</div>
-    <div class="kpi-sub">Jahr 1 &middot; Ergebnissicht</div>
+    <div class="kpi-label">Gewinn je Jahr nach Abschreibung</div>
+    <div class="kpi-value" id="kpi_gewinn1">—</div>
+    <div class="kpi-sub">Jahr 1 &middot; Ergebnissicht &middot; bewusst kein zweiter ROI-Wert</div>
   </div>
   <div class="kpi-card">
     <div class="kpi-label">Kapazitätsgewinn, bewertet</div>
     <div class="kpi-value" id="kpi_kap">—</div>
     <div class="kpi-sub" id="kpi_kap_sub">—</div>
+  </div>
+  <div class="kpi-card">
+    <div class="kpi-label">Restwert am Periodenende</div>
+    <div class="kpi-value" id="kpi_restwert">—</div>
+    <div class="kpi-sub">nicht aufgebrauchter Teil der letzten Investition</div>
   </div>
   <div class="kpi-card">
     <div class="kpi-label">Kapitalwert</div>
@@ -708,8 +715,14 @@ function compute(p){
 
   // Zahlungssicht. Erstinvestition in Jahr 0, Ersatzinvestition in Jahr N, 2N … (innerhalb des Zeitraums).
   const invest_disp  = years.map(y => (y % p.capex_years === 0) ? capex_alloc : 0);
+  // CR-128: Ohne Restwert ergaben 3, 4 und 5 Jahre Nutzungsdauer denselben Kapitalwert.
+  // Die letzte Investition ist am Ende des Zeitraums meist nicht aufgebraucht.
+  const letzteInv    = years.filter(y => y % p.capex_years === 0).pop();
+  const genutzt      = years.length - letzteInv;
+  const restwert     = capex_alloc * Math.max(0, p.capex_years - genutzt) / p.capex_years;
   const cash         = years.map((y,i) => bens[i] - running_disp[i] - invest_disp[i]
-                                          - (i === years.length - 1 ? exit_alloc : 0));
+                                          - (i === years.length - 1 ? exit_alloc : 0)
+                                          + (i === years.length - 1 ? restwert : 0));
   const npv          = cash.reduce((a,c,i) => a + c / Math.pow(1 + p.zins, i), 0);
   const cumul        = [];
   years.forEach((y,i) => cumul.push((cumul[i-1]||0) + cash[i]));
@@ -733,7 +746,7 @@ function compute(p){
     bl_h_gross_mo, bl_h_detail_mo, bl_h_mo, bl_cost_mo, bl_cost_case,
     sv_h_gross_mo, sv_h_detail_mo, sv_h_total_mo, sv_value_mo, sv_fte,
     capex_total, opex_total_yr, capex_alloc, opex_alloc_yr,
-    kapazitaet_yr, budget_yr, be_anteil, roi_ho, npv, exit_alloc, token_yr,
+    kapazitaet_yr, budget_yr, be_anteil, roi_ho, npv, exit_alloc, token_yr, restwert,
     jahre_n: years.length - 1,
     capex_alloc_mo, opex_alloc_mo, ki_cost_mo,
     fs_h_gross_case, fs_h_detail_case, fs_h_mo, fs_personal_mo, fs_cost_mo, fs_cost_case, fs_delta_mo,
@@ -798,15 +811,25 @@ function calculate(){
 
   // ── Gegenüberstellung Baseline vs. Future State ──
   renderVs('vs_mo',   r.bl_cost_mo,   r.fs_cost_mo,   '€/Monat');
+  // Die Gegenueberstellung zeigt bewertete Kapazitaet. Die Kernkennzahlen rechnen auf dem
+  // budgetwirksamen Teil - ohne diesen Hinweis widersprechen sich beide Bloecke.
+  set('vs_hinweis', p.cash_share < 1
+    ? 'Die Differenz oben ist bewertete Kapazität. Budgetwirksam davon: '
+      + fmtEur(r.budget_yr / 12) + ' je Monat (' + fmt(p.cash_share * 100, 0)
+      + ' %). Die Kernkennzahlen unten rechnen mit diesem Teil.'
+    : 'Die Differenz oben ist bewertete Kapazität und wird hier voll als budgetwirksam '
+      + 'gerechnet — prüfe, ob das für Deinen Fall stimmt.');
   renderVs('vs_case', r.bl_cost_case, r.fs_cost_case, '€/Vorgang');
 
   // ── KPIs ──
   const jahre = n => n + (n === 1 ? ' Jahr' : ' Jahre');
   set('kpi_payback', isFinite(r.payback_mo) ? fmtMo(r.payback_mo) : 'nach Jahr 5');
   set('kpi_roi_ho', fmtPct(r.roi_ho[1]));
+  set('kpi_gewinn1', fmtEur(r.gewinn[1]));
   set('kpi_kap',     fmtEur(r.kapazitaet_yr));
   set('kpi_kap_sub', 'davon budgetwirksam: ' + fmtEur(r.budget_yr) + ' je Jahr');
   set('kpi_npv',     fmtEur(r.npv));
+  set('kpi_restwert', fmtEur(r.restwert));
   set('kpi_npv_sub', p.zins > 0
     ? 'bei ' + fmt(p.zins*100,1) + ' % über ' + r.jahre_n + ' Jahre'
     : 'ohne Diskontierung — Zinssatz oben eintragen');
@@ -816,8 +839,10 @@ function calculate(){
   set('kpi_afa',     fmtEur(r.afa_yr));
   set('kpi_afa_sub', 'je Jahr · CAPEX ÷ ' + jahre(p.capex_years));
   set('kpi_roi1',    fmtPct(r.roi_yr[1]));
-  const roiEl = document.getElementById('kpi_roi1');
-  if (roiEl) roiEl.className = 'kpi-value ' + (r.roi_yr[1] >= 0 ? 'green' : 'neg');
+  const roiEl = document.getElementById('kpi_roi_ho');
+  if (roiEl) roiEl.className = 'kpi-value ' + (r.roi_ho[1] >= 0 ? 'green' : 'neg');
+  const gwEl = document.getElementById('kpi_gewinn1');
+  if (gwEl) gwEl.className = 'kpi-value ' + (r.gewinn[1] >= 0 ? '' : 'neg');
 
   // ── Vergleichsbalken (je Monat) ──
   const maxVal = Math.max(r.bl_cost_mo, r.fs_cost_mo, 1);
