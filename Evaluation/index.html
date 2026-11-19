@@ -1,0 +1,1143 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Evaluation (Eval) · Prompts messen</title>
+<style>
+/* VOICE: sachliches Kursmaterial, ruhig und erklärend – im Stil des Labs Modellvalidierung
+   IDEA: ein Laufzettel, der durch vier Schritte wandert und am Ende ein Urteil trägt
+   PICTURE: die Schrittleiste mit Rücklauf-Schleife; je Schritt eine eigene Seite
+   COLOUR and TYPE: Papier, Tinte, ein Blau als Akzent; Grün/Rot nur für bestanden/nicht bestanden; Systemschrift
+   LAYOUT: eine Spalte bis 980px, Schrittleiste oben als Navigation, darunter immer nur ein Schritt */
+:root{color-scheme:light dark;
+--bg:light-dark(#f8f6f1,#121518);--card:light-dark(#ffffff,#1b1f23);--ink:light-dark(#1a1a18,#ebe8e1);
+--muted:light-dark(#6b6b60,#a3a097);--rule:light-dark(#d5d0c5,#343a40);
+--accent:light-dark(#0a4a7a,#7ab0dc);--accent-soft:light-dark(#e6eef5,#1d2b38);--on-accent:light-dark(#ffffff,#121518);
+--green:light-dark(#2a5c3f,#86c79f);--green-soft:light-dark(#e7f0ea,#1c2b22);
+--amber:light-dark(#7a4a00,#e3b45f);--amber-soft:light-dark(#f7eedd,#2e2618);
+--red:light-dark(#8a2a2a,#e39090);--red-soft:light-dark(#f6e6e6,#2f1d1d);
+--quote:light-dark(#f2f0eb,#20252a);--code:light-dark(#22262b,#0c0e10);--code-ink:#eeeae2}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+[hidden]{display:none!important}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 -apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;overflow-x:clip}
+.wrap{max-width:980px;margin:0 auto;padding:clamp(24px,4vw,48px) max(4vw,16px) 56px}
+h1{font-size:clamp(30px,4.2vw,42px);line-height:1.08;margin:0 0 6px}
+h2{font-size:clamp(23px,2.8vw,29px);line-height:1.2;margin:0 0 10px}
+h3{font-size:18px;line-height:1.3;margin:0 0 6px}
+.sec h3.sub3{margin-top:32px}
+p{margin:0 0 12px}
+.small{font-size:14px;color:var(--muted)}
+a{color:var(--accent)}
+pre,.scroll{overflow-x:auto}code{overflow-wrap:anywhere}
+
+/* Schrittleiste */
+.reiter{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 0}
+.reiter a{display:inline-flex;align-items:center;min-height:44px;padding:8px 16px;border-radius:22px;border:1.5px solid var(--rule);background:var(--card);color:var(--ink);text-decoration:none;font-weight:600;font-size:15px}
+.reiter a:hover{border-color:var(--accent)}
+.reiter a[aria-current=page]{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.stations{display:grid;grid-template-columns:1fr 22px 1fr 22px 1fr 22px 1fr 22px 1fr;margin:24px 0 0}
+.st{background:var(--card);border:1.5px solid var(--rule);border-radius:10px;padding:14px 14px 12px;text-decoration:none;color:inherit;display:block}
+.st b{display:block;font-size:17px;line-height:1.25}
+.st span{display:block;font-size:14px;color:var(--muted);margin-top:2px}
+.st i{font-style:normal;display:inline-grid;place-items:center;width:28px;height:28px;border-radius:50%;background:var(--rule);font-weight:700;font-size:14px;margin-bottom:8px}
+.st em{display:block;font-style:normal;font-size:13px;color:var(--muted);margin-top:8px}
+.st:hover{border-color:var(--accent)}
+.st.on{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+.st.on i{background:var(--accent);color:var(--on-accent)}
+.arr{display:grid;place-items:center;color:var(--muted);font-size:20px}
+.loopwrap{grid-column:5/10;position:relative;height:30px;margin-top:6px}
+.loopwrap div{position:absolute;left:12%;right:12%;top:0;height:26px;border:2px dashed var(--accent);border-top:0;border-radius:0 0 14px 14px}
+.loopwrap div::before{content:"";position:absolute;left:-8px;top:-4px;border:7px solid transparent;border-top:0;border-bottom:11px solid var(--accent)}
+.looplabel{grid-column:5/10;text-align:center;font-size:14px;color:var(--accent);margin-top:6px;font-weight:600}
+@media(max-width:720px){.stations{grid-template-columns:1fr}.arr{height:22px;transform:rotate(90deg)}.loopwrap{display:none}.looplabel{grid-column:1;text-align:left}}
+
+/* Seiten */
+.sec{margin-top:36px;padding-top:28px;border-top:2px solid var(--rule)}
+.box{background:var(--card);border:1px solid var(--rule);border-radius:10px;padding:16px 18px}
+.note{background:var(--amber-soft);border:1px solid color-mix(in srgb,var(--amber) 35%,transparent);border-radius:10px;padding:14px 18px;margin:20px 0}
+.note h3{color:var(--amber)}
+.note ul{margin:6px 0 8px;padding-left:20px}
+.verdict{background:var(--accent-soft);border-left:4px solid var(--accent);border-radius:6px;padding:12px 16px;margin:18px 0}
+.heart{border:2px solid var(--accent);border-radius:12px;padding:20px 20px 8px;margin-top:24px;background:var(--card)}
+.heart>h3{font-size:21px;color:var(--accent)}
+
+table{width:100%;border-collapse:collapse;font-size:15px;background:var(--card);border:1px solid var(--rule);border-radius:10px;overflow:hidden}
+th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--rule);vertical-align:top}
+th{font-size:13px;color:var(--muted);font-weight:600}
+tr:last-child td{border-bottom:0}
+td.num{width:44px}
+.heart table{background:var(--bg)}
+.badge{display:inline-grid;place-items:center;width:26px;height:26px;border-radius:50%;background:var(--accent);color:var(--on-accent);font-weight:700;font-size:13px;font-style:normal}
+.duo{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:14px;margin-top:18px}
+.duo ul{margin:6px 0 0;padding-left:20px}
+.duo li{margin-bottom:6px}
+.duo li b{display:block}
+ul.tipps{list-style:none;padding-left:0}
+.tipp>summary{display:list-item;list-style:none;min-height:0;color:var(--ink);font-weight:600;padding:4px 0 4px 1.1em;text-indent:-1.1em}
+.tipp>summary::-webkit-details-marker{display:none}
+.tipp>summary::before{content:"▸";color:var(--accent);display:inline-block;width:1.1em;text-indent:0}
+.tipp[open]>summary::before{content:"▾"}
+.tipp p{margin:2px 0 6px 1.1em}
+.duo li .tipp{margin:0}
+.tipp ul{margin:2px 0 8px 1.1em;padding-left:1.2em}
+.tipp ul li{margin:3px 0}
+.tipp p b{display:inline}
+/* Schritt 2: Auswertung vor/nach der Überarbeitung */
+.evalbox{margin-top:26px}
+.counters{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:14px 0 18px}
+.ctr{border:1.5px solid var(--rule);border-radius:12px;background:var(--card);padding:16px 18px;text-align:center}
+.ctr-lbl{display:block;font-weight:600;color:var(--ink)}
+.ctr-num{display:block;font-size:40px;line-height:1.15;margin:10px 0 2px;font-variant-numeric:tabular-nums}
+.ctr-sub{display:block;color:var(--muted);font-size:15px}
+.ctr .reveal{margin-top:12px}
+.ctr.gut{border-color:var(--green)} .ctr.gut .ctr-num{color:var(--green)}
+.ctr.schlecht{border-color:var(--red)} .ctr.schlecht .ctr-num{color:var(--red)}
+.entwurf.ersetzt{opacity:.55}
+.ctr-einzeln{max-width:460px;margin:16px auto 18px}
+.kritbox{margin-top:12px;background:var(--accent-soft);border-left:4px solid var(--accent);border-radius:8px;padding:12px 16px}
+.kritkopf{display:flex;align-items:center;gap:8px;margin:0 0 10px}
+.tl-wrap{max-height:440px;overflow:auto;border:1px solid var(--rule);border-radius:8px;background:var(--card)}
+table.tl{width:100%;border-collapse:collapse;font-size:14px}
+table.tl th,table.tl td{padding:6px 10px;border-bottom:1px solid var(--rule);text-align:left;vertical-align:top}
+table.tl th{position:sticky;top:0;background:var(--card);color:var(--muted);font-weight:600}
+table.tl tr.durch td{background:var(--red-soft)}
+@media (max-width:640px){.counters{grid-template-columns:1fr}}
+/* Schritt 5: Fassungen des Prompts im Vergleich */
+.vwahl{display:flex;flex-wrap:wrap;gap:10px;margin:16px 0}
+.vbtn{min-height:44px;padding:8px 16px;border-radius:22px;border:1.5px solid var(--rule);background:var(--card);color:var(--ink);font:inherit;font-weight:600;font-size:15px;cursor:pointer}
+.vbtn[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
+.verlauf{text-align:left}
+.verlauf ol{margin:10px 0 0;padding-left:22px;display:grid;gap:4px;font-variant-numeric:tabular-nums}
+.verlauf li.aktiv{font-weight:700}
+.grund{color:var(--muted)}
+
+
+#ansprechpartner .duo{margin-top:6px}
+.miss h3{display:flex;gap:8px;align-items:center}
+.miss .tag{font-size:13px;font-weight:600;border-radius:12px;padding:2px 10px}
+.miss .strict .tag{background:var(--amber-soft);color:var(--amber)}
+.miss .loose .tag{background:var(--red-soft);color:var(--red)}
+
+/* Testfall-Karten */
+.tabs{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 0}
+.tab{font:inherit;font-size:15px;min-height:44px;padding:8px 16px;border-radius:22px;border:1.5px solid var(--rule);background:var(--card);color:var(--ink);cursor:pointer}
+.tab[aria-selected=true]{border-color:var(--accent);background:var(--accent);color:var(--on-accent);font-weight:600}
+.tab:focus-visible,button:focus-visible,textarea:focus-visible,a:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.case{background:var(--card);border:1px solid var(--rule);border-radius:12px;margin-top:12px}
+.row{display:grid;grid-template-columns:190px 1fr;gap:14px;padding:14px 18px;border-bottom:1px solid var(--rule)}
+.row:last-child{border-bottom:0}
+.lbl{font-weight:600;display:flex;gap:8px;align-items:flex-start;font-size:15px}
+.lbl .badge{flex:none;width:24px;height:24px;font-size:12px}
+blockquote{margin:0;background:var(--quote);border-radius:8px;padding:10px 14px;font-style:italic}
+textarea{width:100%;min-height:84px;font:inherit;font-size:16px;padding:10px 12px;border:1.5px solid var(--rule);border-radius:8px;background:var(--bg);color:var(--ink);resize:vertical}
+.fl{display:block;font-size:14px;color:var(--muted);margin-bottom:4px}
+.reveal{font:inherit;font-size:15px;min-height:44px;margin-top:10px;padding:8px 16px;border-radius:8px;border:1.5px solid var(--accent);background:transparent;color:var(--accent);cursor:pointer;font-weight:600}
+.entwurf{font-size:15px;padding:10px 12px;border:1px dashed var(--rule);border-radius:8px;background:var(--quote)}
+.sol{margin-top:12px;background:var(--green-soft);border-radius:8px;padding:10px 14px}
+.sol b{color:var(--green)}
+.msgs{display:grid;gap:8px}.msgs .lang{display:block;font-size:13px;color:var(--muted);margin-bottom:2px}
+.crit h4{margin:0 0 4px;font-size:14px;color:var(--muted)}
+.crit ul{margin:0 0 12px;padding-left:20px}
+.crit ul:last-child{margin-bottom:0}
+@media(max-width:640px){.row{grid-template-columns:1fr;gap:6px}}
+
+.lessons{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:14px;margin-top:14px}
+details{margin-top:22px}
+summary{cursor:pointer;font-weight:600;color:var(--accent);min-height:44px;display:flex;align-items:center}
+pre{background:var(--code);color:var(--code-ink);border-radius:10px;padding:16px 18px;font:14px/1.5 "SFMono-Regular",Consolas,Menlo,monospace;margin:8px 0 0;white-space:pre-wrap;overflow-wrap:anywhere}
+code{font:14px "SFMono-Regular",Consolas,Menlo,monospace;background:var(--quote);border-radius:4px;padding:1px 5px}
+pre code{background:none;padding:0}
+/* Schritt 2: Eingaben des Bots und Prompt-Abschnitte */
+.flow{display:grid;grid-template-columns:minmax(0,1.3fr) 30px minmax(0,.8fr) 30px minmax(0,1fr);align-items:center;margin-top:12px}
+.flow .in{display:grid;gap:8px}
+.inbox,.bot,.out{border-radius:10px;padding:10px 14px;background:var(--card);border:1.5px solid var(--rule)}
+.inbox b,.bot b,.out b{display:block}
+.inbox span,.bot span,.out span{display:block;font-size:14px;color:var(--muted)}
+.inbox.p{border-color:var(--accent);background:var(--accent-soft)}
+.inbox.k{border-style:dashed}
+.bot{text-align:center;padding:18px 14px;border-color:var(--ink)}
+.out{border-color:var(--green);background:var(--green-soft)}
+.farr{display:grid;place-items:center;color:var(--muted);font-size:20px}
+@media(max-width:720px){.flow{grid-template-columns:1fr}.farr{transform:rotate(90deg);height:26px}}
+.prompt{margin-top:14px;border:1.5px solid var(--accent);border-radius:12px;overflow:hidden;background:var(--card)}
+.pblock{display:grid;grid-template-columns:220px 1fr;gap:16px;padding:14px 18px;border-bottom:1px solid var(--rule)}
+.pblock:last-child{border-bottom:0}
+.pmeta b{display:block;font-size:16px}
+.pmeta span{display:block;font-size:14px;color:var(--muted);margin-top:2px}
+.ptext{white-space:pre-wrap;font-size:15px;line-height:1.5;padding:10px 12px;border:1px solid var(--rule);border-radius:8px;background:var(--bg);align-self:start}
+.pblock.auto{background:var(--quote)}
+.fixed{font-size:15px;color:var(--muted);font-style:italic;padding:10px 12px;border:1.5px dashed var(--rule);border-radius:8px}
+@media(max-width:640px){.pblock{grid-template-columns:1fr;gap:6px}}
+ol.zeit{list-style:none;margin:8px 0 10px;padding:0;display:grid;gap:6px}
+ol.zeit li{display:grid;grid-template-columns:7.5em 1fr;gap:10px}
+ol.zeit b{color:var(--amber);white-space:nowrap}
+@media(max-width:480px){ol.zeit li{grid-template-columns:1fr;gap:0}}
+/* Schritt 3: der Lauf */
+.lauf{display:grid;grid-template-columns:minmax(0,1fr) 26px minmax(0,1fr) 26px minmax(0,1.3fr) 26px minmax(0,.9fr);margin-top:12px}
+.ls{border:1.5px solid var(--rule);border-radius:10px;padding:12px 14px;background:var(--card)}
+.ls i{font-style:normal;display:inline-grid;place-items:center;width:24px;height:24px;border-radius:50%;background:var(--rule);font-weight:700;font-size:12px;margin-bottom:6px}
+.ls b{display:block}.ls span{display:block;font-size:14px;color:var(--muted)}
+.ls.rc{border-color:var(--accent)}.ls.kb{border-color:var(--amber)}.ls.ur{border-color:var(--green)}
+@media(max-width:820px){.lauf{grid-template-columns:1fr}.lauf .farr{transform:rotate(90deg);height:24px}}
+.kistatus{border-radius:8px;padding:10px 14px;font-size:15px;background:var(--quote)}
+.kistatus.on{background:var(--green-soft)}.kistatus.off{background:var(--amber-soft)}
+.msglist{display:grid;gap:10px;margin-top:12px}
+.mitem{display:grid;grid-template-columns:1fr auto;gap:2px 10px;align-items:center}
+.mitem .lang{grid-column:1/-1;font-size:13px;color:var(--muted)}
+.del{font:inherit;font-size:20px;line-height:1;width:44px;height:44px;border-radius:8px;border:1.5px solid var(--rule);background:var(--card);color:var(--muted);cursor:pointer}
+.addmsg{margin-top:16px}
+.addrow{display:flex;gap:8px;flex-wrap:wrap}
+.addrow input{flex:1 1 260px;min-height:44px;font:inherit;font-size:16px;padding:8px 12px;border:1.5px solid var(--rule);border-radius:8px;background:var(--bg);color:var(--ink)}
+.addrow .reveal{margin-top:0}
+.runbar{display:flex;flex-wrap:wrap;align-items:center;gap:12px;margin-top:18px}
+.runbar .reveal{margin-top:0}
+.res{background:var(--card);border:1px solid var(--rule);border-radius:12px;margin-top:14px}
+.reshead{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;padding:12px 16px;border-bottom:1px solid var(--rule)}
+.reshead .lang{display:block;font-size:13px;color:var(--muted);margin-bottom:2px}
+.resrow{display:grid;grid-template-columns:150px 1fr;gap:12px;padding:10px 16px;border-bottom:1px solid var(--rule)}
+.resrow:last-child{border-bottom:0}
+@media(max-width:640px){.resrow{grid-template-columns:1fr;gap:4px}}
+.antwort{white-space:pre-wrap;color:var(--ink);font-size:15px;margin-bottom:4px}
+ul.checks{list-style:none;margin:0;padding:0;display:grid;gap:6px;color:var(--ink);font-size:15px}
+.ok{color:var(--green);font-weight:700}.no{color:var(--red);font-weight:700}
+.badge-v{flex:none;border-radius:14px;padding:4px 12px;font-size:14px;font-weight:600;white-space:nowrap}
+.badge-v.wait{background:var(--quote);color:var(--muted)}
+.badge-v.run{background:var(--accent-soft);color:var(--accent)}
+.badge-v.pass{background:var(--green-soft);color:var(--green)}
+.badge-v.fail{background:var(--red-soft);color:var(--red)}
+/* Startseite: Verbindung zur KI */
+.chain{display:grid;grid-template-columns:minmax(0,1fr) 30px minmax(0,1fr) 30px minmax(0,1fr);margin:14px 0 4px}
+.chain>div:not(.farr){border:1.5px solid var(--rule);border-radius:10px;padding:10px 14px;background:var(--card)}
+.chain b{display:block}.chain span{display:block;font-size:14px;color:var(--muted)}
+.chain .key{border-color:var(--amber);background:var(--amber-soft)}
+@media(max-width:720px){.chain{grid-template-columns:1fr}.chain .farr{transform:rotate(90deg);height:26px}}
+.auf{margin-top:28px;border:1.5px solid var(--rule);border-radius:12px;background:var(--card)}
+.auf>summary{font-size:18px;color:var(--ink);padding:10px 18px}
+.auf>summary{list-style:none}.auf>summary::-webkit-details-marker{display:none}
+.auf>summary::before{content:"▸";color:var(--accent);margin-right:10px;font-size:16px}
+.auf[open]>summary::before{content:"▾"}
+.auf[open]>summary{border-bottom:1px solid var(--rule)}
+.aufin{padding:14px 18px 16px}
+ol.need{padding-left:22px;margin:14px 0 10px}ol.need li{margin-bottom:8px}
+.pager{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;margin-top:44px}
+.pbtn{display:inline-flex;align-items:center;min-height:44px;padding:8px 18px;border-radius:8px;border:1.5px solid var(--accent);color:var(--accent);text-decoration:none;font-weight:600}
+.pbtn.next{background:var(--accent);color:var(--on-accent);margin-left:auto}
+button.pbtn{font:inherit;font-weight:600;cursor:pointer}
+.runbar .pbtn.next{margin-left:0}
+.pbtn[disabled],.reveal[disabled]{opacity:.45;cursor:not-allowed}
+.soon{color:var(--muted)}
+.src{margin-top:40px;font-size:14px;color:var(--muted)}
+.src ul{padding-left:20px;margin:6px 0 0}
+.qliste{padding-left:20px;margin:6px 0 0}
+.qliste li{margin:6px 0}
+footer{margin-top:36px;padding-top:14px;border-top:1px solid var(--rule);font-size:12.5px;line-height:1.55;color:var(--muted)}
+@media(max-width:600px){table{font-size:14px}.stack thead{display:none}.stack tr{display:grid;padding-block:10px;border-bottom:1px solid var(--rule)}.stack td{display:flow-root;border:0;padding:3px 12px;padding-inline-start:calc(8em + 12px);text-align:start}.stack td::before{content:attr(data-l);float:inline-start;width:7.5em;margin-inline-start:-8em;white-space:normal;color:var(--muted);font-size:13px}.stack td:empty{display:none}}
+</style>
+<script>new MutationObserver(()=>{for(const c of document.querySelectorAll('.stack td:not([data-l])')){let i=0,p=c;while(p=p.previousElementSibling)i+=p.colSpan;c.dataset.l=c.closest('table').rows[0].cells[i]?.textContent||''}}).observe(document,{childList:true,subtree:true})</script>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>Evaluation (Eval): Wie sich die Qualität von Prompts messen und verbessern lässt</h1>
+  <p class="lead" id="intro">Ein <b>Eval</b> besteht aus einer Reihe wiederholbarer Tests für einen konkreten Prompt: Feste Testfälle werden durchlaufen, die Antworten mit einem vorher festgelegten „guten Ergebnis“ verglichen und nach immer demselben Schema als „bestanden“ (pass) oder „nicht bestanden“ (fail) bewertet.</p>
+  <nav class="reiter" aria-label="Bereiche">
+    <a href="#uebersicht" data-reiter="uebersicht">Übersicht</a>
+    <a href="#schritt-1" data-reiter="schritt-1">1 · Testprozedur</a>
+    <a href="#schritt-1a" data-reiter="schritt-1a">2 · Erstellung Kontrollfall</a>
+    <a href="#schritt-2" data-reiter="schritt-2">3 · Prompt</a>
+    <a href="#schritt-3" data-reiter="schritt-3">4 · Eval-Lauf</a>
+    <a href="#schritt-4" data-reiter="schritt-4">5 · Ergebnis</a>
+    <a href="#technik" data-reiter="technik">Back-Up: Daten und Code</a>
+    <a href="#quellen" data-reiter="quellen">Quellen</a>
+  </nav>
+</header>
+
+<nav class="stations" aria-label="Die fünf Schritte eines Evals">
+  <a class="st" href="#schritt-1"><i>1</i><b>Testprozedur</b><span>Geschäftsregeln und wie bewertet wird</span></a>
+  <div class="arr" aria-hidden="true">→</div>
+  <a class="st" href="#schritt-1a"><i>2</i><b>Erstellung Kontrollfall</b><span>Wie sieht ein gutes Ergebnis aus?</span></a>
+  <div class="arr" aria-hidden="true">→</div>
+  <a class="st" href="#schritt-2"><i>3</i><b>Prompt</b><span>Was weiß und darf der Bot?</span></a>
+  <div class="arr" aria-hidden="true">→</div>
+  <a class="st" href="#schritt-3"><i>4</i><b>Eval-Lauf</b><span>Bot antwortet, Bewerter liest mit</span></a>
+  <div class="arr" aria-hidden="true">→</div>
+  <a class="st" href="#schritt-4"><i>5</i><b>Ergebnis</b><span>Bestanden oder nicht – und warum?</span></a>
+  <div class="loopwrap" aria-hidden="true"><div></div></div>
+  <p class="looplabel">↺ Prompt verbessern und erneut laufen lassen – die Testfälle bleiben unverändert</p>
+</nav>
+
+<!-- ============ Übersicht ============ -->
+<section class="sec" data-view="uebersicht">
+  <h2>So ist dieses Lab aufgebaut</h2>
+  <p>Jeder der fünf Schritte hat einen eigenen Reiter. Klicke oben auf einen Reiter oder auf einen der fünf Kästen – oder arbeite Dich mit „Weiter“ der Reihe nach durch. Die Reihenfolge ist kein Zufall: Erst wird festgelegt, was herauskommen soll – dann wird der Prompt geschrieben, geprüft und verbessert.</p>
+  <details class="auf" id="verbinden">
+    <summary>Wie Du die HTML-Datei mit Deiner KI verbinden kannst</summary>
+    <div class="aufin">
+      <p>Ohne Verbindung zu einer KI lässt sich der Eval-Lauf in Schritt 4 nicht starten. Für die Verbindung braucht es drei Dinge:</p>
+      <div class="chain" aria-label="Verbindung zwischen Seite und KI">
+        <div><b>Diese Seite</b><span>im Browser, auf Deinem Rechner</span></div>
+        <div class="farr" aria-hidden="true">→</div>
+        <div class="key"><b>Server mit API-Schlüssel</b><span>im Unternehmen</span></div>
+        <div class="farr" aria-hidden="true">→</div>
+        <div><b>KI-Modell</b><span>beim Anbieter</span></div>
+      </div>
+      <ol class="need">
+        <li><b>Ein Zugang zu einem KI-Modell über eine Programmierschnittstelle (API).</b> Anbieter wie Anthropic (Claude) oder OpenAI bieten das an – mit Vertrag, Abrechnung nach Nutzung und einem <b>API-Schlüssel</b>: einer Art Passwort, das jede Anfrage dem eigenen Konto zuordnet.</li>
+        <li><b>Ein kleiner Server zwischen Seite und KI.</b> Er bewahrt den API-Schlüssel auf, nimmt die Anfragen der Seite entgegen und leitet sie an die KI weiter. Der Schlüssel gehört nie in die HTML-Datei selbst: Wer die Datei hat, könnte sonst auf Kosten des Unternehmens die KI nutzen.</li>
+        <li><b>Eine Freigabe im Unternehmen.</b> IT, Informationssicherheit und Datenschutz klären, welche Daten an den KI-Anbieter gehen dürfen. Mit echten Kundendaten gilt die DSGVO – die Daten in diesem Lab sind fiktiv.</li>
+      </ol>
+      <p>Wo genau die Datei mit der KI verbunden wird, steht im Reiter „Back-Up: Daten und Code“: Die IT ersetzt dort eine einzige Funktion, alles andere bleibt unverändert.</p>
+    </div>
+  </details>
+
+  <details class="auf" id="ansprechpartner">
+    <summary>Für KI-Manager/innen: Umgang mit Prompt-Evaluation in der Praxis</summary>
+    <div class="aufin">
+      <p>Als KI-Manager/in musst Du die Bewertung nicht selbst bauen. Du musst wissen, wer welche Information hat, und die richtigen Fragen stellen. Vorweg das Wichtigste: <b>Die Regeln für die Bewertung entstehen in Eurem Unternehmen.</b> Der Modellanbieter liefert das Modell und Werkzeuge, ein Rechenzentrum den Betrieb. Eure Geschäftsregeln, Testfälle und Kriterien liefert keiner von beiden – die legt Ihr selbst fest.</p>
+
+      <div class="duo">
+        <div class="box">
+          <h3>Code-based grader (Regel-Check)</h3>
+          <p style="margin:0">Du lieferst die festen Regeln in Klartext: „Muss enthalten …“, „Darf nicht enthalten …“, „Feld = Wert“. Die IT übersetzt sie in Programmcode. Mit dem Fachbereich prüfst Du, ob ein Check zu streng oder zu locker ist.</p>
+        </div>
+        <div class="box">
+          <h3>Model-based grader (KI-Bewerter)</h3>
+          <p style="margin:0">Die Ja/Nein-Fragen sind normale Sprache. Du formulierst sie mit dem Fachbereich und gibst sie frei; die IT baut sie nur ein. Ob der Bewerter richtig liegt, zeigen Stichproben durch Fachleute.</p>
+        </div>
+      </div>
+
+      <h3 class="sub3">Wer hält welche Information?</h3>
+      <table class="stack">
+        <thead><tr><th>Information</th><th>Wer hält sie</th><th>Betrifft</th></tr></thead>
+        <tbody>
+          <tr><td>Geschäftsregeln und das „gute Ergebnis“</td><td>Fachbereich (z. B. Leitung Kundenservice)</td><td>beide Bewerter</td></tr>
+          <tr><td>Feste Regeln in Klartext</td><td>Fachbereich; die Umsetzung in Programmcode macht die eigene IT</td><td>code-based grader</td></tr>
+          <tr><td>Ja/Nein-Fragen an den Bewerter</td><td>Fachbereich zusammen mit Dir</td><td>model-based grader</td></tr>
+          <tr><td>Welches Modell antwortet, welches bewertet</td><td>eigene IT</td><td>beide Bewerter</td></tr>
+          <tr><td>Termine, zu denen ältere Modelle abgeschaltet werden</td><td>Modellanbieter – bei manchen Cloud-Plattformen deren Betreiber</td><td>beide Bewerter</td></tr>
+          <tr><td>Wo und von wem die Anfragen verarbeitet werden</td><td>Modellanbieter oder Cloud-/Rechenzentrumsanbieter, je nach Bezugsweg; den Vertrag führen IT und Einkauf</td><td>Datenschutz</td></tr>
+          <tr><td>Protokolle der Läufe (Antworten und Urteile)</td><td>eigene IT</td><td>beide Bewerter</td></tr>
+          <tr><td>Ob echte Kundenanfragen als Testfälle dienen dürfen</td><td>Datenschutz</td><td>Testfälle</td></tr>
+          <tr><td>Stichproben: Liegt der Bewerter richtig?</td><td><b>Rolle, die Ihr vergeben müsst</b></td><td>model-based grader</td></tr>
+          <tr><td>Freigabe: Ist das Ergebnis gut genug?</td><td><b>Rolle, die Ihr vergeben müsst</b></td><td>beide Bewerter</td></tr>
+        </tbody>
+      </table>
+
+      <h3 class="sub3">Wen Du was fragst</h3>
+      <ul class="tipps">
+        <li><details class="tipp"><summary>Fachbereich</summary>
+          <p>Hält die Geschäftsregeln und weiß, wie eine gute Antwort aussieht. Ohne den Fachbereich gibt es kein Eval. Frag zum Beispiel:</p>
+          <ul>
+            <li>„Was muss in einer richtigen Antwort immer stehen – und was darf nie drinstehen?“ (daraus werden die festen Regeln)</li>
+            <li>„Woran erkennt eine erfahrene Kollegin, dass eine Antwort gut ist?“ (daraus werden die Fragen an den Bewerter)</li>
+            <li>„Welche Regeln haben sich zuletzt geändert – oder ändern sich bald?“ (etwa ein neuer Feiertag, eine neue Rabattregel oder landesspezifische Lieferbedingungen)</li>
+            <li>„Wer gibt das gute Ergebnis verbindlich frei?“</li>
+          </ul></details></li>
+        <li><details class="tipp"><summary>Eigene IT</summary>
+          <p>Hält den Zugang zum Modell, das Werkzeug, mit dem die Evals laufen, und die Protokolle. Sie übersetzt die festen Regeln in Programmcode. Frag zum Beispiel:</p>
+          <ul>
+            <li>„Wo liegen unsere Testfälle und Kriterien – und wer darf sie ändern?“</li>
+            <li>„Kann ich die Ergebnisse und die vollständigen Antworten lesen, ohne Code anzufassen?“</li>
+            <li>„Welches Modell antwortet, welches bewertet – und wer entscheidet über einen Wechsel?“</li>
+            <li>„Was kostet ein Eval-Lauf?“</li>
+          </ul></details></li>
+        <li><details class="tipp"><summary>Datenschutz und Informationssicherheit</summary>
+          <p>Entscheiden, welche Daten in Testfälle und an Anbieter gehen dürfen. Frag zum Beispiel:</p>
+          <ul>
+            <li>„Dürfen wir echte Kundenanfragen als Testfälle verwenden – und wie werden sie anonymisiert?“</li>
+            <li>„Wie lange dürfen wir die Protokolle der Läufe aufbewahren?“</li>
+            <li>„Dürfen diese Daten an den Modellanbieter oder die Cloud-Plattform gehen – auch wenn sie außerhalb der EU verarbeitet werden?“</li>
+          </ul></details></li>
+        <li><details class="tipp"><summary>Modellanbieter (z. B. Anthropic, OpenAI, Mistral AI)</summary>
+          <p>Liefert das Modell, Dokumentation und Werkzeuge und kündigt in der Regel an, wann ältere Modelle abgeschaltet werden. Eure Geschäftsregeln, Testfälle und Kriterien liefert er nicht. Den Kontakt halten meist IT und Einkauf. Bei offenen Modellen (open weights, etwa von DeepSeek oder Alibabas Qwen), die Ihr selbst betreibt, schaltet niemand etwas ab und es gibt keinen Vertrag mit dem Anbieter – Pflege, Updates und Sicherheit liegen dann bei Eurer IT. Für Dich heißt das:</p>
+          <ul>
+            <li>Abschalttermine im Blick behalten (lassen) und das Eval vor jedem Modellwechsel laufen lassen.</li>
+            <li>Nutzt Ihr Werkzeuge des Anbieters, etwa die Bewertungsfunktion in seiner Konsole, liegen die Testfälle auf seiner Plattform – eine Frage für den Datenschutz.</li>
+          </ul></details></li>
+        <li><details class="tipp"><summary>Rechenzentrums- oder Cloud-Anbieter (z. B. AWS, Google Cloud, Microsoft)</summary>
+          <p>Nur im Spiel, wenn Ihr das Modell über eine Cloud-Plattform nutzt statt direkt beim Modellanbieter. Dann bestimmt dieser Weg, wo und von wem die Anfragen verarbeitet werden, und es können eigene Abschalttermine gelten. Eure Bewertungsregeln liefert auch er nicht. Frag über die IT:</p>
+          <ul>
+            <li>„Nutzen wir das Modell direkt beim Anbieter oder über eine Cloud-Plattform?“</li>
+            <li>„In welcher Region und von wem werden die Anfragen verarbeitet?“</li>
+            <li>„Welcher Abschalttermin gilt für unser Modell auf diesem Weg?“</li>
+          </ul></details></li>
+        <li><details class="tipp"><summary>Rollen, die Ihr vergeben müsst</summary>
+          <p>Für diese Aufgaben gibt es keine selbstverständliche Zuständigkeit. Ordnet sie ausdrücklich einer Person zu – sonst bleiben sie liegen.</p>
+          <ul>
+            <li><b>Verantwortung für Testfälle und Kriterien:</b> pflegt und dokumentiert sie und führt jede Änderung über ein Change-Request-Management (wer ändert was, wann und warum) – am besten im Fachbereich.</li>
+            <li><b>Stichproben:</b> Fachleute lesen regelmäßig Antworten und Urteile des model-based grader gegen.</li>
+            <li><b>Freigabe:</b> entscheidet, ob das Ergebnis reicht – vor dem Start und nach jeder Änderung.</li>
+          </ul></details></li>
+      </ul>
+
+      <p><b>Wann Du ein Eval anstoßen solltest:</b> vor dem Start, nach jeder Änderung am Prompt, wenn sich eine Geschäftsregel ändert, und vor jedem Modellwechsel.</p>
+      <p class="small" style="margin:0">Tipp für jedes Gespräch: Bring ein Beispiel mit – eine durchgefallene Antwort und die Begründung des Bewerters. Das macht die Frage für alle greifbar.</p>
+    </div>
+  </details>
+
+  <div class="pager"><a class="pbtn next" href="#schritt-1">Los geht’s: Schritt 1 →</a></div>
+</section>
+
+<!-- ============ Schritt 1 ============ -->
+<section class="sec" data-view="schritt-1" hidden>
+  <p>Als Erstes legen wir fest, woran wir <strong>eine gute Antwort</strong> messen. Dafür brauchen wir Testfälle: typische Kundenanfragen mit einem <b>vorher</b> festgelegten „guten“ Ergebnis – sozusagen einem „Goldstandard“ –, das in seiner Qualität der Antwort einer Expertin entspricht. Wir beginnen mit einem Kontrollfall: einem Testfall, den der Bot immer bestehen muss. Oft muss auch er erst gemeinsam mit dem Fachbereich entwickelt werden. Erst wenn diese Messlatte steht, lohnt es sich, den Prompt zu verbessern.</p>
+
+  <div class="note">
+    <h3>Die gültigen Geschäftsregeln, gegen die getestet wird</h3>
+    <ul>
+      <li>Auktionen finden werktags um 12:00 und 19:00 Uhr statt – im Winter MEZ (UTC+1), im Sommer MESZ (UTC+2).</li>
+      <li>An Wochenenden und an gesetzlichen Feiertagen des Landes Berlin finden keine Auktionen statt.</li>
+      <li>Die Standardprovision beträgt 18 % des Zuschlags.</li>
+      <li>Ältere Rahmenverträge können abweichende Sätze enthalten.</li>
+      <li>Ab einem geschätzten Wert von 10.000 € prüft der Ankauf die Herkunft, bevor ein Stück angenommen wird.</li>
+      <li>Der Bot antwortet auf Deutsch (default) oder auf Englisch. Bei einer englischen Antwort übernimmt er die dort üblichen Uhrzeitangaben.</li>
+    </ul>
+  </div>
+
+  <div class="heart">
+    <h3>Wie bewertet wird – das Herzstück des Evals</h3>
+    <p>Jedes Kriterium eines Testfalls ist eine <b>Ja/Nein-Frage an die Antwort</b> des Bots. Ob ein Eval etwas taugt, hängt davon ab, wie gut diese Fragen gestellt sind – und wer sie beantwortet. Dafür gibt es drei Arten von Bewertern:</p>
+    <table class="stack">
+      <thead><tr><th>Bewerter (engl. grader)</th><th>So funktioniert es</th><th>Stärke</th><th>Grenze</th><th>Einsatz in diesem Lab</th></tr></thead>
+      <tbody>
+        <tr><td style="white-space:nowrap"><b>Regel-Check</b><br><span class="small">engl. code-based grader</span></td><td>Ein Programm prüft eine feste Regel, etwa „Die Antwort nennt 19 Uhr“.</td><td>schnell, kostenlos, jedes Mal gleich</td><td>versteht keinen Sinn</td><td>Zahlen, Pflichtangaben, Ja/Nein-Felder</td></tr>
+        <tr><td style="white-space:nowrap"><b>KI-Bewerter</b><br><span class="small">engl. model-based grader</span></td><td>Eine zweite KI liest die Antwort, beantwortet die Ja/Nein-Fragen und begründet jedes Urteil in einem Satz. Den Prompt des Bots sieht sie nicht.</td><td>versteht Sinn und Ton</td><td>kostet Rechenzeit, kann sich selbst irren</td><td>Zusagen, Ton, Verweise</td></tr>
+        <tr><td style="white-space:nowrap"><b>Mensch</b><br><span class="small">engl. human grader</span></td><td>Eine Fachkraft liest die Antworten und urteilt selbst.</td><td>verlässlichstes Urteil</td><td>langsam und teuer</td><td>Stichproben: kontrolliert den <span style="white-space:nowrap">KI-Bewerter</span></td></tr>
+      </tbody>
+    </table>
+    <p class="verdict"><b>Faustregel: so einfach wie möglich, so klug wie nötig.</b> Was sich per Regel prüfen lässt, wird per Regel geprüft. Der KI-Bewerter kommt nur dort zum Einsatz, wo es auf Sinn und Ton ankommt. Ein Mensch kontrolliert stichprobenartig, ob der KI-Bewerter richtig liegt.</p>
+
+    <div class="duo">
+      <div class="box">
+        <h3>Worauf Ihr bei den festen Regeln achten solltet</h3>
+        <ul class="tipps">
+          <li><details class="tipp"><summary>Prüfen, ob die Pflichtangaben genannt werden</summary><p><b>Beispiel:</b> Die Antwort nennt beide Auktionszeiten.<br>Fehlt eine davon, ist der Check nicht bestanden.</p></details></li>
+          <li><details class="tipp"><summary>Prüfen, dass keine unerwünschten Wörter vorkommen</summary><p><b>Beispiel:</b> Das Wort „garantiert“ darf in der Antwort nicht stehen.<br>Taucht es auf, ist der Check nicht bestanden – auch wenn der Rest der Antwort stimmt.</p></details></li>
+          <li><details class="tipp"><summary>Prüfen, ob ein festes Feld genau den erwarteten Wert enthält</summary><p><b>Beispiel:</b> Will jemand ein Gemälde im Schätzwert von 15.000 € einliefern, erwartet der Testfall „Übergabe an Mitarbeiter: ja“.<br>Steht im Feld „nein“ oder ein Zusatz wie „ja, weil …“, ist der Check nicht bestanden. Eine Begründung gehört in die Antwort, nicht ins Feld.</p></details></li>
+          <li><details class="tipp"><summary>Maximale Länge und Format vorgeben und prüfen</summary><p><b>Beispiele:</b> „höchstens 150 Wörter“, „Datum im Format TT.MM.JJJJ“</p></details></li>
+          <li><details class="tipp"><summary>Prüfen, ob nur freigegebene Kontaktdaten genannt werden</summary><p><b>Beispiel:</b> Die Antwort darf die Servicenummer und die allgemeine E-Mail-Adresse des Ankaufs nennen, aber keine persönliche Durchwahl oder E-Mail-Adresse einer Mitarbeiterin – das wären personenbezogene Daten im Sinne der DSGVO.</p></details></li>
+        </ul>
+      </div>
+      <div class="box">
+        <h3>Worauf Ihr bei den Fragen für den <span style="white-space:nowrap">KI-Bewerter</span> achten solltet</h3>
+        <ul class="tipps">
+          <li><details class="tipp"><summary>Pro Kriterium genau eine Frage stellen</summary><p><b>Nicht:</b> „Ist die Antwort in der Sprache der Anfrage und nennt sie die Zeitzone?“<br><b>Sondern</b> zwei Fragen: „Ist die Antwort in derselben Sprache wie die Anfrage?“ und „Gibt die Antwort an, auf welche Zeitzone sich die Uhrzeiten beziehen?“<br>Bei einem Nein weiß sonst niemand, welcher Teil gefehlt hat.</p></details></li>
+          <li><details class="tipp"><summary>So fragen, dass Ja oder Nein als Antwort genügt</summary><p><b>Nicht:</b> „Wie gut erklärt die Antwort die Auktionszeiten? Vergib eine Note von 1 bis 6.“<br><b>Sondern:</b> „Sagt die Antwort, dass die Auktionen werktags stattfinden?“<br>Ein Ja oder Nein lässt sich zählen und mit dem Urteil einer Fachkraft vergleichen.</p></details></li>
+          <li><details class="tipp"><summary>Die Frage an etwas festmachen, das in der Antwort sichtbar ist</summary><p><b>Nicht:</b> „Ist die Antwort hilfreich?“<br><b>Sondern:</b> „Sagt die Antwort, dass an Wochenenden und an Feiertagen keine Auktionen stattfinden?“<br>„Hilfreich“ legt jede anders aus; ob ein Satz in der Antwort steht, kann jede nachlesen.</p></details></li>
+          <li><details class="tipp"><summary>Eine Begründung in einem Satz verlangen</summary><p><b>Beispiel:</b> „Nein – die Antwort nennt 12 und 19 Uhr, erwähnt aber keine Feiertage.“<br>Die Begründung zeigt, ob der Bewerter die Frage richtig verstanden hat, und macht die Fehlersuche schneller.</p></details></li>
+          <li><details class="tipp"><summary>Prüfen, ob zwei Fachleute gleich urteilen würden (Zwei-Kolleginnen-Test)</summary><p>Würden zwei Fachleute die Frage unabhängig voneinander gleich beantworten?<br><b>Zu unscharf:</b> „Ist die Antwort ausführlich genug?“ – die eine sagt ja, die andere nein.<br><b>Scharf genug:</b> „Sagt die Antwort, dass an Feiertagen keine Auktionen stattfinden?“ – beide kommen zum selben Urteil.<br>Die Idee stammt aus Anthropics Leitfaden „Demystifying evals for AI agents“ (siehe Reiter „Quellen“).</p></details></li>
+          <li><details class="tipp"><summary>Sagen, was gilt, wenn die Frage nicht zutrifft</summary><p><b>Beispiel:</b> „Nur bei englischen Antworten: Verwendet die Antwort die dort übliche Uhrzeitschreibweise? Bei deutschen Antworten gilt die Frage als erfüllt.“<br>Ohne diesen Zusatz könnte der Bewerter eine deutsche Antwort mit Nein bewerten – und das Eval meldet einen Fehler, den es gar nicht gibt.</p></details></li>
+        </ul>
+      </div>
+    </div>
+
+    <h3 class="sub3">Zwei Arten, wie ein Check danebenliegt</h3>
+    <div class="duo miss">
+      <div class="box strict">
+        <h3>Zu streng <span class="tag">fälschlich nicht bestanden</span></h3>
+        <p style="margin:0">Die Regel verlangt „19“, die englische Antwort schreibt „7 pm“. Das Eval meldet einen Fehler, obwohl die Antwort richtig ist.</p>
+      </div>
+      <div class="box loose">
+        <h3>Zu locker <span class="tag">fälschlich bestanden</span></h3>
+        <p style="margin:0">„Unsere Auktionen beginnen nicht um 12 und nicht um 19 Uhr“ enthält beide Zahlen und besteht. Das Eval meldet Erfolg, obwohl die Antwort falsch ist.</p>
+      </div>
+    </div>
+    <p style="margin-top:14px">Deshalb werden Checks an echten Antworten ausprobiert, bevor man ihnen vertraut. Und deshalb sichert im Kontrollfall zusätzlich der KI-Bewerter den Regel-Check ab: eine harte Regel und ein Leser, der den Sinn versteht.</p>
+    <p class="verdict"><b>Wichtig:</b> Ein Testfall gilt nur dann als bestanden, wenn <b>alle</b> seine Kriterien erfüllt sind. Das gute Ergebnis ist eine geschäftliche, keine technische Entscheidung.</p>
+  </div>
+
+
+  <div class="pager"><a class="pbtn" href="#uebersicht">← Übersicht</a><a class="pbtn next" href="#schritt-1a">Weiter: Schritt 2 →</a></div>
+</section>
+
+<!-- ============ Schritt 2: Erstellung Kontrollfall ============ -->
+<section class="sec" data-view="schritt-1a" hidden>
+  <h3 class="sub3">Der Kontrollfall am Beispiel „Auktionszeiten“</h3>
+  <p>Feld 4 zeigt die erste Fassung des „guten Ergebnisses“ für Anfragen zu den Auktionszeiten. In der Auswertung sieht damit alles gut aus. Was könnte dieser Fassung trotzdem fehlen?</p>
+  <div class="tabs" role="tablist" id="tabs"></div>
+  <div id="cases"></div>
+
+  <div class="evalbox" id="eval-k1">
+    <h3 class="sub3">Auswertung vor und nach der Überarbeitung</h3>
+    <div class="ctr ctr-einzeln" id="ctr-1">
+      <span class="ctr-lbl">Bewertet mit der ersten Fassung</span>
+      <b class="ctr-num"><span id="ctr-1-n">0</span> von 50</b>
+      <span class="ctr-sub" id="ctr-1-sub">bestanden</span>
+    </div>
+    <p>Der Kontrollfall wurde mit 50 Kundenanfragen der Form „Findet am Montag, 08.03.2027, eine Auktion statt?“ getestet. Der Bot antwortet so, wie es sein ursprünglicher Prompt nahelegt: montags bis freitags „Ja, um 12 und 19 Uhr“, am Wochenende „Nein“. Die KI-Managerin war glücklich: 100&nbsp;% Erfolgsquote. Der Kundendienst war wütend: Mögliche Bieterinnen und Bieter hatten sich angemeldet, es fand aber – anders als der Bot erklärt hatte – keine Auktion statt. Worin liegt das Problem?</p>
+    <button class="reveal" type="button" id="ctr-2-btn">Überarbeitete Fassung zeigen</button>
+    <div id="eval-neu" hidden>
+      <div class="sol" style="margin:14px 0 0"><b>Überarbeitete Fassung des guten Ergebnisses:</b> <span id="eval-neu-text"></span></div>
+      <div class="kritbox crit">
+        <p class="kritkopf"><i class="badge">5</i><b>Kriterien</b> <span class="small">– abgeleitet aus der überarbeiteten Fassung</span></p>
+        <h4>Regel-Check</h4><ul id="eval-krit-regel"></ul>
+        <h4>Fragen an den KI-Bewerter</h4><ul id="eval-krit-bewerter"></ul>
+      </div>
+    </div>
+    <div class="ctr ctr-einzeln" id="ctr-2" hidden>
+      <span class="ctr-lbl">Bewertet mit der überarbeiteten Fassung</span>
+      <b class="ctr-num"><span id="ctr-2-n">?</span> von 50</b>
+      <span class="ctr-sub" id="ctr-2-sub">bestanden</span>
+    </div>
+    <div id="eval-fehler" hidden>
+      <p><b>Auf den ersten Blick ist der Bot schlechter geworden – von 100 % auf 88 %.</b> Tatsächlich antwortet er genau wie vorher. Geändert hat sich nur die Messlatte: Die überarbeitete Fassung macht Fehler sichtbar, die es schon die ganze Zeit gab. Deshalb muss ein Kontrollfall sorgfältig gebaut werden.</p>
+      <details class="auf" id="eval-fehler-auf" style="margin-top:14px">
+        <summary id="eval-fehler-sum">Diese 6 Antworten fallen jetzt durch</summary>
+        <div class="aufin">
+          <div class="tl-wrap"><table class="tl" id="eval-fehler-tab"></table></div>
+          <p style="margin:12px 0 0">Einige Tage ohne Auktion fallen 2027 ohnehin auf ein Wochenende. Dort antwortet der Bot zufällig richtig – diese Zeilen verraten den Fehler nicht.</p>
+        </div>
+      </details>
+      <p style="margin-top:18px"><b>Und jetzt?</b> Wie kommt die Erfolgsquote zurück auf 100 % – und zwar verlässlich?</p>
+      <button class="reveal" type="button" id="kal-btn">Feiertagskalender hinzufügen</button>
+      <div class="sol" id="kal-box" hidden style="margin:14px 0 0"><b>Feiertagskalender im System:</b> Fachbereich und IT hinterlegen die gesetzlichen Feiertage des Landes Berlin als Kalender. Der Bot schlägt bei jeder Datumsfrage dort nach, statt selbst zu rechnen.</div>
+      <div class="ctr ctr-einzeln" id="ctr-3" hidden>
+        <span class="ctr-lbl">Bewertet mit der überarbeiteten Fassung – Bot mit Feiertagskalender</span>
+        <b class="ctr-num"><span id="ctr-3-n">0</span> von 50</b>
+        <span class="ctr-sub" id="ctr-3-sub">bestanden</span>
+      </div>
+      <p id="kal-fazit" hidden><b>Der Kontrollfall steht.</b> Ab jetzt muss jede Änderung am Prompt diesen Test bestehen. Fällt er durch, stimmt etwas Grundsätzliches nicht.</p>
+      <button class="reveal" type="button" id="eval-zurueck" style="margin-top:14px">Zurück zur ersten Fassung</button>
+    </div>
+    <details class="auf" id="testliste">
+      <summary>Die ganze Testliste ansehen (50 Anfragen)</summary>
+      <div class="aufin"><div class="tl-wrap"><table class="tl" id="tl"></table></div></div>
+    </details>
+    <p class="small" style="margin-top:12px">Modellrechnung, kein Lauf mit einer echten KI.</p>
+  </div>
+  <p class="small" style="margin-top:10px">Alle Namen, Zahlen und Regeln sind fiktiv und für die Übung erstellt.</p>
+
+  <div class="pager"><a class="pbtn" href="#schritt-1">← Schritt 1</a><a class="pbtn next" href="#schritt-2">Weiter: Schritt 3 →</a></div>
+</section>
+
+<!-- ============ Back-Up: Daten und Code ============ -->
+<section class="sec" data-view="technik" hidden>
+  <div class="note">
+    <h3>Zum Verstehen – nicht zum Kopieren</h3>
+    <p style="margin:0">Diese Seite zeigt, wie ein Programm die Testfälle liest und später das Eval ausführt. Sie ist zum Nachvollziehen gedacht. Daten und Code aus Kursmaterialien gehören nie ungeprüft in Systeme Deines Unternehmens – auch dann nicht, wenn sie harmlos aussehen. Wer so etwas einsetzen will, bezieht die IT und die Informationssicherheit ein.</p>
+  </div>
+
+  <h3 class="sub3">Ein Testfall als Daten: das Format JSON</h3>
+  <p>JSON ist ein Textformat, in dem Programme Daten austauschen. Jede Zeile besteht aus einem Namen (vor dem Doppelpunkt) und einem Wert (danach). Geschweifte Klammern fassen zusammengehörige Angaben zusammen, eckige Klammern stehen für Listen.</p>
+  <p>Die fünf Felder aus Schritt 2 finden sich darin so wieder:</p>
+  <table class="stack">
+    <thead><tr><th>Feld in Schritt 2</th><th>Name im JSON</th></tr></thead>
+    <tbody>
+      <tr><td><i class="badge">1</i> Kennung und Rolle</td><td><code>id</code>, <code>rolle</code></td></tr>
+      <tr><td><i class="badge">2</i> Kontext</td><td><code>kontext</code></td></tr>
+      <tr><td><i class="badge">3</i> Kundennachricht</td><td><code>nachrichten</code></td></tr>
+      <tr><td><i class="badge">4</i> Gutes Ergebnis</td><td><code>gutes_ergebnis</code></td></tr>
+      <tr><td><i class="badge">5</i> Kriterien</td><td><code>regel_checks</code>, <code>fragen_an_bewerter</code></td></tr>
+    </tbody>
+  </table>
+  <p style="margin-top:18px">So sieht der Kontrollfall für das Programm aus:</p>
+  <pre id="json"></pre>
+  <p style="margin-top:12px">Das <code>muster</code> ist ein sogenannter regulärer Ausdruck: eine Suchregel, die „19“, „7 pm“, „7pm“ und „7 p.m.“ gleichermaßen erkennt. Genau hier entscheidet sich, ob ein Regel-Check zu streng oder zu locker ist.</p>
+
+  <h3 class="sub3">Was der Bot im Eval-Lauf tatsächlich bekommt</h3>
+  <p>Für jede Kundennachricht setzt das Programm einen Text zusammen: den Prompt aus Schritt 3 mit den eingesetzten Kundendaten, darunter die Kundennachricht. Die Abschnitte sind mit Markierungen wie <code>&lt;rolle&gt;</code> getrennt, damit das Modell sie auseinanderhalten kann. Hier das Beispiel für die deutsche Nachricht des Kontrollfalls:</p>
+  <pre id="bot-eingabe"></pre>
+
+  <h3 class="sub3">Was der KI-Bewerter bekommt</h3>
+  <p>Kundennachricht, Kundendaten, gutes Ergebnis, Antwort des Bots und die Ja/Nein-Fragen – aber nicht den Prompt:</p>
+  <pre id="bewerter-eingabe"></pre>
+
+  <h3 class="sub3">Die Regel-Checks als Muster</h3>
+  <pre id="regel-muster"></pre>
+
+  <h3 class="sub3">Wo die HTML-Datei mit einer KI verbunden wird</h3>
+  <p>Die Seite fragt die KI an genau einer Stelle im Programm: über eine einzige Funktion namens <code>sample</code>. Sie wird zweimal je Kundennachricht aufgerufen – einmal für den Bot, einmal für den KI-Bewerter. Im Kurs stellt claude.ai diese Funktion bereit; in der HTML-Datei auf Deinem Rechner fehlt sie – deshalb bleibt der Lauf gesperrt.</p>
+  <p>Um die Datei an eine KI Deines Unternehmens anzuschließen, müsste die IT nur diese eine Funktion ersetzen: Sie schickt den Text an den eigenen Server, der ihn mit dem API-Schlüssel an das KI-Modell weiterreicht, und gibt die Antwort zurück. Alles andere – Testfälle, Prompt, Regel-Checks, Fragen an den KI-Bewerter, Anzeige – bleibt unverändert. Welche Voraussetzungen dafür nötig sind, steht auf der Übersicht unter „Wie Du die HTML-Datei mit Deiner KI verbinden kannst“.</p>
+
+  <div class="pager"><a class="pbtn" href="#uebersicht">← Übersicht</a><a class="pbtn next" href="#schritt-1">Zu den Schritten →</a></div>
+</section>
+
+<!-- ============ Schritt 2 ============ -->
+<section class="sec" data-view="schritt-2" hidden>
+  <p>Der <b>Prompt</b> ist die Arbeitsanweisung des Unternehmens an den Bot – vergleichbar mit Stellenbeschreibung und Handbuch für eine neue Kollegin im Kundenservice. Der Bot liest ihn vor jeder einzelnen Kundennachricht. Die Kundschaft bekommt ihn nie zu sehen.</p>
+
+  <div class="note">
+    <h3>Zunächst: Der Bot hat eine Geschichte …</h3>
+    <ol class="zeit">
+      <li><b>Anfang 2023</b>Der Service-Assistent geht mit Rolle, Wissen und Antwortformat an den Start.</li>
+      <li><b>Mitte 2023</b>Der damalige Bot sagt einem Kunden einen Sonderrabatt zu, den es nie gab. Eine Verhaltensregel wird ergänzt.</li>
+      <li><b>Mitte 2025</b>Der Ankauf ist mit Bewertungen überlastet, der Bot reicht zu viele Routinefragen weiter. Eine zweite Verhaltensregel wird ergänzt.</li>
+      <li><b>Mitte 2026</b>Umstieg auf ein neues, leistungsfähigeres KI-Modell. Der Prompt wird unverändert übernommen.</li>
+    </ol>
+    <p style="margin:0">Jede Ergänzung war damals vernünftig. Niemand hat seitdem geprüft, ob sie noch passt.</p>
+  </div>
+
+  <h3 class="sub3">Was der Bot bei jeder Anfrage bekommt</h3>
+  <div class="flow" aria-label="Eingaben des Bots">
+    <div class="in">
+      <div class="inbox p"><b>Prompt</b><span>vom Unternehmen · für alle gleich</span></div>
+      <div class="inbox k"><b>Kundendaten</b><span>vom System · je Kunde verschieden</span></div>
+      <div class="inbox n"><b>Kundennachricht</b><span>vom Kunden · wörtlich</span></div>
+    </div>
+    <div class="farr" aria-hidden="true">→</div>
+    <div class="bot"><b>Bot</b><span>liest alle drei</span></div>
+    <div class="farr" aria-hidden="true">→</div>
+    <div class="out"><b>Antwort</b><span>plus Feld „Übergabe an Mitarbeiter: ja/nein“</span></div>
+  </div>
+  <p class="small" style="margin-top:10px">Der KI-Bewerter aus Schritt 1 sieht später Kundennachricht, Kundendaten und Antwort – den Prompt sieht er nicht.</p>
+
+  <h3 class="sub3">Aufbau des Prompts: fünf Abschnitte</h3>
+  <p>So sieht der Prompt aus, mit dem der Service-Assistent heute arbeitet (Fassung v0).</p>
+  <div class="prompt">
+    <div class="pblock">
+      <div class="pmeta"><b>Rolle</b><span>Wer bin ich, für wen arbeite ich, in welchem Ton?</span></div>
+      <div class="ptext" data-teil="rolle"></div>
+    </div>
+    <div class="pblock">
+      <div class="pmeta"><b>Wissen</b><span>Die Geschäftsregeln, wie sie im Prompt hinterlegt sind.</span></div>
+      <div class="ptext" data-teil="wissen"></div>
+    </div>
+    <div class="pblock">
+      <div class="pmeta"><b>Verhaltensregeln</b><span>Was der Bot tun und lassen soll. Hier sammeln sich über die Jahre die meisten Ergänzungen.</span></div>
+      <div class="ptext" data-teil="regeln"></div>
+    </div>
+    <div class="pblock auto">
+      <div class="pmeta"><b>Kundendaten</b><span>Ein Platzhalter. Das System setzt für jeden Testfall automatisch die passenden Daten ein.</span></div>
+      <div class="fixed">[Hier stehen die Daten der jeweiligen Kundin oder des jeweiligen Kunden – zum Beispiel: Bieterin, keine Besonderheiten im Kundenkonto]</div>
+    </div>
+    <div class="pblock">
+      <div class="pmeta"><b>Antwortformat</b><span>Das feste Format macht die Antwort prüfbar: Am Feld „Übergabe an Mitarbeiter“ kann ein Regel-Check direkt ablesen, ob der Bot an einen Menschen übergibt. Der Test bestimmt, was der Bot liefern muss.</span></div>
+      <div class="ptext" data-teil="format"></div>
+    </div>
+  </div>
+
+  <p class="verdict"><b>Wichtig:</b> Der Prompt ist für alle Kundinnen und Kunden gleich – was sich je Kunde unterscheidet, kommt über die Kundendaten. Ein Prompt ist nie fertig: Jede neue Regel kann einen anderen Fall verschlechtern. Ob eine Änderung insgesamt hilft, zeigt nur das Eval.</p>
+
+  <div class="pager"><a class="pbtn" href="#schritt-1a">← Schritt 2</a><a class="pbtn next" href="#schritt-3">Weiter: Schritt 4 →</a></div>
+</section>
+
+<!-- ============ Schritt 3 ============ -->
+<section class="sec" data-view="schritt-3" hidden>
+  <p>Jetzt wird es ernst: Der Bot bekommt die Kundennachricht und antwortet. Danach prüfen zwei Bewerter seine Antwort – zuerst der Regel-Check, dann der KI-Bewerter.</p>
+
+  <h3 class="sub3">Was bei einem Lauf passiert</h3>
+  <div class="lauf">
+    <div class="ls bot"><i>1</i><b>Bot</b><span>bekommt Prompt, Kundendaten und Kundennachricht – und antwortet.</span></div>
+    <div class="farr" aria-hidden="true">→</div>
+    <div class="ls rc"><i>2</i><b>Regel-Check</b><span>Ein Programm durchsucht die Antwort nach festen Mustern. Dauert Millisekunden, kostet nichts.</span></div>
+    <div class="farr" aria-hidden="true">→</div>
+    <div class="ls kb"><i>3</i><b>KI-Bewerter</b><span>Eine zweite KI liest Kundennachricht, Kundendaten, gutes Ergebnis und Antwort – den Prompt nicht – und beantwortet die Ja/Nein-Fragen mit je einem Satz Begründung.</span></div>
+    <div class="farr" aria-hidden="true">→</div>
+    <div class="ls ur"><i>4</i><b>Urteil</b><span>Bestanden nur, wenn alle Kriterien erfüllt sind.</span></div>
+  </div>
+
+  <h3 class="sub3">Wer prüft was im Kontrollfall?</h3>
+  <table class="stack">
+    <thead><tr><th>Kriterium</th><th>Geprüft von</th><th>Warum gerade so?</th></tr></thead>
+    <tbody>
+      <tr><td>Nennt 12 Uhr und 19 Uhr (bzw. 7 pm)</td><td><b>Regel-Check</b></td><td>Zahlen lassen sich sicher und kostenlos per Muster finden – egal, wie die Frage gestellt war.</td></tr>
+      <tr><td>Antwortet in der Sprache der Anfrage</td><td><b>KI-Bewerter</b></td><td>Dafür muss man beide Texte verstehen. Ein einzelnes Wort verrät die Sprache nicht zuverlässig.</td></tr>
+      <tr><td>Sagt, dass die Auktionen werktags stattfinden</td><td><b>KI-Bewerter</b></td><td>„werktags“, „Montag bis Freitag“, „on weekdays“: zu viele richtige Formulierungen für eine feste Regel.</td></tr>
+      <tr><td>Nennt die Zeitzone</td><td><b>KI-Bewerter</b></td><td>„MEZ“, „MESZ“, „CET“, „deutscher Zeit“: dasselbe Problem – eine Regel wäre schnell zu streng.</td></tr>
+      <tr><td>Sagt, dass an Wochenenden und Feiertagen keine Auktionen stattfinden</td><td><b>KI-Bewerter</b></td><td>„Feiertage“, „Sonn- und Feiertage“, „public holidays“, „bank holidays“: viele richtige Formulierungen.</td></tr>
+      <tr><td>Englische Antworten in englischer Uhrzeitschreibweise – und richtig (7 pm statt 19:00, 12 pm statt 12 am)</td><td><b>KI-Bewerter</b></td><td>Ob das Kriterium überhaupt gilt, hängt von der Sprache der Antwort ab – das muss man verstehen, nicht zählen. Und „12 am“ enthält die „12“, ist aber Mitternacht: Der Regel-Check würde es durchlassen.</td></tr>
+    </tbody>
+  </table>
+
+  <div class="note">
+    <h3>Warum der Bot auch andere Formulierungen versteht</h3>
+    <p>Ein Sprachmodell erfasst die <b>Bedeutung</b> einer Frage, nicht nur ihre Stichwörter. „Wann kann man bei Euch bieten?“ und „When are you selling stuff?“ enthalten weder „Auktion“ noch „stattfinden“ – gemeint ist trotzdem dasselbe. Ältere FAQ-Bots haben nach Stichwörtern gesucht und wären hier gescheitert.</p>
+    <p style="margin:0">Die Kriterien prüfen die <b>Antwort</b>, nicht die Frage. Deshalb gelten sie für jede Formulierung, und ein Testfall kann beliebig viele Varianten der Kundennachricht haben. Dass der Bot eine neue Formulierung versteht, ist allerdings nicht garantiert – genau deshalb testet man sie.</p>
+  </div>
+
+  <h3 class="sub3">Der Lauf: Kontrollfall K1 „Auktionszeiten“</h3>
+  <p id="ki-status" class="kistatus">Verbindung zur KI wird geprüft …</p>
+  <div id="msglist" class="msglist"></div>
+  <div class="addmsg">
+    <label class="fl" for="eigene">Eigene Formulierung hinzufügen – auf Deutsch oder Englisch</label>
+    <div class="addrow"><input id="eigene" type="text" placeholder="z. B. Wann kann man bei Euch bieten? – oder: When are you selling stuff?"><button id="add" class="reveal" type="button">Hinzufügen</button></div>
+  </div>
+  <div class="runbar"><button id="run" class="pbtn next" type="button" disabled>Eval-Lauf starten</button><button id="stop" class="reveal" type="button" hidden>Abbrechen</button><span id="runinfo" class="small"></span></div>
+  <div id="ergebnisse"></div>
+  <div class="pager"><a class="pbtn" href="#schritt-2">← Schritt 3</a><a class="pbtn next" href="#schritt-4">Weiter: Schritt 5 →</a></div>
+</section>
+
+<!-- ============ Schritt 4 ============ -->
+<section class="sec" data-view="schritt-4" hidden>
+  <p>Jetzt wird der Prompt verbessert – eine Änderung nach der anderen. Nach jeder Änderung läuft dieselbe Testliste mit 50 Anfragen aus Schritt 2 erneut, bewertet gegen die überarbeitete Fassung des guten Ergebnisses.</p>
+  <div class="vwahl" role="group" aria-label="Fassung des Prompts">
+    <button class="vbtn" type="button" data-v="0" aria-pressed="true">Original</button>
+    <button class="vbtn" type="button" data-v="1" aria-pressed="false">+ gesetzliche Feiertage</button>
+    <button class="vbtn" type="button" data-v="2" aria-pressed="false">+ Feiertage des Landes Berlin</button>
+    <button class="vbtn" type="button" data-v="3" aria-pressed="false">+ Feiertagskalender 2027</button>
+  </div>
+  <div class="note">
+    <h3>Der Prompt in dieser Fassung (Abschnitt „Wissen“)</h3>
+    <p style="margin:0" id="v-text"></p>
+  </div>
+  <div class="runbar"><button id="v-run" class="pbtn next" type="button">Testliste auswerten</button></div>
+  <div class="counters">
+    <div class="ctr" id="v-ctr">
+      <span class="ctr-lbl" id="v-lbl">Original</span>
+      <b class="ctr-num"><span id="v-n">–</span> von 50</b>
+      <span class="ctr-sub" id="v-sub">noch nicht ausgewertet</span>
+    </div>
+    <div class="ctr verlauf">
+      <span class="ctr-lbl">Verlauf</span>
+      <ol id="v-verlauf"></ol>
+    </div>
+  </div>
+  <div id="v-fehler" hidden>
+    <p><b>Diese Antworten fallen durch:</b></p>
+    <div class="tl-wrap"><table class="tl" id="v-fehler-tab"></table></div>
+    <div class="runbar"><button id="v-gruende" class="reveal" type="button">Gründe aufdecken</button></div>
+  </div>
+  <p id="v-alles" hidden><b>Alle 50 Anfragen bestanden.</b> Der Bot muss nichts mehr ausrechnen – er liest die Daten aus der Liste ab. Genau das macht das Ergebnis vorhersagbar.</p>
+  <details class="auf">
+    <summary>Annahme dieser Modellrechnung</summary>
+    <div class="aufin"><p style="margin:0" id="v-annahme"></p></div>
+  </details>
+  <p class="small" style="margin-top:12px">Modellrechnung, kein Lauf mit einer echten KI. Ob sich ein echtes Sprachmodell bei einem beweglichen Feiertag verrechnet, zeigt nur ein echter Lauf.</p>
+  <div class="pager"><a class="pbtn" href="#schritt-3">← Schritt 4</a><a class="pbtn" href="#uebersicht">Zur Übersicht</a></div>
+</section>
+
+<!-- ============ Quellen ============ -->
+<section class="sec" data-view="quellen" hidden>
+  <h3 class="sub3">Grundlage</h3>
+  <ul class="qliste">
+      <li>Margo van Laar (Anthropic): <a href="https://www.youtube.com/watch?v=G2B0YWuJUgI">„The prompting playbook“</a>, Code with Claude London 2026 (Video)</li>
+      <li>Anthropic: <a href="https://platform.claude.com/docs/en/build-with-claude/develop-tests">„Define success criteria and build evaluations“</a> (Dokumentation)</li>
+      <li>Anthropic Engineering: <a href="https://anthropic.com/engineering/demystifying-evals-for-ai-agents">„Demystifying evals for AI agents“</a>, 09.01.2026 (Quelle der Begriffe code-based, model-based und human grader)</li>
+      <li>Zheng, L. et al.: <a href="https://arxiv.org/abs/2306.05685">„Judging LLM-as-a-Judge with MT-Bench and Chatbot Arena“</a>, NeurIPS 2023 (Fachartikel; in der Forschung heißt der model-based grader meist „LLM-as-a-Judge“)</li>
+  </ul>
+  <h3 class="sub3">Werkzeuge für Evals</h3>
+  <p>Fertige Werkzeuge nehmen die Programmierarbeit ab. Einen API-Zugang zu einem KI-Modell braucht man trotzdem.</p>
+  <ul class="qliste">
+      <li>Anthropic: <a href="https://docs.anthropic.com/en/docs/test-and-evaluate/eval-tool">„Using the Evaluation Tool“</a> (Dokumentation) – Bewertungsfunktion in der Entwicklerkonsole: Testfälle von Hand anlegen, aus einer CSV-Datei importieren oder von Claude erzeugen lassen und alle auf einmal ausführen.</li>
+      <li>promptfoo: <a href="https://promptfoo.dev">promptfoo.dev</a> – quelloffenes Werkzeug für Evals (MIT-Lizenz); Testfälle und Checks stehen in einer Konfigurationsdatei. Seit März 2026 gehört promptfoo zu OpenAI und bleibt nach eigener Angabe quelloffen.</li>
+  </ul>
+  <h3 class="sub3">Modelle und Betrieb</h3>
+  <ul class="qliste">
+      <li>Anthropic: <a href="https://platform.claude.com/docs/en/about-claude/model-deprecations">„Model deprecations“</a> (Abschalttermine älterer Modelle; Cloud-Plattformen setzen eigene Termine)</li>
+      <li>Anthropic: <a href="https://claude.com/regional-compliance">„Deploy Claude confidently, wherever you are“</a> (Wahl der Region über Cloud-Plattformen)</li>
+  </ul>
+  <div class="pager"><a class="pbtn" href="#uebersicht">← Zur Übersicht</a></div>
+</section>
+
+<footer>Ulrich Nord · Eval-Lab · Material für den Kurs „KI-Manager/in“<br>&copy; 2026 Ulrich Nord &middot; Alle Rechte vorbehalten. Teilnehmerinnen und Teilnehmer dürfen dieses Material für die eigene berufliche Nutzung sowie innerhalb ihres Unternehmens verwenden, speichern, ausdrucken und weitergeben. Veröffentlichung und Verwendung in eigenen Schulungs- oder Beratungsangeboten bedürfen der schriftlichen Zustimmung.</footer>
+</div>
+
+<script>
+{
+const FAELLE = [
+  { id:"K1", rolle:"Kontrollfall", titel:"Auktionszeiten",
+    kontext:"Bieterin oder Bieter, keine Besonderheiten im Kundenkonto",
+    nachrichten:[
+      { sprache:"Deutsch",  text:"Hallo, wann finden Eure Auktionen eigentlich statt?" },
+      { sprache:"Englisch", text:"Hi, what time do your auctions take place?" }
+    ],
+    entwurf:"Nennt die Auktionszeiten – werktags um 12 und 19 Uhr MEZ (im Sommer MESZ) – und antwortet in der Sprache der Anfrage, also auf Deutsch oder auf Englisch; bei englischen Antworten in der dort üblichen Schreibweise (12 pm bzw. noon und 7 pm).",
+    gut:"Nennt die Auktionszeiten – werktags um 12 und 19 Uhr MEZ (im Sommer MESZ) – und sagt dazu, dass an Wochenenden und an gesetzlichen Feiertagen in Berlin keine Auktionen stattfinden. Antwortet in der Sprache der Anfrage, also auf Deutsch oder auf Englisch; bei englischen Antworten in der dort üblichen Schreibweise (12 pm bzw. noon und 7 pm). Zum Beispiel: ‚Unsere Auktionen finden werktags um 12 und 19 Uhr MEZ statt (im Sommer MESZ). An Wochenenden und an Berliner Feiertagen finden keine Auktionen statt.‘ bzw. ‚Our auctions take place on weekdays at 12 noon and 7 pm CET (CEST in summer). There are no auctions at weekends or on public holidays in Berlin.‘",
+    regel:["Die Antwort enthält „12“ sowie „19“ oder „7 pm“ – in allen üblichen Schreibweisen."],
+    checks:[ { text:"nennt 12 Uhr", muster:/\b12\b/ },
+             { text:"nennt 19 Uhr bzw. 7 pm", muster:/\b19\b|\b7([:.]00)?\s?(pm|p\.m\.)/i } ],
+    bewerter:["Ist die Antwort in derselben Sprache wie die Anfrage?","Sagt die Antwort, dass die Auktionen werktags stattfinden?","Sagt die Antwort, dass an Wochenenden und an Feiertagen keine Auktionen stattfinden?","Gibt die Antwort an, auf welche Zeitzone sich die Uhrzeiten beziehen?","Nur bei englischen Antworten: Verwendet die Antwort die dort übliche Uhrzeitschreibweise und nennt sie die Zeiten richtig – 12 pm bzw. noon und 7 pm (12 am wäre Mitternacht)? Bei deutschen Antworten gilt die Frage als erfüllt."] }
+];
+
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const store = {
+  get(k){ try { return localStorage.getItem(k) || ""; } catch(e){ return ""; } },
+  set(k,v){ try { localStorage.setItem(k,v); } catch(e){} }
+};
+const liste = a => a.map(x => `<li>${esc(x)}</li>`).join("");
+
+/* Seitenwechsel: immer nur ein Schritt sichtbar */
+const VIEWS = ["uebersicht","schritt-1","schritt-1a","schritt-2","schritt-3","schritt-4","technik","quellen"];
+function zeige(){
+  let v = location.hash.slice(1);
+  if (!VIEWS.includes(v)) v = "uebersicht";
+  for (const s of document.querySelectorAll("[data-view]")) s.hidden = s.dataset.view !== v;
+  for (const a of document.querySelectorAll(".st")) {
+    const on = a.getAttribute("href") === "#" + v;
+    a.classList.toggle("on", on);
+    if (on) a.setAttribute("aria-current","step"); else a.removeAttribute("aria-current");
+  }
+  const reiter = v;
+  for (const a of document.querySelectorAll(".reiter a")) {
+    if (a.dataset.reiter === reiter) a.setAttribute("aria-current","page"); else a.removeAttribute("aria-current");
+  }
+  document.getElementById("intro").hidden = v !== "uebersicht";
+  document.querySelector(".stations").hidden = v !== "uebersicht";   /* Schrittleiste mit Schleife nur auf der Übersicht */
+  window.scrollTo(0,0);
+}
+addEventListener("hashchange", zeige);
+
+/* Schritt 1: Testfall-Karten (die Reiterleiste erscheint erst ab zwei Fällen) */
+document.getElementById("tabs").hidden = FAELLE.length < 2;
+document.getElementById("tabs").innerHTML = FAELLE.map((f,i) =>
+  `<button class="tab" role="tab" id="tab-${f.id}" aria-controls="fall-${f.id}" aria-selected="${i===0}">${esc(f.id)} · ${esc(f.titel)}</button>`).join("");
+
+document.getElementById("cases").innerHTML = FAELLE.map((f,i) => `
+<div class="case" role="tabpanel" id="fall-${f.id}" aria-labelledby="tab-${f.id}" ${i===0?"":"hidden"}>
+  <div class="row"><div class="lbl"><i class="badge">1</i>Kennung und Rolle</div><div><b>${esc(f.id)}</b> · ${esc(f.rolle)}</div></div>
+  <div class="row"><div class="lbl"><i class="badge">2</i>Kontext</div><div>${esc(f.kontext)}</div></div>
+  <div class="row"><div class="lbl"><i class="badge">3</i>Kundennachricht</div><div class="msgs">${f.nachrichten.map(n => `<div><span class="lang">${esc(n.sprache)}</span><blockquote>„${esc(n.text)}“</blockquote></div>`).join("")}</div></div>
+  <div class="row"><div class="lbl"><i class="badge">4</i>Gutes Ergebnis</div><div>
+    <div class="entwurf" id="entwurf-${f.id}">${esc(f.entwurf)}</div>
+  </div></div>
+</div>`).join("");
+
+for (const t of document.querySelectorAll(".tab")) {
+  t.addEventListener("click", () => {
+    for (const x of document.querySelectorAll(".tab")) x.setAttribute("aria-selected", x === t);
+    for (const p of document.querySelectorAll(".case")) p.hidden = p.id !== t.getAttribute("aria-controls");
+  });
+}
+for (const ta of document.querySelectorAll("textarea[data-key]")) {
+  ta.value = store.get(ta.dataset.key);
+  ta.addEventListener("input", () => store.set(ta.dataset.key, ta.value));
+}
+
+/* Schritt 2: Modellrechnung zum Kontrollfall.
+   Testliste: alle zehn gesetzlichen Feiertage Berlins 2027 plus 40 Tage im Abstand von neun Tagen ab 4. Januar 2027.
+   Bot (heutiger Prompt): montags bis freitags „Ja“, am Wochenende „Nein“ – Feiertage kennt er nicht.
+   Erste Fassung: werktags (Mo–Fr) ja. Überarbeitete Fassung: werktags ja, außer an Berliner Feiertagen. */
+const FT_BERLIN_2027 = {"2027-01-01": "Neujahr", "2027-03-08": "Internationaler Frauentag", "2027-03-26": "Karfreitag", "2027-03-29": "Ostermontag", "2027-05-01": "Tag der Arbeit", "2027-05-06": "Christi Himmelfahrt", "2027-05-17": "Pfingstmontag", "2027-10-03": "Tag der Deutschen Einheit", "2027-12-25": "1. Weihnachtsfeiertag", "2027-12-26": "2. Weihnachtsfeiertag"};
+const TL_DATEN = ["2027-01-01", "2027-01-04", "2027-01-13", "2027-01-22", "2027-01-31", "2027-02-09", "2027-02-18", "2027-02-27", "2027-03-08", "2027-03-09", "2027-03-17", "2027-03-26", "2027-03-27", "2027-03-29", "2027-04-04", "2027-04-13", "2027-04-22", "2027-05-01", "2027-05-02", "2027-05-06", "2027-05-10", "2027-05-17", "2027-05-19", "2027-05-28", "2027-06-06", "2027-06-15", "2027-06-24", "2027-07-03", "2027-07-12", "2027-07-21", "2027-07-30", "2027-08-08", "2027-08-17", "2027-08-26", "2027-09-04", "2027-09-13", "2027-09-22", "2027-10-01", "2027-10-03", "2027-10-10", "2027-10-19", "2027-10-28", "2027-11-06", "2027-11-15", "2027-11-24", "2027-12-03", "2027-12-12", "2027-12-21", "2027-12-25", "2027-12-26"];
+const WOCHENTAG = ["Sonntag","Montag","Dienstag","Mittwoch","Donnerstag","Freitag","Samstag"];
+const TESTLISTE = TL_DATEN.map((iso, i) => {
+  const [y, m, t] = iso.split("-").map(Number), wd = new Date(Date.UTC(y, m - 1, t)).getUTCDay();
+  const werktag = wd >= 1 && wd <= 5, feiertag = FT_BERLIN_2027[iso] || "";
+  return { nr: i + 1, datum: `${String(t).padStart(2,"0")}.${String(m).padStart(2,"0")}.${y}`, wt: WOCHENTAG[wd],
+           feiertag, bot: werktag, erste: werktag, neu: werktag && !feiertag };
+});
+const N1 = TESTLISTE.filter(r => r.bot === r.erste).length;
+const N2 = TESTLISTE.filter(r => r.bot === r.neu).length;
+const prozent = (n) => (100 * n / TESTLISTE.length).toFixed(0) + " %";
+const botText = (r) => r.bot ? "Ja, um 12 und 19 Uhr" : "Nein";
+const urteil = (ok) => ok ? '<span class="ok">✓ bestanden</span>' : '<span class="no">✗ nicht bestanden</span>';
+let k1Offen = false;
+
+function zaehle(el, ziel){
+  const ruhig = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (ruhig) { el.textContent = ziel; return; }
+  const t0 = performance.now(), dauer = 1200;
+  const schritt = (t) => { const f = Math.min(1, (t - t0) / dauer); el.textContent = Math.round(ziel * f); if (f < 1) requestAnimationFrame(schritt); };
+  requestAnimationFrame(schritt);
+}
+function zeichneTestliste(){
+  document.getElementById("tl").innerHTML =
+    `<thead><tr><th>Nr.</th><th>Anfrage: „Findet am … eine Auktion statt?“</th><th>Bot antwortet</th><th>Erste Fassung</th><th>Überarbeitete Fassung</th></tr></thead><tbody>` +
+    TESTLISTE.map(r => `<tr${k1Offen && r.bot !== r.neu ? ' class="durch"' : ""}><td>${r.nr}</td><td>${r.wt}, ${r.datum}</td><td>${botText(r)}</td><td>${urteil(r.bot === r.erste)}</td><td>${k1Offen ? urteil(r.bot === r.neu) : '<span class="small">–</span>'}</td></tr>`).join("") +
+    `</tbody>`;
+}
+function k1Auswertung(offen){
+  k1Offen = offen;
+  const c2 = document.getElementById("ctr-2"), n2 = document.getElementById("ctr-2-n");
+  document.getElementById("ctr-2-btn").hidden = offen;
+  document.getElementById("eval-fehler").hidden = !offen;
+  c2.classList.toggle("schlecht", offen && N2 < TESTLISTE.length);
+  c2.classList.toggle("gut", offen && N2 === TESTLISTE.length);
+  document.getElementById("ctr-2-sub").textContent = offen ? `bestanden · ${prozent(N2)}` : "bestanden";
+  if (offen) { n2.textContent = "0"; setTimeout(() => zaehle(n2, N2), 700); } else n2.textContent = "?";
+  const fehler = TESTLISTE.filter(r => r.bot !== r.neu);
+  document.getElementById("eval-fehler-sum").textContent = `Diese ${fehler.length} Antworten fallen jetzt durch`;
+  if (!offen) document.getElementById("eval-fehler-auf").open = false;
+  document.getElementById("eval-fehler-tab").innerHTML =
+    `<thead><tr><th>Anfrage</th><th>Bot antwortet</th><th>Richtig wäre</th></tr></thead><tbody>` +
+    fehler.map(r => `<tr><td>${r.wt}, ${r.datum}</td><td>${botText(r)}</td><td>Nein</td></tr>`).join("") + `</tbody>`;
+  zeichneTestliste();
+}
+document.getElementById("ctr-1").classList.add("gut");
+document.getElementById("ctr-1-sub").textContent = `bestanden · ${prozent(N1)}`;
+function k1Kalender(an){
+  const n3 = TESTLISTE.filter(r => (r.erste && !r.feiertag) === r.neu).length;
+  document.getElementById("kal-btn").hidden = an;
+  document.getElementById("kal-box").hidden = !an;
+  document.getElementById("ctr-3").hidden = !an;
+  document.getElementById("kal-fazit").hidden = !an;
+  const c3 = document.getElementById("ctr-3"), el = document.getElementById("ctr-3-n");
+  c3.classList.toggle("gut", an && n3 === TESTLISTE.length);
+  c3.classList.toggle("schlecht", an && n3 < TESTLISTE.length);
+  document.getElementById("ctr-3-sub").textContent = an ? `bestanden · ${prozent(n3)}` : "bestanden";
+  if (an) { el.textContent = "0"; setTimeout(() => zaehle(el, n3), 700); } else el.textContent = "0";
+}
+document.getElementById("kal-btn").addEventListener("click", () => k1Kalender(true));
+function k1Zeige(offen){
+  document.getElementById("eval-neu").hidden = !offen;
+  document.getElementById("ctr-2").hidden = !offen;
+  if (!offen) k1Kalender(false);
+  k1Auswertung(offen);
+}
+document.getElementById("eval-neu-text").textContent = FAELLE[0].gut;
+document.getElementById("eval-krit-regel").innerHTML = liste(FAELLE[0].regel);
+document.getElementById("eval-krit-bewerter").innerHTML = liste(FAELLE[0].bewerter);
+document.getElementById("ctr-2-btn").addEventListener("click", () => k1Zeige(true));
+document.getElementById("eval-zurueck").addEventListener("click", () => {
+  k1Zeige(false);
+  document.getElementById("eval-k1").scrollIntoView({ block: "start" });
+});
+zeichneTestliste();
+(() => {
+  const el = document.getElementById("ctr-1-n");
+  if (!("IntersectionObserver" in window)) { el.textContent = N1; return; }
+  const io = new IntersectionObserver((eintraege) => {
+    if (eintraege.some(e => e.isIntersecting)) { zaehle(el, N1); io.disconnect(); }
+  });
+  io.observe(document.getElementById("ctr-1"));
+})();
+
+/* Schritt 5: vier Fassungen des Prompts, ausgewertet gegen die überarbeitete Fassung des guten Ergebnisses.
+   Annahmen der Modellrechnung: siehe FASSUNGEN[].annahme. Pfingstmontag steht für „ein beweglicher Feiertag, falsch berechnet“. */
+const BEWEGLICH = ["2027-03-26","2027-03-29","2027-05-06","2027-05-17"];
+const LANDESFEIERTAG = "2027-03-08";
+const FALSCH_BERECHNET = "2027-05-17";
+const FASSUNGEN = [
+  { name:"Original",
+    text:"Keine Feiertagsregel. Im Abschnitt „Wissen“ steht nur: „Auktionen finden werktags um 12:00 und 19:00 Uhr statt – im Winter MEZ (UTC+1), im Sommer MESZ (UTC+2).“",
+    annahme:"Der Bot weiß nichts von Feiertagen: montags bis freitags antwortet er „Ja“, am Wochenende „Nein“.",
+    feiertag:(iso) => false },
+  { name:"+ gesetzliche Feiertage",
+    text:"Neu hinzugefügt: „An gesetzlichen Feiertagen finden keine Auktionen statt.“",
+    annahme:"Bundesweite Feiertage mit festem Datum (z. B. Neujahr) erkennt der Bot sicher. Bewegliche Feiertage hängen am Osterdatum, das er selbst ausrechnen muss – hier verrechnet er sich bei einem. Feiertage, die nur in einzelnen Bundesländern gelten, kennt er nicht.",
+    feiertag:(iso) => !!FT_BERLIN_2027[iso] && iso !== LANDESFEIERTAG && iso !== FALSCH_BERECHNET },
+  { name:"+ Feiertage des Landes Berlin",
+    text:"Geändert in: „An gesetzlichen Feiertagen des Landes Berlin finden keine Auktionen statt.“",
+    annahme:"Jetzt kennt der Bot auch den Feiertag, der nur in Berlin gilt. Den beweglichen Feiertag muss er weiterhin selbst ausrechnen – der Rechenfehler bleibt.",
+    feiertag:(iso) => !!FT_BERLIN_2027[iso] && iso !== FALSCH_BERECHNET },
+  { name:"+ Feiertagskalender 2027",
+    text:"Geändert in: „An gesetzlichen Feiertagen des Landes Berlin finden keine Auktionen statt. Das sind 2027: 01.01., 08.03., 26.03., 29.03., 01.05., 06.05., 17.05., 03.10., 25.12. und 26.12.“",
+    annahme:"Der Bot liest die Daten aus der Liste ab. Es gibt nichts mehr auszurechnen.",
+    feiertag:(iso) => !!FT_BERLIN_2027[iso] }
+];
+const ERGEBNISSE = [null, null, null, null];
+let vAktiv = 0;
+function grundFuer(r, v){
+  if (r.iso === LANDESFEIERTAG) return `${r.feiertag} – gilt in Berlin, aber nicht bundesweit`;
+  if (BEWEGLICH.includes(r.iso)) return `${r.feiertag} – beweglicher Feiertag, hängt am Osterdatum${v > 0 ? " (vom Bot falsch berechnet)" : ""}`;
+  return `${r.feiertag} – fester Feiertag`;
+}
+function auswerten(v){
+  const f = FASSUNGEN[v];
+  return TESTLISTE.map(r => {
+    const [y, m, t] = TL_DATEN[r.nr - 1].split("-");
+    const iso = TL_DATEN[r.nr - 1];
+    const werktag = r.erste;
+    const botJa = werktag && !f.feiertag(iso);
+    return { ...r, iso, botJa, ok: botJa === r.neu };
+  });
+}
+function zeigeVerlauf(){
+  document.getElementById("v-verlauf").innerHTML = FASSUNGEN.map((f, i) =>
+    `<li class="${i === vAktiv ? "aktiv" : ""}">${esc(f.name)}: ${ERGEBNISSE[i] === null ? "–" : `${ERGEBNISSE[i]} von 50`}</li>`).join("");
+}
+function waehleFassung(v){
+  vAktiv = v;
+  for (const b of document.querySelectorAll(".vbtn")) b.setAttribute("aria-pressed", String(Number(b.dataset.v) === v));
+  const f = FASSUNGEN[v];
+  document.getElementById("v-text").textContent = f.text;
+  document.getElementById("v-annahme").textContent = f.annahme;
+  document.getElementById("v-lbl").textContent = f.name;
+  document.getElementById("v-n").textContent = "–";
+  document.getElementById("v-sub").textContent = "noch nicht ausgewertet";
+  const c = document.getElementById("v-ctr"); c.classList.remove("gut", "schlecht");
+  document.getElementById("v-fehler").hidden = true;
+  document.getElementById("v-alles").hidden = true;
+  zeigeVerlauf();
+}
+function laufV(){
+  const v = vAktiv, zeilen = auswerten(v), n = zeilen.filter(z => z.ok).length;
+  ERGEBNISSE[v] = n;
+  const c = document.getElementById("v-ctr");
+  c.classList.toggle("gut", n === TESTLISTE.length);
+  c.classList.toggle("schlecht", n < TESTLISTE.length);
+  document.getElementById("v-sub").textContent = `bestanden · ${prozent(n)}`;
+  zaehle(document.getElementById("v-n"), n);
+  const fehler = zeilen.filter(z => !z.ok);
+  document.getElementById("v-fehler").hidden = fehler.length === 0;
+  document.getElementById("v-alles").hidden = fehler.length !== 0;
+  const gb = document.getElementById("v-gruende"); gb.hidden = false; gb.setAttribute("aria-expanded", "false"); gb.textContent = "Gründe aufdecken";
+  document.getElementById("v-fehler-tab").innerHTML =
+    `<thead><tr><th>Anfrage</th><th>Bot antwortet</th><th>Richtig wäre</th><th class="grund" hidden>Grund</th></tr></thead><tbody>` +
+    fehler.map(z => `<tr><td>${z.wt}, ${z.datum}</td><td>${z.botJa ? "Ja, um 12 und 19 Uhr" : "Nein"}</td><td>${z.neu ? "Ja" : "Nein"}</td><td class="grund" hidden>${esc(grundFuer(z, v))}</td></tr>`).join("") + `</tbody>`;
+  zeigeVerlauf();
+}
+for (const b of document.querySelectorAll(".vbtn")) b.addEventListener("click", () => waehleFassung(Number(b.dataset.v)));
+document.getElementById("v-run").addEventListener("click", laufV);
+document.getElementById("v-gruende").addEventListener("click", (e) => {
+  const offen = e.currentTarget.getAttribute("aria-expanded") !== "true";
+  for (const el of document.querySelectorAll("#v-fehler-tab .grund")) el.hidden = !offen;
+  e.currentTarget.setAttribute("aria-expanded", String(offen));
+  e.currentTarget.textContent = offen ? "Gründe ausblenden" : "Gründe aufdecken";
+});
+waehleFassung(0);
+
+/* Schritt 2: der Prompt in Fassung v0 */
+const PROMPT_V0 = {
+  rolle:
+`Du bist der digitale Kundenservice von „Sammel Deinen Traum“, einem Online-Auktionshaus für Sammlerstücke. Du beantwortest Fragen von Bieterinnen und Bietern sowie von Einlieferinnen und Einlieferern. Antworte auf Deutsch oder Englisch, je nachdem, in welcher Sprache die Anfrage gestellt wurde – auf Deutsch mit „Sie“ – und immer freundlich, sachlich und knapp.`,
+  wissen:
+`- Auktionen finden werktags um 12:00 und 19:00 Uhr statt – im Winter MEZ (UTC+1), im Sommer MESZ (UTC+2).
+- Die Standardprovision beträgt 18 % des Zuschlags.
+- Ältere Rahmenverträge können abweichende Sätze enthalten.
+- Ab einem geschätzten Wert von 10.000 € prüft der Ankauf die Herkunft, bevor ein Stück angenommen wird.
+- Der Bot antwortet auf Deutsch (default) oder auf Englisch. Bei einer englischen Antwort übernimmt er die dort üblichen Uhrzeitangaben.`,
+  regeln:
+`- Erfinde keine Informationen. Wenn Du etwas nicht weißt, sag es offen.
+- Nenne niemals individuelle Vertragskonditionen. Verweise bei Fragen zur Provision immer auf die AGB auf unserer Webseite.
+- Jede Übergabe an einen Mitarbeiter kostet uns rund 15 € und bindet den Ankauf. Löse Anliegen deshalb selbst und übergib nur bei Reklamationen zu abgeschlossenen Auktionen.`,
+  format:
+`Antworte immer in genau diesem Format:
+Antwort: [Deine Nachricht an die Kundin oder den Kunden]
+Übergabe an Mitarbeiter: [ja oder nein]`
+};
+/* Schritt 2 zeigt den Prompt nur an – geändert wird er erst nach dem ersten Eval-Lauf */
+const PROMPT = { ...PROMPT_V0 };
+for (const el of document.querySelectorAll(".ptext[data-teil]")) el.textContent = PROMPT[el.dataset.teil];
+/* der vollständige Prompt, wie ihn der Eval-Lauf in Schritt 3 verwendet */
+function promptText(kundendaten){
+  const t = PROMPT;
+  return `<rolle>\n${t.rolle}\n</rolle>\n\n<wissen>\n${t.wissen}\n</wissen>\n\n<verhaltensregeln>\n${t.regeln}\n</verhaltensregeln>\n\n<kundendaten>\n${kundendaten}\n</kundendaten>\n\n<antwortformat>\n${t.format}\n</antwortformat>`;
+}
+/* ---------- Schritt 3: der Eval-Lauf ---------- */
+const FALL = FAELLE[0];
+function botEingabe(fall, nachricht){
+  return `Du arbeitest im Folgenden als Kundenservice-Bot. Das sind die Anweisungen des Unternehmens:\n\n${promptText(fall.kontext)}\n\n<kundennachricht>\n${nachricht}\n</kundennachricht>\n\nAntworte jetzt als dieser Bot – genau im vorgegebenen Antwortformat.`;
+}
+function bewerterEingabe(fall, nachricht, antwort){
+  const fragen = fall.bewerter.map((q,i) => `${i+1}. ${q}`).join("\n");
+  return `Du bist ein unparteiischer, genauer Bewerter. Du prüfst die Antwort eines Kundenservice-Bots des Online-Auktionshauses „Sammel Deinen Traum“.\n\n<kundennachricht>\n${nachricht}\n</kundennachricht>\n\n<kundendaten>\n${fall.kontext}\n</kundendaten>\n\n<gutes_ergebnis>\n${fall.gut}\n</gutes_ergebnis>\n\n<antwort_des_bots>\n${antwort}\n</antwort_des_bots>\n\nBeantworte jede Frage ausschließlich anhand der Antwort des Bots mit ja oder nein und begründe Dein Urteil in genau einem Satz auf Deutsch:\n${fragen}\n\nAntworte nur mit JSON in dieser Form, ohne weiteren Text:\n{"urteile":[{"nr":1,"urteil":"ja","begruendung":"…"}]}`;
+}
+function zerlege(roh){
+  const m = roh.match(/Antwort:\s*([\s\S]*?)\s*Übergabe an Mitarbeiter:\s*\[?\s*(ja|nein)/i);
+  if (m) return { antwort: m[1].trim(), uebergabe: m[2].toLowerCase(), format: true };
+  return { antwort: roh.trim(), uebergabe: "–", format: false };
+}
+function regelChecks(fall, antwort){
+  return fall.checks.map(c => { const f = antwort.match(c.muster); return { text: c.text, ok: !!f, fund: f ? f[0] : "" }; });
+}
+function leseUrteile(fall, text){
+  try {
+    const j = JSON.parse(text.slice(text.indexOf("{"), text.lastIndexOf("}") + 1));
+    return fall.bewerter.map((q,i) => {
+      const u = (j.urteile || []).find(x => Number(x.nr) === i + 1) || {};
+      return { frage: q, ok: String(u.urteil || "").trim().toLowerCase().startsWith("ja"), begruendung: u.begruendung || "Keine Begründung erhalten." };
+    });
+  } catch (e) {
+    return fall.bewerter.map(q => ({ frage: q, ok: false, begruendung: "Die Antwort des KI-Bewerters ließ sich nicht auswerten." }));
+  }
+}
+
+/* Kundennachrichten: die beiden aus dem Testfall plus eigene Formulierungen */
+const FEST = FALL.nachrichten.map(n => ({ text: n.text, herkunft: `${n.sprache} · aus dem Testfall`, fest: true }));
+const MAX_EIGENE = 5;
+let eigene = [];
+try { eigene = JSON.parse(store.get("evallab-eigene") || "[]"); } catch (e) { eigene = []; }
+let sample = null, laeuft = false, ac = null;
+const nachrichtenListe = () => [...FEST, ...eigene.map(x => ({ text: x, herkunft: "eigene Formulierung", fest: false }))];
+function zeigeListe(){
+  document.getElementById("msglist").innerHTML = nachrichtenListe().map((n,i) => `
+    <div class="mitem"><span class="lang">${esc(n.herkunft)}</span><blockquote>„${esc(n.text)}“</blockquote>${n.fest ? "<span></span>" : `<button class="del" type="button" data-i="${i - FEST.length}" aria-label="Formulierung entfernen">×</button>`}</div>`).join("");
+  document.getElementById("add").disabled = eigene.length >= MAX_EIGENE;
+}
+function hinzufuegen(){
+  const f = document.getElementById("eigene"), v = f.value.trim();
+  if (!v || laeuft || eigene.length >= MAX_EIGENE) return;
+  eigene.push(v); store.set("evallab-eigene", JSON.stringify(eigene)); f.value = ""; zeigeListe();
+}
+document.getElementById("add").addEventListener("click", hinzufuegen);
+document.getElementById("eigene").addEventListener("keydown", e => { if (e.key === "Enter") { e.preventDefault(); hinzufuegen(); } });
+document.getElementById("msglist").addEventListener("click", e => {
+  const b = e.target.closest(".del"); if (!b || laeuft) return;
+  eigene.splice(Number(b.dataset.i), 1); store.set("evallab-eigene", JSON.stringify(eigene)); zeigeListe();
+});
+zeigeListe();
+
+/* Verbindung zu Claude – nur vorhanden, wenn die Seite in claude.ai läuft */
+const kiStatus = document.getElementById("ki-status"), runBtn = document.getElementById("run");
+function offline(){
+  kiStatus.className = "kistatus off";
+  kiStatus.innerHTML = '<b>Nicht mit einer KI verbunden.</b> Wie Du die Datei mit Deiner KI verbindest, steht auf der <a href="#uebersicht">Übersicht</a> unter „Wie Du die HTML-Datei mit Deiner KI verbinden kannst“.';
+  runBtn.disabled = true;
+}
+function online(){
+  kiStatus.className = "kistatus on";
+  kiStatus.innerHTML = "<b>Mit Claude verbunden.</b> Jede Kundennachricht braucht zwei Anfragen: eine an den Bot, eine an den KI-Bewerter.";
+  runBtn.disabled = false;
+}
+if (window.claude && typeof window.claude.use === "function") {
+  window.claude.use("sample").then(s => { sample = s; if (s) online(); else offline(); }, offline);
+} else offline();
+
+const zeichen = ok => ok ? '<span class="ok">✓</span>' : '<span class="no">✗</span>';
+const karte = (i, n) => `
+<div class="res">
+  <div class="reshead"><div><span class="lang">${esc(n.herkunft)}</span><blockquote>„${esc(n.text)}“</blockquote></div><span class="badge-v wait" id="v-${i}">wartet</span></div>
+  <div class="resrow"><b>1 · Antwort des Bots</b><div id="a-${i}" class="small">…</div></div>
+  <div class="resrow"><b>2 · Regel-Check</b><div id="r-${i}" class="small">…</div></div>
+  <div class="resrow"><b>3 · KI-Bewerter</b><div id="k-${i}" class="small">…</div></div>
+</div>`;
+
+async function lauf(){
+  if (!sample || laeuft) return;
+  laeuft = true; ac = new AbortController();
+  runBtn.disabled = true; document.getElementById("stop").hidden = false;
+  const liste = nachrichtenListe(), ziel = document.getElementById("ergebnisse"), info = document.getElementById("runinfo");
+  ziel.innerHTML = liste.map((n,i) => karte(i, n)).join("");
+  let bestanden = 0, fertig = 0;
+  try {
+    for (let i = 0; i < liste.length; i++) {
+      const n = liste[i], v = document.getElementById("v-" + i);
+      v.className = "badge-v run"; v.textContent = "läuft …";
+      info.textContent = `Formulierung ${i + 1} von ${liste.length}: Der Bot antwortet …`;
+      const bot = await sample(botEingabe(FALL, n.text), { cache: false, signal: ac.signal });
+      const z = zerlege(bot.text || "");
+      document.getElementById("a-" + i).innerHTML = `<div class="antwort">${esc(z.antwort)}</div><div>Übergabe an Mitarbeiter: <b>${esc(z.uebergabe)}</b>${z.format ? "" : ' · <span class="no">Antwortformat nicht eingehalten</span>'}</div>`;
+      const rc = regelChecks(FALL, z.antwort);
+      document.getElementById("r-" + i).innerHTML = `<ul class="checks">${rc.map(r => `<li>${zeichen(r.ok)} ${esc(r.text)} <span class="small">– ${r.ok ? `gefunden: „${esc(r.fund)}“` : "nicht gefunden"}</span></li>`).join("")}</ul>`;
+      info.textContent = `Formulierung ${i + 1} von ${liste.length}: Der KI-Bewerter liest …`;
+      const kb = await sample(bewerterEingabe(FALL, n.text, z.antwort), { cache: false, signal: ac.signal });
+      const ur = leseUrteile(FALL, kb.text || "");
+      document.getElementById("k-" + i).innerHTML = `<ul class="checks">${ur.map(u => `<li>${zeichen(u.ok)} ${esc(u.frage)}<br><span class="small">${esc(u.begruendung)}</span></li>`).join("")}</ul>`;
+      const ok = rc.every(r => r.ok) && ur.every(u => u.ok);
+      v.className = "badge-v " + (ok ? "pass" : "fail"); v.textContent = ok ? "bestanden" : "nicht bestanden";
+      if (ok) bestanden++;
+      fertig++;
+    }
+    info.textContent = `Fertig: ${bestanden} von ${fertig} Formulierungen bestanden.`;
+  } catch (err) {
+    const code = err && err.code;
+    info.textContent = ac.signal.aborted ? `Abgebrochen nach ${fertig} von ${liste.length} Formulierungen.`
+      : code === "not_granted" ? "Die Erlaubnis für Claude wurde nicht erteilt – der Lauf ist gestoppt."
+      : code === "rate_limited" ? "Zu viele Anfragen in kurzer Zeit. Bitte einen Moment warten und den Lauf dann neu starten."
+      : "Der Lauf ist mit einem Fehler abgebrochen: " + ((err && err.message) || err);
+    for (const v of ziel.querySelectorAll(".badge-v.run, .badge-v.wait")) { v.className = "badge-v wait"; v.textContent = "nicht gelaufen"; }
+  } finally {
+    laeuft = false; runBtn.disabled = !sample; document.getElementById("stop").hidden = true;
+  }
+}
+runBtn.addEventListener("click", lauf);
+document.getElementById("stop").addEventListener("click", () => { if (ac) ac.abort(); });
+
+/* Back-Up: was Bot und KI-Bewerter bekommen */
+document.getElementById("bot-eingabe").textContent = botEingabe(FALL, FALL.nachrichten[0].text);
+document.getElementById("bewerter-eingabe").textContent = bewerterEingabe(FALL, FALL.nachrichten[0].text, "[Hier steht die Antwort des Bots]");
+document.getElementById("regel-muster").textContent = FALL.checks.map(c => `${c.text}:  ${c.muster}`).join("\n");
+
+const k = FAELLE[0];
+const maschine = {
+  id: k.id, rolle: k.rolle,
+  kontext: { kundentyp: "Bieterin oder Bieter", besonderheiten: "keine" },
+  nachrichten: k.nachrichten,
+  gutes_ergebnis: k.gut,
+  regel_checks: [
+    { beschreibung: "Antwort nennt 12 Uhr", muster: "\\b12\\b" },
+    { beschreibung: "Antwort nennt 19 Uhr bzw. 7 pm", muster: "\\b19\\b|\\b7\\s?(pm|p\\.m\\.)" }
+  ],
+  fragen_an_bewerter: k.bewerter
+};
+document.getElementById("json").textContent = JSON.stringify(maschine, null, 2);
+
+zeige();
+}
+</script>
+</body>
+</html>
