@@ -10,7 +10,9 @@ Teil des Kurses *KI-Manager:in* (KIM).
 Grundlage ist der fiktive Anwendungsfall [„Sammel Deinen Traum“](../Use%20Cases/UC05_Sammel_Deinen_Traum.md),
 ein Online-Auktionshaus mit einem Kundenservice-Bot. Am Kontrollfall „Auktionszeiten“ zeigt das Werkzeug,
 wie man vorab festlegt, was eine gute Antwort ist, wie Antworten nach festen Regeln und von einem
-KI-Bewerter geprüft werden – und warum ein Kontrollfall sorgfältig gebaut werden muss.
+KI-Bewerter geprüft werden – und warum ein Kontrollfall sorgfältig gebaut werden muss. In Reiter *5* kommen
+zwei Lehrfälle dazu: Der Prompt wird Fassung für Fassung verbessert, und der Kontrollfall zeigt nach jeder
+Änderung, ob sie etwas kaputt gemacht hat.
 
 ## Dateien
 
@@ -29,11 +31,12 @@ KI-Bewerter geprüft werden – und warum ein Kontrollfall sorgfältig gebaut we
   *Übersicht* unter „Wie Du die HTML-Datei mit Deiner KI verbinden kannst“. Ohne Verbindung zeigt der Reiter,
   was geprüft würde, startet aber keinen Lauf.
 
-## Die drei „Aha“-Momente
+## Die vier „Aha“-Momente
 
 1. **Das gute Ergebnis steht vor dem ersten Lauf fest** – und es ist eine fachliche, keine technische Entscheidung.
 2. **100 % können täuschen:** Eine unvollständige Messlatte übersieht Fehler, die es längst gibt.
 3. **Anweisungen allein machen ein Modell nicht verlässlich** – Daten wie ein Feiertagskalender schon.
+4. **Der Kontrollfall ist das Sicherheitsnetz:** Eine Änderung, die einen Fall verbessert, kann einen anderen verschlechtern.
 
 Alle Namen, Zahlen und Regeln sind fiktiv und für die Übung erstellt.
 

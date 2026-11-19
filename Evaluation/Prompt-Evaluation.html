@@ -108,10 +108,25 @@ table.tl tr.durch td{background:var(--red-soft)}
 .vwahl{display:flex;flex-wrap:wrap;gap:10px;margin:16px 0}
 .vbtn{min-height:44px;padding:8px 16px;border-radius:22px;border:1.5px solid var(--rule);background:var(--card);color:var(--ink);font:inherit;font-weight:600;font-size:15px;cursor:pointer}
 .vbtn[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
-.verlauf{text-align:left}
-.verlauf ol{margin:10px 0 0;padding-left:22px;display:grid;gap:4px;font-variant-numeric:tabular-nums}
-.verlauf li.aktiv{font-weight:700}
-.grund{color:var(--muted)}
+.counters.drei{grid-template-columns:repeat(3,1fr)}
+@media (max-width:760px){.counters.drei{grid-template-columns:1fr}}
+.lf-kopf{margin:0 0 6px;display:flex;flex-wrap:wrap;gap:2px 10px;align-items:baseline}
+.lf-kopf span{color:var(--muted)}
+.lf dl{margin:0}
+.lf dt{font-weight:600;font-size:14px;display:flex;gap:8px;align-items:center;margin:12px 0 4px}
+.lf dd{margin:0}
+.lf .badge{width:22px;height:22px;font-size:12px}
+.auf.klein{margin-top:14px}.auf.klein>summary{font-size:15px;font-weight:600;display:flex;align-items:center;gap:8px}
+.auf.klein>summary::before{margin-right:0}
+.auf.klein ul{margin:4px 0 0;padding-left:20px}
+.regeln,.note .regeln{list-style:none;margin:6px 0 0;padding:0;display:grid;gap:8px}
+.regeln li{background:var(--card);border:1px solid var(--rule);border-radius:8px;padding:8px 12px}
+.regeln li.neu{border-color:var(--green);background:var(--green-soft)}
+.regeln li.weg{color:var(--muted)}
+.regeln li.weg .rt{text-decoration:line-through}
+.regeln .tag{display:inline-block;font-size:12px;font-weight:700;border-radius:10px;padding:1px 8px;margin-right:8px;vertical-align:1px}
+.regeln li.neu .tag{background:var(--green);color:var(--card)}
+.regeln li.weg .tag{background:var(--rule);color:var(--ink)}
 
 
 #ansprechpartner .duo{margin-top:6px}
@@ -535,7 +550,7 @@ footer{margin-top:36px;padding-top:14px;border-top:1px solid var(--rule);font-si
   </table>
   <p style="margin-top:18px">So sieht der Kontrollfall für das Programm aus:</p>
   <pre id="json"></pre>
-  <p style="margin-top:12px">Das <code>muster</code> ist ein sogenannter regulärer Ausdruck: eine Suchregel, die „19“, „7 pm“, „7pm“ und „7 p.m.“ gleichermaßen erkennt. Genau hier entscheidet sich, ob ein Regel-Check zu streng oder zu locker ist.</p>
+  <p style="margin-top:12px">Das <code>muster</code> ist ein sogenannter regulärer Ausdruck: eine Suchregel, die „19“, „7 pm“, „7pm“ und „7 p.m.“ gleichermaßen erkennt. Genau hier entscheidet sich, ob ein Regel-Check zu streng oder zu locker ist. Der dritte Regel-Check braucht kein Muster: Er liest nur das Feld „Übergabe an Mitarbeiter“ aus dem festen Antwortformat.</p>
 
   <h3 class="sub3">Was der Bot im Eval-Lauf tatsächlich bekommt</h3>
   <p>Für jede Kundennachricht setzt das Programm einen Text zusammen: den Prompt aus Schritt 3 mit den eingesetzten Kundendaten, darunter die Kundennachricht. Die Abschnitte sind mit Markierungen wie <code>&lt;rolle&gt;</code> getrennt, damit das Modell sie auseinanderhalten kann. Hier das Beispiel für die deutsche Nachricht des Kontrollfalls:</p>
@@ -558,6 +573,7 @@ footer{margin-top:36px;padding-top:14px;border-top:1px solid var(--rule);font-si
 <!-- ============ Schritt 2 ============ -->
 <section class="sec" data-view="schritt-2" hidden>
   <p>Der <b>Prompt</b> ist die Arbeitsanweisung des Unternehmens an den Bot – vergleichbar mit Stellenbeschreibung und Handbuch für eine neue Kollegin im Kundenservice. Der Bot liest ihn vor jeder einzelnen Kundennachricht. Die Kundschaft bekommt ihn nie zu sehen.</p>
+  <p>Hier siehst Du den <b>Kundenservice-Prompt</b> – denselben, der in Schritt 2 die Fragen nach den Auktionszeiten beantwortet hat. Mit ihm beantwortet der Bot alle Anfragen, nicht nur diese.</p>
 
   <div class="note">
     <h3>Zunächst: Der Bot hat eine Geschichte …</h3>
@@ -634,6 +650,7 @@ footer{margin-top:36px;padding-top:14px;border-top:1px solid var(--rule);font-si
     <thead><tr><th>Kriterium</th><th>Geprüft von</th><th>Warum gerade so?</th></tr></thead>
     <tbody>
       <tr><td>Nennt 12 Uhr und 19 Uhr (bzw. 7 pm)</td><td><b>Regel-Check</b></td><td>Zahlen lassen sich sicher und kostenlos per Muster finden – egal, wie die Frage gestellt war.</td></tr>
+      <tr><td>Übergibt nicht an einen Mitarbeiter</td><td><b>Regel-Check</b></td><td>Das feste Antwortformat macht es ablesbar: Das Programm liest nur das Feld „Übergabe an Mitarbeiter“. Eine Frage nach den Auktionszeiten braucht keinen Menschen – und jede unnötige Übergabe kostet rund 15 €.</td></tr>
       <tr><td>Antwortet in der Sprache der Anfrage</td><td><b>KI-Bewerter</b></td><td>Dafür muss man beide Texte verstehen. Ein einzelnes Wort verrät die Sprache nicht zuverlässig.</td></tr>
       <tr><td>Sagt, dass die Auktionen werktags stattfinden</td><td><b>KI-Bewerter</b></td><td>„werktags“, „Montag bis Freitag“, „on weekdays“: zu viele richtige Formulierungen für eine feste Regel.</td></tr>
       <tr><td>Nennt die Zeitzone</td><td><b>KI-Bewerter</b></td><td>„MEZ“, „MESZ“, „CET“, „deutscher Zeit“: dasselbe Problem – eine Regel wäre schnell zu streng.</td></tr>
@@ -662,40 +679,71 @@ footer{margin-top:36px;padding-top:14px;border-top:1px solid var(--rule);font-si
 
 <!-- ============ Schritt 4 ============ -->
 <section class="sec" data-view="schritt-4" hidden>
-  <p>Jetzt wird der Prompt verbessert – eine Änderung nach der anderen. Nach jeder Änderung läuft dieselbe Testliste mit 50 Anfragen aus Schritt 2 erneut, bewertet gegen die überarbeitete Fassung des guten Ergebnisses.</p>
-  <div class="vwahl" role="group" aria-label="Fassung des Prompts">
-    <button class="vbtn" type="button" data-v="0" aria-pressed="true">Original</button>
-    <button class="vbtn" type="button" data-v="1" aria-pressed="false">+ gesetzliche Feiertage</button>
-    <button class="vbtn" type="button" data-v="2" aria-pressed="false">+ Feiertage des Landes Berlin</button>
-    <button class="vbtn" type="button" data-v="3" aria-pressed="false">+ Feiertagskalender 2027</button>
+  <p>Der Kontrollfall steht. Jetzt kommen zwei <b>Lehrfälle</b> dazu: Anfragen, mit denen der Bot heute schlecht umgeht. Wir verbessern den Kundenservice-Prompt – eine Änderung nach der anderen. Nach jeder Änderung laufen alle drei Testfälle erneut: Die Lehrfälle zeigen, ob die Änderung hilft. Der Kontrollfall zeigt, ob sie etwas kaputt macht, das vorher funktioniert hat.</p>
+
+  <h3 class="sub3">Die beiden Lehrfälle</h3>
+  <div class="duo" id="lf-karten"></div>
+
+  <h3 class="sub3">Der Prompt, Fassung für Fassung</h3>
+  <div class="vwahl" role="group" aria-label="Fassung des Prompts" id="lf-wahl"></div>
+  <div class="note" id="lf-fassung">
+    <h3 id="lf-titel"></h3>
+    <p id="lf-was"></p>
+    <p class="small" style="margin:12px 0 0"><b>Verhaltensregeln in dieser Fassung</b></p>
+    <ul class="regeln" id="lf-regeln"></ul>
   </div>
-  <div class="note">
-    <h3>Der Prompt in dieser Fassung (Abschnitt „Wissen“)</h3>
-    <p style="margin:0" id="v-text"></p>
+  <div class="runbar"><button id="lf-run" class="pbtn next" type="button">Alle drei Testfälle auswerten</button></div>
+  <div class="counters drei">
+    <div class="ctr" id="lf-ctr-K1"><span class="ctr-lbl">K1 · Kontrollfall</span><span class="ctr-sub">Auktionszeiten</span><b class="ctr-num"><span id="lf-n-K1">–</span> von 50</b><span class="ctr-sub" id="lf-sub-K1">noch nicht ausgewertet</span></div>
+    <div class="ctr" id="lf-ctr-A"><span class="ctr-lbl">A · Lehrfall</span><span class="ctr-sub">Der alte Rahmenvertrag</span><b class="ctr-num"><span id="lf-n-A">–</span> von 20</b><span class="ctr-sub" id="lf-sub-A">noch nicht ausgewertet</span></div>
+    <div class="ctr" id="lf-ctr-B"><span class="ctr-lbl">B · Lehrfall</span><span class="ctr-sub">Die Gitarre ohne Papiere</span><b class="ctr-num"><span id="lf-n-B">–</span> von 20</b><span class="ctr-sub" id="lf-sub-B">noch nicht ausgewertet</span></div>
   </div>
-  <div class="runbar"><button id="v-run" class="pbtn next" type="button">Testliste auswerten</button></div>
-  <div class="counters">
-    <div class="ctr" id="v-ctr">
-      <span class="ctr-lbl" id="v-lbl">Original</span>
-      <b class="ctr-num"><span id="v-n">–</span> von 50</b>
-      <span class="ctr-sub" id="v-sub">noch nicht ausgewertet</span>
+
+  <div id="lf-nachher" hidden>
+    <details class="auf" id="lf-k1-auf" hidden>
+      <summary id="lf-k1-sum"></summary>
+      <div class="aufin"><div class="tl-wrap"><table class="tl" id="lf-k1-tab"></table></div></div>
+    </details>
+    <details class="auf" id="lf-bsp-auf">
+      <summary>So antwortet der Bot – je ein typisches Beispiel</summary>
+      <div class="aufin" id="lf-bsp"></div>
+    </details>
+    <p style="margin-top:18px"><b>Warum?</b> <span id="lf-warum"></span></p>
+    <button class="reveal" type="button" id="lf-grund-btn" aria-expanded="false">Gründe aufdecken</button>
+    <div id="lf-grund" hidden></div>
+    <p id="lf-frage" hidden style="margin-top:18px"></p>
+    <button class="reveal" type="button" id="lf-weiter" hidden>Nächste Änderung zeigen</button>
+    <div id="lf-fazit" hidden>
+      <div class="sol" style="margin:14px 0 0"><b>Fast 100&nbsp;% – der Rest ist eine Frage an den Fachbereich.</b> Eine Variante von Fall B fällt weiter durch: Ein Kunde schätzt sein Stück auf „8.000 bis 12.000&nbsp;€“. Der Bot übergibt nicht, die Testliste erwartet eine Übergabe. Wer recht hat, kann nur der Fachbereich entscheiden: Gilt die Grenze von 10.000&nbsp;€ für die niedrigste oder für die höchste Schätzung? Danach wird entweder der Prompt oder der Testfall präzisiert – und das Eval läuft erneut.</div>
+      <div class="verdict">
+        <p style="margin:0 0 6px"><b>Was dieses Beispiel zeigt</b></p>
+        <ul style="margin:0;padding-left:20px">
+          <li><b>Alte Regeln prüfen, bevor neue dazukommen.</b> Eine Regel, die früher geschützt hat, kann heute die richtige Antwort verhindern.</li>
+          <li><b>Beide Seiten einer Abwägung nennen.</b> Kennt der Bot nur die Kosten einer Übergabe, spart er an der falschen Stelle.</li>
+          <li><b>Daten statt Anweisungen.</b> Was der Bot wissen muss, bekommt er als Daten – den Feiertagskalender, die Vertragsdaten.</li>
+          <li><b>Eine Änderung nach der anderen</b> – und nach jeder Änderung laufen alle Testfälle, auch der Kontrollfall.</li>
+        </ul>
+      </div>
     </div>
-    <div class="ctr verlauf">
-      <span class="ctr-lbl">Verlauf</span>
-      <ol id="v-verlauf"></ol>
-    </div>
   </div>
-  <div id="v-fehler" hidden>
-    <p><b>Diese Antworten fallen durch:</b></p>
-    <div class="tl-wrap"><table class="tl" id="v-fehler-tab"></table></div>
-    <div class="runbar"><button id="v-gruende" class="reveal" type="button">Gründe aufdecken</button></div>
-  </div>
-  <p id="v-alles" hidden><b>Alle 50 Anfragen bestanden.</b> Der Bot muss nichts mehr ausrechnen – er liest die Daten aus der Liste ab. Genau das macht das Ergebnis vorhersagbar.</p>
+
   <details class="auf">
-    <summary>Annahme dieser Modellrechnung</summary>
-    <div class="aufin"><p style="margin:0" id="v-annahme"></p></div>
+    <summary>Verlauf: alle Fassungen im Vergleich</summary>
+    <div class="aufin"><div class="tl-wrap"><table class="tl" id="lf-verlauf"></table></div></div>
   </details>
-  <p class="small" style="margin-top:12px">Modellrechnung, kein Lauf mit einer echten KI. Ob sich ein echtes Sprachmodell bei einem beweglichen Feiertag verrechnet, zeigt nur ein echter Lauf.</p>
+  <details class="auf">
+    <summary>Annahmen dieser Modellrechnung</summary>
+    <div class="aufin">
+      <ul style="margin:0;padding-left:20px">
+        <li><b>Kontrollfall K1:</b> die 50 Anfragen aus Schritt 2, ausgezählt. Mit dem Feiertagskalender beantwortet der Bot jede Datumsfrage richtig. Bestanden ist eine Antwort nur, wenn sie richtig ist <b>und</b> der Bot nicht übergibt. In Fassung v1 übergibt der Bot an allen zehn Feiertagen der Liste, weil er nicht ausschließen kann, dass dort eine Sonderauktion stattfindet.</li>
+        <li><b>Lehrfälle A und B:</b> je 20 Varianten – andere Kundinnen und Kunden, andere Formulierungen, andere Stücke und Rahmenverträge. Diese Zahlen sind für die Übung geschätzt, nicht ausgezählt. Sie veranschaulichen das Vorgehen, nicht das Verhalten eines bestimmten Modells.</li>
+        <li>Auch mit einer falschen Regel scheitert ein Prompt nicht in jedem Lauf – deshalb bestehen in Fassung v0 einzelne Varianten.</li>
+        <li>Grün zeigen die Zähler beim Kontrollfall nur bei 100&nbsp;%, bei den Lehrfällen ab 95&nbsp;%.</li>
+        <li>Ein echtes Sprachmodell antwortet nicht jedes Mal gleich. Ob eine Änderung hilft, zeigt nur ein echter Lauf – am besten mehrfach.</li>
+      </ul>
+    </div>
+  </details>
+  <p class="small" style="margin-top:12px">Modellrechnung, kein Lauf mit einer echten KI – alle Namen, Zahlen und Regeln sind fiktiv und für die Übung erstellt.</p>
   <div class="pager"><a class="pbtn" href="#schritt-3">← Schritt 4</a><a class="pbtn" href="#uebersicht">Zur Übersicht</a></div>
 </section>
 
@@ -736,11 +784,12 @@ const FAELLE = [
       { sprache:"Deutsch",  text:"Hallo, wann finden Eure Auktionen eigentlich statt?" },
       { sprache:"Englisch", text:"Hi, what time do your auctions take place?" }
     ],
-    entwurf:"Nennt die Auktionszeiten – werktags um 12 und 19 Uhr MEZ (im Sommer MESZ) – und antwortet in der Sprache der Anfrage, also auf Deutsch oder auf Englisch; bei englischen Antworten in der dort üblichen Schreibweise (12 pm bzw. noon und 7 pm).",
-    gut:"Nennt die Auktionszeiten – werktags um 12 und 19 Uhr MEZ (im Sommer MESZ) – und sagt dazu, dass an Wochenenden und an gesetzlichen Feiertagen in Berlin keine Auktionen stattfinden. Antwortet in der Sprache der Anfrage, also auf Deutsch oder auf Englisch; bei englischen Antworten in der dort üblichen Schreibweise (12 pm bzw. noon und 7 pm). Zum Beispiel: ‚Unsere Auktionen finden werktags um 12 und 19 Uhr MEZ statt (im Sommer MESZ). An Wochenenden und an im Bundesland Berlin geltenden Feiertagen finden keine Auktionen statt.‘ bzw. ‚Our auctions take place on weekdays at 12 noon and 7 pm CET (CEST in summer). There are no auctions at weekends or on public holidays in Berlin.‘",
-    regel:["Die Antwort enthält „12“ sowie „19“ oder „7 pm“ – in allen üblichen Schreibweisen."],
+    entwurf:"Nennt die Auktionszeiten – werktags um 12 und 19 Uhr MEZ (im Sommer MESZ) – und antwortet in der Sprache der Anfrage, also auf Deutsch oder auf Englisch; bei englischen Antworten in der dort üblichen Schreibweise (12 pm bzw. noon und 7 pm). Beantwortet die Frage selbst, ohne an einen Mitarbeiter zu übergeben.",
+    gut:"Nennt die Auktionszeiten – werktags um 12 und 19 Uhr MEZ (im Sommer MESZ) – und sagt dazu, dass an Wochenenden und an gesetzlichen Feiertagen in Berlin keine Auktionen stattfinden. Antwortet in der Sprache der Anfrage, also auf Deutsch oder auf Englisch; bei englischen Antworten in der dort üblichen Schreibweise (12 pm bzw. noon und 7 pm). Beantwortet die Frage selbst, ohne an einen Mitarbeiter zu übergeben. Zum Beispiel: ‚Unsere Auktionen finden werktags um 12 und 19 Uhr MEZ statt (im Sommer MESZ). An Wochenenden und an im Bundesland Berlin geltenden Feiertagen finden keine Auktionen statt.‘ bzw. ‚Our auctions take place on weekdays at 12 noon and 7 pm CET (CEST in summer). There are no auctions at weekends or on public holidays in Berlin.‘",
+    regel:["Die Antwort enthält „12“ sowie „19“ oder „7 pm“ – in allen üblichen Schreibweisen.","Das Feld „Übergabe an Mitarbeiter“ steht auf „nein“."],
     checks:[ { text:"nennt 12 Uhr", muster:/\b12\b/ },
-             { text:"nennt 19 Uhr bzw. 7 pm", muster:/\b19\b|\b7([:.]00)?\s?(pm|p\.m\.)/i } ],
+             { text:"nennt 19 Uhr bzw. 7 pm", muster:/\b19\b|\b7([:.]00)?\s?(pm|p\.m\.)/i },
+             { text:"Übergabe an Mitarbeiter: nein", feld:"uebergabe", erwartet:"nein" } ],
     bewerter:["Ist die Antwort in derselben Sprache wie die Anfrage?","Sagt die Antwort, dass die Auktionen werktags stattfinden?","Sagt die Antwort, dass an Wochenenden und an Feiertagen keine Auktionen stattfinden?","Gibt die Antwort an, auf welche Zeitzone sich die Uhrzeiten beziehen?","Nur bei englischen Antworten: Verwendet die Antwort die dort übliche Uhrzeitschreibweise und nennt sie die Zeiten richtig – 12 pm bzw. noon und 7 pm (12 am wäre Mitternacht)? Bei deutschen Antworten gilt die Frage als erfüllt."] }
 ];
 
@@ -888,97 +937,13 @@ zeichneTestliste();
   io.observe(document.getElementById("ctr-1"));
 })();
 
-/* Schritt 5: vier Fassungen des Prompts, ausgewertet gegen die überarbeitete Fassung des guten Ergebnisses.
-   Annahmen der Modellrechnung: siehe FASSUNGEN[].annahme. Pfingstmontag steht für „ein beweglicher Feiertag, falsch berechnet“. */
-const BEWEGLICH = ["2027-03-26","2027-03-29","2027-05-06","2027-05-17"];
-const LANDESFEIERTAG = "2027-03-08";
-const FALSCH_BERECHNET = "2027-05-17";
-const FASSUNGEN = [
-  { name:"Original",
-    text:"Keine Feiertagsregel. Im Abschnitt „Wissen“ steht nur: „Auktionen finden werktags um 12:00 und 19:00 Uhr statt – im Winter MEZ (UTC+1), im Sommer MESZ (UTC+2).“",
-    annahme:"Der Bot weiß nichts von Feiertagen: montags bis freitags antwortet er „Ja“, am Wochenende „Nein“.",
-    feiertag:(iso) => false },
-  { name:"+ gesetzliche Feiertage",
-    text:"Neu hinzugefügt: „An gesetzlichen Feiertagen finden keine Auktionen statt.“",
-    annahme:"Bundesweite Feiertage mit festem Datum (z. B. Neujahr) erkennt der Bot sicher. Bewegliche Feiertage hängen am Osterdatum, das er selbst ausrechnen muss – hier verrechnet er sich bei einem. Feiertage, die nur in einzelnen Bundesländern gelten, kennt er nicht.",
-    feiertag:(iso) => !!FT_BERLIN_2027[iso] && iso !== LANDESFEIERTAG && iso !== FALSCH_BERECHNET },
-  { name:"+ Feiertage des Landes Berlin",
-    text:"Geändert in: „An gesetzlichen Feiertagen des Landes Berlin finden keine Auktionen statt.“",
-    annahme:"Jetzt kennt der Bot auch den Feiertag, der nur in Berlin gilt. Den beweglichen Feiertag muss er weiterhin selbst ausrechnen – der Rechenfehler bleibt.",
-    feiertag:(iso) => !!FT_BERLIN_2027[iso] && iso !== FALSCH_BERECHNET },
-  { name:"+ Feiertagskalender 2027",
-    text:"Geändert in: „An gesetzlichen Feiertagen des Landes Berlin finden keine Auktionen statt. Das sind 2027: 01.01., 08.03., 26.03., 29.03., 01.05., 06.05., 17.05., 03.10., 25.12. und 26.12.“",
-    annahme:"Der Bot liest die Daten aus der Liste ab. Es gibt nichts mehr auszurechnen.",
-    feiertag:(iso) => !!FT_BERLIN_2027[iso] }
-];
-const ERGEBNISSE = [null, null, null, null];
-let vAktiv = 0;
-function grundFuer(r, v){
-  if (r.iso === LANDESFEIERTAG) return `${r.feiertag} – gilt in Berlin, aber nicht bundesweit`;
-  if (BEWEGLICH.includes(r.iso)) return `${r.feiertag} – beweglicher Feiertag, hängt am Osterdatum${v > 0 ? " (vom Bot falsch berechnet)" : ""}`;
-  return `${r.feiertag} – fester Feiertag`;
-}
-function auswerten(v){
-  const f = FASSUNGEN[v];
-  return TESTLISTE.map(r => {
-    const [y, m, t] = TL_DATEN[r.nr - 1].split("-");
-    const iso = TL_DATEN[r.nr - 1];
-    const werktag = r.erste;
-    const botJa = werktag && !f.feiertag(iso);
-    return { ...r, iso, botJa, ok: botJa === r.neu };
-  });
-}
-function zeigeVerlauf(){
-  document.getElementById("v-verlauf").innerHTML = FASSUNGEN.map((f, i) =>
-    `<li class="${i === vAktiv ? "aktiv" : ""}">${esc(f.name)}: ${ERGEBNISSE[i] === null ? "–" : `${ERGEBNISSE[i]} von 50`}</li>`).join("");
-}
-function waehleFassung(v){
-  vAktiv = v;
-  for (const b of document.querySelectorAll(".vbtn")) b.setAttribute("aria-pressed", String(Number(b.dataset.v) === v));
-  const f = FASSUNGEN[v];
-  document.getElementById("v-text").textContent = f.text;
-  document.getElementById("v-annahme").textContent = f.annahme;
-  document.getElementById("v-lbl").textContent = f.name;
-  document.getElementById("v-n").textContent = "–";
-  document.getElementById("v-sub").textContent = "noch nicht ausgewertet";
-  const c = document.getElementById("v-ctr"); c.classList.remove("gut", "schlecht");
-  document.getElementById("v-fehler").hidden = true;
-  document.getElementById("v-alles").hidden = true;
-  zeigeVerlauf();
-}
-function laufV(){
-  const v = vAktiv, zeilen = auswerten(v), n = zeilen.filter(z => z.ok).length;
-  ERGEBNISSE[v] = n;
-  const c = document.getElementById("v-ctr");
-  c.classList.toggle("gut", n === TESTLISTE.length);
-  c.classList.toggle("schlecht", n < TESTLISTE.length);
-  document.getElementById("v-sub").textContent = `bestanden · ${prozent(n)}`;
-  zaehle(document.getElementById("v-n"), n);
-  const fehler = zeilen.filter(z => !z.ok);
-  document.getElementById("v-fehler").hidden = fehler.length === 0;
-  document.getElementById("v-alles").hidden = fehler.length !== 0;
-  const gb = document.getElementById("v-gruende"); gb.hidden = false; gb.setAttribute("aria-expanded", "false"); gb.textContent = "Gründe aufdecken";
-  document.getElementById("v-fehler-tab").innerHTML =
-    `<thead><tr><th>Anfrage</th><th>Bot antwortet</th><th>Richtig wäre</th><th class="grund" hidden>Grund</th></tr></thead><tbody>` +
-    fehler.map(z => `<tr><td>${z.wt}, ${z.datum}</td><td>${z.botJa ? "Ja, um 12 und 19 Uhr" : "Nein"}</td><td>${z.neu ? "Ja" : "Nein"}</td><td class="grund" hidden>${esc(grundFuer(z, v))}</td></tr>`).join("") + `</tbody>`;
-  zeigeVerlauf();
-}
-for (const b of document.querySelectorAll(".vbtn")) b.addEventListener("click", () => waehleFassung(Number(b.dataset.v)));
-document.getElementById("v-run").addEventListener("click", laufV);
-document.getElementById("v-gruende").addEventListener("click", (e) => {
-  const offen = e.currentTarget.getAttribute("aria-expanded") !== "true";
-  for (const el of document.querySelectorAll("#v-fehler-tab .grund")) el.hidden = !offen;
-  e.currentTarget.setAttribute("aria-expanded", String(offen));
-  e.currentTarget.textContent = offen ? "Gründe ausblenden" : "Gründe aufdecken";
-});
-waehleFassung(0);
-
 /* Schritt 2: der Prompt in Fassung v0 */
 const PROMPT_V0 = {
   rolle:
 `Du bist der digitale Kundenservice von „Sammel Deinen Traum“, einem Online-Auktionshaus für Sammlerstücke. Du beantwortest Fragen von Bieterinnen und Bietern sowie von Einlieferinnen und Einlieferern. Antworte auf Deutsch oder Englisch, je nachdem, in welcher Sprache die Anfrage gestellt wurde – auf Deutsch mit „Sie“ – und immer freundlich, sachlich und knapp.`,
   wissen:
 `- Auktionen finden werktags um 12:00 und 19:00 Uhr statt – im Winter MEZ (UTC+1), im Sommer MESZ (UTC+2).
+- An Wochenenden und an gesetzlichen Feiertagen des Landes Berlin finden keine Auktionen statt. Die Feiertage 2027 (vom System aus dem Feiertagskalender eingesetzt): 01.01., 08.03., 26.03., 29.03., 01.05., 06.05., 17.05., 03.10., 25.12. und 26.12.
 - Die Standardprovision beträgt 18 % des Zuschlags.
 - Ältere Rahmenverträge können abweichende Sätze enthalten.
 - Ab einem geschätzten Wert von 10.000 € prüft der Ankauf die Herkunft, bevor ein Stück angenommen wird.
@@ -1014,8 +979,15 @@ function zerlege(roh){
   if (m) return { antwort: m[1].trim(), uebergabe: m[2].toLowerCase(), format: true };
   return { antwort: roh.trim(), uebergabe: "–", format: false };
 }
-function regelChecks(fall, antwort){
-  return fall.checks.map(c => { const f = antwort.match(c.muster); return { text: c.text, ok: !!f, fund: f ? f[0] : "" }; });
+function regelChecks(fall, z){
+  return fall.checks.map(c => {
+    if (c.feld) {
+      const wert = z[c.feld];
+      return { text: c.text, ok: wert === c.erwartet, info: wert === "–" ? "Feld fehlt" : `steht auf „${wert}“` };
+    }
+    const f = z.antwort.match(c.muster);
+    return { text: c.text, ok: !!f, info: f ? `gefunden: „${f[0]}“` : "nicht gefunden" };
+  });
 }
 function leseUrteile(fall, text){
   try {
@@ -1094,8 +1066,8 @@ async function lauf(){
       const bot = await sample(botEingabe(FALL, n.text), { cache: false, signal: ac.signal });
       const z = zerlege(bot.text || "");
       document.getElementById("a-" + i).innerHTML = `<div class="antwort">${esc(z.antwort)}</div><div>Übergabe an Mitarbeiter: <b>${esc(z.uebergabe)}</b>${z.format ? "" : ' · <span class="no">Antwortformat nicht eingehalten</span>'}</div>`;
-      const rc = regelChecks(FALL, z.antwort);
-      document.getElementById("r-" + i).innerHTML = `<ul class="checks">${rc.map(r => `<li>${zeichen(r.ok)} ${esc(r.text)} <span class="small">– ${r.ok ? `gefunden: „${esc(r.fund)}“` : "nicht gefunden"}</span></li>`).join("")}</ul>`;
+      const rc = regelChecks(FALL, z);
+      document.getElementById("r-" + i).innerHTML = `<ul class="checks">${rc.map(r => `<li>${zeichen(r.ok)} ${esc(r.text)} <span class="small">– ${esc(r.info)}</span></li>`).join("")}</ul>`;
       info.textContent = `Formulierung ${i + 1} von ${liste.length}: Der KI-Bewerter liest …`;
       const kb = await sample(bewerterEingabe(FALL, n.text, z.antwort), { cache: false, signal: ac.signal });
       const ur = leseUrteile(FALL, kb.text || "");
@@ -1123,7 +1095,7 @@ document.getElementById("stop").addEventListener("click", () => { if (ac) ac.abo
 /* Back-Up: was Bot und KI-Bewerter bekommen */
 document.getElementById("bot-eingabe").textContent = botEingabe(FALL, FALL.nachrichten[0].text);
 document.getElementById("bewerter-eingabe").textContent = bewerterEingabe(FALL, FALL.nachrichten[0].text, "[Hier steht die Antwort des Bots]");
-document.getElementById("regel-muster").textContent = FALL.checks.map(c => `${c.text}:  ${c.muster}`).join("\n");
+document.getElementById("regel-muster").textContent = FALL.checks.map(c => c.feld ? `${c.text}:  Feld „${c.feld}“ = „${c.erwartet}“` : `${c.text}:  ${c.muster}`).join("\n");
 
 const k = FAELLE[0];
 const maschine = {
@@ -1131,13 +1103,207 @@ const maschine = {
   kontext: { kundentyp: "Bieterin oder Bieter", besonderheiten: "keine" },
   nachrichten: k.nachrichten,
   gutes_ergebnis: k.gut,
-  regel_checks: [
-    { beschreibung: "Antwort nennt 12 Uhr", muster: "\\b12\\b" },
-    { beschreibung: "Antwort nennt 19 Uhr bzw. 7 pm", muster: "\\b19\\b|\\b7\\s?(pm|p\\.m\\.)" }
-  ],
+  regel_checks: k.checks.map(c => c.feld ? { beschreibung: c.text, feld: c.feld, erwartet: c.erwartet } : { beschreibung: c.text, muster: c.muster.source }),
   fragen_an_bewerter: k.bewerter
 };
 document.getElementById("json").textContent = JSON.stringify(maschine, null, 2);
+
+/* ---------- Schritt 5: Kontrollfall und zwei Lehrfälle über vier Fassungen des Prompts ----------
+   Modellrechnung. K1: die 50 Anfragen aus Schritt 2, ausgezählt – mit Feiertagskalender beantwortet der Bot jede Datumsfrage richtig;
+   in Fassung v1 übergibt er an allen zehn Feiertagen. A und B: je 20 Varianten, Zahlen für die Übung geschätzt. */
+const LEHRFAELLE = [
+  { id:"A", rolle:"Lehrfall", titel:"Der alte Rahmenvertrag",
+    kontext:"Petra Lindner, Einlieferin seit 2017 · Rahmenvertrag 2017: Provision 12 % (aktueller Standard: 18 %)",
+    nachricht:"Ich möchte wieder 30 Comics bei Euch einliefern. Mit welcher Provision muss ich rechnen?",
+    gut:"Nennt ihr direkt die 12 % aus ihrem Rahmenvertrag. Ein Hinweis auf die AGB ist höchstens eine Ergänzung.",
+    regel:["Die Antwort nennt „12 %“ (auch „12%“ oder „12 Prozent“)."],
+    bewerter:["Nennt die Antwort der Kundin ihren persönlichen Provisionssatz direkt?","Ist ein Hinweis auf AGB oder Webseite höchstens eine Ergänzung – und nicht die eigentliche Antwort?"] },
+  { id:"B", rolle:"Lehrfall", titel:"Die Gitarre ohne Papiere",
+    kontext:"Neukunde, keine Vorgeschichte",
+    nachricht:"Ich habe von meinem Onkel eine Gitarre geerbt, die angeblich Bob Dylan gehört hat. Papiere gibt es keine. Die bringt sicher 40.000 €. Wann kann ich sie vorbeibringen, und wie viel Provision zahlt man bei Euch?",
+    gut:"Sagt weder die Annahme noch einen Wert zu. Erklärt freundlich, dass bei solchen Stücken zuerst die Herkunft geprüft wird, bittet um vorhandene Nachweise und übergibt an einen Menschen im Ankauf. Unterstellt dem Kunden nichts.",
+    regel:["Das Feld „Übergabe an Mitarbeiter“ steht auf „ja“."],
+    bewerter:["Verzichtet die Antwort auf jede Zusage, das Stück anzunehmen oder zu versteigern?","Verzichtet sie auf eine eigene Einschätzung von Echtheit oder Wert?","Erklärt sie die Herkunftsprüfung oder bittet sie um Nachweise?","Bleibt sie freundlich, ohne dem Kunden etwas zu unterstellen?"] }
+];
+const N_LF = 20;
+const nb = h => h.replace(/ (€|%)/g, "\u00a0$1");   /* kein Zeilenumbruch vor € und % */
+const [R_ERFINDE, R_2023, R_2025] = PROMPT_V0.regeln.split("\n").map(z => z.replace(/^-\s*/, ""));
+const R_ZWEIFEL = "Übergib im Zweifel an einen Mitarbeiter.";
+const R_ABWAEGUNG = "Eine Übergabe an einen Mitarbeiter kostet uns rund 15 € und bindet den Ankauf. Eine falsche Zusage kann deutlich teurer werden: Sagst Du die Annahme eines Stücks zu, dessen Herkunft nicht geklärt ist, drohen Rückabwicklung, Rechtsstreit und ein Schaden für unseren Ruf. Übergib deshalb an den Ankauf, wenn ein Stück auf 10.000 € oder mehr geschätzt wird, und bei Reklamationen zu abgeschlossenen Auktionen. Alle anderen Anliegen löst Du selbst.";
+const R_DATEN = "Nenne Provisionssätze nur so, wie sie in den Kundendaten oder in unseren AGB stehen. Hat die Kundin oder der Kunde einen eigenen Rahmenvertrag, nenne den Satz daraus. Erfinde keine Konditionen.";
+
+const K1_FRAGE = "Findet am Montag, 29.03.2027, eine Auktion statt?";
+const BSP_K1_OK = { antwort:"Nein, am Ostermontag, 29.03.2027, finden keine Auktionen statt – in Berlin ist gesetzlicher Feiertag. Die nächsten Auktionen sind am Dienstag, 30.03.2027, um 12 und 19 Uhr MESZ.", uebergabe:"nein",
+  checks:[[true,"Antwort richtig: An diesem Tag findet keine Auktion statt."],[true,"Regel-Check: Übergabe an Mitarbeiter steht auf „nein“."]] };
+const BSP_A_AGB = { antwort:"Vielen Dank, dass Sie wieder bei uns einliefern möchten, Frau Lindner! Zu individuellen Vertragskonditionen kann ich leider keine Auskunft geben. Die aktuellen Provisionssätze finden Sie in unseren AGB auf unserer Webseite.", uebergabe:"nein",
+  checks:[[false,"Regel-Check: „12 %“ nicht gefunden."],[false,"KI-Bewerter: Die Antwort nennt den persönlichen Provisionssatz nicht."],[false,"KI-Bewerter: Der Hinweis auf die AGB ist die eigentliche Antwort."]] };
+const B_GUT_CHECKS = [[true,"Regel-Check: Übergabe an Mitarbeiter steht auf „ja“."],[true,"KI-Bewerter: keine Zusage, das Stück anzunehmen oder zu versteigern."],[true,"KI-Bewerter: keine eigene Einschätzung von Echtheit oder Wert."],[true,"KI-Bewerter: erklärt die Herkunftsprüfung und bittet um Nachweise."],[true,"KI-Bewerter: freundlich, unterstellt dem Kunden nichts."]];
+const B_GUT_ANFANG = "Vielen Dank für Ihre Nachricht! Bei Stücken mit einem geschätzten Wert ab 10.000 € prüft unser Ankauf zuerst die Herkunft. Haben Sie Fotos, Briefe oder andere Hinweise zur Geschichte der Gitarre? Dann halten Sie diese bitte bereit.";
+
+const STUFEN = [
+  { kurz:"v0 · heute", titel:"Fassung v0: der Kundenservice-Prompt von heute",
+    was:"Die Verhaltensregeln aus Schritt 3, unverändert. Seit Schritt 2 kennt der Bot außerdem die Berliner Feiertage aus dem Kalender.",
+    regeln:[[R_ERFINDE],[R_2023],[R_2025]],
+    n:{ A:2, B:1 }, k1Uebergabe:false,
+    warum:"Woran scheitern die beiden Lehrfälle – obwohl der Bot alles vor sich hat, was er für die richtige Antwort braucht?",
+    grund:`<div class="duo">
+      <div class="box"><h3>Regel aus Mitte 2023 → betrifft Fall A</h3><blockquote>„${esc(R_2023)}“</blockquote>
+        <p style="margin:10px 0 0">Gedacht als Schutz vor einem Modell, das Konditionen erfunden hat. Heute hat der Bot die Vertragsdaten direkt vor sich – und die Regel verbietet ihm, die richtige Antwort zu geben. Ein alter Flicken verursacht einen neuen Fehler.</p></div>
+      <div class="box"><h3>Regel aus Mitte 2025 → betrifft Fall B</h3><blockquote>„${esc(R_2025)}“</blockquote>
+        <p style="margin:10px 0 0">Die Regel nennt nur die Kosten einer Übergabe – nicht die Kosten einer falschen Zusage. Bei einer Gitarre ohne Herkunftsnachweis kann das teuer werden. Kennt der Bot nur eine Seite der Abwägung, entscheidet er sich für diese Seite.</p></div>
+    </div>
+    <p style="margin:12px 0 0">Der Kontrollfall besteht: Fragen nach den Auktionszeiten berühren keine der beiden Regeln.</p>`,
+    frage:"<b>Und jetzt?</b> Wir beginnen mit Fall B. Was würdet Ihr am Prompt ändern?",
+    bsp:{ K1:BSP_K1_OK, A:BSP_A_AGB,
+      B:{ antwort:"Vielen Dank für Ihr Angebot – eine Gitarre aus dem Besitz von Bob Dylan ist ein ganz besonderes Stück! Ab einem Wert von 10.000 € prüft unser Ankauf vor der Annahme die Herkunft. Sie können die Gitarre gern bei uns einliefern. Alle Angaben zur Provision finden Sie in unseren AGB auf unserer Webseite.", uebergabe:"nein",
+          checks:[[false,"Regel-Check: Übergabe an Mitarbeiter steht auf „nein“ – erwartet: „ja“."],[false,"KI-Bewerter: Die Einladung zur Einlieferung wirkt wie eine Zusage."],[false,"KI-Bewerter: Die Antwort behandelt die Herkunft von Bob Dylan als Tatsache."],[true,"KI-Bewerter: erwähnt die Herkunftsprüfung."],[true,"KI-Bewerter: freundlich, unterstellt dem Kunden nichts."]] } } },
+  { kurz:"v1 · Flicken", titel:"Fassung v1: ein schneller Flicken",
+    was:"Ein naheliegender Vorschlag aus dem Team: Ein Satz wird ergänzt. Die Regel von 2025 bleibt stehen.",
+    regeln:[[R_ERFINDE],[R_2023],[R_2025],[R_ZWEIFEL,"neu"]],
+    n:{ A:2, B:12 }, k1Uebergabe:true,
+    warum:"Fall B ist besser geworden, der Kontrollfall schlechter. Wie kann das sein – an den Fragen nach den Auktionszeiten hat sich nichts geändert?",
+    grund:`<div class="box" style="margin-top:14px">
+      <p style="margin:0"><b>Ein Flicken auf einem Flicken.</b> Die neue Regel widerspricht der von 2025, die weiter im Prompt steht: Einmal soll der Bot nur bei Reklamationen übergeben, einmal „im Zweifel“. Welche Regel sich durchsetzt, ist nicht vorhersehbar – in Fall B übergibt der Bot nur in 12 von 20 Varianten.</p>
+      <p style="margin:10px 0 0">Außerdem sagt „im Zweifel“ nicht, <b>wann</b> ein Zweifel vorliegt. An Feiertagen ist sich der Bot unsicher, ob vielleicht eine Sonderauktion stattfindet – und übergibt Fragen, die er vorher selbst richtig beantwortet hat. Jede dieser Übergaben kostet rund 15 €.</p>
+      <p style="margin:10px 0 0"><b>Genau dafür gibt es den Kontrollfall.</b> Die Antworten selbst sind richtig. Aufgefallen ist die Verschlechterung nur durch den Regel-Check „Übergabe an Mitarbeiter: nein“ – ohne ihn stünde der Kontrollfall weiter bei 100 %.</p></div>`,
+    frage:"<b>Und jetzt?</b> Wie lässt sich Fall B lösen, ohne dass der Kontrollfall darunter leidet?",
+    bsp:{ K1:{ antwort:"Am Ostermontag, 29.03.2027, finden keine regulären Auktionen statt – in Berlin ist gesetzlicher Feiertag. Ob es an diesem Tag eine Sonderauktion gibt, kann Ihnen eine Kollegin sagen. Ich verbinde Sie gern.", uebergabe:"ja",
+          checks:[[true,"Antwort richtig: An diesem Tag findet keine Auktion statt."],[false,"Regel-Check: Übergabe an Mitarbeiter steht auf „ja“ – erwartet: „nein“."]] },
+      A:{ antwort:"Vielen Dank, dass Sie wieder bei uns einliefern möchten, Frau Lindner! Zu Ihren persönlichen Konditionen verbinde ich Sie gern mit einer Kollegin. Allgemeine Angaben zur Provision finden Sie in unseren AGB auf unserer Webseite.", uebergabe:"ja",
+          checks:BSP_A_AGB.checks, hinweis:"Fall A prüft die Übergabe nicht. Sie hilft der Kundin hier nicht weiter – und kostet trotzdem rund 15 €." },
+      B:{ antwort:`${B_GUT_ANFANG} Ich verbinde Sie mit einer Kollegin aus dem Ankauf, die alles Weitere mit Ihnen bespricht. Alle Angaben zur Provision finden Sie in unseren AGB auf unserer Webseite.`, uebergabe:"ja",
+          checks:B_GUT_CHECKS, hinweis:"So antwortet der Bot in 12 von 20 Varianten. In den übrigen folgt er weiter der Regel von 2025 und antwortet wie in Fassung v0." } } },
+  { kurz:"v2 · Abwägung", titel:"Fassung v2: beide Seiten der Abwägung",
+    was:"Der Flicken entfällt. Die Regel von 2025 wird neu geschrieben: Sie nennt jetzt beide Seiten der Abwägung – und eine klare Grenze.",
+    regeln:[[R_ERFINDE],[R_2023],[R_2025,"weg"],[R_ZWEIFEL,"weg"],[R_ABWAEGUNG,"neu"]],
+    n:{ A:2, B:19 }, k1Uebergabe:false,
+    warum:"Was hat die Änderung bewirkt – und was nicht?",
+    grund:`<div class="box" style="margin-top:14px">
+      <p style="margin:0"><b>Beide Seiten stehen jetzt im Prompt:</b> die Kosten einer Übergabe und die Kosten einer falschen Zusage – dazu eine klare Grenze von 10.000 €. Der widersprüchliche Flicken ist weg. Fall B besteht bis auf eine Variante, der Kontrollfall ist zurück bei 100 %.</p>
+      <p style="margin:10px 0 0">Die Angaben für die Abwägung liefert der Fachbereich: Der Ankauf kennt die Kosten einer Übergabe, die Rechtsabteilung das Risiko einer falschen Zusage.</p>
+      <p style="margin:10px 0 0"><b>Fall A ist unverändert</b> – zu Recht: Die Änderung betraf nur die Übergabe. Eine Änderung nach der anderen; so bleibt erkennbar, welche Änderung was bewirkt.</p></div>`,
+    frage:"<b>Und jetzt?</b> Bleibt Fall A. Was würdet Ihr ändern?",
+    bsp:{ K1:BSP_K1_OK, A:BSP_A_AGB,
+      B:{ antwort:`${B_GUT_ANFANG} Ich gebe Ihre Anfrage an eine Kollegin im Ankauf weiter, die sich bei Ihnen meldet. Alle Angaben zur Provision finden Sie in unseren AGB auf unserer Webseite.`, uebergabe:"ja",
+          checks:B_GUT_CHECKS, hinweis:"So antwortet der Bot in 19 von 20 Varianten." } } },
+  { kurz:"v3 · Vertragsdaten", titel:"Fassung v3: Vertragsdaten statt Verbot",
+    was:"Die Regel von 2023 wird neu geschrieben: Ihr Zweck bleibt, ihre Formulierung ändert sich.",
+    regeln:[[R_ERFINDE],[R_2023,"weg"],[R_DATEN,"neu"],[R_ABWAEGUNG]],
+    n:{ A:20, B:19 }, k1Uebergabe:false,
+    warum:"Was hat diese Änderung bewirkt?",
+    grund:`<div class="box" style="margin-top:14px">
+      <p style="margin:0"><b>Zweck bewahren, Formulierung erneuern.</b> 2023 sollte die Regel verhindern, dass der Bot Konditionen erfindet. Die neue Regel verfolgt dasselbe Ziel, lässt aber zu, was heute richtig ist: den Satz aus den Kundendaten zu nennen. Fall A besteht jetzt in allen 20 Varianten.</p>
+      <p style="margin:10px 0 0">Voraussetzung ist, dass die IT die Vertragsdaten in die Kundendaten liefert und der Datenschutz geklärt hat, dass der Bot sie verwenden darf.</p>
+      <p style="margin:10px 0 0"><b>Der Kontrollfall bleibt bei 100 %</b> – die Änderung hat nichts kaputt gemacht.</p></div>`,
+    frage:null,
+    bsp:{ K1:BSP_K1_OK,
+      A:{ antwort:"Schön, dass Sie wieder bei uns einliefern möchten, Frau Lindner! Laut Ihrem Rahmenvertrag von 2017 beträgt Ihre Provision 12 % des Zuschlags. Die allgemeinen Bedingungen finden Sie in unseren AGB auf unserer Webseite.", uebergabe:"nein",
+          checks:[[true,"Regel-Check: „12 %“ gefunden."],[true,"KI-Bewerter: nennt den persönlichen Provisionssatz direkt."],[true,"KI-Bewerter: Der Hinweis auf die AGB ist nur eine Ergänzung."]] },
+      B:{ antwort:`${B_GUT_ANFANG} Ich gebe Ihre Anfrage an eine Kollegin im Ankauf weiter, die sich bei Ihnen meldet. Unsere Standardprovision beträgt 18 % des Zuschlags; Einzelheiten stehen in unseren AGB.`, uebergabe:"ja",
+          checks:B_GUT_CHECKS, hinweis:"So antwortet der Bot in 19 von 20 Varianten." } } }
+];
+const LF_ERG = STUFEN.map(() => null);
+let lfOffen = 0, lfAktiv = 0;
+const lfProzent = (n, von) => (100 * n / von).toFixed(0) + " %";
+const lfGut = (id, n) => id === "K1" ? n === TESTLISTE.length : n >= 19;   /* grün: Kontrollfall 100 %, Lehrfälle ab 95 % */
+
+document.getElementById("lf-karten").innerHTML = nb(LEHRFAELLE.map(f => `
+<div class="box lf">
+  <p class="lf-kopf"><b>${esc(f.id)} · ${esc(f.rolle)}</b><span>${esc(f.titel)}</span></p>
+  <dl>
+    <dt><i class="badge">2</i>Kontext</dt><dd>${esc(f.kontext)}</dd>
+    <dt><i class="badge">3</i>Kundennachricht</dt><dd><blockquote>„${esc(f.nachricht)}“</blockquote></dd>
+    <dt><i class="badge">4</i>Gutes Ergebnis</dt><dd>${esc(f.gut)}</dd>
+  </dl>
+  <details class="auf klein"><summary><i class="badge">5</i> Kriterien</summary><div class="aufin crit">
+    <h4>Regel-Check</h4><ul>${liste(f.regel)}</ul>
+    <h4 style="margin-top:10px">Fragen an den KI-Bewerter</h4><ul>${liste(f.bewerter)}</ul>
+  </div></details>
+</div>`).join(""));
+
+function lfZeichneWahl(){
+  document.getElementById("lf-wahl").innerHTML = STUFEN.slice(0, lfOffen + 1).map((s, i) =>
+    `<button class="vbtn" type="button" data-v="${i}" aria-pressed="${i === lfAktiv}">${esc(s.kurz)}</button>`).join("");
+}
+function lfZeichneVerlauf(){
+  const zelle = (id, n, von) => n === null ? "–" : `<span class="${lfGut(id, n) ? "ok" : "no"}">${n} von ${von}</span> · ${lfProzent(n, von)}`;
+  document.getElementById("lf-verlauf").innerHTML =
+    `<thead><tr><th>Fassung</th><th>K1 · Kontrollfall</th><th>A · Rahmenvertrag</th><th>B · Gitarre</th></tr></thead><tbody>` +
+    STUFEN.slice(0, lfOffen + 1).map((s, i) => { const e = LF_ERG[i];
+      return `<tr${i === lfAktiv ? ' style="font-weight:700"' : ""}><td>${esc(s.kurz)}</td><td>${zelle("K1", e && e.K1, 50)}</td><td>${zelle("A", e && e.A, N_LF)}</td><td>${zelle("B", e && e.B, N_LF)}</td></tr>`; }).join("") + `</tbody>`;
+}
+function lfZaehler(id, n, von){
+  const c = document.getElementById("lf-ctr-" + id), el = document.getElementById("lf-n-" + id);
+  c.classList.toggle("gut", n !== null && lfGut(id, n));
+  c.classList.toggle("schlecht", n !== null && !lfGut(id, n));
+  document.getElementById("lf-sub-" + id).textContent = n === null ? "noch nicht ausgewertet" : `bestanden · ${lfProzent(n, von)}`;
+  if (n === null) el.textContent = "–"; else zaehle(el, n);
+}
+function lfWaehle(v){
+  lfAktiv = v;
+  const s = STUFEN[v];
+  document.getElementById("lf-titel").textContent = s.titel;
+  document.getElementById("lf-was").textContent = s.was;
+  document.getElementById("lf-regeln").innerHTML = nb(s.regeln.map(([t, art]) =>
+    `<li${art ? ` class="${art}"` : ""}>${art === "neu" ? '<span class="tag">neu</span>' : art === "weg" ? '<span class="tag">entfällt</span>' : ""}<span class="rt">${esc(t)}</span></li>`).join(""));
+  for (const id of ["K1", "A", "B"]) lfZaehler(id, null);
+  document.getElementById("lf-nachher").hidden = true;
+  lfZeichneWahl(); lfZeichneVerlauf();
+}
+function lfBeispiel(id, titel, frage, b){
+  const ok = b.checks.every(([x]) => x);
+  return nb(`<div class="res">
+  <div class="reshead"><div><span class="lang">${esc(titel)}</span><blockquote>„${esc(frage)}“</blockquote></div><span class="badge-v ${ok ? "pass" : "fail"}">${ok ? "bestanden" : "nicht bestanden"}</span></div>
+  <div class="resrow"><b>Antwort des Bots</b><div class="small"><div class="antwort">${esc(b.antwort)}</div><div>Übergabe an Mitarbeiter: <b>${esc(b.uebergabe)}</b></div></div></div>
+  <div class="resrow"><b>Bewertung</b><div class="small"><ul class="checks">${b.checks.map(([x, t]) => `<li>${zeichen(x)} ${esc(t)}</li>`).join("")}</ul>${b.hinweis ? `<p style="margin:8px 0 0">${esc(b.hinweis)}</p>` : ""}</div></div>
+</div>`);
+}
+function lfAuswerten(){
+  const v = lfAktiv, s = STUFEN[v];
+  const k1Fehler = TESTLISTE.filter(r => s.k1Uebergabe && r.feiertag);
+  const e = { K1: TESTLISTE.length - k1Fehler.length, A: s.n.A, B: s.n.B };
+  LF_ERG[v] = e;
+  lfZaehler("K1", e.K1, TESTLISTE.length); lfZaehler("A", e.A, N_LF); lfZaehler("B", e.B, N_LF);
+  const k1auf = document.getElementById("lf-k1-auf");
+  k1auf.hidden = k1Fehler.length === 0; k1auf.open = false;
+  document.getElementById("lf-k1-sum").textContent = `Diese ${k1Fehler.length} Antworten im Kontrollfall fallen jetzt durch`;
+  document.getElementById("lf-k1-tab").innerHTML =
+    `<thead><tr><th>Anfrage</th><th>Bot antwortet</th><th>Übergabe an Mitarbeiter</th><th>Erwartet</th></tr></thead><tbody>` +
+    k1Fehler.map(r => `<tr class="durch"><td>${r.wt}, ${r.datum}</td><td>Nein, Feiertag</td><td>ja</td><td>nein</td></tr>`).join("") + `</tbody>`;
+  document.getElementById("lf-bsp-auf").open = false;
+  document.getElementById("lf-bsp").innerHTML =
+    lfBeispiel("K1", "K1 · Kontrollfall – eine der 50 Anfragen", K1_FRAGE, s.bsp.K1) +
+    lfBeispiel("A", "A · Der alte Rahmenvertrag", LEHRFAELLE[0].nachricht, s.bsp.A) +
+    lfBeispiel("B", "B · Die Gitarre ohne Papiere", LEHRFAELLE[1].nachricht, s.bsp.B);
+  document.getElementById("lf-warum").textContent = s.warum;
+  const gb = document.getElementById("lf-grund-btn"); gb.hidden = false; gb.setAttribute("aria-expanded", "false");
+  document.getElementById("lf-grund").hidden = true;
+  document.getElementById("lf-grund").innerHTML = nb(s.grund);
+  document.getElementById("lf-frage").hidden = true;
+  document.getElementById("lf-weiter").hidden = true;
+  document.getElementById("lf-fazit").hidden = true;
+  document.getElementById("lf-nachher").hidden = false;
+  lfZeichneVerlauf();
+}
+document.getElementById("lf-run").addEventListener("click", lfAuswerten);
+document.getElementById("lf-wahl").addEventListener("click", e => {
+  const b = e.target.closest(".vbtn"); if (b) lfWaehle(Number(b.dataset.v));
+});
+document.getElementById("lf-grund-btn").addEventListener("click", e => {
+  const s = STUFEN[lfAktiv];
+  e.currentTarget.hidden = true;
+  document.getElementById("lf-grund").hidden = false;
+  const fr = document.getElementById("lf-frage");
+  if (s.frage) { fr.innerHTML = nb(s.frage); fr.hidden = false; document.getElementById("lf-weiter").hidden = false; }
+  else document.getElementById("lf-fazit").hidden = false;
+});
+document.getElementById("lf-weiter").addEventListener("click", () => {
+  const v = Math.min(lfAktiv + 1, STUFEN.length - 1);
+  lfOffen = Math.max(lfOffen, v);
+  lfWaehle(v);
+  document.getElementById("lf-fassung").scrollIntoView({ block: "start" });
+});
+lfWaehle(0);
 
 zeige();
 }
