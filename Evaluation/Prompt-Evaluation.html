@@ -493,13 +493,14 @@ footer{margin-top:36px;padding-top:14px;border-top:1px solid var(--rule);font-si
       </details>
       <p style="margin-top:18px"><b>Und jetzt?</b> Wie kommt die Erfolgsquote zurück auf 100 % – und zwar verlässlich?</p>
       <button class="reveal" type="button" id="kal-btn">Lösung zeigen</button>
-      <div class="sol" id="kal-box" hidden style="margin:14px 0 0"><b>Feiertagskalender im System:</b> Fachbereich und IT hinterlegen die gesetzlichen Feiertage des Landes Berlin als Kalender. Der Bot schlägt bei jeder Datumsfrage dort nach, statt selbst zu rechnen.</div>
+      <div class="sol" id="kal-box" hidden style="margin:14px 0 0"><b>Feiertagskalender im System:</b><sup>1</sup> Fachbereich und IT hinterlegen die gesetzlichen Feiertage des Landes Berlin als Kalender. Der Bot schlägt bei jeder Datumsfrage dort nach, statt selbst zu rechnen.</div>
       <div class="ctr ctr-einzeln" id="ctr-3" hidden>
         <span class="ctr-lbl">Bewertet mit der überarbeiteten Fassung – Bot mit Feiertagskalender</span>
         <b class="ctr-num"><span id="ctr-3-n">0</span> von 50</b>
         <span class="ctr-sub" id="ctr-3-sub">bestanden</span>
       </div>
       <p id="kal-fazit" hidden><b>Der Kontrollfall steht.</b> Ab jetzt muss jede Änderung am Prompt diesen Test bestehen. Fällt er durch, stimmt etwas Grundsätzliches nicht.</p>
+      <p class="small" id="kal-fussnote" hidden><sup>1</sup> <b>Kalender in internationalen Unternehmen:</b> Feiertage gelten oft nur regional – in Deutschland je nach Bundesland, in anderen Staaten ebenso. Manche Termine folgen einer Regel statt einem festen Datum: Ostern und alle davon abhängigen Feiertage, in den USA Thanksgiving am vierten Donnerstag im November. Manche ändern sich: Japan feierte den Geburtstag des Kaisers bis 2018 am 23. Dezember, seit 2020 am 23. Februar; fällt er auf einen Sonntag, ist der folgende Montag frei. Dazu kommen Zeitzonen und Sonderaktionen, etwa eine Auktion am Thanksgiving-Wochenende. Deshalb braucht der Kalender eine verantwortliche Stelle im Fachbereich und eine Vorrangregel („Sonderauktionen laut Kalender gehen vor“), und nach jeder Änderung läuft der Kontrollfall erneut. Die erwarteten Antworten der Testliste dürfen nicht aus demselben Kalender stammen, den der Bot liest – sonst prüft das Eval nur, ob der Bot richtig abliest, nicht ob der Kalender stimmt.</p>
       <button class="reveal" type="button" id="eval-zurueck" style="margin-top:14px">Zurück zur ersten Fassung</button>
     </div>
     <details class="auf" id="testliste">
@@ -713,10 +714,12 @@ footer{margin-top:36px;padding-top:14px;border-top:1px solid var(--rule);font-si
       <li>Anthropic: <a href="https://docs.anthropic.com/en/docs/test-and-evaluate/eval-tool">„Using the Evaluation Tool“</a> (Dokumentation) – Bewertungsfunktion in der Entwicklerkonsole: Testfälle von Hand anlegen, aus einer CSV-Datei importieren oder von Claude erzeugen lassen und alle auf einmal ausführen.</li>
       <li>promptfoo: <a href="https://promptfoo.dev">promptfoo.dev</a> – quelloffenes Werkzeug für Evals (MIT-Lizenz); Testfälle und Checks stehen in einer Konfigurationsdatei. Seit März 2026 gehört promptfoo zu OpenAI und bleibt nach eigener Angabe quelloffen.</li>
   </ul>
-  <h3 class="sub3">Modelle und Betrieb</h3>
+  <h3 class="sub3">Modelle, Betrieb und Kalender</h3>
   <ul class="qliste">
       <li>Anthropic: <a href="https://platform.claude.com/docs/en/about-claude/model-deprecations">„Model deprecations“</a> (Abschalttermine älterer Modelle; Cloud-Plattformen setzen eigene Termine)</li>
       <li>Anthropic: <a href="https://claude.com/regional-compliance">„Deploy Claude confidently, wherever you are“</a> (Wahl der Region über Cloud-Plattformen)</li>
+        <li>U.S. Office of Personnel Management: <a href="https://www.opm.gov/frequently-asked-questions/pay-and-leave-faq/pay-administration/what-are-federal-holidays/">„What are Federal holidays?“</a> (Thanksgiving: vierter Donnerstag im November)</li>
+      <li>Wikipedia: <a href="https://en.wikipedia.org/wiki/The_Emperor%27s_Birthday">„The Emperor’s Birthday“</a> (Japan: Datum wechselt mit dem Kaiser, seit 2020 der 23. Februar)</li>
   </ul>
   <div class="pager"><a class="pbtn" href="#uebersicht">← Zur Übersicht</a></div>
 </section>
@@ -853,6 +856,7 @@ function k1Kalender(an){
   document.getElementById("kal-box").hidden = !an;
   document.getElementById("ctr-3").hidden = !an;
   document.getElementById("kal-fazit").hidden = !an;
+  document.getElementById("kal-fussnote").hidden = !an;
   const c3 = document.getElementById("ctr-3"), el = document.getElementById("ctr-3-n");
   c3.classList.toggle("gut", an && n3 === TESTLISTE.length);
   c3.classList.toggle("schlecht", an && n3 < TESTLISTE.length);
