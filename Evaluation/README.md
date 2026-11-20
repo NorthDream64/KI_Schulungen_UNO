@@ -11,7 +11,7 @@ Grundlage ist der fiktive Anwendungsfall [„Sammel Deinen Traum“](../Use%20Ca
 ein Online-Auktionshaus mit einem Kundendienst-Bot. Am Kontrollfall „Auktionszeiten“ zeigt das Werkzeug,
 wie man vorab festlegt, was eine gute Antwort ist, wie Antworten nach festen Regeln und von einem
 KI-Bewerter geprüft werden – und warum ein Kontrollfall sorgfältig gebaut werden muss. In Reiter *5* kommen
-zwei Lehrfälle dazu: Der Prompt wird Fassung für Fassung verbessert, und der Kontrollfall zeigt nach jeder
+zwei Optimierungsfälle dazu: Der Prompt wird Fassung für Fassung verbessert, und der Kontrollfall zeigt nach jeder
 Änderung, ob sie etwas kaputt gemacht hat.
 
 ## Dateien
