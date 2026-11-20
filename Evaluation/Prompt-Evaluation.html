@@ -197,16 +197,19 @@ ol.zeit b{color:var(--amber);white-space:nowrap}
 .wer dt{font-weight:600;border-top:1px solid var(--rule);padding-top:10px;margin-top:10px}
 .wer dt:first-child{border-top:0;padding-top:0;margin-top:0}
 .wer dd{margin:3px 0 0}
-.kistatus{border-radius:8px;padding:10px 14px;font-size:15px;background:var(--quote)}
-.kistatus.on{background:var(--green-soft)}.kistatus.off{background:var(--amber-soft)}
-.msglist{display:grid;gap:10px;margin-top:12px}
-.mitem{display:grid;grid-template-columns:1fr auto;gap:2px 10px;align-items:center}
-.mitem .lang{grid-column:1/-1;font-size:13px;color:var(--muted)}
-.del{font:inherit;font-size:20px;line-height:1;width:44px;height:44px;border-radius:8px;border:1.5px solid var(--rule);background:var(--card);color:var(--muted);cursor:pointer}
-.addmsg{margin-top:16px}
-.addrow{display:flex;gap:8px;flex-wrap:wrap}
-.addrow input{flex:1 1 260px;min-height:44px;font:inherit;font-size:16px;padding:8px 12px;border:1.5px solid var(--rule);border-radius:8px;background:var(--bg);color:var(--ink)}
-.addrow .reveal{margin-top:0}
+.kifuss{margin-top:22px}
+.kacheln{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:12px}
+@media(max-width:860px){.kacheln{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:540px){.kacheln{grid-template-columns:1fr}}
+.kachel{background:var(--card);border:1.5px solid var(--rule);border-radius:12px;padding:12px 14px;display:flex;flex-direction:column;gap:8px;min-height:118px}
+.kachel.offen{border-style:dashed}
+.kachel.pass{border-color:var(--green)}.kachel.fail{border-color:var(--red)}
+.kkopf{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:13px;color:var(--muted)}
+.kkopf .badge-v{font-size:12px;padding:2px 10px}
+.kachel blockquote{margin:0;font-style:italic}
+.kachel textarea{font:inherit;font-size:16px;min-height:64px;resize:vertical;padding:8px 10px;border:1.5px solid var(--rule);border-radius:8px;background:var(--bg);color:var(--ink)}
+.ksprache{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:13px;color:var(--muted)}
+.ksprache select{font:inherit;font-size:14px;min-height:36px;padding:4px 8px;border:1.5px solid var(--rule);border-radius:8px;background:var(--bg);color:var(--ink)}
 .runbar{display:flex;flex-wrap:wrap;align-items:center;gap:12px;margin-top:18px}
 .runbar .reveal{margin-top:0}
 .res{background:var(--card);border:1px solid var(--rule);border-radius:12px;margin-top:14px}
@@ -648,7 +651,7 @@ footer{margin-top:36px;padding-top:14px;border-top:1px solid var(--rule);font-si
         <dt>Nennt 12 Uhr und 19 Uhr (bzw. 7 pm)</dt>
         <dd>Zahlen lassen sich sicher und kostenlos per Muster finden – egal, wie die Frage gestellt war.</dd>
         <dt>Übergibt nicht an einen Mitarbeiter</dt>
-        <dd>Das feste Antwortformat macht es ablesbar: Das Programm liest nur das Feld „Übergabe an Mitarbeiter“. Eine Frage nach den Auktionszeiten braucht keinen Menschen – und jede unnötige Übergabe kostet rund 15&nbsp;€.</dd>
+        <dd>Das feste Antwortformat macht es ablesbar: Das Programm liest nur das Feld „Übergabe an Mitarbeiter“. Eine Frage nach den Auktionszeiten braucht keinen Menschen – und jede unnötige Übergabe kostet rund 15&nbsp;€. Ausnahme: Schreibt jemand in einer anderen Sprache als Deutsch oder Englisch, soll der Bot übergeben. Dann erwartet der Kontrollfall „ja“.</dd>
       </dl>
     </div>
   </details>
@@ -668,6 +671,7 @@ footer{margin-top:36px;padding-top:14px;border-top:1px solid var(--rule);font-si
         <dt>Englische Antworten in englischer Uhrzeitschreibweise – und richtig (7 pm statt 19:00, 12 pm statt 12 am)</dt>
         <dd>Ob das Kriterium überhaupt gilt, hängt von der Sprache der Antwort ab – das muss man verstehen, nicht zählen. Und „12 am“ enthält die „12“, ist aber Mitternacht: Der Regel-Check würde es durchlassen.</dd>
       </dl>
+      <p class="small" style="margin:12px 0 0"><b>Anfragen in anderen Sprachen:</b> Hier stellt der KI-Bewerter drei andere Fragen – ob die Antwort auf Englisch ist, ob sie ankündigt, dass sich eine Kollegin oder ein Kollege meldet, und ob sie freundlich und knapp bleibt.</p>
     </div>
   </details>
 
@@ -677,15 +681,13 @@ footer{margin-top:36px;padding-top:14px;border-top:1px solid var(--rule);font-si
     <p style="margin:0">Die Kriterien prüfen die <b>Antwort</b>, nicht die Frage. Deshalb gelten sie für jede Formulierung, und ein Testfall kann beliebig viele Varianten der Kundennachricht haben. Dass der Bot eine neue Formulierung versteht, ist allerdings nicht garantiert – genau deshalb testet man sie.</p>
   </div>
 
-  <h3 class="sub3">Der Lauf: Kontrollfall K1 „Auktionszeiten“</h3>
-  <p id="ki-status" class="kistatus">Verbindung zur KI wird geprüft …</p>
-  <div id="msglist" class="msglist"></div>
-  <div class="addmsg">
-    <label class="fl" for="eigene">Eigene Formulierung hinzufügen – auf Deutsch oder Englisch</label>
-    <div class="addrow"><input id="eigene" type="text" placeholder="z. B. Wann kann man bei Euch bieten? – oder: When are you selling stuff?"><button id="add" class="reveal" type="button">Hinzufügen</button></div>
-  </div>
+  <h3 class="sub3">Der Testlauf: Kontrollfall K1 „Auktionszeiten“</h3>
+  <p>Fünf Kundennachrichten stammen aus dem Testfall. In der sechsten Kachel kannst Du eine eigene Formulierung testen – auf Deutsch, auf Englisch oder in einer anderen Sprache.</p>
+  <div class="kacheln" id="kacheln"></div>
   <div class="runbar"><button id="run" class="pbtn next" type="button" disabled>Testlauf starten</button><button id="stop" class="reveal" type="button" hidden>Abbrechen</button><span id="runinfo" class="small"></span></div>
+  <div class="ctr ctr-einzeln" id="t-ctr"><span class="ctr-lbl">Kontrollfall K1 im Testlauf</span><b class="ctr-num"><span id="t-n">–</span> von <span id="t-von">5</span></b><span class="ctr-sub" id="t-sub">noch nicht gelaufen</span></div>
   <div id="ergebnisse"></div>
+  <p id="ki-status" class="small kifuss">Verbindung zur KI wird geprüft …</p>
   <div class="pager"><a class="pbtn" href="#schritt-2">← Schritt 3</a><a class="pbtn next" href="#schritt-4">Weiter: Schritt 5 →</a></div>
 </section>
 
@@ -794,7 +796,10 @@ const FAELLE = [
     kontext:"Bieterin oder Bieter, keine Besonderheiten im Kundenkonto",
     nachrichten:[
       { sprache:"Deutsch",  text:"Hallo, wann finden Eure Auktionen eigentlich statt?" },
-      { sprache:"Englisch", text:"Hi, what time do your auctions take place?" }
+      { sprache:"Englisch", text:"Hi, what time do your auctions take place?" },
+      { sprache:"Deutsch",  text:"Wann kann man bei Euch bieten?" },
+      { sprache:"Englisch", text:"When are you selling stuff?" },
+      { sprache:"Deutsch",  text:"Zu welcher Uhrzeit sind Ihre Versteigerungen?" }
     ],
     entwurf:"Nennt die Auktionszeiten – werktags um 12 und 19 Uhr MEZ (im Sommer MESZ) – und antwortet in der Sprache der Anfrage, also auf Deutsch oder auf Englisch; bei englischen Antworten in der dort üblichen Schreibweise (12 pm bzw. noon und 7 pm). Beantwortet die Frage selbst, ohne an einen Mitarbeiter zu übergeben.",
     gut:"Nennt die Auktionszeiten – werktags um 12 und 19 Uhr MEZ (im Sommer MESZ) – und sagt dazu, dass an Wochenenden und an gesetzlichen Feiertagen in Berlin keine Auktionen stattfinden. Antwortet in der Sprache der Anfrage, also auf Deutsch oder auf Englisch; bei englischen Antworten in der dort üblichen Schreibweise (12 pm bzw. noon und 7 pm). Beantwortet die Frage selbst, ohne an einen Mitarbeiter zu übergeben. Zum Beispiel: ‚Unsere Auktionen finden werktags um 12 und 19 Uhr MEZ statt (im Sommer MESZ). An Wochenenden und an im Bundesland Berlin geltenden Feiertagen finden keine Auktionen statt.‘ bzw. ‚Our auctions take place on weekdays at 12 noon and 7 pm CET (CEST in summer). There are no auctions at weekends or on public holidays in Berlin.‘",
@@ -802,7 +807,11 @@ const FAELLE = [
     checks:[ { text:"nennt 12 Uhr", muster:/\b12\b/ },
              { text:"nennt 19 Uhr bzw. 7 pm", muster:/\b19\b|\b7([:.]00)?\s?(pm|p\.m\.)/i },
              { text:"Übergabe an Mitarbeiter: nein", feld:"uebergabe", erwartet:"nein" } ],
-    bewerter:["Ist die Antwort in derselben Sprache wie die Anfrage?","Sagt die Antwort, dass die Auktionen werktags stattfinden?","Sagt die Antwort, dass an Wochenenden und an Feiertagen keine Auktionen stattfinden?","Gibt die Antwort an, auf welche Zeitzone sich die Uhrzeiten beziehen?","Nur bei englischen Antworten: Verwendet die Antwort die dort übliche Uhrzeitschreibweise und nennt sie die Zeiten richtig – 12 pm bzw. noon und 7 pm (12 am wäre Mitternacht)? Bei deutschen Antworten gilt die Frage als erfüllt."] }
+    bewerter:["Ist die Antwort in derselben Sprache wie die Anfrage?","Sagt die Antwort, dass die Auktionen werktags stattfinden?","Sagt die Antwort, dass an Wochenenden und an Feiertagen keine Auktionen stattfinden?","Gibt die Antwort an, auf welche Zeitzone sich die Uhrzeiten beziehen?","Nur bei englischen Antworten: Verwendet die Antwort die dort übliche Uhrzeitschreibweise und nennt sie die Zeiten richtig – 12 pm bzw. noon und 7 pm (12 am wäre Mitternacht)? Bei deutschen Antworten gilt die Frage als erfüllt."],
+    /* Anfragen in anderen Sprachen als Deutsch oder Englisch: hier ist die Übergabe richtig */
+    andere:{ gut:"Antwortet kurz und freundlich auf Englisch, dass sich eine Kollegin oder ein Kollege meldet, und übergibt an einen Mitarbeiter.",
+      checks:[ { text:"Übergabe an Mitarbeiter: ja", feld:"uebergabe", erwartet:"ja" } ],
+      bewerter:["Ist die Antwort auf Englisch geschrieben?","Sagt die Antwort, dass sich eine Kollegin oder ein Kollege meldet?","Ist die Antwort freundlich und knapp?"] } }
 ];
 
 const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
@@ -952,7 +961,7 @@ zeichneTestliste();
 /* Schritt 2: der Prompt in Fassung v0 */
 const PROMPT_V0 = {
   rolle:
-`Du bist der digitale Kundendienst von „Sammel Deinen Traum“, einem Online-Auktionshaus für Sammlerstücke. Du beantwortest Fragen der interessierten Öffentlichkeit, seien es Bieterinnen und Bieter, Interessenten oder Einlieferinnen und Einlieferer. Antworte auf Deutsch oder Englisch, je nachdem, in welcher Sprache die Anfrage gestellt wurde – auf Deutsch mit „Sie“ – und immer freundlich, sachlich und knapp.`,
+`Du bist der digitale Kundendienst von „Sammel Deinen Traum“, einem Online-Auktionshaus für Sammlerstücke. Du beantwortest Fragen der interessierten Öffentlichkeit, seien es Bieterinnen und Bieter, Interessenten oder Einlieferinnen und Einlieferer. Antworte auf Deutsch oder Englisch, je nachdem, in welcher Sprache die Anfrage gestellt wurde – auf Deutsch mit „Sie“ – und immer freundlich, sachlich und knapp. Schreibt jemand in einer anderen Sprache, antworte kurz auf Englisch, dass sich eine Kollegin oder ein Kollege meldet, und übergib an einen Mitarbeiter.`,
   wissen:
 `- Auktionen finden werktags um 12:00 und 19:00 Uhr statt – im Winter MEZ (UTC+1), im Sommer MESZ (UTC+2).
 - An Wochenenden und an gesetzlichen Feiertagen des Landes Berlin finden keine Auktionen statt. Die Feiertage der nächsten zwölf Monate (vom System täglich aus dem separat gepflegten Feiertagskalender eingesetzt, Stand 01.01.2027): 01.01.2027, 08.03.2027, 26.03.2027, 29.03.2027, 01.05.2027, 06.05.2027, 17.05.2027, 03.10.2027, 25.12.2027 und 26.12.2027. Liegt ein Datum nach diesem Zeitraum, sag, dass die Termine dafür noch nicht feststehen.
@@ -963,7 +972,7 @@ const PROMPT_V0 = {
   regeln:
 `- Erfinde keine Informationen. Wenn Du etwas nicht weißt, sag es offen.
 - Nenne niemals individuelle Vertragskonditionen. Verweise bei Fragen zur Provision immer auf die AGB auf unserer Webseite.
-- Jede Übergabe an einen Mitarbeiter kostet uns rund 15 € und bindet den Ankauf. Löse Anliegen deshalb selbst und übergib nur bei Reklamationen zu abgeschlossenen Auktionen.`,
+- Jede Übergabe an einen Mitarbeiter kostet uns rund 15 € und bindet den Ankauf. Löse Anliegen deshalb selbst und übergib nur bei Reklamationen zu abgeschlossenen Auktionen und bei Anfragen in anderen Sprachen als Deutsch oder Englisch.`,
   format:
 `Antworte immer in genau diesem Format:
 Antwort: [Deine Nachricht an die Kundin oder den Kunden]
@@ -1049,41 +1058,67 @@ function leseUrteile(fall, text){
   }
 }
 
-/* Kundennachrichten: die beiden aus dem Testfall plus eigene Formulierungen */
-const FEST = FALL.nachrichten.map(n => ({ text: n.text, herkunft: `${n.sprache} · aus dem Testfall`, fest: true }));
-const MAX_EIGENE = 5;
-let eigene = [];
-try { eigene = JSON.parse(store.get("evallab-eigene") || "[]"); } catch (e) { eigene = []; }
-let sample = null, laeuft = false, ac = null;
-const nachrichtenListe = () => [...FEST, ...eigene.map(x => ({ text: x, herkunft: "eigene Formulierung", fest: false }))];
-function zeigeListe(){
-  document.getElementById("msglist").innerHTML = nachrichtenListe().map((n,i) => `
-    <div class="mitem"><span class="lang">${esc(n.herkunft)}</span><blockquote>„${esc(n.text)}“</blockquote>${n.fest ? "<span></span>" : `<button class="del" type="button" data-i="${i - FEST.length}" aria-label="Formulierung entfernen">×</button>`}</div>`).join("");
-  document.getElementById("add").disabled = eigene.length >= MAX_EIGENE;
+/* Kundennachrichten: fünf aus dem Testfall, eine eigene. Die Sprache legt fest, was als richtig gilt:
+   Deutsch und Englisch – die Kriterien des Kontrollfalls; andere Sprache – Übergabe an einen Mitarbeiter. */
+const FEST = FALL.nachrichten.map(n => ({ text: n.text, sprache: n.sprache, herkunft: `${n.sprache} · aus dem Testfall` }));
+const SPRACHEN = { "Deutsch":"Deutsch", "Englisch":"Englisch", "andere":"andere Sprache" };
+let sample = null, laeuft = false, ac = null, spracheVonHand = false;
+const erwartung = n => n.sprache === "andere" ? { ...FALL, ...FALL.andere } : FALL;
+function rateSprache(t){
+  const w = t.toLowerCase().match(/[a-zäöüß]+/g) || [];
+  if (!w.length) return null;
+  const de = new Set(["der","die","das","den","dem","und","ist","sind","wann","wie","was","ich","sie","ihr","ihre","euch","eure","man","bei","kann","gibt","auch","am","um","zu","nicht","finden","findet","statt","hallo","welcher","welche","mit","auf","für","noch","wo","uhr","uhrzeit"]);
+  const en = new Set(["the","and","is","are","what","when","how","do","does","your","you","can","there","any","hi","hello","which","time","of","for","where","sell","selling","auction","auctions"]);
+  let d = 0, e = 0;
+  for (const x of w) { if (de.has(x)) d++; if (en.has(x)) e++; }
+  if (!d && !e) return "andere";
+  return d >= e ? "Deutsch" : "Englisch";
 }
-function hinzufuegen(){
-  const f = document.getElementById("eigene"), v = f.value.trim();
-  if (!v || laeuft || eigene.length >= MAX_EIGENE) return;
-  eigene.push(v); store.set("evallab-eigene", JSON.stringify(eigene)); f.value = ""; zeigeListe();
+function eigeneNachricht(){
+  const t = document.getElementById("eigene").value.trim();
+  if (!t) return null;
+  const sp = document.getElementById("eigene-sprache").value;
+  return { text: t, sprache: sp, herkunft: `eigene Formulierung · ${SPRACHEN[sp]}` };
 }
-document.getElementById("add").addEventListener("click", hinzufuegen);
-document.getElementById("eigene").addEventListener("keydown", e => { if (e.key === "Enter") { e.preventDefault(); hinzufuegen(); } });
-document.getElementById("msglist").addEventListener("click", e => {
-  const b = e.target.closest(".del"); if (!b || laeuft) return;
-  eigene.splice(Number(b.dataset.i), 1); store.set("evallab-eigene", JSON.stringify(eigene)); zeigeListe();
-});
-zeigeListe();
+const nachrichtenListe = () => { const e = eigeneNachricht(); return e ? [...FEST, e] : [...FEST]; };
+function zeigeKacheln(){
+  document.getElementById("kacheln").innerHTML = FEST.map((n,i) => `
+    <div class="kachel" id="ka-${i}"><div class="kkopf"><span>${esc(n.herkunft)}</span><span class="badge-v wait" id="kb-${i}" hidden></span></div><blockquote>„${esc(n.text)}“</blockquote></div>`).join("") + `
+    <div class="kachel offen" id="ka-${FEST.length}"><div class="kkopf"><label for="eigene">Deine Formulierung</label><span class="badge-v wait" id="kb-${FEST.length}" hidden></span></div>
+      <textarea id="eigene" rows="3" placeholder="Eigene Kundennachricht eingeben"></textarea>
+      <label class="ksprache">Sprache der Nachricht <select id="eigene-sprache">${Object.entries(SPRACHEN).map(([w,t]) => `<option value="${w}">${t}</option>`).join("")}</select></label></div>`;
+  const f = document.getElementById("eigene"), sel = document.getElementById("eigene-sprache");
+  f.value = store.get("evallab-eigen-text");
+  sel.value = store.get("evallab-eigen-sprache") || "Deutsch";
+  f.addEventListener("input", () => {
+    store.set("evallab-eigen-text", f.value);
+    if (!f.value.trim()) spracheVonHand = false;
+    const g = rateSprache(f.value);
+    if (g && !spracheVonHand) { sel.value = g; store.set("evallab-eigen-sprache", g); }
+    zaehlerZurueck();
+  });
+  sel.addEventListener("change", () => { spracheVonHand = true; store.set("evallab-eigen-sprache", sel.value); zaehlerZurueck(); });
+}
+function zaehlerZurueck(){
+  if (laeuft) return;
+  const c = document.getElementById("t-ctr");
+  c.classList.remove("gut", "schlecht");
+  document.getElementById("t-n").textContent = "–";
+  document.getElementById("t-von").textContent = nachrichtenListe().length;
+  document.getElementById("t-sub").textContent = "noch nicht gelaufen";
+}
+zeigeKacheln(); zaehlerZurueck();
 
 /* Verbindung zu Claude – nur vorhanden, wenn die Seite in claude.ai läuft */
 const kiStatus = document.getElementById("ki-status"), runBtn = document.getElementById("run");
 function offline(){
-  kiStatus.className = "kistatus off";
   kiStatus.innerHTML = '<b>Nicht mit einer KI verbunden.</b> Wie Du die Datei mit Deiner KI verbindest, steht auf der <a href="#uebersicht">Übersicht</a> unter „Wie Du die HTML-Datei mit Deiner KI verbinden kannst“.';
+  document.getElementById("runinfo").textContent = "Ohne Verbindung zu einer KI lässt sich der Testlauf nicht starten – siehe Hinweis am Ende der Seite.";
   runBtn.disabled = true;
 }
 function online(){
-  kiStatus.className = "kistatus on";
   kiStatus.innerHTML = "<b>Mit Claude verbunden.</b> Jede Kundennachricht braucht zwei Anfragen: eine an den Bot, eine an den KI-Bewerter.";
+  document.getElementById("runinfo").textContent = "";
   runBtn.disabled = false;
 }
 if (window.claude && typeof window.claude.use === "function") {
@@ -1094,7 +1129,7 @@ const zeichen = ok => ok ? '<span class="ok">✓</span>' : '<span class="no">✗
 const karte = (i, n) => `
 <div class="res">
   <div class="reshead"><div><span class="lang">${esc(n.herkunft)}</span><blockquote>„${esc(n.text)}“</blockquote></div><span class="badge-v wait" id="v-${i}">wartet</span></div>
-  <div class="resrow"><b>1 · Antwort des Bots</b><div id="a-${i}" class="small">…</div></div>
+${n.sprache === "andere" ? `  <div class="resrow"><b>Erwartet</b><div class="small">${esc(FALL.andere.gut)}</div></div>\n` : ""}  <div class="resrow"><b>1 · Antwort des Bots</b><div id="a-${i}" class="small">…</div></div>
   <div class="resrow"><b>2 · Regel-Check</b><div id="r-${i}" class="small">…</div></div>
   <div class="resrow"><b>3 · KI-Bewerter</b><div id="k-${i}" class="small">…</div></div>
 </div>`;
@@ -1105,36 +1140,52 @@ async function lauf(){
   runBtn.disabled = true; document.getElementById("stop").hidden = false;
   const liste = nachrichtenListe(), ziel = document.getElementById("ergebnisse"), info = document.getElementById("runinfo");
   ziel.innerHTML = liste.map((n,i) => karte(i, n)).join("");
+  document.getElementById("eigene").disabled = document.getElementById("eigene-sprache").disabled = true;
+  for (let i = 0; i <= FEST.length; i++) {
+    const kb = document.getElementById("kb-" + i), ka = document.getElementById("ka-" + i);
+    ka.classList.remove("pass", "fail");
+    kb.hidden = i >= liste.length; kb.className = "badge-v wait"; kb.textContent = "wartet";
+  }
+  const ctr = document.getElementById("t-ctr"), tn = document.getElementById("t-n");
+  ctr.classList.remove("gut", "schlecht");
+  tn.textContent = "0"; document.getElementById("t-von").textContent = liste.length;
+  document.getElementById("t-sub").textContent = "läuft …";
   let bestanden = 0, fertig = 0;
   try {
     for (let i = 0; i < liste.length; i++) {
-      const n = liste[i], v = document.getElementById("v-" + i);
-      v.className = "badge-v run"; v.textContent = "läuft …";
+      const n = liste[i], v = document.getElementById("v-" + i), kb = document.getElementById("kb-" + i), F = erwartung(n);
+      v.className = kb.className = "badge-v run"; v.textContent = kb.textContent = "läuft …";
       info.textContent = `Formulierung ${i + 1} von ${liste.length}: Der Bot antwortet …`;
-      const bot = await sample(botEingabe(FALL, n.text), { cache: false, signal: ac.signal });
+      const bot = await sample(botEingabe(F, n.text), { cache: false, signal: ac.signal });
       const z = zerlege(bot.text || "");
       document.getElementById("a-" + i).innerHTML = `<div class="antwort">${esc(z.antwort)}</div><div>Übergabe an Mitarbeiter: <b>${esc(z.uebergabe)}</b>${z.format ? "" : ' · <span class="no">Antwortformat nicht eingehalten</span>'}</div>`;
-      const rc = regelChecks(FALL, z);
+      const rc = regelChecks(F, z);
       document.getElementById("r-" + i).innerHTML = `<ul class="checks">${rc.map(r => `<li>${zeichen(r.ok)} ${esc(r.text)} <span class="small">– ${esc(r.info)}</span></li>`).join("")}</ul>`;
       info.textContent = `Formulierung ${i + 1} von ${liste.length}: Der KI-Bewerter liest …`;
-      const kb = await sample(bewerterEingabe(FALL, n.text, z.antwort), { cache: false, signal: ac.signal });
-      const ur = leseUrteile(FALL, kb.text || "");
+      const kr = await sample(bewerterEingabe(F, n.text, z.antwort), { cache: false, signal: ac.signal });
+      const ur = leseUrteile(F, kr.text || "");
       document.getElementById("k-" + i).innerHTML = `<ul class="checks">${ur.map(u => `<li>${zeichen(u.ok)} ${esc(u.frage)}<br><span class="small">${esc(u.begruendung)}</span></li>`).join("")}</ul>`;
       const ok = rc.every(r => r.ok) && ur.every(u => u.ok);
-      v.className = "badge-v " + (ok ? "pass" : "fail"); v.textContent = ok ? "bestanden" : "nicht bestanden";
+      v.className = kb.className = "badge-v " + (ok ? "pass" : "fail"); v.textContent = kb.textContent = ok ? "bestanden" : "nicht bestanden";
+      document.getElementById("ka-" + i).classList.add(ok ? "pass" : "fail");
       if (ok) bestanden++;
       fertig++;
+      tn.textContent = bestanden;
     }
-    info.textContent = `Fertig: ${bestanden} von ${fertig} Formulierungen bestanden.`;
+    ctr.classList.add(bestanden === liste.length ? "gut" : "schlecht");
+    document.getElementById("t-sub").textContent = `bestanden · ${(100 * bestanden / liste.length).toFixed(0)}\u00a0%`;
+    info.textContent = `Fertig: ${bestanden} von ${fertig} Kundennachrichten bestanden.`;
   } catch (err) {
     const code = err && err.code;
     info.textContent = ac.signal.aborted ? `Abgebrochen nach ${fertig} von ${liste.length} Formulierungen.`
       : code === "not_granted" ? "Die Erlaubnis für Claude wurde nicht erteilt – der Lauf ist gestoppt."
       : code === "rate_limited" ? "Zu viele Anfragen in kurzer Zeit. Bitte einen Moment warten und den Lauf dann neu starten."
       : "Der Lauf ist mit einem Fehler abgebrochen: " + ((err && err.message) || err);
-    for (const v of ziel.querySelectorAll(".badge-v.run, .badge-v.wait")) { v.className = "badge-v wait"; v.textContent = "nicht gelaufen"; }
+    for (const v of document.querySelectorAll("#ergebnisse .badge-v.run, #ergebnisse .badge-v.wait, #kacheln .badge-v.run, #kacheln .badge-v.wait")) { v.className = "badge-v wait"; v.textContent = "nicht gelaufen"; }
+    document.getElementById("t-sub").textContent = `abgebrochen – ${bestanden} von ${fertig} bestanden`;
   } finally {
     laeuft = false; runBtn.disabled = !sample; document.getElementById("stop").hidden = true;
+    document.getElementById("eigene").disabled = document.getElementById("eigene-sprache").disabled = false;
   }
 }
 runBtn.addEventListener("click", lauf);
@@ -1143,7 +1194,8 @@ document.getElementById("stop").addEventListener("click", () => { if (ac) ac.abo
 /* Back-Up: was Bot und KI-Bewerter bekommen */
 document.getElementById("bot-eingabe").textContent = botEingabe(FALL, FALL.nachrichten[0].text);
 document.getElementById("bewerter-eingabe").textContent = bewerterEingabe(FALL, FALL.nachrichten[0].text, "[Hier steht die Antwort des Bots]");
-document.getElementById("regel-muster").textContent = FALL.checks.map(c => c.feld ? `${c.text}:  Feld „${c.feld}“ = „${c.erwartet}“` : `${c.text}:  ${c.muster}`).join("\n");
+document.getElementById("regel-muster").textContent = FALL.checks.map(c => c.feld ? `${c.text}:  Feld „${c.feld}“ = „${c.erwartet}“` : `${c.text}:  ${c.muster}`).join("\n")
+  + "\n\nBei Anfragen in anderen Sprachen:\n" + FALL.andere.checks.map(c => `${c.text}:  Feld „${c.feld}“ = „${c.erwartet}“`).join("\n");
 
 const k = FAELLE[0];
 const maschine = {
@@ -1152,7 +1204,12 @@ const maschine = {
   nachrichten: k.nachrichten,
   gutes_ergebnis: k.gut,
   regel_checks: k.checks.map(c => c.feld ? { beschreibung: c.text, feld: c.feld, erwartet: c.erwartet } : { beschreibung: c.text, muster: c.muster.source }),
-  fragen_an_bewerter: k.bewerter
+  fragen_an_bewerter: k.bewerter,
+  andere_sprache: {
+    gutes_ergebnis: k.andere.gut,
+    regel_checks: k.andere.checks.map(c => ({ beschreibung: c.text, feld: c.feld, erwartet: c.erwartet })),
+    fragen_an_bewerter: k.andere.bewerter
+  }
 };
 document.getElementById("json").textContent = JSON.stringify(maschine, null, 2);
 
@@ -1177,7 +1234,7 @@ const N_LF = 20;
 const nb = h => h.replace(/ (€|%)/g, "\u00a0$1");   /* kein Zeilenumbruch vor € und % */
 const [R_ERFINDE, R_2023, R_2025] = PROMPT_V0.regeln.split("\n").map(z => z.replace(/^-\s*/, ""));
 const R_ZWEIFEL = "Übergib im Zweifel an einen Mitarbeiter.";
-const R_ABWAEGUNG = "Eine Übergabe an einen Mitarbeiter kostet uns rund 15 € und bindet den Ankauf. Eine falsche Zusage kann deutlich teurer werden: Sagst Du die Annahme eines Stücks zu, dessen Herkunft nicht geklärt ist, drohen Rückabwicklung, Rechtsstreit und ein Schaden für unseren Ruf. Übergib deshalb an den Ankauf, wenn ein Stück auf 10.000 € oder mehr geschätzt wird, und bei Reklamationen zu abgeschlossenen Auktionen. Alle anderen Anliegen löst Du selbst.";
+const R_ABWAEGUNG = "Eine Übergabe an einen Mitarbeiter kostet uns rund 15 € und bindet den Ankauf. Eine falsche Zusage kann deutlich teurer werden: Sagst Du die Annahme eines Stücks zu, dessen Herkunft nicht geklärt ist, drohen Rückabwicklung, Rechtsstreit und ein Schaden für unseren Ruf. Übergib deshalb an einen Mitarbeiter, wenn ein Stück auf 10.000 € oder mehr geschätzt wird, bei Reklamationen zu abgeschlossenen Auktionen und bei Anfragen in anderen Sprachen als Deutsch oder Englisch. Alle anderen Anliegen löst Du selbst.";
 const R_DATEN = "Nenne Provisionssätze nur so, wie sie in den Kundendaten oder in unseren AGB stehen. Hat die Kundin oder der Kunde einen eigenen Rahmenvertrag, nenne den Satz daraus. Erfinde keine Konditionen.";
 
 const K1_FRAGE = "Findet am Montag, 29.03.2027, eine Auktion statt?";
@@ -1211,7 +1268,7 @@ const STUFEN = [
     n:{ A:2, B:12 }, k1Uebergabe:true,
     warum:"Fall B ist besser geworden, der Kontrollfall schlechter. Wie kann das sein – an den Fragen nach den Auktionszeiten hat sich nichts geändert?",
     grund:`<div class="box" style="margin-top:14px">
-      <p style="margin:0"><b>Ein Flicken auf einem Flicken.</b> Die neue Regel widerspricht der von 2025, die weiter im Prompt steht: Einmal soll der Bot nur bei Reklamationen übergeben, einmal „im Zweifel“. Welche Regel sich durchsetzt, ist nicht vorhersehbar – in Fall B übergibt der Bot nur in 12 von 20 Varianten.</p>
+      <p style="margin:0"><b>Ein Flicken auf einem Flicken.</b> Die neue Regel widerspricht der von 2025, die weiter im Prompt steht: Einmal soll der Bot nur in festgelegten Fällen übergeben, einmal „im Zweifel“. Welche Regel sich durchsetzt, ist nicht vorhersehbar – in Fall B übergibt der Bot nur in 12 von 20 Varianten.</p>
       <p style="margin:10px 0 0">Außerdem sagt „im Zweifel“ nicht, <b>wann</b> ein Zweifel vorliegt. An Feiertagen ist sich der Bot unsicher, ob vielleicht eine Sonderauktion stattfindet – und übergibt Fragen, die er vorher selbst richtig beantwortet hat. Jede dieser Übergaben kostet rund 15 €.</p>
       <p style="margin:10px 0 0"><b>Genau dafür gibt es den Kontrollfall.</b> Die Antworten selbst sind richtig. Aufgefallen ist die Verschlechterung nur durch den Regel-Check „Übergabe an Mitarbeiter: nein“ – ohne ihn stünde der Kontrollfall weiter bei 100 %.</p></div>`,
     frage:"<b>Und jetzt?</b> Wie lässt sich Fall B lösen, ohne dass der Kontrollfall darunter leidet?",
