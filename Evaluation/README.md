@@ -18,7 +18,7 @@ zwei Lehrfälle dazu: Der Prompt wird Fassung für Fassung verbessert, und der K
 
 | Datei | Zweck | Für wen |
 |---|---|---|
-| **Prompt-Evaluation.html** | Das Lab. Im Browser öffnen. Reiter: *Übersicht*, *1 · Testprozedur*, *2 · Erstellung Kontrollfall*, *3 · Übertragung auf den Kundendienst-Bot*, *4 · Eval-Lauf*, *5 · Optimierung*, *Back-Up: Daten und Code*, *Quellen*. **Kein Setup.** | Teilnehmende (Haupt-Werkzeug) |
+| **Prompt-Evaluation.html** | Das Lab. Im Browser öffnen. Reiter: *Übersicht*, *1 · Testprozedur*, *2 · Erstellung Kontrollfall*, *3 · Übertragung auf den Kundendienst-Bot*, *4 · Testlauf*, *5 · Optimierung*, *Back-Up: Daten und Code*, *Quellen*. **Kein Setup.** | Teilnehmende (Haupt-Werkzeug) |
 | **index.html** | Leitet nur auf `Prompt-Evaluation.html` weiter, damit der kurze Pages-Link funktioniert. | — |
 | **Testliste_Kontrollfall_K1.csv** | Die 50 Kundenanfragen zum Kontrollfall als Tabelle (öffnet in Excel): Antwort des Bots, richtige Antwort laut erster und laut überarbeiteter Fassung des guten Ergebnisses, Ergebnis. | Alle – so sieht eine Testliste aus |
 | **LICENSE** | Rechtevermerk für alle Inhalte dieses Ordners. | — |
@@ -27,7 +27,7 @@ zwei Lehrfälle dazu: Der Prompt wird Fassung für Fassung verbessert, und der K
 
 - **Ohne alles:** `Prompt-Evaluation.html` im Browser öffnen (oder den Pages-Link teilen).
 - Die Auswertungen in den Reitern *2* und *5* sind **Modellrechnungen** – sie laufen ohne KI.
-- Der **Eval-Lauf** in Reiter *4* braucht eine Verbindung zu einem KI-Modell. Wie das geht, steht auf der
+- Der **Testlauf** in Reiter *4* braucht eine Verbindung zu einem KI-Modell. Wie das geht, steht auf der
   *Übersicht* unter „Wie Du die HTML-Datei mit Deiner KI verbinden kannst“. Ohne Verbindung zeigt der Reiter,
   was geprüft würde, startet aber keinen Lauf.
 
