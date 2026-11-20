@@ -127,6 +127,16 @@ table.tl tr.durch td{background:var(--red-soft)}
 .regeln .tag{display:inline-block;font-size:12px;font-weight:700;border-radius:10px;padding:1px 8px;margin-right:8px;vertical-align:1px}
 .regeln li.neu .tag{background:var(--green);color:var(--card)}
 .regeln li.weg .tag{background:var(--rule);color:var(--ink)}
+.regeln li.schuld{border-color:var(--red);background:var(--red-soft)}
+.regeln .ziel{display:block;margin-top:4px;font-size:13px;font-weight:700;color:var(--red)}
+.lf-hinweis{margin:10px 0 0;padding-top:8px;border-top:1px solid var(--rule)}
+.fkopf{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 14px}
+.fkopf h3{margin:0}
+.infowrap{position:relative}
+.infobtn{font:inherit;font-size:14px;font-weight:600;border:1.5px solid var(--rule);border-radius:16px;background:var(--card);color:var(--accent);padding:4px 12px;cursor:pointer}
+.infopop{position:absolute;right:0;top:calc(100% + 6px);z-index:20;width:min(640px,88vw);max-height:60vh;overflow:auto;background:var(--card);color:var(--ink);border:1px solid var(--rule);border-radius:10px;box-shadow:0 8px 28px rgba(0,0,0,.25);padding:12px 14px}
+.infopop h4{margin:10px 0 4px;font-size:14px}
+.infopop .ptext{font-size:14px}
 
 
 #ansprechpartner .duo{margin-top:6px}
@@ -719,7 +729,9 @@ footer{margin-top:36px;padding-top:14px;border-top:1px solid var(--rule);font-si
   <h3 class="sub3">Der Prompt, Fassung für Fassung</h3>
   <div class="vwahl" role="group" aria-label="Fassung des Prompts" id="lf-wahl"></div>
   <div class="note" id="lf-fassung">
-    <h3 id="lf-titel"></h3>
+    <div class="fkopf"><h3 id="lf-titel"></h3>
+      <span class="infowrap"><button type="button" class="infobtn" id="lf-info-btn" aria-expanded="false" aria-controls="lf-info">ⓘ Vollständiger Prompt</button>
+      <div class="infopop" id="lf-info" role="dialog" aria-label="Vollständiger Prompt dieser Fassung" hidden></div></span></div>
     <p id="lf-was"></p>
     <p class="small" style="margin:12px 0 0"><b>Verhaltensregeln in dieser Fassung</b></p>
     <ul class="regeln" id="lf-regeln"></ul>
@@ -767,7 +779,7 @@ footer{margin-top:36px;padding-top:14px;border-top:1px solid var(--rule);font-si
     <summary>Annahmen dieser Modellrechnung</summary>
     <div class="aufin">
       <ul style="margin:0;padding-left:20px">
-        <li><b>Kontrollfall K1:</b> die 50 Anfragen aus Schritt 2, ausgezählt. Mit dem Feiertagskalender beantwortet der Bot jede Datumsfrage richtig. Bestanden ist eine Antwort nur, wenn sie richtig ist <b>und</b> der Bot nicht übergibt. In Fassung v1 übergibt der Bot an allen zehn Feiertagen der Liste, weil er nicht ausschließen kann, dass dort eine Sonderauktion stattfindet.</li>
+        <li><b>Kontrollfall K1:</b> die 50 Anfragen aus Schritt 2, ausgezählt. Mit dem Feiertagskalender beantwortet der Bot jede Datumsfrage richtig. Bestanden ist eine Antwort nur, wenn sie richtig ist <b>und</b> der Bot nicht übergibt. In Fassung v2 übergibt der Bot an allen zehn Feiertagen der Liste, weil er nicht ausschließen kann, dass dort eine Sonderauktion stattfindet.</li>
         <li><b>Optimierungsfälle OF1 und OF2:</b> je 20 Varianten – andere Kundinnen und Kunden, andere Formulierungen, andere Stücke und Rahmenverträge. Diese Zahlen sind für die Übung geschätzt, nicht ausgezählt. Sie veranschaulichen das Vorgehen, nicht das Verhalten eines bestimmten Modells.</li>
         <li>Auch mit einer falschen Regel scheitert ein Prompt nicht in jedem Lauf – deshalb bestehen in Fassung v0 einzelne Varianten.</li>
         <li>Grün zeigen die Zähler beim Kontrollfall nur bei 100&nbsp;%, bei den Optimierungsfällen ab 95&nbsp;%.</li>
@@ -1234,14 +1246,15 @@ document.getElementById("json").textContent = JSON.stringify(maschine, null, 2);
 
 /* ---------- Schritt 5: Kontrollfall und zwei Optimierungsfälle über vier Fassungen des Prompts ----------
    Modellrechnung. K1: die 50 Anfragen aus Schritt 2, ausgezählt – mit Feiertagskalender beantwortet der Bot jede Datumsfrage richtig;
-   in Fassung v1 übergibt er an allen zehn Feiertagen. A und B: je 20 Varianten, Zahlen für die Übung geschätzt. */
+   in Fassung v2 übergibt er an allen zehn Feiertagen. OF1 und OF2: je 20 Varianten, Zahlen für die Übung geschätzt. */
 const LEHRFAELLE = [
   { id:"OF1", rolle:"Optimierungsfall", titel:"Der alte Rahmenvertrag",
-    kontext:"Petra Lindner, Einlieferin seit 2017 · Rahmenvertrag 2017: Provision 12 % (aktueller Standard: 18 %)",
+    kontext:"Petra Lindner, Einlieferin seit 2017 · Rahmenvertrag 2017: Provision 12 %",
     nachricht:"Ich möchte wieder 30 Comics bei Euch einliefern. Mit welcher Provision muss ich rechnen?",
-    gut:"Nennt ihr direkt die 12 % aus ihrem Rahmenvertrag. Ein Hinweis auf die AGB ist höchstens eine Ergänzung.",
+    gut:"Nennt ihr direkt die 12 % aus ihrem Rahmenvertrag – die 18 % gelten seit 2025 nur für Neukundinnen und Neukunden. Ein Hinweis auf die AGB ist höchstens eine Ergänzung.",
+    hinweis:"Dass 12 % richtig sind, folgt aus einer Geschäftsregel: Seit 2025 gelten 18 % nur für Neukundinnen und Neukunden, ältere Rahmenverträge behalten ihren Satz. Hätte das Unternehmen alle Provisionen auf 18 % angehoben, wäre 18 % richtig. Welche Regel gilt, klärt der Fachbereich, bevor der Testfall gilt.",
     regel:["Die Antwort nennt „12 %“ (auch „12%“ oder „12 Prozent“)."],
-    bewerter:["Nennt die Antwort der Kundin ihren persönlichen Provisionssatz direkt?","Ist ein Hinweis auf AGB oder Webseite höchstens eine Ergänzung – und nicht die eigentliche Antwort?"] },
+    bewerter:["Nennt die Antwort der Kundin den Satz aus ihrem Rahmenvertrag – und nicht den Satz für Neukundinnen und Neukunden?","Ist ein Hinweis auf AGB oder Webseite höchstens eine Ergänzung – und nicht die eigentliche Antwort?"] },
   { id:"OF2", rolle:"Optimierungsfall", titel:"Die Gitarre ohne Papiere",
     kontext:"Neukunde, keine Vorgeschichte",
     nachricht:"Ich habe von meinem Onkel eine Gitarre geerbt, die angeblich Bob Dylan gehört hat. Papiere gibt es keine. Die bringt sicher 40.000 €. Wann kann ich sie vorbeibringen, und wie viel Provision zahlt man bei Euch?",
@@ -1250,7 +1263,7 @@ const LEHRFAELLE = [
     bewerter:["Verzichtet die Antwort auf jede Zusage, das Stück anzunehmen oder zu versteigern?","Verzichtet sie auf eine eigene Einschätzung von Echtheit oder Wert?","Erklärt sie die Herkunftsprüfung oder bittet sie um Nachweise?","Bleibt sie freundlich, ohne dem Kunden etwas zu unterstellen?"] }
 ];
 const N_LF = 20;
-const nb = h => h.replace(/ (€|%)/g, "\u00a0$1");   /* kein Zeilenumbruch vor € und % */
+const nb = h => h.replace(/ (€|%)/g, " $1");   /* kein Zeilenumbruch vor € und % */
 const [R_ERFINDE, R_2023, R_2025] = PROMPT_V0.regeln.split("\n").map(z => z.replace(/^-\s*/, ""));
 const R_ZWEIFEL = "Übergib im Zweifel an einen Mitarbeiter.";
 const R_ABWAEGUNG = "Eine Übergabe an einen Mitarbeiter kostet uns rund 15 € und bindet den Ankauf. Eine falsche Zusage kann deutlich teurer werden: Sagst Du die Annahme eines Stücks zu, dessen Herkunft nicht geklärt ist, drohen Rückabwicklung, Rechtsstreit und ein Schaden für unseren Ruf. Übergib deshalb an einen Mitarbeiter, wenn ein Stück auf 10.000 € oder mehr geschätzt wird, bei Reklamationen zu abgeschlossenen Auktionen und bei Anfragen in anderen Sprachen als Deutsch oder Englisch. Alle anderen Anliegen löst Du selbst.";
@@ -1259,32 +1272,52 @@ const R_DATEN = "Nenne Provisionssätze nur so, wie sie in den Kundendaten oder 
 const K1_FRAGE = "Findet am Montag, 29.03.2027, eine Auktion statt?";
 const BSP_K1_OK = { antwort:"Nein, am Ostermontag, 29.03.2027, finden keine Auktionen statt – in Berlin ist gesetzlicher Feiertag. Die nächsten Auktionen sind am Dienstag, 30.03.2027, um 12 und 19 Uhr MESZ.", uebergabe:"nein",
   checks:[[true,"Antwort richtig: An diesem Tag findet keine Auktion statt."],[true,"Regel-Check: Übergabe an Mitarbeiter steht auf „nein“."]] };
-const BSP_A_AGB = { antwort:"Vielen Dank, dass Sie wieder bei uns einliefern möchten, Frau Lindner! Zu individuellen Vertragskonditionen kann ich leider keine Auskunft geben. Die aktuellen Provisionssätze finden Sie in unseren AGB auf unserer Webseite.", uebergabe:"nein",
-  checks:[[false,"Regel-Check: „12 %“ nicht gefunden."],[false,"KI-Bewerter: Die Antwort nennt den persönlichen Provisionssatz nicht."],[false,"KI-Bewerter: Der Hinweis auf die AGB ist die eigentliche Antwort."]] };
+const BSP_A_18 = { antwort:"Vielen Dank, dass Sie wieder bei uns einliefern möchten, Frau Lindner! Unsere Provision beträgt 18 % des Zuschlags. Alle Einzelheiten finden Sie in unseren AGB auf unserer Webseite.", uebergabe:"nein",
+  checks:[[false,"Regel-Check: „12 %“ nicht gefunden."],[false,"KI-Bewerter: Die Antwort nennt den Satz für Neukundinnen und Neukunden (18 %) statt des Satzes aus ihrem Rahmenvertrag."],[true,"KI-Bewerter: Der Hinweis auf die AGB ist nur eine Ergänzung."]] };
+const BSP_A_OK = { antwort:"Schön, dass Sie wieder bei uns einliefern möchten, Frau Lindner! Laut Ihrem Rahmenvertrag von 2017 beträgt Ihre Provision 12 % des Zuschlags. Die allgemeinen Bedingungen finden Sie in unseren AGB auf unserer Webseite.", uebergabe:"nein",
+  checks:[[true,"Regel-Check: „12 %“ gefunden."],[true,"KI-Bewerter: nennt den Satz aus ihrem Rahmenvertrag."],[true,"KI-Bewerter: Der Hinweis auf die AGB ist nur eine Ergänzung."]] };
+const B_SCHLECHT = provision => ({ antwort:`Vielen Dank für Ihr Angebot – eine Gitarre aus dem Besitz von Bob Dylan ist ein ganz besonderes Stück! Ab einem Wert von 10.000 € prüft unser Ankauf vor der Annahme die Herkunft. Sie können die Gitarre gern bei uns einliefern. ${provision}`, uebergabe:"nein",
+  checks:[[false,"Regel-Check: Übergabe an Mitarbeiter steht auf „nein“ – erwartet: „ja“."],[false,"KI-Bewerter: Die Einladung zur Einlieferung wirkt wie eine Zusage."],[false,"KI-Bewerter: Die Antwort behandelt die Herkunft von Bob Dylan als Tatsache."],[true,"KI-Bewerter: erwähnt die Herkunftsprüfung."],[true,"KI-Bewerter: freundlich, unterstellt dem Kunden nichts."]] });
 const B_GUT_CHECKS = [[true,"Regel-Check: Übergabe an Mitarbeiter steht auf „ja“."],[true,"KI-Bewerter: keine Zusage, das Stück anzunehmen oder zu versteigern."],[true,"KI-Bewerter: keine eigene Einschätzung von Echtheit oder Wert."],[true,"KI-Bewerter: erklärt die Herkunftsprüfung und bittet um Nachweise."],[true,"KI-Bewerter: freundlich, unterstellt dem Kunden nichts."]];
 const B_GUT_ANFANG = "Vielen Dank für Ihre Nachricht! Bei Stücken mit einem geschätzten Wert ab 10.000 € prüft unser Ankauf zuerst die Herkunft. Haben Sie Fotos, Briefe oder andere Hinweise zur Geschichte der Gitarre? Dann halten Sie diese bitte bereit.";
+const PROV_AGB = "Alle Angaben zur Provision finden Sie in unseren AGB auf unserer Webseite.";
+const PROV_NEU = "Unsere Standardprovision beträgt 18 % des Zuschlags; Einzelheiten stehen in unseren AGB.";
 
+/* schuld: [Nummer der Regel in „regeln“, Markierung] – wird beim Aufdecken der Gründe rot hervorgehoben */
 const STUFEN = [
   { kurz:"v0 · heute", titel:"Fassung v0: der Kundendienst-Prompt von heute",
-    was:"Die Verhaltensregeln aus Schritt 3, unverändert. Seit Schritt 2 kennt der Bot außerdem die Berliner Feiertage aus dem Kalender.",
+    was:"Die Verhaltensregeln aus Schritt 3, unverändert – derselbe Prompt, mit dem der Kontrollfall im Testlauf alle Kriterien erfüllt. Seit Schritt 2 kennt der Bot außerdem die Berliner Feiertage aus dem Kalender.",
     regeln:[[R_ERFINDE],[R_2023],[R_2025]],
+    schuld:[[1,"verursacht den Fehler in OF1"],[2,"verursacht den Fehler in OF2"]],
     n:{ A:2, B:1 }, k1Uebergabe:false,
     warum:"Woran scheitern die beiden Optimierungsfälle – obwohl der Bot alles vor sich hat, was er für die richtige Antwort braucht?",
     grund:`<div class="duo">
       <div class="box"><h3>Regel aus Mitte 2023 → betrifft OF1</h3><blockquote>„${esc(R_2023)}“</blockquote>
-        <p style="margin:10px 0 0">Gedacht als Schutz vor einem Modell, das Konditionen erfunden hat. Heute hat der Bot die Vertragsdaten direkt vor sich – und die Regel verbietet ihm, die richtige Antwort zu geben. Ein alter Flicken verursacht einen neuen Fehler.</p></div>
+        <p style="margin:10px 0 0">Gedacht als Schutz vor einem Modell, das Konditionen erfunden hat. Heute hat der Bot Petras Vertragsdaten direkt vor sich – aber die Regel verbietet ihm, sie zu nennen. Also nennt er den Satz aus den AGB: 18 %. Der gilt seit 2025 aber nur für Neukundinnen und Neukunden. Ein alter Flicken verursacht einen neuen Fehler.</p></div>
       <div class="box"><h3>Regel aus Mitte 2025 → betrifft OF2</h3><blockquote>„${esc(R_2025)}“</blockquote>
         <p style="margin:10px 0 0">Die Regel nennt nur die Kosten einer Übergabe – nicht die Kosten einer falschen Zusage. Bei einer Gitarre ohne Herkunftsnachweis kann das teuer werden. Kennt der Bot nur eine Seite der Abwägung, entscheidet er sich für diese Seite.</p></div>
     </div>
-    <p style="margin:12px 0 0">Der Kontrollfall besteht: Fragen nach den Auktionszeiten berühren keine der beiden Regeln.</p>`,
-    frage:"<b>Und jetzt?</b> Wir beginnen mit OF2. Was würdet Ihr am Prompt ändern?",
-    bsp:{ K1:BSP_K1_OK, A:BSP_A_AGB,
-      B:{ antwort:"Vielen Dank für Ihr Angebot – eine Gitarre aus dem Besitz von Bob Dylan ist ein ganz besonderes Stück! Ab einem Wert von 10.000 € prüft unser Ankauf vor der Annahme die Herkunft. Sie können die Gitarre gern bei uns einliefern. Alle Angaben zur Provision finden Sie in unseren AGB auf unserer Webseite.", uebergabe:"nein",
-          checks:[[false,"Regel-Check: Übergabe an Mitarbeiter steht auf „nein“ – erwartet: „ja“."],[false,"KI-Bewerter: Die Einladung zur Einlieferung wirkt wie eine Zusage."],[false,"KI-Bewerter: Die Antwort behandelt die Herkunft von Bob Dylan als Tatsache."],[true,"KI-Bewerter: erwähnt die Herkunftsprüfung."],[true,"KI-Bewerter: freundlich, unterstellt dem Kunden nichts."]] } } },
-  { kurz:"v1 · Flicken", titel:"Fassung v1: ein schneller Flicken",
+    <p style="margin:12px 0 0">In den Verhaltensregeln oben sind beide Regeln jetzt rot markiert. Der Kontrollfall besteht trotzdem: Fragen nach den Auktionszeiten berühren keine der beiden Regeln.</p>`,
+    frage:"<b>Und jetzt?</b> Wir beginnen mit OF1. Was würdet Ihr am Prompt ändern?",
+    bsp:{ K1:BSP_K1_OK, A:BSP_A_18, B:B_SCHLECHT(PROV_AGB) } },
+  { kurz:"v1 · Vertragsdaten", titel:"Fassung v1: Vertragsdaten statt Verbot",
+    was:"Die Regel von 2023 wird neu geschrieben: Ihr Zweck bleibt, ihre Formulierung ändert sich.",
+    regeln:[[R_ERFINDE],[R_2023,"weg"],[R_DATEN,"neu"],[R_2025]],
+    schuld:[[3,"verursacht weiter den Fehler in OF2"]],
+    n:{ A:20, B:1 }, k1Uebergabe:false,
+    warum:"Was hat diese Änderung bewirkt – und was nicht?",
+    grund:`<div class="box" style="margin-top:14px">
+      <p style="margin:0"><b>Zweck bewahren, Formulierung erneuern.</b> 2023 sollte die Regel verhindern, dass der Bot Konditionen erfindet. Die neue Regel verfolgt dasselbe Ziel, lässt aber zu, was heute richtig ist: den Satz aus den Kundendaten zu nennen. OF1 besteht jetzt in allen 20 Varianten.</p>
+      <p style="margin:10px 0 0">Die 12&nbsp;% stehen nicht im Prompt, sondern im Kundenkonto: Das System setzt Petras Vertragsdaten in den Abschnitt „Kundendaten“ ein. Das funktioniert nur, weil die IT diese Anbindung gebaut hat und der Datenschutz geklärt hat, dass der Bot die Daten verwenden darf. Ohne sie hilft auch die beste Regel nicht.</p>
+      <p style="margin:10px 0 0"><b>Der Kontrollfall bleibt bei 100 %</b> – die Änderung hat nichts kaputt gemacht.</p>
+      <p style="margin:10px 0 0"><b>OF2 ist unverändert</b> – zu Recht: Die Änderung betraf nur die Provision. Eine Änderung nach der anderen; so bleibt erkennbar, welche Änderung was bewirkt.</p></div>`,
+    frage:"<b>Und jetzt?</b> Bleibt OF2. Was würdet Ihr ändern?",
+    bsp:{ K1:BSP_K1_OK, A:BSP_A_OK, B:B_SCHLECHT(PROV_NEU) } },
+  { kurz:"v2 · Flicken", titel:"Fassung v2: ein schneller Flicken",
     was:"Ein naheliegender Vorschlag aus dem Team: Ein Satz wird ergänzt. Die Regel von 2025 bleibt stehen.",
-    regeln:[[R_ERFINDE],[R_2023],[R_2025],[R_ZWEIFEL,"neu"]],
-    n:{ A:2, B:12 }, k1Uebergabe:true,
+    regeln:[[R_ERFINDE],[R_DATEN],[R_2025],[R_ZWEIFEL,"neu"]],
+    schuld:[[3,"verursacht die Fehler im Kontrollfall"],[2,"widerspricht dem neuen Satz"]],
+    n:{ A:20, B:12 }, k1Uebergabe:true,
     warum:"OF2 ist besser geworden, der Kontrollfall schlechter. Wie kann das sein – an den Fragen nach den Auktionszeiten hat sich nichts geändert?",
     grund:`<div class="box" style="margin-top:14px">
       <p style="margin:0"><b>Ein Flicken auf einem Flicken.</b> Die neue Regel widerspricht der von 2025, die weiter im Prompt steht: Einmal soll der Bot nur in festgelegten Fällen übergeben, einmal „im Zweifel“. Welche Regel sich durchsetzt, ist nicht vorhersehbar – in OF2 übergibt der Bot nur in 12 von 20 Varianten.</p>
@@ -1293,37 +1326,21 @@ const STUFEN = [
     frage:"<b>Und jetzt?</b> Wie lässt sich OF2 lösen, ohne dass der Kontrollfall darunter leidet?",
     bsp:{ K1:{ antwort:"Am Ostermontag, 29.03.2027, finden keine regulären Auktionen statt – in Berlin ist gesetzlicher Feiertag. Ob es an diesem Tag eine Sonderauktion gibt, kann Ihnen eine Kollegin sagen. Ich verbinde Sie gern.", uebergabe:"ja",
           checks:[[true,"Antwort richtig: An diesem Tag findet keine Auktion statt."],[false,"Regel-Check: Übergabe an Mitarbeiter steht auf „ja“ – erwartet: „nein“."]] },
-      A:{ antwort:"Vielen Dank, dass Sie wieder bei uns einliefern möchten, Frau Lindner! Zu Ihren persönlichen Konditionen verbinde ich Sie gern mit einer Kollegin. Allgemeine Angaben zur Provision finden Sie in unseren AGB auf unserer Webseite.", uebergabe:"ja",
-          checks:BSP_A_AGB.checks, hinweis:"OF1 prüft die Übergabe nicht. Sie hilft der Kundin hier nicht weiter – und kostet trotzdem rund 15 €." },
-      B:{ antwort:`${B_GUT_ANFANG} Ich verbinde Sie mit einer Kollegin aus dem Ankauf, die alles Weitere mit Ihnen bespricht. Alle Angaben zur Provision finden Sie in unseren AGB auf unserer Webseite.`, uebergabe:"ja",
-          checks:B_GUT_CHECKS, hinweis:"So antwortet der Bot in 12 von 20 Varianten. In den übrigen folgt er weiter der Regel von 2025 und antwortet wie in Fassung v0." } } },
-  { kurz:"v2 · Abwägung", titel:"Fassung v2: beide Seiten der Abwägung",
+      A:BSP_A_OK,
+      B:{ antwort:`${B_GUT_ANFANG} Ich verbinde Sie mit einer Kollegin aus dem Ankauf, die alles Weitere mit Ihnen bespricht. ${PROV_NEU}`, uebergabe:"ja",
+          checks:B_GUT_CHECKS, hinweis:"So antwortet der Bot in 12 von 20 Varianten. In den übrigen folgt er weiter der Regel von 2025 und antwortet wie in Fassung v1." } } },
+  { kurz:"v3 · Abwägung", titel:"Fassung v3: beide Seiten der Abwägung",
     was:"Der Flicken entfällt. Die Regel von 2025 wird neu geschrieben: Sie nennt jetzt beide Seiten der Abwägung – und eine klare Grenze.",
-    regeln:[[R_ERFINDE],[R_2023],[R_2025,"weg"],[R_ZWEIFEL,"weg"],[R_ABWAEGUNG,"neu"]],
-    n:{ A:2, B:19 }, k1Uebergabe:false,
-    warum:"Was hat die Änderung bewirkt – und was nicht?",
-    grund:`<div class="box" style="margin-top:14px">
-      <p style="margin:0"><b>Beide Seiten stehen jetzt im Prompt:</b> die Kosten einer Übergabe und die Kosten einer falschen Zusage – dazu eine klare Grenze von 10.000 €. Der widersprüchliche Flicken ist weg. OF2 besteht bis auf eine Variante, der Kontrollfall ist zurück bei 100 %.</p>
-      <p style="margin:10px 0 0">Die Angaben für die Abwägung liefert der Fachbereich: Der Ankauf kennt die Kosten einer Übergabe, die Rechtsabteilung das Risiko einer falschen Zusage.</p>
-      <p style="margin:10px 0 0"><b>OF1 ist unverändert</b> – zu Recht: Die Änderung betraf nur die Übergabe. Eine Änderung nach der anderen; so bleibt erkennbar, welche Änderung was bewirkt.</p></div>`,
-    frage:"<b>Und jetzt?</b> Bleibt OF1. Was würdet Ihr ändern?",
-    bsp:{ K1:BSP_K1_OK, A:BSP_A_AGB,
-      B:{ antwort:`${B_GUT_ANFANG} Ich gebe Ihre Anfrage an eine Kollegin im Ankauf weiter, die sich bei Ihnen meldet. Alle Angaben zur Provision finden Sie in unseren AGB auf unserer Webseite.`, uebergabe:"ja",
-          checks:B_GUT_CHECKS, hinweis:"So antwortet der Bot in 19 von 20 Varianten." } } },
-  { kurz:"v3 · Vertragsdaten", titel:"Fassung v3: Vertragsdaten statt Verbot",
-    was:"Die Regel von 2023 wird neu geschrieben: Ihr Zweck bleibt, ihre Formulierung ändert sich.",
-    regeln:[[R_ERFINDE],[R_2023,"weg"],[R_DATEN,"neu"],[R_ABWAEGUNG]],
+    regeln:[[R_ERFINDE],[R_DATEN],[R_2025,"weg"],[R_ZWEIFEL,"weg"],[R_ABWAEGUNG,"neu"]],
+    schuld:[],
     n:{ A:20, B:19 }, k1Uebergabe:false,
     warum:"Was hat diese Änderung bewirkt?",
     grund:`<div class="box" style="margin-top:14px">
-      <p style="margin:0"><b>Zweck bewahren, Formulierung erneuern.</b> 2023 sollte die Regel verhindern, dass der Bot Konditionen erfindet. Die neue Regel verfolgt dasselbe Ziel, lässt aber zu, was heute richtig ist: den Satz aus den Kundendaten zu nennen. OF1 besteht jetzt in allen 20 Varianten.</p>
-      <p style="margin:10px 0 0">Voraussetzung ist, dass die IT die Vertragsdaten in die Kundendaten liefert und der Datenschutz geklärt hat, dass der Bot sie verwenden darf.</p>
-      <p style="margin:10px 0 0"><b>Der Kontrollfall bleibt bei 100 %</b> – die Änderung hat nichts kaputt gemacht.</p></div>`,
+      <p style="margin:0"><b>Beide Seiten stehen jetzt im Prompt:</b> die Kosten einer Übergabe und die Kosten einer falschen Zusage – dazu eine klare Grenze von 10.000 €. Der widersprüchliche Flicken ist weg. OF2 besteht bis auf eine Variante, der Kontrollfall ist zurück bei 100 %, OF1 bleibt bei 100 %.</p>
+      <p style="margin:10px 0 0">Die Angaben für die Abwägung liefert der Fachbereich: Der Ankauf kennt die Kosten einer Übergabe, die Rechtsabteilung das Risiko einer falschen Zusage.</p></div>`,
     frage:null,
-    bsp:{ K1:BSP_K1_OK,
-      A:{ antwort:"Schön, dass Sie wieder bei uns einliefern möchten, Frau Lindner! Laut Ihrem Rahmenvertrag von 2017 beträgt Ihre Provision 12 % des Zuschlags. Die allgemeinen Bedingungen finden Sie in unseren AGB auf unserer Webseite.", uebergabe:"nein",
-          checks:[[true,"Regel-Check: „12 %“ gefunden."],[true,"KI-Bewerter: nennt den persönlichen Provisionssatz direkt."],[true,"KI-Bewerter: Der Hinweis auf die AGB ist nur eine Ergänzung."]] },
-      B:{ antwort:`${B_GUT_ANFANG} Ich gebe Ihre Anfrage an eine Kollegin im Ankauf weiter, die sich bei Ihnen meldet. Unsere Standardprovision beträgt 18 % des Zuschlags; Einzelheiten stehen in unseren AGB.`, uebergabe:"ja",
+    bsp:{ K1:BSP_K1_OK, A:BSP_A_OK,
+      B:{ antwort:`${B_GUT_ANFANG} Ich gebe Ihre Anfrage an eine Kollegin im Ankauf weiter, die sich bei Ihnen meldet. ${PROV_NEU}`, uebergabe:"ja",
           checks:B_GUT_CHECKS, hinweis:"So antwortet der Bot in 19 von 20 Varianten." } } }
 ];
 const LF_ERG = STUFEN.map(() => null);
@@ -1335,10 +1352,10 @@ document.getElementById("lf-karten").innerHTML = nb(LEHRFAELLE.map(f => `
 <div class="box lf">
   <p class="lf-kopf"><b>${esc(f.id)} · ${esc(f.rolle)}</b><span>${esc(f.titel)}</span></p>
   <dl>
-    <dt><i class="badge">2</i>Kontext</dt><dd>${esc(f.kontext)}</dd>
+    <dt><i class="badge">2</i>Kontext – Kundendaten aus dem Kundenkonto</dt><dd>${esc(f.kontext)}</dd>
     <dt><i class="badge">3</i>Kundennachricht</dt><dd><blockquote>„${esc(f.nachricht)}“</blockquote></dd>
     <dt><i class="badge">4</i>Gutes Ergebnis</dt><dd>${esc(f.gut)}</dd>
-  </dl>
+  </dl>${f.hinweis ? `<p class="small lf-hinweis">${esc(f.hinweis)}</p>` : ""}
   <details class="auf klein"><summary><i class="badge">5</i> Kriterien</summary><div class="aufin crit">
     <h4>Regel-Check</h4><ul>${liste(f.regel)}</ul>
     <h4 style="margin-top:10px">Fragen an den KI-Bewerter</h4><ul>${liste(f.bewerter)}</ul>
@@ -1368,8 +1385,12 @@ function lfWaehle(v){
   const s = STUFEN[v];
   document.getElementById("lf-titel").textContent = s.titel;
   document.getElementById("lf-was").textContent = s.was;
-  document.getElementById("lf-regeln").innerHTML = nb(s.regeln.map(([t, art]) =>
-    `<li${art ? ` class="${art}"` : ""}>${art === "neu" ? '<span class="tag">neu</span>' : art === "weg" ? '<span class="tag">entfällt</span>' : ""}<span class="rt">${esc(t)}</span></li>`).join(""));
+  document.getElementById("lf-regeln").innerHTML = nb(s.regeln.map(([t, art], i) =>
+    `<li data-i="${i}"${art ? ` class="${art}"` : ""}>${art === "neu" ? '<span class="tag">neu</span>' : art === "weg" ? '<span class="tag">entfällt</span>' : ""}<span class="rt">${esc(t)}</span></li>`).join(""));
+  const regelnJetzt = s.regeln.filter(([, art]) => art !== "weg").map(([t]) => "- " + t).join("\n");
+  document.getElementById("lf-info").innerHTML = nb(`<p class="small" style="margin:0 0 8px">Der Kundendienst-Prompt in ${esc(s.kurz.split(" · ")[0])} – ohne die Kundendaten, die das System je Kundin oder Kunde einsetzt.</p>` +
+    [["Rolle", PROMPT_V0.rolle], ["Wissen", PROMPT_V0.wissen], ["Verhaltensregeln", regelnJetzt], ["Antwortformat", PROMPT_V0.format]]
+      .map(([k, t]) => `<h4>${k}</h4><div class="ptext">${esc(t)}</div>`).join(""));
   for (const id of ["K1", "A", "B"]) lfZaehler(id, null);
   document.getElementById("lf-nachher").hidden = true;
   lfZeichneWahl(); lfZeichneVerlauf();
@@ -1410,6 +1431,16 @@ function lfAuswerten(){
   lfZeichneVerlauf();
 }
 document.getElementById("lf-run").addEventListener("click", lfAuswerten);
+(() => {
+  const ib = document.getElementById("lf-info-btn"), ip = document.getElementById("lf-info"), iw = ib.parentElement;
+  let fest = false;
+  const zeige = an => { ip.hidden = !an; ib.setAttribute("aria-expanded", String(an)); };
+  iw.addEventListener("mouseenter", () => zeige(true));
+  iw.addEventListener("mouseleave", () => { if (!fest) zeige(false); });
+  ib.addEventListener("click", () => { fest = !fest; zeige(fest); });
+  document.addEventListener("keydown", e => { if (e.key === "Escape") { fest = false; zeige(false); } });
+  document.addEventListener("click", e => { if (fest && !iw.contains(e.target)) { fest = false; zeige(false); } });
+})();
 document.getElementById("lf-wahl").addEventListener("click", e => {
   const b = e.target.closest(".vbtn"); if (b) lfWaehle(Number(b.dataset.v));
 });
@@ -1417,6 +1448,10 @@ document.getElementById("lf-grund-btn").addEventListener("click", e => {
   const s = STUFEN[lfAktiv];
   e.currentTarget.hidden = true;
   document.getElementById("lf-grund").hidden = false;
+  for (const [i, text] of s.schuld || []) {
+    const li = document.querySelector(`#lf-regeln li[data-i="${i}"]`);
+    if (li && !li.classList.contains("schuld")) { li.classList.add("schuld"); li.insertAdjacentHTML("beforeend", `<span class="ziel">${esc(text)}</span>`); }
+  }
   const fr = document.getElementById("lf-frage");
   if (s.frage) { fr.innerHTML = nb(s.frage); fr.hidden = false; document.getElementById("lf-weiter").hidden = false; }
   else document.getElementById("lf-fazit").hidden = false;
