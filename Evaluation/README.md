@@ -10,9 +10,9 @@ Teil des Kurses *KI-Manager:in* (KIM).
 Grundlage ist der fiktive Anwendungsfall [„Sammel Deinen Traum“](../Use%20Cases/UC05_Sammel_Deinen_Traum.md),
 ein Online-Auktionshaus mit einem Kundendienst-Bot. Am Kontrollfall „Auktionszeiten“ zeigt das Werkzeug,
 wie man vorab festlegt, was eine gute Antwort ist, wie Antworten nach festen Regeln und von einem
-KI-Bewerter geprüft werden – und warum ein Kontrollfall sorgfältig gebaut werden muss. In Reiter *5* kommen
-zwei Optimierungsfälle dazu: Der Prompt wird Fassung für Fassung verbessert, und der Kontrollfall zeigt nach jeder
-Änderung, ob sie etwas kaputt gemacht hat.
+KI-Bewerter geprüft werden – und warum ein Kontrollfall sorgfältig gebaut werden muss. In Reiter *5* kommt
+ein Optimierungsfall dazu – eine Bestandskundin fragt nach Terminen und Provision: Der Prompt wird Schritt für Schritt
+verbessert, und der Kontrollfall zeigt nach jeder Änderung, ob sie etwas kaputt gemacht hat.
 
 ## Dateien
 
@@ -20,7 +20,7 @@ zwei Optimierungsfälle dazu: Der Prompt wird Fassung für Fassung verbessert, u
 |---|---|---|
 | **Prompt-Evaluation.html** | Das Lab. Im Browser öffnen. Reiter: *Übersicht*, *1 · Testprozedur*, *2 · Erstellung Kontrollfall*, *3 · Übertragung auf den Kundendienst-Bot*, *4 · Testlauf*, *5 · Optimierung*, *Back-Up: Daten und Code*, *Quellen*. **Kein Setup.** | Teilnehmende (Haupt-Werkzeug) |
 | **index.html** | Leitet nur auf `Prompt-Evaluation.html` weiter, damit der kurze Pages-Link funktioniert. | — |
-| **Testliste_Kontrollfall_K1.csv** | Die 50 Kundenanfragen zum Kontrollfall als Tabelle (öffnet in Excel): Antwort des Bots, richtige Antwort laut erster und laut überarbeiteter Fassung des guten Ergebnisses, Ergebnis. | Alle – so sieht eine Testliste aus |
+| **Testliste_Kontrollfall_K.csv** | Die 50 Kundenanfragen zum Kontrollfall als Tabelle (öffnet in Excel): Antwort des Bots, richtige Antwort laut erster und laut überarbeiteter Fassung des guten Ergebnisses, Ergebnis. | Alle – so sieht eine Testliste aus |
 | **LICENSE** | Rechtevermerk für alle Inhalte dieses Ordners. | — |
 
 ## Nutzung
