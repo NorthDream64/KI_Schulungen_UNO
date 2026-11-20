@@ -221,6 +221,7 @@ ol.zeit b{color:var(--amber);white-space:nowrap}
 .runbar{display:flex;flex-wrap:wrap;align-items:center;gap:12px;margin-top:18px}
 .runbar .reveal{margin-top:0}
 .res{background:var(--card);border:1px solid var(--rule);border-radius:12px;margin-top:14px}
+#ergebnisse .res:first-child{margin-top:0}
 .reshead{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;padding:12px 16px;border-bottom:1px solid var(--rule)}
 .reshead .lang{display:block;font-size:13px;color:var(--muted);margin-bottom:2px}
 .resrow{display:grid;grid-template-columns:150px 1fr;gap:12px;padding:10px 16px;border-bottom:1px solid var(--rule)}
@@ -700,7 +701,10 @@ footer{margin-top:36px;padding-top:14px;border-top:1px solid var(--rule);font-si
   <div class="kacheln" id="kacheln"></div>
   <div class="runbar"><button id="run" class="pbtn next" type="button" disabled>Testlauf starten</button><button id="stop" class="reveal" type="button" hidden>Abbrechen</button><span id="runinfo" class="small"></span></div>
   <div class="ctr ctr-einzeln" id="t-ctr"><span class="ctr-lbl">Kontrollfall K1 im Testlauf</span><b class="ctr-num"><span id="t-n">–</span> von <span id="t-von">5</span></b><span class="ctr-sub" id="t-sub">noch nicht gelaufen</span></div>
-  <div id="ergebnisse"></div>
+  <details class="auf" id="ergebnisse-auf" hidden>
+    <summary>Antworten des Bots im Detail</summary>
+    <div class="aufin" id="ergebnisse"></div>
+  </details>
   <p id="ki-status" class="small kifuss">Verbindung zur KI wird geprüft …</p>
   <div class="pager"><a class="pbtn" href="#schritt-2">← Schritt 3</a><a class="pbtn next" href="#schritt-4">Weiter: Schritt 5 →</a></div>
 </section>
@@ -1154,6 +1158,7 @@ async function lauf(){
   runBtn.disabled = true; document.getElementById("stop").hidden = false;
   const liste = nachrichtenListe(), ziel = document.getElementById("ergebnisse"), info = document.getElementById("runinfo");
   ziel.innerHTML = liste.map((n,i) => karte(i, n)).join("");
+  document.getElementById("ergebnisse-auf").hidden = false;
   document.getElementById("eigene").disabled = document.getElementById("eigene-sprache").disabled = true;
   for (let i = 0; i <= FEST.length; i++) {
     const kb = document.getElementById("kb-" + i), ka = document.getElementById("ka-" + i);
