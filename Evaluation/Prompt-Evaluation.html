@@ -264,9 +264,9 @@ footer{margin-top:36px;padding-top:14px;border-top:1px solid var(--rule);font-si
     <a href="#uebersicht" data-reiter="uebersicht">Übersicht</a>
     <a href="#schritt-1" data-reiter="schritt-1">1 · Testprozedur</a>
     <a href="#schritt-1a" data-reiter="schritt-1a">2 · Erstellung Kontrollfall</a>
-    <a href="#schritt-2" data-reiter="schritt-2">3 · Optimierung des Kundendienst-Bots</a>
+    <a href="#schritt-2" data-reiter="schritt-2">3 · Übertragung auf den Kundendienst-Bot</a>
     <a href="#schritt-3" data-reiter="schritt-3">4 · Eval-Lauf</a>
-    <a href="#schritt-4" data-reiter="schritt-4">5 · Ergebnis</a>
+    <a href="#schritt-4" data-reiter="schritt-4">5 · Optimierung</a>
     <a href="#technik" data-reiter="technik">Back-Up: Daten und Code</a>
     <a href="#quellen" data-reiter="quellen">Quellen</a>
   </nav>
@@ -277,11 +277,11 @@ footer{margin-top:36px;padding-top:14px;border-top:1px solid var(--rule);font-si
   <div class="arr" aria-hidden="true">→</div>
   <a class="st" href="#schritt-1a"><i>2</i><b>Erstellung Kontrollfall</b><span>Wie sieht ein gutes Ergebnis aus?</span></a>
   <div class="arr" aria-hidden="true">→</div>
-  <a class="st" href="#schritt-2"><i>3</i><b>Optimierung des Kundendienst-Bots</b><span>Was weiß und darf der Bot?</span></a>
+  <a class="st" href="#schritt-2"><i>3</i><b>Übertragung auf den Kundendienst-Bot</b><span>Was weiß und darf der Bot?</span></a>
   <div class="arr" aria-hidden="true">→</div>
   <a class="st" href="#schritt-3"><i>4</i><b>Eval-Lauf</b><span>Bot antwortet, Bewerter liest mit</span></a>
   <div class="arr" aria-hidden="true">→</div>
-  <a class="st" href="#schritt-4"><i>5</i><b>Ergebnis</b><span>Bestanden oder nicht – und warum?</span></a>
+  <a class="st" href="#schritt-4"><i>5</i><b>Optimierung</b><span>Was hilft – und was macht etwas kaputt?</span></a>
   <div class="loopwrap" aria-hidden="true"><div></div></div>
   <p class="looplabel">↺ Prompt verbessern und erneut laufen lassen – die Testfälle bleiben unverändert</p>
 </nav>
@@ -330,7 +330,7 @@ footer{margin-top:36px;padding-top:14px;border-top:1px solid var(--rule);font-si
       <table class="stack">
         <thead><tr><th>Information</th><th>Wer hält sie</th><th>Betrifft</th></tr></thead>
         <tbody>
-          <tr><td>Geschäftsregeln und das „gute Ergebnis“</td><td>Fachbereich (z. B. Leitung Kundenservice)</td><td>beide Bewerter</td></tr>
+          <tr><td>Geschäftsregeln und das „gute Ergebnis“</td><td>Fachbereich (z. B. Leitung Kundendienst)</td><td>beide Bewerter</td></tr>
           <tr><td>Feste Regeln in Klartext</td><td>Fachbereich; die Umsetzung in Programmcode macht die eigene IT</td><td>code-based grader</td></tr>
           <tr><td>Ja/Nein-Fragen an den Bewerter</td><td>Fachbereich zusammen mit Dir</td><td>model-based grader</td></tr>
           <tr><td>Welches Modell antwortet, welches bewertet</td><td>eigene IT</td><td>beide Bewerter</td></tr>
@@ -574,13 +574,13 @@ footer{margin-top:36px;padding-top:14px;border-top:1px solid var(--rule);font-si
 
 <!-- ============ Schritt 2 ============ -->
 <section class="sec" data-view="schritt-2" hidden>
-  <p>Mithilfe des Kontrollfalls soll nun ein dem Publikum gewandter Bot und dessen <b>Customer Service Prompt</b> optimiert werden. Dabei wird geschaut, wie gut der Prompt einerseits den Kontrollfall bearbeitet (hier sollte die Erfolgsquote stets 100&nbsp;% betragen), wie gut er andererseits andere Geschäftsvorfälle bewältigt – dazu dient die sog. „Evaluation“, kurz: Eval.</p>
-  <p>Im Folgenden siehst Du diesen <b>Kundenservice-Prompt</b> – warum muss der überhaupt angepasst werden? Wie viele andere Abläufe im Unternehmen ändern sich auch die Rahmenbedingungen und Regeln, nach denen der Kundendienst funktioniert. Es gibt beispielsweise neue Rabattkonditionen, neue Märkte mit neuen Währungen und Wechselkursen werden erschlossen, neue Ausschlusskriterien oder Rückgabefristen werden in den AGB hinterlegt. All diese Veränderungen und Verbesserungen muss der Kundendienst-Bot erfolgreich verarbeiten.</p>
+  <p>Warum muss ein Prompt überhaupt angepasst werden? Wie bei vielen anderen Abläufen im Unternehmen ändern sich auch im Kundendienst die Rahmenbedingungen: neue Rabattkonditionen, neue Märkte mit anderen Währungen, neue Ausschlusskriterien oder Rückgabefristen in den AGB. Jede dieser Änderungen landet als neue Regel im Prompt – und jede neue Regel kann etwas verschlechtern, das bisher funktioniert hat.</p>
+  <p>Deshalb arbeitet das Eval mit zwei Arten von Testfällen: Der <b>Kontrollfall</b> aus Schritt 2 muss nach jeder Änderung bei 100&nbsp;% bleiben. <b>Neue Testfälle</b> zeigen, ob eine Änderung das bewirkt, was sie soll. Zuerst schauen wir uns an, wie der <b>Kundendienst-Prompt</b> (engl. customer service prompt) heute aussieht.</p>
 
   <div class="note">
     <h3>Nehmen wir an, der Bot hat folgende Geschichte …</h3>
     <ol class="zeit">
-      <li><b>Anfang 2023</b>Der Service-Assistent geht mit Rolle, Wissen und Antwortformat an den Start.</li>
+      <li><b>Anfang 2023</b>Der Kundendienst-Bot geht mit Rolle, Wissen und Antwortformat an den Start.</li>
       <li><b>Mitte 2023</b>Der damalige Bot sagt einem Kunden einen Sonderrabatt zu, den es nie gab. Eine Verhaltensregel wird ergänzt.</li>
       <li><b>Mitte 2025</b>Der Ankauf ist mit Bewertungen überlastet, der Bot reicht zu viele Routinefragen weiter. Eine zweite Verhaltensregel wird ergänzt.</li>
       <li><b>Mitte 2026</b>Umstieg auf ein neues, leistungsfähigeres KI-Modell. Der Prompt wird unverändert übernommen.</li>
@@ -602,7 +602,7 @@ footer{margin-top:36px;padding-top:14px;border-top:1px solid var(--rule);font-si
   </div>
 
   <h3 class="sub3">Gegenwärtiger Aufbau des Kundendienst-Prompts (nach Erstellung des Kontrollfalls)</h3>
-  <p>So sieht der Prompt aus, mit dem der Customer-Service-Assistent heute arbeitet (Fassung v0). <mark class="k1">Grün markiert und nummeriert</mark> sind die Stellen, aus denen der Bot die Antwort für den Kontrollfall aus Schritt 2 ableitet – die Tabelle unter dem Prompt ordnet sie zu.</p>
+  <p>So sieht der Prompt aus, mit dem der Kundendienst-Bot heute arbeitet (Fassung v0). <mark class="k1">Grün markiert und nummeriert</mark> sind die Stellen, aus denen der Bot die Antwort für den Kontrollfall aus Schritt 2 ableitet – die Tabelle unter dem Prompt ordnet sie zu.</p>
   <div class="prompt">
     <div class="pblock">
       <div class="pmeta"><b>Rolle</b><span>Wer bin ich, für wen arbeite ich, in welchem Ton?</span></div>
@@ -627,7 +627,7 @@ footer{margin-top:36px;padding-top:14px;border-top:1px solid var(--rule);font-si
   </div>
 
     <h3 class="sub3">Wo steckt der Kontrollfall im Prompt?</h3>
-  <p>In Schritt 2 haben wir festgelegt, wie eine gute Antwort auf die Frage nach den Auktionszeiten aussieht. Die Tabelle zeigt die überarbeitete Fassung Stück für Stück – und daneben die Stelle im Prompt, aus der der Bot die jeweilige Angabe hat. <b>Wichtig:</b> Das "gute Ergebnis" selbst steht nie im Prompt. Es ist die Messlatte – und die wird im Test gesetzt. Im Prompt stehen die Geschäftsregeln, aus denen der Bot seine Antwort ableitet.</p>
+  <p>In Schritt 2 haben wir festgelegt, wie eine gute Antwort auf die Frage nach den Auktionszeiten aussieht. Die Tabelle zeigt die überarbeitete Fassung Stück für Stück – und daneben die Stelle im Prompt, aus der der Bot die jeweilige Angabe hat. <b>Wichtig:</b> Das „gute Ergebnis“ selbst steht nie im Prompt. Es ist die Messlatte – und die wird im Test gesetzt. Im Prompt stehen die Geschäftsregeln, aus denen der Bot seine Antwort ableitet.</p>
   <table class="stack" id="k1-zuordnung">
     <thead><tr><th>Nr.</th><th>Gutes Ergebnis aus Schritt 2 (überarbeitete Fassung)</th><th>Woher der Bot das weiß</th></tr></thead>
     <tbody></tbody>
@@ -685,7 +685,7 @@ footer{margin-top:36px;padding-top:14px;border-top:1px solid var(--rule);font-si
 
 <!-- ============ Schritt 4 ============ -->
 <section class="sec" data-view="schritt-4" hidden>
-  <p>Der Kontrollfall steht. Jetzt kommen zwei <b>Lehrfälle</b> dazu: Anfragen, mit denen der Bot heute schlecht umgeht. Wir verbessern den Kundenservice-Prompt – eine Änderung nach der anderen. Nach jeder Änderung laufen alle drei Testfälle erneut: Die Lehrfälle zeigen, ob die Änderung hilft. Der Kontrollfall zeigt, ob sie etwas kaputt macht, das vorher funktioniert hat.</p>
+  <p>Der Kontrollfall steht. Jetzt kommen zwei <b>Lehrfälle</b> dazu: Anfragen, mit denen der Bot heute schlecht umgeht. Wir verbessern den Kundendienst-Prompt – eine Änderung nach der anderen. Nach jeder Änderung laufen alle drei Testfälle erneut: Die Lehrfälle zeigen, ob die Änderung hilft. Der Kontrollfall zeigt, ob sie etwas kaputt macht, das vorher funktioniert hat.</p>
 
   <h3 class="sub3">Die beiden Lehrfälle</h3>
   <div class="duo" id="lf-karten"></div>
@@ -946,7 +946,7 @@ zeichneTestliste();
 /* Schritt 2: der Prompt in Fassung v0 */
 const PROMPT_V0 = {
   rolle:
-`Du bist der digitale Kundenservice von „Sammel Deinen Traum“, einem Online-Auktionshaus für Sammlerstücke. Du beantwortest Fragen von Bieterinnen und Bietern sowie von Einlieferinnen und Einlieferern. Antworte auf Deutsch oder Englisch, je nachdem, in welcher Sprache die Anfrage gestellt wurde – auf Deutsch mit „Sie“ – und immer freundlich, sachlich und knapp.`,
+`Du bist der digitale Kundendienst von „Sammel Deinen Traum“, einem Online-Auktionshaus für Sammlerstücke. Du beantwortest Fragen der interessierten Öffentlichkeit, seien es Bieterinnen und Bieter, Interessenten oder Einlieferinnen und Einlieferer. Antworte auf Deutsch oder Englisch, je nachdem, in welcher Sprache die Anfrage gestellt wurde – auf Deutsch mit „Sie“ – und immer freundlich, sachlich und knapp.`,
   wissen:
 `- Auktionen finden werktags um 12:00 und 19:00 Uhr statt – im Winter MEZ (UTC+1), im Sommer MESZ (UTC+2).
 - An Wochenenden und an gesetzlichen Feiertagen des Landes Berlin finden keine Auktionen statt. Die Feiertage 2027 (vom System aus dem Feiertagskalender eingesetzt): 01.01., 08.03., 26.03., 29.03., 01.05., 06.05., 17.05., 03.10., 25.12. und 26.12.
@@ -1014,11 +1014,11 @@ function promptText(kundendaten){
 /* ---------- Schritt 3: der Eval-Lauf ---------- */
 const FALL = FAELLE[0];
 function botEingabe(fall, nachricht){
-  return `Du arbeitest im Folgenden als Kundenservice-Bot. Das sind die Anweisungen des Unternehmens:\n\n${promptText(fall.kontext)}\n\n<kundennachricht>\n${nachricht}\n</kundennachricht>\n\nAntworte jetzt als dieser Bot – genau im vorgegebenen Antwortformat.`;
+  return `Du arbeitest im Folgenden als Kundendienst-Bot. Das sind die Anweisungen des Unternehmens:\n\n${promptText(fall.kontext)}\n\n<kundennachricht>\n${nachricht}\n</kundennachricht>\n\nAntworte jetzt als dieser Bot – genau im vorgegebenen Antwortformat.`;
 }
 function bewerterEingabe(fall, nachricht, antwort){
   const fragen = fall.bewerter.map((q,i) => `${i+1}. ${q}`).join("\n");
-  return `Du bist ein unparteiischer, genauer Bewerter. Du prüfst die Antwort eines Kundenservice-Bots des Online-Auktionshauses „Sammel Deinen Traum“.\n\n<kundennachricht>\n${nachricht}\n</kundennachricht>\n\n<kundendaten>\n${fall.kontext}\n</kundendaten>\n\n<gutes_ergebnis>\n${fall.gut}\n</gutes_ergebnis>\n\n<antwort_des_bots>\n${antwort}\n</antwort_des_bots>\n\nBeantworte jede Frage ausschließlich anhand der Antwort des Bots mit ja oder nein und begründe Dein Urteil in genau einem Satz auf Deutsch:\n${fragen}\n\nAntworte nur mit JSON in dieser Form, ohne weiteren Text:\n{"urteile":[{"nr":1,"urteil":"ja","begruendung":"…"}]}`;
+  return `Du bist ein unparteiischer, genauer Bewerter. Du prüfst die Antwort eines Kundendienst-Bots des Online-Auktionshauses „Sammel Deinen Traum“.\n\n<kundennachricht>\n${nachricht}\n</kundennachricht>\n\n<kundendaten>\n${fall.kontext}\n</kundendaten>\n\n<gutes_ergebnis>\n${fall.gut}\n</gutes_ergebnis>\n\n<antwort_des_bots>\n${antwort}\n</antwort_des_bots>\n\nBeantworte jede Frage ausschließlich anhand der Antwort des Bots mit ja oder nein und begründe Dein Urteil in genau einem Satz auf Deutsch:\n${fragen}\n\nAntworte nur mit JSON in dieser Form, ohne weiteren Text:\n{"urteile":[{"nr":1,"urteil":"ja","begruendung":"…"}]}`;
 }
 function zerlege(roh){
   const m = roh.match(/Antwort:\s*([\s\S]*?)\s*Übergabe an Mitarbeiter:\s*\[?\s*(ja|nein)/i);
@@ -1187,7 +1187,7 @@ const B_GUT_CHECKS = [[true,"Regel-Check: Übergabe an Mitarbeiter steht auf „
 const B_GUT_ANFANG = "Vielen Dank für Ihre Nachricht! Bei Stücken mit einem geschätzten Wert ab 10.000 € prüft unser Ankauf zuerst die Herkunft. Haben Sie Fotos, Briefe oder andere Hinweise zur Geschichte der Gitarre? Dann halten Sie diese bitte bereit.";
 
 const STUFEN = [
-  { kurz:"v0 · heute", titel:"Fassung v0: der Kundenservice-Prompt von heute",
+  { kurz:"v0 · heute", titel:"Fassung v0: der Kundendienst-Prompt von heute",
     was:"Die Verhaltensregeln aus Schritt 3, unverändert. Seit Schritt 2 kennt der Bot außerdem die Berliner Feiertage aus dem Kalender.",
     regeln:[[R_ERFINDE],[R_2023],[R_2025]],
     n:{ A:2, B:1 }, k1Uebergabe:false,
