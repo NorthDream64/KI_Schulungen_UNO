@@ -18,7 +18,7 @@ zwei Lehrfälle dazu: Der Prompt wird Fassung für Fassung verbessert, und der K
 
 | Datei | Zweck | Für wen |
 |---|---|---|
-| **Prompt-Evaluation.html** | Das Lab. Im Browser öffnen. Reiter: *Übersicht*, *1 · Testprozedur*, *2 · Erstellung Kontrollfall*, *3 · Prompt*, *4 · Eval-Lauf*, *5 · Ergebnis*, *Back-Up: Daten und Code*, *Quellen*. **Kein Setup.** | Teilnehmende (Haupt-Werkzeug) |
+| **Prompt-Evaluation.html** | Das Lab. Im Browser öffnen. Reiter: *Übersicht*, *1 · Testprozedur*, *2 · Erstellung Kontrollfall*, *3 · Optimierung des Kundendienst-Bots*, *4 · Eval-Lauf*, *5 · Ergebnis*, *Back-Up: Daten und Code*, *Quellen*. **Kein Setup.** | Teilnehmende (Haupt-Werkzeug) |
 | **index.html** | Leitet nur auf `Prompt-Evaluation.html` weiter, damit der kurze Pages-Link funktioniert. | — |
 | **Testliste_Kontrollfall_K1.csv** | Die 50 Kundenanfragen zum Kontrollfall als Tabelle (öffnet in Excel): Antwort des Bots, richtige Antwort laut erster und laut überarbeiteter Fassung des guten Ergebnisses, Ergebnis. | Alle – so sieht eine Testliste aus |
 | **LICENSE** | Rechtevermerk für alle Inhalte dieses Ordners. | — |
