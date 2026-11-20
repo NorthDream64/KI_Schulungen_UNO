@@ -151,6 +151,14 @@ textarea{width:100%;min-height:84px;font:inherit;font-size:16px;padding:10px 12p
 .reveal{font:inherit;font-size:15px;min-height:44px;margin-top:10px;padding:8px 16px;border-radius:8px;border:1.5px solid var(--accent);background:transparent;color:var(--accent);cursor:pointer;font-weight:600}
 .entwurf{font-size:15px;padding:10px 12px;border:1px dashed var(--rule);border-radius:8px;background:var(--quote)}
 .sol{margin-top:12px;background:var(--green-soft);border-radius:8px;padding:10px 14px}
+.entscheid{background:var(--green-soft);border:1px solid color-mix(in srgb,var(--green) 35%,transparent);border-radius:10px;padding:14px 18px;margin:20px 0}
+.entscheid h3{color:var(--green);margin:0 0 6px}
+.ent-reihe{display:grid;grid-template-columns:200px 1fr;gap:4px 16px;padding:10px 0;border-top:1px solid color-mix(in srgb,var(--green) 25%,transparent)}
+.ent-reihe:first-of-type{border-top:0}
+.ent-reihe b{display:block}.ent-reihe .small{display:block}
+.ent-reihe p{margin:0}
+.ent-fazit{margin:10px 0 0;padding-top:10px;border-top:1px solid color-mix(in srgb,var(--green) 25%,transparent)}
+@media(max-width:640px){.ent-reihe{grid-template-columns:1fr}}
 .sol b{color:var(--green)}
 .msgs{display:grid;gap:8px}.msgs .lang{display:block;font-size:13px;color:var(--muted);margin-bottom:2px}
 .crit h4{margin:0 0 4px;font-size:14px;color:var(--muted)}
@@ -672,6 +680,14 @@ footer{margin-top:36px;padding-top:14px;border-top:1px solid var(--rule);font-si
       <p class="small" style="margin:12px 0 0"><b>Anfragen in anderen Sprachen:</b> Hier stellt der KI-Bewerter drei andere Fragen – ob die Antwort auf Englisch ist, ob sie ankündigt, dass sich eine Kollegin oder ein Kollege meldet, und ob sie freundlich und knapp bleibt.</p>
     </div>
   </details>
+
+  <div class="entscheid">
+    <h3>Wer entscheidet was?</h3>
+    <div class="ent-reihe"><div><b>Der Bot</b><span class="small">während des Testlaufs</span></div><p>Er liest die Kundennachricht, erkennt selbst, in welcher Sprache sie geschrieben ist, und wendet die Regel aus dem Prompt an. Bei einer anderen Sprache als Deutsch oder Englisch schreibt er „Übergabe an Mitarbeiter: ja“ in seine Antwort.</p></div>
+    <div class="ent-reihe"><div><b>Der Testfall</b><span class="small">vorher, vom Fachbereich angelegt</span></div><p>Für jede Testnachricht steht fest, in welcher Sprache sie geschrieben ist und was richtig ist: „nein“ bei Deutsch und Englisch, „ja“ bei anderen Sprachen. Das ist der Lösungsschlüssel. Bei der eigenen Formulierung legst Du die Sprache in der Kachel fest.</p></div>
+    <div class="ent-reihe"><div><b>Regel&#8209;Check und KI&#8209;Bewerter</b><span class="small">nach der Antwort des Bots</span></div><p>Beide prüfen dieselbe Antwort, jeder für sich, und beide nehmen den Maßstab aus dem Testfall. Der Regel-Check vergleicht nur den Wert im Feld mit dem Lösungsschlüssel – verstehen muss er dafür nichts.</p></div>
+    <p class="ent-fazit">Geprüft wird also, ob der Bot die Sprache erkennt und die Regel befolgt. Das geht nur, weil die richtige Antwort für jede Testnachricht vorher feststeht – wie bei einer Klausur mit Lösungsschlüssel.</p>
+  </div>
 
   <div class="note">
     <h3>Warum der Bot auch andere Formulierungen versteht</h3>
