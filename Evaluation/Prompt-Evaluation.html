@@ -648,7 +648,7 @@ footer{margin-top:36px;padding-top:14px;border-top:1px solid var(--rule);font-si
 
 <!-- ============ Schritt 3 ============ -->
 <section class="sec" data-view="schritt-3" hidden>
-  <p>Jetzt bekommt eine echte KI die Kundennachricht aus dem Kontrollfall und antwortet darauf. Neben Prompt und Kundennachricht erhält der Bot die Kundendaten und weitere Daten, die das System einsetzt – z.&nbsp;B. die Feiertage aus dem Kalender. Danach prüfen zwei Bewerter (engl. grader) die Antwort: sowohl der Regel-Check als auch der KI-Bewerter. Der KI-Bewerter sieht den Prompt dabei nicht – er beurteilt die Antwort so, wie sie bei der Kundin ankommt. Eine Antwort gilt nur dann als bestanden, wenn alle Kriterien erfüllt sind.</p>
+  <p>Jetzt bekommt eine echte KI die Kundennachricht aus dem Kontrollfall und antwortet darauf. Neben Prompt und Kundennachricht erhält der Bot die Kundendaten und weitere Daten, die das System einsetzt – z.&nbsp;B. die Feiertage aus dem Kalender. Danach prüfen zwei Bewerter (engl. grader) die Antwort, unabhängig voneinander: der Regel-Check und der KI-Bewerter. Der KI-Bewerter sieht den Prompt dabei nicht – er beurteilt die Antwort so, wie sie bei der Kundin ankommt. Eine Antwort gilt nur dann als bestanden, wenn alle Kriterien erfüllt sind.</p>
 
   <h3 class="sub3">Wer prüft was im Kontrollfall?</h3>
   <details class="auf eng">
@@ -1143,9 +1143,9 @@ const zeichen = ok => ok ? '<span class="ok">✓</span>' : '<span class="no">✗
 const karte = (i, n) => `
 <div class="res">
   <div class="reshead"><div><span class="lang">${esc(n.herkunft)}</span><blockquote>„${esc(n.text)}“</blockquote></div><span class="badge-v wait" id="v-${i}">wartet</span></div>
-${n.sprache === "andere" ? `  <div class="resrow"><b>Erwartet</b><div class="small">${esc(FALL.andere.gut)}</div></div>\n` : ""}  <div class="resrow"><b>1 · Antwort des Bots</b><div id="a-${i}" class="small">…</div></div>
-  <div class="resrow"><b>2 · Regel-Check</b><div id="r-${i}" class="small">…</div></div>
-  <div class="resrow"><b>3 · KI-Bewerter</b><div id="k-${i}" class="small">…</div></div>
+${n.sprache === "andere" ? `  <div class="resrow"><b>Erwartet</b><div class="small">${esc(FALL.andere.gut)}</div></div>\n` : ""}  <div class="resrow"><b>Antwort des Bots</b><div id="a-${i}" class="small">…</div></div>
+  <div class="resrow"><b>Regel-Check</b><div id="r-${i}" class="small">…</div></div>
+  <div class="resrow"><b>KI-Bewerter</b><div id="k-${i}" class="small">…</div></div>
 </div>`;
 
 async function lauf(){
