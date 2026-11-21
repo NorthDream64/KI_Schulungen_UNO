@@ -445,7 +445,7 @@ footer{margin-top:36px;padding-top:14px;border-top:1px solid var(--rule);font-si
       <li>Auktionen finden werktags um 12:00 und 19:00 Uhr statt – im Winter MEZ (UTC+1), im Sommer MESZ (UTC+2).</li>
       <li>An Wochenenden und an gesetzlichen Feiertagen des Landes Berlin finden keine Auktionen statt.</li>
       <li>Die Standardprovision beträgt 18 % des Zuschlags.</li>
-      <li>Ältere Rahmenverträge können abweichende Sätze enthalten. Den günstigeren Satz daraus erhalten gute Verkäuferinnen und Verkäufer: wer in den letzten zwölf Monaten mehr als drei Einlieferungen hatte oder mehr als 5.000&nbsp;€ Zuschlag erzielt hat.</li>
+      <li>Verträge, die vor dem 01.01.2025 abgeschlossen wurden, können abweichende Sätze enthalten. Den günstigeren Satz daraus erhalten gute Verkäuferinnen und Verkäufer: wer in den letzten zwölf Monaten mehr als drei Einlieferungen hatte oder mehr als 5.000&nbsp;€ Zuschlag erzielt hat.</li>
       <li>Eingelieferte Stücke kommen per Post: Versand innerhalb der EU bis zu drei Tage, außerhalb der EU bis zu zehn Tage. Danach braucht der Ankauf einen Tag für Prüfung und Verwaltung, bevor ein Stück in eine Auktion kommt.</li>
       <li>Ab einem geschätzten Wert von 10.000 € prüft der Ankauf die Herkunft, bevor ein Stück angenommen wird.</li>
       <li>Der Bot antwortet auf Deutsch (default) oder auf Englisch. Bei einer englischen Antwort übernimmt er die dort üblichen Uhrzeitangaben.</li>
@@ -839,7 +839,7 @@ footer{margin-top:36px;padding-top:14px;border-top:1px solid var(--rule);font-si
       <ul style="margin:0;padding-left:20px">
         <li><b>Testdatum:</b> Für den Optimierungsfall setzt das System als heutiges Datum Donnerstag, 29.04.2027, ein. „Nächster Mittwoch“ ist damit der 05.05.2027, „nächster Donnerstag“ der 06.05.2027 – Christi Himmelfahrt. Das Zwölf-Monats-Fenster des Feiertagskalenders reicht dann bis April 2028. Für den Kontrollfall gilt Freitag, 01.01.2027.</li>
         <li><b>Kontrollfall K:</b> die 50 Anfragen aus Schritt 2, ausgezählt. Mit dem Feiertagskalender beantwortet der Bot jede Datumsfrage richtig. Bestanden ist eine Antwort nur, wenn sie richtig ist <b>und</b> der Bot nicht übergibt. Keine der Änderungen berührt diese Fragen; der Kontrollfall besteht deshalb in jeder Fassung.</li>
-        <li><b>Optimierungsfall OF:</b> Petras Anfrage. Die Antworten des Bots sind für die Übung erstellt. Sie veranschaulichen das Vorgehen, nicht das Verhalten eines bestimmten Modells. Ein echter Optimierungsfall enthielte mehrere Varianten der Anfrage – andere Kundinnen und Kunden mit älterem Rahmenvertrag, mit mehr oder weniger Einlieferungen und Zuschlag, in der EU oder außerhalb.</li>
+        <li><b>Optimierungsfall OF:</b> Petras Anfrage. Die Antworten des Bots sind für die Übung erstellt. Sie veranschaulichen das Vorgehen, nicht das Verhalten eines bestimmten Modells. Ein echter Optimierungsfall enthielte mehrere Varianten der Anfrage – andere Kundinnen und Kunden, deren Vertrag vor dem 01.01.2025 abgeschlossen wurde – mit mehr oder weniger Einlieferungen und Zuschlag, in der EU oder außerhalb.</li>
         <li>Grün ist der Kontrollfall nur, wenn alle 50 Anfragen bestehen, Petras Anfrage nur, wenn alle vier Kriterien erfüllt sind.</li>
         <li>Ein echtes Sprachmodell antwortet nicht jedes Mal gleich. Ob eine Änderung hilft, zeigt nur ein echter Lauf – am besten mehrfach.</li>
       </ul>
@@ -1068,7 +1068,7 @@ const PROMPT_V0 = {
 - Heute ist Freitag, 01.01.2027 (vom System täglich eingesetzt).
 - An Wochenenden und an gesetzlichen Feiertagen des Landes Berlin finden keine Auktionen statt. Die Feiertage der nächsten zwölf Monate (vom System täglich aus dem separat gepflegten Feiertagskalender eingesetzt): 01.01.2027, 08.03.2027, 26.03.2027, 29.03.2027, 01.05.2027, 06.05.2027, 17.05.2027, 03.10.2027, 25.12.2027 und 26.12.2027. Liegt ein Datum nach diesem Zeitraum, sag, dass die Termine dafür noch nicht feststehen.
 - Die Standardprovision beträgt 18 % des Zuschlags.
-- Ältere Rahmenverträge können abweichende Sätze enthalten.
+- Verträge, die vor dem 01.01.2025 abgeschlossen wurden, können abweichende Sätze enthalten.
 - Ab einem geschätzten Wert von 10.000 € prüft der Ankauf die Herkunft, bevor ein Stück angenommen wird.
 - Der Bot antwortet auf Deutsch (default) oder auf Englisch. Bei einer englischen Antwort übernimmt er die dort üblichen Uhrzeitangaben.`,
   regeln:
@@ -1319,19 +1319,18 @@ document.getElementById("json").textContent = JSON.stringify(maschine, null, 2);
 /* ---------- Schritt 5: Kontrollfall K und Optimierungsfall OF über sechs Fassungen des Prompts ----------
    Modellrechnung. K: die 50 Anfragen aus Schritt 2, ausgezählt – mit Feiertagskalender beantwortet der Bot jede Datumsfrage richtig. OF: Petras Anfrage, Antworten für die Übung erstellt. Testdatum: 29.04.2027. */
 const OF = { id:"OF", rolle:"Optimierungsfall", titel:"Die Bestandskundin",
-  kontext:"Petra Lindner · Testdatum: Donnerstag, 29.04.2027 · Im Kundenkonto: Einlieferin seit 2017, Wohnsitz Deutschland, Rahmenvertrag 2017 mit 12 % Provision, zwei Einlieferungen in den letzten zwölf Monaten · Ihre Zuschlagssumme führt die Buchhaltung, nicht das Kundenkonto",
+  kontext:"Petra Lindner · Testdatum: Donnerstag, 29.04.2027 · Im Kundenkonto: Einlieferin seit 2017, Wohnsitz Deutschland, Vertrag von 2017 mit 12 % Provision, zwei Einlieferungen in den letzten zwölf Monaten · Ihre Zuschlagssumme führt die Buchhaltung, nicht das Kundenkonto",
   kontextHinweis:"Was davon der Bot zu sehen bekommt, hängt von der Fassung des Prompts ab.",
   nachricht:"Ich möchte wieder 30 Comics bei Euch verkaufen, am besten nächsten Mittwoch oder Donnerstag. Geht das? Mit welcher Provision kann ich rechnen? Ich habe gehört, Ihr habt die Provision erhöht.",
-  gut:"Nennt die Termine konkret: Am Mittwoch, 05.05.2027, finden Auktionen um 12 und 19 Uhr MESZ statt, am Donnerstag, 06.05.2027 (Christi Himmelfahrt), nicht. Nennt die Fristen: Versand innerhalb der EU bis zu drei Tage, außerhalb der EU bis zu zehn Tage, danach ein Tag für Prüfung und Verwaltung. Erklärt, dass Petras Rahmenvertrag von 2017 12 % vorsieht und die 18 % seit 2025 für Neukundinnen und Neukunden gelten. Petra hatte in den letzten zwölf Monaten nur zwei Einlieferungen; ob sie über ihre Zuschlagssumme den günstigeren Satz erhält, kann der Bot nicht prüfen. Deshalb sagt er keinen Satz verbindlich zu und übergibt an den Ankauf.",
-  hinweis:"Die Geschäftsregel dahinter legt der Fachbereich fest: Seit 2025 gelten 18 % für Neukundinnen und Neukunden. Den günstigeren Satz aus einem älteren Rahmenvertrag erhalten gute Verkäuferinnen und Verkäufer – wer in den letzten zwölf Monaten mehr als drei Einlieferungen hatte oder mehr als 5.000 € Zuschlag erzielt hat. Ohne diese Regel ließe sich nicht sagen, ob 12 % oder 18 % richtig ist.",
+  gut:"Nennt die Termine konkret: Am Mittwoch, 05.05.2027, finden Auktionen um 12 und 19 Uhr MESZ statt, am Donnerstag, 06.05.2027 (Christi Himmelfahrt), nicht. Nennt die Fristen: Versand innerhalb der EU bis zu drei Tage, außerhalb der EU bis zu zehn Tage, danach ein Tag für Prüfung und Verwaltung. Erklärt, dass Petras Vertrag von 2017 12 % vorsieht und die 18 % seit 2025 für Neukundinnen und Neukunden gelten. Petra hatte in den letzten zwölf Monaten nur zwei Einlieferungen; ob sie über ihre Zuschlagssumme den günstigeren Satz erhält, kann der Bot nicht prüfen. Deshalb sagt er keinen Satz verbindlich zu und übergibt an den Ankauf.",
+  hinweis:"Die Geschäftsregel dahinter legt der Fachbereich fest: Seit 2025 gelten 18 % für Neukundinnen und Neukunden. Den günstigeren Satz aus einem Vertrag, der vor dem 01.01.2025 abgeschlossen wurde, erhalten gute Verkäuferinnen und Verkäufer – wer in den letzten zwölf Monaten mehr als drei Einlieferungen hatte oder mehr als 5.000 € Zuschlag erzielt hat. Ohne diese Regel ließe sich nicht sagen, ob 12 % oder 18 % richtig ist.",
   regel:["Die Antwort nennt den 05.05. als Auktionstermin.","Die Antwort nennt „12 %“ (auch „12%“ oder „12 Prozent“).","Das Feld „Übergabe an Mitarbeiter“ steht auf „ja“."],
-  bewerter:["Sagt die Antwort, dass am Mittwoch, 05.05.2027, Auktionen um 12 und 19 Uhr stattfinden und am Donnerstag, 06.05.2027, wegen des Feiertags nicht?","Nennt die Antwort die Fristen für Versand und Prüfung?","Erklärt die Antwort, dass Petras Rahmenvertrag 12 % vorsieht und die 18 % seit 2025 für Neukundinnen und Neukunden gelten?","Verzichtet die Antwort darauf, einen Provisionssatz verbindlich zuzusagen, und kündigt sie an, dass sich der Ankauf meldet?"] };
+  bewerter:["Sagt die Antwort, dass am Mittwoch, 05.05.2027, Auktionen um 12 und 19 Uhr stattfinden und am Donnerstag, 06.05.2027, wegen des Feiertags nicht?","Nennt die Antwort die Fristen für Versand und Prüfung?","Erklärt die Antwort, dass Petras Vertrag 12 % vorsieht und die 18 % seit 2025 für Neukundinnen und Neukunden gelten?","Verzichtet die Antwort darauf, einen Provisionssatz verbindlich zuzusagen, und kündigt sie an, dass sich der Ankauf meldet?"] };
 const KRITERIEN = ["Termine: Mittwoch ja, Donnerstag Feiertag","Fristen für Versand und Prüfung","Provision: 12 % laut Vertrag, 18 % für Neukunden","Kein Satz verbindlich, Übergabe an den Ankauf"];
 const nb = h => h.replace(/ (€|%)/g, " $1");   /* kein Zeilenumbruch vor € und % */
 
 /* Bausteine des Prompts, die sich von Fassung zu Fassung ändern */
 const [R_ERFINDE, R_2023, R_2025] = PROMPT_V0.regeln.split("\n").map(z => z.replace(/^-\s*/, ""));
-const W_PROVISION = PROMPT_V0.wissen.split("\n").filter(z => /provision|Rahmenvertr/i.test(z)).map(z => z.replace(/^-\s*/, ""));
 const LISTE_K = "01.01.2027, 08.03.2027, 26.03.2027, 29.03.2027, 01.05.2027, 06.05.2027, 17.05.2027, 03.10.2027, 25.12.2027 und 26.12.2027";
 const LISTE_OF = "01.05.2027, 06.05.2027, 17.05.2027, 03.10.2027, 25.12.2027, 26.12.2027, 01.01.2028, 08.03.2028, 14.04.2028 und 17.04.2028";
 const W_HEUTE_K = "Heute ist Freitag, 01.01.2027 (vom System täglich eingesetzt).";
@@ -1340,12 +1339,12 @@ const W_HEUTE_OF = "Heute ist Donnerstag, 29.04.2027 (vom System täglich einges
 const WISSEN_OF = PROMPT_V0.wissen.replace(W_HEUTE_K, W_HEUTE_OF).replace(LISTE_K, LISTE_OF);
 if (!PROMPT_V0.wissen.includes(W_HEUTE_K) || !PROMPT_V0.wissen.includes(LISTE_K)) console.warn("Schritt 5: Datum oder Feiertagsliste im Prompt geändert – WISSEN_OF prüfen");
 const W_VORLAUF = "Eingelieferte Stücke kommen per Post. Für den Versand rechne innerhalb der EU mit bis zu drei Tagen, außerhalb der EU mit bis zu zehn Tagen. Danach brauchen wir einen weiteren Tag für Prüfung und Verwaltung, bevor ein Stück in eine Auktion kommt.";
-const W_GUT = "Den günstigeren Satz aus einem älteren Rahmenvertrag erhalten nur gute Verkäuferinnen und Verkäufer: wer in den letzten zwölf Monaten mehr als drei Einlieferungen hatte oder mehr als 5.000 € Zuschlag erzielt hat.";
+const W_GUT = "Den günstigeren Satz aus einem Vertrag, der vor dem 01.01.2025 abgeschlossen wurde, erhalten nur gute Verkäuferinnen und Verkäufer: wer in den letzten zwölf Monaten mehr als drei Einlieferungen hatte oder mehr als 5.000 € Zuschlag erzielt hat.";
 const KD_0 = "Petra Lindner";
-const KD_KONTO = "Petra Lindner · Einlieferin seit 2017 · Wohnsitz: Deutschland · Rahmenvertrag 2017: Provision 12 %";
+const KD_KONTO = "Petra Lindner · Einlieferin seit 2017 · Wohnsitz: Deutschland · Vertrag von 2017: Provision 12 %";
 const KD_GUT = "Einlieferungen in den letzten zwölf Monaten: 2 (vom System gezählt) · Zuschlagssumme der letzten zwölf Monate: nicht verfügbar (liegt in der Buchhaltung)";
-const R_DATEN = "Nenne Provisionssätze nur so, wie sie in den Kundendaten oder in unseren AGB stehen. Hat die Kundin oder der Kunde einen älteren Rahmenvertrag, nenne den Satz daraus und erkläre, dass seit 2025 für Neukundinnen und Neukunden 18 % gelten. Erfinde keine Konditionen.";
-const R_ABWAEGUNG = "Eine Übergabe an einen Mitarbeiter kostet uns rund 15 € und bindet den Ankauf. Eine falsche Auskunft zur Provision kann eine langjährige Kundin oder einen langjährigen Kunden verärgern – das kostet am Ende mehr. Übergib deshalb an den Ankauf, wenn bei einer Kundin oder einem Kunden mit älterem Rahmenvertrag nicht feststeht, ob der günstigere Satz gilt, und nenne dann keinen Satz als verbindlich. Übergib außerdem bei Reklamationen zu abgeschlossenen Auktionen und bei Anfragen in anderen Sprachen als Deutsch oder Englisch. Alle anderen Anliegen löst Du selbst.";
+const R_DATEN = "Nenne Provisionssätze nur so, wie sie in den Kundendaten oder in unseren AGB stehen. Hat die Kundin oder der Kunde einen Vertrag, der vor dem 01.01.2025 abgeschlossen wurde, nenne den Satz daraus und erkläre, dass seit 2025 für Neukundinnen und Neukunden 18 % gelten. Erfinde keine Konditionen.";
+const R_ABWAEGUNG = "Eine Übergabe an einen Mitarbeiter kostet uns rund 15 € und bindet den Ankauf. Eine falsche Auskunft zur Provision kann eine langjährige Kundin oder einen langjährigen Kunden verärgern – das kostet am Ende mehr. Übergib deshalb an den Ankauf, wenn bei einem Vertrag, der vor dem 01.01.2025 abgeschlossen wurde, nicht feststeht, ob der günstigere Satz gilt, und nenne dann keinen Satz als verbindlich. Übergib außerdem bei Reklamationen zu abgeschlossenen Auktionen und bei Anfragen in anderen Sprachen als Deutsch oder Englisch. Alle anderen Anliegen löst Du selbst.";
 
 function promptStufe(v){
   const wissen = [WISSEN_OF];
@@ -1360,7 +1359,7 @@ function promptStufe(v){
 const TERMIN = "Am Mittwoch, 05.05.2027, finden Auktionen um 12 und 19 Uhr MESZ statt. Am Donnerstag, 06.05.2027, ist Christi Himmelfahrt – an diesem Feiertag gibt es keine Auktion.";
 const FRIST_DE = "Innerhalb Deutschlands rechnen Sie bitte mit bis zu drei Tagen für den Versand und einem weiteren Tag für Prüfung und Verwaltung, bevor Ihre Comics in eine Auktion kommen.";
 const PETRA = (antwort, uebergabe, k, hinweis, gruende) => ({ antwort, uebergabe, k, hinweis, gruende });
-const SATZ_UEBERGABE = "Zur Provision: Ihr Rahmenvertrag von 2017 sieht 12 % vor; seit 2025 gelten für Neukundinnen und Neukunden 18 %. Ob Ihr bisheriger Satz weiter gilt, prüft eine Kollegin aus dem Ankauf – sie meldet sich bei Ihnen.";
+const SATZ_UEBERGABE = "Zur Provision: Ihr Vertrag von 2017 sieht 12 % vor; seit 2025 gelten für Neukundinnen und Neukunden 18 %. Ob Ihr bisheriger Satz weiter gilt, prüft eine Kollegin aus dem Ankauf – sie meldet sich bei Ihnen.";
 
 /* zeilen: was die Fassung zeigt – [Abschnitt, Text, „neu“/„weg“/leer]; schuld: [Nummer der Zeile, Markierung beim Aufdecken] */
 const STUFEN = [
@@ -1406,7 +1405,7 @@ const STUFEN = [
       <p style="margin:10px 0 0">Ob Petra eine ist, steht aber nicht fest. Nach der Geschäftsregel des Fachbereichs erhält den günstigeren Satz nur, wer in den letzten zwölf Monaten mehr als drei Einlieferungen hatte oder mehr als 5.000&nbsp;€ Zuschlag erzielt hat. Petra hatte zwei Einlieferungen – der Bot sagt ihr die 12&nbsp;% trotzdem zu. Er kennt weder die Regel noch Petras Zahlen.</p>
       <p style="margin:10px 0 0">Der Kontrollfall besteht weiter.</p></div>`,
     frage:"<b>Und jetzt?</b> Was braucht der Bot, um gute Verkäuferinnen und Verkäufer zu erkennen?",
-    bspOF:PETRA(`Schön, dass Sie wieder bei uns einliefern möchten, Frau Lindner! ${TERMIN} ${FRIST_DE} Zur Provision: Laut Ihrem Rahmenvertrag von 2017 gilt für Sie ein Satz von 12 % des Zuschlags. Die Erhöhung auf 18 % betrifft seit 2025 Neukundinnen und Neukunden.`, "nein", [1,1,1,0]) },
+    bspOF:PETRA(`Schön, dass Sie wieder bei uns einliefern möchten, Frau Lindner! ${TERMIN} ${FRIST_DE} Zur Provision: Laut Ihrem Vertrag von 2017 gilt für Sie ein Satz von 12 % des Zuschlags. Die Erhöhung auf 18 % betrifft seit 2025 Neukundinnen und Neukunden.`, "nein", [1,1,1,0]) },
   { kurz:"v4 · Gute Verkäuferin?", titel:"Schritt 4: Ist Petra eine gute Verkäuferin?",
     was:"Das Wissen bekommt die Geschäftsregel des Fachbereichs. Das System zählt Petras Einlieferungen der letzten zwölf Monate und setzt das Ergebnis in die Kundendaten ein. Ihre Zuschlagssumme kennt es nicht – die führt die Buchhaltung.",
     zeilenTitel:"Was sich gegenüber der vorigen Fassung ändert",
@@ -1419,7 +1418,7 @@ const STUFEN = [
       <p style="margin:10px 0 0">Gezählt hat übrigens das System, nicht der Bot. Eine feste Regel wie „mehr als drei Einlieferungen“ ist ein Fall für ein Programm – wie der Feiertagskalender. Die Zuschlagssumme könnte das System genauso prüfen, sobald die Buchhaltung angebunden ist.</p>
       <p style="margin:10px 0 0">Der Kontrollfall besteht weiter.</p></div>`,
     frage:"<b>Und jetzt?</b> Wie bringen wir den Bot dazu, Petras Fall an den Ankauf zu übergeben?",
-    bspOF:PETRA(`Schön, dass Sie wieder bei uns einliefern möchten, Frau Lindner! ${TERMIN} ${FRIST_DE} Zur Provision: Ihr Rahmenvertrag von 2017 sieht 12 % vor; seit 2025 gelten für Neukundinnen und Neukunden 18 %. Den günstigeren Satz erhalten gute Verkäuferinnen und Verkäufer – mit mehr als drei Einlieferungen oder mehr als 5.000 € Zuschlag in den letzten zwölf Monaten. Sie hatten zwei Einlieferungen, Ihre Zuschlagssumme kann ich nicht einsehen. Bitte wenden Sie sich deshalb an unseren Ankauf.`, "nein", [1,1,1,0]) },
+    bspOF:PETRA(`Schön, dass Sie wieder bei uns einliefern möchten, Frau Lindner! ${TERMIN} ${FRIST_DE} Zur Provision: Ihr Vertrag von 2017 sieht 12 % vor; seit 2025 gelten für Neukundinnen und Neukunden 18 %. Den günstigeren Satz erhalten gute Verkäuferinnen und Verkäufer – mit mehr als drei Einlieferungen oder mehr als 5.000 € Zuschlag in den letzten zwölf Monaten. Sie hatten zwei Einlieferungen, Ihre Zuschlagssumme kann ich nicht einsehen. Bitte wenden Sie sich deshalb an unseren Ankauf.`, "nein", [1,1,1,0]) },
   { kurz:"v5 · Übergabe", titel:"Schritt 5: beide Seiten der Abwägung",
     was:"Die Regel von 2025 wird neu geschrieben: Sie nennt beide Seiten der Abwägung – und genau, wann übergeben wird.",
     zeilenTitel:"Was sich gegenüber der vorigen Fassung ändert",
