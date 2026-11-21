@@ -130,7 +130,6 @@ table.tl tr.durch td{background:var(--red-soft)}
 .regeln li.schuld{border-color:var(--red);background:var(--red-soft)}
 .regeln .ziel{display:block;margin-top:4px;font-size:13px;font-weight:700;color:var(--red)}
 .regeln .abschnitt{display:block;font-size:12px;font-weight:700;color:var(--muted);margin-bottom:2px}
-#lf-matrix-box{margin:4px 0 12px}
 .matrix th:not(:first-child),.matrix td.mz{text-align:center}
 .lf-hinweis{margin:10px 0 0;padding-top:8px;border-top:1px solid var(--rule)}
 .fkopf{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 14px}
@@ -771,11 +770,8 @@ footer{margin-top:36px;padding-top:14px;border-top:1px solid var(--rule);font-si
   <div class="runbar"><button id="lf-run" class="pbtn next" type="button">Beide Testfälle auswerten</button></div>
   <div class="counters">
     <div class="ctr" id="lf-ctr-K"><span class="ctr-lbl">K · Kontrollfall</span><span class="ctr-sub">Auktionszeiten</span><b class="ctr-num"><span id="lf-n-K">–</span> von 50</b><span class="ctr-sub" id="lf-sub-K">noch nicht ausgewertet</span></div>
-    <div class="ctr" id="lf-ctr-OF"><span class="ctr-lbl">OF · Optimierungsfall</span><span class="ctr-sub">Die Bestandskundin</span><b class="ctr-num"><span id="lf-n-OF">–</span> von 20</b><span class="ctr-sub" id="lf-sub-OF">noch nicht ausgewertet</span></div>
+    <div class="ctr" id="lf-ctr-OF"><span class="ctr-lbl">OF · Optimierungsfall</span><span class="ctr-sub">Die Bestandskundin</span><b class="ctr-num"><span id="lf-n-OF">–</span> von 20</b><span class="ctr-sub" id="lf-sub-OF">noch nicht ausgewertet</span><span class="ctr-sub" id="lf-krit-OF"></span></div>
   </div>
-  <div id="lf-matrix-box" hidden>
-    <p class="small" style="margin:0 0 6px"><b>Petras Anfrage, Kriterium für Kriterium</b> – bestanden ist sie erst, wenn alle vier Kriterien erfüllt sind.</p>
-    <div class="tl-wrap"><table class="tl matrix" id="lf-matrix"></table></div>
   </div>
 
   <div id="lf-nachher" hidden>
@@ -838,7 +834,7 @@ footer{margin-top:36px;padding-top:14px;border-top:1px solid var(--rule);font-si
     <summary>Annahmen dieser Modellrechnung</summary>
     <div class="aufin">
       <ul style="margin:0;padding-left:20px">
-        <li><b>Testdatum:</b> Alle Testläufe gehen davon aus, dass heute Donnerstag, 29.04.2027, ist. „Nächster Mittwoch“ ist damit der 05.05.2027, „nächster Donnerstag“ der 06.05.2027 – Christi Himmelfahrt.</li>
+        <li><b>Testdatum:</b> Für den Optimierungsfall setzt das System als heutiges Datum Donnerstag, 29.04.2027, ein. „Nächster Mittwoch“ ist damit der 05.05.2027, „nächster Donnerstag“ der 06.05.2027 – Christi Himmelfahrt. Das Zwölf-Monats-Fenster des Feiertagskalenders reicht dann bis April 2028. Für den Kontrollfall gilt Freitag, 01.01.2027.</li>
         <li><b>Kontrollfall K:</b> die 50 Anfragen aus Schritt 2, ausgezählt. Mit dem Feiertagskalender beantwortet der Bot jede Datumsfrage richtig. Bestanden ist eine Antwort nur, wenn sie richtig ist <b>und</b> der Bot nicht übergibt. In Fassung v5 übergibt der Bot an allen zehn Feiertagen der Liste, weil er nicht ausschließen kann, dass dort eine Sonderauktion stattfindet.</li>
         <li><b>Optimierungsfall OF:</b> 20 Varianten – Kundinnen und Kunden mit älterem Rahmenvertrag, die nach Terminen und Provision fragen. Zwölf davon sind aktiv (ihr alter Satz gilt weiter, keine Übergabe), acht nicht (Übergabe an den Ankauf). Diese Zahlen sind für die Übung geschätzt, nicht ausgezählt. Sie veranschaulichen das Vorgehen, nicht das Verhalten eines bestimmten Modells.</li>
         <li>Grün zeigen die Zähler beim Kontrollfall nur bei 100&nbsp;%, beim Optimierungsfall ab 95&nbsp;%.</li>
@@ -1066,7 +1062,8 @@ const PROMPT_V0 = {
 `Du bist der digitale Kundendienst von „Sammel Deinen Traum“, einem Online-Auktionshaus für Sammlerstücke. Du beantwortest Fragen der interessierten Öffentlichkeit, seien es Bieterinnen und Bieter, Interessenten oder Einlieferinnen und Einlieferer. Antworte auf Deutsch oder Englisch, je nachdem, in welcher Sprache die Anfrage gestellt wurde – auf Deutsch mit „Sie“ – und immer freundlich, sachlich und knapp. Schreibt jemand in einer anderen Sprache, antworte kurz auf Englisch, dass sich eine Kollegin oder ein Kollege meldet, und sag dazu, dass im nächsten Schritt die persönlichen Daten abgefragt werden – mit einer Kontaktadresse (E-Mail oder Telefon), damit die Kollegin oder der Kollege sich melden kann. Übergib dann an einen Mitarbeiter.`,
   wissen:
 `- Auktionen finden werktags um 12:00 und 19:00 Uhr statt – im Winter MEZ (UTC+1), im Sommer MESZ (UTC+2).
-- An Wochenenden und an gesetzlichen Feiertagen des Landes Berlin finden keine Auktionen statt. Die Feiertage der nächsten zwölf Monate (vom System täglich aus dem separat gepflegten Feiertagskalender eingesetzt, Stand 01.01.2027): 01.01.2027, 08.03.2027, 26.03.2027, 29.03.2027, 01.05.2027, 06.05.2027, 17.05.2027, 03.10.2027, 25.12.2027 und 26.12.2027. Liegt ein Datum nach diesem Zeitraum, sag, dass die Termine dafür noch nicht feststehen.
+- Heute ist Freitag, 01.01.2027 (vom System täglich eingesetzt).
+- An Wochenenden und an gesetzlichen Feiertagen des Landes Berlin finden keine Auktionen statt. Die Feiertage der nächsten zwölf Monate (vom System täglich aus dem separat gepflegten Feiertagskalender eingesetzt): 01.01.2027, 08.03.2027, 26.03.2027, 29.03.2027, 01.05.2027, 06.05.2027, 17.05.2027, 03.10.2027, 25.12.2027 und 26.12.2027. Liegt ein Datum nach diesem Zeitraum, sag, dass die Termine dafür noch nicht feststehen.
 - Die Standardprovision beträgt 18 % des Zuschlags.
 - Ältere Rahmenverträge können abweichende Sätze enthalten.
 - Ab einem geschätzten Wert von 10.000 € prüft der Ankauf die Herkunft, bevor ein Stück angenommen wird.
@@ -1334,7 +1331,13 @@ const nb = h => h.replace(/ (€|%)/g, " $1");   /* kein Zeilenumbruch vor € 
 /* Bausteine des Prompts, die sich von Fassung zu Fassung ändern */
 const [R_ERFINDE, R_2023, R_2025] = PROMPT_V0.regeln.split("\n").map(z => z.replace(/^-\s*/, ""));
 const W_PROVISION = PROMPT_V0.wissen.split("\n").filter(z => /provision|Rahmenvertr/i.test(z)).map(z => z.replace(/^-\s*/, ""));
-const W_DATUM = "Heute ist Donnerstag, 29.04.2027 (vom System täglich eingesetzt).";
+const LISTE_K = "01.01.2027, 08.03.2027, 26.03.2027, 29.03.2027, 01.05.2027, 06.05.2027, 17.05.2027, 03.10.2027, 25.12.2027 und 26.12.2027";
+const LISTE_OF = "01.05.2027, 06.05.2027, 17.05.2027, 03.10.2027, 25.12.2027, 26.12.2027, 01.01.2028, 08.03.2028, 14.04.2028 und 17.04.2028";
+const W_HEUTE_K = "Heute ist Freitag, 01.01.2027 (vom System täglich eingesetzt).";
+const W_HEUTE_OF = "Heute ist Donnerstag, 29.04.2027 (vom System täglich eingesetzt).";
+/* Im Testlauf des Optimierungsfalls setzt das System ein anderes heutiges Datum ein – und damit ein anderes Zwölf-Monats-Fenster */
+const WISSEN_OF = PROMPT_V0.wissen.replace(W_HEUTE_K, W_HEUTE_OF).replace(LISTE_K, LISTE_OF);
+if (!PROMPT_V0.wissen.includes(W_HEUTE_K) || !PROMPT_V0.wissen.includes(LISTE_K)) console.warn("Schritt 5: Datum oder Feiertagsliste im Prompt geändert – WISSEN_OF prüfen");
 const W_VORLAUF = "Eingelieferte Stücke kommen per Post. Für den Versand rechne innerhalb der EU mit bis zu drei Tagen, außerhalb der EU mit bis zu zehn Tagen. Danach brauchen wir einen weiteren Tag für Prüfung und Verwaltung, bevor ein Stück in eine Auktion kommt.";
 const W_AKTIV = "Ältere Rahmenverträge gelten nur weiter, solange die Kundin oder der Kunde aktiv ist – also mehr als drei Einlieferungen in den letzten zwölf Monaten hatte. Ist das nicht der Fall, entscheidet der Ankauf über den Satz.";
 const KD_0 = "Petra Lindner";
@@ -1345,8 +1348,8 @@ const R_ZWEIFEL = "Übergib im Zweifel an einen Mitarbeiter.";
 const R_ABWAEGUNG = "Eine Übergabe an einen Mitarbeiter kostet uns rund 15 € und bindet den Ankauf. Eine falsche Auskunft zur Provision kann eine langjährige Kundin oder einen langjährigen Kunden verärgern – das kostet am Ende mehr. Übergib deshalb an den Ankauf, wenn eine Kundin oder ein Kunde mit älterem Rahmenvertrag nicht mehr aktiv ist, und nenne dann keinen Satz als verbindlich. Übergib außerdem bei Reklamationen zu abgeschlossenen Auktionen und bei Anfragen in anderen Sprachen als Deutsch oder Englisch. Alle anderen Anliegen löst Du selbst.";
 
 function promptStufe(v){
-  const wissen = [PROMPT_V0.wissen];
-  if (v >= 1) wissen.push("- " + W_DATUM, "- " + W_VORLAUF);
+  const wissen = [WISSEN_OF];
+  if (v >= 1) wissen.push("- " + W_VORLAUF);
   if (v >= 4) wissen.push("- " + W_AKTIV);
   const regeln = [R_ERFINDE, v >= 3 ? R_DATEN : R_2023];
   if (v >= 6) regeln.push(R_ABWAEGUNG); else { regeln.push(R_2025); if (v === 5) regeln.push(R_ZWEIFEL); }
@@ -1362,29 +1365,29 @@ const SATZ_UEBERGABE = "Zur Provision: Ihr Rahmenvertrag von 2017 sieht 12 % vor
 /* zeilen: was die Fassung zeigt – [Abschnitt, Text, „neu“/„weg“/leer]; schuld: [Nummer der Zeile, Markierung beim Aufdecken] */
 const STUFEN = [
   { kurz:"v0 · heute", titel:"Fassung v0: der Kundendienst-Prompt von heute",
-    was:"Der Prompt aus Schritt 3, unverändert – derselbe, mit dem der Kontrollfall im Testlauf alle Kriterien erfüllt. Unten stehen die Teile, die für Petras Anfrage wichtig sind.",
+    was:"Der Prompt aus Schritt 3, unverändert – derselbe, mit dem der Kontrollfall im Testlauf alle Kriterien erfüllt. Für diesen Testfall setzt das System als heutiges Datum Donnerstag, 29.04.2027, ein. Unten stehen die Teile, die für Petras Anfrage wichtig sind.",
     zeilenTitel:"Was der Prompt zu Petras Anfrage enthält",
-    zeilen:[["Kundendaten", KD_0], ["Wissen", W_PROVISION[0]], ["Wissen", W_PROVISION[1]], ["Verhaltensregeln", R_2023], ["Verhaltensregeln", R_2025]],
-    schuld:[[0,"nur der Name – kein Zugriff auf das Kundenkonto"],[3,"verbietet, Petras Satz zu nennen"],[4,"verhindert die Übergabe"]],
-    of:0, k1Uebergabe:false, krit:[0,0,0,0],
-    warum:"Woran scheitert der Bot – Kriterium für Kriterium?",
+    zeilen:[["Wissen", W_HEUTE_OF], ["Kundendaten", KD_0], ["Wissen", W_PROVISION[0]], ["Wissen", W_PROVISION[1]], ["Verhaltensregeln", R_2023], ["Verhaltensregeln", R_2025]],
+    schuld:[[1,"nur der Name – kein Zugriff auf das Kundenkonto"],[4,"verbietet, Petras Satz zu nennen"],[5,"verhindert die Übergabe"]],
+    of:0, k1Uebergabe:false, krit:[1,0,0,0],
+    warum:"Was klappt schon – und woran scheitert der Bot?",
     grund:`<div class="box" style="margin-top:14px"><ul style="margin:0;padding-left:20px">
-      <li><b>Termine:</b> Der Bot weiß nicht, welcher Tag heute ist. „Nächster Mittwoch“ kann er nicht ausrechnen – also nennt er die allgemeinen Auktionszeiten und übersieht den Feiertag am Donnerstag.</li>
+      <li><b>Termine: klappt schon.</b> Mit dem heutigen Datum und dem Feiertagskalender aus Schritt 2 rechnet der Bot „nächster Mittwoch“ selbst aus: Am 05.05.2027 finden Auktionen statt, der 06.05.2027 ist Christi Himmelfahrt. Das Wissen aus dem Kontrollfall trägt auch hier.</li>
       <li><b>Fristen:</b> Versand und Prüfung stehen nirgends im Prompt.</li>
       <li><b>Provision:</b> Der Bot sieht nur Petras Namen, nicht ihr Kundenkonto. Und die Regel von 2023 verbietet ihm ohnehin, individuelle Konditionen zu nennen. Also nennt er die 18 % aus den AGB – und bestätigt das Gerücht, als gälte es für Petra.</li>
       <li><b>Übergabe:</b> Die Regel von 2025 erlaubt Übergaben nur bei Reklamationen und Anfragen in anderen Sprachen.</li></ul>
-      <p style="margin:10px 0 0">Oben sind die verantwortlichen Stellen jetzt rot markiert. Der Kontrollfall besteht trotzdem: Fragen nach den Auktionszeiten berühren keine dieser Lücken.</p></div>`,
-    frage:"<b>Und jetzt?</b> Wir beginnen mit der Terminfrage. Was braucht der Bot dafür?",
-    bspOF:PETRA("Vielen Dank für Ihre Nachricht, Frau Lindner! Unsere Auktionen finden werktags um 12 und 19 Uhr statt – mittwochs und donnerstags also jeweils zweimal. Zur Provision: Unsere Standardprovision beträgt 18 % des Zuschlags, und ja, die Provision wurde angepasst. Alle Einzelheiten finden Sie in unseren AGB auf unserer Webseite.", "nein", [0,0,0,0]) },
-  { kurz:"v1 · Termine", titel:"Schritt 1: Datum und Fristen",
-    was:"Das System setzt jeden Tag das heutige Datum ein, und das Wissen bekommt die Fristen für Versand und Prüfung. Den Feiertagskalender kennt der Bot schon aus Schritt 2. Beide Ergänzungen betreffen dieselbe Frage: Wann kommen Petras Comics unter den Hammer?",
+      <p style="margin:10px 0 0">Oben sind die verantwortlichen Stellen jetzt rot markiert. Der Kontrollfall besteht: Fragen nach den Auktionszeiten berühren keine dieser Lücken.</p></div>`,
+    frage:"<b>Und jetzt?</b> Wir beginnen mit den Fristen. Was braucht der Bot dafür?",
+    bspOF:PETRA(`Vielen Dank für Ihre Nachricht, Frau Lindner! ${TERMIN} Zur Provision: Unsere Standardprovision beträgt 18 % des Zuschlags, und ja, die Provision wurde angepasst. Alle Einzelheiten finden Sie in unseren AGB auf unserer Webseite.`, "nein", [1,0,0,0]) },
+  { kurz:"v1 · Fristen", titel:"Schritt 1: Fristen für Versand und Prüfung",
+    was:"Das Wissen bekommt die Fristen für Versand und Prüfung – eine Geschäftsregel, die bisher nur der Ankauf kannte.",
     zeilenTitel:"Was sich gegenüber der vorigen Fassung ändert",
-    zeilen:[["Wissen", W_DATUM, "neu"], ["Wissen", W_VORLAUF, "neu"]], schuld:[],
+    zeilen:[["Wissen", W_VORLAUF, "neu"]], schuld:[],
     of:0, k1Uebergabe:false, krit:[1,1,0,0],
     warum:"Zwei Kriterien sind erfüllt – warum besteht keine einzige Variante?",
     grund:`<div class="box" style="margin-top:14px">
-      <p style="margin:0">Mit Datum und Feiertagskalender rechnet der Bot „nächster Mittwoch“ selbst aus: Am 05.05.2027 finden Auktionen statt, der 06.05.2027 ist Christi Himmelfahrt. Das ist das Wissen aus dem Kontrollfall – angewendet auf eine neue Frage. Die Fristen kann er jetzt auch nennen.</p>
-      <p style="margin:10px 0 0">Bestanden ist eine Antwort aber erst, wenn <b>alle</b> Kriterien erfüllt sind. Darum steht der Zähler noch bei null – und darum zeigt die Tabelle die Kriterien einzeln. Der Kontrollfall bleibt bei 100&nbsp;%.</p></div>`,
+      <p style="margin:0">Die Fristen kann der Bot jetzt nennen, die Termine stimmten schon vorher. Bestanden ist eine Antwort aber erst, wenn <b>alle</b> Kriterien erfüllt sind. Darum steht der Zähler noch bei null – die Zeile darunter zeigt, wie viele Kriterien Petras Anfrage schon erfüllt.</p>
+      <p style="margin:10px 0 0">Der Kontrollfall bleibt bei 100&nbsp;%.</p></div>`,
     frage:"<b>Und jetzt?</b> Woher soll der Bot Petras Provisionssatz kennen?",
     bspOF:PETRA(`Vielen Dank für Ihre Nachricht, Frau Lindner! ${TERMIN} Bitte rechnen Sie für den Versand mit bis zu drei Tagen innerhalb der EU (außerhalb der EU bis zu zehn Tage) und einem weiteren Tag für Prüfung und Verwaltung, bevor Ihre Comics in eine Auktion kommen. Zur Provision: Unsere Standardprovision beträgt 18 % des Zuschlags, und ja, die Provision wurde angepasst. Alle Einzelheiten finden Sie in unseren AGB.`, "nein", [1,1,0,0]) },
   { kurz:"v2 · Kundenkonto", titel:"Schritt 2: Zugriff auf das Kundenkonto",
@@ -1479,10 +1482,6 @@ function lfZeichneVerlauf(){
     `<thead><tr><th>Fassung</th><th>K · Kontrollfall</th><th>OF · Optimierungsfall</th><th>Petras Anfrage</th></tr></thead><tbody>` +
     STUFEN.slice(0, lfOffen + 1).map((s, i) => { const e = LF_ERG[i];
       return `<tr${i === lfAktiv ? ' style="font-weight:700"' : ""}><td>${esc(s.kurz)}</td><td>${zelle("K", e && e.K, 50)}</td><td>${zelle("OF", e && e.OF, N_OF)}</td><td>${e ? `${s.krit.filter(Boolean).length} von 4 Kriterien` : "–"}</td></tr>`; }).join("") + `</tbody>`;
-  const gelaufen = STUFEN.map((s, i) => i).filter(i => i <= lfOffen && LF_ERG[i]);
-  document.getElementById("lf-matrix-box").hidden = !gelaufen.length;
-  document.getElementById("lf-matrix").innerHTML = `<thead><tr><th>Kriterium</th>${gelaufen.map(i => `<th>${esc(STUFEN[i].kurz.split(" · ")[0])}</th>`).join("")}</tr></thead><tbody>` +
-    KRITERIEN.map((k, j) => `<tr><td>${j + 1} · ${esc(k)}</td>${gelaufen.map(i => `<td class="mz">${zeichen(STUFEN[i].krit[j])}</td>`).join("")}</tr>`).join("") + `</tbody>`;
 }
 function lfZaehler(id, n, von){
   const c = document.getElementById("lf-ctr-" + id), el = document.getElementById("lf-n-" + id);
@@ -1503,14 +1502,13 @@ function lfWaehle(v){
   document.getElementById("lf-info").innerHTML = nb(`<p class="small" style="margin:0 0 8px">Der Kundendienst-Prompt in ${esc(s.kurz.split(" · ")[0])}, mit den Kundendaten für Petras Anfrage.</p>` +
     Object.entries(p).map(([k, t]) => `<h4>${k}</h4><div class="ptext">${esc(t)}</div>`).join(""));
   for (const id of ["K", "OF"]) lfZaehler(id, null);
+  document.getElementById("lf-krit-OF").textContent = "";
   document.getElementById("lf-nachher").hidden = true;
   lfZeichneWahl(); lfZeichneVerlauf();
 }
-function lfBeispiel(titel, frage, b){
+function lfBeispiel(b){
   const checks = b.checks || b.k.map((x, j) => [!!x, KRITERIEN[j]]);
-  const ok = checks.every(([x]) => x);
   return nb(`<div class="res">
-  <div class="reshead"><div><span class="lang">${esc(titel)}</span><blockquote>„${esc(frage)}“</blockquote></div><span class="badge-v ${ok ? "pass" : "fail"}">${ok ? "bestanden" : "nicht bestanden"}</span></div>
   <div class="resrow"><b>Antwort des Bots</b><div class="small"><div class="antwort">${esc(b.antwort)}</div><div>Übergabe an Mitarbeiter: <b>${esc(b.uebergabe)}</b></div></div></div>
   <div class="resrow"><b>Bewertung</b><div class="small"><ul class="checks">${checks.map(([x, t]) => `<li>${zeichen(x)} ${esc(t)}</li>`).join("")}</ul>${b.hinweis ? `<p style="margin:8px 0 0">${esc(b.hinweis)}</p>` : ""}</div></div>
 </div>`);
@@ -1521,6 +1519,7 @@ function lfAuswerten(){
   const e = { K: TESTLISTE.length - kFehler.length, OF: s.of };
   LF_ERG[v] = e;
   lfZaehler("K", e.K, TESTLISTE.length); lfZaehler("OF", e.OF, N_OF);
+  document.getElementById("lf-krit-OF").textContent = `Petras Anfrage: ${s.krit.filter(Boolean).length} von 4 Kriterien`;
   const kauf = document.getElementById("lf-k1-auf");
   kauf.hidden = kFehler.length === 0; kauf.open = false;
   document.getElementById("lf-k1-sum").textContent = `Diese ${kFehler.length} Antworten im Kontrollfall fallen jetzt durch`;
@@ -1529,7 +1528,7 @@ function lfAuswerten(){
     kFehler.map(r => `<tr class="durch"><td>${r.wt}, ${r.datum}</td><td>Nein, Feiertag</td><td>ja</td><td>nein</td></tr>`).join("") + `</tbody>`;
   document.getElementById("lf-bsp-auf").open = false;
   document.getElementById("lf-bsp").innerHTML =
-    lfBeispiel("OF · Optimierungsfall – Petras Anfrage", OF.nachricht, s.bspOF);
+    lfBeispiel(s.bspOF);
   document.getElementById("lf-warum").textContent = s.warum;
   const gb = document.getElementById("lf-grund-btn"); gb.hidden = false; gb.setAttribute("aria-expanded", "false");
   document.getElementById("lf-grund").hidden = true;
