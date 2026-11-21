@@ -811,10 +811,6 @@ footer{margin-top:36px;padding-top:14px;border-top:1px solid var(--rule);font-si
   </div>
 
   <details class="auf">
-    <summary>Verlauf: alle Fassungen im Vergleich</summary>
-    <div class="aufin"><div class="tl-wrap"><table class="tl" id="lf-verlauf"></table></div></div>
-  </details>
-  <details class="auf">
     <summary>Annahmen dieser Modellrechnung</summary>
     <div class="aufin">
       <ul style="margin:0;padding-left:20px">
@@ -1400,7 +1396,6 @@ const STUFEN = [
       [null, null, null,
       "Die neue Regel nennt beide Seiten der Abwägung – die Kosten einer Übergabe und die Kosten einer falschen Auskunft – und genau, wann übergeben wird."]) }
 ];
-const LF_ERG = STUFEN.map(() => null);
 let lfOffen = 0, lfAktiv = 0;
 /* Stand nach dem Lauf: Kontrollfall bestanden ja/nein, Petras Anfrage: erfüllte Kriterien */
 const lfKText = e => e.K === TESTLISTE.length ? "✓ bestanden" : `✗ nicht bestanden · ${TESTLISTE.length - e.K} von ${TESTLISTE.length} Anfragen fallen durch`;
@@ -1424,12 +1419,6 @@ document.getElementById("of-karte").innerHTML = nb(`
 function lfZeichneWahl(){
   document.getElementById("lf-wahl").innerHTML = STUFEN.slice(0, lfOffen + 1).map((s, i) =>
     `<button class="vbtn" type="button" data-v="${i}" aria-pressed="${i === lfAktiv}">${esc(s.kurz)}</button>`).join("");
-}
-function lfZeichneVerlauf(){
-  document.getElementById("lf-verlauf").innerHTML =
-    `<thead><tr><th>Fassung</th><th>K · Kontrollfall</th><th>OF · Petras Anfrage</th></tr></thead><tbody>` +
-    STUFEN.slice(0, lfOffen + 1).map((s, i) => { const e = LF_ERG[i], n = s.krit.filter(Boolean).length;
-      return `<tr${i === lfAktiv ? ' style="font-weight:700"' : ""}><td>${esc(s.kurz)}</td><td>${e ? `<span class="${e.K === TESTLISTE.length ? "ok" : "no"}">${esc(lfKText(e))}</span>` : "–"}</td><td>${e ? `<span class="${n === 4 ? "ok" : "no"}">${esc(lfOFText(n))}</span>` : "–"}</td></tr>`; }).join("") + `</tbody>`;
 }
 function lfStand(e, n){
   const k = document.getElementById("lf-st-K"), o = document.getElementById("lf-st-OF");
@@ -1455,7 +1444,7 @@ function lfWaehle(v){
     Object.entries(p).map(([k, t]) => `<h4>${k}</h4><div class="ptext">${markiere(k, t)}</div>`).join(""));
   lfStand(null);
   document.getElementById("lf-nachher").hidden = true;
-  lfZeichneWahl(); lfZeichneVerlauf();
+  lfZeichneWahl();
 }
 function lfBeispiel(b){
   const checks = b.checks || b.k.map((x, j) => [!!x, KRITERIEN[j], b.gruende && b.gruende[j]]);
@@ -1467,7 +1456,6 @@ function lfBeispiel(b){
 function lfAuswerten(){
   const v = lfAktiv, s = STUFEN[v];
   const e = { K: TESTLISTE.length };   /* der Kontrollfall besteht in jeder Fassung */
-  LF_ERG[v] = e;
   lfStand(e, s.krit.filter(Boolean).length);
   document.getElementById("lf-bsp").innerHTML =
     lfBeispiel(s.bspOF);
@@ -1475,7 +1463,6 @@ function lfAuswerten(){
   document.getElementById("lf-bew").addEventListener("toggle", e => { if (e.currentTarget.open) lfAufdecken(); });
   document.getElementById("lf-fazit").hidden = true;
   document.getElementById("lf-nachher").hidden = false;
-  lfZeichneVerlauf();
 }
 document.getElementById("lf-run").addEventListener("click", lfAuswerten);
 function infoKnopf(iw){
