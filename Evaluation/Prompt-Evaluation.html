@@ -255,6 +255,13 @@ ol.zeit b{color:var(--amber);white-space:nowrap}
 .antwort{white-space:pre-wrap;color:var(--ink);font-size:15px;margin-bottom:4px}
 ul.checks{list-style:none;margin:0;padding:0;display:grid;gap:6px;color:var(--ink);font-size:15px}
 ul.checks .kgrund{display:block;margin:2px 0 0 1.4em;color:var(--muted);font-size:14px}
+details.bew{margin-top:0}
+details.bew>summary{cursor:pointer;list-style:none;color:var(--accent);font-weight:600;font-size:15px;width:max-content;min-height:0;display:block}
+details.bew>summary::-webkit-details-marker{display:none}
+details.bew>summary::before{content:"▸\00a0"}details.bew[open]>summary::before{content:"▾\00a0"}
+details.bew .offen,details.bew[open] .zu{display:none}details.bew[open] .offen{display:inline}
+details.bew[open]>summary{margin-bottom:8px}
+.bew-hinweis{margin:10px 0 0;padding-top:8px;border-top:1px solid var(--rule);color:var(--ink)}
 .ok{color:var(--green);font-weight:700}.no{color:var(--red);font-weight:700}
 .badge-v{flex:none;border-radius:14px;padding:4px 12px;font-size:14px;font-weight:600;white-space:nowrap}
 .badge-v.wait{background:var(--quote);color:var(--muted)}
@@ -786,9 +793,6 @@ footer{margin-top:36px;padding-top:14px;border-top:1px solid var(--rule);font-si
   <div id="lf-nachher" hidden>
     <p class="small" style="margin:6px 0 6px"><b>Petras Anfrage – so antwortet der Bot</b></p>
     <div id="lf-bsp"></div>
-    <p style="margin-top:18px" id="lf-warum-p"><b>Warum?</b> <span id="lf-warum"></span></p>
-    <button class="reveal" type="button" id="lf-grund-btn" aria-expanded="false">Gründe aufdecken</button>
-    <div id="lf-grund" hidden></div>
     <p id="lf-frage" hidden style="margin-top:18px"></p>
     <button class="reveal" type="button" id="lf-weiter" hidden>Nächste Änderung zeigen</button>
     <div id="lf-fazit" hidden>
@@ -1367,7 +1371,6 @@ const STUFEN = [
     was:"Der Prompt aus Schritt 3, unverändert. Mit ihm besteht der Kontrollfall – mit Petras Anfrage kommt der Bot aber schlecht zurecht.",
     zeilenTitel:"", zeilen:[], schuld:[],
     krit:[1,0,0,0],
-    warum:null, grund:null,
     frage:"<b>Und jetzt?</b> Wir beginnen mit den Fristen. Was braucht der Bot dafür?",
     bspOF:PETRA(`Vielen Dank für Ihre Nachricht, Frau Lindner! ${TERMIN} Zur Provision: Unsere Standardprovision beträgt 18 % des Zuschlags, und ja, die Provision wurde angepasst. Alle Einzelheiten finden Sie in unseren AGB auf unserer Webseite.`, "nein", [1,0,0,0], null, [
       "Mit dem heutigen Datum und dem Feiertagskalender aus Schritt 2 rechnet der Bot „nächster Mittwoch“ selbst aus.",
@@ -1379,57 +1382,53 @@ const STUFEN = [
     zeilenTitel:"Was sich gegenüber der vorigen Fassung ändert",
     zeilen:[["Wissen", W_VORLAUF, "neu"]], schuld:[],
     krit:[1,1,0,0],
-    warum:null, grund:null,
     frage:"<b>Und jetzt?</b> Woher soll der Bot Petras Provisionssatz kennen?",
-    bspOF:PETRA(`Vielen Dank für Ihre Nachricht, Frau Lindner! ${TERMIN} Bitte rechnen Sie für den Versand mit bis zu drei Tagen innerhalb der EU (außerhalb der EU bis zu zehn Tage) und einem weiteren Tag für Prüfung und Verwaltung, bevor Ihre Comics in eine Auktion kommen. Zur Provision: Unsere Standardprovision beträgt 18 % des Zuschlags, und ja, die Provision wurde angepasst. Alle Einzelheiten finden Sie in unseren AGB.`, "nein", [1,1,0,0]) },
+    bspOF:PETRA(`Vielen Dank für Ihre Nachricht, Frau Lindner! ${TERMIN} Bitte rechnen Sie für den Versand mit bis zu drei Tagen innerhalb der EU (außerhalb der EU bis zu zehn Tage) und einem weiteren Tag für Prüfung und Verwaltung, bevor Ihre Comics in eine Auktion kommen. Zur Provision: Unsere Standardprovision beträgt 18 % des Zuschlags, und ja, die Provision wurde angepasst. Alle Einzelheiten finden Sie in unseren AGB.`, "nein", [1,1,0,0], null, [null,
+      "Die Fristen stehen jetzt im Wissen.",
+      "Wie in v0: Der Bot sieht nur Petras Namen, nicht ihr Kundenkonto – und die Regel von 2023 verbietet ihm, individuelle Konditionen zu nennen.",
+      "Wie in v0: Die Regel von 2025 erlaubt hier keine Übergabe."]) },
   { kurz:"v2 · Kundenkonto", titel:"Schritt 2: Zugriff auf das Kundenkonto",
     was:"Die IT bindet das Kundenkonto an: Das System setzt Petras Vertragsdaten in den Abschnitt „Kundendaten“ ein. Der Datenschutz hat vorher geklärt, dass der Bot sie verwenden darf.",
     zeilenTitel:"Was sich gegenüber der vorigen Fassung ändert",
     zeilen:[["Kundendaten", KD_0, "weg"], ["Kundendaten", KD_KONTO, "neu"], ["Verhaltensregeln", R_2023]],
     schuld:[[2,"verbietet, Petras Satz zu nennen"]],
     krit:[1,1,0,0],
-    warum:"Der Bot hat Petras 12 % jetzt vor sich. Warum nennt er sie nicht?",
-    grund:`<div class="box" style="margin-top:14px">
-      <p style="margin:0"><b>Daten allein reichen nicht, wenn eine alte Regel ihre Nutzung verbietet.</b> Die Regel von 2023 sollte verhindern, dass der Bot Konditionen erfindet. Jetzt verhindert sie, dass er die richtigen nennt. Ein alter Flicken verursacht einen neuen Fehler.</p>
-      <p style="margin:10px 0 0">Der Kontrollfall besteht weiter.</p></div>`,
     frage:"<b>Und jetzt?</b> Wie müsste die Regel von 2023 heute lauten?",
-    bspOF:PETRA(`Vielen Dank für Ihre Nachricht, Frau Lindner! ${TERMIN} ${FRIST_DE} Zu individuellen Vertragskonditionen kann ich leider keine Auskunft geben. Unsere Standardprovision beträgt 18 % des Zuschlags; alle Einzelheiten finden Sie in unseren AGB.`, "nein", [1,1,0,0]) },
+    bspOF:PETRA(`Vielen Dank für Ihre Nachricht, Frau Lindner! ${TERMIN} ${FRIST_DE} Zu individuellen Vertragskonditionen kann ich leider keine Auskunft geben. Unsere Standardprovision beträgt 18 % des Zuschlags; alle Einzelheiten finden Sie in unseren AGB.`, "nein", [1,1,0,0],
+      "Daten allein reichen nicht, wenn eine alte Regel ihre Nutzung verbietet. Die Regel von 2023 sollte verhindern, dass der Bot Konditionen erfindet. Jetzt verhindert sie, dass er die richtigen nennt – ein alter Flicken verursacht einen neuen Fehler.",
+      [null, null,
+      "Petras 12 % stehen jetzt in den Kundendaten. Die Regel von 2023 verbietet dem Bot aber, individuelle Konditionen zu nennen – also weicht er aus.",
+      "Die Regel von 2025 erlaubt hier weiter keine Übergabe."]) },
   { kurz:"v3 · Vertragssatz", titel:"Schritt 3: Vertragssatz nennen, Gerücht einordnen",
     was:"Die Regel von 2023 wird neu geschrieben: Ihr Zweck bleibt, ihre Formulierung ändert sich.",
     zeilenTitel:"Was sich gegenüber der vorigen Fassung ändert",
     zeilen:[["Verhaltensregeln", R_2023, "weg"], ["Verhaltensregeln", R_DATEN, "neu"]], schuld:[],
     krit:[1,1,1,0],
-    warum:"Der Bot nennt jetzt Petras 12 % – warum ist das vierte Kriterium trotzdem nicht erfüllt?",
-    grund:`<div class="box" style="margin-top:14px">
-      <p style="margin:0">Der Bot nennt jetzt den Satz aus dem Vertrag und ordnet das Gerücht richtig ein. Für eine gute Verkäuferin wäre das die richtige Antwort.</p>
-      <p style="margin:10px 0 0">Ob Petra eine ist, steht aber nicht fest. Nach der Geschäftsregel des Fachbereichs erhält den günstigeren Satz nur, wer in den letzten zwölf Monaten mehr als drei Einlieferungen hatte oder mehr als 5.000&nbsp;€ Zuschlag erzielt hat. Petra hatte zwei Einlieferungen – der Bot sagt ihr die 12&nbsp;% trotzdem zu. Er kennt weder die Regel noch Petras Zahlen.</p>
-      <p style="margin:10px 0 0">Der Kontrollfall besteht weiter.</p></div>`,
     frage:"<b>Und jetzt?</b> Was braucht der Bot, um gute Verkäuferinnen und Verkäufer zu erkennen?",
-    bspOF:PETRA(`Schön, dass Sie wieder bei uns einliefern möchten, Frau Lindner! ${TERMIN} ${FRIST_DE} Zur Provision: Laut Ihrem Vertrag von 2017 gilt für Sie ein Satz von 12 % des Zuschlags. Die Erhöhung auf 18 % betrifft seit 2025 Neukundinnen und Neukunden.`, "nein", [1,1,1,0]) },
+    bspOF:PETRA(`Schön, dass Sie wieder bei uns einliefern möchten, Frau Lindner! ${TERMIN} ${FRIST_DE} Zur Provision: Laut Ihrem Vertrag von 2017 gilt für Sie ein Satz von 12 % des Zuschlags. Die Erhöhung auf 18 % betrifft seit 2025 Neukundinnen und Neukunden.`, "nein", [1,1,1,0], null, [null, null,
+      "Die neu geschriebene Regel erlaubt dem Bot, den Satz aus dem Vertrag zu nennen und das Gerücht einzuordnen.",
+      "Der Bot sagt Petra die 12 % fest zu. Den günstigeren Satz erhält aber nur, wer in den letzten zwölf Monaten mehr als drei Einlieferungen hatte oder mehr als 5.000 € Zuschlag erzielt hat. Ob Petra dazugehört, steht nicht fest – der Bot kennt weder diese Regel noch Petras Zahlen."]) },
   { kurz:"v4 · Gute Verkäuferin?", titel:"Schritt 4: Ist Petra eine gute Verkäuferin?",
     was:"Das Wissen bekommt die Geschäftsregel des Fachbereichs. Das System zählt Petras Einlieferungen der letzten zwölf Monate und setzt das Ergebnis in die Kundendaten ein. Ihre Zuschlagssumme kennt es nicht – die führt die Buchhaltung.",
     zeilenTitel:"Was sich gegenüber der vorigen Fassung ändert",
     zeilen:[["Kundendaten", KD_GUT, "neu"], ["Wissen", W_GUT, "neu"], ["Verhaltensregeln", R_2025]],
     schuld:[[2,"verhindert die Übergabe"]],
     krit:[1,1,1,0],
-    warum:"Der Bot erkennt jetzt, dass er Petras Satz nicht selbst klären kann. Warum ist das vierte Kriterium trotzdem nicht erfüllt?",
-    grund:`<div class="box" style="margin-top:14px">
-      <p style="margin:0">Mit zwei Einlieferungen reicht Petras erstes Kriterium nicht. Ob sie über ihre Zuschlagssumme den günstigeren Satz erhält, kann nur der Ankauf prüfen. Das erkennt der Bot richtig – übergeben darf er nach der Regel von 2025 aber nur bei Reklamationen und Anfragen in anderen Sprachen. Also schickt er Petra selbst zum Ankauf: Die Arbeit landet bei der Kundin.</p>
-      <p style="margin:10px 0 0">Gezählt hat übrigens das System, nicht der Bot. Eine feste Regel wie „mehr als drei Einlieferungen“ ist ein Fall für ein Programm – wie der Feiertagskalender. Die Zuschlagssumme könnte das System genauso prüfen, sobald die Buchhaltung angebunden ist.</p>
-      <p style="margin:10px 0 0">Der Kontrollfall besteht weiter.</p></div>`,
     frage:"<b>Und jetzt?</b> Wie bringen wir den Bot dazu, Petras Fall an den Ankauf zu übergeben?",
-    bspOF:PETRA(`Schön, dass Sie wieder bei uns einliefern möchten, Frau Lindner! ${TERMIN} ${FRIST_DE} Zur Provision: Ihr Vertrag von 2017 sieht 12 % vor; seit 2025 gelten für Neukundinnen und Neukunden 18 %. Den günstigeren Satz erhalten gute Verkäuferinnen und Verkäufer – mit mehr als drei Einlieferungen oder mehr als 5.000 € Zuschlag in den letzten zwölf Monaten. Sie hatten zwei Einlieferungen, Ihre Zuschlagssumme kann ich nicht einsehen. Bitte wenden Sie sich deshalb an unseren Ankauf.`, "nein", [1,1,1,0]) },
+    bspOF:PETRA(`Schön, dass Sie wieder bei uns einliefern möchten, Frau Lindner! ${TERMIN} ${FRIST_DE} Zur Provision: Ihr Vertrag von 2017 sieht 12 % vor; seit 2025 gelten für Neukundinnen und Neukunden 18 %. Den günstigeren Satz erhalten gute Verkäuferinnen und Verkäufer – mit mehr als drei Einlieferungen oder mehr als 5.000 € Zuschlag in den letzten zwölf Monaten. Sie hatten zwei Einlieferungen, Ihre Zuschlagssumme kann ich nicht einsehen. Bitte wenden Sie sich deshalb an unseren Ankauf.`, "nein", [1,1,1,0],
+      "Gezählt hat übrigens das System, nicht der Bot. Eine feste Regel wie „mehr als drei Einlieferungen“ ist ein Fall für ein Programm – wie der Feiertagskalender. Die Zuschlagssumme könnte das System genauso prüfen, sobald die Buchhaltung angebunden ist.",
+      [null, null, null,
+      "Der Bot erkennt richtig, dass er Petras Satz nicht klären kann: Zwei Einlieferungen reichen nicht, ihre Zuschlagssumme kennt er nicht. Übergeben darf er nach der Regel von 2025 aber nicht – also schickt er Petra selbst zum Ankauf. Die Arbeit landet bei der Kundin."]) },
   { kurz:"v5 · Übergabe", titel:"Schritt 5: beide Seiten der Abwägung",
     was:"Die Regel von 2025 wird neu geschrieben: Sie nennt beide Seiten der Abwägung – und genau, wann übergeben wird.",
     zeilenTitel:"Was sich gegenüber der vorigen Fassung ändert",
     zeilen:[["Verhaltensregeln", R_2025, "weg"], ["Verhaltensregeln", R_ABWAEGUNG, "neu"]], schuld:[],
     krit:[1,1,1,1],
-    warum:"Was hat diese Änderung bewirkt?",
-    grund:`<div class="box" style="margin-top:14px">
-      <p style="margin:0"><b>Beide Seiten stehen jetzt im Prompt:</b> die Kosten einer Übergabe und die Kosten einer falschen Auskunft – dazu genau, wann übergeben wird. Petras Anfrage erfüllt alle vier Kriterien, und der Kontrollfall besteht weiter.</p>
-      <p style="margin:10px 0 0">Die Angaben für die Abwägung liefert der Fachbereich: Der Ankauf kennt die Kosten einer Übergabe und den Wert einer langjährigen Kundin.</p></div>`,
     frage:null,
-    bspOF:PETRA(`Schön, dass Sie wieder bei uns einliefern möchten, Frau Lindner! ${TERMIN} ${FRIST_DE} ${SATZ_UEBERGABE}`, "ja", [1,1,1,1]) }
+    bspOF:PETRA(`Schön, dass Sie wieder bei uns einliefern möchten, Frau Lindner! ${TERMIN} ${FRIST_DE} ${SATZ_UEBERGABE}`, "ja", [1,1,1,1],
+      "Die Angaben für die Abwägung liefert der Fachbereich: Der Ankauf kennt die Kosten einer Übergabe und den Wert einer langjährigen Kundin.",
+      [null, null, null,
+      "Die neue Regel nennt beide Seiten der Abwägung – die Kosten einer Übergabe und die Kosten einer falschen Auskunft – und genau, wann übergeben wird."]) }
 ];
 const LF_ERG = STUFEN.map(() => null);
 let lfOffen = 0, lfAktiv = 0;
@@ -1492,7 +1491,7 @@ function lfBeispiel(b){
   const checks = b.checks || b.k.map((x, j) => [!!x, KRITERIEN[j], b.gruende && b.gruende[j]]);
   return nb(`<div class="res">
   <div class="resrow"><b>Antwort des Bots</b><div class="small"><div class="antwort">${esc(b.antwort)}</div><div>Übergabe an Mitarbeiter: <b>${esc(b.uebergabe)}</b></div></div></div>
-  <div class="resrow"><b>Bewertung</b><div class="small"><ul class="checks">${checks.map(([x, t, g]) => `<li>${zeichen(x)} ${esc(t)}${g ? `<span class="kgrund">${esc(g)}</span>` : ""}</li>`).join("")}</ul>${b.hinweis ? `<p style="margin:8px 0 0">${esc(b.hinweis)}</p>` : ""}</div></div>
+  <div class="resrow"><b>Bewertung</b><details class="bew" id="lf-bew"><summary><span class="zu">Aufdecken</span><span class="offen">Verbergen</span></summary><div class="small"><ul class="checks">${checks.map(([x, t, g]) => `<li>${zeichen(x)} ${esc(t)}${g ? `<span class="kgrund">${esc(g)}</span>` : ""}</li>`).join("")}</ul>${b.hinweis ? `<p class="bew-hinweis">${esc(b.hinweis)}</p>` : ""}</div></details></div>
 </div>`);
 }
 function lfAuswerten(){
@@ -1502,14 +1501,8 @@ function lfAuswerten(){
   lfStand(e, s.krit.filter(Boolean).length);
   document.getElementById("lf-bsp").innerHTML =
     lfBeispiel(s.bspOF);
-  document.getElementById("lf-warum").textContent = s.warum || "";
-  document.getElementById("lf-warum-p").hidden = !s.grund;
-  const gb = document.getElementById("lf-grund-btn"); gb.hidden = !s.grund; gb.setAttribute("aria-expanded", "false");
-  document.getElementById("lf-grund").hidden = true;
-  document.getElementById("lf-grund").innerHTML = s.grund ? nb(s.grund) : "";
-  const fr = document.getElementById("lf-frage");
-  fr.innerHTML = s.frage ? nb(s.frage) : "";
-  fr.hidden = document.getElementById("lf-weiter").hidden = !!s.grund || !s.frage;
+  document.getElementById("lf-frage").hidden = document.getElementById("lf-weiter").hidden = true;
+  document.getElementById("lf-bew").addEventListener("toggle", e => { if (e.currentTarget.open) lfAufdecken(); });
   document.getElementById("lf-fazit").hidden = true;
   document.getElementById("lf-nachher").hidden = false;
   lfZeichneVerlauf();
@@ -1535,10 +1528,9 @@ document.getElementById("ds-btn").addEventListener("click", e => {
 document.getElementById("lf-wahl").addEventListener("click", e => {
   const b = e.target.closest(".vbtn"); if (b) lfWaehle(Number(b.dataset.v));
 });
-document.getElementById("lf-grund-btn").addEventListener("click", e => {
+/* Aufdecken der Bewertung: verantwortliche Stellen rot markieren, dann die nächste Frage oder das Fazit zeigen */
+function lfAufdecken(){
   const s = STUFEN[lfAktiv];
-  e.currentTarget.hidden = true;
-  document.getElementById("lf-grund").hidden = false;
   for (const [i, text] of s.schuld || []) {
     const li = document.querySelector(`#lf-regeln li[data-i="${i}"]`);
     if (li && !li.classList.contains("schuld")) { li.classList.add("schuld"); li.insertAdjacentHTML("beforeend", `<span class="ziel">${esc(text)}</span>`); }
@@ -1546,7 +1538,7 @@ document.getElementById("lf-grund-btn").addEventListener("click", e => {
   const fr = document.getElementById("lf-frage");
   if (s.frage) { fr.innerHTML = nb(s.frage); fr.hidden = false; document.getElementById("lf-weiter").hidden = false; }
   else document.getElementById("lf-fazit").hidden = false;
-});
+}
 document.getElementById("lf-weiter").addEventListener("click", () => {
   const v = Math.min(lfAktiv + 1, STUFEN.length - 1);
   lfOffen = Math.max(lfOffen, v);
