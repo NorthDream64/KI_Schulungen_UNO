@@ -692,7 +692,7 @@ footer{margin-top:36px;padding-top:14px;border-top:1px solid var(--rule);font-si
         <dt>Englische Antworten in englischer Uhrzeitschreibweise – und richtig (7 pm statt 19:00, 12 pm statt 12 am)</dt>
         <dd>Ob das Kriterium überhaupt gilt, hängt von der Sprache der Antwort ab – das muss man verstehen, nicht zählen. Und „12 am“ enthält die „12“, ist aber Mitternacht: Der Regel-Check würde es durchlassen.</dd>
       </dl>
-      <p class="small" style="margin:12px 0 0"><b>Anfragen in anderen Sprachen:</b> Hier stellt der KI-Bewerter drei andere Fragen – ob die Antwort auf Englisch ist, ob sie ankündigt, dass sich eine Kollegin oder ein Kollege meldet, und ob sie freundlich und knapp bleibt.</p>
+      <p class="small" style="margin:12px 0 0"><b>Anfragen in anderen Sprachen:</b> Hier stellt der KI-Bewerter vier andere Fragen – ob die Antwort auf Englisch ist, ob sie ankündigt, dass sich eine Kollegin oder ein Kollege meldet, ob sie darauf hinweist, dass im nächsten Schritt Kontaktdaten (E-Mail oder Telefon) abgefragt werden, und ob sie freundlich und knapp bleibt.</p>
     </div>
   </details>
 
@@ -711,7 +711,7 @@ footer{margin-top:36px;padding-top:14px;border-top:1px solid var(--rule);font-si
   </div>
 
   <h3 class="sub3">Der Testlauf: Kontrollfall K „Auktionszeiten“</h3>
-  <p>Fünf Kundennachrichten stammen aus dem Testfall. In der sechsten Kachel kannst Du eine eigene Formulierung testen – auf Deutsch, auf Englisch oder in einer anderen Sprache.</p>
+  <p>Fünf Kundennachrichten stammen aus dem Testfall. In der sechsten Kachel kannst Du die Frage nach den Auktionszeiten in eigenen Worten testen – auf Deutsch, auf Englisch oder in einer anderen Sprache.</p>
   <div class="kacheln" id="kacheln"></div>
   <div class="runbar"><button id="run" class="pbtn next" type="button" disabled>Testlauf starten</button><button id="stop" class="reveal" type="button" hidden>Abbrechen</button><span id="runinfo" class="small"></span></div>
   <div class="ctr ctr-einzeln" id="t-ctr"><span class="ctr-lbl">Kontrollfall K im Testlauf</span><b class="ctr-num"><span id="t-n">–</span> von <span id="t-von">5</span></b><span class="ctr-sub" id="t-sub">noch nicht gelaufen</span></div>
@@ -877,9 +877,9 @@ const FAELLE = [
              { text:"Übergabe an Mitarbeiter: nein", feld:"uebergabe", erwartet:"nein" } ],
     bewerter:["Ist die Antwort in derselben Sprache wie die Anfrage?","Sagt die Antwort, dass die Auktionen werktags stattfinden?","Sagt die Antwort, dass an Wochenenden und an Feiertagen keine Auktionen stattfinden?","Gibt die Antwort an, auf welche Zeitzone sich die Uhrzeiten beziehen?","Nur bei englischen Antworten: Verwendet die Antwort die dort übliche Uhrzeitschreibweise und nennt sie die Zeiten richtig – 12 pm bzw. noon und 7 pm (12 am wäre Mitternacht)? Bei deutschen Antworten gilt die Frage als erfüllt."],
     /* Anfragen in anderen Sprachen als Deutsch oder Englisch: hier ist die Übergabe richtig */
-    andere:{ gut:"Antwortet kurz und freundlich auf Englisch, dass sich eine Kollegin oder ein Kollege meldet, und übergibt an einen Mitarbeiter.",
+    andere:{ gut:"Antwortet kurz und freundlich auf Englisch, dass sich eine Kollegin oder ein Kollege meldet, kündigt an, dass im nächsten Schritt die persönlichen Daten mit einer Kontaktadresse (E-Mail oder Telefon) abgefragt werden, und übergibt an einen Mitarbeiter.",
       checks:[ { text:"Übergabe an Mitarbeiter: ja", feld:"uebergabe", erwartet:"ja" } ],
-      bewerter:["Ist die Antwort auf Englisch geschrieben?","Sagt die Antwort, dass sich eine Kollegin oder ein Kollege meldet?","Ist die Antwort freundlich und knapp?"] } }
+      bewerter:["Ist die Antwort auf Englisch geschrieben?","Sagt die Antwort, dass sich eine Kollegin oder ein Kollege meldet?","Kündigt die Antwort an, dass im nächsten Schritt persönliche Daten mit einer Kontaktadresse (E-Mail oder Telefon) abgefragt werden?","Ist die Antwort freundlich und knapp?"] } }
 ];
 
 const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
@@ -1029,7 +1029,7 @@ zeichneTestliste();
 /* Schritt 2: der Prompt in Fassung v0 */
 const PROMPT_V0 = {
   rolle:
-`Du bist der digitale Kundendienst von „Sammel Deinen Traum“, einem Online-Auktionshaus für Sammlerstücke. Du beantwortest Fragen der interessierten Öffentlichkeit, seien es Bieterinnen und Bieter, Interessenten oder Einlieferinnen und Einlieferer. Antworte auf Deutsch oder Englisch, je nachdem, in welcher Sprache die Anfrage gestellt wurde – auf Deutsch mit „Sie“ – und immer freundlich, sachlich und knapp. Schreibt jemand in einer anderen Sprache, antworte kurz auf Englisch, dass sich eine Kollegin oder ein Kollege meldet, und übergib an einen Mitarbeiter.`,
+`Du bist der digitale Kundendienst von „Sammel Deinen Traum“, einem Online-Auktionshaus für Sammlerstücke. Du beantwortest Fragen der interessierten Öffentlichkeit, seien es Bieterinnen und Bieter, Interessenten oder Einlieferinnen und Einlieferer. Antworte auf Deutsch oder Englisch, je nachdem, in welcher Sprache die Anfrage gestellt wurde – auf Deutsch mit „Sie“ – und immer freundlich, sachlich und knapp. Schreibt jemand in einer anderen Sprache, antworte kurz auf Englisch, dass sich eine Kollegin oder ein Kollege meldet, und sag dazu, dass im nächsten Schritt die persönlichen Daten abgefragt werden – mit einer Kontaktadresse (E-Mail oder Telefon), damit die Kollegin oder der Kollege sich melden kann. Übergib dann an einen Mitarbeiter.`,
   wissen:
 `- Auktionen finden werktags um 12:00 und 19:00 Uhr statt – im Winter MEZ (UTC+1), im Sommer MESZ (UTC+2).
 - An Wochenenden und an gesetzlichen Feiertagen des Landes Berlin finden keine Auktionen statt. Die Feiertage der nächsten zwölf Monate (vom System täglich aus dem separat gepflegten Feiertagskalender eingesetzt, Stand 01.01.2027): 01.01.2027, 08.03.2027, 26.03.2027, 29.03.2027, 01.05.2027, 06.05.2027, 17.05.2027, 03.10.2027, 25.12.2027 und 26.12.2027. Liegt ein Datum nach diesem Zeitraum, sag, dass die Termine dafür noch nicht feststehen.
@@ -1153,7 +1153,7 @@ function zeigeKacheln(){
   document.getElementById("kacheln").innerHTML = FEST.map((n,i) => `
     <div class="kachel" id="ka-${i}"><div class="kkopf"><span>${esc(n.herkunft)}</span><span class="badge-v wait" id="kb-${i}" hidden></span></div><blockquote>„${esc(n.text)}“</blockquote></div>`).join("") + `
     <div class="kachel offen" id="ka-${FEST.length}"><div class="kkopf"><label for="eigene">Deine Formulierung</label><span class="badge-v wait" id="kb-${FEST.length}" hidden></span></div>
-      <textarea id="eigene" rows="3" placeholder="Eigene Kundennachricht eingeben"></textarea>
+      <textarea id="eigene" rows="3" placeholder="Frage nach den Auktionszeiten in eigenen Worten"></textarea>
       <label class="ksprache">Sprache der Nachricht <select id="eigene-sprache">${Object.entries(SPRACHEN).map(([w,t]) => `<option value="${w}">${t}</option>`).join("")}</select></label></div>`;
   const f = document.getElementById("eigene"), sel = document.getElementById("eigene-sprache");
   f.value = store.get("evallab-eigen-text");
