@@ -311,6 +311,7 @@ footer{margin-top:36px;padding-top:14px;border-top:1px solid var(--rule);font-si
     <a href="#schritt-2" data-reiter="schritt-2">3 · Übertragung auf den Kundendienst-Bot</a>
     <a href="#schritt-3" data-reiter="schritt-3">4 · Testlauf</a>
     <a href="#schritt-4" data-reiter="schritt-4">5 · Optimierung</a>
+    <a href="#annahmen" data-reiter="annahmen">Back-Up: Annahmen der Modellrechnung</a>
     <a href="#technik" data-reiter="technik">Back-Up: Daten und Code</a>
     <a href="#quellen" data-reiter="quellen">Quellen</a>
   </nav>
@@ -810,20 +811,23 @@ footer{margin-top:36px;padding-top:14px;border-top:1px solid var(--rule);font-si
     </div>
   </div>
 
-  <details class="auf">
-    <summary>Annahmen dieser Modellrechnung</summary>
-    <div class="aufin">
-      <ul style="margin:0;padding-left:20px">
-        <li><b>Testdatum:</b> Für den Optimierungsfall setzt das System als heutiges Datum Donnerstag, 29.04.2027, ein. „Nächster Mittwoch“ ist damit der 05.05.2027, „nächster Donnerstag“ der 06.05.2027 – Christi Himmelfahrt. Das Zwölf-Monats-Fenster des Feiertagskalenders reicht dann bis April 2028. Für den Kontrollfall gilt Freitag, 01.01.2027.</li>
-        <li><b>Kontrollfall K:</b> die 50 Anfragen aus Schritt 2, ausgezählt. Mit dem Feiertagskalender beantwortet der Bot jede Datumsfrage richtig. Bestanden ist eine Antwort nur, wenn sie richtig ist <b>und</b> der Bot nicht übergibt. Keine der Änderungen berührt diese Fragen; der Kontrollfall besteht deshalb in jeder Fassung.</li>
-        <li><b>Optimierungsfall OF:</b> Petras Anfrage. Die Antworten des Bots sind für die Übung erstellt. Sie veranschaulichen das Vorgehen, nicht das Verhalten eines bestimmten Modells. Ein echter Optimierungsfall enthielte mehrere Varianten der Anfrage – andere Kundinnen und Kunden, deren Vertrag vor dem 01.01.2025 abgeschlossen wurde – mit mehr oder weniger Einlieferungen und Zuschlag, in der EU oder außerhalb.</li>
-        <li>Grün ist der Kontrollfall nur, wenn alle 50 Anfragen bestehen, Petras Anfrage nur, wenn alle vier Kriterien erfüllt sind.</li>
-        <li>Ein echtes Sprachmodell antwortet nicht jedes Mal gleich. Ob eine Änderung hilft, zeigt nur ein echter Lauf – am besten mehrfach.</li>
-      </ul>
-    </div>
-  </details>
-  <p class="small" style="margin-top:12px">Modellrechnung, kein Lauf mit einer echten KI – alle Namen, Zahlen und Regeln sind fiktiv und für die Übung erstellt.</p>
+  <p class="small" style="margin-top:12px">Modellrechnung, kein Lauf mit einer echten KI – alle Namen, Zahlen und Regeln sind fiktiv und für die Übung erstellt. Die Annahmen stehen im Reiter <a href="#annahmen">„Back-Up: Annahmen der Modellrechnung“</a>.</p>
   <div class="pager"><a class="pbtn" href="#schritt-3">← Schritt 4</a><a class="pbtn" href="#uebersicht">Zur Übersicht</a></div>
+</section>
+
+<!-- ============ Back-Up: Annahmen ============ -->
+<section class="sec" data-view="annahmen" hidden>
+  <div class="note">
+    <h3>Annahmen der Modellrechnung in Schritt 5</h3>
+    <ul style="margin:0;padding-left:20px">
+      <li><b>Testdatum:</b> Für den Optimierungsfall setzt das System als heutiges Datum Donnerstag, 29.04.2027, ein. „Nächster Mittwoch“ ist damit der 05.05.2027, „nächster Donnerstag“ der 06.05.2027 – Christi Himmelfahrt. Das Zwölf-Monats-Fenster des Feiertagskalenders reicht dann bis April 2028. Für den Kontrollfall gilt Freitag, 01.01.2027.</li>
+      <li><b>Kontrollfall K:</b> die 50 Anfragen aus Schritt 2, ausgezählt. Mit dem Feiertagskalender beantwortet der Bot jede Datumsfrage richtig. Bestanden ist eine Antwort nur, wenn sie richtig ist <b>und</b> der Bot nicht übergibt. Keine der Änderungen berührt diese Fragen; der Kontrollfall besteht deshalb in jeder Fassung.</li>
+      <li><b>Optimierungsfall OF:</b> Petras Anfrage. Die Antworten des Bots sind für die Übung erstellt. Sie veranschaulichen das Vorgehen, nicht das Verhalten eines bestimmten Modells. Ein echter Optimierungsfall enthielte mehrere Varianten der Anfrage – andere Kundinnen und Kunden, deren Vertrag vor dem 01.01.2025 abgeschlossen wurde – mit mehr oder weniger Einlieferungen und Zuschlag, in der EU oder außerhalb.</li>
+      <li>Grün ist der Kontrollfall nur, wenn alle 50 Anfragen bestehen, Petras Anfrage nur, wenn alle vier Kriterien erfüllt sind.</li>
+      <li>Ein echtes Sprachmodell antwortet nicht jedes Mal gleich. Ob eine Änderung hilft, zeigt nur ein echter Lauf – am besten mehrfach.</li>
+    </ul>
+  </div>
+  <div class="pager"><a class="pbtn" href="#schritt-4">← Schritt 5</a><a class="pbtn" href="#uebersicht">Zur Übersicht</a></div>
 </section>
 
 <!-- ============ Quellen ============ -->
@@ -893,7 +897,7 @@ const store = {
 const liste = a => a.map(x => `<li>${esc(x)}</li>`).join("");
 
 /* Seitenwechsel: immer nur ein Schritt sichtbar */
-const VIEWS = ["uebersicht","schritt-1","schritt-1a","schritt-2","schritt-3","schritt-4","technik","quellen"];
+const VIEWS = ["uebersicht","schritt-1","schritt-1a","schritt-2","schritt-3","schritt-4","annahmen","technik","quellen"];
 function zeige(){
   let v = location.hash.slice(1);
   if (!VIEWS.includes(v)) v = "uebersicht";

@@ -18,7 +18,7 @@ verbessert, und der Kontrollfall zeigt nach jeder Änderung, ob sie etwas kaputt
 
 | Datei | Zweck | Für wen |
 |---|---|---|
-| **Prompt-Evaluation.html** | Das Lab. Im Browser öffnen. Reiter: *Übersicht*, *1 · Testprozedur*, *2 · Erstellung Kontrollfall*, *3 · Übertragung auf den Kundendienst-Bot*, *4 · Testlauf*, *5 · Optimierung*, *Back-Up: Daten und Code*, *Quellen*. **Kein Setup.** | Teilnehmende (Haupt-Werkzeug) |
+| **Prompt-Evaluation.html** | Das Lab. Im Browser öffnen. Reiter: *Übersicht*, *1 · Testprozedur*, *2 · Erstellung Kontrollfall*, *3 · Übertragung auf den Kundendienst-Bot*, *4 · Testlauf*, *5 · Optimierung*, *Back-Up: Annahmen der Modellrechnung*, *Back-Up: Daten und Code*, *Quellen*. **Kein Setup.** | Teilnehmende (Haupt-Werkzeug) |
 | **index.html** | Leitet nur auf `Prompt-Evaluation.html` weiter, damit der kurze Pages-Link funktioniert. | — |
 | **Testliste_Kontrollfall_K.csv** | Die 50 Kundenanfragen zum Kontrollfall als Tabelle (öffnet in Excel): Antwort des Bots, richtige Antwort laut erster und laut überarbeiteter Fassung des guten Ergebnisses, Ergebnis. | Alle – so sieht eine Testliste aus |
 | **LICENSE** | Rechtevermerk für alle Inhalte dieses Ordners. | — |
