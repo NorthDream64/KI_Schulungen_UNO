@@ -139,6 +139,7 @@ table.tl tr.durch td{background:var(--red-soft)}
 .infopop{position:absolute;right:0;top:calc(100% + 6px);z-index:20;width:min(640px,88vw);max-height:60vh;overflow:auto;background:var(--card);color:var(--ink);border:1px solid var(--rule);border-radius:10px;box-shadow:0 8px 28px rgba(0,0,0,.25);padding:12px 14px}
 .infopop h4{margin:10px 0 4px;font-size:14px}
 .infopop .ptext{font-size:14px}
+.infopop .pneu{color:var(--ink);font-weight:700}
 .infopop.links{left:0;right:auto}
 .infozeile{margin:0 0 14px}
 .ds-liste{margin:6px 0 10px;padding-left:22px;font-size:15px}
@@ -1504,9 +1505,12 @@ function lfWaehle(v){
   document.getElementById("lf-zeilen-kopf").hidden = document.getElementById("lf-regeln").hidden = !s.zeilen.length;
   document.getElementById("lf-regeln").innerHTML = nb(s.zeilen.map(([abschnitt, t, art], i) =>
     `<li data-i="${i}"${art ? ` class="${art}"` : ""}><span class="abschnitt">${esc(abschnitt)}</span>${art === "neu" ? '<span class="tag">neu</span>' : art === "weg" ? '<span class="tag">entfällt</span>' : ""}<span class="rt">${esc(t)}</span></li>`).join(""));
-  const p = promptStufe(v);
-  document.getElementById("lf-info").innerHTML = nb(`<p class="small" style="margin:0 0 8px">Der Kundendienst-Prompt in ${esc(s.kurz.split(" · ")[0])}, mit den Kundendaten für Petras Anfrage.</p>` +
-    Object.entries(p).map(([k, t]) => `<h4>${k}</h4><div class="ptext">${esc(t)}</div>`).join(""));
+  const p = promptStufe(v), vorher = v > 0 ? promptStufe(v - 1) : p;
+  /* Was in dieser Fassung neu ist, steht fett: Zeilen (bei den Kundendaten: Angaben), die die vorige Fassung nicht hatte */
+  const markiere = (k, t) => { const sep = k === "Kundendaten" ? " · " : "\n", alt = vorher[k].split(sep);
+    return t.split(sep).map(z => alt.includes(z) ? esc(z) : `<b class="pneu">${esc(z)}</b>`).join(sep); };
+  document.getElementById("lf-info").innerHTML = nb(`<p class="small" style="margin:0 0 8px">Der Kundendienst-Prompt in ${esc(s.kurz.split(" · ")[0])}, mit den Kundendaten für Petras Anfrage.${v > 0 ? " <b>Fett</b>: was in dieser Fassung neu ist." : ""}</p>` +
+    Object.entries(p).map(([k, t]) => `<h4>${k}</h4><div class="ptext">${markiere(k, t)}</div>`).join(""));
   for (const id of ["K", "OF"]) lfZaehler(id, null);
   document.getElementById("lf-krit-OF").textContent = "";
   document.getElementById("lf-nachher").hidden = true;
