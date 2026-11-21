@@ -36,7 +36,7 @@ verbessert, und der Kontrollfall zeigt nach jeder Änderung, ob sie etwas kaputt
 1. **Das gute Ergebnis steht vor dem ersten Lauf fest** – und es ist eine fachliche, keine technische Entscheidung.
 2. **100 % können täuschen:** Eine unvollständige Messlatte übersieht Fehler, die es längst gibt.
 3. **Anweisungen allein machen ein Modell nicht verlässlich** – Daten wie ein Feiertagskalender schon.
-4. **Der Kontrollfall ist das Sicherheitsnetz:** Eine Änderung, die einen Fall verbessert, kann einen anderen verschlechtern.
+4. **Der Kontrollfall ist das Sicherheitsnetz:** Er läuft nach jeder Änderung mit und zeigt, ob sie etwas kaputt gemacht hat.
 
 Alle Namen, Zahlen und Regeln sind fiktiv und für die Übung erstellt.
 

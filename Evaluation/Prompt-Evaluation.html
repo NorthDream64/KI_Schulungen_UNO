@@ -786,10 +786,6 @@ footer{margin-top:36px;padding-top:14px;border-top:1px solid var(--rule);font-si
   <div id="lf-nachher" hidden>
     <p class="small" style="margin:6px 0 6px"><b>Petras Anfrage – so antwortet der Bot</b></p>
     <div id="lf-bsp"></div>
-    <details class="auf" id="lf-k1-auf" hidden>
-      <summary id="lf-k1-sum"></summary>
-      <div class="aufin"><div class="tl-wrap"><table class="tl" id="lf-k1-tab"></table></div></div>
-    </details>
     <p style="margin-top:18px" id="lf-warum-p"><b>Warum?</b> <span id="lf-warum"></span></p>
     <button class="reveal" type="button" id="lf-grund-btn" aria-expanded="false">Gründe aufdecken</button>
     <div id="lf-grund" hidden></div>
@@ -842,7 +838,7 @@ footer{margin-top:36px;padding-top:14px;border-top:1px solid var(--rule);font-si
     <div class="aufin">
       <ul style="margin:0;padding-left:20px">
         <li><b>Testdatum:</b> Für den Optimierungsfall setzt das System als heutiges Datum Donnerstag, 29.04.2027, ein. „Nächster Mittwoch“ ist damit der 05.05.2027, „nächster Donnerstag“ der 06.05.2027 – Christi Himmelfahrt. Das Zwölf-Monats-Fenster des Feiertagskalenders reicht dann bis April 2028. Für den Kontrollfall gilt Freitag, 01.01.2027.</li>
-        <li><b>Kontrollfall K:</b> die 50 Anfragen aus Schritt 2, ausgezählt. Mit dem Feiertagskalender beantwortet der Bot jede Datumsfrage richtig. Bestanden ist eine Antwort nur, wenn sie richtig ist <b>und</b> der Bot nicht übergibt. In Fassung v5 übergibt der Bot an allen zehn Feiertagen der Liste, weil er nicht ausschließen kann, dass dort eine Sonderauktion stattfindet.</li>
+        <li><b>Kontrollfall K:</b> die 50 Anfragen aus Schritt 2, ausgezählt. Mit dem Feiertagskalender beantwortet der Bot jede Datumsfrage richtig. Bestanden ist eine Antwort nur, wenn sie richtig ist <b>und</b> der Bot nicht übergibt. Keine der Änderungen berührt diese Fragen; der Kontrollfall besteht deshalb in jeder Fassung.</li>
         <li><b>Optimierungsfall OF:</b> Petras Anfrage. Die Antworten des Bots sind für die Übung erstellt. Sie veranschaulichen das Vorgehen, nicht das Verhalten eines bestimmten Modells. Ein echter Optimierungsfall enthielte mehrere Varianten der Anfrage – andere Kundinnen und Kunden mit älterem Rahmenvertrag, mit mehr oder weniger Einlieferungen und Zuschlag, in der EU oder außerhalb.</li>
         <li>Grün ist der Kontrollfall nur, wenn alle 50 Anfragen bestehen, Petras Anfrage nur, wenn alle vier Kriterien erfüllt sind.</li>
         <li>Ein echtes Sprachmodell antwortet nicht jedes Mal gleich. Ob eine Änderung hilft, zeigt nur ein echter Lauf – am besten mehrfach.</li>
@@ -1320,9 +1316,8 @@ const maschine = {
 };
 document.getElementById("json").textContent = JSON.stringify(maschine, null, 2);
 
-/* ---------- Schritt 5: Kontrollfall K und Optimierungsfall OF über sieben Fassungen des Prompts ----------
-   Modellrechnung. K: die 50 Anfragen aus Schritt 2, ausgezählt – mit Feiertagskalender beantwortet der Bot jede Datumsfrage richtig;
-   in Fassung v5 übergibt er an allen zehn Feiertagen. OF: Petras Anfrage, Antworten für die Übung erstellt. Testdatum: 29.04.2027. */
+/* ---------- Schritt 5: Kontrollfall K und Optimierungsfall OF über sechs Fassungen des Prompts ----------
+   Modellrechnung. K: die 50 Anfragen aus Schritt 2, ausgezählt – mit Feiertagskalender beantwortet der Bot jede Datumsfrage richtig. OF: Petras Anfrage, Antworten für die Übung erstellt. Testdatum: 29.04.2027. */
 const OF = { id:"OF", rolle:"Optimierungsfall", titel:"Die Bestandskundin",
   kontext:"Petra Lindner · Testdatum: Donnerstag, 29.04.2027 · Im Kundenkonto: Einlieferin seit 2017, Wohnsitz Deutschland, Rahmenvertrag 2017 mit 12 % Provision, zwei Einlieferungen in den letzten zwölf Monaten · Ihre Zuschlagssumme führt die Buchhaltung, nicht das Kundenkonto",
   kontextHinweis:"Was davon der Bot zu sehen bekommt, hängt von der Fassung des Prompts ab.",
@@ -1350,7 +1345,6 @@ const KD_0 = "Petra Lindner";
 const KD_KONTO = "Petra Lindner · Einlieferin seit 2017 · Wohnsitz: Deutschland · Rahmenvertrag 2017: Provision 12 %";
 const KD_GUT = "Einlieferungen in den letzten zwölf Monaten: 2 (vom System gezählt) · Zuschlagssumme der letzten zwölf Monate: nicht verfügbar (liegt in der Buchhaltung)";
 const R_DATEN = "Nenne Provisionssätze nur so, wie sie in den Kundendaten oder in unseren AGB stehen. Hat die Kundin oder der Kunde einen älteren Rahmenvertrag, nenne den Satz daraus und erkläre, dass seit 2025 für Neukundinnen und Neukunden 18 % gelten. Erfinde keine Konditionen.";
-const R_ZWEIFEL = "Übergib im Zweifel an einen Mitarbeiter.";
 const R_ABWAEGUNG = "Eine Übergabe an einen Mitarbeiter kostet uns rund 15 € und bindet den Ankauf. Eine falsche Auskunft zur Provision kann eine langjährige Kundin oder einen langjährigen Kunden verärgern – das kostet am Ende mehr. Übergib deshalb an den Ankauf, wenn bei einer Kundin oder einem Kunden mit älterem Rahmenvertrag nicht feststeht, ob der günstigere Satz gilt, und nenne dann keinen Satz als verbindlich. Übergib außerdem bei Reklamationen zu abgeschlossenen Auktionen und bei Anfragen in anderen Sprachen als Deutsch oder Englisch. Alle anderen Anliegen löst Du selbst.";
 
 function promptStufe(v){
@@ -1358,7 +1352,7 @@ function promptStufe(v){
   if (v >= 1) wissen.push("- " + W_VORLAUF);
   if (v >= 4) wissen.push("- " + W_GUT);
   const regeln = [R_ERFINDE, v >= 3 ? R_DATEN : R_2023];
-  if (v >= 6) regeln.push(R_ABWAEGUNG); else { regeln.push(R_2025); if (v === 5) regeln.push(R_ZWEIFEL); }
+  regeln.push(v >= 5 ? R_ABWAEGUNG : R_2025);
   return { Rolle: PROMPT_V0.rolle, Wissen: wissen.join("\n"), Verhaltensregeln: regeln.map(r => "- " + r).join("\n"),
            Kundendaten: v >= 4 ? KD_KONTO + " · " + KD_GUT : v >= 2 ? KD_KONTO : KD_0, Antwortformat: PROMPT_V0.format };
 }
@@ -1373,7 +1367,7 @@ const STUFEN = [
   { kurz:"v0 · heute", titel:"Fassung v0: der Kundendienst-Prompt von heute",
     was:"Der Prompt aus Schritt 3, unverändert. Mit ihm besteht der Kontrollfall – mit Petras Anfrage kommt der Bot aber schlecht zurecht.",
     zeilenTitel:"", zeilen:[], schuld:[],
-    k1Uebergabe:false, krit:[1,0,0,0],
+    krit:[1,0,0,0],
     warum:null, grund:null,
     frage:"<b>Und jetzt?</b> Wir beginnen mit den Fristen. Was braucht der Bot dafür?",
     bspOF:PETRA(`Vielen Dank für Ihre Nachricht, Frau Lindner! ${TERMIN} Zur Provision: Unsere Standardprovision beträgt 18 % des Zuschlags, und ja, die Provision wurde angepasst. Alle Einzelheiten finden Sie in unseren AGB auf unserer Webseite.`, "nein", [1,0,0,0], null, [
@@ -1385,7 +1379,7 @@ const STUFEN = [
     was:"Das Wissen bekommt die Fristen für Versand und Prüfung – eine Geschäftsregel, die bisher nur der Ankauf kannte.",
     zeilenTitel:"Was sich gegenüber der vorigen Fassung ändert",
     zeilen:[["Wissen", W_VORLAUF, "neu"]], schuld:[],
-    k1Uebergabe:false, krit:[1,1,0,0],
+    krit:[1,1,0,0],
     warum:null, grund:null,
     frage:"<b>Und jetzt?</b> Woher soll der Bot Petras Provisionssatz kennen?",
     bspOF:PETRA(`Vielen Dank für Ihre Nachricht, Frau Lindner! ${TERMIN} Bitte rechnen Sie für den Versand mit bis zu drei Tagen innerhalb der EU (außerhalb der EU bis zu zehn Tage) und einem weiteren Tag für Prüfung und Verwaltung, bevor Ihre Comics in eine Auktion kommen. Zur Provision: Unsere Standardprovision beträgt 18 % des Zuschlags, und ja, die Provision wurde angepasst. Alle Einzelheiten finden Sie in unseren AGB.`, "nein", [1,1,0,0]) },
@@ -1394,7 +1388,7 @@ const STUFEN = [
     zeilenTitel:"Was sich gegenüber der vorigen Fassung ändert",
     zeilen:[["Kundendaten", KD_0, "weg"], ["Kundendaten", KD_KONTO, "neu"], ["Verhaltensregeln", R_2023]],
     schuld:[[2,"verbietet, Petras Satz zu nennen"]],
-    k1Uebergabe:false, krit:[1,1,0,0],
+    krit:[1,1,0,0],
     warum:"Der Bot hat Petras 12 % jetzt vor sich. Warum nennt er sie nicht?",
     grund:`<div class="box" style="margin-top:14px">
       <p style="margin:0"><b>Daten allein reichen nicht, wenn eine alte Regel ihre Nutzung verbietet.</b> Die Regel von 2023 sollte verhindern, dass der Bot Konditionen erfindet. Jetzt verhindert sie, dass er die richtigen nennt. Ein alter Flicken verursacht einen neuen Fehler.</p>
@@ -1405,7 +1399,7 @@ const STUFEN = [
     was:"Die Regel von 2023 wird neu geschrieben: Ihr Zweck bleibt, ihre Formulierung ändert sich.",
     zeilenTitel:"Was sich gegenüber der vorigen Fassung ändert",
     zeilen:[["Verhaltensregeln", R_2023, "weg"], ["Verhaltensregeln", R_DATEN, "neu"]], schuld:[],
-    k1Uebergabe:false, krit:[1,1,1,0],
+    krit:[1,1,1,0],
     warum:"Der Bot nennt jetzt Petras 12 % – warum ist das vierte Kriterium trotzdem nicht erfüllt?",
     grund:`<div class="box" style="margin-top:14px">
       <p style="margin:0">Der Bot nennt jetzt den Satz aus dem Vertrag und ordnet das Gerücht richtig ein. Für eine gute Verkäuferin wäre das die richtige Antwort.</p>
@@ -1418,7 +1412,7 @@ const STUFEN = [
     zeilenTitel:"Was sich gegenüber der vorigen Fassung ändert",
     zeilen:[["Kundendaten", KD_GUT, "neu"], ["Wissen", W_GUT, "neu"], ["Verhaltensregeln", R_2025]],
     schuld:[[2,"verhindert die Übergabe"]],
-    k1Uebergabe:false, krit:[1,1,1,0],
+    krit:[1,1,1,0],
     warum:"Der Bot erkennt jetzt, dass er Petras Satz nicht selbst klären kann. Warum ist das vierte Kriterium trotzdem nicht erfüllt?",
     grund:`<div class="box" style="margin-top:14px">
       <p style="margin:0">Mit zwei Einlieferungen reicht Petras erstes Kriterium nicht. Ob sie über ihre Zuschlagssumme den günstigeren Satz erhält, kann nur der Ankauf prüfen. Das erkennt der Bot richtig – übergeben darf er nach der Regel von 2025 aber nur bei Reklamationen und Anfragen in anderen Sprachen. Also schickt er Petra selbst zum Ankauf: Die Arbeit landet bei der Kundin.</p>
@@ -1426,27 +1420,14 @@ const STUFEN = [
       <p style="margin:10px 0 0">Der Kontrollfall besteht weiter.</p></div>`,
     frage:"<b>Und jetzt?</b> Wie bringen wir den Bot dazu, Petras Fall an den Ankauf zu übergeben?",
     bspOF:PETRA(`Schön, dass Sie wieder bei uns einliefern möchten, Frau Lindner! ${TERMIN} ${FRIST_DE} Zur Provision: Ihr Rahmenvertrag von 2017 sieht 12 % vor; seit 2025 gelten für Neukundinnen und Neukunden 18 %. Den günstigeren Satz erhalten gute Verkäuferinnen und Verkäufer – mit mehr als drei Einlieferungen oder mehr als 5.000 € Zuschlag in den letzten zwölf Monaten. Sie hatten zwei Einlieferungen, Ihre Zuschlagssumme kann ich nicht einsehen. Bitte wenden Sie sich deshalb an unseren Ankauf.`, "nein", [1,1,1,0]) },
-  { kurz:"v5 · Übergabe, 1. Versuch", titel:"Schritt 5, erster Versuch: ein schneller Flicken",
-    was:"Ein naheliegender Vorschlag aus dem Team: Ein Satz wird ergänzt. Die Regel von 2025 bleibt stehen.",
+  { kurz:"v5 · Übergabe", titel:"Schritt 5: beide Seiten der Abwägung",
+    was:"Die Regel von 2025 wird neu geschrieben: Sie nennt beide Seiten der Abwägung – und genau, wann übergeben wird.",
     zeilenTitel:"Was sich gegenüber der vorigen Fassung ändert",
-    zeilen:[["Verhaltensregeln", R_2025], ["Verhaltensregeln", R_ZWEIFEL, "neu"]],
-    schuld:[[1,"verursacht die Fehler im Kontrollfall"],[0,"widerspricht dem neuen Satz"]],
-    k1Uebergabe:true, krit:[1,1,1,1],
-    warum:"Petras Anfrage besteht – aber der Kontrollfall nicht mehr. Wie kann das sein? An den Fragen nach den Auktionszeiten hat sich nichts geändert.",
-    grund:`<div class="box" style="margin-top:14px">
-      <p style="margin:0"><b>Ein Flicken auf einem Flicken.</b> Die neue Regel widerspricht der von 2025, die weiter im Prompt steht: Einmal soll der Bot nur in festgelegten Fällen übergeben, einmal „im Zweifel“. Welche Regel sich durchsetzt, ist nicht vorhersehbar.</p>
-      <p style="margin:10px 0 0">Außerdem sagt „im Zweifel“ nicht, <b>wann</b> ein Zweifel vorliegt. An Feiertagen ist sich der Bot unsicher, ob vielleicht eine Sonderauktion stattfindet – und übergibt Fragen, die er vorher selbst richtig beantwortet hat. Jede dieser Übergaben kostet rund 15&nbsp;€.</p>
-      <p style="margin:10px 0 0"><b>Genau dafür gibt es den Kontrollfall.</b> Die Antworten selbst sind richtig. Aufgefallen ist die Verschlechterung nur durch den Regel-Check „Übergabe an Mitarbeiter: nein“ – ohne ihn gälte der Kontrollfall weiter als bestanden.</p></div>`,
-    frage:"<b>Und jetzt?</b> Wie lässt sich Petras Fall übergeben, ohne dass der Kontrollfall darunter leidet?",
-    bspOF:PETRA(`Schön, dass Sie wieder bei uns einliefern möchten, Frau Lindner! ${TERMIN} ${FRIST_DE} ${SATZ_UEBERGABE}`, "ja", [1,1,1,1]) },
-  { kurz:"v6 · Übergabe, 2. Versuch", titel:"Schritt 5, zweiter Versuch: beide Seiten der Abwägung",
-    was:"Der Flicken entfällt. Die Regel von 2025 wird neu geschrieben: Sie nennt beide Seiten der Abwägung – und genau, wann übergeben wird.",
-    zeilenTitel:"Was sich gegenüber der vorigen Fassung ändert",
-    zeilen:[["Verhaltensregeln", R_2025, "weg"], ["Verhaltensregeln", R_ZWEIFEL, "weg"], ["Verhaltensregeln", R_ABWAEGUNG, "neu"]], schuld:[],
-    k1Uebergabe:false, krit:[1,1,1,1],
+    zeilen:[["Verhaltensregeln", R_2025, "weg"], ["Verhaltensregeln", R_ABWAEGUNG, "neu"]], schuld:[],
+    krit:[1,1,1,1],
     warum:"Was hat diese Änderung bewirkt?",
     grund:`<div class="box" style="margin-top:14px">
-      <p style="margin:0"><b>Beide Seiten stehen jetzt im Prompt:</b> die Kosten einer Übergabe und die Kosten einer falschen Auskunft – dazu genau, wann übergeben wird. Der widersprüchliche Flicken ist weg. Petras Anfrage erfüllt alle vier Kriterien, und der Kontrollfall besteht wieder.</p>
+      <p style="margin:0"><b>Beide Seiten stehen jetzt im Prompt:</b> die Kosten einer Übergabe und die Kosten einer falschen Auskunft – dazu genau, wann übergeben wird. Petras Anfrage erfüllt alle vier Kriterien, und der Kontrollfall besteht weiter.</p>
       <p style="margin:10px 0 0">Die Angaben für die Abwägung liefert der Fachbereich: Der Ankauf kennt die Kosten einer Übergabe und den Wert einer langjährigen Kundin.</p></div>`,
     frage:null,
     bspOF:PETRA(`Schön, dass Sie wieder bei uns einliefern möchten, Frau Lindner! ${TERMIN} ${FRIST_DE} ${SATZ_UEBERGABE}`, "ja", [1,1,1,1]) }
@@ -1517,16 +1498,9 @@ function lfBeispiel(b){
 }
 function lfAuswerten(){
   const v = lfAktiv, s = STUFEN[v];
-  const kFehler = TESTLISTE.filter(r => s.k1Uebergabe && r.feiertag);
-  const e = { K: TESTLISTE.length - kFehler.length };
+  const e = { K: TESTLISTE.length };   /* der Kontrollfall besteht in jeder Fassung */
   LF_ERG[v] = e;
   lfStand(e, s.krit.filter(Boolean).length);
-  const kauf = document.getElementById("lf-k1-auf");
-  kauf.hidden = kFehler.length === 0; kauf.open = false;
-  document.getElementById("lf-k1-sum").textContent = `Diese ${kFehler.length} Antworten im Kontrollfall fallen jetzt durch`;
-  document.getElementById("lf-k1-tab").innerHTML =
-    `<thead><tr><th>Anfrage</th><th>Bot antwortet</th><th>Übergabe an Mitarbeiter</th><th>Erwartet</th></tr></thead><tbody>` +
-    kFehler.map(r => `<tr class="durch"><td>${r.wt}, ${r.datum}</td><td>Nein, Feiertag</td><td>ja</td><td>nein</td></tr>`).join("") + `</tbody>`;
   document.getElementById("lf-bsp").innerHTML =
     lfBeispiel(s.bspOF);
   document.getElementById("lf-warum").textContent = s.warum || "";
