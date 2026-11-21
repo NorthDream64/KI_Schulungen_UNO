@@ -800,11 +800,11 @@ footer{margin-top:36px;padding-top:14px;border-top:1px solid var(--rule);font-si
       <div class="verdict">
         <p style="margin:0 0 6px"><b>Was dieses Beispiel zeigt</b></p>
         <ul style="margin:0;padding-left:20px">
-          <li><b>Daten statt Anweisungen.</b> Datum, Feiertagskalender, Kundenkonto, Zahl der Einlieferungen: Was der Bot wissen muss, bekommt er als Daten. Was sich nachschlagen oder zählen lässt, erledigt das System.</li>
+          <li><b>Daten statt Anweisungen.</b> Datum, Feiertagskalender, Daten aus dem CRM-System, Zahl der Einlieferungen: Was der Bot wissen muss, bekommt er als Daten. Was sich nachschlagen oder zählen lässt, erledigt das System.</li>
           <li><b>Alte Regeln prüfen, bevor neue dazukommen.</b> Die Regel von 2023 hat verhindert, dass der Bot die richtigen Daten nutzt.</li>
           <li><b>Beide Seiten einer Abwägung nennen.</b> Kennt der Bot nur die Kosten einer Übergabe, spart er an der falschen Stelle.</li>
           <li><b>Eine Änderung nach der anderen</b> – und nach jeder Änderung laufen alle Testfälle, auch der Kontrollfall.</li>
-          <li><b>Hinter fast jedem Schritt steht eine Person im Unternehmen:</b> der Fachbereich (Geschäftsregeln, Abwägung), die IT (Datum, Kundenkonto, Zählung), der Datenschutz (Zugriff auf das Kundenkonto).</li>
+          <li><b>Hinter fast jedem Schritt steht eine Person im Unternehmen:</b> der Fachbereich (Geschäftsregeln, Abwägung), die IT (Datum, CRM-System, Zählung), der Datenschutz (Zugriff auf die Kundendaten).</li>
         </ul>
       </div>
     </div>
@@ -1323,7 +1323,7 @@ document.getElementById("json").textContent = JSON.stringify(maschine, null, 2);
 /* ---------- Schritt 5: Kontrollfall K und Optimierungsfall OF über sechs Fassungen des Prompts ----------
    Modellrechnung. K: die 50 Anfragen aus Schritt 2, ausgezählt – mit Feiertagskalender beantwortet der Bot jede Datumsfrage richtig. OF: Petras Anfrage, Antworten für die Übung erstellt. Testdatum: 29.04.2027. */
 const OF = { id:"OF", rolle:"Optimierungsfall", titel:"Die Bestandskundin",
-  kontext:"Petra Lindner · Testdatum: Donnerstag, 29.04.2027 · Im Kundenkonto: Einlieferin seit 2017, Wohnsitz Deutschland, Vertrag von 2017 mit 12 % Provision, zwei Einlieferungen in den letzten zwölf Monaten · Ihre Zuschlagssumme führt die Buchhaltung, nicht das Kundenkonto",
+  kontext:"Petra Lindner · Testdatum: Donnerstag, 29.04.2027 · Im CRM-System (Kundenverwaltung): Einlieferin seit 2017, Wohnsitz Deutschland, Vertrag von 2017 mit 12 % Provision, zwei Einlieferungen in den letzten zwölf Monaten · Ihre Zuschlagssumme führt die Buchhaltung, nicht das CRM-System",
   kontextHinweis:"Petra schreibt angemeldet aus ihrem Kundenkonto – das System weiß deshalb, wer sie ist. Was davon der Bot zu sehen bekommt, hängt von der Fassung des Prompts ab.",
   nachricht:"Ich möchte wieder 30 Comics bei Euch verkaufen, am besten nächsten Mittwoch oder Donnerstag. Geht das? Mit welcher Provision kann ich rechnen? Ich habe gehört, Ihr habt die Provision erhöht.",
   gut:"Nennt die Termine konkret: Am Mittwoch, 05.05.2027, finden Auktionen um 12 und 19 Uhr MESZ statt, am Donnerstag, 06.05.2027 (Christi Himmelfahrt), nicht. Nennt die Fristen: Versand innerhalb der EU bis zu drei Tage, außerhalb der EU bis zu zehn Tage, danach ein Tag für Prüfung und Verwaltung. Erklärt, dass Petras Vertrag von 2017 12 % vorsieht und die 18 % seit 2025 für Neukundinnen und Neukunden gelten. Petra hatte in den letzten zwölf Monaten nur zwei Einlieferungen; ob sie über ihre Zuschlagssumme den günstigeren Satz erhält, kann der Bot nicht prüfen. Deshalb sagt er keinen Satz verbindlich zu und übergibt an den Ankauf.",
@@ -1375,7 +1375,7 @@ const STUFEN = [
     bspOF:PETRA(`Vielen Dank für Ihre Nachricht, Frau Lindner! ${TERMIN} Zur Provision: Unsere Standardprovision beträgt 18 % des Zuschlags, und ja, die Provision wurde angepasst. Alle Einzelheiten finden Sie in unseren AGB auf unserer Webseite.`, "nein", [1,0,0,0], null, [
       "Mit dem heutigen Datum und dem Feiertagskalender aus Schritt 2 rechnet der Bot „nächster Mittwoch“ selbst aus.",
       "Versand und Prüfung stehen nirgends im Prompt.",
-      "Der Bot sieht nur Petras Namen, nicht ihr Kundenkonto – und die Regel von 2023 verbietet ihm, individuelle Konditionen zu nennen. Also nennt er die 18 % aus den AGB und bestätigt das Gerücht, als gälte es für Petra.",
+      "Der Bot sieht nur Petras Namen, nicht ihre Daten im CRM-System – und die Regel von 2023 verbietet ihm, individuelle Konditionen zu nennen. Also nennt er die 18 % aus den AGB und bestätigt das Gerücht, als gälte es für Petra.",
       "Die Regel von 2025 erlaubt Übergaben nur bei Reklamationen und bei Anfragen in anderen Sprachen."]) },
   { kurz:"v1 · Fristen", titel:"Schritt 1: Fristen für Versand und Prüfung",
     was:"Das Wissen bekommt die Fristen für Versand und Prüfung – eine Geschäftsregel, die bisher nur der Ankauf kannte.",
@@ -1385,10 +1385,10 @@ const STUFEN = [
     frage:"<b>Und jetzt?</b> Woher soll der Bot Petras Provisionssatz kennen?",
     bspOF:PETRA(`Vielen Dank für Ihre Nachricht, Frau Lindner! ${TERMIN} Bitte rechnen Sie für den Versand mit bis zu drei Tagen innerhalb der EU (außerhalb der EU bis zu zehn Tage) und einem weiteren Tag für Prüfung und Verwaltung, bevor Ihre Comics in eine Auktion kommen. Zur Provision: Unsere Standardprovision beträgt 18 % des Zuschlags, und ja, die Provision wurde angepasst. Alle Einzelheiten finden Sie in unseren AGB.`, "nein", [1,1,0,0], null, [null,
       "Die Fristen stehen jetzt im Wissen.",
-      "Wie in v0: Der Bot sieht nur Petras Namen, nicht ihr Kundenkonto – und die Regel von 2023 verbietet ihm, individuelle Konditionen zu nennen.",
+      "Wie in v0: Der Bot sieht nur Petras Namen, nicht ihre Daten im CRM-System – und die Regel von 2023 verbietet ihm, individuelle Konditionen zu nennen.",
       "Wie in v0: Die Regel von 2025 erlaubt hier keine Übergabe."]) },
-  { kurz:"v2 · Kundenkonto", titel:"Schritt 2: Zugriff auf das Kundenkonto",
-    was:"Die IT bindet das Kundenkonto an: Das System setzt Petras Vertragsdaten in den Abschnitt „Kundendaten“ ein. Der Datenschutz hat vorher geklärt, dass der Bot sie verwenden darf.",
+  { kurz:"v2 · CRM", titel:"Schritt 2: Anbindung des CRM-Systems",
+    was:"Die IT bindet das CRM-System an: Das System setzt Petras Vertragsdaten in den Abschnitt „Kundendaten“ ein. Der Datenschutz hat vorher geklärt, dass der Bot sie verwenden darf.",
     zeilenTitel:"Was sich gegenüber der vorigen Fassung ändert",
     zeilen:[["Kundendaten", KD_0, "weg"], ["Kundendaten", KD_KONTO, "neu"], ["Verhaltensregeln", R_2023]],
     schuld:[[2,"verbietet, Petras Satz zu nennen"]],
@@ -1440,7 +1440,7 @@ document.getElementById("of-karte").innerHTML = nb(`
 <div class="box lf">
   <p class="lf-kopf"><b>${esc(OF.id)} · ${esc(OF.rolle)}</b><span>${esc(OF.titel)}</span></p>
   <dl>
-    <dt><i class="badge">2</i>Kontext – Petra und ihr Kundenkonto</dt><dd>${esc(OF.kontext)}<br><span class="small">${esc(OF.kontextHinweis)}</span></dd>
+    <dt><i class="badge">2</i>Kontext – Petra und ihre Kundendaten</dt><dd>${esc(OF.kontext)}<br><span class="small">${esc(OF.kontextHinweis)}</span></dd>
     <dt><i class="badge">3</i>Kundennachricht</dt><dd><blockquote>„${esc(OF.nachricht)}“</blockquote></dd>
     <dt><i class="badge">4</i>Gutes Ergebnis</dt><dd>${esc(OF.gut)}</dd>
   </dl>
