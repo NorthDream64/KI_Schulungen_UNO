@@ -140,6 +140,10 @@ table.tl tr.durch td{background:var(--red-soft)}
 .infopop{position:absolute;right:0;top:calc(100% + 6px);z-index:20;width:min(640px,88vw);max-height:60vh;overflow:auto;background:var(--card);color:var(--ink);border:1px solid var(--rule);border-radius:10px;box-shadow:0 8px 28px rgba(0,0,0,.25);padding:12px 14px}
 .infopop h4{margin:10px 0 4px;font-size:14px}
 .infopop .ptext{font-size:14px}
+.infopop.links{left:0;right:auto}
+.infozeile{margin:0 0 14px}
+.ds-liste{margin:6px 0 10px;padding-left:22px;font-size:15px}
+.ds-liste li{margin-bottom:6px}
 
 
 #ansprechpartner .duo{margin-top:6px}
@@ -712,6 +716,30 @@ footer{margin-top:36px;padding-top:14px;border-top:1px solid var(--rule);font-si
 
   <h3 class="sub3">Der Testlauf: Kontrollfall K „Auktionszeiten“</h3>
   <p>Fünf Kundennachrichten stammen aus dem Testfall. In der sechsten Kachel kannst Du die Frage nach den Auktionszeiten in eigenen Worten testen – auf Deutsch, auf Englisch oder in einer anderen Sprache.</p>
+  <p style="margin-bottom:6px">Schreibt jemand in einer anderen Sprache, übergibt der Bot und kündigt an, dass im nächsten Schritt Kontaktdaten abgefragt werden.</p>
+  <div class="infozeile"><span class="infowrap"><button type="button" class="infobtn" id="ds-info-btn" aria-expanded="false" aria-controls="ds-info">ⓘ Datenschutz: Darf der Bot das?</button>
+    <div class="infopop links" id="ds-info" role="dialog" aria-label="Datenschutz bei der Abfrage von Kontaktdaten" hidden>
+      <h4 style="margin-top:0">Datenschutz: Darf der Bot das?</h4>
+      <p class="small" style="margin:0 0 6px">Der Bot kündigt an, dass er gleich eine E-Mail-Adresse oder Telefonnummer abfragt. Überlege zuerst selbst:</p>
+      <ol class="ds-liste">
+        <li>Auf welche Rechtsgrundlage stützt sich die Abfrage – braucht es eine Einwilligung?</li>
+        <li>Ließe sich das Thema mit einer Einwilligung in den AGB erledigen?</li>
+        <li>Was muss die Person erfahren, wenn ihre Daten erhoben werden?</li>
+        <li>Welche Daten sind wirklich nötig?</li>
+        <li>Wer verarbeitet die Daten außer dem Unternehmen – und was folgt daraus?</li>
+        <li>Was verlangt die KI-Verordnung von einem Chatbot?</li>
+      </ol>
+      <button class="reveal" type="button" id="ds-btn" aria-expanded="false" aria-controls="ds-antworten">Antworten zeigen</button>
+      <ol class="ds-liste" id="ds-antworten" hidden>
+        <li><b>Vorvertragliche Maßnahme, keine Einwilligung.</b> Die Person fragt von sich aus, wie sie bei uns verkaufen kann. Die Kontaktdaten, die für die Antwort nötig sind, dürfen deshalb nach Art. 6 Abs. 1 lit. b DSGVO verarbeitet werden. Voraussetzung: Die Initiative geht von ihr aus.</li>
+        <li><b>Nein.</b> Eine Einwilligung muss freiwillig sein und darf nicht an einen Vertrag gekoppelt werden, für den sie nicht nötig ist (Art. 7 Abs. 4 DSGVO, Erwägungsgrund 43). Steckt sie in den AGB, weiß die Person nicht sicher, dass und wozu sie einwilligt (Erwägungsgrund 42). Außerdem müsste das Unternehmen sie nachweisen, und die Person könnte sie jederzeit widerrufen (Art. 7 DSGVO).</li>
+        <li><b>Die Pflichtinformationen bei der Erhebung (Art. 13 DSGVO):</b> wer verantwortlich ist, zu welchem Zweck und auf welcher Rechtsgrundlage, wer die Daten erhält, wie lange sie gespeichert werden und welche Rechte die Person hat. In der Praxis: ein Satz mit Link auf die Datenschutzhinweise.</li>
+        <li><b>Datenminimierung (Art. 5 Abs. 1 lit. c DSGVO):</b> Eine Kontaktadresse genügt – E-Mail oder Telefon. Was darüber hinausgeht, braucht einen eigenen Grund.</li>
+        <li><b>Der Modellanbieter</b> verarbeitet den Chat im Auftrag des Unternehmens. Dafür braucht es einen Vertrag zur Auftragsverarbeitung (Art. 28 DSGVO) und, wenn die Daten die EU verlassen, eine Grundlage für die Übermittlung (Art. 44 ff. DSGVO).</li>
+        <li><b>Hinweis auf die KI:</b> Seit dem 2. August 2026 müssen Menschen erfahren, dass sie mit einer KI sprechen (Art. 50 KI-Verordnung).</li>
+      </ol>
+      <p class="small" style="margin:10px 0 0"><b>Wer entscheidet?</b> Die oder der Datenschutzbeauftragte – am besten, bevor der Bot startet. Kurzüberblick, keine Rechtsberatung; Quellen im Reiter „Quellen“.</p>
+    </div></span></div>
   <div class="kacheln" id="kacheln"></div>
   <div class="runbar"><button id="run" class="pbtn next" type="button" disabled>Testlauf starten</button><button id="stop" class="reveal" type="button" hidden>Abbrechen</button><span id="runinfo" class="small"></span></div>
   <div class="ctr ctr-einzeln" id="t-ctr"><span class="ctr-lbl">Kontrollfall K im Testlauf</span><b class="ctr-num"><span id="t-n">–</span> von <span id="t-von">5</span></b><span class="ctr-sub" id="t-sub">noch nicht gelaufen</span></div>
@@ -756,7 +784,7 @@ footer{margin-top:36px;padding-top:14px;border-top:1px solid var(--rule);font-si
       <div class="aufin"><div class="tl-wrap"><table class="tl" id="lf-k1-tab"></table></div></div>
     </details>
     <details class="auf" id="lf-bsp-auf">
-      <summary>So antwortet der Bot – je ein typisches Beispiel</summary>
+      <summary>So antwortet der Bot auf Petras Anfrage</summary>
       <div class="aufin" id="lf-bsp"></div>
     </details>
     <p style="margin-top:18px"><b>Warum?</b> <span id="lf-warum"></span></p>
@@ -843,6 +871,12 @@ footer{margin-top:36px;padding-top:14px;border-top:1px solid var(--rule);font-si
       <li>Anthropic: <a href="https://claude.com/regional-compliance">„Deploy Claude confidently, wherever you are“</a> (Wahl der Region über Cloud-Plattformen)</li>
         <li>U.S. Office of Personnel Management: <a href="https://www.opm.gov/frequently-asked-questions/pay-and-leave-faq/pay-administration/what-are-federal-holidays/">„What are Federal holidays?“</a> (Thanksgiving: vierter Donnerstag im November)</li>
       <li>Wikipedia: <a href="https://en.wikipedia.org/wiki/The_Emperor%27s_Birthday">„The Emperor’s Birthday“</a> (Japan: Datum wechselt mit dem Kaiser, seit 2020 der 23. Februar)</li>
+  </ul>
+  <h3 class="sub3">Datenschutz und KI-Verordnung (Kasten im Testlauf)</h3>
+  <ul class="qliste">
+      <li>Der Bundesbeauftragte für den Datenschutz und die Informationsfreiheit (BfDI): „DSGVO – BDSG. Texte und Erläuterungen“, Broschüre, Stand März 2026 (Art. 6 Abs. 1 lit. b, Koppelungsverbot, Erwägungsgründe 42 und 43, Art. 13)</li>
+      <li>Europäischer Datenschutzausschuss (EDPB): <a href="https://www.edpb.europa.eu/documents/215_en">„Guidelines 05/2020 on consent under Regulation 2016/679“</a> (Leitlinien zur Einwilligung)</li>
+      <li>Europäische Kommission: <a href="https://digital-strategy.ec.europa.eu/en/library/guidelines-transparency-obligations-providers-and-deployers-ai-systems">„Guidelines on transparency obligations for providers and deployers of AI systems“</a>, 20.07.2026 (Art. 50 KI-Verordnung, gilt seit 02.08.2026)</li>
   </ul>
   <h3 class="sub3">Ausblick: Vom Eval zum Training</h3>
   <ul class="qliste">
@@ -1320,11 +1354,6 @@ function promptStufe(v){
            Kundendaten: v >= 4 ? KD_KONTO + " · " + KD_AKTIV : v >= 2 ? KD_KONTO : KD_0, Antwortformat: PROMPT_V0.format };
 }
 
-const K_FRAGE = "Findet am Montag, 29.03.2027, eine Auktion statt?";
-const BSP_K_OK = { antwort:"Nein, am Ostermontag, 29.03.2027, finden keine Auktionen statt – in Berlin ist gesetzlicher Feiertag. Die nächsten Auktionen sind am Dienstag, 30.03.2027, um 12 und 19 Uhr MESZ.", uebergabe:"nein",
-  checks:[[true,"Antwort richtig: An diesem Tag findet keine Auktion statt."],[true,"Regel-Check: Übergabe an Mitarbeiter steht auf „nein“."]] };
-const BSP_K_UEBERGABE = { antwort:"Am Ostermontag, 29.03.2027, finden keine regulären Auktionen statt – in Berlin ist gesetzlicher Feiertag. Ob es an diesem Tag eine Sonderauktion gibt, kann Ihnen eine Kollegin sagen. Ich verbinde Sie gern.", uebergabe:"ja",
-  checks:[[true,"Antwort richtig: An diesem Tag findet keine Auktion statt."],[false,"Regel-Check: Übergabe an Mitarbeiter steht auf „ja“ – erwartet: „nein“."]] };
 const TERMIN = "Am Mittwoch, 05.05.2027, finden Auktionen um 12 und 19 Uhr MESZ statt. Am Donnerstag, 06.05.2027, ist Christi Himmelfahrt – an diesem Feiertag gibt es keine Auktion.";
 const FRIST_DE = "Innerhalb Deutschlands rechnen Sie bitte mit bis zu drei Tagen für den Versand und einem weiteren Tag für Prüfung und Verwaltung, bevor Ihre Comics in eine Auktion kommen.";
 const PETRA = (antwort, uebergabe, k, hinweis) => ({ antwort, uebergabe, k, hinweis });
@@ -1346,7 +1375,6 @@ const STUFEN = [
       <li><b>Übergabe:</b> Die Regel von 2025 erlaubt Übergaben nur bei Reklamationen und Anfragen in anderen Sprachen.</li></ul>
       <p style="margin:10px 0 0">Oben sind die verantwortlichen Stellen jetzt rot markiert. Der Kontrollfall besteht trotzdem: Fragen nach den Auktionszeiten berühren keine dieser Lücken.</p></div>`,
     frage:"<b>Und jetzt?</b> Wir beginnen mit der Terminfrage. Was braucht der Bot dafür?",
-    bspK:BSP_K_OK,
     bspOF:PETRA("Vielen Dank für Ihre Nachricht, Frau Lindner! Unsere Auktionen finden werktags um 12 und 19 Uhr statt – mittwochs und donnerstags also jeweils zweimal. Zur Provision: Unsere Standardprovision beträgt 18 % des Zuschlags, und ja, die Provision wurde angepasst. Alle Einzelheiten finden Sie in unseren AGB auf unserer Webseite.", "nein", [0,0,0,0]) },
   { kurz:"v1 · Termine", titel:"Schritt 1: Datum und Fristen",
     was:"Das System setzt jeden Tag das heutige Datum ein, und das Wissen bekommt die Fristen für Versand und Prüfung. Den Feiertagskalender kennt der Bot schon aus Schritt 2. Beide Ergänzungen betreffen dieselbe Frage: Wann kommen Petras Comics unter den Hammer?",
@@ -1358,7 +1386,6 @@ const STUFEN = [
       <p style="margin:0">Mit Datum und Feiertagskalender rechnet der Bot „nächster Mittwoch“ selbst aus: Am 05.05.2027 finden Auktionen statt, der 06.05.2027 ist Christi Himmelfahrt. Das ist das Wissen aus dem Kontrollfall – angewendet auf eine neue Frage. Die Fristen kann er jetzt auch nennen.</p>
       <p style="margin:10px 0 0">Bestanden ist eine Antwort aber erst, wenn <b>alle</b> Kriterien erfüllt sind. Darum steht der Zähler noch bei null – und darum zeigt die Tabelle die Kriterien einzeln. Der Kontrollfall bleibt bei 100&nbsp;%.</p></div>`,
     frage:"<b>Und jetzt?</b> Woher soll der Bot Petras Provisionssatz kennen?",
-    bspK:BSP_K_OK,
     bspOF:PETRA(`Vielen Dank für Ihre Nachricht, Frau Lindner! ${TERMIN} Bitte rechnen Sie für den Versand mit bis zu drei Tagen innerhalb der EU (außerhalb der EU bis zu zehn Tage) und einem weiteren Tag für Prüfung und Verwaltung, bevor Ihre Comics in eine Auktion kommen. Zur Provision: Unsere Standardprovision beträgt 18 % des Zuschlags, und ja, die Provision wurde angepasst. Alle Einzelheiten finden Sie in unseren AGB.`, "nein", [1,1,0,0]) },
   { kurz:"v2 · Kundenkonto", titel:"Schritt 2: Zugriff auf das Kundenkonto",
     was:"Die IT bindet das Kundenkonto an: Das System setzt Petras Vertragsdaten in den Abschnitt „Kundendaten“ ein. Der Datenschutz hat vorher geklärt, dass der Bot sie verwenden darf.",
@@ -1371,7 +1398,6 @@ const STUFEN = [
       <p style="margin:0"><b>Daten allein reichen nicht, wenn eine alte Regel ihre Nutzung verbietet.</b> Die Regel von 2023 sollte verhindern, dass der Bot Konditionen erfindet. Jetzt verhindert sie, dass er die richtigen nennt. Ein alter Flicken verursacht einen neuen Fehler.</p>
       <p style="margin:10px 0 0">Der Kontrollfall bleibt bei 100&nbsp;%.</p></div>`,
     frage:"<b>Und jetzt?</b> Wie müsste die Regel von 2023 heute lauten?",
-    bspK:BSP_K_OK,
     bspOF:PETRA(`Vielen Dank für Ihre Nachricht, Frau Lindner! ${TERMIN} ${FRIST_DE} Zu individuellen Vertragskonditionen kann ich leider keine Auskunft geben. Unsere Standardprovision beträgt 18 % des Zuschlags; alle Einzelheiten finden Sie in unseren AGB.`, "nein", [1,1,0,0]) },
   { kurz:"v3 · Vertragssatz", titel:"Schritt 3: Vertragssatz nennen, Gerücht einordnen",
     was:"Die Regel von 2023 wird neu geschrieben: Ihr Zweck bleibt, ihre Formulierung ändert sich.",
@@ -1384,7 +1410,6 @@ const STUFEN = [
       <p style="margin:10px 0 0">Petra aber hatte in den letzten zwölf Monaten nur zwei Einlieferungen. Nach der Geschäftsregel des Fachbereichs gilt ihr alter Satz nicht automatisch weiter – der Bot sagt ihr die 12&nbsp;% trotzdem zu. Er weiß weder, wie aktiv Petra ist, noch, dass das eine Rolle spielt.</p>
       <p style="margin:10px 0 0">Der Kontrollfall bleibt bei 100&nbsp;%.</p></div>`,
     frage:"<b>Und jetzt?</b> Was braucht der Bot, um aktive von nicht aktiven Kundinnen und Kunden zu unterscheiden?",
-    bspK:BSP_K_OK,
     bspOF:PETRA(`Schön, dass Sie wieder bei uns einliefern möchten, Frau Lindner! ${TERMIN} ${FRIST_DE} Zur Provision: Laut Ihrem Rahmenvertrag von 2017 gilt für Sie ein Satz von 12 % des Zuschlags. Die Erhöhung auf 18 % betrifft seit 2025 Neukundinnen und Neukunden.`, "nein", [1,1,1,0]) },
   { kurz:"v4 · Aktivität", titel:"Schritt 4: Ist Petra eine aktive Kundin?",
     was:"Das System zählt Petras Einlieferungen der letzten zwölf Monate und setzt das Ergebnis in die Kundendaten ein. Das Wissen bekommt die Geschäftsregel des Fachbereichs dazu.",
@@ -1398,7 +1423,6 @@ const STUFEN = [
       <p style="margin:10px 0 0">Gezählt hat übrigens das System, nicht der Bot. Eine feste Regel wie „mehr als drei Einlieferungen“ ist ein Fall für ein Programm – wie der Feiertagskalender.</p>
       <p style="margin:10px 0 0">Der Kontrollfall bleibt bei 100&nbsp;%.</p></div>`,
     frage:"<b>Und jetzt?</b> Wie bringen wir den Bot dazu, Petras Fall an den Ankauf zu übergeben?",
-    bspK:BSP_K_OK,
     bspOF:PETRA(`Schön, dass Sie wieder bei uns einliefern möchten, Frau Lindner! ${TERMIN} ${FRIST_DE} Zur Provision: Ihr Rahmenvertrag von 2017 sieht 12 % vor. Da Sie in den letzten zwölf Monaten nur zwei Einlieferungen hatten, gilt für Sie inzwischen der Satz für Neukundinnen und Neukunden: 18 % des Zuschlags.`, "nein", [1,1,1,0]) },
   { kurz:"v5 · Übergabe, 1. Versuch", titel:"Schritt 5, erster Versuch: ein schneller Flicken",
     was:"Ein naheliegender Vorschlag aus dem Team: Ein Satz wird ergänzt. Die Regel von 2025 bleibt stehen.",
@@ -1412,7 +1436,6 @@ const STUFEN = [
       <p style="margin:10px 0 0">Außerdem sagt „im Zweifel“ nicht, <b>wann</b> ein Zweifel vorliegt. An Feiertagen ist sich der Bot unsicher, ob vielleicht eine Sonderauktion stattfindet – und übergibt Fragen, die er vorher selbst richtig beantwortet hat. Jede dieser Übergaben kostet rund 15&nbsp;€.</p>
       <p style="margin:10px 0 0"><b>Genau dafür gibt es den Kontrollfall.</b> Die Antworten selbst sind richtig. Aufgefallen ist die Verschlechterung nur durch den Regel-Check „Übergabe an Mitarbeiter: nein“ – ohne ihn stünde der Kontrollfall weiter bei 100&nbsp;%.</p></div>`,
     frage:"<b>Und jetzt?</b> Wie lässt sich Petras Fall übergeben, ohne dass der Kontrollfall darunter leidet?",
-    bspK:BSP_K_UEBERGABE,
     bspOF:PETRA(`Schön, dass Sie wieder bei uns einliefern möchten, Frau Lindner! ${TERMIN} ${FRIST_DE} ${SATZ_UEBERGABE}`, "ja", [1,1,1,1], "So antwortet der Bot in 16 von 20 Varianten.") },
   { kurz:"v6 · Übergabe, 2. Versuch", titel:"Schritt 5, zweiter Versuch: beide Seiten der Abwägung",
     was:"Der Flicken entfällt. Die Regel von 2025 wird neu geschrieben: Sie nennt beide Seiten der Abwägung – und genau, wann übergeben wird.",
@@ -1424,7 +1447,6 @@ const STUFEN = [
       <p style="margin:0"><b>Beide Seiten stehen jetzt im Prompt:</b> die Kosten einer Übergabe und die Kosten einer falschen Auskunft – dazu genau, wann übergeben wird. Der widersprüchliche Flicken ist weg. Der Optimierungsfall besteht in 19 von 20 Varianten, der Kontrollfall ist zurück bei 100&nbsp;%.</p>
       <p style="margin:10px 0 0">Die Angaben für die Abwägung liefert der Fachbereich: Der Ankauf kennt die Kosten einer Übergabe und den Wert einer langjährigen Kundin.</p></div>`,
     frage:null,
-    bspK:BSP_K_OK,
     bspOF:PETRA(`Schön, dass Sie wieder bei uns einliefern möchten, Frau Lindner! ${TERMIN} ${FRIST_DE} ${SATZ_UEBERGABE}`, "ja", [1,1,1,1], "So antwortet der Bot in 19 von 20 Varianten.") }
 ];
 const LF_ERG = STUFEN.map(() => null);
@@ -1507,7 +1529,6 @@ function lfAuswerten(){
     kFehler.map(r => `<tr class="durch"><td>${r.wt}, ${r.datum}</td><td>Nein, Feiertag</td><td>ja</td><td>nein</td></tr>`).join("") + `</tbody>`;
   document.getElementById("lf-bsp-auf").open = false;
   document.getElementById("lf-bsp").innerHTML =
-    lfBeispiel("K · Kontrollfall – eine der 50 Anfragen", K_FRAGE, s.bspK) +
     lfBeispiel("OF · Optimierungsfall – Petras Anfrage", OF.nachricht, s.bspOF);
   document.getElementById("lf-warum").textContent = s.warum;
   const gb = document.getElementById("lf-grund-btn"); gb.hidden = false; gb.setAttribute("aria-expanded", "false");
@@ -1520,8 +1541,8 @@ function lfAuswerten(){
   lfZeichneVerlauf();
 }
 document.getElementById("lf-run").addEventListener("click", lfAuswerten);
-(() => {
-  const ib = document.getElementById("lf-info-btn"), ip = document.getElementById("lf-info"), iw = ib.parentElement;
+function infoKnopf(iw){
+  const ib = iw.querySelector(".infobtn"), ip = iw.querySelector(".infopop");
   let fest = false;
   const zeige = an => { ip.hidden = !an; ib.setAttribute("aria-expanded", String(an)); };
   iw.addEventListener("mouseenter", () => zeige(true));
@@ -1529,7 +1550,14 @@ document.getElementById("lf-run").addEventListener("click", lfAuswerten);
   ib.addEventListener("click", () => { fest = !fest; zeige(fest); });
   document.addEventListener("keydown", e => { if (e.key === "Escape") { fest = false; zeige(false); } });
   document.addEventListener("click", e => { if (fest && !iw.contains(e.target)) { fest = false; zeige(false); } });
-})();
+}
+document.querySelectorAll(".infowrap").forEach(infoKnopf);
+document.getElementById("ds-btn").addEventListener("click", e => {
+  const an = document.getElementById("ds-antworten").hidden;
+  document.getElementById("ds-antworten").hidden = !an;
+  e.currentTarget.textContent = an ? "Antworten verbergen" : "Antworten zeigen";
+  e.currentTarget.setAttribute("aria-expanded", String(an));
+});
 document.getElementById("lf-wahl").addEventListener("click", e => {
   const b = e.target.closest(".vbtn"); if (b) lfWaehle(Number(b.dataset.v));
 });
