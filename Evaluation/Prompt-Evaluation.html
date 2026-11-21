@@ -245,6 +245,7 @@ ol.zeit b{color:var(--amber);white-space:nowrap}
 @media(max-width:640px){.resrow{grid-template-columns:1fr;gap:4px}}
 .antwort{white-space:pre-wrap;color:var(--ink);font-size:15px;margin-bottom:4px}
 ul.checks{list-style:none;margin:0;padding:0;display:grid;gap:6px;color:var(--ink);font-size:15px}
+ul.checks .kgrund{display:block;margin:2px 0 0 1.4em;color:var(--muted);font-size:14px}
 .ok{color:var(--green);font-weight:700}.no{color:var(--red);font-weight:700}
 .badge-v{flex:none;border-radius:14px;padding:4px 12px;font-size:14px;font-weight:600;white-space:nowrap}
 .badge-v.wait{background:var(--quote);color:var(--muted)}
@@ -764,7 +765,7 @@ footer{margin-top:36px;padding-top:14px;border-top:1px solid var(--rule);font-si
       <span class="infowrap"><button type="button" class="infobtn" id="lf-info-btn" aria-expanded="false" aria-controls="lf-info">ⓘ Vollständiger Prompt</button>
       <div class="infopop" id="lf-info" role="dialog" aria-label="Vollständiger Prompt dieser Fassung" hidden></div></span></div>
     <p id="lf-was"></p>
-    <p class="small" style="margin:12px 0 0"><b id="lf-zeilen-titel"></b></p>
+    <p class="small" id="lf-zeilen-kopf" style="margin:12px 0 0"><b id="lf-zeilen-titel"></b></p>
     <ul class="regeln" id="lf-regeln"></ul>
   </div>
   <div class="runbar"><button id="lf-run" class="pbtn next" type="button">Beide Testfälle auswerten</button></div>
@@ -785,15 +786,13 @@ footer{margin-top:36px;padding-top:14px;border-top:1px solid var(--rule);font-si
     </div></span></div>
 
   <div id="lf-nachher" hidden>
+    <p class="small" style="margin:6px 0 6px"><b>Petras Anfrage – so antwortet der Bot</b></p>
+    <div id="lf-bsp"></div>
     <details class="auf" id="lf-k1-auf" hidden>
       <summary id="lf-k1-sum"></summary>
       <div class="aufin"><div class="tl-wrap"><table class="tl" id="lf-k1-tab"></table></div></div>
     </details>
-    <details class="auf" id="lf-bsp-auf">
-      <summary>So antwortet der Bot auf Petras Anfrage</summary>
-      <div class="aufin" id="lf-bsp"></div>
-    </details>
-    <p style="margin-top:18px"><b>Warum?</b> <span id="lf-warum"></span></p>
+    <p style="margin-top:18px" id="lf-warum-p"><b>Warum?</b> <span id="lf-warum"></span></p>
     <button class="reveal" type="button" id="lf-grund-btn" aria-expanded="false">Gründe aufdecken</button>
     <div id="lf-grund" hidden></div>
     <p id="lf-frage" hidden style="margin-top:18px"></p>
@@ -1369,26 +1368,22 @@ function promptStufe(v){
 
 const TERMIN = "Am Mittwoch, 05.05.2027, finden Auktionen um 12 und 19 Uhr MESZ statt. Am Donnerstag, 06.05.2027, ist Christi Himmelfahrt – an diesem Feiertag gibt es keine Auktion.";
 const FRIST_DE = "Innerhalb Deutschlands rechnen Sie bitte mit bis zu drei Tagen für den Versand und einem weiteren Tag für Prüfung und Verwaltung, bevor Ihre Comics in eine Auktion kommen.";
-const PETRA = (antwort, uebergabe, k, hinweis) => ({ antwort, uebergabe, k, hinweis });
+const PETRA = (antwort, uebergabe, k, hinweis, gruende) => ({ antwort, uebergabe, k, hinweis, gruende });
 const SATZ_UEBERGABE = "Zur Provision: Ihr Rahmenvertrag von 2017 sieht 12 % vor; seit 2025 gelten für Neukundinnen und Neukunden 18 %. Ob Ihr bisheriger Satz weiter gilt, prüft eine Kollegin aus dem Ankauf – sie meldet sich bei Ihnen.";
 
 /* zeilen: was die Fassung zeigt – [Abschnitt, Text, „neu“/„weg“/leer]; schuld: [Nummer der Zeile, Markierung beim Aufdecken] */
 const STUFEN = [
   { kurz:"v0 · heute", titel:"Fassung v0: der Kundendienst-Prompt von heute",
-    was:"Der Prompt aus Schritt 3, unverändert – derselbe, mit dem der Kontrollfall im Testlauf alle Kriterien erfüllt. Für diesen Testfall setzt das System als heutiges Datum Donnerstag, 29.04.2027, ein. Unten stehen die Teile, die für Petras Anfrage wichtig sind.",
-    zeilenTitel:"Was der Prompt zu Petras Anfrage enthält",
-    zeilen:[["Wissen", W_HEUTE_OF], ["Kundendaten", KD_0], ["Wissen", W_PROVISION[0]], ["Wissen", W_PROVISION[1]], ["Verhaltensregeln", R_2023], ["Verhaltensregeln", R_2025]],
-    schuld:[[1,"nur der Name – kein Zugriff auf das Kundenkonto"],[4,"verbietet, Petras Satz zu nennen"],[5,"verhindert die Übergabe"]],
+    was:"Der Prompt aus Schritt 3, unverändert. Mit ihm besteht der Kontrollfall – mit Petras Anfrage kommt der Bot aber schlecht zurecht.",
+    zeilenTitel:"", zeilen:[], schuld:[],
     of:0, k1Uebergabe:false, krit:[1,0,0,0],
-    warum:"Was klappt schon – und woran scheitert der Bot?",
-    grund:`<div class="box" style="margin-top:14px"><ul style="margin:0;padding-left:20px">
-      <li><b>Termine: klappt schon.</b> Mit dem heutigen Datum und dem Feiertagskalender aus Schritt 2 rechnet der Bot „nächster Mittwoch“ selbst aus: Am 05.05.2027 finden Auktionen statt, der 06.05.2027 ist Christi Himmelfahrt. Das Wissen aus dem Kontrollfall trägt auch hier.</li>
-      <li><b>Fristen:</b> Versand und Prüfung stehen nirgends im Prompt.</li>
-      <li><b>Provision:</b> Der Bot sieht nur Petras Namen, nicht ihr Kundenkonto. Und die Regel von 2023 verbietet ihm ohnehin, individuelle Konditionen zu nennen. Also nennt er die 18 % aus den AGB – und bestätigt das Gerücht, als gälte es für Petra.</li>
-      <li><b>Übergabe:</b> Die Regel von 2025 erlaubt Übergaben nur bei Reklamationen und Anfragen in anderen Sprachen.</li></ul>
-      <p style="margin:10px 0 0">Oben sind die verantwortlichen Stellen jetzt rot markiert. Der Kontrollfall besteht: Fragen nach den Auktionszeiten berühren keine dieser Lücken.</p></div>`,
+    warum:null, grund:null,
     frage:"<b>Und jetzt?</b> Wir beginnen mit den Fristen. Was braucht der Bot dafür?",
-    bspOF:PETRA(`Vielen Dank für Ihre Nachricht, Frau Lindner! ${TERMIN} Zur Provision: Unsere Standardprovision beträgt 18 % des Zuschlags, und ja, die Provision wurde angepasst. Alle Einzelheiten finden Sie in unseren AGB auf unserer Webseite.`, "nein", [1,0,0,0]) },
+    bspOF:PETRA(`Vielen Dank für Ihre Nachricht, Frau Lindner! ${TERMIN} Zur Provision: Unsere Standardprovision beträgt 18 % des Zuschlags, und ja, die Provision wurde angepasst. Alle Einzelheiten finden Sie in unseren AGB auf unserer Webseite.`, "nein", [1,0,0,0], null, [
+      "Mit dem heutigen Datum und dem Feiertagskalender aus Schritt 2 rechnet der Bot „nächster Mittwoch“ selbst aus.",
+      "Versand und Prüfung stehen nirgends im Prompt.",
+      "Der Bot sieht nur Petras Namen, nicht ihr Kundenkonto – und die Regel von 2023 verbietet ihm, individuelle Konditionen zu nennen. Also nennt er die 18 % aus den AGB und bestätigt das Gerücht, als gälte es für Petra.",
+      "Die Regel von 2025 erlaubt Übergaben nur bei Reklamationen und bei Anfragen in anderen Sprachen."]) },
   { kurz:"v1 · Fristen", titel:"Schritt 1: Fristen für Versand und Prüfung",
     was:"Das Wissen bekommt die Fristen für Versand und Prüfung – eine Geschäftsregel, die bisher nur der Ankauf kannte.",
     zeilenTitel:"Was sich gegenüber der vorigen Fassung ändert",
@@ -1506,6 +1501,7 @@ function lfWaehle(v){
   document.getElementById("lf-titel").textContent = s.titel;
   document.getElementById("lf-was").textContent = s.was;
   document.getElementById("lf-zeilen-titel").textContent = s.zeilenTitel;
+  document.getElementById("lf-zeilen-kopf").hidden = document.getElementById("lf-regeln").hidden = !s.zeilen.length;
   document.getElementById("lf-regeln").innerHTML = nb(s.zeilen.map(([abschnitt, t, art], i) =>
     `<li data-i="${i}"${art ? ` class="${art}"` : ""}><span class="abschnitt">${esc(abschnitt)}</span>${art === "neu" ? '<span class="tag">neu</span>' : art === "weg" ? '<span class="tag">entfällt</span>' : ""}<span class="rt">${esc(t)}</span></li>`).join(""));
   const p = promptStufe(v);
@@ -1517,10 +1513,10 @@ function lfWaehle(v){
   lfZeichneWahl(); lfZeichneVerlauf();
 }
 function lfBeispiel(b){
-  const checks = b.checks || b.k.map((x, j) => [!!x, KRITERIEN[j]]);
+  const checks = b.checks || b.k.map((x, j) => [!!x, KRITERIEN[j], b.gruende && b.gruende[j]]);
   return nb(`<div class="res">
   <div class="resrow"><b>Antwort des Bots</b><div class="small"><div class="antwort">${esc(b.antwort)}</div><div>Übergabe an Mitarbeiter: <b>${esc(b.uebergabe)}</b></div></div></div>
-  <div class="resrow"><b>Bewertung</b><div class="small"><ul class="checks">${checks.map(([x, t]) => `<li>${zeichen(x)} ${esc(t)}</li>`).join("")}</ul>${b.hinweis ? `<p style="margin:8px 0 0">${esc(b.hinweis)}</p>` : ""}</div></div>
+  <div class="resrow"><b>Bewertung</b><div class="small"><ul class="checks">${checks.map(([x, t, g]) => `<li>${zeichen(x)} ${esc(t)}${g ? `<span class="kgrund">${esc(g)}</span>` : ""}</li>`).join("")}</ul>${b.hinweis ? `<p style="margin:8px 0 0">${esc(b.hinweis)}</p>` : ""}</div></div>
 </div>`);
 }
 function lfAuswerten(){
@@ -1536,15 +1532,16 @@ function lfAuswerten(){
   document.getElementById("lf-k1-tab").innerHTML =
     `<thead><tr><th>Anfrage</th><th>Bot antwortet</th><th>Übergabe an Mitarbeiter</th><th>Erwartet</th></tr></thead><tbody>` +
     kFehler.map(r => `<tr class="durch"><td>${r.wt}, ${r.datum}</td><td>Nein, Feiertag</td><td>ja</td><td>nein</td></tr>`).join("") + `</tbody>`;
-  document.getElementById("lf-bsp-auf").open = false;
   document.getElementById("lf-bsp").innerHTML =
     lfBeispiel(s.bspOF);
-  document.getElementById("lf-warum").textContent = s.warum;
-  const gb = document.getElementById("lf-grund-btn"); gb.hidden = false; gb.setAttribute("aria-expanded", "false");
+  document.getElementById("lf-warum").textContent = s.warum || "";
+  document.getElementById("lf-warum-p").hidden = !s.grund;
+  const gb = document.getElementById("lf-grund-btn"); gb.hidden = !s.grund; gb.setAttribute("aria-expanded", "false");
   document.getElementById("lf-grund").hidden = true;
-  document.getElementById("lf-grund").innerHTML = nb(s.grund);
-  document.getElementById("lf-frage").hidden = true;
-  document.getElementById("lf-weiter").hidden = true;
+  document.getElementById("lf-grund").innerHTML = s.grund ? nb(s.grund) : "";
+  const fr = document.getElementById("lf-frage");
+  fr.innerHTML = s.frage ? nb(s.frage) : "";
+  fr.hidden = document.getElementById("lf-weiter").hidden = !!s.grund || !s.frage;
   document.getElementById("lf-fazit").hidden = true;
   document.getElementById("lf-nachher").hidden = false;
   lfZeichneVerlauf();
