@@ -19,85 +19,17 @@ QUER_FERTIG = [
                'Bildungszentrums, Nachweis vom 11.11.2026 auf CL-KIM-T2-34 übertragen.', '18.11.2026'),
 ]
 
-T1_OFFEN = [
-    dict(id='CL-KIM-T1-83', sev='🟢', wer='du', fund='Folie 5', st='teil',
-         titel='Malik-Zitat: Anführungszeichen entfernen oder Belegstelle ergänzen',
-         det='Das Zitat steht in zwei Wortlauten. Im Hand-Out ist es seit 13.11. als sinngemäße '
-             'Wiedergabe gekennzeichnet („sinngemäß nach dem Managementdenker Fredmund Malik“), '
-             'die Anführungszeichen sind dort weg. Auf der Folie stehen sie noch.'),
-    dict(id='CL-KIM-T1-84', sev='🟢', wer='du', fund='Folie 6', st='offen',
-         titel='Mollicks vier Regeln sind Regeln für die persönliche Arbeit mit KI, keine Managementprinzipien',
-         det='Vorschlag für die Überschrift: „Vier Regeln für die eigene Arbeit mit KI“. Als '
-             'Managementprinzipien gelesen führen sie in die Irre — sie sagen nichts über Steuerung, '
-             'Beschaffung oder Aufsicht.'),
-    dict(id='CL-KIM-T1-85', sev='🟢', wer='du', fund='Folie 6, Regel 3', st='offen',
-         titel='Mollicks dritte Regel vollständig wiedergeben',
-         det='Sie lautet sinngemäß „Treat AI like a person — but tell it what kind of person it is“. '
-             'Der zweite Halbsatz ist der eigentliche Inhalt: Rollenangabe im Prompt. Ohne ihn klingt '
-             'die Regel nach Vermenschlichung.'),
-    dict(id='CL-KIM-T1-99', sev='⚪', wer='du', fund='Folie 6', st='offen',
-         titel='Umfang der Wiedergabe aus Mollicks Buch prüfen',
-         det='Niemand hat bewertet, wie viel Wortlaut die Folie übernimmt. Praktischer Weg: die vier '
-             'Regeln in eigenen Worten zusammenfassen und das Buch als Quelle nennen. Dann erledigt '
-             'sich die Frage, und CL-KIM-T1-84 und -85 sind gleich mit erledigt.'),
-    dict(id='CL-KIM-T1-86', sev='🟢', wer='du', fund='Folie 7', st='teil',
-         titel='Anstieg beträgt +52,3 %; das Wort „also“ streichen',
-         det='„Also“ stellt einen Zusammenhang her, den die Zahlen nicht hergeben. Im Hand-Out steht '
-             'seit 13.11. „das sind rund +52 %, wobei Ausreißer am 99. Perzentil gekappt sind“.'),
-    dict(id='CL-KIM-T1-87', sev='🟢', wer='du', fund='Folie 10', st='offen',
-         titel='Schwellenwert ohne Quelle — als Richtwert kennzeichnen oder belegen',
-         det='Der Wert wirkt wie ein Messwert. Es gab produktive Expertensysteme dieser Größenordnung, '
-             'die Grenze ist also keine harte Linie.'),
-    dict(id='CL-KIM-T1-88', sev='🟢', wer='du', fund='Folien 12 und 13', st='offen',
-         titel='Labels stammen nicht nur von Menschen — Geschäftsdaten als Quelle ergänzen',
-         det='Ein großer Teil der Labels kommt aus Bestandsdaten (Kündigung ja/nein, Reklamation ja/nein). '
-             'Genau dort steckt historischer Bias, und das ist die Brücke zu Tag 9.'),
-    dict(id='CL-KIM-T1-89', sev='🟢', wer='du', fund='Folie 17', st='offen',
-         titel='Folie widerspricht ihrer eigenen Tabelle („Erzeugt“)',
-         det='Die Folie bestreitet eine neue Fähigkeit, die ihre Tabelle zeigt, und reduziert '
-             'klassische KI auf beschriftete Daten. Entweder die Tabellenzeile oder die Aussage anpassen.'),
-    dict(id='CL-KIM-T1-90', sev='🟢', wer='du', fund='Folie 19', st='offen',
-         titel='Zitat aus Erwägungsgrund 97 bricht ab — Auslassung mit […] kennzeichnen',
-         det='Formale Sache, aber bei einem Normzitat sichtbar.'),
-    dict(id='CL-KIM-T1-91', sev='🟢', wer='du', fund='Folien 28 und 22', st='offen',
-         titel='Musterlösung: „semi-supervised“ als vertretbare Antwort zulassen',
-         det='Die Aufgabe lässt beide Deutungen zu. In der Lösung einen Satz ergänzen, dass '
-             'halbüberwachtes Lernen ebenfalls gilt — sonst wird eine richtige Antwort als falsch gewertet.'),
-    dict(id='CL-KIM-T1-93', sev='🟢', wer='du', fund='Folie 25', st='offen',
-         titel='Messbare Kriterien ankündigen und auch nennen',
-         det='Es fehlen Kriterium, Ausgangswert, Verantwortliche und Termin. Vier Spalten genügen; '
-             'die Teilnehmenden brauchen das Muster für die Projektarbeit.'),
-    dict(id='CL-KIM-T1-94', sev='🟢', wer='du', fund='Folie 26', st='offen',
-         titel='Beide Einstiegsquellen sind Selbstdarstellungen — das kennzeichnen',
-         det='Bank und Standortagentur beschreiben sich selbst. Ein Wort wie „Eigendarstellung“ reicht; '
-             'im Unterricht ist das zugleich die Überleitung zur Quellenbewertung.'),
-    dict(id='CL-KIM-T1-95', sev='🟢', wer='du', fund='Folie 26', st='offen',
-         titel='BaFin-„Merkblatt zur Nutzung von Big Data und KI“ gibt es nicht',
-         det='Ich habe nachgesehen: Es existiert die BaFin-Studie „Big Data trifft auf künstliche '
-             'Intelligenz“ (2018) und eine gemeinsame Konsultation von BaFin und Bundesbank zu '
-             'maschinellem Lernen in Risikomodellen (2021). Ein Merkblatt dieses Titels ist nicht '
-             'auffindbar — bitte den Titel austauschen.'),
-]
+T1_OFFEN = []
 
 T1_MEINS = [
-    dict(id='MIR-T1-01', sev='🟡', wer='ich', fund='Hand-Out, Quellenverzeichnis', st='offen',
-         titel='Verwaiste Fed-Quellen: zwei Chips ohne Bezug im Text',
-         det='Am 18.11. nachgezählt: „Federal Reserve Board — Monitoring AI Adoption“ und die '
-             'Erläuterung zur Fed Atlanta stehen im Quellenverzeichnis, im Textteil kommt seit dem '
-             'Umbau kein einziger Treffer auf Fed oder Atlanta mehr vor. Entweder die Chips streichen '
-             'oder den Adoptionsabschnitt wieder aufnehmen. Ich würde streichen und die Quelle im '
-             'Register führen.'),
-    dict(id='MIR-T1-02', sev='🟡', wer='ich', fund='Hand-Out, Quellenverzeichnis', st='offen',
-         titel='Quellenverzeichnis in Dauerblock und ausklappbare Tagesquellen teilen',
-         det='Die Zielstruktur sieht einen immer offenen Block „Kursübergreifende Quellen“ und darunter '
-             'ausklappbare Tagesquellen vor, wie im Hand-Out KIB Tag 2. In Tag 1 KIM fehlt der '
-             'Dauerblock; acht Klappgruppen sind schon da.'),
-    dict(id='MIR-T1-03', sev='🟢', wer='ent', fund='Hand-Out, Quellenverzeichnis', st='offen',
-         titel='Folienquellen ohne Ort im Hand-Out — gehören sie hinein?',
-         det='Mollick, Malik, Drucker, Goldman Sachs, BaFin, DORA, MaRisk und der Fall SolidFinanz '
-             'kommen im Hand-Out nicht vor (nachgezählt: null Treffer), auf den Folien schon. '
-             'Entscheide einmal, ob die Hand-Out-Quellen den Foliensatz abdecken sollen — dann baue '
-             'ich die fehlenden Einträge ein.'),
+    dict(id='MIR-T1-02', sev='🟡', wer='ent', fund='Alle 16 KIM-Hand-Outs, Quellenverzeichnis', st='offen',
+         titel='Tagesquellen ausklappbar machen — oder beim bisherigen Aufbau bleiben?',
+         det='Korrektur meiner eigenen Darstellung: Das ist kein Tag-1-Mangel. Am 22.11. nachgezählt — '
+             'alle 16 KIM-Hand-Outs haben denselben Aufbau („Für diesen Tag“ offen, darunter die '
+             'Dauerreferenzen), und keines hat einen ausklappbaren Quellenblock. Ausklappbar ist die '
+             'Zielstruktur aus der KIB-Vorlage. Tag 1 allein umzubauen würde ihn zum Ausreißer machen. '
+             'Die Mechanik (CSS und Auf-/Zuklappen-Skript) liegt in allen Dateien bereits bereit, es '
+             'fehlt nur das Markup. Also: so lassen oder alle 16 in einem Durchgang umstellen?'),
     dict(id='MIR-T1-04', sev='🟢', wer='ich', fund='Hand-Out, Taxonomie (Zeile Verstärkendes Lernen)', st='offen',
          titel='AlphaGo wird im Rumpf noch einmal genannt',
          det='Deine Weisung vom 17.11.: AlphaGo und Zug 37 haben im Hand-Out nichts zu suchen. Das '
@@ -144,6 +76,21 @@ T1_FERTIG = [
     ('CL-KIM-T1-96', '⚪', 'Drucker-Zitat: Fundstelle vom Dozenten belegt, kein Änderungsbedarf', '13.11.2026'),
     ('CL-KIM-T1-97', '⚪', 'Epochengrenzen: Hand-Out ist richtig (1990–2012)', '13.11.2026'),
     ('CL-KIM-T1-98', '⚪', 'reCAPTCHA und autonomes Fahren: Zuschreibung entschärft', '13.11.2026'),
+    ('MIR-T1-01', '🟡', 'Verwaiste Fed-Quellen aus dem Quellenverzeichnis entfernt (zwei Chips plus Erläuterung, ohne Bezug im Text)', '22.11.2026'),
+    ('MIR-T1-03', '🟢', 'Entscheidung des Dozenten: Die Quellen des Use Case gehören nicht ins Hand-Out', '22.11.2026'),
+    ('CL-KIM-T1-83', '🟢', 'Folie 5: Malik-Zitat als sinngemäße Wiedergabe gekennzeichnet', '22.11.2026'),
+    ('CL-KIM-T1-84', '🟢', 'Folie 6: Mollicks Regeln nicht mehr als Managementprinzipien', '22.11.2026'),
+    ('CL-KIM-T1-85', '🟢', 'Folie 6: dritte Regel vollständig wiedergegeben', '22.11.2026'),
+    ('CL-KIM-T1-86', '🟢', 'Folie 7: Anstieg +52,3 %, „also“ gestrichen', '22.11.2026'),
+    ('CL-KIM-T1-87', '🟢', 'Folie 10: Schwellenwert als Richtwert gekennzeichnet', '22.11.2026'),
+    ('CL-KIM-T1-88', '🟢', 'Folien 12/13: Labels auch aus Geschäftsdaten, historischer Bias', '22.11.2026'),
+    ('CL-KIM-T1-89', '🟢', 'Folie 17: Widerspruch zur eigenen Tabelle aufgelöst', '22.11.2026'),
+    ('CL-KIM-T1-90', '🟢', 'Folie 19: Auslassung im Zitat aus Erwägungsgrund 97 gekennzeichnet', '22.11.2026'),
+    ('CL-KIM-T1-91', '🟢', 'Folien 22/28: Musterlösung lässt „semi-supervised“ gelten', '22.11.2026'),
+    ('CL-KIM-T1-93', '🟢', 'Folie 25: Kriterien, Ausgangswert, Verantwortliche und Termin ergänzt', '22.11.2026'),
+    ('CL-KIM-T1-94', '🟢', 'Folie 26: Einstiegsquellen als Eigendarstellung gekennzeichnet', '22.11.2026'),
+    ('CL-KIM-T1-95', '🟢', 'Folie 26: BaFin-Merkblatt dieses Titels existiert nicht — Titel ersetzt', '22.11.2026'),
+    ('CL-KIM-T1-99', '⚪', 'Folie 6: Umfang der Wiedergabe aus Mollicks Buch geklärt', '22.11.2026'),
     ('CL-KIM-T1-92', '🟢', 'Hinweis „keine Rechtsberatung im Einzelfall“ in Hand-Out und Folien', '18.11.2026'),
     ('CL-KIM-T1-100', '⚪', 'Folie 24: Standort Guernsey didaktisch nicht einschlägig', '17.11.2026'),
     ('CL-KIM-T1-101', '⚪', 'Folie 24: Rolle als „Chief AI Officer“ umformuliert', '17.11.2026'),

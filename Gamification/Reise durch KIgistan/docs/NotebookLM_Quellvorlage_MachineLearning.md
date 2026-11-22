@@ -13,7 +13,7 @@ Ein Logistikunternehmen möchte voraussagen, welche Sendungen sich voraussichtli
 Ein Machine-Learning-Modell wird mit historischen Lieferdaten trainiert: wann haben sich Sendungen verzögert, unter welchen Bedingungen, auf welchen Routen? Das Modell erkennt selbstständig Muster, die kein Mensch bewusst formuliert hätte — und gibt täglich automatisch eine Risikoeinschätzung für alle laufenden Sendungen aus.
 
 **Konkretes Praxisbeispiel im Unternehmenskontext:**
-DHL und ähnliche Logistiker nutzen ML-Modelle, um Verzögerungsrisiken in Echtzeit zu bewerten. Disponenten erhalten automatisch Warnhinweise und können proaktiv umrouten oder Kunden informieren — bevor die Verzögerung eintritt.
+Logistikunternehmen nutzen ML-Modelle, um Verzögerungsrisiken in Echtzeit zu bewerten. Disponenten erhalten automatisch Warnhinweise und können proaktiv umrouten oder Kunden informieren — bevor die Verzögerung eintritt.
 
 **Häufiger Irrtum:**
 Machine Learning „denkt“ nicht. Es erkennt statistische Muster in vergangenen Daten. Wenn sich die Realität grundlegend ändert (z. B. eine neue Zollregulierung), muss das Modell mit neuen Daten neu trainiert werden — es lernt nicht automatisch weiter.

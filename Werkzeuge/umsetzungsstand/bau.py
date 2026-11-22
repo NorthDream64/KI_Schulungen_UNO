@@ -5,7 +5,7 @@ import re
 import hashlib
 from daten import QUER, QUER_FERTIG, TAGE
 
-HEUTE = '18.11.2026'
+HEUTE = '22.11.2026'
 
 WER_LABEL = {'du': 'Bei Dir', 'ich': 'Bei mir', 'ent': 'Entscheidung'}
 WER_TITEL = {'du': 'Bei Dir · Foliensatz und Präsentation',

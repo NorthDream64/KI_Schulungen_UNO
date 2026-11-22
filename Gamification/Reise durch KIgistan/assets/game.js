@@ -437,7 +437,7 @@ function zeigeErgebnis() {
       legendeEintrag("meister",       "sofort verstanden") +
       legendeEintrag("verstanden",    "im zweiten Versuch") +
       legendeEintrag("teilweise",     "teilweise erfasst") +
-      legendeEintrag("kennengelernt", "durch Erklärung") +
+      legendeEintrag("kennengelernt", "nach Erklärung gesehen") +
       legendeEintrag("uebersprungen", "direkt zur Erklärung") +
     '</div>';
 }
@@ -447,7 +447,7 @@ function statusLabel(s) {
     "meister": "sofort verstanden",
     "verstanden": "im zweiten Versuch verstanden",
     "teilweise": "teilweise richtig",
-    "kennengelernt": "durch die Erklärung kennengelernt",
+    "kennengelernt": "nach der Erklärung gesehen",
     "uebersprungen": "direkt zur Erklärung gesprungen"
   }[s] || s;
 }

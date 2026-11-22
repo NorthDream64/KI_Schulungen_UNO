@@ -13,7 +13,7 @@ Ein Onlinehändler möchte seinen Lagerrobotern beibringen, wie sie Pakete mögl
 Die Roboter lernen durch Simulation: In einer virtuellen Lagerumgebung probieren sie Millionen von Szenarien durch. Jede Aktion, die zu schnellerer Kommissionierung führt, wird belohnt; Kollisionen oder Umwege werden bestraft. Nach dem Training in der Simulation werden die gelernten Strategien auf die realen Roboter übertragen.
 
 **Konkretes Praxisbeispiel im Unternehmenskontext:**
-Amazon Robotics und Ocado nutzen Reinforcement Learning, um Lagerroboter zu trainieren. Die Systeme entwickeln Strategien, die menschliche Planer nicht entworfen hätten — z. B. dynamische Umlagerungen in Niedriglastzeiten, die die Spitzenstunden-Kommissionierung um 15–20 % beschleunigen.
+Betreiber großer automatisierter Lager erproben Reinforcement Learning, um Lagerroboter zu trainieren (Beispiel zur Veranschaulichung, ohne belegte Unternehmenszahlen). Die Systeme können Strategien entwickeln, die menschliche Planer nicht entworfen hätten — z. B. dynamische Umlagerungen in Niedriglastzeiten, die die Kommissionierung in den Spitzenstunden beschleunigen. Wie stark, muss im eigenen Lager gemessen werden; dem stehen Aufwand für Simulation, Überwachung und Nachtrainieren gegenüber.
 
 **Häufiger Irrtum:**
 Reinforcement Learning ist kein universelles Optimierungswerkzeug. Es funktioniert gut, wenn eine klare Belohnungsfunktion definierbar ist. Ist das Ziel schwer messbar (z. B. „Kundenzufriedenheit“), kann das System auf Wege trainieren, die die Kennzahl optimieren, aber das eigentliche Ziel verfehlen — ein bekanntes Problem namens „Reward Hacking“.

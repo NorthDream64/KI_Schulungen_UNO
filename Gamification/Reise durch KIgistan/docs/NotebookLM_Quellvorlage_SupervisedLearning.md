@@ -13,7 +13,7 @@ Eine Versicherung erhält täglich Hunderte von Schadensmeldungen per E-Mail. Ei
 Das Unternehmen nutzt seine historischen Schadensdaten: Tausende von Fällen, bei denen Betrug bestätigt oder ausgeschlossen wurde. Ein Supervised-Learning-Modell lernt aus diesen beschrifteten Beispielen, welche Merkmale auf Betrug hindeuten — ungewöhnliche Schadenshöhe, kurze Vertragslaufzeit, bestimmte Formulierungsmuster. Neue Meldungen werden automatisch eingestuft und priorisiert.
 
 **Konkretes Praxisbeispiel im Unternehmenskontext:**
-Allianz und andere Versicherer setzen Supervised-Learning-Modelle zur Betrugserkennung ein. Das Ergebnis: Hochrisiko-Fälle landen sofort bei spezialisierten Prüfern, klare Standardfälle werden automatisch freigegeben. Die manuelle Prüfzeit sinkt um bis zu 60 %, die Erkennungsrate für Betrug steigt.
+Versicherer setzen Supervised-Learning-Modelle zur Betrugserkennung ein (Beispiel zur Veranschaulichung, ohne belegte Unternehmenszahlen). Das Ergebnis: Fälle mit hohem Betrugsverdacht landen sofort bei spezialisierten Prüfern, klare Standardfälle werden schneller bearbeitet; eine Ablehnung trifft immer ein Mensch. Die manuelle Prüfzeit kann deutlich sinken. Ob daraus eine Ersparnis wird, hängt davon ab, wie die frei gewordene Kapazität genutzt wird. Dazu kommt ein Restrisiko: Betrugsfälle, die das Modell übersieht.
 
 **Häufiger Irrtum:**
 Das Modell kann nur so gut sein wie die Trainingsdaten. Waren in der Vergangenheit bestimmte Betrugsformen unterrepräsentiert oder wurden sie systematisch übersehen, lernt das Modell diese blinden Flecken mit. „Garbage in, garbage out“ gilt hier besonders — die Qualität der Beschriftungen ist entscheidend.

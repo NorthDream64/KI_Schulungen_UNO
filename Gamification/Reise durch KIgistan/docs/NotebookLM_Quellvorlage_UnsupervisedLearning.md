@@ -10,13 +10,13 @@
 Die Marketingleitung eines Einzelhändlers möchte die Kundschaft gezielter ansprechen. Bislang werden alle Kund:innen mit denselben Newslettern und Aktionen bedient — die Öffnungsraten sind niedrig, die Abmeldequote steigt. Das Team ahnt, dass „die Kundschaft“ keine homogene Gruppe ist, hat aber keine objektive Grundlage für eine Segmentierung.
 
 **Wie der Ansatz das Problem löst:**
-Ein Unsupervised-Learning-Algorithmus analysiert das Kaufverhalten aller Kund:innen — ohne vorab festzulegen, welche Gruppen es geben soll. Das System erkennt eigenständig, dass es z. B. vier distinkte Verhaltensmuster gibt: Schnäppchenjäger, Markentreue, saisonale Käufer und Hochfrequenz-Besteller. Diese Segmente waren vorher nicht sichtbar, weil niemand explizit danach gesucht hat.
+Ein Unsupervised-Learning-Algorithmus analysiert das Kaufverhalten aller Kund:innen — ohne vorab festzulegen, welche Gruppen es geben soll. Das System schlägt z. B. vier Gruppen mit ähnlichem Verhalten vor; das Team prüft sie und gibt ihnen Namen: Schnäppchenjäger, Markentreue, saisonale Käufer und Hochfrequenz-Besteller. Diese Segmente waren vorher nicht sichtbar, weil niemand explizit danach gesucht hat. Rechtlich ist das Profiling im Sinne der DSGVO: Die Kundschaft muss darüber informiert werden und der Werbung widersprechen können.
 
 **Konkretes Praxisbeispiel im Unternehmenskontext:**
-Zalando und ähnliche Plattformen nutzen Clustering-Algorithmen (eine Form von Unsupervised Learning), um Kundensegmente zu entdecken. Jedes Segment erhält angepasste Kommunikation und Angebote. Die Conversion Rate steigt messbar, weil die Ansprache zum tatsächlichen Verhalten passt — nicht zu einer Annahme des Marketingteams.
+Onlinehändler nutzen Clustering-Algorithmen (eine Form von Unsupervised Learning), um Kundensegmente zu entdecken (Beispiel zur Veranschaulichung). Jedes Segment erhält angepasste Kommunikation und Angebote. Ob die Conversion Rate dadurch steigt, zeigt erst ein Vergleich mit einer Kontrollgruppe.
 
 **Häufiger Irrtum:**
-Unsupervised Learning liefert keine Antworten, sondern Muster — die Interpretation obliegt dem Menschen. Ein Algorithmus kann drei Cluster finden und benennen, aber ob „Cluster 2“ wirklich „preissensible Gelegenheitskäufer“ sind, entscheidet das Team auf Basis von Domänenwissen. Das Verfahren ersetzt kein Urteilsvermögen, es schärft es.
+Unsupervised Learning liefert keine Antworten, sondern Muster — die Interpretation obliegt dem Menschen. Ein Algorithmus kann drei Cluster finden (bei vielen Verfahren gibt das Team die Zahl vor), aber er benennt sie nicht: Ob „Cluster 2“ wirklich „preissensible Gelegenheitskäufer“ sind, entscheidet das Team auf Basis von Domänenwissen. Das Verfahren ersetzt kein Urteilsvermögen, es schärft es.
 
 ---
 

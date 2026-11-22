@@ -4,8 +4,16 @@
  * Nimmt POST-Requests aus der Spiel-HTML entgegen und schreibt eine Zeile
  * ans zugehörige Google Sheet. Löscht automatisch Einträge älter als 14 Tage.
  *
+ * Bewusst ohne doGet: Die Web-App nimmt nur Einträge entgegen und gibt keine
+ * Daten aus. Die Ausführungsprotokolle enthalten keine Spielerdaten.
+ *
+ * Nach Änderungen an diesem Code: unter "Bereitstellen" → "Bereitstellungen
+ * verwalten" eine neue Version der bestehenden Bereitstellung anlegen.
+ *
  * DEPLOYMENT (Klick-Reihenfolge):
- *   1. Neues Google Sheet anlegen (Name z. B. "KIM-Gamification").
+ *   1. Neues Google Sheet anlegen (Name z. B. "KIM-Gamification") — nur mit
+ *      einem Google-Workspace-Konto mit Auftragsverarbeitungsvertrag,
+ *      nicht mit einem privaten Google-Konto (siehe README).
  *   2. Erweiterungen → Apps Script öffnen. Diesen Code komplett einfügen.
  *   3. Oben rechts "Bereitstellen" → "Neue Bereitstellung" → Typ "Web-App":
  *        - Beschreibung:   KIM-Gamification v1
@@ -31,10 +39,10 @@ function doPost(e) {
   try {
     console.log("doPost aufgerufen");
     const payload = JSON.parse(e.postData.contents);
-    console.log("Payload empfangen: " + JSON.stringify(payload));
+    console.log("Payload empfangen (Inhalt wird nicht protokolliert)");
 
     if (payload.token !== SHARED_TOKEN) {
-      console.log("TOKEN FALSCH — erwartet: " + SHARED_TOKEN + ", bekommen: " + payload.token);
+      console.log("TOKEN FALSCH");
       return ausgabe({ ok: false, err: "invalid token" });
     }
     console.log("Token ok");
@@ -49,9 +57,11 @@ function doPost(e) {
     let sheet = ss.getSheetByName(SHEET_NAME);
     if (!sheet) {
       sheet = ss.insertSheet(SHEET_NAME);
-      sheet.appendRow(["Zeit", "Spieler", "Reise", "Schwerpunkt", "Fragetext", "Antwortoptionen", "Richtig?"]);
+      sheet.appendRow(["Zeit", "Spieler", "Reise", "Schwerpunkt", "Fragetext", "Antwortoptionen", "Richtig?", "Versuche"]);
       console.log("Log-Tab neu angelegt");
     }
+    // Bestehende Sheets ohne Spalte "Versuche" einmalig ergänzen
+    if (sheet.getRange(1, 8).getValue() === "") sheet.getRange(1, 8).setValue("Versuche");
 
     sheet.appendRow([
       payload.zeit || new Date().toISOString(),
@@ -60,7 +70,10 @@ function doPost(e) {
       payload.begriff || "",
       payload.frage_text || "",
       formatiereOptionen(payload.optionen, payload.korrekt, payload.gewaehlt),
-      payload.richtig === true ? "ja" : (payload.richtig === null ? "übersprungen" : "nein")
+      payload.richtig === true ? "ja"
+        : (payload.richtig === "teilweise" ? "teilweise"
+        : (payload.richtig === null ? "übersprungen" : "nein")),
+      payload.versuche != null ? payload.versuche : ""
     ]);
     console.log("Zeile geschrieben");
 
@@ -139,10 +152,10 @@ function testeSheetVerbindung() {
     let sheet = ss.getSheetByName(SHEET_NAME);
     if (!sheet) {
       sheet = ss.insertSheet(SHEET_NAME);
-      sheet.appendRow(["Zeit", "Spieler", "Reise", "Schwerpunkt", "Fragetext", "Antwortoptionen", "Richtig?"]);
+      sheet.appendRow(["Zeit", "Spieler", "Reise", "Schwerpunkt", "Fragetext", "Antwortoptionen", "Richtig?", "Versuche"]);
       console.log("Log-Tab neu angelegt");
     }
-    sheet.appendRow([new Date().toISOString(), "Test", "0", "MANUELL", "Testfrage", "a) …", "ja"]);
+    sheet.appendRow([new Date().toISOString(), "Test", "0", "MANUELL", "Testfrage", "a) …", "ja", 1]);
     console.log("Testzeile geschrieben");
     return "OK";
   } catch (err) {

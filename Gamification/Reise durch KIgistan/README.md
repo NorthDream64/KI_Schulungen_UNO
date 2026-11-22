@@ -8,7 +8,7 @@ Live: https://northdream64.github.io/KI_Schulungen_UNO/Gamification/Reise%20durc
 
 ## Was drin ist
 
-Aktuell **46 Fragen in 8 „Reisen"**, jede Reise mit einem eigenen inhaltlichen Fokus. Reihenfolge folgt dem KI-Lebenszyklus:
+Aktuell **47 Fragen in 8 „Reisen"**, jede Reise mit einem eigenen inhaltlichen Fokus. Reihenfolge folgt dem KI-Lebenszyklus:
 
 | # | Reise | Fokus |
 |---|-------|-------|
@@ -21,7 +21,7 @@ Aktuell **46 Fragen in 8 „Reisen"**, jede Reise mit einem eigenen inhaltlichen
 | 7 | Exotische Ziele | GenAI, Agenten, RLHF/RLVR, Neuro-Symbolic |
 | 8 | Zurück im Reisebüro | Abnahme, EU AI Act Art. 10, Model/Data Cards |
 
-Pro Reise werden bis zu **5 Fragen** zufällig gezogen (`PAKET_GROESSE` in `game.js`). Die Fragen selbst enthalten zusätzlich eine Vertiefung mit 2–5 öffentlichen Quellen (Wikipedia, EU AI Act, Google SRE, AWS ML Lens, Nature, arXiv).
+Pro Reise werden bis zu **5 Fragen** zufällig gezogen (`PAKET_GROESSE` in `game.js`). Die Fragen selbst enthalten zusätzlich eine Vertiefung mit 2–5 öffentlichen Quellen (Wikipedia, EU AI Act, Google SRE, AWS ML Lens, Nature, arXiv). Die Quellen sind unterschiedlich belastbar: Gesetzestexte und begutachtete Fachartikel wiegen schwerer als Wikipedia, Hersteller-Leitfäden oder arXiv-Preprints ohne Begutachtung. Das Feld `art` nennt die Quellenart.
 
 ## Ordner-Struktur
 
@@ -30,7 +30,9 @@ Gamification/Reise durch KIgistan/
 ├── index.html              Startseite (Datenschutz, Namenseingabe, Reise-Auswahl)
 ├── assets/
 │   ├── style.css           Layout im Kurs-Design (warmes Papier, lila Akzent)
-│   └── game.js             Spiel-Logik (Reise laden, Frage anzeigen, Feedback)
+│   ├── game.js             Spiel-Logik (Reise laden, Frage anzeigen, Feedback)
+│   ├── confetti.browser.js canvas-confetti 1.9.3, lokal ausgeliefert (kein Dritt-CDN)
+│   └── confetti.LICENSE.txt  Lizenztext dazu (ISC)
 ├── data/
 │   ├── fragen.json         Alle Fragen, gefiltert per Feld `paket` (1–8)
 │   └── pakete.json         Metadaten der 8 Reisen (Titel, Beschreibung, aktiv-Flag)
@@ -54,11 +56,13 @@ Push auf `main` reicht — GitHub Pages baut automatisch neu (typisch 1–2 Minu
 - Datenschutzhinweis erscheint **vor** dem Namensfeld
 - Speicherdauer: max. 14 Tage, dann automatische Löschung durch Apps-Script-Trigger
 - Löschungs-Kontakt: `u.nord@pm-diagnostik.de`
-- Kein Personenbezug erzwungen, kein Tracking, keine Cookies
+- Kein Personenbezug erzwungen, kein Tracking, keine Cookies. Der Vorname wird im Browser lokal gespeichert (`localStorage`); die Antworten gehen an Google Apps Script (IP-Adresse technisch bedingt)
+- Die Konfetti-Bibliothek liegt lokal unter `assets/`; es wird kein Dritt-CDN aufgerufen
+- Der Datenschutzhinweis in `index.html` nennt Zweck, Rechtsgrundlage, Empfänger, Speicherdauer und Rechte. Offen und vom Verantwortlichen zu ergänzen: die Garantie für die Übermittlung in die USA (hängt vom verwendeten Google-Konto ab) und ein Impressum
 
 ## Google-Sheet-Backend einrichten (einmalig, ca. 5 Minuten)
 
-1. Neues Google Sheet anlegen, z. B. `KIM-Gamification`.
+1. Neues Google Sheet anlegen, z. B. `KIM-Gamification`. **Nur mit einem Google-Workspace-Konto, für das der Auftragsverarbeitungsvertrag (Cloud Data Processing Addendum) gilt** — nicht mit einem privaten Google-Konto. Die Drittlandübermittlung (EU-US Data Privacy Framework bzw. Standardvertragsklauseln) dokumentieren; sonst ein Backend ohne Drittlandbezug nutzen.
 2. Menü **Erweiterungen → Apps Script** öffnen.
 3. Den Inhalt von `apps_script/Code.gs` komplett in den Script-Editor kopieren (den Beispiel-Inhalt vorher löschen).
 4. Speichern (Diskettensymbol), dann oben rechts **Bereitstellen → Neue Bereitstellung**.
@@ -68,7 +72,9 @@ Push auf `main` reicht — GitHub Pages baut automatisch neu (typisch 1–2 Minu
 8. Im Apps-Script-Editor die Konstante `SHEET_ID` auf die eigene Sheet-ID setzen (aus der Sheet-URL).
 9. Die Funktion `installTrigger` einmalig ausführen (Dropdown oben → `installTrigger` → **Ausführen**). Das aktiviert die tägliche Auto-Löschung.
 
-Das Sheet legt sich beim ersten eingehenden Event automatisch einen Reiter `Log` mit Kopfzeile an.
+Das Sheet legt sich beim ersten eingehenden Event automatisch einen Reiter `Log` mit Kopfzeile an. Die Spalte „Richtig?“ enthält `ja`, `teilweise`, `nein` oder `übersprungen`, die Spalte „Versuche“ die Zahl der Anläufe.
+
+Nach Änderungen an `Code.gs`: den Code im Script-Editor ersetzen und unter **Bereitstellen → Bereitstellungen verwalten** eine neue Version der bestehenden Bereitstellung anlegen.
 
 ## Fragen ergänzen oder ändern
 
@@ -117,7 +123,7 @@ Nach jeder Reise sieht die Teilnehmer:in eine Karten-Sammlung mit den bearbeitet
 - **sofort verstanden** (dunkelgrün, fett): Beim ersten Versuch richtig.
 - **im zweiten Versuch** (klarblau): Nach der sokratischen Rückfrage geknackt.
 - **teilweise erfasst** (gelb): Ein Teil der richtigen Antworten war dabei.
-- **durch Erklärung** (violett): Erst über die didaktische Vertiefung verstanden.
+- **nach Erklärung gesehen** (violett): Auch im zweiten Versuch nicht richtig; die Vertiefung wurde angezeigt.
 - **direkt zur Erklärung** (grau gestrichelt): „Ich weiß nicht"-Klick.
 
 ## Sicherheit
@@ -125,6 +131,7 @@ Nach jeder Reise sieht die Teilnehmer:in eine Karten-Sammlung mit den bearbeitet
 - Die Apps-Script-URL steht öffentlich im Quelltext (unvermeidbar, der Browser muss sie aufrufen).
 - Missbrauchsschutz erfolgt über den `SHARED_TOKEN`, den das Script prüft. Ohne gültiges Token wird kein Eintrag geschrieben.
 - Kein 100-%-Schutz gegen gezielten Missbrauch, aber effektiv gegen zufällige Bots.
+- Das Script hat bewusst keine Leseschnittstelle (kein `doGet`): Über die öffentliche URL und das Token lassen sich Zeilen schreiben, aber keine Daten abrufen. Die Ausführungsprotokolle enthalten keine Spielerdaten.
 - Für den Testbetrieb bewusst ohne komplizierte Auth-Kette gebaut. Wer produktive Daten hinter einer echten Auth-Schicht braucht: den Apps-Script-Aufruf durch einen serverseitigen Proxy ersetzen.
 
 ## Bekannte Grenzen
