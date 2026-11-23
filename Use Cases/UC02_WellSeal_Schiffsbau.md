@@ -12,6 +12,7 @@ Hersteller von Wellenkomponenten und Abdichtungssystemen für die maritime Indus
 **Geschäftsmodell:** Neulieferungen häufig mit geringer Marge (strategische Marktdurchdringung). Haupterträge aus Wartung und Reparatur alle 5–7 Jahre bei einer Schiffslebensdauer von 25–35 Jahren.  
 **Umsatz:** ca. 85 Mio. EUR (2025)  
 **Mitarbeitende:** 350 am Hauptstandort Bremen, 150 in internationalen Niederlassungen  
+**Einordnung nach KI-Verordnung:** kleines Midcap-Unternehmen (Art. 3 Nr. 14b KI-VO: weniger als 750 Beschäftigte, Umsatz höchstens 150 Mio. EUR) — kein KMU  
 **Niederlassungen:** Houston (USA), Yokohama (Japan), Shanghai (China), Busan (Südkorea)  
 **Vertriebspartner:** 17 selbständige Agenten weltweit (keine Arbeitnehmer, aber Zugang zu Unternehmensdaten und technischen Systemen)
 
@@ -68,8 +69,8 @@ Die Teilnehmenden nehmen diese Rolle ein. Die Stelle wurde auf Initiative des Ju
 ### Initiative 3 — Predictive Maintenance
 **Idee:** KI-System analysiert Betriebsdaten von Dichtungssystemen und prognostiziert Wartungsbedarf.  
 **Technologie:** Sensordaten, SAP-Integration, ML-Modell  
-**Risikostufe:** Hoch  
-**Spannungsfeld:** SAP-Datenexport. Mögliche Hochrisiko-Klassifizierung (Sicherheitsrelevanz bei Schiffskomponenten). CISO-Widerstand wegen externer Datenübertragung.
+**Risikostufe:** Hoch — vertraglich gefordert, gesetzlich fraglich  
+**Spannungsfeld:** SAP-Datenexport. Ist das überhaupt Hochrisiko? Die Maschinenverordnung (EU) 2023/1230 gilt nicht für Maschinen an Bord von Seeschiffen (Art. 2 Abs. 2 Buchst. k) und steht seit der Digital-Omnibus-Verordnung zur KI in Anhang I Abschnitt B; Großkunden verlangen trotzdem die Anforderungen an Hochrisiko-KI (vertragliche statt gesetzlicher Pflicht). CISO-Widerstand wegen externer Datenübertragung.
 
 ### Initiative 4 — Onboarding-Bot
 **Idee:** Mehrsprachiger interner Chatbot für neue Mitarbeitende (DE, EN, JA, ZH, KO).  
@@ -110,4 +111,4 @@ Die Kernaufgabe des KI-Beauftragten ist nicht technische Umsetzung, sondern **st
 | **Woche 4 (Change Management)** | Spannungsfeld Junior vs. alte Garde |
 
 ---
-*Letzte Aktualisierung: April 2026 — Ulrich Nord / Claude (Anthropic)*
+*Letzte Aktualisierung: November 2026 (Digital-Omnibus-Verordnung zur KI) — Ulrich Nord / Claude (Anthropic)*
