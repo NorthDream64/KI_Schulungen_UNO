@@ -368,7 +368,7 @@ hr.divider{border:none;border-top:1px solid var(--rule);margin:1rem 0;}
     <h2>Anwendungsfall-Übersicht</h2>
     <p>Beschreiben Sie das KI-Vorhaben, das zu lösende Problem und die betroffenen Nutzerinnen und Nutzer präzise und verständlich.</p>
   </div>
-  <p class="hint" style="display:block;margin:.2rem 0 1rem;padding:.6rem .9rem;border:1px dashed var(--rule);border-radius:var(--radius);background:var(--soft);">💾 <strong>So sicherst Du Deine Stände.</strong> Der Canvas speichert Eingaben <strong>automatisch im Browser</strong> dieses Geräts — das geht verloren, wenn Browserdaten gelöscht werden. Dauerhaft sichern: oben <strong>„⬇ Exportieren“</strong> — das erzeugt eine <strong>.json-Datei</strong>, die Du ablegst und später über <strong>„Importieren“</strong> wieder einspielst (auch auf einem anderen Gerät; mehrere Dateien = mehrere Stände, z. B. je Version). <strong>„📄 Markdown“</strong> ist dagegen die <strong>Übergabe an Deine Dokumentation</strong>: eine lesbare Textdatei der ausgefüllten Felder zum Einfügen in Word, Confluence oder die Anhang-IV-Unterlagen. <em>Markdown lässt sich nicht re-importieren — zum Weiterarbeiten immer zusätzlich die .json-Datei sichern.</em></p>
+  <p class="hint" style="display:block;margin:.2rem 0 1rem;padding:.6rem .9rem;border:1px dashed var(--rule);border-radius:var(--radius);background:var(--soft);">⚖️ <strong>Arbeitsvorlage, keine Rechtsberatung.</strong> Dass alle Felder ausgefüllt sind, sagt nichts über die Rechtskonformität des Vorhabens. 💾 <strong>So sicherst Du Deine Stände.</strong> Der Canvas speichert Eingaben <strong>automatisch im Browser</strong> dieses Geräts — das geht verloren, wenn Browserdaten gelöscht werden. Dauerhaft sichern: oben <strong>„⬇ Exportieren“</strong> — das erzeugt eine <strong>.json-Datei</strong>, die Du ablegst und später über <strong>„Importieren“</strong> wieder einspielst (auch auf einem anderen Gerät; mehrere Dateien = mehrere Stände, z. B. je Version). <strong>„📄 Markdown“</strong> ist dagegen die <strong>Übergabe an Deine Dokumentation</strong>: eine lesbare Textdatei der ausgefüllten Felder zum Einfügen in Word, Confluence oder die Anhang-IV-Unterlagen. <em>Markdown lässt sich nicht re-importieren — zum Weiterarbeiten immer zusätzlich die .json-Datei sichern.</em></p>
   <div class="form-card">
     <div class="field-row">
       <div class="field-group">
@@ -419,7 +419,7 @@ hr.divider{border:none;border-top:1px solid var(--rule);margin:1rem 0;}
     </div>
     <div class="field-group">
       <label>Erwartete Ergebnisse</label>
-      <textarea id="uc-outcomes" rows="2" placeholder="Messbare Ziele: z. B. Bearbeitungszeit −40 %, Fehlerquote −25 %, Compliance-Nachweis gegenüber Regulierer…"></textarea>
+      <textarea id="uc-outcomes" rows="2" placeholder="Messbare Ziele: z. B. Bearbeitungszeit −40 %, Fehlerquote von 4,5 % auf unter 1 %, Compliance-Nachweis gegenüber Regulierer…"></textarea>
     </div>
   </div>
 
@@ -484,8 +484,17 @@ hr.divider{border:none;border-top:1px solid var(--rule);margin:1rem 0;}
       <label class="radio-card" onclick="selectRadio(this,'ai-type')"><input type="radio" name="ai-type" value="agent"><div><strong>KI-Agent</strong>Autonome Handlungsketten, Tool-Use</div></label>
       <label class="radio-card" onclick="selectRadio(this,'ai-type')"><input type="radio" name="ai-type" value="other"><div><strong>Sonstiges</strong>Recommender, Optimierung, Regelbasiert+KI</div></label>
     </div>
+    <div class="field-group" style="margin-top:.6rem">
+      <label>Handelt das System selbständig über Werkzeuge? <span class="hint">— unabhängig vom Typ oben, z. B. ein generatives Modell mit Schreibzugriff auf andere Systeme</span></label>
+      <select id="ai-tooluse" onchange="agentProfilZeigen()">
+        <option value="">— Auswahl —</option>
+        <option>Ja — führt Aktionen in anderen Systemen aus</option>
+        <option>Nein — liefert nur Ergebnisse an Menschen</option>
+      </select>
+      <div class="field-note">Die Typen oben überschneiden sich (ein Agent auf Basis eines Sprachmodells ist zugleich generativ). Wähle den Typ, der den Einsatz am besten beschreibt; bei „Ja“ gilt zusätzlich das Agenten-Profil.</div>
+    </div>
     <div class="agent-expand" id="agent-warning">
-      <div class="alert alert-warn"><p><strong>KI-Agent erkannt:</strong> Autonome Entscheidungsketten begründen erhöhte Haftungsrisiken und erfordern besondere Kontrollmechanismen. Bitte zusätzlich die Einstufung unten sowie im Risikoregister (Abschnitt 7) die Agenten-Risiken vollständig ausfüllen.</p></div>
+      <div class="alert alert-warn"><p><strong>Agenten-Profil aktiv:</strong> Autonome Entscheidungsketten begründen erhöhte Haftungsrisiken und erfordern besondere Kontrollmechanismen. Bitte zusätzlich die Einstufung unten sowie im Risikoregister (Abschnitt 7) die Agenten-Risiken vollständig ausfüllen.</p></div>
 
       <h4 style="font-family:var(--font-mono);font-size:0.62rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--teal);margin:0.9rem 0 0.6rem;padding-bottom:0.35rem;border-bottom:1px solid var(--rule)">Einstufung des Agenten — Handlungsspielraum × Autonomiegrad</h4>
       <p style="font-size:0.8rem;color:#555;margin-bottom:0.7rem;line-height:1.5">Beide Dimensionen sind unabhängig voneinander zu bewerten: <em>Was</em> darf der Agent tun (Handlungsspielraum) und <em>wie eigenständig</em> entscheidet er dabei (Autonomiegrad). Je weiter beide Werte oben liegen, desto höher die Kontrollanforderung — unabhängig von der Leistungsfähigkeit des Modells.</p>
@@ -536,7 +545,7 @@ hr.divider{border:none;border-top:1px solid var(--rule);margin:1rem 0;}
       </div>
       <div class="field-group">
         <label>Messung von Automation Bias <span class="hint">— wie wird geprüft, ob Menschen noch wirklich prüfen?</span></label>
-        <textarea id="agent-autobias" rows="2" placeholder="z. B. Human Override Rate wird monatlich ausgewertet (Alarm unter 3 %); Human Response Time unter 10 Sekunden gilt als Hinweis auf reflexhaftes Bestätigen und wird stichprobenhaft nachgeprüft."></textarea>
+        <textarea id="agent-autobias" rows="2" placeholder="z. B. Human Override Rate wird monatlich ausgewertet (Alarm unter 3 %), ergänzt um eingestreute Prüffälle mit bekanntem Fehler (Erkennungsquote); Human Response Time unter 10 Sekunden gilt als Hinweis auf reflexhaftes Bestätigen und wird stichprobenhaft nachgeprüft."></textarea>
       </div>
       <p style="font-size:0.76rem;color:#777;font-style:italic;margin-top:0.5rem">Bezugsrahmen: <a href="https://www.imda.gov.sg/-/media/imda/files/about/emerging-tech-and-research/artificial-intelligence/mgf-for-agentic-ai.pdf" target="_blank">IMDA Singapur — Model AI Governance Framework for Agentic AI</a> (staatliche Regulierungsbehörde, Version 1.5, 2026).</p>
     </div>
@@ -569,7 +578,7 @@ hr.divider{border:none;border-top:1px solid var(--rule);margin:1rem 0;}
     <div class="field-row">
       <div class="field-group">
         <label>Anbieter / Modell / Produkt</label>
-        <input type="text" id="ai-vendor" placeholder="z. B. OpenAI GPT-4o, Microsoft Copilot, Eigenentwicklung">
+        <input type="text" id="ai-vendor" placeholder="z. B. Anbieter, Modell und Version (Stand: Datum) oder Eigenentwicklung">
       </div>
       <div class="field-group">
         <label>Deployment-Modell</label>
@@ -645,17 +654,17 @@ hr.divider{border:none;border-top:1px solid var(--rule);margin:1rem 0;}
     <h2>Ziele &amp; Scope-Abgrenzung</h2>
     <p>SMART-Ziele, Scope des Vorhabens (In-Scope / Out-of-Scope), kritische Erfolgsfaktoren und strategische Einbettung in die Unternehmens-KI-Strategie.</p>
   </div>
-  <div class="alert alert-info" style="margin:.2rem 0 1rem;"><p><strong>🧭 Die Vier-Faktoren-Probe — bevor Du Ziele formulierst.</strong> Die überzeugendsten KI-Erfolgsgeschichten stammen aus der Softwareentwicklung. Das ist kein Zufall, sondern liegt an vier Eigenschaften dieses Anwendungsfalls: <strong>① reichlich Trainingsmaterial</strong> vorhanden · <strong>② Ergebnisse leicht prüfbar</strong> (läuft oder läuft nicht) · <strong>③ wenig menschliche Interaktion</strong> im Arbeitsfluss · <strong>④ Anwender, die Werkzeugwechsel gewohnt sind</strong> und neue Werkzeuge von sich aus annehmen. <strong>Lege Deinen Use Case an diese vier Faktoren an:</strong> Je weiter er von ihnen entfernt ist, desto weniger übertragen sich die bekannten Erfolgsgeschichten — und desto vorsichtiger gehören Nutzenerwartung (Abschnitt 10) und Zeitplan (Abschnitt 14) angesetzt. Das ist kein Ausschlussgrund, sondern eine Erwartungskalibrierung: Ein Use Case, der bei ② schwach ist, braucht vor allem bessere Abnahmekriterien (Abschnitt 8); einer, der bei ④ schwach ist, mehr Change-Aufwand (Abschnitt 14).</p></div>
+  <div class="alert alert-info" style="margin:.2rem 0 1rem;"><p><strong>🧭 Die Vier-Faktoren-Probe — bevor Du Ziele formulierst.</strong> Viele der bekannten KI-Erfolgsgeschichten stammen aus der Softwareentwicklung. Als Erklärung werden vier Eigenschaften dieses Anwendungsfalls genannt (eine Heuristik, kein Messergebnis): <strong>① reichlich Trainingsmaterial</strong> vorhanden · <strong>② Ergebnisse automatisiert prüfbar</strong> (durch Tests) · <strong>③ wenig menschliche Interaktion</strong> im Arbeitsfluss · <strong>④ Anwender, die Werkzeugwechsel gewohnt sind</strong> und neue Werkzeuge von sich aus annehmen. <strong>Lege Deinen Use Case an diese vier Faktoren an:</strong> Je weiter er von ihnen entfernt ist, desto weniger übertragen sich die bekannten Erfolgsgeschichten — und desto vorsichtiger gehören Nutzenerwartung (Abschnitt 10) und Zeitplan (Abschnitt 14) angesetzt. Das ist kein Ausschlussgrund, sondern eine Erwartungskalibrierung: Ein Use Case, der bei ② schwach ist, braucht vor allem bessere Abnahmekriterien (Abschnitt 8); einer, der bei ④ schwach ist, mehr Change-Aufwand (Abschnitt 14).</p></div>
   <div class="form-card">
     <h4>SMART-Zieldefinition</h4>
     <div class="alert alert-info"><p><strong>SMART</strong> = Specific · Measurable · Achievable · Relevant · Time-bound. Formulieren Sie mindestens zwei messbare Ziele.</p></div>
     <div class="field-group">
       <label>SMART-Ziel 1 <span class="hint">— spezifisch, messbar, mit Zeithorizont</span></label>
-      <textarea id="z-smart1" rows="2" placeholder="z. B. Reduktion der Bearbeitungszeit für Kreditanträge um 40 % (von Ø 120 auf Ø 72 Min.) bis Q3 2026, gemessen an einem Pilot mit 500 Vorgängen/Monat."></textarea>
+      <textarea id="z-smart1" rows="2" placeholder="z. B. Reduktion der Bearbeitungszeit für Kreditanträge um 40 % (von Ø 120 auf Ø 72 Min.) bis Q3 2027, gemessen an einem Pilot mit 500 Vorgängen/Monat."></textarea>
     </div>
     <div class="field-group">
       <label>SMART-Ziel 2</label>
-      <textarea id="z-smart2" rows="2" placeholder="z. B. Fehlerquote bei Dokumentenprüfung auf &lt; 1 % senken (aktuell 4,5 %) — Messung per monatlichem Audit-Sample, Ziel bis Q4 2026."></textarea>
+      <textarea id="z-smart2" rows="2" placeholder="z. B. Fehlerquote bei Dokumentenprüfung auf &lt; 1 % senken (aktuell 4,5 %) — Messung per monatlicher Audit-Stichprobe von mindestens 300 Vorgängen, Ziel bis Q4 2027."></textarea>
     </div>
     <div class="field-group">
       <label>Weiteres Ziel / KPI <span class="hint">— optional</span></label>
@@ -690,12 +699,12 @@ hr.divider{border:none;border-top:1px solid var(--rule);margin:1rem 0;}
     </div>
     <div class="field-group">
       <label>Welche offene Frage soll der PoC beantworten? <span class="hint">— genau eine, präzise formuliert</span></label>
-      <textarea id="poc-frage" rows="2" placeholder="z. B. Erreicht das Modell auf einer Stichprobe von 500 aktualisierten Datensätzen eine Genauigkeit über 90 % — oder reicht die Datenqualität dafür nicht aus?"></textarea>
+      <textarea id="poc-frage" rows="2" placeholder="z. B. Erreicht das Modell auf einer Stichprobe von 500 aktualisierten Datensätzen einen Recall von mindestens 90 % bei einer Falsch-Positiv-Rate von höchstens 5 % — oder reicht die Datenqualität dafür nicht aus?"></textarea>
     </div>
     <div class="field-row">
       <div class="field-group">
         <label>Erfolgskriterium <span class="hint">— vorab festgelegt, messbar</span></label>
-        <textarea id="poc-kriterium" rows="2" placeholder="z. B. Recall (Sensitivität) ≥ 90 % bei ≤ 5 % Falsch-Positiven; andernfalls Rückgabe an die Datenaufbereitung."></textarea>
+        <textarea id="poc-kriterium" rows="2" placeholder="z. B. Recall (Sensitivität) ≥ 90 % bei einer Falsch-Positiv-Rate ≤ 5 % (FP / (FP + TN)); Zahl der positiven Fälle in der Stichprobe angeben; andernfalls Rückgabe an die Datenaufbereitung."></textarea>
       </div>
       <div class="field-group">
         <label>Abgrenzung <span class="hint">— was der PoC bewusst NICHT prüft</span></label>
@@ -714,7 +723,7 @@ hr.divider{border:none;border-top:1px solid var(--rule);margin:1rem 0;}
     </div>
     <div class="field-group">
       <label>Ergebnis des PoC <span class="hint">— erst nach Abschluss auszufüllen, auch bei negativem Ausgang</span></label>
-      <textarea id="poc-ergebnis" rows="2" placeholder="z. B. Erfolgskriterium knapp verfehlt (87 %); Ursache: fehlende Labels in zwei Produktgruppen. Empfehlung: Datenaufbereitung nachziehen, PoC in Q4 wiederholen."></textarea>
+      <textarea id="poc-ergebnis" rows="2" placeholder="z. B. Erfolgskriterium nicht sicher erreicht: Recall 87 % (130 von 150 positiven Fällen, Unsicherheit rund ±5 Prozentpunkte); Ursache: fehlende Labels in zwei Produktgruppen. Empfehlung: Datenaufbereitung nachziehen, PoC in Q4 wiederholen."></textarea>
     </div>
   </div>
 
@@ -756,10 +765,10 @@ hr.divider{border:none;border-top:1px solid var(--rule);margin:1rem 0;}
 
   <div class="form-card">
     <h4>Stakeholder-Identifikation</h4>
-    <div class="alert alert-info"><p>Fehlende Einbindung — besonders von Betriebsrat und Datenschutzbeauftragter — ist eine der häufigsten Ursachen für das Scheitern von KI-Projekten. Frühzeitige Einbindung reduziert Widerstand und Projektverzögerungen erheblich.</p></div>
+    <div class="alert alert-info"><p>Fehlende Einbindung — besonders von Betriebsrat und Datenschutzbeauftragter — ist ein häufig berichteter Grund für das Scheitern von KI-Projekten. Frühzeitige Einbindung verringert erfahrungsgemäß Widerstand und Verzögerungen.</p></div>
     <div class="field-group">
       <label>Stakeholder-Liste <span class="hint">— Funktion, Interesse, Einfluss (H/M/N), Einbindungsstrategie</span></label>
-      <textarea id="sh-liste" rows="5" placeholder="z. B.:&#10;• Fachbereichsleitung Kredit (Fachsponsor) — Einfluss: hoch, Interesse: hoch → aktiv managen&#10;• IT/Data-Team — Einfluss: hoch, Interesse: mittel → zufriedenstellen&#10;• Betriebsrat — Einfluss: hoch, Interesse: hoch → partnerschaftlich einbinden&#10;• Datenschutzbeauftragte:r — Einfluss: mittel, Interesse: mittel → informiert halten&#10;• Aufsichtsbehörde (BaFin/BNetzA) — Einfluss: hoch, Interesse: niedrig → zufriedenstellen"></textarea>
+      <textarea id="sh-liste" rows="5" placeholder="z. B.:&#10;• Fachbereichsleitung Kredit (Fachsponsor) — Einfluss: hoch, Interesse: hoch → aktiv managen&#10;• IT/Data-Team — Einfluss: hoch, Interesse: mittel → zufriedenstellen&#10;• Betriebsrat — Einfluss: hoch, Interesse: hoch → partnerschaftlich einbinden&#10;• Datenschutzbeauftragte:r — Einfluss: mittel, Interesse: hoch → frühzeitig einbinden (Art. 38 Abs. 1 DSGVO)&#10;• Aufsichtsbehörde (BaFin/BNetzA) — Einfluss: hoch, Interesse: niedrig → zufriedenstellen"></textarea>
     </div>
   </div>
 
@@ -826,7 +835,7 @@ hr.divider{border:none;border-top:1px solid var(--rule);margin:1rem 0;}
           <option value="">— Auswahl —</option>
           <option>Ja — DSB hat Stellung genommen</option>
           <option>Ja — Abstimmung läuft</option>
-          <option>Nein — nicht erforderlich</option>
+          <option>Nein — keine personenbezogenen Daten oder kein DSB benannt</option>
           <option>Nein — noch nicht kontaktiert (Maßnahme erforderlich)</option>
         </select>
       </div>
@@ -875,7 +884,7 @@ hr.divider{border:none;border-top:1px solid var(--rule);margin:1rem 0;}
   <div class="section-header" style="border-left-color:var(--s6)">
     <div class="section-tag">Abschnitt 5 von 16</div>
     <h2>RACI-Matrix</h2>
-    <p>Verantwortlichkeiten für den KI-Einsatz klären: Wer führt aus (<strong>R</strong>), wer trägt Gesamtverantwortung (<strong>A</strong> — max. 1 pro Zeile), wer wird konsultiert (<strong>C</strong>), wer wird informiert (<strong>I</strong>)? Klick auf eine Zelle wechselt die Rolle.</p>
+    <p>Verantwortlichkeiten für den KI-Einsatz klären: Wer führt aus (<strong>R</strong>), wer trägt Gesamtverantwortung (<strong>A</strong> — genau 1 pro Zeile), wer wird konsultiert (<strong>C</strong>), wer wird informiert (<strong>I</strong>)? Klick auf eine Zelle wechselt die Rolle.</p>
   </div>
 
   <div class="form-card">
@@ -972,11 +981,11 @@ hr.divider{border:none;border-top:1px solid var(--rule);margin:1rem 0;}
     <div class="radio-grid">
       <label class="radio-card" onclick="selectRadio(this,'ai-act-tier');updateRiskResult()">
         <input type="radio" name="ai-act-tier" value="verboten">
-        <div><strong style="color:var(--danger)">Unzulässig (Art. 5)</strong>Social Scoring, verbotene Manipulation, Echtzeit-Biometrie im öffentlichen Raum</div>
+        <div><strong style="color:var(--danger)">Unzulässig (Art. 5)</strong>u. a. Social Scoring, verbotene Manipulation, Emotionserkennung am Arbeitsplatz und in Bildungseinrichtungen, biometrische Echtzeit-Fernidentifizierung zur Strafverfolgung</div>
       </label>
       <label class="radio-card" onclick="selectRadio(this,'ai-act-tier');updateRiskResult()">
         <input type="radio" name="ai-act-tier" value="hochrisiko">
-        <div><strong style="color:#8b4a00">Hochrisiko (Art. 6)</strong>Via Anhang I (Sicherheitskomponente eines geregelten Produkts) oder Anhang III (Beschäftigung, Kredit, Bildung, Medizin u. a.)</div>
+        <div><strong style="color:#8b4a00">Hochrisiko (Art. 6)</strong>Via Anhang I (Sicherheitskomponente eines geregelten Produkts) oder Anhang III (u. a. Beschäftigung, Kreditwürdigkeit, Bildung, Notfall-Triage); Medizinprodukte über Anhang I</div>
       </label>
       <label class="radio-card" onclick="selectRadio(this,'ai-act-tier');updateRiskResult()">
         <input type="radio" name="ai-act-tier" value="begrenzt">
@@ -994,7 +1003,7 @@ hr.divider{border:none;border-top:1px solid var(--rule);margin:1rem 0;}
     <div class="field-group">
       <label>Hochrisiko-Klassifizierungspfad (Art. 6 KI-VO) <span class="hint">— falls Hochrisiko</span></label>
       <div class="alert alert-info" style="margin-bottom:0.6rem"><p><strong>Zwei Klassifizierungswege nach Art. 6 KI-VO:</strong><br>
-      <strong>Art. 6(1) → Anhang I:</strong> Das KI-System ist Sicherheitskomponente eines Produkts, das unter EU-Produktsicherheitsrecht fällt. Der Hochrisiko-Status ergibt sich aus dem Produktrecht — unabhängig vom Anwendungssektor. Beispiel: Predictive Maintenance an einem Sicherheitsventil (→ Druckgeräterichtlinie).<br>
+      <strong>Art. 6(1) → Anhang I:</strong> Zwei Bedingungen müssen beide erfüllt sein: (1) Das KI-System ist selbst ein Produkt oder Sicherheitskomponente eines Produkts nach Anhang I, und (2) dieses Produkt muss nach dem dortigen Recht eine Konformitätsbewertung durch Dritte durchlaufen. Der Hochrisiko-Status folgt dann aus dem Produktrecht — unabhängig vom Anwendungssektor. Beispiel: Predictive Maintenance an einem Sicherheitsventil (→ Druckgeräterichtlinie) — nur, wenn ein Ausfall der KI die Sicherheitsfunktion gefährdet.<br>
       <strong>Art. 6(2) → Anhang III:</strong> Das KI-System gehört einem der acht gelisteten Anwendungsbereiche an (Biometrie, Beschäftigung, Kredit usw.).</p></div>
       <select id="act-anhang3">
         <option value="">— Nicht anwendbar oder Auswahl —</option>
@@ -1058,19 +1067,19 @@ hr.divider{border:none;border-top:1px solid var(--rule);margin:1rem 0;}
         <label>Automatisierte Einzelentscheidung (Art. 22 DSGVO)?</label>
         <select id="gdpr-art22">
           <option value="">— Auswahl —</option>
-          <option>Ja — rechtlich erhebliche Entscheidung vollautomatisch</option>
-          <option>Ja, aber: menschliche Überprüfung vorgesehen</option>
-          <option>Nein — keine rechtlich erhebliche Auswirkung</option>
-          <option>Zu prüfen</option>
+          <option>Ja — ausschließlich automatisiert, mit rechtlicher oder ähnlich erheblicher Wirkung (Ausnahme nach Abs. 2 nötig)</option>
+          <option>Nein — inhaltliche menschliche Prüfung mit Entscheidungsbefugnis</option>
+          <option>Nein — keine rechtliche oder ähnlich erhebliche Wirkung</option>
+          <option>Zu prüfen — Score oder Empfehlung prägt die Entscheidung maßgeblich (EuGH C-634/21, SCHUFA)</option>
         </select>
       </div>
       <div class="field-group">
-        <label>Drittlandtransfer (Art. 46 DSGVO)?</label>
+        <label>Drittlandtransfer (Kap. V, Art. 44 ff. DSGVO)?</label>
         <select id="gdpr-drittland">
           <option value="">— Auswahl —</option>
           <option>Nein — Verarbeitung ausschließlich in EU/EWR</option>
-          <option>Ja — Angemessenheitsbeschluss vorhanden (z. B. USA/DPF)</option>
-          <option>Ja — Standardvertragsklauseln (SCC) vereinbart</option>
+          <option>Ja — Angemessenheitsbeschluss (Art. 45), z. B. DPF; Empfänger ist zertifiziert (Liste geprüft)</option>
+          <option>Ja — Standardvertragsklauseln (Art. 46) vereinbart, Transferfolgenabschätzung dokumentiert</option>
           <option>Ja — andere geeignete Garantien</option>
           <option>Ungeklärt — Prüfung erforderlich</option>
         </select>
@@ -1090,7 +1099,7 @@ hr.divider{border:none;border-top:1px solid var(--rule);margin:1rem 0;}
 
   <div class="form-card">
     <label>Grundrechte-Folgenabschätzung (Art. 27 KI-VO) & nationale Aufsicht</label>
-    <p class="hint" style="display:block;margin:.3rem 0 .8rem;">Die FRIA (Fundamental Rights Impact Assessment) trifft <strong>Betreiber</strong> bestimmter Hochrisiko-Systeme <em>vor der ersten Verwendung</em>: Einrichtungen des öffentlichen Rechts, private Einrichtungen, die öffentliche Dienstleistungen erbringen, sowie Betreiber von Systemen nach Anhang III Nr. 5b (Kreditwürdigkeit) und Nr. 5c (Risikobewertung/Preisbildung Lebens- und Krankenversicherung). Sie ergänzt die DSFA, ersetzt sie nicht — und kann auf ihr aufbauen. Das Ergebnis ist der Marktüberwachungsbehörde mitzuteilen (Art. 27 Abs. 3) — künftig mit dem ausgefüllten Muster des KI-Büros (<a href="https://digital-strategy.ec.europa.eu/en/news/commission-seeks-feedback-draft-template-fundamental-rights-impact-assessment-under-ai-act" target="_blank">Entwurf vom 16.11.2026</a>); die Pflicht greift ab 02.12.2027. Text: <a href="https://ai-act-service-desk.ec.europa.eu/de/ai-act/article-27" target="_blank">Art. 27 (AI Act Service Desk, konsolidiert)</a> — verbindlich ist EUR-Lex.</p>
+    <p class="hint" style="display:block;margin:.3rem 0 .8rem;">Die FRIA (Fundamental Rights Impact Assessment) trifft <strong>Betreiber</strong> bestimmter Hochrisiko-Systeme nach Anhang III (Art. 6 Abs. 2; ausgenommen Anhang III Nr. 2, kritische Infrastruktur) <em>vor der ersten Verwendung</em>: Einrichtungen des öffentlichen Rechts, private Einrichtungen, die öffentliche Dienstleistungen erbringen, sowie Betreiber von Systemen nach Anhang III Nr. 5b (Kreditwürdigkeit) und Nr. 5c (Risikobewertung/Preisbildung Lebens- und Krankenversicherung). Sie ergänzt die DSFA, ersetzt sie nicht — und kann auf ihr aufbauen. Das Ergebnis ist der Marktüberwachungsbehörde mitzuteilen (Art. 27 Abs. 3) — künftig mit dem ausgefüllten Muster des KI-Büros (<a href="https://digital-strategy.ec.europa.eu/en/news/commission-seeks-feedback-draft-template-fundamental-rights-impact-assessment-under-ai-act" target="_blank">Entwurf vom 16.11.2026</a>); die Pflicht greift ab 02.12.2027. Text: <a href="https://ai-act-service-desk.ec.europa.eu/de/ai-act/article-27" target="_blank">Art. 27 (AI Act Service Desk, konsolidiert)</a> — verbindlich ist EUR-Lex.</p>
     <div class="field-row">
       <div class="field-group">
         <label>Fällt der Betreiber unter Art. 27?</label>
@@ -1124,18 +1133,19 @@ hr.divider{border:none;border-top:1px solid var(--rule);margin:1rem 0;}
         <textarea id="fria-notes" rows="2" placeholder="z. B. Betreiber ist kein Adressat des Art. 27; DSFA vom … deckt … ab"></textarea>
       </div>
     </div>
-    <p class="hint" style="display:block;margin-top:.5rem;"><strong>Nationale Ebene seit 29.07.2026:</strong> Das <strong>KI-Marktüberwachungsgesetz (KI-MIG)</strong> benennt die Bundesnetzagentur als zentrale Marktüberwachungsbehörde; § 15 KI-MIG enthält die Bußgeldtatbestände. Dieselbe Behörde wird das deutsche <strong>KI-Reallabor</strong> (Art. 57–59) betreiben — es ist noch nicht eröffnet; die Frist für mindestens ein nationales Reallabor wurde durch den Omnibus auf den <strong>2. August 2027</strong> verschoben. Nach Eröffnung: Teilnahme-Dokumentation kann als Konformitätsnachweis dienen, der Zugang ist für KMU und Start-ups kostenfrei — als Chance in Abschnitt 10 mitdenken. Stand 30.10.2026.</p>
+    <p class="hint" style="display:block;margin-top:.5rem;"><strong>Nationale Ebene seit 29.07.2026:</strong> Das <strong>Gesetz zur Marktüberwachung und Innovationsförderung von künstlicher Intelligenz (KI-MIG)</strong> benennt die Bundesnetzagentur als zentrale Marktüberwachungsbehörde; § 15 KI-MIG enthält die Bußgeldvorschriften zur KI-VO. Dieselbe Behörde wird das deutsche <strong>KI-Reallabor</strong> (Art. 57–59) betreiben — es ist noch nicht eröffnet; die Frist für mindestens ein nationales Reallabor wurde durch den Omnibus auf den <strong>2. August 2027</strong> verschoben. Nach Eröffnung: Abschlussbericht und Nachweis aus dem Reallabor werden bei der Konformitätsbewertung positiv berücksichtigt und können sie beschleunigen (Art. 57 Abs. 7); sie ersetzen sie nicht. Der Zugang ist für KMU und Start-ups kostenfrei — als Chance in Abschnitt 10 mitdenken. Stand 30.10.2026.</p>
   </div>
   <div class="form-card">
     <h4>Haftung & Urheberrecht</h4>
     <div class="field-row">
       <div class="field-group">
-        <label>Eigentümerschaft KI-Output</label>
+        <label>Rechtslage KI-Output</label>
         <select id="ip-ownership">
           <option value="">— Auswahl —</option>
-          <option>Unser Unternehmen (vollständig)</option>
-          <option>Geteiltes Eigentum mit KI-Anbieter</option>
-          <option>KI-Anbieter / nicht geschützt</option>
+          <option>Vertragliche Nutzungsrechte laut Anbieter-Bedingungen</option>
+          <option>Kein Urheberrechtsschutz (rein KI-generiert)</option>
+          <option>Schutz durch eigenen schöpferischen Beitrag möglich</option>
+          <option>Rechte Dritter zu prüfen</option>
           <option>Unklar — rechtliche Klärung erforderlich</option>
         </select>
       </div>
@@ -1172,7 +1182,7 @@ hr.divider{border:none;border-top:1px solid var(--rule);margin:1rem 0;}
     <div class="section-tag">Abschnitt 7 von 16</div>
     <h2>Risikoregister</h2>
     <p>Strukturierte Bewertung nach sechs KI-Risikoarten. Bewertungsschema: <strong>A × B × E</strong> — <strong>A</strong> (Auftreten/Eintrittswahrscheinlichkeit) × <strong>B</strong> (Bedeutung/Schadenshöhe) × <strong>E</strong> (Entdeckbarkeit/Schwierigkeit der Detektion), je 1–10, max. Score = 1.000. <strong>Verantwortlich/Owner:</strong> Bitte eine konkrete Person eintragen — keine Abteilung und keine Rolle.</p>
-    <p style="font-size:0.84rem;margin-top:0.5rem;line-height:1.55"><strong>Was der Score bedeutet:</strong> <span style="color:#2e7d32;font-weight:600">1–49 (grün)</span> = im Rahmen, Maßnahme dokumentieren und beobachten · <span style="color:#f57f17;font-weight:600">50–199 (gelb)</span> = Mitigationsmaßnahme mit Termin und benannter Person verbindlich festlegen · <span style="color:#b71c1c;font-weight:600">ab 200 (rot)</span> = Eskalation an das Steuerungsgremium; ohne dokumentierte Mitigation oder bewusste Risikoannahme keine Freigabeempfehlung in Abschnitt 16.</p>
+    <p style="font-size:0.84rem;margin-top:0.5rem;line-height:1.55"><strong>Was der Score bedeutet:</strong> <span style="color:#2e7d32;font-weight:600">1–49 (grün)</span> = im Rahmen, Maßnahme dokumentieren und beobachten · <span style="color:#f57f17;font-weight:600">50–199 (gelb)</span> = Mitigationsmaßnahme mit Termin und benannter Person verbindlich festlegen · <span style="color:#b71c1c;font-weight:600">ab 200 (rot)</span> = Eskalation an das Steuerungsgremium; ohne dokumentierte Mitigation oder bewusste Risikoannahme keine Freigabeempfehlung in Abschnitt 16. <strong>Sonderregel:</strong> Bei Bedeutung B ≥ 9 gilt mindestens Gelb mit benannter Mitigation, unabhängig vom Produkt — die Multiplikation kann ein schweres, aber seltenes Risiko sonst als unkritisch ausweisen.</p>
 
     <div class="alert alert-info" style="margin-top:0.8rem">
       <p style="margin-bottom:0.5rem"><strong>📏 Was die Zahlen bedeuten — Bewertungsleitfaden für A, B und E</strong></p>
@@ -1244,14 +1254,14 @@ hr.divider{border:none;border-top:1px solid var(--rule);margin:1rem 0;}
 
   <!-- Technische Fehler -->
   <div class="risk-category">
-    <div class="risk-cat-header"><span class="risk-cat-icon">⚙️</span> Technische Fehler — Model Drift, Robustheit, Fehlerfortpflanzung</div>
+    <div class="risk-cat-header"><span class="risk-cat-icon">⚙️</span> Technische Fehler — Daten- und Concept-Drift, Robustheit, Fehlerfortpflanzung</div>
     <table class="risk-rows">
       <thead><tr><th style="width:16%">Risikobeschreibung</th><th style="width:15%">Auswirkung</th><th style="width:15%">Mitigationsmaßnahme</th><th style="width:7%">A</th><th style="width:7%">B</th><th style="width:7%">E</th><th style="width:7%">Score</th><th style="width:11%">Status</th><th style="width:15%">Verantwortlich/Owner</th></tr></thead>
       <tbody id="tech-rows">
         <tr>
-          <td><input type="text" placeholder="z. B. Model Drift nach 6 Monaten Betrieb"></td>
+          <td><input type="text" placeholder="z. B. Daten- oder Concept-Drift nach 6 Monaten Betrieb"></td>
           <td><textarea placeholder="z. B. Accuracy-Einbruch unter Schwellenwert, fehlerhafte Prognosen"></textarea></td>
-          <td><input type="text" placeholder="z. B. Monatliches Performance-Monitoring, Retraining-Schwellenwert definieren"></td>
+          <td><input type="text" placeholder="z. B. Monatliches Performance-Monitoring, Schwellenwert für die Ursachenprüfung definieren, danach Entscheidung über Retraining"></td>
           <td><select onchange="updateScore(this)"><option value="0">—</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option></select></td>
           <td><select onchange="updateScore(this)"><option value="0">—</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option></select></td>
           <td><select onchange="updateScore(this)"><option value="0">—</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option></select></td>
@@ -1289,7 +1299,7 @@ hr.divider{border:none;border-top:1px solid var(--rule);margin:1rem 0;}
   <!-- KI-Agenten-Risiken -->
   <div class="risk-category">
     <div class="risk-cat-header"><span class="risk-cat-icon">🤖</span> KI-Agenten-Risiken — Autonome Handlungsketten, Kontrollverlust</div>
-    <div class="alert alert-info" style="margin:0;border-radius:0"><p>Nur ausfüllen, wenn als KI-System-Typ „KI-Agent“ ausgewählt wurde. Autonome Entscheidungsketten schaffen neue Haftungsebenen, da Zwischenschritte nicht mehr menschlich kontrolliert werden. Die Einstufung nach Handlungsspielraum und Autonomiegrad sowie die Angaben zu Least Privilege und Freigabe-Gate erfolgen in <strong>Abschnitt 2</strong> — die dort offen gebliebenen Punkte gehören als konkretes Risiko in diese Tabelle.</p></div>
+    <div class="alert alert-info" style="margin:0;border-radius:0"><p>Nur ausfüllen, wenn als KI-System-Typ „KI-Agent“ ausgewählt wurde oder das System selbständig über Werkzeuge handelt. Autonome Entscheidungsketten schaffen neue Haftungsebenen, da Zwischenschritte nicht mehr menschlich kontrolliert werden. Die Einstufung nach Handlungsspielraum und Autonomiegrad sowie die Angaben zu Least Privilege und Freigabe-Gate erfolgen in <strong>Abschnitt 2</strong> — die dort offen gebliebenen Punkte gehören als konkretes Risiko in diese Tabelle.</p></div>
     <table class="risk-rows">
       <thead><tr><th style="width:16%">Risikobeschreibung</th><th style="width:15%">Auswirkung</th><th style="width:15%">Mitigationsmaßnahme</th><th style="width:7%">A</th><th style="width:7%">B</th><th style="width:7%">E</th><th style="width:7%">Score</th><th style="width:11%">Status</th><th style="width:15%">Verantwortlich/Owner</th></tr></thead>
       <tbody id="agent-rows">
@@ -1318,7 +1328,7 @@ hr.divider{border:none;border-top:1px solid var(--rule);margin:1rem 0;}
         <tr>
           <td><input type="text" placeholder="z. B. Sanktionen nach EU AI Act bei fehlender Konformitätsbewertung"></td>
           <td><textarea placeholder="z. B. Bußgeld bis 3 % des weltweiten Jahresumsatzes (Art. 99 KI-VO)"></textarea></td>
-          <td><input type="text" placeholder="z. B. Konformitätsbewertungsverfahren einleiten (→ Abschnitt 10)"></td>
+          <td><input type="text" placeholder="z. B. Konformitätsbewertungsverfahren einleiten (→ Abschnitt 9)"></td>
           <td><select onchange="updateScore(this)"><option value="0">—</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option></select></td>
           <td><select onchange="updateScore(this)"><option value="0">—</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option></select></td>
           <td><select onchange="updateScore(this)"><option value="0">—</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option></select></td>
@@ -1386,12 +1396,13 @@ hr.divider{border:none;border-top:1px solid var(--rule);margin:1rem 0;}
           <option>Kombination mehrerer Quellen</option>
           <option>Nicht bekannt (SaaS — Anbieter verantwortlich)</option>
         </select>
+        <div class="field-note">Synthetische Daten übernehmen die Verzerrungen ihres Generators und ersetzen keine Validierung an echten Daten.</div>
       </div>
       <div class="field-group">
         <label>Repräsentativität der Trainingsdaten</label>
         <select id="dq-repraes">
           <option value="">— Auswahl —</option>
-          <option>Hoch — alle relevanten demografischen Gruppen abgedeckt</option>
+          <option>Hoch — Einsatzbedingungen abgedeckt (Gruppen, Zeitraum, Regionen, Randfälle)</option>
           <option>Mittel — bekannte Lücken, dokumentiert</option>
           <option>Niedrig — unvollständige Abdeckung, Bias-Risiko hoch</option>
           <option>Unbekannt — Prüfung ausstehend</option>
@@ -1471,7 +1482,7 @@ hr.divider{border:none;border-top:1px solid var(--rule);margin:1rem 0;}
     </div>
     <div class="field-group" style="margin-top:0.8rem">
       <label>Abnahmekriterien (Akzeptanzgrenzen)</label>
-      <textarea id="qs-kriterien" rows="2" placeholder="z. B. Precision ≥ 90 %, Recall ≥ 85 % (höchstens 15 % der echten Fälle werden übersehen); Gleichverteilung ±5 % über demografische Gruppen; Antwortzeit &lt; 200 ms"></textarea>
+      <textarea id="qs-kriterien" rows="2" placeholder="z. B. Precision ≥ 90 %, Recall ≥ 85 % (höchstens 15 % der echten Fälle werden übersehen); Unterschied im Recall zwischen Gruppen ≤ 5 Prozentpunkte (Equal Opportunity — Fairness-Metrik bewusst wählen und begründen); Antwortzeit &lt; 200 ms"></textarea>
     </div>
     <div class="field-row">
       <div class="field-group">
@@ -1493,7 +1504,7 @@ hr.divider{border:none;border-top:1px solid var(--rule);margin:1rem 0;}
         <option>Nicht anwendbar (Fremdsystem)</option>
       </select>
     </div>
-    <div class="alert alert-info" style="margin-top:.8rem;"><p><strong>⚖️ Zielkonflikt-Testfälle — die Testmenge, die über Genauigkeit hinausgeht.</strong> Nimm <strong>vier bis fünf eigene Abwägungsfälle</strong> in die Testmenge auf: Situationen aus Eurem Einsatzgebiet, in denen zwei berechtigte Ziele kollidieren (z. B. Gründlichkeit gegen Antwortzeit, Kulanz gegen Regelbindung, Warnung gegen Bevormundung) — je mit dem <strong>erwarteten Verhalten</strong>, das Ihr festgelegt habt. Ein Regressionstest, der nur Genauigkeit und Laufzeit misst, übersieht, wenn ein neues Modell dieselben Fragen <em>anders abwägt</em> als das alte. <strong>Dieselben Fälle bei jedem Modell- oder Versionswechsel erneut laufen lassen</strong> (→ Abschnitt 11) und Abweichungen wie einen Befund behandeln, nicht wie Geschmacksfragen.</p><p style="margin-top:.4rem;"><label style="display:block;">Eigene Zielkonflikt-Testfälle <span class="hint">— Fall · erwartetes Verhalten · zuletzt geprüft am</span></label><textarea id="qs-zielkonflikte" rows="3" placeholder="z. B. Kunde verlangt sofortige Kündigung in erkennbarer Ausnahmesituation → erwartet: Folgen aufzeigen, dann ausführen · geprüft 11/2026"></textarea></p></div>
+    <div class="alert alert-info" style="margin-top:.8rem;"><p><strong>⚖️ Zielkonflikt-Testfälle — die Testmenge, die über Genauigkeit hinausgeht.</strong> Nimm <strong>vier bis fünf eigene Abwägungsfälle</strong> in die Testmenge auf: Situationen aus Eurem Einsatzgebiet, in denen zwei berechtigte Ziele kollidieren (z. B. Gründlichkeit gegen Antwortzeit, Kulanz gegen Regelbindung, Warnung gegen Bevormundung) — je mit dem <strong>erwarteten Verhalten</strong>, das Ihr festgelegt habt. Ein Regressionstest, der nur Genauigkeit und Laufzeit misst, übersieht, wenn ein neues Modell dieselben Fragen <em>anders beantwortet</em> als das alte. <strong>Dieselben Fälle bei jedem Modell- oder Versionswechsel erneut laufen lassen</strong> (→ Abschnitt 11) und Abweichungen wie einen Befund behandeln, nicht wie Geschmacksfragen. Generative Modelle antworten nicht jedes Mal gleich: Jeden Fall mehrfach mit festen Einstellungen laufen lassen (Temperatur, Seed, sofern verfügbar). Vier bis fünf Fälle sind ein Minimum, kein Nachweis.</p><p style="margin-top:.4rem;"><label style="display:block;">Eigene Zielkonflikt-Testfälle <span class="hint">— Fall · erwartetes Verhalten · zuletzt geprüft am</span></label><textarea id="qs-zielkonflikte" rows="3" placeholder="z. B. Kunde verlangt sofortige Kündigung in erkennbarer Ausnahmesituation → erwartet: Folgen aufzeigen, dann ausführen · geprüft 11/2026"></textarea></p></div>
   </div>
 
   <div class="section-nav">
@@ -1516,7 +1527,7 @@ hr.divider{border:none;border-top:1px solid var(--rule);margin:1rem 0;}
       <p><strong>Ab wann gelten diese Pflichten? — Stand 30.10.2026</strong></p>
       <p>Die Fristen der KI-Verordnung sind durch den <strong>Digital Omnibus (Verordnung (EU) 2026/1744)</strong> verschoben worden. Maßgeblich ist, unter welchen Anhang der Anwendungsfall fällt:</p>
       <ul>
-        <li><strong>Anhang III</strong> — eigenständige Hochrisiko-Anwendungen (u. a. Kreditwürdigkeitsprüfung, Personalauswahl, Bildung, kritische Infrastruktur): Anbieter- und Betreiberpflichten ab <strong>2. Dezember 2027</strong>. Die BaFin hat dieses Datum am 29.07.2026 für Kredit-Scoring und Versicherungs-Risikobewertung ausdrücklich bestätigt.</li>
+        <li><strong>Anhang III</strong> — eigenständige Hochrisiko-Anwendungen (u. a. Kreditwürdigkeitsprüfung, Personalauswahl, Bildung, kritische Infrastruktur): Anbieter- und Betreiberpflichten ab <strong>2. Dezember 2027</strong>. Das gilt auch für Kredit-Scoring und Versicherungs-Risikobewertung im Finanzsektor (Aufsicht: BaFin).</li>
         <li><strong>Anhang I</strong> — KI als Sicherheitskomponente in bereits regulierten Produkten (Maschinen, Medizinprodukte, Aufzüge): ab <strong>2. August 2028</strong>.</li>
         <li><strong>Transparenzpflichten nach Art. 50</strong> (Kennzeichnung synthetischer Inhalte, Offenlegung gegenüber Nutzenden) gelten bereits seit dem <strong>2. August 2026</strong> — unabhängig von der Risikoklasse; einzige Übergangsfrist: Die <strong>maschinenlesbare Markierung</strong> nach Art. 50 Abs. 2 müssen Anbieter generativer Systeme, die bereits vor dem 02.08.2026 im Markt waren, bis zum <strong>2. Dezember 2026</strong> nachrüsten.</li>
       </ul>
@@ -1526,14 +1537,14 @@ hr.divider{border:none;border-top:1px solid var(--rule);margin:1rem 0;}
   </div>
 
   <div class="form-card">
-    <div class="pf-intro">Für jede Tätigkeit den aktuellen Bearbeitungsstand markieren. Ein <em>n/a</em> ist im Kommentarfeld kurz zu begründen (z. B. „kein Hochrisiko-KI-System“). Klick auf die Artikel-Referenz öffnet den Originaltext (artificialintelligenceact.eu).</div>
+    <div class="pf-intro">Für jede Tätigkeit den aktuellen Bearbeitungsstand markieren. Ein <em>n/a</em> ist im Kommentarfeld kurz zu begründen (z. B. „kein Hochrisiko-KI-System“ oder „nicht Anbieter — Nachweis beim Anbieter angefordert“). <strong>Wen trifft was?</strong> Konformitätsbewertung, Konformitätserklärung, CE-Kennzeichnung, technische Dokumentation nach Anhang IV, Betriebsanleitung (Art. 13) und die Kennzeichnungspflichten nach Art. 50 Abs. 1 und 2 treffen den <strong>Anbieter</strong>. Wer ein System nur als <strong>Betreiber</strong> einsetzt, hat vor allem die Pflichten aus Art. 26 (u. a. Nr. ⑭ und ⑮, Aufbewahrung der Protokolle, Meldung an den Anbieter). Klick auf die Artikel-Referenz öffnet den Originaltext (artificialintelligenceact.eu).</div>
 
     <div class="pf-group">
       <div class="pf-group-title">Pflichtenfeld 1 · Konformitätsbewertung</div>
 
       <div class="pf-item" data-pf="pf-01">
         <div class="pf-head">
-          <div class="pf-title"><span class="pf-num">①</span>Konformitätsbewertungsverfahren auswählen — internes Verfahren nach Anhang VI oder Verfahren mit Notified Body nach Anhang VII</div>
+          <div class="pf-title"><span class="pf-num">①</span>Konformitätsbewertungsverfahren auswählen — internes Verfahren nach Anhang VI oder Verfahren mit Notified Body nach Anhang VII (für Anhang III Nr. 2–8 ist nur das interne Verfahren nach Anhang VI vorgesehen)</div>
           <a class="pf-art" href="https://artificialintelligenceact.eu/article/43/" target="_blank" rel="noopener">Art. 43 Abs. 1+2</a>
         </div>
         <div class="pf-status" data-pf-status="pf-01">
@@ -1664,7 +1675,7 @@ hr.divider{border:none;border-top:1px solid var(--rule);margin:1rem 0;}
       <div class="pf-item" data-pf="pf-10">
         <div class="pf-head">
           <div class="pf-title"><span class="pf-num">⑩</span>Dokumentation aktualisieren bei Änderungen — bei jedem wesentlichen Modell-Update</div>
-          <a class="pf-art" href="https://artificialintelligenceact.eu/article/11/" target="_blank" rel="noopener">Art. 11 Abs. 2</a>
+          <a class="pf-art" href="https://artificialintelligenceact.eu/article/11/" target="_blank" rel="noopener">Art. 11 Abs. 1</a>
         </div>
         <div class="pf-status" data-pf-status="pf-10">
           <label class="st-erledigt"><input type="radio" name="pf-10" value="erledigt"><span>✓ erledigt</span></label>
@@ -1737,7 +1748,7 @@ hr.divider{border:none;border-top:1px solid var(--rule);margin:1rem 0;}
 
       <div class="pf-item" data-pf="pf-15">
         <div class="pf-head">
-          <div class="pf-title"><span class="pf-num">⑮</span>Betroffene über automatisierte Entscheidungen informieren — bei Hochrisiko-KI mit Wirkung auf natürliche Personen</div>
+          <div class="pf-title"><span class="pf-num">⑮</span>Betroffene informieren, wenn ein Anhang-III-System Entscheidungen über sie trifft oder dabei unterstützt</div>
           <a class="pf-art" href="https://artificialintelligenceact.eu/article/26/" target="_blank" rel="noopener">Art. 26 Abs. 11</a>
         </div>
         <div class="pf-status" data-pf-status="pf-15">
@@ -1752,7 +1763,7 @@ hr.divider{border:none;border-top:1px solid var(--rule);margin:1rem 0;}
 
     <div class="pf-group">
       <div class="pf-group-title">Pflichtenfeld 5 · Meldepflicht bei schwerwiegenden Vorfällen</div>
-    <p class="hint" style="display:block;margin:.3rem 0 .5rem;"><strong>Adressat in Deutschland:</strong> die Marktüberwachungsbehörde nach KI-MIG — regelmäßig die <strong>Bundesnetzagentur</strong>, sektoral abweichend (z. B. BaFin). Leitlinien und Meldeformular gelten seit dem 02.08.2026. Bei einem schwerwiegenden Vorfall informieren Betreiber nach Art. 26 Abs. 5 <strong>unverzüglich zuerst den Anbieter</strong>, dann den Einführer oder Händler <strong>und die Marktüberwachungsbehörde</strong>. Ist der Anbieter nicht erreichbar, gilt Art. 73 entsprechend. Die Meldung ist bußgeldbewehrt — sie entfällt nicht deshalb, weil der Anbieter ebenfalls meldet.</p>
+    <p class="hint" style="display:block;margin:.3rem 0 .5rem;"><strong>Adressat in Deutschland:</strong> die Marktüberwachungsbehörde nach KI-MIG — regelmäßig die <strong>Bundesnetzagentur</strong>, sektoral abweichend (z. B. BaFin). Die Kommission hat dazu Leitlinien und eine Meldevorlage im Entwurf vorgelegt (09/2025; aktuellen Stand prüfen). Für Anhang-III-Systeme greift die Meldepflicht mit den Hochrisiko-Pflichten ab 02.12.2027. Bei einem schwerwiegenden Vorfall informieren Betreiber nach Art. 26 Abs. 5 <strong>unverzüglich zuerst den Anbieter</strong>, dann den Einführer oder Händler <strong>und die Marktüberwachungsbehörde</strong>. Ist der Anbieter nicht erreichbar, gilt Art. 73 entsprechend. Die Meldung ist bußgeldbewehrt — sie entfällt nicht deshalb, weil der Anbieter ebenfalls meldet.</p>
 
       <div class="pf-item" data-pf="pf-16">
         <div class="pf-head">
@@ -1799,7 +1810,7 @@ hr.divider{border:none;border-top:1px solid var(--rule);margin:1rem 0;}
       <div class="pf-item" data-pf="pf-19">
         <div class="pf-head">
           <div class="pf-title"><span class="pf-num">⑲</span>Korrekturmaßnahmen einleiten und dokumentieren — Ursache analysieren, abstellen, Wirkung dokumentieren</div>
-          <a class="pf-art" href="https://artificialintelligenceact.eu/article/73/" target="_blank" rel="noopener">Art. 73 Abs. 5</a>
+          <a class="pf-art" href="https://artificialintelligenceact.eu/article/73/" target="_blank" rel="noopener">Art. 73 Abs. 6</a>
         </div>
         <div class="pf-status" data-pf-status="pf-19">
           <label class="st-erledigt"><input type="radio" name="pf-19" value="erledigt"><span>✓ erledigt</span></label>
@@ -1839,7 +1850,7 @@ hr.divider{border:none;border-top:1px solid var(--rule);margin:1rem 0;}
     <div class="field-row">
       <div class="field-group">
         <label>Zuständige benannte Stelle (falls extern)</label>
-        <input type="text" id="conf-stelle" placeholder="z. B. TÜV SÜD, BSI, DEKRA — Name und Referenznummer">
+        <input type="text" id="conf-stelle" placeholder="Name und Kennnummer der benannten Stelle (NANDO-Datenbank der EU)">
       </div>
       <div class="field-group">
         <label>Automatisches Logging implementiert? (Art. 12)</label>
@@ -1873,17 +1884,26 @@ hr.divider{border:none;border-top:1px solid var(--rule);margin:1rem 0;}
   <div class="section-header" style="border-left-color:var(--s4)">
     <div class="section-tag">Abschnitt 10 von 16</div>
     <h2>Geschäftlicher Mehrwert</h2>
-    <p>Quantifizierung des Nutzens, ROI-Bewertung und strategische Priorisierung für die Go/No-Go-Entscheidung. Literatur: <a href="https://www.mckinsey.com/capabilities/quantumblack/our-insights/the-state-of-ai" target="_blank">McKinsey State of AI</a>.</p>
+    <p>Quantifizierung des Nutzens, ROI-Bewertung und strategische Priorisierung für die Go/No-Go-Entscheidung. Zur Orientierung: <a href="https://www.mckinsey.com/capabilities/quantumblack/our-insights/the-state-of-ai" target="_blank">McKinsey State of AI</a> (Umfrage auf Basis von Selbstauskünften — kein Planwert).</p>
   </div>
 
   <div class="form-card">
     <div class="field-group">
       <label>Quantifizierbarer Nutzen <span class="hint">— Einsparungen, Effizienzgewinn, Umsatzwirkung</span></label>
-      <textarea id="bv-quant" rows="2" placeholder="z. B. Geschätzte Einsparung 200 T€/Jahr durch reduzierten manuellen Aufwand; Bearbeitungszeit −40 % bei 5.000 Vorgängen/Monat…"></textarea>
+      <textarea id="bv-quant" rows="2" placeholder="z. B. Bearbeitungszeit −40 % bei 500 Vorgängen/Monat = freigesetzte Kapazität ca. 4.800 h/Jahr (Kapazitätswert ca. 200 T€). Davon zahlungswirksam: 60 T€ weniger Fremdleistung; der Rest fließt in Beratung (Messgröße: …)"></textarea>
     </div>
     <div class="field-group">
       <label>Qualitativer Nutzen</label>
       <textarea id="bv-qual" rows="2" placeholder="z. B. Verbesserte Compliance-Nachweisbarkeit, erhöhte Kundenzufriedenheit, Reduktion menschlicher Fehler in hochvolumigen Prozessen…"></textarea>
+    </div>
+    <div class="field-group">
+      <label>Nutzen-Nachweis <span class="hint">— je Nutzen: Basislinie · Messgröße · Zielwert · Nutzen-Eigentümer:in · ab wann · Nachweis</span></label>
+      <textarea id="bv-nachweis" rows="3" placeholder="z. B. Bearbeitungszeit je Antrag · Basislinie Ø 120 Min. (siehe SMART-Ziele, Abschnitt 3) · Ziel Ø 72 Min. · Eigentümerin: Leitung Kreditbearbeitung · ab 6 Monate nach Go-Live · Nachweis: Vorher-Nachher-Messung mit Vergleichsgruppe"></textarea>
+      <div class="hint">Die Basislinie steht bei den SMART-Zielen in Abschnitt 3. Ohne benannte Person, die den Nutzen verantwortet, wird er selten gemessen.</div>
+    </div>
+    <div class="field-group">
+      <label>Negative Nebenwirkungen <span class="hint">— was wird durch die Lösung schlechter oder teurer?</span></label>
+      <textarea id="bv-nebenwirkungen" rows="2" placeholder="z. B. mehr Rückfragen im Kundenservice in den ersten Monaten, zusätzlicher Prüfaufwand für die Fachaufsicht, Abhängigkeit von einem Anbieter"></textarea>
     </div>
   </div>
 
@@ -2121,12 +2141,12 @@ hr.divider{border:none;border-top:1px solid var(--rule);margin:1rem 0;}
     </div>
     <div class="field-group">
       <label>Überwachte Performance-Metriken</label>
-      <textarea id="pmm-metriken" rows="2" placeholder="z. B. Accuracy, Precision/Recall, Fairness-Metriken pro Subgruppe, Drift-Index (PSI), Latenz, Ablehnungsquote…"></textarea>
+      <textarea id="pmm-metriken" rows="2" placeholder="z. B. Precision/Recall (Accuracy nur bei ausgewogenen Klassen), Fairness-Metriken pro Subgruppe, Drift-Index (PSI), Latenz, Ablehnungsquote…"></textarea>
     </div>
     <div class="field-row">
       <div class="field-group">
         <label>Schwellenwerte für Intervention / Retraining</label>
-        <input type="text" id="pmm-schwelle" placeholder="z. B. Accuracy-Abfall &gt; 5 Prozentpunkte vs. Baseline">
+        <input type="text" id="pmm-schwelle" placeholder="z. B. Recall-Abfall &gt; 5 Prozentpunkte gegenüber dem Validierungswert oder PSI &gt; 0,2 (Faustregel) → Ursachenprüfung, danach Entscheidung über Retraining">
       </div>
       <div class="field-group">
         <label>Verantwortlich für Monitoring</label>
@@ -2138,9 +2158,9 @@ hr.divider{border:none;border-top:1px solid var(--rule);margin:1rem 0;}
   <div class="form-card">
     <h4>Genauigkeit, Robustheit &amp; Cybersicherheit — KI-VO Art. 15</h4>
     <div class="alert alert-info"><p>Art. 15 KI-VO legt drei Anforderungen fest, die für Hochrisiko-KI-Systeme verpflichtend zu erfüllen und in der technischen Dokumentation (Anhang IV Nr. 2 lit. h) zu belegen sind:<br>
-    <strong>Abs. 3 — Genauigkeit (Accuracy):</strong> Das System muss die deklarierten Genauigkeitsmetriken über den gesamten Lebenszyklus einhalten; Schwellenwerte sind vor Inbetriebnahme zu definieren und im PMM-Plan (Art. 72) zu überwachen.<br>
+    <strong>Abs. 3 — Genauigkeit:</strong> Gemeint sind die für den Zweck passenden Leistungskennzahlen (z. B. Recall, Precision, F1), nicht nur die Kennzahl Accuracy. Das System muss die deklarierten Kennzahlen über den gesamten Lebenszyklus einhalten; Schwellenwerte sind vor Inbetriebnahme zu definieren und im PMM-Plan (Art. 72) zu überwachen.<br>
     <strong>Abs. 4 — Robustheit:</strong> Das System muss gegenüber Betriebsstörungen, Ausfällen einzelner Komponenten und bekannten Adversarial-Input-Mustern widerstandsfähig sein; redundante Sicherheitsmechanismen sind zu dokumentieren.<br>
-    <strong>Abs. 5 — Cybersicherheit:</strong> Technische und organisatorische Maßnahmen gegen Angriffe auf Integrität, Verfügbarkeit und Vertraulichkeit des Modells sind nachzuweisen (vgl. Risikoregister Abschnitt 8 — Kategorie Cybersicherheit).</p></div>
+    <strong>Abs. 5 — Cybersicherheit:</strong> Technische und organisatorische Maßnahmen gegen Angriffe auf Integrität, Verfügbarkeit und Vertraulichkeit des Modells sind nachzuweisen (vgl. Risikoregister Abschnitt 7 — Kategorie Cybersicherheit).</p></div>
     <div class="field-row">
       <div class="field-group">
         <label>Genauigkeitsmetrik(en) definiert? (Art. 15 Abs. 3)</label>
@@ -2248,6 +2268,7 @@ hr.divider{border:none;border-top:1px solid var(--rule);margin:1rem 0;}
           <option>Noch nicht begonnen</option>
           <option>Nicht relevant für unsere Größe/Branche</option>
         </select>
+        <div class="field-note">Bei „Noch nicht begonnen“ oder „Nicht relevant“ sind die übrigen ISO-Felder dieses Abschnitts sowie Anhang A und Anhang C freiwillig und werden in der Vollständigkeitsprüfung nicht eingefordert.</div>
       </div>
       <div class="field-group">
         <label>KI-Risikobeurteilung gemäß AIMS (Kl. 6.1)?</label>
@@ -2319,7 +2340,7 @@ hr.divider{border:none;border-top:1px solid var(--rule);margin:1rem 0;}
     <div class="field-row">
       <div class="field-group">
         <label>Monitoring (Kl. 9.1): Welche KPIs überwachen die KI-Systemleistung im Betrieb?</label>
-        <textarea id="pdca-monitoring" rows="1" placeholder="z. B. Accuracy, Drift-Rate, Latenz, Fairness-Metriken…"></textarea>
+        <textarea id="pdca-monitoring" rows="1" placeholder="z. B. Precision/Recall, Drift-Index (PSI), Latenz, Fairness-Metriken…"></textarea>
       </div>
       <div class="field-group">
         <label>Internes Audit (Kl. 9.2): Ist dieser Use Case im Auditprogramm erfasst?</label>
@@ -2434,7 +2455,7 @@ hr.divider{border:none;border-top:1px solid var(--rule);margin:1rem 0;}
     </div>
     <div class="field-row">
       <div class="field-group">
-        <label>KI-Manager (normativ)</label>
+        <label>KI-Beauftragte:r</label>
         <input type="text" id="gov-kibeauftragter" placeholder="Name des Einreichenden">
       </div>
       <div class="field-group">
@@ -2443,7 +2464,7 @@ hr.divider{border:none;border-top:1px solid var(--rule);margin:1rem 0;}
           <option value="">— Auswahl —</option>
           <option>Ja — DSB hat Stellung genommen</option>
           <option>Ja — Abstimmung läuft</option>
-          <option>Nein — nicht erforderlich</option>
+          <option>Nein — keine personenbezogenen Daten oder kein DSB benannt</option>
           <option>Nein — noch nicht kontaktiert</option>
         </select>
       </div>
@@ -2457,7 +2478,7 @@ hr.divider{border:none;border-top:1px solid var(--rule);margin:1rem 0;}
         <option>Nein — noch nicht kontaktiert</option>
       </select>
     </div>
-    <div class="alert alert-info" style="margin-top:0.5rem"><p>Betriebsrats-Einbindung wird in Abschnitt 5 (Stakeholder &amp; Kommunikation) geplant und dokumentiert.</p></div>
+    <div class="alert alert-info" style="margin-top:0.5rem"><p>Betriebsrats-Einbindung wird in Abschnitt 4 (Stakeholder &amp; Kommunikation) geplant und dokumentiert.</p></div>
   </div>
 
   <div class="form-card">
@@ -2494,7 +2515,7 @@ hr.divider{border:none;border-top:1px solid var(--rule);margin:1rem 0;}
     <h4>KI-Literacy &amp; Schulung — KI-VO Art. 4</h4>
     <div class="field-group">
       <label>Schulungsmaßnahmen für betroffene Mitarbeitende</label>
-      <textarea id="gov-literacy" rows="3" placeholder="Beschreiben Sie geplante oder bestehende Schulungen: Zielgruppe, Format, Inhalte, Häufigkeit. Beispiel: &#10;- Endnutzer (50 Pers.): E-Learning-Modul 'KI im Kreditprozess' (2h), verpflichtend vor Go-Live&#10;- Teamleitung (8 Pers.): Workshop 'Kritisches Lesen von KI-Ergebnissen' (4h)&#10;- IT-Betrieb (3 Pers.): Technisches Deep-Dive-Training (1 Tag)"></textarea>
+      <textarea id="gov-literacy" rows="3" placeholder="Beschreiben Sie geplante oder bestehende Schulungen: Zielgruppe, Format, Inhalte, Häufigkeit. Beispiel: &#10;- Endnutzer (80 Pers.): E-Learning-Modul 'KI im Kreditprozess' (2h), verpflichtend vor Go-Live&#10;- Teamleitung (8 Pers.): Workshop 'Kritisches Lesen von KI-Ergebnissen' (4h)&#10;- IT-Betrieb (3 Pers.): Technisches Deep-Dive-Training (1 Tag)"></textarea>
     </div>
     <div class="field-row">
       <div class="field-group">
@@ -2586,6 +2607,14 @@ hr.divider{border:none;border-top:1px solid var(--rule);margin:1rem 0;}
         <input type="text" placeholder="z. B. KI-Beauftragter">
         <input type="date">
       </div>
+      <div class="field-group" style="margin-top:.8rem">
+        <label>Entscheidungspunkte zwischen den Phasen <span class="hint">— je Übergang: Kriterium für „weiter“ und Kriterium für „Abbruch“</span></label>
+        <textarea id="cm-gates" rows="3" placeholder="z. B.&#10;• Phase 1 → 2: Datenzugang vertraglich geklärt; Abbruch, wenn Datenqualität das PoC-Kriterium nicht erreichbar macht&#10;• Phase 2 → 3: Abnahmekriterien aus Abschnitt 8 im Pilot erfüllt; Abbruch, wenn der Nutzen im Pilot unter der pessimistischen Annahme liegt&#10;• Phase 3 → 4: Monitoring stabil, keine offenen roten Risiken"></textarea>
+      </div>
+      <div class="field-group">
+        <label>Business Case nach Pilot neu bewertet <span class="hint">— Datum und Ergebnis (pessimistisch / Basis)</span></label>
+        <input type="text" id="cm-bc-review" placeholder="z. B. geplant für 03/2027; unsicherste Annahme: Zeitersparnis je Vorgang">
+      </div>
     </div>
   </div>
 
@@ -2630,29 +2659,7 @@ hr.divider{border:none;border-top:1px solid var(--rule);margin:1rem 0;}
 
   <div class="form-card">
     <h4>Strategische KI-Roadmap-Einordnung</h4>
-    <div class="field-row">
-      <div class="field-group">
-        <label>Einordnung in die Unternehmens-KI-Roadmap</label>
-        <select id="cm-roadmap-prio">
-          <option value="">— Auswahl —</option>
-          <option>Quick Win — kurzfristig umsetzbar, hoher Sichtbarkeitseffekt</option>
-          <option>Strategisches Kernprojekt</option>
-          <option>Langfristige Innovation (Experimentierfeld)</option>
-          <option>Regulatorische Pflicht</option>
-          <option>Noch nicht priorisiert</option>
-        </select>
-      </div>
-      <div class="field-group">
-        <label>Impact/Effort-Einschätzung</label>
-        <select id="cm-ie">
-          <option value="">— Auswahl —</option>
-          <option>Hoch Impact / Niedrig Effort (Priorität 1)</option>
-          <option>Hoch Impact / Hoch Effort (strategisch planen)</option>
-          <option>Niedrig Impact / Niedrig Effort (nice to have)</option>
-          <option>Niedrig Impact / Hoch Effort (vermeiden)</option>
-        </select>
-      </div>
-    </div>
+    <div class="alert alert-info"><p>Roadmap-Einordnung und Impact/Effort-Einschätzung werden einmal in Abschnitt 10 erfasst und gelten auch hier.</p></div>
     <div class="field-group">
       <label>100-Tage-Plan — wesentliche Maßnahmen nach Go-Live</label>
       <textarea id="cm-100tage" rows="2" placeholder="z. B. Tage 1–30: Hypercare-Phase, tägliches Monitoring; Tage 31–60: Erster Feedback-Zyklus mit Nutzern; Tage 61–100: Optimierungsmaßnahmen umsetzen, Lessons Learned dokumentieren"></textarea>
@@ -2691,7 +2698,7 @@ hr.divider{border:none;border-top:1px solid var(--rule);margin:1rem 0;}
     </div>
 
     <div class="alert alert-info" style="margin-top:1rem">
-      <p><strong>📋 Relevante Förderprogramme für KI-Vorhaben</strong> <span style="font-family:var(--font-mono);font-size:0.68rem;background:var(--navy);color:#fff;padding:0.15em 0.5em;border-radius:3px;margin-left:0.4em">Stand September 2026 · nächste Prüfung: März 2027</span></p>
+      <p><strong>📋 Relevante Förderprogramme für KI-Vorhaben</strong> <span style="font-family:var(--font-mono);font-size:0.68rem;background:var(--navy);color:#fff;padding:0.15em 0.5em;border-radius:3px;margin-left:0.4em">Stand September 2026 · Volumina und Fördersätze seither nicht erneut an der Primärquelle geprüft · nächste Prüfung: März 2027</span></p>
       <p style="margin-top:0.6rem;padding:0.55rem 0.75rem;background:#fef2f2;border-left:3px solid #dc2626;font-size:0.78rem;line-height:1.55;color:#7f1d1d">
         <strong>⛔ ZIM: befristeter Antragsstopp seit 7. Juli 2026, 12:00 Uhr.</strong>
         Es können vorübergehend keine Anträge angenommen werden — für alle Projektformen einschließlich Projektskizzen.
@@ -2803,7 +2810,7 @@ hr.divider{border:none;border-top:1px solid var(--rule);margin:1rem 0;}
       </p>
       <p style="margin-top:0.75rem;font-size:0.77rem;color:#64748b;line-height:1.55">
         ⚠️ <strong>Wichtige Hinweise:</strong>
-        Antrag muss <strong>vor</strong> Projektbeginn gestellt werden. ·
+        Antrag muss <strong>vor</strong> Projektbeginn gestellt werden. Fördermittel erst nach Bewilligung als Einzahlung im Business Case ansetzen, vorher nur als Szenario „mit Förderung“. ·
         go-digital ist seit 31.12.2024 ausgelaufen. ·
         Einfache KI-API-Anbindungen (z. B. ChatGPT-Integration) gelten nicht als förderfähige F&amp;E-Vorhaben — technische Unsicherheit und Innovationscharakter erforderlich. ·
         Angaben zu Auslandsprogrammen sind eine Orientierung, keine Rechtsberatung — Eligibility ist je Ausschreibung im Original zu prüfen.
@@ -3055,7 +3062,7 @@ hr.divider{border:none;border-top:1px solid var(--rule);margin:1rem 0;}
   <!-- Phase 5 -->
   <div class="tuev-phase">
     <div class="tuev-phase-head"><div class="tuev-phase-num">5</div><div class="tuev-phase-title">Interne Prüfung durch eine externe Stelle</div></div>
-    <div class="tuev-item"><div class="tuev-item-text"><strong>Internes Audit</strong>Haben Sie ein internes Audit mit einer externen Zertifizierungsstelle durchgeführt, um die Konformität mit den Anforderungen der Norm zu bewerten?</div><div class="tuev-toggle"><button class="tuev-btn" onclick="tuevVote(this,'ja')">JA</button><button class="tuev-btn" onclick="tuevVote(this,'nein')">NEIN</button></div></div>
+    <div class="tuev-item"><div class="tuev-item-text"><strong>Internes Audit</strong>Haben Sie ein internes Audit mit einer externen Zertifizierungsstelle durchgeführt, um die Konformität mit den Anforderungen der Norm zu bewerten? <em>(Anmerkung zur Vorlage: Die Stelle, die später zertifiziert, darf das interne Audit nicht selbst durchführen — Unparteilichkeit.)</em></div><div class="tuev-toggle"><button class="tuev-btn" onclick="tuevVote(this,'ja')">JA</button><button class="tuev-btn" onclick="tuevVote(this,'nein')">NEIN</button></div></div>
     <div class="tuev-item"><div class="tuev-item-text"><strong>Abhilfemaßnahmen</strong>Wurden Lücken und Abweichungen durch konkrete Maßnahmen geschlossen?</div><div class="tuev-toggle"><button class="tuev-btn" onclick="tuevVote(this,'ja')">JA</button><button class="tuev-btn" onclick="tuevVote(this,'nein')">NEIN</button></div></div>
   </div>
 
@@ -3112,8 +3119,8 @@ hr.divider{border:none;border-top:1px solid var(--rule);margin:1rem 0;}
 <div class="form-section" id="section-19">
   <div class="section-header" style="border-left-color:var(--amber)">
     <div class="section-tag">Anhang B · Einordnungshilfe</div>
-    <h2>Checkliste Hochrisiko-KI — Scoring nach Art. 6 KI-VO</h2>
-    <p>Beantworte die Prüffaktoren mit Ja, Nein oder Unklar. Hochrisiko-Indikatoren zahlen negativ, Filter-Bedingungen positiv auf den Score ein. Das Ergebnis ist eine Orientierungshilfe — es ersetzt nicht die abschließende rechtliche Bewertung.</p>
+    <h2>Checkliste Hochrisiko-KI — Prüfreihenfolge nach Art. 6 KI-VO</h2>
+    <p>Beantworte die Prüffaktoren mit Ja, Nein oder Unklar. Die Checkliste folgt der Prüfreihenfolge des Art. 6: Definition → Anhang I → Anhang III → Profiling → Ausnahme nach Abs. 3. Für die Ausnahme genügt eine der Bedingungen lit. a bis d, wenn kein erhebliches Risiko besteht; es wird nichts gegeneinander aufgerechnet. Die Ausnahme prüft und dokumentiert der Anbieter — als Betreiber forderst Du seine Bewertung an. Das Ergebnis ist eine Orientierungshilfe und ersetzt nicht die abschließende rechtliche Bewertung.</p>
     <div class="kursreferenz"><span style="font-family:var(--font-mono);font-size:0.68rem;background:var(--navy);color:#fff;padding:0.15em 0.5em;border-radius:3px;margin-right:0.4em">Grundlage noch Entwurf · geprüft 29.10.2026 · nächste Prüfung: Januar 2027 (endgültige Leitlinien bis Jahresende 2026 erwartet)</span> Grundlage: <a href="https://digital-strategy.ec.europa.eu/en/library/draft-commission-guidelines-classification-high-risk-ai-systems" target="_blank" rel="noopener">Draft Guidelines on the Classification of High-Risk AI Systems</a> (EU-Kommission, 19.05.2026)</div>
   </div>
 
@@ -3215,11 +3222,11 @@ hr.divider{border:none;border-top:1px solid var(--rule);margin:1rem 0;}
 
   <!-- HOCHRISIKO-INDIKATOREN -->
   <div class="form-card">
-    <h4>Hochrisiko-Indikatoren <span class="hr-badge hr-badge-risk">Negativ-Score</span></h4>
+    <h4>Hochrisiko-Indikatoren <span class="hr-badge hr-badge-risk">sprechen gegen die Ausnahme</span></h4>
 
     <div class="hr-factor" id="hrf-h1">
       <div>
-        <div class="hr-fid">H1 · −2 Punkte</div>
+        <div class="hr-fid">H1</div>
         <div class="hr-flabel">Beeinflusst das System den Ausgang von Entscheidungen über natürliche Personen wesentlich?</div>
         <div class="hr-fhint">„Wesentlich“ = das System prägt die Substanz der Entscheidung, nicht nur unterstützende oder organisatorische Aspekte.</div>
         <div class="hr-fref"><a href="https://ec.europa.eu/newsroom/dae/redirection/document/128561" target="_blank">Leitlinie Annex III, Abs. 85</a> · Erwägungsgrund 53 KI-VO</div>
@@ -3233,7 +3240,7 @@ hr.divider{border:none;border-top:1px solid var(--rule);margin:1rem 0;}
 
     <div class="hr-factor" id="hrf-h2">
       <div>
-        <div class="hr-fid">H2 · −4 Punkte · Filter blockiert!</div>
+        <div class="hr-fid">H2 · sperrt die Ausnahme</div>
         <div class="hr-flabel">Führt das System ein Profiling natürlicher Personen durch?</div>
         <div class="hr-fhint">Automatisierte Bewertung persönlicher Aspekte (Arbeitsleistung, wirtschaftliche Lage, Gesundheit, Interessen, Verhalten, Aufenthaltsort). Einfache Klassifizierung nach Alter/Geschlecht ist nicht automatisch Profiling.</div>
         <div class="hr-fref"><a href="https://ec.europa.eu/newsroom/dae/redirection/document/128561" target="_blank">Leitlinie Annex III, Abs. 109–112</a> · Art. 6 Abs. 3 UAbs. 3 KI-VO · Art. 4 Nr. 4 DSGVO</div>
@@ -3247,7 +3254,7 @@ hr.divider{border:none;border-top:1px solid var(--rule);margin:1rem 0;}
 
     <div class="hr-factor" id="hrf-h3">
       <div>
-        <div class="hr-fid">H3 · −2 Punkte</div>
+        <div class="hr-fid">H3</div>
         <div class="hr-flabel">Ist das System Teil eines Gesamtsystems, das zusammen einen Hochrisiko-Zweck verfolgt (Anti-Splitting)?</div>
         <div class="hr-fhint">Mehrere KI-Komponenten, deren kombinierter Zweck oder gemeinsame Outputs eine Einzelfallentscheidung wesentlich beeinflussen — auch agentic AI.</div>
         <div class="hr-fref"><a href="https://ec.europa.eu/newsroom/dae/redirection/document/128561" target="_blank">Leitlinie Annex III, Abs. 75 + 90</a></div>
@@ -3261,7 +3268,7 @@ hr.divider{border:none;border-top:1px solid var(--rule);margin:1rem 0;}
 
     <div class="hr-factor" id="hrf-h4">
       <div>
-        <div class="hr-fid">H4 · −2 Punkte</div>
+        <div class="hr-fid">H4</div>
         <div class="hr-flabel">Wird das System als Multi-Purpose-KI breit vermarktet, ohne Hochrisiko-Nutzungen kohärent auszuschließen?</div>
         <div class="hr-fhint">Ein bloßer Disclaimer in den AGB reicht nicht — der Ausschluss muss klar, konkret und konsistent über alle Materialien erfolgen.</div>
         <div class="hr-fref"><a href="https://ec.europa.eu/newsroom/dae/redirection/document/128559" target="_blank">Leitlinie General Principles, Abs. 12</a></div>
@@ -3276,11 +3283,11 @@ hr.divider{border:none;border-top:1px solid var(--rule);margin:1rem 0;}
 
   <!-- FILTER ART. 6 ABS. 3 -->
   <div class="form-card" id="hr-filter-card">
-    <h4>Filter Art. 6 Abs. 3 — Ausnahmen <span class="hr-badge hr-badge-filter">Positiv-Score</span></h4>
+    <h4>Filter Art. 6 Abs. 3 — Ausnahmen <span class="hr-badge hr-badge-filter">eine Bedingung genügt</span></h4>
 
     <div class="hr-factor" id="hrf-f1">
       <div>
-        <div class="hr-fid">F1 · +3 Punkte</div>
+        <div class="hr-fid">F1 · Art. 6 Abs. 3 lit. a</div>
         <div class="hr-flabel">Führt das System lediglich eine begrenzte Verfahrensaufgabe aus?</div>
         <div class="hr-fhint">Sortieren, Formatieren, Duplikaterkennung, Kategorisierung in vordefinierte Klassen. Nicht: Scoring, Ranking, Werturteile.</div>
         <div class="hr-fref"><a href="https://ec.europa.eu/newsroom/dae/redirection/document/128561" target="_blank">Leitlinie Annex III, Abs. 91–93</a> · Art. 6 Abs. 3 lit. a KI-VO</div>
@@ -3294,7 +3301,7 @@ hr.divider{border:none;border-top:1px solid var(--rule);margin:1rem 0;}
 
     <div class="hr-factor" id="hrf-f2">
       <div>
-        <div class="hr-fid">F2 · +3 Punkte</div>
+        <div class="hr-fid">F2 · Art. 6 Abs. 3 lit. b</div>
         <div class="hr-flabel">Verbessert das System das Ergebnis einer zuvor abgeschlossenen menschlichen Tätigkeit?</div>
         <div class="hr-fhint">Verfeinerung, Qualitätssicherung, Fehlererkennung — nicht: Ersetzung, wesentliche Änderung oder ein materiell anderes Ergebnis.</div>
         <div class="hr-fref"><a href="https://ec.europa.eu/newsroom/dae/redirection/document/128561" target="_blank">Leitlinie Annex III, Abs. 94–96</a> · Art. 6 Abs. 3 lit. b KI-VO</div>
@@ -3308,7 +3315,7 @@ hr.divider{border:none;border-top:1px solid var(--rule);margin:1rem 0;}
 
     <div class="hr-factor" id="hrf-f3">
       <div>
-        <div class="hr-fid">F3 · +3 Punkte</div>
+        <div class="hr-fid">F3 · Art. 6 Abs. 3 lit. c</div>
         <div class="hr-flabel">Erkennt das System nur Entscheidungsmuster oder Abweichungen — ex post, ohne die menschliche Bewertung zu ersetzen?</div>
         <div class="hr-fhint">Vergleich einer abgeschlossenen Entscheidung mit früheren Mustern. Ergebnis muss angemessener menschlicher Überprüfung unterliegen.</div>
         <div class="hr-fref"><a href="https://ec.europa.eu/newsroom/dae/redirection/document/128561" target="_blank">Leitlinie Annex III, Abs. 97–102</a> · Art. 6 Abs. 3 lit. c KI-VO</div>
@@ -3322,7 +3329,7 @@ hr.divider{border:none;border-top:1px solid var(--rule);margin:1rem 0;}
 
     <div class="hr-factor" id="hrf-f4">
       <div>
-        <div class="hr-fid">F4 · +3 Punkte</div>
+        <div class="hr-fid">F4 · Art. 6 Abs. 3 lit. d</div>
         <div class="hr-flabel">Führt das System nur eine vorbereitende Aufgabe aus?</div>
         <div class="hr-fhint">Indexierung, Suche, Verknüpfung von Informationen — keine eigene Empfehlung, Einzelfallbewertung oder Handlungsanweisung.</div>
         <div class="hr-fref"><a href="https://ec.europa.eu/newsroom/dae/redirection/document/128561" target="_blank">Leitlinie Annex III, Abs. 103–108</a> · Art. 6 Abs. 3 lit. d KI-VO</div>
@@ -3358,7 +3365,6 @@ hr.divider{border:none;border-top:1px solid var(--rule);margin:1rem 0;}
 
   <script>
   (function(){
-    const W = {h1:-2, h2:-4, h3:-2, h4:-2, f1:3, f2:3, f3:3, f4:3};
     function hrVal(n){ const e=document.querySelector('input[name="hr'+n+'"]:checked'); return e?e.value:null; }
 
     window.hrScore = function(){
@@ -3398,24 +3404,30 @@ hr.divider{border:none;border-top:1px solid var(--rule);margin:1rem 0;}
       if(v1==='unklar'){setHR(rBox,rL,rD,rS,'hr-lv-gz','Definition noch offen','Ob überhaupt ein KI-System nach Art. 3 Nr. 1 KI-VO vorliegt, ist nicht geklärt. Bis zur Klärung wie ein KI-System behandeln.','Definition offen');actDot('hrdot-gz','hr-d-gz');return;}
       if(v3==='ja'){setHR(rBox,rL,rD,rS,'hr-lv-hr','Hochrisiko nach Art. 6 Abs. 1 (Anhang I)','Produkt oder Sicherheitskomponente mit Drittkonformitätsbewertung. Der Filter nach Art. 6 Abs. 3 gilt hier nicht — auch dann nicht, wenn zusätzlich ein Anwendungsfall nach Anhang III vorliegt.','Anhang-I-Route');actDot('hrdot-hr','hr-d-hr');return;}
       if(v3==='unklar'){setHR(rBox,rL,rD,rS,'hr-lv-gz','Anhang-I-Prüfung offen','Ob das System unter Anhang I mit Drittkonformitätsbewertung fällt, ist nicht geklärt. Diese Frage geht allen Filtern vor und ist zuerst zu beantworten.','Anhang I offen');actDot('hrdot-gz','hr-d-gz');return;}
+      if(v1===null||v2===null||v3===null){setHR(rBox,rL,rD,rS,'','Bitte Vorprüfung vollständig beantworten','V1 bis V3 entscheiden, ob Art. 6 überhaupt greift. Bitte alle drei beantworten.','');return;}
       if(v2==='nein'){setHR(rBox,rL,rD,rS,'hr-lv-nhr','Kein Hochrisiko-System','Weder Anhang III noch Anhang I mit Drittkonformitätsbewertung. Art. 6 greift nicht.','');actDot('hrdot-nhr','hr-d-nhr');return;}
       if(v2==='unklar'){setHR(rBox,rL,rD,rS,'hr-lv-gz','Anhang-III-Prüfung offen','Ob ein Anwendungsfall nach Anhang III vorliegt, ist nicht geklärt. Der Filter nach Art. 6 Abs. 3 ist erst danach zu prüfen.','Anhang III offen');actDot('hrdot-gz','hr-d-gz');return;}
       if(pb){setHR(rBox,rL,rD,rS,'hr-lv-hr','Eindeutig Hochrisiko — Profiling','Profiling natürlicher Personen: Art. 6 Abs. 3 Filter greift nie (Art. 6 Abs. 3 UAbs. 3).','Profiling blockiert alle Filter');actDot('hrdot-hr','hr-d-hr');return;}
       if(pbUnklar){setHR(rBox,rL,rD,rS,'hr-lv-hr','Hochrisiko bis zur Klärung — Profiling unklar','Solange offen ist, ob das System ein Profiling natürlicher Personen durchführt, greift der Filter nach Art. 6 Abs. 3 nicht (Art. 6 Abs. 3 UAbs. 3). Erst klären, dann einstufen.','Profiling unklar');actDot('hrdot-hr','hr-d-hr');return;}
 
-      let pts=0,unk=0,ans=0;
-      ['h1','h2','h3','h4'].forEach(n=>{const v=hrVal(n);if(v==='ja'){pts+=W[n];ans++;}else if(v==='nein')ans++;else if(v==='unklar'){unk++;ans++;}});
-      if(!pb)['f1','f2','f3','f4'].forEach(n=>{const v=hrVal(n);if(v==='ja'){pts+=W[n];ans++;}else if(v==='nein')ans++;else if(v==='unklar'){unk++;ans++;}});
+      if(h2===null){setHR(rBox,rL,rD,rS,'','Bitte Profiling (H2) beantworten','Bei Profiling natürlicher Personen greift die Ausnahme nach Art. 6 Abs. 3 nie. Diese Frage ist deshalb zuerst zu klären.','');return;}
 
-      if(ans===0&&v2!=='ja'){setHR(rBox,rL,rD,rS,'','Bitte Faktoren bewerten','Wähle bei jedem Faktor Ja, Nein oder Unklar.','');return;}
+      // Entscheidungslogik statt Punktwert: Art. 6 Abs. 3 ist keine Abwaegung.
+      // Eine Bedingung lit. a–d genuegt, wenn kein erhebliches Risiko besteht (H1, H3, H4).
+      const F=['f1','f2','f3','f4'].map(hrVal), H=['h1','h3','h4'].map(hrVal);
+      const fJa=F.includes('ja'), fOffen=F.includes(null), fUnklar=F.includes('unklar');
+      const hJa=H.includes('ja'), hOffen=H.includes(null), hUnklar=H.includes('unklar');
+      const beantw=[...F,...H].filter(x=>x!==null).length;
+      const stand='Beantwortet: '+beantw+'/7 nach der Vorprüfung';
+      const anbieter=' Die Ausnahme prüft und dokumentiert der Anbieter vor dem Inverkehrbringen (Art. 6 Abs. 4); als Betreiber die Bewertung des Anbieters anfordern und aufbewahren.';
 
-      let lv,lb,dt;
-      if(pts<=-5){lv='hr-lv-hr';lb='Eindeutig Hochrisiko';dt='Mehrere Hochrisiko-Indikatoren treffen zu, keine Filterbedingung greift. Anforderungen aus Kapitel III KI-VO vollständig erfüllen.';actDot('hrdot-hr','hr-d-hr');}
-      else if(pts<=-2){lv='hr-lv-phr';lb='Wahrscheinlich Hochrisiko';dt='Die Hochrisiko-Indikatoren überwiegen. Vertiefte Prüfung empfohlen, Dokumentation vorbereiten.';actDot('hrdot-phr','hr-d-phr');}
-      else if(pts<=2){lv='hr-lv-gz';lb='Grauzone — vertiefte Prüfung nötig';dt='Hochrisiko-Indikatoren und Filter-Bedingungen halten sich die Waage'+(unk>0?' — '+unk+' Faktor(en) unklar':'')+'. Einzelfallbewertung mit juristischer Unterstützung erforderlich.';actDot('hrdot-gz','hr-d-gz');}
-      else if(pts<=5){lv='hr-lv-pnhr';lb='Filter greift wahrscheinlich';dt='Mindestens eine Filterbedingung greift. Der Punktwert ist eine Orientierung, nicht der Prüfmaßstab des Art. 6 Abs. 3: Dort ist einzeln festzustellen, ob eine der Bedingungen lit. a bis d vorliegt und kein erhebliches Risiko besteht. Die Einstufung dokumentiert der Anbieter; als Betreiber die Anbieterangaben prüfen. Einordnung vor Inverkehrbringen dokumentieren und in EU-Datenbank registrieren (Art. 6 Abs. 4).';actDot('hrdot-pnhr','hr-d-pnhr');}
-      else{lv='hr-lv-nhr';lb='Kein Hochrisiko — Filter greift klar';dt='Filterbedingungen greifen deutlich. Der Punktwert ist eine Orientierung, nicht der Prüfmaßstab des Art. 6 Abs. 3: Dort ist einzeln festzustellen, ob eine der Bedingungen lit. a bis d vorliegt und kein erhebliches Risiko besteht. Die Einstufung dokumentiert der Anbieter; als Betreiber die Anbieterangaben prüfen. Dokumentation + Registrierung in EU-Datenbank dennoch Pflicht (Art. 6 Abs. 4).';actDot('hrdot-nhr','hr-d-nhr');}
-      setHR(rBox,rL,rD,rS,lv,lb,dt,'Score: '+(pts>0?'+':'')+pts+' · Unklar: '+unk+' · Beantwortet: '+ans+'/8');
+      if(!fJa&&fOffen){setHR(rBox,rL,rD,rS,'','Bitte Ausnahmebedingungen F1 bis F4 bewerten','Anwendungsfall nach Anhang III ohne Profiling. Jetzt ist zu klären, ob eine der Bedingungen des Art. 6 Abs. 3 lit. a bis d erfüllt ist.',stand);return;}
+      if(!fJa&&fUnklar){setHR(rBox,rL,rD,rS,'hr-lv-phr','Hochrisiko bis zur Klärung — Ausnahme offen','Keine Ausnahmebedingung ist sicher erfüllt, mindestens eine ist unklar. Bis zur Klärung als Hochrisiko-System nach Art. 6 Abs. 2 behandeln.',stand);actDot('hrdot-phr','hr-d-phr');return;}
+      if(!fJa){setHR(rBox,rL,rD,rS,'hr-lv-hr','Hochrisiko nach Art. 6 Abs. 2 (Anhang III)','Anwendungsfall nach Anhang III, und keine der Bedingungen des Art. 6 Abs. 3 lit. a bis d ist erfüllt. Anforderungen aus Kapitel III KI-VO vollständig erfüllen.',stand);actDot('hrdot-hr','hr-d-hr');return;}
+      if(hJa){setHR(rBox,rL,rD,rS,'hr-lv-phr','Ausnahme greift voraussichtlich nicht','Mindestens eine Ausnahmebedingung ist bejaht, zugleich aber ein Hochrisiko-Indikator (H1, H3 oder H4). Wer den Ausgang einer Entscheidung wesentlich beeinflusst oder Teil eines Gesamtsystems mit Hochrisiko-Zweck ist, erfüllt die Ausnahme in der Regel nicht. Als Hochrisiko behandeln und juristisch prüfen lassen.',stand);actDot('hrdot-phr','hr-d-phr');return;}
+      if(hOffen){setHR(rBox,rL,rD,rS,'','Bitte H1, H3 und H4 bewerten','Eine Ausnahmebedingung ist bejaht. Die Ausnahme greift nur, wenn kein erhebliches Risiko besteht — dafür fehlen noch Antworten.',stand);return;}
+      if(hUnklar){setHR(rBox,rL,rD,rS,'hr-lv-gz','Grauzone — vertiefte Prüfung nötig','Eine Ausnahmebedingung ist bejaht, aber mindestens ein Hochrisiko-Indikator ist unklar. Einzelfallbewertung mit juristischer Unterstützung erforderlich; bis dahin vorsorglich wie Hochrisiko behandeln.'+anbieter,stand);actDot('hrdot-gz','hr-d-gz');return;}
+      setHR(rBox,rL,rD,rS,'hr-lv-pnhr','Ausnahme nach Art. 6 Abs. 3 kann greifen','Mindestens eine Bedingung lit. a bis d ist bejaht, kein Profiling, kein Hochrisiko-Indikator. Dann gilt das System nicht als hochriskant — vorausgesetzt, die Bewertung ist dokumentiert und das System registriert (Art. 6 Abs. 4).'+anbieter,stand);actDot('hrdot-pnhr','hr-d-pnhr');
     };
 
     function setHR(b,l,d,s,cls,label,detail,sc){b.className='hr-result '+(cls||'');l.textContent=label;d.innerHTML=detail;s.textContent=sc;}
@@ -3611,12 +3623,12 @@ hr.divider{border:none;border-top:1px solid var(--rule);margin:1rem 0;}
   <div class="iso-phase">
     <div class="iso-phase-head">Act · Verbesserung<span class="iso-phase-sub">Klausel 10 · S. 25–26</span></div>
     <div class="iso-field">
-      <div class="iso-ref">Kl. 10.1 — Nichtkonformität und Korrekturmaßnahmen</div>
+      <div class="iso-ref">Kl. 10.2 — Nichtkonformität und Korrekturmaßnahmen</div>
       <label>Wie werden Abweichungen vom AIMS behandelt?</label>
       <textarea id="org-nonconf" rows="2" placeholder="Meldeverfahren, Ursachenanalyse, Korrekturmaßnahmen, Wirksamkeitsprüfung…"></textarea>
     </div>
     <div class="iso-field">
-      <div class="iso-ref">Kl. 10.2 — Fortlaufende Verbesserung</div>
+      <div class="iso-ref">Kl. 10.1 — Fortlaufende Verbesserung</div>
       <label>Welche Mechanismen gibt es für die fortlaufende Verbesserung des AIMS?</label>
       <textarea id="org-verbesserung" rows="2" placeholder="z. B. Lessons Learned, Review-Zyklen, Benchmarking, Reifegradmodell…"></textarea>
     </div>
@@ -3665,8 +3677,17 @@ function selectRadio(card, name) {
   if (name === 'ai-type') {
     const agentWarn = document.getElementById('agent-warning');
     const val = card.querySelector('input').value;
-    agentWarn.classList.toggle('visible', val === 'agent');
+    agentWarn.classList.toggle('visible', val === 'agent' || istWerkzeugAgent());
   }
+}
+
+// ── Agenten-Profil: Typ „KI-Agent“ oder selbstaendiges Handeln ueber Werkzeuge ──
+function istWerkzeugAgent() {
+  return (document.getElementById('ai-tooluse')?.value || '').startsWith('Ja');
+}
+function agentProfilZeigen() {
+  const typ = document.querySelector('input[name="ai-type"]:checked')?.value || '';
+  document.getElementById('agent-warning')?.classList.toggle('visible', typ === 'agent' || istWerkzeugAgent());
 }
 
 // ── Recommendation selection ─────────────────────────────────
@@ -3695,7 +3716,7 @@ function updateScore(sel) {
   scoreEl.textContent = score > 0 ? score : '—';
   scoreEl.className = 'risk-score';
   if (score >= 200) scoreEl.classList.add('high');
-  else if (score >= 50) scoreEl.classList.add('med');
+  else if (score >= 50 || (score >= 1 && b >= 9)) scoreEl.classList.add('med');   // B >= 9: nie gruen
   else if (score >= 1) scoreEl.classList.add('low');
 }
 
@@ -3723,8 +3744,8 @@ function updateRiskResult() {
   if (!checked) { el.style.display = 'none'; return; }
   const v = checked.value;
   const map = {
-    verboten: { cls: 'alert-danger', icon: '🚫', title: 'Unzulässiges KI-System (Art. 5)', text: 'Dieser Anwendungsfall fällt unter die verbotenen KI-Praktiken der KI-VO. Eine Genehmigung ist nicht möglich. Bitte Rechtsabteilung und Aufsichtsbehörde kontaktieren.' },
-    hochrisiko: { cls: 'alert-warn', icon: '⚠️', title: 'Hochrisiko-KI-System (Anhang I oder III)', text: 'Umfassende Pflichten: Konformitätsbewertung (Art. 43), technische Dokumentation (Anhang IV), Registrierung in EU-Datenbank, Post-Market-Monitoring (Art. 72), Logging (Art. 12). Abschnitte 8–10 dieses Steckbriefs vollständig ausfüllen.' },
+    verboten: { cls: 'alert-danger', icon: '🚫', title: 'Unzulässiges KI-System (Art. 5)', text: 'Dieser Anwendungsfall fällt unter die verbotenen KI-Praktiken der KI-VO. Eine Genehmigung ist nicht möglich. Vorhaben nicht umsetzen bzw. stoppen und die Rechtsabteilung einbinden.' },
+    hochrisiko: { cls: 'alert-warn', icon: '⚠️', title: 'Hochrisiko-KI-System (Anhang I oder III)', text: 'Umfassende Pflichten: Konformitätsbewertung (Art. 43), technische Dokumentation (Anhang IV), Registrierung in EU-Datenbank, Post-Market-Monitoring (Art. 72), Logging (Art. 12). Dafür gelten zusätzliche Pflichtfelder in den Abschnitten 6, 7, 9 und 11 dieses Steckbriefs (siehe Vollständigkeitsprüfung).' },
     begrenzt: { cls: 'alert-info', icon: 'ℹ️', title: 'Begrenztes Risiko (Art. 50)', text: 'Transparenzpflichten gelten: Benutzer müssen über KI-Interaktion informiert werden (Chatbots, Deepfakes etc.).' },
     minimal: { cls: 'alert-ok', icon: '✅', title: 'Minimales Risiko', text: 'Keine Pflichten aus Kapitel III und Art. 50 — aber nicht pflichtfrei: Art. 4 (KI-Kompetenz) gilt für Anbieter und Betreiber jedes KI-Systems, und die Verbote des Art. 5 gelten ohnehin. Freiwillige Verhaltenskodizes nach Art. 95 möglich.' }
   };
@@ -3752,6 +3773,7 @@ const PFLICHTFELDER = [
   [1,null,'Mensch-KI-Interaktionsmodus','radio:interaction'],
   [1,'uc-users','Nutzergruppen','text'],
   [2,null,'KI-System-Typ','radio:ai-type'],
+  [2,'ai-tooluse','Handelt selbständig über Werkzeuge?','select'],
   [2,null,'Organisationsrolle KI-VO','radio:org-role'],
   [2,null,'Personenbezogene Daten','radio:personal-data'],
   [2,'agent-actionspace','Handlungsspielraum des Agenten','select','agent'],
@@ -3775,7 +3797,7 @@ const PFLICHTFELDER = [
   [6,'gdpr-basis','DSGVO Rechtsgrundlage','select'],
   [6,'gdpr-dpia','DSFA erforderlich','select'],
   [6,'gdpr-art22','Art. 22 DSGVO','select'],
-  [6,'ip-ownership','IP-Eigentümerschaft','select'],
+  [6,'ip-ownership','Rechtslage KI-Output','select'],
   [7,'__cyber_risk__','Cybersicherheits-Risiko beschrieben (Art. 15 KI-VO)','risktable:cyber-rows','hochrisiko'],
   [7,'__legal_risk__','Rechts-/Compliance-Risiko beschrieben','risktable:legal-rows','hochrisiko'],
   [7,'__agent_risk__','Agenten-Risiko beschrieben','risktable:agent-rows','agent'],
@@ -3786,6 +3808,7 @@ const PFLICHTFELDER = [
   [9,'conf-logging','Logging','select','hochrisiko'],
   [10,'bv-quant','Quantifizierbarer Nutzen','text'],
   [10,'bv-qual','Qualitativer Nutzen','text'],
+  [10,'bv-nachweis','Nutzen-Nachweis (Basislinie, Messgröße, Ziel, Eigentümer:in)','text'],
   [10,'bv-priority','Geschäftliche Priorität','select'],
   [10,'bv-investment','Investitionsrahmen','select'],
     [10,'bv-opex','Laufende Kosten p. a.','select'],
@@ -3793,52 +3816,52 @@ const PFLICHTFELDER = [
     [10,'bv-roi','ROI / Amortisation mit Kostenbasis','text'],
   [11,'pmm-plan','Monitoring-Plan','select','hochrisiko'],
   [12,'std-42001','ISO/IEC 42001 Status','select'],
-  [12,'pdca-scope','AIMS-Scope','select'],
-  [12,'pdca-risiko','KI-Risikobeurteilung','select'],
-  [12,'pdca-folgen','KI-System-Folgenabschätzung','select'],
-  [12,'pdca-soa','Erklärung zur Anwendbarkeit','text'],
-  [12,'pdca-richtlinie','KI-Richtlinie','select'],
-  [12,'pdca-ressourcen','Ressourcen','select'],
-  [12,'pdca-daten','Datenqualität','select'],
-  [12,'pdca-lifecycle','Lebenszyklus','select'],
-  [12,'pdca-transparenz','Transparenz','select'],
-  [12,'pdca-dritte','Drittbeziehungen','select'],
-  [12,'pdca-monitoring','Monitoring-KPIs','text'],
-  [12,'pdca-audit','Internes Audit','select'],
-  [12,'pdca-mgmt','Managementbewertung','select'],
-  [12,'pdca-vorfall','Vorfallsmeldung','select'],
-  [12,'pdca-korrektur','Korrekturmaßnahmen','select'],
-  [12,'pdca-verbesserung','Fortlaufende Verbesserung','text'],
-  [18,'rel-a2','Relevanz A.2 KI-Richtlinie','select'],
-  [18,'rel-a3','Relevanz A.3 Interne Organisation','select'],
-  [18,'rel-a4','Relevanz A.4 Ressourcen','select'],
-  [18,'rel-a5','Relevanz A.5 Folgenabschätzung','select'],
-  [18,'rel-a6','Relevanz A.6 Lebenszyklus','select'],
-  [18,'rel-a7','Relevanz A.7 Daten','select'],
-  [18,'rel-a8','Relevanz A.8 Transparenz','select'],
-  [18,'rel-a9','Relevanz A.9 Ethischer Einsatz','select'],
-  [18,'rel-a10','Relevanz A.10 Drittbeziehungen','select'],
-  [20,'org-kontext','Kontext der Organisation','text'],
-  [20,'org-stakeholder','Interessierte Parteien','text'],
-  [20,'org-scope','Anwendungsbereich AIMS','text'],
-  [20,'org-richtlinie','KI-Richtlinie','select'],
-  [20,'org-rollen','Rollen und Verantwortlichkeiten','text'],
-  [20,'org-risiken-erfasst','KI-Risiken erfasst','select'],
-  [20,'org-risiko-verfahren','Verfahren Risikobeurteilung','text'],
-  [20,'org-steuerungen','Ausgewählte Steuerungen','text'],
-  [20,'org-soa','Erklärung zur Anwendbarkeit','select'],
-  [20,'org-folgen','Verfahren Folgenabschätzung','text'],
-  [20,'org-ziele','KI-Ziele','text'],
-  [20,'org-ressourcen','Ressourcen und Kompetenz','text'],
-  [20,'org-bewusstsein','Bewusstsein','select'],
-  [20,'org-doku','Kommunikation und Dokumentation','text'],
-  [20,'org-betrieb','Operative Umsetzung','select'],
-  [20,'org-kernprozesse','Kernprozesse Kl. 8','text'],
-  [20,'org-kpis','KPIs Überwachung','text'],
-  [20,'org-audit','Internes Audit','select'],
-  [20,'org-mgmt-review','Managementbewertung','text'],
-  [20,'org-nonconf','Nichtkonformität','text'],
-  [20,'org-verbesserung','Fortlaufende Verbesserung','text'],
+  [12,'pdca-scope','AIMS-Scope','select','aims'],
+  [12,'pdca-risiko','KI-Risikobeurteilung','select','aims'],
+  [12,'pdca-folgen','KI-System-Folgenabschätzung','select','aims'],
+  [12,'pdca-soa','Erklärung zur Anwendbarkeit','text','aims'],
+  [12,'pdca-richtlinie','KI-Richtlinie','select','aims'],
+  [12,'pdca-ressourcen','Ressourcen','select','aims'],
+  [12,'pdca-daten','Datenqualität','select','aims'],
+  [12,'pdca-lifecycle','Lebenszyklus','select','aims'],
+  [12,'pdca-transparenz','Transparenz','select','aims'],
+  [12,'pdca-dritte','Drittbeziehungen','select','aims'],
+  [12,'pdca-monitoring','Monitoring-KPIs','text','aims'],
+  [12,'pdca-audit','Internes Audit','select','aims'],
+  [12,'pdca-mgmt','Managementbewertung','select','aims'],
+  [12,'pdca-vorfall','Vorfallsmeldung','select','aims'],
+  [12,'pdca-korrektur','Korrekturmaßnahmen','select','aims'],
+  [12,'pdca-verbesserung','Fortlaufende Verbesserung','text','aims'],
+  [18,'rel-a2','Relevanz A.2 KI-Richtlinie','select','aims'],
+  [18,'rel-a3','Relevanz A.3 Interne Organisation','select','aims'],
+  [18,'rel-a4','Relevanz A.4 Ressourcen','select','aims'],
+  [18,'rel-a5','Relevanz A.5 Folgenabschätzung','select','aims'],
+  [18,'rel-a6','Relevanz A.6 Lebenszyklus','select','aims'],
+  [18,'rel-a7','Relevanz A.7 Daten','select','aims'],
+  [18,'rel-a8','Relevanz A.8 Transparenz','select','aims'],
+  [18,'rel-a9','Relevanz A.9 Ethischer Einsatz','select','aims'],
+  [18,'rel-a10','Relevanz A.10 Drittbeziehungen','select','aims'],
+  [20,'org-kontext','Kontext der Organisation','text','aims'],
+  [20,'org-stakeholder','Interessierte Parteien','text','aims'],
+  [20,'org-scope','Anwendungsbereich AIMS','text','aims'],
+  [20,'org-richtlinie','KI-Richtlinie','select','aims'],
+  [20,'org-rollen','Rollen und Verantwortlichkeiten','text','aims'],
+  [20,'org-risiken-erfasst','KI-Risiken erfasst','select','aims'],
+  [20,'org-risiko-verfahren','Verfahren Risikobeurteilung','text','aims'],
+  [20,'org-steuerungen','Ausgewählte Steuerungen','text','aims'],
+  [20,'org-soa','Erklärung zur Anwendbarkeit','select','aims'],
+  [20,'org-folgen','Verfahren Folgenabschätzung','text','aims'],
+  [20,'org-ziele','KI-Ziele','text','aims'],
+  [20,'org-ressourcen','Ressourcen und Kompetenz','text','aims'],
+  [20,'org-bewusstsein','Bewusstsein','select','aims'],
+  [20,'org-doku','Kommunikation und Dokumentation','text','aims'],
+  [20,'org-betrieb','Operative Umsetzung','select','aims'],
+  [20,'org-kernprozesse','Kernprozesse Kl. 8','text','aims'],
+  [20,'org-kpis','KPIs Überwachung','text','aims'],
+  [20,'org-audit','Internes Audit','select','aims'],
+  [20,'org-mgmt-review','Managementbewertung','text','aims'],
+  [20,'org-nonconf','Nichtkonformität','text','aims'],
+  [20,'org-verbesserung','Fortlaufende Verbesserung','text','aims'],
   [13,'gov-owner','KI-System-Eigentümer','text'],
   [13,'gov-op-owner','Operativer Betreiber','text'],
   [13,'gov-kibeauftragter','KI-Beauftragter','text'],
@@ -3848,12 +3871,14 @@ const PFLICHTFELDER = [
   [14,'cm-golive','Geplanter Go-Live','text'],
   [14,'cm-modell','Change-Management-Modell','select'],
   [14,'cm-widerstaende','Identifizierte Widerstände','text'],
+  [14,'cm-gates','Entscheidungspunkte zwischen den Phasen','text'],
   [15,null,'Fördermittel-Prüfung (Ja / Nein / Wird geprüft)','radio:foerder-verfuegbar'],
   [16,'out-opportunity','Chancen-Zusammenfassung','text'],
   [16,'out-risks','Zusammenfassung Restrisiken','text'],
   [16,'out-recommendation','Gesamtempfehlung','text_hidden'],
   [16,'sign-ki','Unterzeichner KI-Beauftragter','text'],
   [16,'sign-legal','Unterzeichner Legal','text'],
+  [16,'sign-exec','Unterzeichner Executive Sponsor (entscheidet)','text'],
 ];
 
 const ABSCHNITT_NAMEN = {
@@ -3908,7 +3933,9 @@ const REF_TABELLE = [
 function activeProfile() {
   const tier  = document.querySelector('input[name="ai-act-tier"]:checked')?.value || '';
   const aiTyp = document.querySelector('input[name="ai-type"]:checked')?.value || '';
-  return { hochrisiko: tier === 'hochrisiko' || tier === 'verboten', agent: aiTyp === 'agent', tier: tier };
+  const iso = document.getElementById('std-42001')?.value || '';
+  const aims = ['Zertifiziert','Zertifizierung angestrebt','Implementiert (ohne Zertifizierung)','Gap-Analyse durchgeführt'].includes(iso);
+  return { hochrisiko: tier === 'hochrisiko' || tier === 'verboten', agent: (aiTyp === 'agent' || istWerkzeugAgent()), aims: aims, tier: tier };
 }
 
 function runCompletion() {
@@ -3940,12 +3967,32 @@ function runCompletion() {
   applicable++;
   if (!riskFilled) missing.push({ sec: 7, label: 'Risikoregister — mind. ein Bias- oder technisches Risiko beschreiben' });
 
+  // RACI: je beschriebener Tätigkeit genau ein A
+  document.querySelectorAll('.raci-tbl tbody tr').forEach((tr, i) => {
+    const t = tr.querySelector('.raci-inp');
+    if (!t || !t.value.trim()) return;
+    const a = tr.querySelectorAll('.raci-pill.raci-a').length;
+    if (a !== 1) { applicable++; missing.push({ sec: 5, label: 'RACI-Zeile ' + (i + 1) + ': genau ein A vergeben (derzeit ' + a + ')' }); }
+  });
+
+  // „Freigabe“ trotz roter Risiken ohne Mitigation oder Risikoannahme
+  if ((document.getElementById('out-recommendation')?.value || '') === 'freigabe') {
+    let rot = 0;
+    RISK_TBODIES.forEach(id => document.querySelectorAll('#' + id + ' tr').forEach(tr => {
+      if (!tr.querySelector('.risk-score.high')) return;
+      const st = tr.querySelectorAll('td')[7]?.querySelector('select')?.value || '';
+      if (st !== 'Mitigiert' && st !== 'Akzeptiert') rot++;
+    }));
+    if (rot > 0) { applicable++; missing.push({ sec: 16, label: '„Freigabe“ gewählt, obwohl ' + rot + (rot === 1 ? ' rotes Risiko' : ' rote Risiken') + ' in Abschnitt 7 weder mitigiert noch akzeptiert ' + (rot === 1 ? 'ist' : 'sind') }); }
+  }
+
   // Hinweisbanner zum aktiven Prüfprofil
   const profEl = document.getElementById('profile-note');
   if (profEl) {
     const parts = [];
     if (prof.hochrisiko) parts.push('<strong>Hochrisiko-KI</strong> — zusätzliche Pflichtfelder aktiv: Konformitätsbewertung, technische Dokumentation, Logging, Post-Market-Monitoring sowie Cybersicherheits- und Rechtsrisiko im Risikoregister (Art. 15, 43, 72 KI-VO).');
     if (prof.agent) parts.push('<strong>KI-Agent</strong> — zusätzliche Pflichtfelder aktiv: Handlungsspielraum, Autonomiegrad, Least Privilege, Freigabe-Gate sowie mindestens ein Agenten-Risiko.');
+    if (prof.aims) parts.push('<strong>KI-Managementsystem</strong> — zusätzliche Pflichtfelder aktiv: PDCA-Fragen in Abschnitt 12 sowie Anhang A und Anhang C (ISO/IEC 42001).');
     if (!prof.tier) {
       profEl.className = 'alert alert-warn';
       profEl.innerHTML = '<p>Die <strong>Risikostufe nach EU AI Act</strong> ist in Abschnitt 6 noch nicht gesetzt. Solange sie fehlt, wird nur der Grundumfang geprüft — die risikoklassenabhängigen Pflichtfelder sind noch nicht aktiv.</p>';
@@ -3973,7 +4020,7 @@ function runCompletion() {
 
   const listEl = document.getElementById('completion-list');
   if (missing.length === 0) {
-    listEl.innerHTML = '<div class="alert alert-ok"><p>✅ Alle Pflichtfelder ausgefüllt. Steckbrief ist zur Abgabe bereit.</p></div>';
+    listEl.innerHTML = '<div class="alert alert-ok"><p>✅ Alle Pflichtfelder ausgefüllt. Steckbrief ist zur Abgabe bereit. Das ist eine Aussage über die Vollständigkeit der Felder, nicht über die Rechtskonformität.</p></div>';
   } else {
     const grouped = {};
     missing.forEach(({ sec, label }) => { if (!grouped[sec]) grouped[sec] = []; grouped[sec].push(label); });
@@ -4012,66 +4059,6 @@ function cycleRaci(cell) {
   order.forEach(c => pill.classList.remove(c));
   pill.classList.add(next);
   pill.textContent = labels[next];
-}
-
-// ── RACI-Beispiel Abschnitt 6 (23 Tätigkeiten EU AI Act) ───
-function initRaciExample() {
-  const ITEMS_EX = [
-    {type:'section', label:'Pflichtenfeld 1 · Konformitätsbewertung'},
-    {type:'task', num:1,  text:'Risikoklasse nach Art. 6(1)/Anhang I oder Art. 6(2)/Anhang III bestätigen und dokumentieren', source:'Art. 6 + Anh. I/III'},
-    {type:'task', num:2,  text:'Konformitätsbewertungsverfahren auswählen (Anhang VI oder VII)', source:'Art. 43 Abs. 1+2'},
-    {type:'task', num:3,  text:'Konformitätsbewertung durchführen (Prüfung Art. 9–15 + 17)', source:'Art. 43'},
-    {type:'task', num:4,  text:'Notified Body einbinden (nur bei Anhang-VII-Verfahren)', source:'Art. 43 Abs. 2'},
-    {type:'task', num:5,  text:'EU-Konformitätserklärung erstellen und unterzeichnen', source:'Art. 47'},
-    {type:'task', num:6,  text:'CE-Kennzeichnung anbringen', source:'Art. 48'},
-    {type:'task', num:7,  text:'EU-Datenbank-Registrierung vor Inverkehrbringen', source:'Art. 49'},
-    {type:'task', num:8,  text:'Qualitätsmanagementsystem einrichten und betreiben', source:'Art. 17'},
-    {type:'section', label:'Pflichtenfeld 2 · Dokumentation'},
-    {type:'task', num:9,  text:'Technische Dokumentation (Anhang IV) initial erstellen', source:'Art. 11 + Anh. IV'},
-    {type:'task', num:10, text:'Technische Dokumentation während des Betriebs aktuell halten', source:'Art. 11 Abs. 2'},
-    {type:'task', num:11, text:'Risikomanagement-System aufbauen und betreiben', source:'Art. 9'},
-    {type:'task', num:12, text:'Logs aufzeichnen und aufbewahren', source:'Art. 12 + Art. 26(6)'},
-    {type:'section', label:'Pflichtenfeld 3 · Transparenz'},
-    {type:'task', num:13, text:'Bedienungsanleitung für Betreiber erstellen', source:'Art. 13'},
-    {type:'task', num:14, text:'Beschäftigte und Vertretung informieren', source:'Art. 26 Abs. 7'},
-    {type:'task', num:15, text:'Betroffene Personen bei automatisierten Entscheidungen informieren', source:'Art. 26 Abs. 11'},
-    {type:'task', num:16, text:'KI-Hinweis im UI implementieren', source:'Art. 50 Abs. 1'},
-    {type:'task', num:17, text:'KI-generierte Inhalte kennzeichnen / Wasserzeichen anbringen', source:'Art. 50 Abs. 2'},
-    {type:'section', label:'Pflichtenfeld 4 · Post-Market-Monitoring'},
-    {type:'task', num:18, text:'Post-Market-Monitoring-System aufbauen', source:'Art. 72 Abs. 1'},
-    {type:'task', num:19, text:'Drift-Schwellwerte definieren und Verhaltens-Baseline dokumentieren', source:'Art. 72 + Art. 3(23)'},
-    {type:'task', num:20, text:'Wesentliche Veränderung erkennen und Konformitätsbewertung wiederholen', source:'Art. 43 Abs. 4'},
-    {type:'section', label:'Pflichtenfeld 5 · Meldung'},
-    {type:'task', num:21, text:'Vorfall als schwerwiegend klassifizieren', source:'Art. 3 Nr. 49'},
-    {type:'task', num:22, text:'Vorfall an Marktüberwachungsbehörde melden', source:'Art. 73 Abs. 2–4'},
-    {type:'task', num:23, text:'Korrekturmaßnahmen einleiten und dokumentieren', source:'Art. 73 Abs. 5'},
-  ];
-  const tbody = document.getElementById('raci-ex-body');
-  if (!tbody) return;
-  tbody.innerHTML = '';
-  ITEMS_EX.forEach(item => {
-    const tr = document.createElement('tr');
-    if (item.type === 'section') {
-      tr.className = 'raci-sec-ex';
-      const td = document.createElement('td');
-      td.colSpan = 9; td.textContent = item.label;
-      tr.appendChild(td);
-    } else {
-      const tdN = document.createElement('td'); tdN.textContent = item.num; tr.appendChild(tdN);
-      const tdT = document.createElement('td'); tdT.textContent = item.text; tdT.style.lineHeight='1.4'; tr.appendChild(tdT);
-      const tdS = document.createElement('td'); tdS.textContent = item.source; tr.appendChild(tdS);
-      ['KL','CISO','KIB','DSB','FA','xDL'].forEach(actor => {
-        const td = document.createElement('td');
-        td.className = 'rc'; td.title = actor + ' · Klicken zum Wechseln';
-        const pill = document.createElement('span');
-        pill.className = 'raci-pill raci-empty'; pill.textContent = '—';
-        td.appendChild(pill);
-        td.addEventListener('click', () => cycleRaci(td));
-        tr.appendChild(td);
-      });
-    }
-    tbody.appendChild(tr);
-  });
 }
 
 // ── Save / Load ──────────────────────────────────────────────
@@ -4216,6 +4203,7 @@ function restoreRiskTables(data) {
     if (!rows || !rows.length) return;
     const tbody = document.getElementById(tbId);
     if (!tbody) return;
+    while (tbody.rows.length > 1) tbody.deleteRow(1);   // Import in ein gefuelltes Formular: erst auf eine Zeile zuruecksetzen
     rows.forEach((row, idx) => {
       if (idx > 0) addRiskRow(tbId);
       const tr = tbody.querySelectorAll('tr')[idx];
@@ -4265,6 +4253,7 @@ function loadForm() {
     restoreRiskTables(data);
     restoreExtra(data);
     if (data['radio_ai-act-tier']) updateRiskResult();
+    agentProfilZeigen();
     if (data['out-recommendation']) {
       const map = {freigabe:0,auflagen:1,zurueck:2,abgelehnt:3};
       const btns = document.querySelectorAll('.rec-btn');
