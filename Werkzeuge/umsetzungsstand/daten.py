@@ -282,21 +282,6 @@ T3_OFFEN = [
          titel='Feldzahlen des Canvas nicht nachzählbar, Quelle des „Selbstchecks der Zertifizierer“ unklar',
          det='Die Feldzahl hängt daran, welches Werkzeug Du austeilst (siehe CL-KIM-T3-09). Für den '
              'Selbstcheck brauche ich von Dir, woher er stammt — sonst nehme ich die Bezeichnung heraus.'),
-    dict(id='CL-KIM-T3-32', sev='🟡', wer='ent', fund='Hand-Out, Leitfragen zum Canvas, ③', st='offen',
-         titel='Erfolgsfaktoren und Erfolgskriterien in Leitfrage ③ trennen',
-         det='Die Leitfrage setzt kritische Erfolgsfaktoren (Voraussetzungen) mit Erfolgskriterien gleich (woran Erfolg gemessen wird). Der Einwand trägt — berührt aber T3-15, wo die KEF-Frage am 17.11. bewusst nach ③ gewandert ist. Vorschlag: beide Fragen in ③ nebeneinander stellen, erst die Kennzahl mit Zielwert, dann die Voraussetzungen.'),
-    dict(id='CL-KIM-T3-33', sev='🟡', wer='ent', fund='Hand-Out, Basiswissen „Priorisieren“, Matrix ohne Kosten, Quadrant Quick Win', st='offen',
-         titel='Braucht ein schneller Erfolg auch eine Wirtschaftlichkeitsrechnung?',
-         det='Hier widerspricht Claudia Deiner Entscheidung vom 18.11. (T3-01, Achsentrennung). Ihr Argument ist feiner: Die Doppelzählung betrifft nur das Kosten-Nutzen-Verhältnis, nicht die Aufwandshöhe; in Impact-Effort-Matrizen ist Aufwand eine übliche Achse. Mein Vorschlag: Achsentrennung bleibt, ein Satz ergänzt, dass auch ein schneller Erfolg Zielwert, Aufwand und eine kleine Wirtschaftlichkeitsrechnung bekommt.'),
-    dict(id='CL-KIM-T3-34', sev='🟡', wer='ent', fund='Hand-Out, „Bevor der Projektauftrag erteilt wird“, Konzeptkarte', st='offen',
-         titel='„Scheitern selten an der Modellgüte“ — Häufigkeitsbehauptung ohne Beleg',
-         det='Der Satz behauptet eine Häufigkeit ohne Beleg und steht im selben Kasten wie „Belastbar ist die Richtung, nicht die Rangfolge“. Bei generativen Anwendungen ist die Ergebnisqualität ein zentraler Machbarkeitspunkt, der in den fünf Dimensionen nur in der Querfrage steckt. Vorschlag: Superlativ abschwächen und die Ergebnisqualität ausdrücklich nennen.'),
-    dict(id='CL-KIM-T3-35', sev='🟡', wer='ent', fund='Hand-Out, Basiswissen „SMART“, Absatz zum Mittelwert', st='offen',
-         titel='Mittelwert pauschal als falsch bezeichnet',
-         det='Berechtigt: Mittelwert mal Fallzahl ergibt gerade die Kapazität für die ROI-Rechnung, und eine kürzere Durchlaufzeit ist kein Bearbeitungsaufwand. Vorschlag: Median als Service-Ziel, Mittelwert für die Mengenrechnung — beides benannt, statt den Mittelwert pauschal für falsch zu erklären.'),
-    dict(id='CL-KIM-T3-36', sev='🟡', wer='ent', fund='Hand-Out, Weiterführendes Wissen, Kapitel gtk-studien, Note und Spaltenkopf', st='offen',
-         titel='Das Studienkapitel wirkt belegter, als die Daten tragen',
-         det='Die NANDA-Einsparungen sind Selbstauskünfte und Einzelbeispiele, und die drei Größen stammen aus verschiedenen Erhebungen (BCG: KI insgesamt, 1.250 Befragte; NANDA: generative KI). Vorschlag: einen Satz zur eingeschränkten Vergleichbarkeit ergänzen.'),
     dict(id='CL-KIM-T3-47', sev='⚪', wer='ich', fund='Hand-Out, Konzeptkarte „Bevor der Projektauftrag erteilt wird“, NANDA und Daten', st='offen',
          titel='NANDA-Aussage zum Haupthemmnis nicht am Primärtext prüfbar',
          det='Das Primär-PDF des Berichts ist nicht abrufbar (HTTP 404), die Aussage „der NANDA-Bericht widerspricht der Vorstellung, Daten seien das Haupthemmnis, ausdrücklich“ also nicht prüfbar. Vorschlag: auf das abschwächen, was die Sekundärberichte tragen — oder streichen.'),
@@ -375,6 +360,22 @@ T3_FERTIG = [
     ('CL-KIM-T3-52', '⚪', 'Ob StatPearls die Humphrey-Zuschreibung als umstritten darstellt oder '
                           'Humphrey nur nennt, ist nicht geprüft, weil der Abruf an der '
                           'Browserprüfung …',
+                          '24.11.2026'),
+    ('CL-KIM-T3-32', '🟡', 'übernommen · Leitfrage ③ trennt jetzt Kennzahl mit Zielwert von den '
+                          'kritischen Erfolgsfaktoren',
+                          '24.11.2026'),
+    ('CL-KIM-T3-33', '🟡', 'teilweise übernommen · Achsentrennung präzisiert: nur das Kosten-Nutzen- '
+                          'Verhältnis zählt doppelt, der Aufwand gehört zur Machbarkeit; Quick Win '
+                          'mit grober Kostenschätzung',
+                          '24.11.2026'),
+    ('CL-KIM-T3-34', '🟡', 'übernommen · Häufigkeitsbehauptung ersetzt; Ergebnisqualität bei '
+                          'generativen Anwendungen als Machbarkeitsfrage benannt',
+                          '24.11.2026'),
+    ('CL-KIM-T3-35', '🟡', 'übernommen · Median für das Service-Ziel, Mittelwert mal Fallzahl für die '
+                          'Kapazität der ROI-Rechnung',
+                          '24.11.2026'),
+    ('CL-KIM-T3-36', '🟡', 'teilweise übernommen · Satz zur eingeschränkten Vergleichbarkeit der '
+                          'beiden Erhebungen ergänzt',
                           '24.11.2026'),
 ]
 
