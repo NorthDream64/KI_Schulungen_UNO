@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Inhalte des Umsetzungsstands. Quelle: Entscheidungsprotokoll Reviewer (Stand 18.11.2026)
+"""Inhalte des Umsetzungsstands. Quelle: Entscheidungsprotokoll Reviewer (Stand 24.11.2026)
 sowie die eigenen Prueffunde der Kurstag-Reviews."""
 
 # wer: 'du' = Dozent (Foliensaetze, Gamma) | 'ich' = Claude (Hand-Out, Handreichungen, Register)
@@ -97,95 +97,113 @@ T1_FERTIG = [
 ]
 
 T2_OFFEN = [
-    dict(id='CL-KIM-T2-03', sev='🟡', wer='du', fund='Folien 2 und 3', st='offen',
-         titel='KI-Beauftragte:r und KI-Auditor:in werden gleich beschrieben',
-         det='Zusätzlich geben die Folien den Aufbau normativer Rahmenwerke beiden Rollen. Das ist die '
-             'Trennlinie, die der TÜV-Fragenpool abfragt: Die Beauftragte überwacht laufend, die '
-             'Auditorin erteilt ein unabhängiges Prüfurteil. Wer umsetzt, prüft nicht sich selbst.'),
-    dict(id='CL-KIM-T2-04', sev='🟡', wer='du', fund='Folie 9, Anhang A, Kachel A.7', st='offen',
-         titel='Modellqualität ist im Anhang A nicht der Datenbereich',
-         det='Die Folie ordnet die Sicherung der Modellqualität A.7 (Daten) zu. Dort gehört sie nicht hin. '
-             'Vor der Korrektur sage mir Bescheid — dann sehe ich die Zuordnung in der Normausgabe nach, '
-             'damit die Kachel beim richtigen Bereich landet.'),
-    dict(id='CL-KIM-T2-05', sev='🟡', wer='du', fund='Folie 15, Praxisaufgabe d)', st='offen',
-         titel='Praxisaufgabe plant eine Datenerhebung über Beschäftigte ohne Datenschutz und Betriebsrat',
-         det='In einer Managementrolle ist genau das der Fehler, der teuer wird. Zwei Sätze in der '
-             'Aufgabenstellung genügen: Rechtsgrundlage und Beteiligung des Betriebsrats mitdenken.'),
-    dict(id='CL-KIM-T2-14', sev='🟢', wer='du', fund='Folie 8', st='offen',
-         titel='Oberste Leitung erfüllt die Normkonformität nicht selbst',
-         det='Sie verantwortet sie. Erfüllt wird sie durch die Organisation. Im Hand-Out ist die '
-             'Rollentabelle seit 17.11. entsprechend gefasst (CL-KIM-T2-01).'),
-    dict(id='CL-KIM-T2-15', sev='🟢', wer='du', fund='Folie 14', st='offen',
-         titel='Satz wirkt wie eine Aussage des SEI-Modells, stammt aber aus der Führungsanalogie',
-         det='Herkunft Hersey/Blanchard. Zuschreibung ergänzen, sonst wirkt eine Analogie wie ein Modellbefund.'),
-    dict(id='CL-KIM-T2-16', sev='🟢', wer='du', fund='Folie 15, Praxisaufgabe d)', st='offen',
-         titel='Selbstauskünfte überschätzen die Reife — das in die Aufgabe schreiben',
-         det='Die Antworten hängen davon ab, wer befragt wird. Für eine Reifegradbestimmung ist das '
-             'die wichtigste Einschränkung.'),
-    dict(id='CL-KIM-T2-17', sev='🟢', wer='du', fund='Folien 15 und 11', st='offen',
-         titel='Praxisaufgabe ohne Auftragsklärung, GAP-Tabelle ohne Verantwortliche, Priorität und Kosten',
-         det='Drei Spalten in der GAP-Tabelle ergänzen; die Aufgabe um einen Satz zum Auftrag und zu '
-             'den Bewertungskriterien erweitern.'),
-    dict(id='CL-KIM-T2-21', sev='🟢', wer='ich', fund='Hand-Out, Quellenchip White House Accord', st='offen',
-         titel='Quellenchip ohne Hinweis auf die fehlende amtliche Fundstelle',
-         det='Ich ergänze den Vorbehalt, sobald Du freigibst. Vorher suche ich noch einmal nach einer '
-             'amtlichen Veröffentlichung; finde ich keine, sage ich das im Chip.'),
-    dict(id='CL-KIM-T2-24', sev='🟢', wer='ich', fund='Hand-Out, Analogie, Tabelle M1–M4', st='offen',
-         titel='Reifegrade nach Hersey/Blanchard ungenau und mit dem SLII-Modell vermischt',
-         det='Das sind zwei Modelle aus zwei Jahrzehnten. Ich trenne die Tabelle und nenne die Herkunft; '
-             'die Analogie selbst bleibt, sie trägt den Abschnitt.'),
-    dict(id='CL-KIM-T2-26', sev='🟢', wer='ich', fund='Hand-Out, Kasten vor „Der Verstärker“; PDF-Titel', st='offen',
-         titel='Tagesverweise im Hand-Out inkonsistent und teils falsch',
-         det='Ich ziehe sie gegen die geltende Tagesstruktur nach. Dabei prüfe ich auch, welche Verweise '
-             'ganz entfallen können — Tagesverweise im Teilnehmermaterial sind ohnehin sparsam zu halten.'),
-    dict(id='CL-KIM-T2-29', sev='⚪', wer='ich', fund='Hand-Out, Abschnitt Marktbedeutung', st='offen',
-         titel='Gilt die Konformitätsvermutung von EN 18286 wirklich „nur für Art. 17“?',
-         det='Nicht bestätigt. Ich prüfe das gegen den Normungsauftrag der Kommission und den Stand der '
-             'Veröffentlichung im Amtsblatt, sobald Du freigibst — Ergebnis offen, die Aussage kann auch fallen.'),
-    dict(id='CL-KIM-T2-30', sev='⚪', wer='ich', fund='Hand-Out, Angabe „identischer Normtext“', st='offen',
-         titel='Hat die DIN-Fassung einen identischen Normtext?',
-         det='Ich habe am 17.11. das Deckblatt der Ausgabe gelesen und die Bezeichnung bestätigt — über '
-             'die Textidentität sagt das nichts. Belastbar wäre die Übernahmeerklärung im Vorwort der '
-             'DIN-Ausgabe; die sehe ich nach, wenn Du es möchtest.'),
-    dict(id='CL-KIM-T2-31', sev='⚪', wer='ent', fund='Hand-Out, Reifegradmodell', st='offen',
-         titel='Dimensionsnamen und die Aussage „nicht beschrieben“ ohne Modelldokument nicht prüfbar',
-         det='Entweder wir nennen die Quelle des Modells, oder die Kurzfassung wird ausdrücklich als '
-             'Kursfassung gekennzeichnet. Letzteres ist der ehrlichere und schnellere Weg — sag, was Du willst.'),
-    dict(id='CL-KIM-T2-33', sev='⚪', wer='ich', fund='Hand-Out, Quellenverzeichnis', st='offen',
-         titel='Seitenzahlen der Norm und die Ausgabe 2026-08 prüfen',
-         det='Teilweise schon erledigt: Bezeichnung und Ausgabestand DIN EN ISO/IEC 42001:2026-08 sowie '
-             'Kapitel 9 „Leistungsbewertung“ auf Seite 24 habe ich am 17.11. gegen die lokale '
-             'Normausgabe geprüft. Offen sind die übrigen Seitenangaben.'),
+    dict(id='CL-KIM-T2-15', sev='🟢', wer='du', fund='Foliensatz, Einleitung der Stufentabelle', st='offen',
+         titel='Führungsregel steht in der Quellenklammer und liest sich als Modellaussage',
+         det='Am Foliensatz geprüft: Die Einleitung führt die Quelle (Carnegie Mellon SEI und '
+             'Accenture, AI Adoption Maturity Model, 2026) und die Regel „wer eine reife Organisation '
+             'zu eng führt, bremst sie“ in einem Satz. Das Modell beschreibt Stufen und Dimensionen, '
+             'keine Governance-Intensität — die Regel ist unsere, nicht seine. Seit der Streichung der '
+             'Führungsanalogie aus dem Hand-Out hat sie dort nur noch den Merksatz als Rückhalt. '
+             'Neuer Wortlaut liegt vor: Quelle an die Stufen binden, Regel als Merksatz des Kurses '
+             'ausweisen. Der Einbau wartet auf die freie Datei — PowerPoint hat den Foliensatz am '
+             '24.11. um 06:18 überschrieben, dabei ist auch die neue Folie „Dieselbe Architektur — '
+             'ohne Recht dahinter“ verloren gegangen. Beides ist ein Lauf von Sekunden, sobald die '
+             'Datei geschlossen ist.'),
 ]
 
-T2_MEINS = [
-    dict(id='MIR-T2-01', sev='🟢', wer='ich', fund='Hand-Out, Fließtext', st='offen',
-         titel='Eine Du-Form-Abweichung angleichen',
-         det='Gezählt am 18.11.: achtmal „Du“, zweimal „Dich“, einmal kleines „du“. Die eine Stelle '
-             'ziehe ich mit dem nächsten Durchgang nach. Dieselbe Prüfung steht für die KIM-Tage 9 und 11 aus.'),
-]
+T2_MEINS = []
 
 T2_FERTIG = [
-    ('CL-KIM-T2-01', '🟠', 'Rollentabelle: Zeile „Oberste Leitung“ ergänzt, A-Rolle richtig verteilt', '17.11.2026'),
-    ('CL-KIM-T2-02', '🟠', 'Ebene ③ ist externe Zusicherung außerhalb der drei Linien', '17.11.2026'),
-    ('CL-KIM-T2-06', '🟡', 'RACI steht nicht mehr als Normvorgabe (Normtext 5.3 zitiert)', '17.11.2026'),
-    ('CL-KIM-T2-07', '🟡', 'Auditor:in auf Klausel 9.2 (internes Audit) begrenzt', '17.11.2026'),
-    ('CL-KIM-T2-08', '🟡', 'Zeile „Unabhängigkeit“: gute Praxis statt Pflicht', '17.11.2026'),
-    ('CL-KIM-T2-09', '🟡', 'Norm verlangt erste und zweite Linie, nicht alle vier Ebenen', '17.11.2026'),
-    ('CL-KIM-T2-10', '🟡', 'Reifegrad-Kurzfassung führt vier Dimensionen inkl. Risk & Governance', '17.11.2026'),
-    ('CL-KIM-T2-11', '🟡', 'Governance-Intensität: Risiko neben Reife gestellt', '17.11.2026'),
-    ('CL-KIM-T2-12', '🟡', '„Der Verstärker“: Zitat dem Mitautor Slattery zugeschrieben', '17.11.2026'),
-    ('CL-KIM-T2-13', '🟡', 'Belegstufen gleich angewendet, Vorbehalt beim Leitmodell ergänzt', '17.11.2026'),
-    ('CL-KIM-T2-18', '🟢', '„Aufsicht“ ersetzt — Behörden verlangen ISO/IEC 42001 nicht', '17.11.2026'),
-    ('CL-KIM-T2-19', '🟢', 'Eskalationsweg: Grenze des Leitungsentscheids ergänzt', '17.11.2026'),
-    ('CL-KIM-T2-20', '🟢', '„Ausrichtung“ als Fachbegriff Alignment erklärt', '17.11.2026'),
-    ('CL-KIM-T2-22', '🟢', 'Kostenaussage als Einschätzung des Kurses gekennzeichnet', '17.11.2026'),
-    ('CL-KIM-T2-23', '🟢', 'P3M3: geschützt sind Texte und Darstellungen, nicht die Methode', '17.11.2026'),
-    ('CL-KIM-T2-25', '🟢', 'SoA ist Grundlage einer GAP-Analyse, nicht selbst eine', '17.11.2026'),
-    ('CL-KIM-T2-27', '🟢', 'Haftungshinweis in der Fußzeile ergänzt', '18.11.2026'),
-    ('CL-KIM-T2-28', '⚪', 'Bildherkunft und Lizenz der Folien 1, 4, 5 vom Dozenten geprüft', '18.11.2026'),
-    ('CL-KIM-T2-32', '⚪', 'Link auf die Microsoft-Broschüre aus dem Teilnehmermaterial entfernt', '17.11.2026'),
-    ('CL-KIM-T2-34', '⚪', 'Lizenz zur Weitergabe von Norm und Fachbüchern nachgewiesen (eBooks des Bildungszentrums)', '18.11.2026'),
+    ('CL-KIM-T2-01', '🟠', 'Rollentabelle: Zeile „Oberste Leitung“ ergänzt, A-Rolle richtig verteilt',
+                          '17.11.2026'),
+    ('CL-KIM-T2-02', '🟠', 'Ebene ③ ist externe Zusicherung außerhalb der drei Linien',
+                          '17.11.2026'),
+    ('CL-KIM-T2-03', '🟡', 'Abgrenzung KI-Beauftragte:r und KI-Auditor:in — Formulierung ist '
+                          'eindeutig, die Lesart der Reviewerin nicht nachvollziehbar; am Material '
+                          'gegengeprüft, die Rollenzeilen trennen „unterstützend, korrigierend“ von '
+                          '„prüfend, rückwärtsschauend“',
+                          '23.11.2026'),
+    ('CL-KIM-T2-04', '🟡', 'Modellqualität im Anhang A — „Sicherung der Modellqualität“ nach A6 '
+                          'verschoben',
+                          '23.11.2026'),
+    ('CL-KIM-T2-05', '🟡', 'abgelehnt · Datenerhebung über Beschäftigte in der Praxisaufgabe — '
+                          'Beobachtung richtig, hier aber didaktisch untergeordnet; die Folie fragt '
+                          'die Klärung mit Vorstand, Betriebsrat und Datenschutz ohnehin ab',
+                          '23.11.2026'),
+    ('CL-KIM-T2-06', '🟡', 'RACI steht nicht mehr als Normvorgabe (Normtext 5.3 zitiert)',
+                          '17.11.2026'),
+    ('CL-KIM-T2-07', '🟡', 'Auditor:in auf Klausel 9.2 (internes Audit) begrenzt',
+                          '17.11.2026'),
+    ('CL-KIM-T2-08', '🟡', 'Zeile „Unabhängigkeit“: gute Praxis statt Pflicht',
+                          '17.11.2026'),
+    ('CL-KIM-T2-09', '🟡', 'Norm verlangt erste und zweite Linie, nicht alle vier Ebenen',
+                          '17.11.2026'),
+    ('CL-KIM-T2-10', '🟡', 'Reifegrad-Kurzfassung führt vier Dimensionen inkl. Risk & Governance',
+                          '17.11.2026'),
+    ('CL-KIM-T2-11', '🟡', 'Governance-Intensität: Risiko neben Reife gestellt',
+                          '17.11.2026'),
+    ('CL-KIM-T2-12', '🟡', '„Der Verstärker“: Zitat dem Mitautor Slattery zugeschrieben',
+                          '17.11.2026'),
+    ('CL-KIM-T2-13', '🟡', 'Belegstufen gleich angewendet, Vorbehalt beim Leitmodell ergänzt',
+                          '17.11.2026'),
+    ('CL-KIM-T2-14', '🟡', 'Normkonformität der obersten Leitung — Formulierung geändert in „die '
+                          'oberste Leitung trägt die Verantwortung (in RACI: A) dafür, dass …“',
+                          '23.11.2026'),
+    ('CL-KIM-T2-16', '🟢', 'abgelehnt · Selbstauskünfte überschätzen die Reife — didaktisch hier '
+                          'irrelevant',
+                          '23.11.2026'),
+    ('CL-KIM-T2-17', '🟢', 'abgelehnt · Auftragsklärung und Bewertungskriterien in der Praxisaufgabe — '
+                          'würden das Thema zu groß machen; die GAP-Tabelle nennt inzwischen '
+                          'Verantwortliche, Priorität, Aufwand und Termin',
+                          '23.11.2026'),
+    ('CL-KIM-T2-18', '🟢', '„Aufsicht“ ersetzt — Behörden verlangen ISO/IEC 42001 nicht',
+                          '17.11.2026'),
+    ('CL-KIM-T2-19', '🟢', 'Eskalationsweg: Grenze des Leitungsentscheids ergänzt',
+                          '17.11.2026'),
+    ('CL-KIM-T2-20', '🟢', '„Ausrichtung“ als Fachbegriff Alignment erklärt',
+                          '17.11.2026'),
+    ('CL-KIM-T2-21', '🟢', 'Quellenchip White House Accord — entfällt, der Abschnitt ist aus dem Hand- '
+                          'Out heraus und wandert in den Foliensatz',
+                          '24.11.2026'),
+    ('CL-KIM-T2-22', '🟢', 'Kostenaussage als Einschätzung des Kurses gekennzeichnet',
+                          '17.11.2026'),
+    ('CL-KIM-T2-23', '🟢', 'P3M3: geschützt sind Texte und Darstellungen, nicht die Methode',
+                          '17.11.2026'),
+    ('CL-KIM-T2-24', '🟢', 'Reifegrade nach Hersey/Blanchard — entfällt, der Analogie-Abschnitt samt '
+                          'Tabelle M1 bis M4 ist aus dem Hand-Out heraus (null Treffer in der '
+                          'Gegenprobe)',
+                          '24.11.2026'),
+    ('CL-KIM-T2-25', '🟢', 'SoA ist Grundlage einer GAP-Analyse, nicht selbst eine',
+                          '17.11.2026'),
+    ('CL-KIM-T2-26', '🟢', 'Tagesverweise — Tag 12 und Tag 15 trugen falsche Klammerzusätze, beide '
+                          'korrigiert; die Verweise auf Tag 3 und Tag 8 stimmen',
+                          '24.11.2026'),
+    ('CL-KIM-T2-27', '🟢', 'Haftungshinweis in der Fußzeile ergänzt',
+                          '18.11.2026'),
+    ('CL-KIM-T2-28', '⚪', 'Bildherkunft und Lizenz der Folien 1, 4, 5 vom Dozenten geprüft',
+                          '18.11.2026'),
+    ('CL-KIM-T2-29', '⚪', 'Reichweite der Konformitätsvermutung von EN 18286 — der '
+                          'Durchführungsbeschluss nennt nur Art. 40; die Zuordnung zu Art. 17 ist '
+                          'fachliche Einordnung und jetzt als solche gekennzeichnet',
+                          '24.11.2026'),
+    ('CL-KIM-T2-30', '⚪', 'DIN-Fassung der ISO/IEC 42001 — Sache bestätigt, Wort geändert: statt '
+                          '„identischer Normtext“ jetzt „die unverändert übernommene ISO-Norm“',
+                          '24.11.2026'),
+    ('CL-KIM-T2-31', '⚪', 'Dimensionen des SEI/Accenture-Modells — alle acht jetzt namentlich im '
+                          'Hand-Out; die unbelegte Aussage „nur benannt, nicht beschrieben“ ist '
+                          'heraus',
+                          '24.11.2026'),
+    ('CL-KIM-T2-32', '⚪', 'Link auf die Microsoft-Broschüre aus dem Teilnehmermaterial entfernt',
+                          '17.11.2026'),
+    ('CL-KIM-T2-33', '⚪', 'Seitenzahlen der Norm — Kapitel 5.3 auf S. 16, Kapitel 9 auf S. 24, Anhang '
+                          'A.3 auf S. 27 am Normtext nachgezählt; Ausgabestand 2026-08 bestätigt',
+                          '24.11.2026'),
+    ('CL-KIM-T2-34', '⚪', 'Lizenz zur Weitergabe von Norm und Fachbüchern nachgewiesen (eBooks des '
+                          'Bildungszentrums)',
+                          '18.11.2026'),
+    ('MIR-T2-01', '🟢', 'Du-Form — die eine kleingeschriebene Stelle im Lernziel ist angeglichen; die '
+                       'Prüfung für die KIM-Tage 9 und 11 steht weiter aus',
+                       '24.11.2026'),
 ]
 
 T3_OFFEN = [
@@ -267,16 +285,6 @@ T3_OFFEN = [
 ]
 
 T3_MEINS = [
-    dict(id='CL-KIM-T3-29', sev='⚪', wer='ich', fund='Hand-Out, Mercedes-Fall', st='offen',
-         titel='Zwei Detailangaben im Mercedes-Fall an der Primärquelle prüfen',
-         det='Betroffen sind der Belegvorbehalt und zwei Zahlenangaben. Ich suche die Primärbelege, '
-             'sobald Du freigibst; finde ich sie nicht, nehme ich die Angaben heraus und lasse den Fall '
-             'mit den belegten Teilen stehen.'),
-    dict(id='CL-KIM-T3-30', sev='⚪', wer='ich', fund='Hand-Out, GAP-Abschnitt', st='offen',
-         titel='Entspricht die GAP-Logik der Anwendbarkeitserklärung nach ISO/IEC 42001?',
-         det='Die Zuordnung steht im Hand-Out als Brücke zum KI-Beauftragten-Kurs. Ich prüfe sie gegen '
-             'die lokale Normausgabe (Anwendbarkeitserklärung, Anhang A) und melde, wenn die Analogie '
-             'nicht trägt.'),
     dict(id='MIR-T3-01', sev='🟡', wer='ent', fund='Hand-Out, Abschnitt SMART und Sensitivität', st='offen',
          titel='Rechenbeispiel auf belastbare Größen umstellen — Angebot steht',
          det='Das SMART-Beispiel und die Sensitivitätsbetrachtung rechnen mit Werten, die den Fall '
@@ -298,6 +306,12 @@ T3_FERTIG = [
     ('CL-KIM-T3-25', '🟢', 'Canvas-Leitfrage ② fragt nach Tätigkeit und Datenart, Mehrfachnennung erlaubt', '17.11.2026'),
     ('CL-KIM-T3-26', '🟢', 'SMART: Median statt Mittelwert, Messdefinition ergänzt', '17.11.2026'),
     ('CL-KIM-T3-27', '⚪', 'Bildherkunft und Lizenz der Folien 1, 8, 9, 10, 15 vom Dozenten geprüft', '18.11.2026'),
+    ('CL-KIM-T3-29', '⚪', 'Mercedes-Angaben an der Primärquelle bestätigt — Lernreise und '
+                    'Zehntausende Absolventen stehen wörtlich auf der Konzernseite; '
+                    '„begleitend“ war zu eng zugerechnet und ist geändert', '24.11.2026'),
+    ('CL-KIM-T3-30', '⚪', 'GAP-Logik und Erklärung zur Anwendbarkeit am Normtext bewertet — '
+                    'der Abgleich gegen Anhang A ist der Schritt, die Erklärung das '
+                    'Ergebnisdokument; Satz entsprechend neu gefasst', '24.11.2026'),
     ('CL-KIM-T3-31', '⚪', 'Normbezeichnung DIN EN ISO/IEC 42001 am Deckblatt bestätigt', '17.11.2026'),
 ]
 

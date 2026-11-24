@@ -171,17 +171,17 @@ a{color:var(--accent);}
     </div>
     <button class="case-btn no-print" onclick="resetCase()" title="Beispielfall wiederherstellen">&#8634; Beispielfall</button>
   </div>
-  <div class="calc-header-lead" id="case_lead" contenteditable="true" spellcheck="false">Die Bank plant, Kreditanträge und Investitionsvorhaben einer automatischen Vorprüfung zu unterziehen. Im Moment bindet dieser Prozess relativ teure menschliche Ressourcen.</div>
-  <div class="case-hint no-print">Titel und Fallbeschreibung sind direkt überschreibbar — klicke hinein und ersetze den Text durch deinen eigenen Fall. Die Eingaben bleiben in diesem Browser erhalten.</div>
+  <div class="calc-header-lead" id="case_lead" contenteditable="true" spellcheck="false">Die Bank plant, Kreditanträge und Investitionsvorhaben einer automatischen Vorprüfung zu unterziehen. Im Moment bindet dieser Prozess relativ teure menschliche Ressourcen. Die KI bereitet die Prüfung vor; die Entscheidung über den Antrag trifft weiterhin ein Mensch.</div>
+  <div class="case-hint no-print">Titel und Fallbeschreibung sind direkt überschreibbar — klicke hinein und ersetze den Text durch deinen eigenen Fall. Titel und Fallbeschreibung bleiben in diesem Browser gespeichert; die Zahlen nicht — bitte drucken oder als PDF sichern. Auf fremden oder gemeinsam genutzten Geräten keine vertraulichen oder personenbezogenen Angaben eintragen und am Ende „Beispielfall“ wiederherstellen.</div>
 </div>
 
 <div class="note-box">
-  <strong>So nutzen Sie diesen Rechner</strong>
+  <strong>So nutzt Du diesen Rechner</strong>
   Der Rechner ist in vier Schritten aufgebaut: <strong>① Baseline</strong> beschreibt den heutigen Prozess ohne KI.
   <strong>② Savings</strong> erfasst, wie stark die KI den Prozess beeinflusst.
-  <strong>③ Expenditure</strong> nimmt einmalige Investitionen (CAPEX, z.B. für den Erwerb der KI-Lizenzen oder auch die externen Kosten für das KI-Projekt) und laufende Aufwendungen (OPEX, z.B. laufende Wartung, Help Desk, Monitoring) auf —
-  über den <em>Umlagefaktor</em> wird nur der Anteil angerechnet, der tatsächlich der Vorgangsbearbeitung zuzurechnen ist. Unter Umständen werden über die gleiche Lizenz oder den gleichen Provider auch andere KI-Dienstleistungen erbracht und abgerechnet.
-  Die <em>Nutzungsdauer</em> legt fest, über wie viele Jahre die CAPEX abgeschrieben wird und wann sie durch eine Ersatzinvestition erneuert werden muss.
+  <strong>③ Expenditure</strong> nimmt einmalige Investitionen (CAPEX, z. B. Entwicklung, Kauflizenzen und die externen Kosten für das KI-Projekt) und laufende Aufwendungen (OPEX, z. B. Lizenz-Abonnements, laufende Wartung, Help Desk, Monitoring) auf —
+  über den <em>Umlagefaktor</em> wird von den Plattformkosten (Entwicklung und Kauflizenzen, Lizenz-Abonnements, Cloud) nur der Anteil angerechnet, der diesem Vorhaben zuzurechnen ist, weil über dieselbe Plattform oft auch andere KI-Dienste laufen. Alle übrigen Posten entstehen nur durch dieses Vorhaben und zählen zu 100 %.
+  Die <em>Nutzungsdauer</em> legt fest, über wie viele Jahre die Einmalkosten kalkulatorisch verteilt werden und wann eine Ersatzinvestition angesetzt wird. Das ist eine kalkulatorische Abschreibung für die interne Wirtschaftlichkeitsrechnung, keine bilanzielle oder steuerliche AfA; die Aktivierung klärt das Rechnungswesen.
   <strong>④ Future State</strong> zeigt denselben Prozess mit KI — mit den gleichen Kennzahlen wie die Baseline,
   aber neu berechnet. Alle Werte aktualisieren sich sofort.
 </div>
@@ -245,7 +245,7 @@ a{color:var(--accent);}
       <div class="unit">Stück/Monat</div>
     </div>
     <div class="field">
-      <label>Grobprüfung je Vorgang <span class="hint">Ja/Nein-Entscheidung</span></label>
+      <label>Grobprüfung je Vorgang <span class="hint">Vorprüfung — die Entscheidung trifft ein Mensch</span></label>
       <input type="number" id="h_gross" value="3.0" min="0" step="0.5">
       <div class="unit">Stunden/Vorgang</div>
     </div>
@@ -311,7 +311,7 @@ a{color:var(--accent);}
       <div class="calc-out is-total"><span class="cv" id="sv_h_total">—</span><span class="cu">Stunden/Monat</span></div>
     </div>
     <div class="calc-field">
-      <span class="cf-label">Entspricht <span class="cf-hint">220 Arbeitstage × 8 h</span></span>
+      <span class="cf-label">Entspricht <span class="cf-hint">Annahme: Sollarbeitszeit 220 Arbeitstage × 8 h — Nettojahresarbeitszeit beim Controlling erfragen</span></span>
       <div class="calc-out is-carry"><span class="cv" id="sv_fte">—</span><span class="cu">% einer Vollzeitstelle</span></div>
     </div>
     <div class="calc-field">
@@ -330,7 +330,7 @@ a{color:var(--accent);}
 
     <div class="section-label">Einmalige Investitionen (CAPEX)</div>
     <div class="field">
-      <label>Entwicklung &amp; Lizenzen</label>
+      <label>Entwicklung &amp; Kauflizenzen <span class="hint">Plattformkosten — Umlagefaktor gilt</span></label>
       <input type="number" id="c_dev" value="25000" min="0" step="1000">
       <div class="unit">€</div>
     </div>
@@ -353,7 +353,12 @@ a{color:var(--accent);}
     <div class="cf-divider"></div>
     <div class="section-label">Laufende Aufwendungen (OPEX)</div>
     <div class="field">
-      <label>Cloud-Infrastruktur</label>
+      <label>Lizenzen im Abonnement <span class="hint">Plattformkosten — Umlagefaktor gilt</span></label>
+      <input type="number" id="c_lizenz" value="0" min="0" step="500">
+      <div class="unit">€/Jahr</div>
+<div class="unit" style="font-size:10.5px;color:var(--muted);">KI-Lizenzen sind meist laufende Abonnements und gehören dann hierher, nicht zu den Einmalkosten</div>    </div>
+    <div class="field">
+      <label>Cloud-Infrastruktur <span class="hint">Plattformkosten — Umlagefaktor gilt</span></label>
       <input type="number" id="c_infra" value="5000" min="0" step="500">
       <div class="unit">€/Jahr</div>
     </div>
@@ -387,7 +392,7 @@ a{color:var(--accent);}
     <div class="section-label">Belastbarkeit des Nutzens</div>
     <div class="field">
       <label>davon <strong>budgetwirksam</strong></label>
-      <input type="number" id="cash_share" value="50" min="0" step="5">
+      <input type="number" id="cash_share" value="50" min="0" max="100" step="5">
       <div class="unit">%</div>
 <div class="unit" style="font-size:10.5px;color:var(--muted);">Gesparte Stunden sind zunächst Kapazität. Geld wird daraus nur, soweit Stellen abgebaut, Fremdleistung ersetzt oder messbar Mehrvolumen bewältigt wird. <strong>Trage hier nur ein, wofür Du die Maßnahme benennen kannst</strong> — die Vorgabe 50 % ist eine Beispielannahme, kein Erfahrungswert.</div>    </div>
     <div class="field">
@@ -397,9 +402,9 @@ a{color:var(--accent);}
 <div class="unit" style="font-size:10.5px;color:var(--muted);">Was das Vorhaben an anderer Stelle kostet — Nachprüfung, Korrekturen</div>    </div>
     <div class="field">
       <label>Nutzungsgrad im Einführungsjahr</label>
-      <input type="number" id="ramp" value="25" min="0" step="5">
+      <input type="number" id="ramp" value="25" min="0" max="100" step="5">
       <div class="unit">%</div>
-<div class="unit" style="font-size:10.5px;color:var(--muted);">Hochlauf: Der Nutzen fällt im Jahr 0 nicht voll an</div>    </div>
+<div class="unit" style="font-size:10.5px;color:var(--muted);">Hochlauf: Nutzen und nutzungsabhängige Modellkosten fallen im Jahr 0 nur zu diesem Anteil an</div>    </div>
     <div class="field">
       <label>Kalkulationszins für den Kapitalwert</label>
       <input type="number" id="zins" value="0" min="0" step="0.5">
@@ -408,12 +413,12 @@ a{color:var(--accent);}
     <div class="cf-divider"></div>
     <div class="section-label">Zurechnung</div>
     <div class="field">
-      <label>Umlagefaktor <span class="hint">Anteil von CAPEX und OPEX, der dem Vorhaben direkt zuzurechnen ist</span></label>
+      <label>Umlagefaktor <span class="hint">Anteil der Plattformkosten, der diesem Vorhaben zuzurechnen ist</span></label>
       <input type="number" id="alloc" value="100" min="0" max="100" step="5">
-      <div class="unit">% (0–100) — der Rest entfällt auf andere Vorhaben</div>
+      <div class="unit">% (0–100) — gilt nur für Entwicklung &amp; Kauflizenzen, Lizenz-Abonnements und Cloud; alle übrigen Posten zählen zu 100 %</div>
     </div>
     <div class="field">
-      <label>Nutzungsdauer CAPEX <span class="hint">Abschreibungsdauer; danach Ersatzinvestition</span></label>
+      <label>Nutzungsdauer CAPEX <span class="hint">kalkulatorische Abschreibungsdauer; danach Ersatzinvestition</span></label>
       <input type="number" id="capex_years" value="3" min="1" max="10" step="1">
       <div class="unit">Jahre</div>
     </div>
@@ -433,18 +438,18 @@ a{color:var(--accent);}
     </div>
     <div class="field">
       <label>Messzeitpunkt / Gate</label>
-      <input type="text" id="n_gate" value="" placeholder="Datum, an dem nachgerechnet wird — mit Stoppkriterium">
+      <input type="text" id="n_gate" value="" placeholder="Datum, an dem nachgerechnet wird — mit Stoppkriterium, Zahl der gemessenen Vorgänge und Spanne">
     </div>
 
 
     <div class="cf-divider"></div>
 
     <div class="calc-field">
-      <span class="cf-label">CAPEX gesamt / davon umgelegt</span>
+      <span class="cf-label">CAPEX gesamt / davon angerechnet</span>
       <div class="calc-out"><span class="cv" id="ex_capex">—</span><span class="cu">€ einmalig</span></div>
     </div>
     <div class="calc-field">
-      <span class="cf-label">OPEX gesamt / davon umgelegt</span>
+      <span class="cf-label">OPEX gesamt / davon angerechnet</span>
       <div class="calc-out"><span class="cv" id="ex_opex">—</span><span class="cu">€/Jahr</span></div>
     </div>
 
@@ -466,7 +471,7 @@ a{color:var(--accent);}
       <div class="calc-out"><span class="cv" id="fs_h_gross">—</span><span class="cu">Stunden/Vorgang</span></div>
     </div>
     <div class="calc-field">
-      <span class="cf-label">Anteil mit Feinprüfung <span class="cf-hint">unverändert</span></span>
+      <span class="cf-label">Anteil mit Feinprüfung <span class="cf-hint">unverändert — Annahme; hängt vom Schwellenwert der KI-Vorprüfung ab. Fehlentscheidungen als Dis-Benefits erfassen</span></span>
       <div class="calc-out is-carry"><span class="cv" id="fs_pct_detail">—</span><span class="cu">%</span></div>
     </div>
     <div class="calc-field">
@@ -474,7 +479,7 @@ a{color:var(--accent);}
       <div class="calc-out"><span class="cv" id="fs_h_detail">—</span><span class="cu">Stunden/Vorgang</span></div>
     </div>
     <div class="calc-field">
-      <span class="cf-label">Annualisierte, allokierte Kosten KI <span class="cf-hint">umgelegte CAPEX-Abschreibung + OPEX</span></span>
+      <span class="cf-label">Annualisierte, allokierte Kosten KI <span class="cf-hint">kalkulatorische Abschreibung + laufende Kosten</span></span>
       <div class="calc-out is-ki"><span class="cv" id="fs_ki_cost_mo">—</span><span class="cu">€/Monat</span></div>
     </div>
 
@@ -511,7 +516,7 @@ a{color:var(--accent);}
     <div class="kpi-sub">Nettonutzen ÷ Investition &middot; die einzige ROI-Formel dieses Kurses</div>
   </div>
   <div class="kpi-card">
-    <div class="kpi-label">Gewinn je Jahr nach Abschreibung</div>
+    <div class="kpi-label">Gewinn je Jahr nach kalk. Abschreibung</div>
     <div class="kpi-value" id="kpi_gewinn1">—</div>
     <div class="kpi-sub">Jahr 1 &middot; Ergebnissicht &middot; bewusst kein zweiter ROI-Wert</div>
   </div>
@@ -526,25 +531,37 @@ a{color:var(--accent);}
     <div class="kpi-sub">nicht aufgebrauchter Teil der letzten Investition</div>
   </div>
   <div class="kpi-card">
-    <div class="kpi-label">Kapitalwert</div>
+    <div class="kpi-label" id="kpi_npv_label">Kapitalwert</div>
     <div class="kpi-value" id="kpi_npv">—</div>
     <div class="kpi-sub" id="kpi_npv_sub">—</div>
   </div>
   <div class="kpi-card kpi-warn">
     <div class="kpi-label">Break-even der Zeitersparnis</div>
     <div class="kpi-value amber" id="kpi_be">—</div>
-    <div class="kpi-sub">Anteil der angenommenen Zeitersparnis, ab dem der Fall nach Abschreibung trägt</div>
+    <div class="kpi-sub">Anteil der angenommenen Zeitersparnis, ab dem der Gewinn nach kalkulatorischer Abschreibung und verteilten Exit-Kosten null erreicht (nicht die ROI-Formel)</div>
   </div>
   <div class="kpi-card">
-    <div class="kpi-label">Umgelegte CAPEX</div>
+    <div class="kpi-label">Angerechnete CAPEX</div>
     <div class="kpi-value blue" id="kpi_invest">—</div>
     <div class="kpi-sub" id="kpi_invest_sub">je Investition</div>
   </div>
   <div class="kpi-card">
-    <div class="kpi-label">Abschreibung</div>
+    <div class="kpi-label">Kalkulatorische Abschreibung</div>
     <div class="kpi-value blue" id="kpi_afa">—</div>
     <div class="kpi-sub" id="kpi_afa_sub">je Jahr</div>
   </div>
+</div>
+
+<!-- ─── SZENARIEN ─────────────────────────────────────── -->
+<div class="section-card">
+  <div class="sec-title">Szenarien &middot; Was passiert, wenn die Annahmen nicht halten?</div>
+  <div style="overflow-x:auto;">
+  <table class="tbl">
+    <thead><tr><th style="text-align:left;">Szenario</th><th>Zeitersparnis Grob / Fein</th><th>budgetwirksam</th><th>ROI (Kursformel)</th><th>Amortisation</th><th>Gewinn Jahr 1 nach kalk. Abschreibung</th></tr></thead>
+    <tbody id="scen_body"></tbody>
+  </table>
+  </div>
+  <p style="font-size:12px;color:var(--muted);margin:.6rem 0 0;">Pessimistisch und optimistisch verändern Zeitersparnis und budgetwirksamen Anteil um je ein Viertel ihres Werts (höchstens 95 % bzw. 100 %). Das sind gesetzte Bandbreiten, keine Erfahrungswerte — ersetze sie durch die Spanne aus Deinem Pilot. Der pessimistische Fall ist der Worst-Case-ROI für die Entscheidungsvorlage.</p>
 </div>
 
 <!-- ─── BREAKDOWN ─────────────────────────────────────── -->
@@ -578,16 +595,16 @@ a{color:var(--accent);}
 <!-- ─── FOOTER ────────────────────────────────────────── -->
 <div class="note-box" style="margin-top:1.2rem;">
   <strong>Methodische Hinweise</strong>
-  Dieses Modell rechnet die Zahlungsreihe standardmässig <strong>ohne Diskontierung</strong> und ist auf Plausibilitätsbewertung ausgelegt. Für eine Investitionsentscheidung trägst Du oben den von Finance vorgegebenen Kalkulationszins ein — dann weist der Rechner den <strong>Kapitalwert</strong> aus. Der Jahres-ROI bleibt in jedem Fall eine Grösse je Periode und ist mit einer Mindestrendite nicht unmittelbar vergleichbar.
+  Dieses Modell rechnet die Zahlungsreihe standardmässig <strong>ohne Diskontierung</strong> und ist auf Plausibilitätsbewertung ausgelegt. Es ist eine Planungshilfe und ersetzt keine rechtliche, aufsichtsrechtliche oder steuerliche Prüfung des Einzelfalls. Im Beispielfall bereitet die KI die Prüfung vor; die Entscheidung über einen Antrag trifft ein Mensch. Trifft ein System Entscheidungen über natürliche Personen ohne inhaltliche menschliche Prüfung, gelten die Grenzen des Art. 22 DSGVO — diese Einordnung gehört vor den Business Case. Für eine Investitionsentscheidung trägst Du oben den von Finance vorgegebenen Kalkulationszins ein — dann weist der Rechner den <strong>Kapitalwert</strong> aus. Der Jahres-ROI bleibt in jedem Fall eine Grösse je Periode und ist mit einer Mindestrendite nicht unmittelbar vergleichbar.
   Berücksichtigt werden direkte Personalzeitersparnisse auf Basis des <em>aktuellen</em> Vorgangsvolumens.
-  Der <em>Umlagefaktor</em> bildet ab, dass CAPEX und OPEX einer KI-Plattform meist mehreren Vorhaben zugutekommen —
-  nur der zugerechnete Anteil belastet diesen Business Case.<br>
-  <strong>Zwei Sichten auf dieselbe Investition:</strong> Die <em>Ergebnissicht</em> verteilt die umgelegte CAPEX als Abschreibung linear über die Nutzungsdauer (CAPEX &divide; Nutzungsdauer je Jahr). Daraus ergeben sich Gewinn und ROI je Jahr; genauso geht die CAPEX in die annualisierten, allokierten Kosten KI des Future State ein.
-  Die <em>Zahlungssicht</em> setzt die CAPEX als Auszahlung in Jahr 0 an und nach Ablauf der Nutzungsdauer als Ersatzinvestition in gleicher Höhe. Daraus ergeben sich der kumulierte Zahlungsüberschuss und die Amortisation.
+  Der <em>Umlagefaktor</em> bildet ab, dass die Kosten einer KI-Plattform (Entwicklung und Kauflizenzen, Lizenz-Abonnements, Cloud) meist mehreren Vorhaben zugutekommen —
+  nur der zugerechnete Anteil belastet diesen Business Case. Nutzungsabhängige Modellkosten und alle vorhabenspezifischen Posten (Daten und Integration, Schulung, interne Zeit, Updates, Monitoring, Support, Exit) zählen immer voll.<br>
+  <strong>Zwei Sichten auf dieselbe Investition:</strong> Die <em>Ergebnissicht</em> verteilt die angerechnete CAPEX als kalkulatorische Abschreibung linear über die Nutzungsdauer (CAPEX &divide; Nutzungsdauer je Jahr) und die Exit-Kosten gleichmäßig über die sechs Perioden (Konvention: Der Ausstieg wird über die Laufzeit angespart). Daraus ergibt sich der Gewinn je Jahr. Das ist keine Ergebnisrechnung im Sinne des Rechnungswesens und keine bilanzielle oder steuerliche AfA; genauso geht die CAPEX in die annualisierten, allokierten Kosten KI des Future State ein.
+  Die <em>Zahlungssicht</em> setzt die CAPEX als Auszahlung in Jahr 0 an und nach Ablauf der Nutzungsdauer als Ersatzinvestition in gleicher Höhe — eine vorsichtige Annahme, denn Schulung und Projektzeit fallen beim Ersatz selten in voller Höhe erneut an. Die Exit-Kosten stehen am Ende von Jahr 5, der nicht aufgebrauchte Teil der letzten Investition wird dort als Restwert gutgeschrieben. Beim Kapitalwert zählt Jahr 0 als Zeitpunkt 0 (nicht abgezinst), jedes weitere Jahr wird um ein Jahr mehr abgezinst. Daraus ergeben sich der kumulierte Zahlungsüberschuss und die Amortisation.
   Beide Sichten werden getrennt geführt — es gibt keine Doppelzählung. Die Nutzungsdauer beginnt mit Jahr 0; weil nach ihrem Ablauf ersetzt wird, läuft die Abschreibung in jedem Jahr weiter.
   Strategische Zusatznutzen (Skalierung, Qualität, Time-to-Decision) sind nicht eingerechnet.
-  ROI-Formel: <strong>Gewinn &divide; investiertes Kapital &times; 100</strong> — angewendet je Jahr, nicht kumuliert: Der ROI ist wie eine Verzinsung eine Kennzahl je Periode. Im Nenner steht das eingesetzte Kapital, nicht die Summe aller Kosten.<br>
-  <strong>Annahmen für Jahr 0 (Einführungsjahr):</strong> Die Lösung läuft in diesem Jahr noch nicht durchgängig. Angesetzt werden daher <strong>50 % der umgelegten OPEX</strong> (der laufende Betrieb startet erst im Jahresverlauf) und <strong>25 % der jährlichen Personalersparnis</strong> (Einführung, Schulung und Anlaufkurve verzögern den Nutzen). Ab Jahr 1 werden beide Werte voll angesetzt. Beide Anteile sind gesetzte Planungsannahmen, keine empirischen Werte — für einen realen Business Case sind sie durch eigene Erfahrungswerte zu ersetzen. Die Amortisation wird aus der Zahlungssicht abgeleitet und berücksichtigt damit auch das Einführungsjahr. Investitionen fallen zu Jahresbeginn an, Ersparnis und OPEX verteilen sich gleichmäßig über das Jahr.<br>
+  ROI-Formel: <strong>(jährlicher Nutzen &minus; laufende Kosten) &divide; Investitionssumme &times; 100</strong> — angewendet je Jahr, nicht kumuliert: Der ROI ist wie eine Verzinsung eine Kennzahl je Periode. Im Nenner steht das eingesetzte Kapital, nicht die Summe aller Kosten.<br>
+  <strong>Annahmen für Jahr 0 (Einführungsjahr):</strong> Die Lösung läuft in diesem Jahr noch nicht durchgängig. Angesetzt werden daher <strong>50 % der festen laufenden Kosten</strong> (der Betrieb startet erst im Jahresverlauf) sowie für den Nutzen und die nutzungsabhängigen Modellkosten der Anteil aus dem Feld <strong>„Nutzungsgrad im Einführungsjahr“</strong> (Vorgabe 25 %; Einführung, Schulung und Anlaufkurve verzögern die Nutzung). Ab Jahr 1 werden alle Werte voll angesetzt. Beide Anteile sind gesetzte Planungsannahmen, keine empirischen Werte — für einen realen Business Case sind sie durch eigene Erfahrungswerte zu ersetzen. Die Amortisation wird aus der Zahlungssicht abgeleitet und berücksichtigt damit auch das Einführungsjahr. Investitionen fallen zu Jahresbeginn an, Ersparnis und OPEX verteilen sich gleichmäßig über das Jahr.<br>
   Quellen: <a href="https://welt-der-bwl.de/ROI-Return-on-Investment" target="_blank">Welt der BWL</a> &middot; <a href="https://www.gabler-banklexikon.de/definition/return-investment-roi-60969" target="_blank">Gabler Banklexikon</a> &middot; <a href="https://wiki.hslu.ch/controlling/DuPont-Kennzahlensystem" target="_blank">Hochschule Luzern — DuPont-Kennzahlensystem</a>
 </div>
 
@@ -631,11 +648,18 @@ function getInputs(){
     c_monitor:   v('c_monitor'),
     c_support:   v('c_support'),
     c_exit:      v('c_exit'),
-    cash_share:  v('cash_share')/100,
+    cash_share:  Math.min(1, Math.max(0, v('cash_share')/100)),
     dis_benefit: v('dis_benefit'),
-    ramp:        v('ramp')/100,
+    ramp:        Math.min(1, Math.max(0, v('ramp')/100)),
     zins:        v('zins')/100,
+    c_lizenz:    v('c_lizenz'),
   };
+}
+
+function restwertVon(p, capex_alloc, years){
+  const letzte  = years.filter(y => y % p.capex_years === 0).pop();
+  const genutzt = years.length - letzte;
+  return capex_alloc * Math.max(0, p.capex_years - genutzt) / p.capex_years;
 }
 
 function compute(p){
@@ -654,12 +678,16 @@ function compute(p){
   const sv_fte         = (sv_h_total_mo * 12) / (220 * 8) * 100;
 
   // ── ③ Expenditure ──
+  // Der Umlagefaktor gilt nur fuer Plattformkosten (Entwicklung/Kauflizenzen, Lizenz-Abos, Cloud).
+  // Vorhabenspezifische Posten und nutzungsabhaengige Modellkosten zaehlen immer zu 100 %.
   const capex_total    = p.c_dev + p.c_data + p.c_train + p.c_intern;
   const token_yr       = p.c_token * p.vol * 12;
-  const opex_total_yr  = p.c_infra + p.c_maint + p.c_monitor + p.c_support + token_yr;
-  const exit_alloc     = p.c_exit * p.alloc;
-  const capex_alloc    = capex_total   * p.alloc;
-  const opex_alloc_yr  = opex_total_yr * p.alloc;
+  const opex_fix_total = p.c_lizenz + p.c_infra + p.c_maint + p.c_monitor + p.c_support;
+  const opex_total_yr  = opex_fix_total + token_yr;
+  const exit_alloc     = p.c_exit;
+  const capex_alloc    = p.c_dev * p.alloc + p.c_data + p.c_train + p.c_intern;
+  const opex_fix_alloc = (p.c_lizenz + p.c_infra) * p.alloc + p.c_maint + p.c_monitor + p.c_support;
+  const opex_alloc_yr  = opex_fix_alloc + token_yr;
   const capex_alloc_mo = capex_alloc / (p.capex_years * 12);
   const opex_alloc_mo  = opex_alloc_yr / 12;
   const ki_cost_mo     = capex_alloc_mo + opex_alloc_mo;
@@ -681,12 +709,13 @@ function compute(p){
   // Kapazitaetsgewinn (bewertet) -> budgetwirksamer Anteil -> abzueglich Dis-Benefits.
   const kapazitaet_yr   = sv_value_mo * 12;
   const budget_yr       = kapazitaet_yr * p.cash_share;
-  const saving_gross_yr = Math.max(0, budget_yr - p.dis_benefit);
+  const saving_gross_yr = budget_yr - p.dis_benefit;   // darf negativ werden: Der Ueberhang wirkt als Kosten
   const saving_net_yr   = saving_gross_yr - opex_alloc_yr;
   const afa_yr          = capex_alloc / p.capex_years;
-  // Break-even: Anteil der angenommenen Zeitersparnis, bei dem der Nettonutzen null wird.
+  // Break-even: Anteil der angenommenen Zeitersparnis, bei dem der Gewinn nach kalkulatorischer
+  // Abschreibung und verteilten Exit-Kosten null wird (dieselbe Groesse wie „Gewinn / Jahr“).
   const be_anteil = (budget_yr > 0)
-    ? (opex_alloc_yr + p.dis_benefit + afa_yr) / (kapazitaet_yr * p.cash_share) * 100 : Infinity;
+    ? (opex_alloc_yr + p.dis_benefit + afa_yr + exit_alloc / 6) / budget_yr * 100 : Infinity;
 
   // ── Zeitreihe ──
   // Jahr 0 ist das Einführungsjahr: Die Lösung läuft noch nicht das volle Jahr.
@@ -694,7 +723,15 @@ function compute(p){
   const Y0_OPEX_ANTEIL = 0.50;  // 50 % der umgelegten OPEX
   const Y0_NUTZEN_ANTEIL = p.ramp;  // Hochlauf im Einführungsjahr, Eingabefeld
   const years        = [0,1,2,3,4,5];
-  const running_disp = years.map(y => y===0 ? opex_alloc_yr  * Y0_OPEX_ANTEIL   : opex_alloc_yr);
+  // Feste laufende Kosten im Jahr 0 zu 50 %; nutzungsabhaengige Modellkosten folgen dem Hochlauf.
+  const running_disp = years.map(y => y===0 ? opex_fix_alloc * Y0_OPEX_ANTEIL + token_yr * Y0_NUTZEN_ANTEIL : opex_alloc_yr);
+  const anteil       = years.map(y => y===0 ? Y0_NUTZEN_ANTEIL : 1);
+  const kap_disp     = anteil.map(a => kapazitaet_yr * a);
+  const bud_disp     = anteil.map(a => budget_yr * a);
+  const dis_disp     = anteil.map(a => p.dis_benefit * a);
+  const exit_disp    = years.map(() => exit_alloc / years.length);
+  const exit_cash    = years.map((y,i) => i === years.length - 1 ? exit_alloc : 0);
+  const rest_cash    = years.map((y,i) => i === years.length - 1 ? restwertVon(p, capex_alloc, years) : 0);
   const bens         = years.map(y => y===0 ? saving_gross_yr * Y0_NUTZEN_ANTEIL : saving_gross_yr);
 
   // Ergebnissicht. Die Nutzungsdauer beginnt mit Jahr 0; nach ihrem Ablauf wird ersetzt,
@@ -731,7 +768,7 @@ function compute(p){
   // Investitionen fallen zu Jahresbeginn an, Ersparnis und OPEX gleichmäßig über das Jahr.
   let payback_mo = Infinity;
   if (capex_alloc <= 0) {
-    payback_mo = 0;
+    payback_mo = saving_net_yr > 0 ? 0 : Infinity;   // ohne Investition nur bei positivem Nettonutzen „0“
   } else {
     let kum = 0;
     for (let i = 0; i < years.length; i++){
@@ -751,7 +788,8 @@ function compute(p){
     capex_alloc_mo, opex_alloc_mo, ki_cost_mo,
     fs_h_gross_case, fs_h_detail_case, fs_h_mo, fs_personal_mo, fs_cost_mo, fs_cost_case, fs_delta_mo,
     saving_gross_yr, saving_net_yr, afa_yr, payback_mo,
-    invest_disp, running_disp, bens, afa_disp, gewinn, roi_yr, cash, cumul
+    invest_disp, running_disp, bens, afa_disp, gewinn, roi_yr, cash, cumul,
+    kap_disp, bud_disp, dis_disp, exit_disp, exit_cash, rest_cash
   };
 }
 
@@ -823,26 +861,45 @@ function calculate(){
 
   // ── KPIs ──
   const jahre = n => n + (n === 1 ? ' Jahr' : ' Jahre');
-  set('kpi_payback', isFinite(r.payback_mo) ? fmtMo(r.payback_mo) : 'nach Jahr 5');
+  const pbText = x => isFinite(x) ? fmtMo(x) : 'keine bis Jahr 5';
+  set('kpi_payback', pbText(r.payback_mo));
   set('kpi_roi_ho', fmtPct(r.roi_ho[1]));
   set('kpi_gewinn1', fmtEur(r.gewinn[1]));
   set('kpi_kap',     fmtEur(r.kapazitaet_yr));
   set('kpi_kap_sub', 'davon budgetwirksam: ' + fmtEur(r.budget_yr) + ' je Jahr');
   set('kpi_npv',     fmtEur(r.npv));
   set('kpi_restwert', fmtEur(r.restwert));
+  set('kpi_npv_label', p.zins > 0 ? 'Kapitalwert' : 'Summe Zahlungsüberschüsse');
   set('kpi_npv_sub', p.zins > 0
-    ? 'bei ' + fmt(p.zins*100,1) + ' % über ' + r.jahre_n + ' Jahre'
-    : 'ohne Diskontierung — Zinssatz oben eintragen');
+    ? 'bei ' + fmt(p.zins*100,1) + ' % · Jahr 0 bis 5 (6 Perioden) · Jahr 0 nicht abgezinst'
+    : 'undiskontiert · Jahr 0 bis 5 (6 Perioden) — für den Kapitalwert Zinssatz oben eintragen');
   set('kpi_be',      isFinite(r.be_anteil) ? fmt(r.be_anteil,0) + ' %' : '—');
   set('kpi_invest',  fmtEur(r.capex_alloc));
   set('kpi_invest_sub', p.capex_years > 5 ? 'einmalig im Betrachtungszeitraum' : 'je Investition · Ersatz nach ' + p.capex_years + (p.capex_years === 1 ? ' Jahr' : ' Jahren'));
   set('kpi_afa',     fmtEur(r.afa_yr));
-  set('kpi_afa_sub', 'je Jahr · CAPEX ÷ ' + jahre(p.capex_years));
-  set('kpi_roi1',    fmtPct(r.roi_yr[1]));
+  set('kpi_afa_sub', 'je Jahr · CAPEX ÷ ' + jahre(p.capex_years) + ' · keine bilanzielle AfA');
   const roiEl = document.getElementById('kpi_roi_ho');
   if (roiEl) roiEl.className = 'kpi-value ' + (r.roi_ho[1] >= 0 ? 'green' : 'neg');
   const gwEl = document.getElementById('kpi_gewinn1');
   if (gwEl) gwEl.className = 'kpi-value ' + (r.gewinn[1] >= 0 ? '' : 'neg');
+
+  // ── Szenarien (CR-132): gesetzte Bandbreite von einem Viertel um die Eingaben ──
+  const scen = [['Pessimistisch', 0.75], ['Basis (Eingaben)', 1], ['Optimistisch', 1.25]];
+  document.getElementById('scen_body').innerHTML = scen.map(([name, f]) => {
+    const q  = Object.assign({}, p, {
+      eff_gross:  Math.min(0.95, p.eff_gross  * f),
+      eff_detail: Math.min(0.95, p.eff_detail * f),
+      cash_share: Math.min(1,    p.cash_share * f)
+    });
+    const x  = compute(q);
+    const cl = val => val < 0 ? 'neg' : val > 0 ? 'pos' : '';
+    return `<tr${f === 1 ? ' class="tr-result"' : ''}><td>${name}</td>`
+      + `<td>${fmt(q.eff_gross*100,1)} % / ${fmt(q.eff_detail*100,1)} %</td>`
+      + `<td>${fmt(q.cash_share*100,1)} %</td>`
+      + `<td class="${cl(x.roi_ho[1])}">${fmtPct(x.roi_ho[1])}</td>`
+      + `<td>${pbText(x.payback_mo)}</td>`
+      + `<td class="${cl(x.gewinn[1])}">${fmtEur(x.gewinn[1])}</td></tr>`;
+  }).join('');
 
   // ── Vergleichsbalken (je Monat) ──
   const maxVal = Math.max(r.bl_cost_mo, r.fs_cost_mo, 1);
@@ -860,9 +917,9 @@ function calculate(){
     <div class="bar-row"><span class="bar-label" style="font-weight:600">④ Future State — gesamt</span>
       <div class="bar-track"><div class="bar-fill cost" style="width:${barPct(r.fs_cost_mo)}%;opacity:.8"></div></div>
       <span class="bar-val neg">${fmtEur(r.fs_cost_mo)}</span></div>
-    <div class="bar-row"><span class="bar-label" style="font-weight:700;color:var(--green)">Differenz je Monat</span>
-      <div class="bar-track"><div class="bar-fill save" style="width:${barPct(Math.abs(r.fs_delta_mo))}%">&nbsp;</div></div>
-      <span class="bar-val pos">${fmtEur(r.fs_delta_mo)}</span></div>
+    <div class="bar-row"><span class="bar-label" style="font-weight:700;color:var(--${r.fs_delta_mo >= 0 ? 'green' : 'red'})">Differenz je Monat${r.fs_delta_mo >= 0 ? '' : ' (Mehrkosten)'}</span>
+      <div class="bar-track"><div class="bar-fill ${r.fs_delta_mo >= 0 ? 'save' : 'cost'}" style="width:${barPct(Math.abs(r.fs_delta_mo))}%">&nbsp;</div></div>
+      <span class="bar-val ${r.fs_delta_mo >= 0 ? 'pos' : 'neg'}">${fmtEur(r.fs_delta_mo)}</span></div>
   `;
 
   // ── Stunden-Vergleich (Jahr) ──
@@ -891,7 +948,7 @@ function calculate(){
         <td style="text-align:right;padding:.4rem .5rem;color:var(--green);">${fmt(r.sv_h_total_mo*12,0)} h</td></tr>
       <tr>
         <td colspan="2" style="padding:.5rem .5rem;font-size:11px;color:var(--muted);">
-          entspricht ${fmt(r.sv_fte,1)} % einer Vollzeitstelle (220 AT × 8 h)
+          entspricht ${fmt(r.sv_fte,1)} % einer Vollzeitstelle (Annahme: Sollarbeitszeit 220 AT × 8 h)
         </td></tr>
     </table>
   `;
@@ -900,14 +957,21 @@ function calculate(){
   // Break-even: Spalte des Jahres, in dem der kumulierte Zahlungsüberschuss null erreicht.
   const beIdx = isFinite(r.payback_mo) ? Math.max(0, Math.ceil(r.payback_mo / 12) - 1) : -1;
   const rows = [
+    {sec:'Nutzen'},
+    {label:'Bewertete Kapazität (€)',                   vals:r.kap_disp,     isInfo:true},
+    {label:'davon budgetwirksam (€)',                   vals:r.bud_disp},
+    {label:'− Dis-Benefits (€)',                        vals:r.dis_disp,     isCost:true},
+    {label:'= Budgetwirksamer Nutzen nach Dis-Benefits (€)', vals:r.bens,    bold:true, isNet:true},
     {sec:'Ergebnissicht — Gewinn und ROI'},
-    {label:'Jährl. Personalersparnis (€)',              vals:r.bens},
-    {label:'Umgelegte OPEX (€/Jahr)',                   vals:r.running_disp, isCost:true},
-    {label:'Abschreibung (CAPEX ÷ Nutzungsdauer)',      vals:r.afa_disp,     isCost:true},
-    {label:'Gewinn / Jahr (€)',                         vals:r.gewinn,       bold:true, isNet:true},
-    {label:'ROI / Jahr (%)',                            vals:r.roi_yr,       bold:true, isRoi:true},
-    {sec:'Zahlungssicht — Amortisation'},
-    {label:'Investition und Ersatzinvestition (€)',     vals:r.invest_disp,  isCost:true},
+    {label:'− Laufende Kosten, angerechnet (€)',        vals:r.running_disp, isCost:true},
+    {label:'ROI / Jahr (%) — (Nutzen − laufende Kosten) ÷ Investition', vals:r.roi_ho, bold:true, isRoi:true},
+    {label:'− Kalkulatorische Abschreibung (CAPEX ÷ Nutzungsdauer)', vals:r.afa_disp, isCost:true},
+    {label:'− Exit-Kosten, über 6 Perioden verteilt (€)', vals:r.exit_disp,  isCost:true},
+    {label:'= Gewinn / Jahr (€)',                       vals:r.gewinn,       bold:true, isNet:true},
+    {sec:'Zahlungssicht — Amortisation (Nutzen − laufende Kosten − Investition − Exit + Restwert)'},
+    {label:'− Investition und Ersatzinvestition (€)',   vals:r.invest_disp,  isCost:true},
+    {label:'− Exit-Kosten am Ende (€)',                 vals:r.exit_cash,    isCost:true},
+    {label:'+ Restwert der letzten Investition (€)',    vals:r.rest_cash},
     {label:'Zahlungsüberschuss / Jahr (€)',             vals:r.cash,         bold:true, isNet:true},
     {label:'Kumulierter Zahlungsüberschuss (€)',        vals:r.cumul,        bold:true, isCumul:true},
   ];
@@ -926,7 +990,7 @@ function calculate(){
     tr.innerHTML = `<td style="font-weight:${row.bold?'600':'400'}">${row.label}</td>` +
       row.vals.map((val,i) => {
         // Kostenzeilen rot, Ergebniszeilen nach Vorzeichen
-        const cls = row.isCost ? (val > 0 ? 'neg' : '') : (val < 0 ? 'neg' : val > 0 ? 'pos' : '');
+        const cls = row.isInfo ? '' : row.isCost ? (val > 0 ? 'neg' : '') : (val < 0 ? 'neg' : val > 0 ? 'pos' : '');
         const mk  = row.isCumul && i === beIdx ? '<span class="be-marker">Break-even ↑</span>' : '';
         const txt = row.isRoi ? fmtPct(val) : fmtEur(val);
         return `<td class="${cls}">${txt}${mk}</td>`;
@@ -942,7 +1006,7 @@ function calculate(){
 const CASE_KEY = 'roi-rechner-fall-v1';
 const CASE_DEFAULT = {
   title: 'ROI-Rechner &middot; KI-Projekt',
-  lead:  'Die Bank plant, Kreditanträge und Investitionsvorhaben einer automatischen Vorprüfung zu unterziehen. Im Moment bindet dieser Prozess relativ teure menschliche Ressourcen.'
+  lead:  'Die Bank plant, Kreditanträge und Investitionsvorhaben einer automatischen Vorprüfung zu unterziehen. Im Moment bindet dieser Prozess relativ teure menschliche Ressourcen. Die KI bereitet die Prüfung vor; die Entscheidung über den Antrag trifft weiterhin ein Mensch.'
 };
 
 function caseEls(){
@@ -979,13 +1043,9 @@ function resetCase(){
 }
 
 function resetDefaults(){
-  const defaults = {vol:17,h_gross:3,pct_detail:50,h_detail:12,rate:120,
-                    eff_gross:70,eff_detail:50,c_dev:25000,c_data:75000,
-                    c_train:5000,c_infra:5000,c_maint:2500,alloc:100,capex_years:3};
-  Object.entries(defaults).forEach(([k,val])=>{
-    const el = document.getElementById(k);
-    if(el) el.value = val;
-  });
+  // Alle Zahlenfelder auf die Vorgabe aus dem HTML zuruecksetzen — so bleibt das Beispiel
+  // reproduzierbar, auch wenn spaeter Felder hinzukommen. Die Nachweisfelder bleiben stehen.
+  document.querySelectorAll('input[type=number]').forEach(el => { el.value = el.defaultValue; });
   calculate();
 }
 
