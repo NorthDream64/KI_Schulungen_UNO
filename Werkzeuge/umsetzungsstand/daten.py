@@ -282,6 +282,33 @@ T3_OFFEN = [
          titel='Feldzahlen des Canvas nicht nachzählbar, Quelle des „Selbstchecks der Zertifizierer“ unklar',
          det='Die Feldzahl hängt daran, welches Werkzeug Du austeilst (siehe CL-KIM-T3-09). Für den '
              'Selbstcheck brauche ich von Dir, woher er stammt — sonst nehme ich die Bezeichnung heraus.'),
+    dict(id='CL-KIM-T3-32', sev='🟡', wer='ent', fund='Hand-Out, Leitfragen zum Canvas, ③', st='offen',
+         titel='Erfolgsfaktoren und Erfolgskriterien in Leitfrage ③ trennen',
+         det='Die Leitfrage setzt kritische Erfolgsfaktoren (Voraussetzungen) mit Erfolgskriterien gleich (woran Erfolg gemessen wird). Der Einwand trägt — berührt aber T3-15, wo die KEF-Frage am 17.11. bewusst nach ③ gewandert ist. Vorschlag: beide Fragen in ③ nebeneinander stellen, erst die Kennzahl mit Zielwert, dann die Voraussetzungen.'),
+    dict(id='CL-KIM-T3-33', sev='🟡', wer='ent', fund='Hand-Out, Basiswissen „Priorisieren“, Matrix ohne Kosten, Quadrant Quick Win', st='offen',
+         titel='Braucht ein schneller Erfolg auch eine Wirtschaftlichkeitsrechnung?',
+         det='Hier widerspricht Claudia Deiner Entscheidung vom 18.11. (T3-01, Achsentrennung). Ihr Argument ist feiner: Die Doppelzählung betrifft nur das Kosten-Nutzen-Verhältnis, nicht die Aufwandshöhe; in Impact-Effort-Matrizen ist Aufwand eine übliche Achse. Mein Vorschlag: Achsentrennung bleibt, ein Satz ergänzt, dass auch ein schneller Erfolg Zielwert, Aufwand und eine kleine Wirtschaftlichkeitsrechnung bekommt.'),
+    dict(id='CL-KIM-T3-34', sev='🟡', wer='ent', fund='Hand-Out, „Bevor der Projektauftrag erteilt wird“, Konzeptkarte', st='offen',
+         titel='„Scheitern selten an der Modellgüte“ — Häufigkeitsbehauptung ohne Beleg',
+         det='Der Satz behauptet eine Häufigkeit ohne Beleg und steht im selben Kasten wie „Belastbar ist die Richtung, nicht die Rangfolge“. Bei generativen Anwendungen ist die Ergebnisqualität ein zentraler Machbarkeitspunkt, der in den fünf Dimensionen nur in der Querfrage steckt. Vorschlag: Superlativ abschwächen und die Ergebnisqualität ausdrücklich nennen.'),
+    dict(id='CL-KIM-T3-35', sev='🟡', wer='ent', fund='Hand-Out, Basiswissen „SMART“, Absatz zum Mittelwert', st='offen',
+         titel='Mittelwert pauschal als falsch bezeichnet',
+         det='Berechtigt: Mittelwert mal Fallzahl ergibt gerade die Kapazität für die ROI-Rechnung, und eine kürzere Durchlaufzeit ist kein Bearbeitungsaufwand. Vorschlag: Median als Service-Ziel, Mittelwert für die Mengenrechnung — beides benannt, statt den Mittelwert pauschal für falsch zu erklären.'),
+    dict(id='CL-KIM-T3-36', sev='🟡', wer='ent', fund='Hand-Out, Weiterführendes Wissen, Kapitel gtk-studien, Note und Spaltenkopf', st='offen',
+         titel='Das Studienkapitel wirkt belegter, als die Daten tragen',
+         det='Die NANDA-Einsparungen sind Selbstauskünfte und Einzelbeispiele, und die drei Größen stammen aus verschiedenen Erhebungen (BCG: KI insgesamt, 1.250 Befragte; NANDA: generative KI). Vorschlag: einen Satz zur eingeschränkten Vergleichbarkeit ergänzen.'),
+    dict(id='CL-KIM-T3-47', sev='⚪', wer='ich', fund='Hand-Out, Konzeptkarte „Bevor der Projektauftrag erteilt wird“, NANDA und Daten', st='offen',
+         titel='NANDA-Aussage zum Haupthemmnis nicht am Primärtext prüfbar',
+         det='Das Primär-PDF des Berichts ist nicht abrufbar (HTTP 404), die Aussage „der NANDA-Bericht widerspricht der Vorstellung, Daten seien das Haupthemmnis, ausdrücklich“ also nicht prüfbar. Vorschlag: auf das abschwächen, was die Sekundärberichte tragen — oder streichen.'),
+    dict(id='CL-KIM-T3-49', sev='⚪', wer='du', fund='Hand-Out, Mercedes-Fall, Rechenzentren und Austauschbarkeit', st='offen',
+         titel='Mercedes-Fall: rechtliche Seite nicht bewertet',
+         det='Übergabe zwischen den Perspektiven: Rechenzentren in Europa und Austauschbarkeit der Modellanbieter hat keine Perspektive rechtlich bewertet. Erledigt sich mit dem nächsten Lauf von /claudia oder einem gezielten /compliance-review.'),
+    dict(id='CL-KIM-T3-50', sev='⚪', wer='du', fund='Hand-Out, Mercedes-Fall, Hinweis „Austauschbarkeit“ für Tag 5', st='offen',
+         titel='Mercedes-Fall: Tag-5-Hinweis aus PM-Sicht nicht bewertet',
+         det='Übergabe zwischen den Perspektiven: Der Hinweis „Austauschbarkeit als Thema für Tag 5“ ist aus PM-Sicht (Build vs. Buy) nicht bewertet. Gegenprobe von mir: Tag 5 behandelt Plattform, Agenten und „selbst bauen oder zukaufen“ — der Verweis trägt inhaltlich.'),
+    dict(id='CL-KIM-T3-51', sev='⚪', wer='ich', fund='Hand-Out, Quellenverzeichnis, Quellenchip Digital Omnibus', st='offen',
+         titel='Digital-Omnibus-Link nicht geprüft',
+         det='Der Abruf des Links ist zweimal an einer unbeantworteten Freigabeanfrage gescheitert, nicht an der Seite. Über den Link selbst sage ich deshalb nichts. Nachholen, sobald die Freigabe durchgeht.'),
 ]
 
 T3_MEINS = [
@@ -313,6 +340,42 @@ T3_FERTIG = [
                     'der Abgleich gegen Anhang A ist der Schritt, die Erklärung das '
                     'Ergebnisdokument; Satz entsprechend neu gefasst', '24.11.2026'),
     ('CL-KIM-T3-31', '⚪', 'Normbezeichnung DIN EN ISO/IEC 42001 am Deckblatt bestätigt', '17.11.2026'),
+    ('CL-KIM-T3-37', '🟡', 'Auf derselben Seite wird die hypothetische Verteilungsübung einmal den 50 '
+                          '% und einmal den 70 % zugeordnet.',
+                          '24.11.2026'),
+    ('CL-KIM-T3-38', '🟢', 'übernommen · Die Leitfrage setzt ein eigenes Training voraus und fragt '
+                          'nicht nach Prüfdaten mit bekannter richtiger Antwort.',
+                          '24.11.2026'),
+    ('CL-KIM-T3-39', '🟢', 'übernommen · Der Betriebsrat erscheint als „Betroffener“ und nicht als '
+                          'Gremium mit Informations- und Mitbestimmungsrechten.',
+                          '24.11.2026'),
+    ('CL-KIM-T3-40', '🟢', 'Der Verweis auf „Block 1“ geht ins Leere, weil das Hand-Out keinen Block 1 '
+                          'hat.',
+                          '24.11.2026'),
+    ('CL-KIM-T3-41', '🟢', 'übernommen · Die Frage nach dem Nutzungsrecht nennt weder Urheber- und '
+                          'Datenbankrechte an Fremddaten noch Geschäftsgeheimnisse.',
+                          '24.11.2026'),
+    ('CL-KIM-T3-42', '🟢', 'übernommen · In der Compliance-Checkliste fehlt die KI-Verordnung.',
+                          '24.11.2026'),
+    ('CL-KIM-T3-43', '🟢', 'Der Superlativ ist eine Rangfolge ohne Beleg und widerspricht dem Satz '
+                          '„Belastbar ist die Richtung, nicht die Rangfolge“ aus demselben Abschnitt.',
+                          '24.11.2026'),
+    ('CL-KIM-T3-44', '🟢', 'BCG beschreibt eine Befragung und kein Modell, und bei „Ausnahme“ fehlt '
+                          'der Bezug.',
+                          '24.11.2026'),
+    ('CL-KIM-T3-45', '🟢', 'Die Überschrift macht die NANDA-Zahl zu einer MIT-Zahl, obwohl der Kurs '
+                          'den Bericht als Bericht des MIT-Projekts NANDA zitiert.',
+                          '24.11.2026'),
+    ('CL-KIM-T3-46', '🟢', 'Der Satz stellt eine von mehreren verbreiteten SMARTER-Varianten als die '
+                          'Erweiterung dar.',
+                          '24.11.2026'),
+    ('CL-KIM-T3-48', '⚪', 'Die Nutzerzahl hat der PM-Reviewer nicht geprüft, weil der Abruf der '
+                          'Konzernseite scheiterte.',
+                          '24.11.2026'),
+    ('CL-KIM-T3-52', '⚪', 'Ob StatPearls die Humphrey-Zuschreibung als umstritten darstellt oder '
+                          'Humphrey nur nennt, ist nicht geprüft, weil der Abruf an der '
+                          'Browserprüfung …',
+                          '24.11.2026'),
 ]
 
 TAGE = [
@@ -324,5 +387,5 @@ TAGE = [
          offen=T2_OFFEN + T2_MEINS, fertig=T2_FERTIG, gesamt=34),
     dict(nr=3, titel='KI-Anwendungsfälle · Welche KI — und wer macht was?',
          datei='KI-Manager/Tag 3 · Tag3_HandOut.html · 3-KIM-SWOT-Analyse-und-Use-Cases.pdf',
-         offen=T3_OFFEN + T3_MEINS, fertig=T3_FERTIG, gesamt=31),
+         offen=T3_OFFEN + T3_MEINS, fertig=T3_FERTIG, gesamt=52),
 ]
