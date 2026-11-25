@@ -492,62 +492,67 @@ Der Rechner ist in vier Schritten aufgebaut: <strong>① Baseline</strong> besch
     <div class="section-label">Einmalige Investitionen (CAPEX)</div>
     <div class="field">
       <label>Entwicklung &amp; Kauflizenzen <span class="hint">Plattformkosten — Umlagefaktor gilt</span></label>
-      <input type="number" id="c_dev" value="25000" min="0" step="1000">
+      <input type="number" id="c_dev" value="" min="0" step="1000">
       <div class="unit">€</div>
     </div>
     <div class="field">
       <label>Datenvorbereitung &amp; Integration &amp; Implementierung</label>
-      <input type="number" id="c_data" value="75000" min="0" step="1000">
+      <input type="number" id="c_data" value="" min="0" step="1000">
       <div class="unit">€</div>
     </div>
     <div class="field">
       <label>Schulung &amp; Change Management</label>
-      <input type="number" id="c_train" value="5000" min="0" step="500">
+      <input type="number" id="c_train" value="" min="0" step="500">
       <div class="unit">€</div>
     </div>
     <div class="field">
-      <label>Interne Personalzeit (PoC, Projektmanagement, Compliance-Setup)</label>
-      <input type="number" id="c_intern" value="30000" min="0" step="1000">
+      <label><em>Interne Personalkosten</em> <span class="hint">PoC, Projektmanagement, Compliance-Setup</span></label>
+      <input type="number" id="c_intern" value="" min="0" step="1000">
       <div class="unit">€</div>
 <div class="unit" style="font-size:10.5px;color:var(--muted);">Stunden × Vollkostensatz — eine echte Ressource, kein Nulltarif</div>    </div>
+
+    <div class="cf-divider"></div>
+    <div class="calc-field">
+      <span class="cf-label">Summe Einmal-Kosten <span class="cf-hint">die vier Posten oben, vor Umlage</span></span>
+      <div class="calc-out is-total"><span class="cv" id="sum_capex">—</span><span class="cu">&euro; einmalig</span></div>
+    </div>
 
     <div class="cf-divider"></div>
     <div class="section-label">Laufende Aufwendungen (OPEX)</div>
     <div class="field">
       <label>Lizenzen im Abonnement <span class="hint">Plattformkosten — Umlagefaktor gilt</span></label>
-      <input type="number" id="c_lizenz" value="0" min="0" step="500">
+      <input type="number" id="c_lizenz" value="" min="0" step="500">
       <div class="unit">€/Jahr</div>
 <div class="unit" style="font-size:10.5px;color:var(--muted);">KI-Lizenzen sind meist laufende Abonnements und gehören dann hierher, nicht zu den Einmalkosten</div>    </div>
     <div class="field">
       <label>Cloud-Infrastruktur <span class="hint">Plattformkosten — Umlagefaktor gilt</span></label>
-      <input type="number" id="c_infra" value="5000" min="0" step="500">
+      <input type="number" id="c_infra" value="" min="0" step="500">
       <div class="unit">€/Jahr</div>
     </div>
     <div class="field">
       <label>Updates, Re-Training &amp; Fine-Tuning</label>
-      <input type="number" id="c_maint" value="2500" min="0" step="500">
+      <input type="number" id="c_maint" value="" min="0" step="500">
       <div class="unit">€/Jahr</div>
     </div>
     <div class="field">
       <label>Nutzungsabhängige Modellkosten</label>
-      <input type="number" id="c_token" value="2" min="0" step="0.01">
+      <input type="number" id="c_token" value="" min="0" step="0.01">
       <div class="unit">€/Vorgang</div>
 <div class="unit" style="font-size:10.5px;color:var(--muted);">Token- oder API-Preis je Vorgang — als Annahme mit Bandbreite prüfen</div>    </div>
     <div class="field">
       <label>Monitoring, Evaluation &amp; Qualitätssicherung</label>
-      <input type="number" id="c_monitor" value="6000" min="0" step="500">
+      <input type="number" id="c_monitor" value="" min="0" step="500">
       <div class="unit">€/Jahr</div>
     </div>
     <div class="field">
       <label>Support, Audit &amp; Compliance</label>
-      <input type="number" id="c_support" value="4000" min="0" step="500">
+      <input type="number" id="c_support" value="" min="0" step="500">
       <div class="unit">€/Jahr</div>
     </div>
-    <div class="field">
-      <label>Exit- und Wechselkosten</label>
-      <input type="number" id="c_exit" value="10000" min="0" step="1000">
-      <div class="unit">€</div>
-<div class="unit" style="font-size:10.5px;color:var(--muted);">einmalig am Ende des Betrachtungszeitraums</div>    </div>
+    <div class="calc-field">
+      <span class="cf-label">Summe laufende Kosten <span class="cf-hint">je Jahr, vor Umlage &mdash; die nutzungsabh&auml;ngigen Modellkosten gehen mit dem Vorgangsvolumen ein</span></span>
+      <div class="calc-out is-total"><span class="cv" id="sum_opex">—</span><span class="cu">&euro;/Jahr</span></div>
+    </div>
 
   </div>
 </section>
@@ -757,7 +762,7 @@ Der Rechner ist in vier Schritten aufgebaut: <strong>① Baseline</strong> besch
           
         </div>
         <div class="reg">
-          <div class="reg-kopf"><span class="reg-name">Interne Personalzeit</span>
+          <div class="reg-kopf"><span class="reg-name">Interne Personalkosten</span>
             <span class="reg-wert" id="r_intern_v">—</span></div>
           <input type="range" id="r_intern" data-ziel="c_intern" data-einheit=" &euro;"
                  min="0" max="100000" step="2500">
@@ -845,7 +850,8 @@ const fmt = (n, dec=0) => isFinite(n)
 const fmtEur  = n => isFinite(n) ? fmt(n) + ' €' : '—';
 const fmtPct  = n => isFinite(n) ? fmt(n,1) + ' %' : '—';
 const fmtMo   = n => isFinite(n) ? fmt(n,1) + ' Mo.' : '—';
-const v = id  => parseFloat(document.getElementById(id).value) || 0;
+const v = id  => { const e = document.getElementById(id);
+  return e ? (parseFloat(e.value) || 0) : 0; };   // entfernte Felder zaehlen als 0
 const set = (id, txt) => { const el = document.getElementById(id); if(el) el.textContent = txt; };
 
 function getInputs(){
@@ -973,7 +979,9 @@ function compute(p){
   // den verteilten Exit-Kosten. Nur so tragen ROI und Gewinn dasselbe Vorzeichen.
   // Bewusst NICHT ueber mehrere Jahre kumuliert: Der ROI ist — wie eine Verzinsung —
   // eine Kennzahl je Periode.
-  const roi_yr = gewinn.map(g => capex_alloc > 0 ? g / capex_alloc * 100 : 0);
+  // Ohne eingetragene Investition hat der ROI keinen Nenner. Dann NaN statt 0 —
+  // fmtPct macht daraus „—“, und der Tachozeiger wird ausgeblendet.
+  const roi_yr = gewinn.map(g => capex_alloc > 0 ? g / capex_alloc * 100 : NaN);
 
   // Zahlungssicht. Erstinvestition in Jahr 0, Ersatzinvestition in Jahr N, 2N … (innerhalb des Zeitraums).
   const invest_disp  = years.map(y => (y % p.capex_years === 0) ? capex_alloc : 0);
@@ -1071,6 +1079,8 @@ function calculate(){
   set('sv_eff', r.bl_h_mo > 0 ? fmt((r.bl_h_mo - r.fs_h_mo) / r.bl_h_mo * 100, 1) + ' %' : '—');
 
   // ── ③ Expenditure ──
+  set('sum_capex', fmtEur(r.capex_total));
+  set('sum_opex',  fmtEur(r.opex_total_yr));
   set('ex_capex', fmt(r.capex_total)   + ' € → ' + fmt(r.capex_alloc)   + ' €');
   set('ex_opex',  fmt(r.opex_total_yr) + ' € → ' + fmt(r.opex_alloc_yr) + ' €');
 
@@ -1094,21 +1104,30 @@ function calculate(){
   // ROI: rot unter 0 %, gelb bis 5 %, gruen darueber. Skala -10 bis +30 %.
   renderGauge('g_roi', r.roi_yr[1], -10, 30,
     [[-10, 0, ROT], [0, 5, GELB], [5, 30, GRUEN]],
-    fmtPct(r.roi_yr[1]), 'je Jahr', r.roi_yr[1] < 0);
+    fmtPct(r.roi_yr[1]), isFinite(r.roi_yr[1]) ? 'je Jahr' : 'ohne Investition nicht berechenbar',
+    isFinite(r.roi_yr[1]) && r.roi_yr[1] < 0);
   // Amortisation: gruen unter 3 Jahren, gelb bis 7, rot darueber. Skala 0 bis 10 Jahre.
-  const payJ = isFinite(r.payback_mo) ? r.payback_mo / 12 : 99;
+  // Bei leerem CAPEX-Feld gibt es nichts zurueckzuverdienen. „0,0 Jahre“ las sich
+  // dort wie ein perfekter Fall — deshalb hier derselbe Strich wie beim ROI.
+  const ohneInvest = !(r.capex_alloc > 0);
+  const payJ = ohneInvest ? NaN : (isFinite(r.payback_mo) ? r.payback_mo / 12 : 99);
   renderGauge('g_pay', payJ, 0, 10,
     [[0, 3, GRUEN], [3, 7, GELB], [7, 10, ROT]],
-    isFinite(r.payback_mo) ? fmt(payJ, 1) : 'keine',
-    isFinite(r.payback_mo) ? 'Jahre · ' + fmtMo(r.payback_mo) : 'bis Jahr 5', !isFinite(r.payback_mo));
+    ohneInvest ? '—' : (isFinite(r.payback_mo) ? fmt(payJ, 1) : 'keine'),
+    ohneInvest ? 'noch keine Investition eingetragen'
+               : (isFinite(r.payback_mo) ? 'Jahre · ' + fmtMo(r.payback_mo) : 'bis Jahr 5'),
+    !ohneInvest && !isFinite(r.payback_mo));
   // Dieselben beiden Kennzahlen im Reiter „Stellhebel“
   renderGauge('h_roi', r.roi_yr[1], -10, 30,
     [[-10, 0, ROT], [0, 5, GELB], [5, 30, GRUEN]],
-    fmtPct(r.roi_yr[1]), 'je Jahr', r.roi_yr[1] < 0);
+    fmtPct(r.roi_yr[1]), isFinite(r.roi_yr[1]) ? 'je Jahr' : 'ohne Investition nicht berechenbar',
+    isFinite(r.roi_yr[1]) && r.roi_yr[1] < 0);
   renderGauge('h_pay', payJ, 0, 10,
     [[0, 3, GRUEN], [3, 7, GELB], [7, 10, ROT]],
-    isFinite(r.payback_mo) ? fmt(payJ, 1) : 'keine',
-    isFinite(r.payback_mo) ? 'Jahre · ' + fmtMo(r.payback_mo) : 'bis Jahr 5', !isFinite(r.payback_mo));
+    ohneInvest ? '—' : (isFinite(r.payback_mo) ? fmt(payJ, 1) : 'keine'),
+    ohneInvest ? 'noch keine Investition eingetragen'
+               : (isFinite(r.payback_mo) ? 'Jahre · ' + fmtMo(r.payback_mo) : 'bis Jahr 5'),
+    !ohneInvest && !isFinite(r.payback_mo));
 
   // ── Szenarien (CR-132): gesetzte Bandbreite von einem Viertel um die Eingaben ──
   // fz = Faktor auf die Zeitersparnis, fb = Faktor auf den budgetwirksamen Anteil.
@@ -1154,13 +1173,14 @@ function calculate(){
     {sec:'Ergebnissicht — Gewinn und ROI'},
     {label:'− Laufende Kosten, angerechnet (€)',        vals:r.running_disp, isCost:true},
     {label:'− Kalkulatorische Abschreibung (CAPEX ÷ Nutzungsdauer)', vals:r.afa_disp, isCost:true},
-    {label:'− Exit-Kosten, über 6 Perioden verteilt (€)', vals:r.exit_disp,  isCost:true},
+    ...(r.exit_alloc > 0 ? [{label:'− Exit-Kosten, über 6 Perioden verteilt (€)', vals:r.exit_disp, isCost:true}] : []),
     {label:'= Gewinn / Jahr (€)',                       vals:r.gewinn,       bold:true, isNet:true},
     {label:'ROI / Jahr (%) — Gewinn ÷ Investition',     vals:r.roi_yr,       bold:true, isRoi:true},
     {label:'Jährlicher Rückfluss (%) — vor Abschreibung, erklärt die Amortisation', vals:r.rueckfluss, isRoi:true, isInfo:true},
-    {sec:'Zahlungssicht — Amortisation (Nutzen − laufende Kosten − Investition − Exit + Restwert)'},
+    {sec:'Zahlungssicht — Amortisation (Nutzen − laufende Kosten − Investition'
+        + (r.exit_alloc > 0 ? ' − Exit' : '') + ' + Restwert)'},
     {label:'− Investition und Ersatzinvestition (€)',   vals:r.invest_disp,  isCost:true},
-    {label:'− Exit-Kosten am Ende (€)',                 vals:r.exit_cash,    isCost:true},
+    ...(r.exit_alloc > 0 ? [{label:'− Exit-Kosten am Ende (€)', vals:r.exit_cash, isCost:true}] : []),
     {label:'+ Restwert der letzten Investition (€)',    vals:r.rest_cash},
     {label:'Zahlungsüberschuss / Jahr (€)',             vals:r.cash,         bold:true, isNet:true},
     {label:'Kumulierter Zahlungsüberschuss (€)',        vals:r.cumul,        bold:true, isCumul:true},
@@ -1264,13 +1284,15 @@ function gaugeArc(a1, a2, r){
 function renderGauge(id, wert, min, max, baender, text, unit, istSchlecht){
   const arcs = document.getElementById(id + '_arcs');
   if (!arcs) return;
+  const nadelAus = !isFinite(wert);
   const klemm = v => Math.min(max, Math.max(min, v));
   const winkel = v => 180 - (klemm(v) - min) / (max - min) * 180;
   arcs.innerHTML = baender.map(([von, bis, farbe]) =>
     `<path d="${gaugeArc(winkel(von), winkel(bis), 76)}" stroke="${farbe}" stroke-width="14" fill="none"/>`
   ).join('');
   const nadel = document.getElementById(id + '_needle');
-  if (nadel) nadel.setAttribute('transform', `rotate(${(90 - winkel(wert)).toFixed(1)} 100 100)`);
+  if (nadel){ nadel.style.display = nadelAus ? 'none' : '';
+    if (!nadelAus) nadel.setAttribute('transform', `rotate(${(90 - winkel(wert)).toFixed(1)} 100 100)`); }
   const v = document.getElementById(id + '_val');
   if (v){ v.textContent = text; v.setAttribute('class', 'g-val' + (istSchlecht ? ' neg' : '')); }
   set(id + '_unit', unit || '');
