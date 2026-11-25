@@ -135,3 +135,7 @@ Querschnitt: Personal (Bewerber-Vorauswahl) · Verwaltung (Textassistenten, Copi
 
 ---
 *Letzte Aktualisierung: Oktober 2026 (Entwurf) – Ulrich Nord / Claude (Anthropic)*
+
+---
+
+© 2026 Ulrich Nord · Alle Rechte vorbehalten. Teilnehmerinnen und Teilnehmer dürfen dieses Material für die eigene berufliche Nutzung sowie innerhalb ihres Unternehmens verwenden, speichern, ausdrucken und weitergeben. Veröffentlichung und Verwendung in eigenen Schulungs- oder Beratungsangeboten bedürfen der schriftlichen Zustimmung.

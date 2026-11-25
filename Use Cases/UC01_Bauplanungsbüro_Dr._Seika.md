@@ -55,3 +55,7 @@ Die in UC 01 c entwickelte Lösung wird nunmehr von Dr. Seika und dem ursprüngl
 - [Phase0](https://www.phase0.com/) — Cloud-basierte AVA-, HOAI- und Bauleiter-Software für kleine und mittlere Planungsbüros mit KI-Funktionen
 
 *Hinweis: Für die in UC 01 c beschriebene Kombination aller Funktionen (CRM + Kalender + Skill-Datenbank + Projekt-Wissensdatenbank + Lieferantenabfrage) gibt es derzeit keine integrierte Standardlösung. Dies entspricht dem UC-Narrativ einer Eigenentwicklung.*
+
+---
+
+© 2026 Ulrich Nord · Alle Rechte vorbehalten. Teilnehmerinnen und Teilnehmer dürfen dieses Material für die eigene berufliche Nutzung sowie innerhalb ihres Unternehmens verwenden, speichern, ausdrucken und weitergeben. Veröffentlichung und Verwendung in eigenen Schulungs- oder Beratungsangeboten bedürfen der schriftlichen Zustimmung.

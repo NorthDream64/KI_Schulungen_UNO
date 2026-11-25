@@ -187,3 +187,7 @@ xxxx *(to be developed)*
 - **Evertune** — AI analytics firm, commissioned by the publication for the chatbot comparison. Vendor-adjacent; use the consistency finding as an illustration, not as a measurement.
 
 *Note: market-research and product/commission figures above are practitioner sources (not government/academic Tier-1). The city-break TAM and the ~5–10 % commission range are each supported by more than one of the sources listed. The Economist articles are quality journalism, not peer-reviewed research — the academic findings they report should be traced to the original work before this case goes to committee.*
+
+---
+
+© 2026 Ulrich Nord · Alle Rechte vorbehalten. Teilnehmerinnen und Teilnehmer dürfen dieses Material für die eigene berufliche Nutzung sowie innerhalb ihres Unternehmens verwenden, speichern, ausdrucken und weitergeben. Veröffentlichung und Verwendung in eigenen Schulungs- oder Beratungsangeboten bedürfen der schriftlichen Zustimmung.

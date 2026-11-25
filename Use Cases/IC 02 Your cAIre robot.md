@@ -223,3 +223,7 @@ xxxx *(to be developed)*
 - Humanoid landscape (1X NEO, Neura 4NE1) — [The Robot Report](https://www.therobotreport.com/1x-announces-pre-order-launch-neo-humanoid-robot/), [Neura Robotics](https://neura-robotics.com/products/4ne1/)
 
 *Confidence note. All market-size, deployment-count and pricing figures in §§ 3–4 are corroborated by at least two of the sources listed above. Regulatory statements (EU AI Act, MDR, GDPR) are backed by Tier-1 EU-institutional sources. Product deployment numbers (Hyodol 12,000+, PARO 5,000, China national pilot) reflect industry reporting as of the search date; before committee, cross-check with the manufacturer's most recent investor material or a Tier-1 government release.*
+
+---
+
+© 2026 Ulrich Nord · Alle Rechte vorbehalten. Teilnehmerinnen und Teilnehmer dürfen dieses Material für die eigene berufliche Nutzung sowie innerhalb ihres Unternehmens verwenden, speichern, ausdrucken und weitergeben. Veröffentlichung und Verwendung in eigenen Schulungs- oder Beratungsangeboten bedürfen der schriftlichen Zustimmung.

@@ -176,3 +176,6 @@ Alle Links wurden am 08.08.2026 geprüft.
 
 - [Amazon Connect Talent](https://aws.amazon.com/de/products/connect/talent/) — im Szenario als Vorbild für den Einstellungsprozess genannt (D1)
 
+---
+
+© 2026 Ulrich Nord · Alle Rechte vorbehalten. Teilnehmerinnen und Teilnehmer dürfen dieses Material für die eigene berufliche Nutzung sowie innerhalb ihres Unternehmens verwenden, speichern, ausdrucken und weitergeben. Veröffentlichung und Verwendung in eigenen Schulungs- oder Beratungsangeboten bedürfen der schriftlichen Zustimmung.

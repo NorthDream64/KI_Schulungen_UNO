@@ -122,3 +122,7 @@ Die folgenden Fälle sind reale, öffentlich dokumentierte Entsprechungen zu den
 
 ---
 *Letzte Aktualisierung: August 2026 — Ulrich Nord*
+
+---
+
+© 2026 Ulrich Nord · Alle Rechte vorbehalten. Teilnehmerinnen und Teilnehmer dürfen dieses Material für die eigene berufliche Nutzung sowie innerhalb ihres Unternehmens verwenden, speichern, ausdrucken und weitergeben. Veröffentlichung und Verwendung in eigenen Schulungs- oder Beratungsangeboten bedürfen der schriftlichen Zustimmung.

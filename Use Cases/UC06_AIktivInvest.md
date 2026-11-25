@@ -132,3 +132,7 @@ Die AIktiv-Invest (AI) GmbH ist als Kapitalverwaltungsgesellschaft (KVG) nach **
 
 ---
 *Letzte Aktualisierung: Mai 2026 — Ulrich Nord / Claude (Anthropic)*
+
+---
+
+© 2026 Ulrich Nord · Alle Rechte vorbehalten. Teilnehmerinnen und Teilnehmer dürfen dieses Material für die eigene berufliche Nutzung sowie innerhalb ihres Unternehmens verwenden, speichern, ausdrucken und weitergeben. Veröffentlichung und Verwendung in eigenen Schulungs- oder Beratungsangeboten bedürfen der schriftlichen Zustimmung.

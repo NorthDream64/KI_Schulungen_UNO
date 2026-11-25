@@ -210,3 +210,7 @@ xxxx *(to be developed)*
 - EU AI Act for HR and work-allocation systems — [Morgan Lewis client alert](https://www.morganlewis.com/pubs/2026/06/changes-to-eu-ai-act-deadlines-what-it-means-for-employers-and-hr-technology-providers), [Crowell & Moring 2026 legal overview](https://www.crowell.com/en/insights/client-alerts/artificial-intelligence-and-human-resources-in-the-eu-a-2026-legal-overview), [AMS analysis](https://www.amsinform.com/newsletter/the-eu-ai-act-and-your-hr-stack-whats-actually-classified-as-high-risk/)
 
 *Confidence note. Market-size and pricing figures in §§ 3–4 are corroborated by at least two of the sources listed above. The 22 % CAGR band for AI-in-PM software is the median across three independent research firms. Regulatory statements (EU AI Act Annex III, GDPR Art. 22/35, BetrVG § 87) are backed by EU-institutional sources and specialist legal commentary. Vendor pricing reflects public list prices as of the search date; before committee, cross-check with the vendor's most recent published pricing or an RFP.*
+
+---
+
+© 2026 Ulrich Nord · Alle Rechte vorbehalten. Teilnehmerinnen und Teilnehmer dürfen dieses Material für die eigene berufliche Nutzung sowie innerhalb ihres Unternehmens verwenden, speichern, ausdrucken und weitergeben. Veröffentlichung und Verwendung in eigenen Schulungs- oder Beratungsangeboten bedürfen der schriftlichen Zustimmung.
