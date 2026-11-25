@@ -1,6 +1,7 @@
 # IC 01 · Investment Case — TrAIvel Friend
 > ⚠️ Fictional company — all names and figures are created for training purposes.
 > Status: working draft, developed step by step. Submitted to **AIktivInvest** for evaluation by the KI-Manager.
+> The legal remarks are general information for training purposes, not legal advice for an individual case. As of 25 November 2026.
 
 ---
 
@@ -52,19 +53,21 @@ Sizing logic (as instructed): *total city-trip spending × 1 % captured booking 
 | Level | Basis | Figure |
 |---|---|---|
 | **TAM** — city breaks / short getaways | Global weekend-getaway market 2024 (≈ USD 246 bn, ~7 % CAGR); broader urban-tourism spend ≈ USD 7.4 tn (2025) as upper bound. Short trips (≤ 7 days) = ~54 % of all tourism activity. | **≈ USD 250 bn** (conservative) |
-| **SOM** — captured booking volume (GMV) | 1 % of TAM intermediated through TrAIvel Friend | **≈ USD 2.5 bn GMV** |
-| **Revenue** | GMV × commission rate | see sensitivity below |
+| **SAM** — serviceable market | Not yet defined by the proposer: which regions and which traveller segment can TrAIvel Friend actually serve? | **open** |
+| **SOM** — captured booking volume (GMV) | 1 % of TAM intermediated through TrAIvel Friend; the proposer names no target year | **≈ USD 2.5 bn GMV** |
+| **Commission revenue** | GMV × commission rate — gross commission, not profit | see sensitivity below |
 
-**Commission sensitivity** (annual revenue at ~USD 2.5 bn GMV):
+**Commission sensitivity** (annual commission revenue at USD 2.5 bn GMV):
 
-| Commission on GMV | Annual revenue |
+| Commission on GMV | Annual commission revenue |
 |---|---|
 | 0.001 % *(as noted in the brief)* | ≈ **USD 25 k** — implausibly low; almost certainly a slip |
-| 3 % | ≈ USD 74 m |
-| 5 % | ≈ USD 123 m |
-| 8 % | ≈ USD 197 m |
+| 2 % | ≈ USD 50 m |
+| 3 % | ≈ USD 75 m |
+| 5 % | ≈ USD 125 m |
+| 8 % | ≈ USD 200 m |
 
-> ⚠️ **Assumption to correct:** real online-travel commissions run ~5–10 % on hotels and ~0–15 % on flights; affiliate programmes pass through a share of the ~15 % supplier commission. A blended take rate of **~5–8 %** is realistic — the 0.001 % input should be replaced before this case goes to committee.
+> ⚠️ **Assumption to correct:** real online-travel commissions run ~5–10 % on hotels and ~0–15 % on flights; affiliate programmes pass through a share of the ~15 % supplier commission. A blended take rate of **~5–8 %** is the upper end of what is plausible: flights often yield little or nothing, and an affiliate only receives part of the supplier commission, so a case at 2–3 % belongs in the sensitivity. The 0.001 % input should be replaced before this case goes to committee.
 
 ### Competitive landscape
 
@@ -83,7 +86,7 @@ The AI trip-planning space is crowded and moving fast:
 | Category | Why it competes | Evidence |
 |---|---|---|
 | **General-purpose chatbots** — ChatGPT, Gemini, Google AI Mode | They already plan trips, at no marginal cost to the user, inside an interface the user opens anyway. Each draws on a different corpus — ChatGPT largely on online guides and Reddit threads, Google's AI Mode on Google Maps reviews — so they produce genuinely different itineraries. | 55 % of Americans used an AI app to plan a holiday last summer |
-| **Human advisers — and the platforms arming them** | Demand for human advisers is growing, not shrinking, especially at the top end. **Fora**, a luxury host agency, built a billion-dollar business by selling advisers an AI platform that speeds up administrative work — AI *for* the adviser, not instead of. | ~⅓ of British travellers booked through a human specialist last year (ABTA); ASTA membership >310 k, up from 190 k in 2024 |
+| **Human advisers — and the platforms arming them** | Demand for human advisers is growing, not shrinking, especially at the top end. **Fora**, a luxury host agency, built a billion-dollar business by selling advisers an AI platform that speeds up administrative work — AI *for* the adviser, not instead of. | ~⅓ of British travellers booked through a human specialist last year (ABTA); according to the article, ASTA reports >310 k (up from 190 k in 2024) — implausibly large and fast-growing for a trade association's membership; check at the source which figure is meant (e.g. number of travel advisers) |
 
 **Frontier trend (2026):** *agentic* AI that proactively re-plans — e.g. noticing a booked restaurant is closed and rebooking before the traveller lands.
 
@@ -109,15 +112,15 @@ The second is not obviously worse. It should be priced before the first is funde
 
 ### Key risks — with the evidence now attached
 
-**Regulatory and contractual** (unchanged, still to be worked): payment regulation (PSD2), data protection (GDPR — cross-app purchase data plus stored card details), dependency on OTA inventory and APIs.
+**Regulatory and contractual** (unchanged, still to be worked): payment regulation (PSD2), data protection (GDPR — cross-app purchase data plus stored card details), dependency on OTA inventory and APIs. Also to be covered: **package-travel law** — whoever sells flight and hotel in combination can become the organiser of a package or a facilitator of linked travel arrangements and is then liable for defects in the trip (Directive (EU) 2015/2302; in Germany §§ 651a ff. BGB), which bears directly on the question „who pays“; **labelling of paid placements** in rankings and recommendations (unfair-competition law; in Germany §§ 5a, 5b UWG); and **transparency under Art. 50 (1) AI Act** — users must be told that they are dealing with an AI system. How PSD2 and the GDPR apply to stored card details and cross-app purchase data has not been assessed legally yet.
 
 **Product risk 1 · The model invents places that do not exist.** Daniel Paül i Agustí (University of Lleida) collected 10,000 ChatGPT recommendations for Barcelona. They covered **215 distinct locations** — against roughly **1,300** locations represented in a comparable set of tourist photographs from Instagram. Among the recommendations were **38 attractions that appeared to be fabricated**.
 
-For a planner this is an annoyance. For TrAIvel Friend — which books tables, buys tickets and charges a stored card — it is a direct liability exposure. This turns the existing „liability for faulty bookings“ line from a legal abstraction into a measured failure rate that diligence can size. **Required:** a verification layer between recommendation and booking, and an explicit answer to who pays when a booking is made against a place that does not exist.
+For a planner this is an annoyance. For TrAIvel Friend — which books tables, buys tickets and charges a stored card — it is a direct liability exposure. This turns the existing „liability for faulty bookings“ line from a legal abstraction into a documented failure pattern. The study does not yield a failure rate for TrAIvel Friend: it concerns ChatGPT, one city and other prompts, without a verification layer. How often the problem occurs here has to be measured on the company's own test set. **Required:** a verification layer between recommendation and booking, and an explicit answer to who pays when a booking is made against a place that does not exist.
 
 **Product risk 2 · The same question does not produce the same answer.** An analysis by Evertune found that Gemini's jointly most-recommended pizzerias in Rome appeared in **91 %** of its responses — meaning close to one user in ten never sees the top pick at all. Across all responses it named **24 different** establishments.
 
-Consequences for this business model, in order of severity: itineraries are not reproducible, so complaints cannot be reconstructed; quality assurance has no stable baseline to test against; and the „sponsored placements“ revenue layer sketched in §3 is hard to sell and harder to disclose honestly if placement cannot be guaranteed.
+Consequences for this business model, in order of severity: itineraries cannot be regenerated identically, so every recommendation has to be logged with model version and context for a complaint to be traceable; quality assurance has to measure rates over repeated runs on a fixed test set instead of judging single answers; and the „sponsored placements“ revenue layer sketched in §3 is hard to sell and harder to disclose honestly if placement cannot be guaranteed.
 
 **Product risk 3 · Recommendation quality is inherited, not owned.** ChatGPT's answers rest largely on online guides and Reddit threads; Google's AI Mode on Google Maps reviews. The core asset — knowing where to send someone — belongs to whichever model TrAIvel Friend sits on. A model change, a licensing change or an outage moves the product's quality without the company touching its own code. **Required:** name the model dependency, the substitution plan, and what is owned independently of it.
 
@@ -134,9 +137,9 @@ Consequences for this business model, in order of severity: itineraries are not 
 Eight questions the case must answer before it is worth a term sheet. Each is answerable — none is rhetorical.
 
 1. **Why would a traveller route through us at all?** ChatGPT and Gemini plan trips for free, inside an app the user already has open. What does our booking-and-payment layer add that is worth switching for — and can we state it in one sentence a consumer would repeat?
-2. **What does the verification layer cost?** Given a measured tendency to invent attractions, no booking may execute against an unverified entity. Is that a supplier-API check, a human review queue, or both — and what does it do to gross margin per booking?
+2. **What does the verification layer cost?** Given the documented tendency of language models to invent attractions, no booking may execute against an unverified entity. Is that a supplier-API check, a human review queue, or both — and what does it do to gross margin per booking?
 3. **Who pays for a booking made against a place that does not exist?** Us, the supplier, or the traveller. This needs a contractual answer, not a support policy.
-4. **How do we reconstruct a complaint** when the itinerary that produced it cannot be reproduced? Do we log and version every recommendation, and what does that mean for GDPR retention?
+4. **How do we reconstruct a complaint** when the itinerary that produced it cannot be regenerated? Do we log and version every recommendation, and what does that mean for GDPR retention?
 5. **Can sponsored placement be sold honestly** if placement is probabilistic? If not, that revenue layer should come out of the model.
 6. **Which model are we built on, what happens if it changes or disappears, and what do we own that survives it?**
 7. **What is the answer at 23:00** when the hotel has no reservation? Human on call, insurance, supplier guarantee — each has a cost line.
@@ -144,9 +147,9 @@ Eight questions the case must answer before it is worth a term sheet. Each is an
 
 ### A note on the evidence — for the analyst preparing this case
 
-The travel-adviser figures in §4 come with a live contradiction worth carrying into the committee. **LinkedIn** ranked travel adviser among the fastest-growing jobs in America. The **US Bureau of Labour Statistics** expects the occupation to grow **more slowly than average** through 2034.
+The travel-adviser figures in §4 come with a tension worth carrying into the committee. **LinkedIn** ranked travel adviser among the fastest-growing jobs in America. The **US Bureau of Labour Statistics** expects the occupation to grow **more slowly than average** through 2034.
 
-Same occupation, opposite signals. One source is a commercial platform reporting from its own user base, with an interest in showing labour-market momentum; the other is the federal statistical agency. Where they conflict, the statistical agency carries more weight — and a case that quotes the more flattering figure without naming the conflict has told the committee something untrue by omission.
+Same occupation, two measures over two periods: short-term growth on a commercial platform, reported from its own user base and with an interest in showing labour-market momentum, against a ten-year projection by the federal statistical agency. Both can be true at once. For the long-term outlook the statistical agency carries more weight — and a case that quotes only the more flattering figure gives the committee an incomplete picture. Name both, and say what each one measures.
 
 The same discipline applies to the adoption figures in §4: name the source type beside the number, and let the reader discount it themselves.
 
@@ -164,6 +167,16 @@ xxxx *(to be developed)*
 
 ---
 
+## Glossary of financial terms
+
+- **TAM / SAM / SOM** — total addressable market / the part of it the company can actually serve (region, segment) / the share it can realistically win.
+- **GMV (gross merchandise value)** — total value of all bookings handled through the platform; not the company's own revenue.
+- **Take rate (commission rate)** — share of GMV the company keeps as commission. Commission revenue = GMV × take rate.
+- **CAC (customer acquisition cost)** — sales and marketing cost ÷ number of new customers won.
+- **LTV (lifetime value)** — contribution margin a customer brings over the whole relationship: revenue per customer and year × gross margin × expected years as a customer.
+
+---
+
 ## Sources (market & competition)
 
 - Weekend Getaway Market — [Growth Market Reports](https://growthmarketreports.com/report/weekend-getaway-market)
@@ -175,7 +188,7 @@ xxxx *(to be developed)*
 ### Demand, AI recommendation quality & the human-adviser counter-trend
 
 - *„Can AI save tourists from the TikTok herd?“* — **The Economist**, August 2026. Source of the McKinsey adoption figures, the Tripadvisor traffic estimate, and the Evertune consistency analysis.
-- *„Travel agents are in demand—especially for luxury trips“* — **The Economist**, 13 August 2026. Source of the ABTA and ASTA membership figures, the Fora model, and the LinkedIn / Bureau of Labour Statistics conflict.
+- *„Travel agents are in demand—especially for luxury trips“* — **The Economist**, 13 August 2026. Source of the ABTA and ASTA membership figures, the Fora model, and the LinkedIn / Bureau of Labour Statistics comparison.
 
 **Primary sources named in those articles — cite these directly where possible, they are stronger than the reporting:**
 

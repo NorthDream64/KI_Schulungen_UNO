@@ -1,4 +1,6 @@
 # UC-01: Bauplanungsbüro Dr. Seika
+> ⚠️ Fiktives Unternehmen — alle Namen und Details sind für Schulungszwecke erstellt
+> Die rechtlichen Hinweise sind allgemeine Information zu Schulungszwecken, keine Rechtsberatung im Einzelfall. Stand: 25.11.2026.
 
 ## Das Unternehmen
 
@@ -15,7 +17,7 @@ Das Unternehmen hat seinen Sitz in Frankfurt; es wird in 2. Generation von Frau 
 
 ## UC 01 a: Nachtragsprüfung
 
-Das Büro setzt ein KI-System zur **Nachtragsprüfung** ein: Das System prüft automatisch, ob ein Nachtrag durch den bestehenden Vertrag abgedeckt ist oder eine Zusatzbeauftragung des Auftraggebers erfordert. Grundlage sind Originalverträge und die gültigen Baugesetze (VOB/B, BGB).
+Das Büro setzt ein KI-System zur **Nachtragsprüfung** ein: Das System prüft automatisch, ob ein Nachtrag durch den bestehenden Vertrag abgedeckt ist oder eine Zusatzbeauftragung des Auftraggebers erfordert. Grundlage sind die Originalverträge, gegebenenfalls die vereinbarte VOB/B (sie ist kein Gesetz, sondern gilt nur, wenn sie vertraglich vereinbart wurde) und das Bauvertragsrecht des BGB.
 
 Das System wurde von einem externen Anbieter zugekauft.
 
@@ -41,7 +43,7 @@ Die in UC 01 c entwickelte Lösung wird nunmehr von Dr. Seika und dem ursprüngl
 ### Nachtragsprüfung (vgl. UC 01 a)
 
 - [Zaster](https://getzaster.com/) — KI-gestützte Prüfung von Baurechnungen und Nachträgen; vergleicht Rechnungen automatisch gegen Leistungsverzeichnisse und Aufmaße; deutsches Produkt, EU-Hosting
-- [BAU AI / Dora](https://www.bauai.eu/agents/dora) — KI-Vertragsanalyse für VOB/B, BGB und HOAI inkl. BGH-Rechtsprechung; Nachtragsprüfung nach §2 VOB/B; 96 % Präzision bei Klausel-Erkennung
+- [BAU AI / Dora](https://www.bauai.eu/agents/dora) — KI-Vertragsanalyse für VOB/B, BGB und HOAI inkl. BGH-Rechtsprechung; Nachtragsprüfung nach §2 VOB/B; laut Anbieter 96 % Präzision bei der Klausel-Erkennung (Selbstauskunft, Methode nicht offengelegt)
 - [nextbau](https://www.nextbau.de/) — Baukalkulation und AVA-Software mit Nachtragsprüfungsfunktion für Architekten und Ingenieure
 
 ### Gefährdungsbeurteilung (vgl. UC 01 b)

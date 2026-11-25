@@ -1,5 +1,6 @@
 # Handel im Wandel – [Firmenname] GmbH & Co. KG
 > ⚠️ Fiktives Unternehmen – alle Namen und Details sind für Schulungszwecke erstellt
+> Die rechtlichen Hinweise sind allgemeine Information zu Schulungszwecken, keine Rechtsberatung im Einzelfall. Stand: 25.11.2026.
 > ✏️ **Entwurf** – Werte mit *(Vorschlag)* und Stellen mit **[ergänzen]** sind Platzhalter.
 
 ---
@@ -116,7 +117,7 @@ Querschnitt: Personal (Bewerber-Vorauswahl) · Verwaltung (Textassistenten, Copi
 
 | Regelwerk | Bezug im Unternehmen |
 |---|---|
-| **KI-VO (EU AI Act)** | Rolle meist Betreiber gekaufter Systeme; Anbieterrolle möglich, wenn das Unternehmen ein System unter eigenem Namen anbietet oder wesentlich verändert. KI-Kompetenz der Beschäftigten (Art. 4). Verbotene Praktiken (Art. 5), z. B. Emotionserkennung am Arbeitsplatz. Hochrisiko nach Anhang III: Beschäftigung (Nr. 4, Bewerber-Vorauswahl, Schichtplanung je nach Ausgestaltung), Kreditwürdigkeit (Nr. 5 lit. b, Bonitätsprüfung beim Kauf auf Rechnung), biometrische Fernidentifizierung (Nr. 1). Transparenz bei Chatbots und KI-generierten Inhalten (Art. 50). Fristen: siehe KI-VO. |
+| **KI-VO (EU AI Act)** | Rolle meist Betreiber gekaufter Systeme; Anbieterrolle möglich, wenn das Unternehmen ein System unter eigenem Namen anbietet oder wesentlich verändert. KI-Kompetenz der Beschäftigten (Art. 4). Verbotene Praktiken (Art. 5), z. B. Emotionserkennung am Arbeitsplatz. Hochrisiko nach Anhang III: Beschäftigung (Nr. 4, Bewerber-Vorauswahl, Schichtplanung je nach Ausgestaltung), Kreditwürdigkeit (Nr. 5 lit. b, Bonitätsprüfung beim Kauf auf Rechnung — Betreiber ist in der Regel der externe Zahlungsdienstleister; das Unternehmen selbst prüft Vertrag und Informationspflichten), biometrische Fernidentifizierung (Nr. 1 — eine biometrische Wiedererkennung von Personen in Filialen scheitert in aller Regel schon an Art. 9 DSGVO). Transparenz bei Chatbots und KI-generierten Inhalten (Art. 50). Fristen: siehe KI-VO. |
 | **DSGVO** | Kundenkarte und Personalisierung (Profiling, Einwilligung), automatisierte Einzelentscheidungen (Art. 22 – vgl. EuGH, C-634/21, „SCHUFA“), Datenschutz-Folgenabschätzung (Art. 35) bei Kameraanalyse und Scoring, Auftragsverarbeitung (Art. 28), Drittlandübermittlung (Art. 44 ff.) bei Cloud-Diensten |
 | **BetrVG** | Mitbestimmung bei technischen Einrichtungen, die Verhalten oder Leistung überwachen können (§ 87 Abs. 1 Nr. 6) – Kameraanalyse, Schichtplanung, Copilot |
 | **Urheberrecht** | Rechte an KI-generierten Produkttexten und -bildern, Nutzungsbedingungen der Tools, Rechte an Trainingsdaten |

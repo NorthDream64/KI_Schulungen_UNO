@@ -1,5 +1,6 @@
 # UC-03 Unternehmensakte — Krankenhaus St. Ulrich
 > ⚠️ Fiktives Unternehmen — alle Namen und Details sind für Schulungszwecke erstellt
+> Die rechtlichen Hinweise sind allgemeine Information zu Schulungszwecken, keine Rechtsberatung im Einzelfall. Stand: 25.11.2026.
 
 ---
 
@@ -21,13 +22,13 @@ Der Ansatz des Krankenhauses ist:
 
 **Zweitens: fragmentierte Abläufe konsolidieren, bevor automatisiert wird.** Bestehende Aufnahmen und heterogene Datenbestände wurden zuerst zusammengelegt oder harmonisiert — das schuf überhaupt erst eine messbare Warteschlange und eine gemeinsame Datenbasis. Erst danach kam die Automatisierung. Ein KI-System kann kein Betriebsmodell reparieren, das es nicht sehen kann.
 
-**Drittens: Kosten erheben, bevor gekauft wird.** Vor der Anschaffung einer kamerabasierten Beobachtung wurden 90 Tage Sitzwachen-Stunden, Sturzereignisse je 1.000 Behandlungstage, Eskalationszeiten und der Aufwand der Datenschutzprüfung veranschlagt. Erst dann folgte ein Pilot mit einer Risikogruppe und einer Vergleichsstation.
+**Drittens: Kosten erheben, bevor gekauft wird.** Ein Beispiel für dieses Prinzip: Vor der Anschaffung einer kamerabasierten Beobachtung (bei St. Ulrich bisher nicht geplant; siehe das Vorbild Artsight weiter unten) wären über 90 Tage Sitzwachen-Stunden, Sturzereignisse je 1.000 Behandlungstage, Eskalationszeiten und der Aufwand der Datenschutzprüfung zu erheben. Erst dann folgt ein Pilot mit einer Risikogruppe und einer Vergleichsstation.
 
 Die Daten, auf denen im Krankenhaus KI-Modelle trainiert werden, spiegeln teilweise eine verzerrte Realität wider. Trainingsdaten aus 2020–2024 zeigen ein in Zeiten der Covid-Epidemie überlastetes System als „normal“. Der medizinische Fokus hat sich seit 2020 verschoben: 2021 kam die Pädiatrie, 2023 die Gerontologie hinzu.
 
-St. Ulrich verzichtete zunächst **bewusst** auf eine eigene KI-Leitungsfunktion und band KI in bestehende IT- und Klinikgremien ein. Damit wollte man eine parallele Bürokratie vermeiden und Entscheidungen nah an der klinischen Praxis halten. Offen ist jedoch die Frage, ob Ablauf, Belege und Verantwortung des KI-Programms noch funktionieren würden, wenn am Montag, nachdem die Wissensträger in der IT das Unternehmen verlassen haben. Für jeden produktiven KI-Ablauf gehören deshalb fünf Angaben schriftlich vor:
+St. Ulrich verzichtete zunächst **bewusst** auf eine eigene KI-Leitungsfunktion und band KI in bestehende IT- und Klinikgremien ein. Damit wollte man eine parallele Bürokratie vermeiden und Entscheidungen nah an der klinischen Praxis halten. Offen ist jedoch die Frage, ob Ablauf, Belege und Verantwortung des KI-Programms noch funktionieren würden, wenn am Montag die Wissensträger in der IT das Unternehmen verlassen hätten. Für jeden produktiven KI-Ablauf gehören deshalb sechs Angaben schriftlich vor:
 
-**welcher Ablauf** sich ändert (eine benannte Prozessänderung, keine allgemeine Fähigkeit) · **welcher Basiswert** verbessert werden muss (aus dem Quellsystem, mit festem Zeitraum) · **wer primär verantwortet** (benannt, mit Befugnis und Zeit) · **wer stellvertritt** (kann morgen übernehmen und der Leitung berichten) · **welcher Beleg** das Ziel stützt (mit Belegstärke und Reproduktionsplan). Jede Leerstelle ist kein Verwaltungsdetail, sondern das nächste zu behebende Risiko.
+**welcher Ablauf** sich ändert (eine benannte Prozessänderung, keine allgemeine Fähigkeit) · **welcher Basiswert** verbessert werden muss (aus dem Quellsystem, mit festem Zeitraum) · **welcher Zielwert bis wann** erreicht sein soll · **wer primär verantwortet** (benannt, mit Befugnis und Zeit) · **wer stellvertritt** (kann morgen übernehmen und der Leitung berichten) · **welcher Beleg** das Ziel stützt (mit Belegstärke und Reproduktionsplan). Jede Leerstelle ist kein Verwaltungsdetail, sondern das nächste zu behebende Risiko.
 
 ---
 
@@ -45,10 +46,13 @@ Erfahrene Krankenpflegerin, seit 20 Jahren im Haus. Repräsentiert den größten
 **Peter Miese — IT-Leiter**  
 Zuständig für SAP, Krankenhausinformationssystem (KIS) und die neue EPA-Anbindung. Überlastet. Hat Bedenken zur Cybersicherheit — Krankenhäuser sind häufiges Angriffsziel. Kein Datenschutzbeauftragter im Haus (extern beauftragt).
 
-**Sie — KI-Beauftragter:in (neue Stelle)**  
+**Dr. Jana Weiss — Oberärztin Radiologie**  
+Verantwortet die Befundung der CT-Aufnahmen und arbeitet im Test mit der Diagnoseunterstützung (A 4). Fachlich engagiert, will das System verbessern und sieht regulatorische Fragen als Sache anderer.
+
+**Du — KI-Beauftragte:r (neue Stelle)**  
 Direkt der Geschäftsführerin zugeordnet. Kein eigenes Budget. Beratende Funktion. Der Betriebsrat hat die Stelle mit gemischten Gefühlen zur Kenntnis genommen.
 
-> **Hinweis Digital Omnibus (VO 2026/1744, in Kraft 27.7.2026):** Art. 4 KI-VO wurde von „sicherstellen“ auf „unterstützen“ geändert. Die Pflicht zur KI-Kompetenz ist jetzt eine **Bemühenspflicht** (Best Effort), keine Ergebnispflicht. Für die Rolle im St. Ulrich heißt das: Ein 100-Tage-Plan muss keinen lückenlosen Kompetenznachweis zusagen, sondern einen nachvollziehbaren Lernpfad belegen. Das verändert auch die Argumentation gegenüber Geschäftsführung und Betriebsrat.
+> **Hinweis Digital Omnibus (VO 2026/1744, in Kraft 27.7.2026):** Seit dem 27.7.2026 verlangt Art. 4 KI-VO **Maßnahmen zur Unterstützung** der KI-Kompetenz; ein bestimmtes Kompetenzniveau Einzelner muss ausdrücklich nicht garantiert werden. Schon die alte Fassung verlangte Maßnahmen nur „nach besten Kräften“ — neu ist die Klarstellung, nicht die Bemühenspflicht. Für die Rolle im St. Ulrich heißt das: Ein 100-Tage-Plan muss keinen lückenlosen Kompetenznachweis zusagen, sondern einen nachvollziehbaren Lernpfad belegen. Das verändert auch die Argumentation gegenüber Geschäftsführung und Betriebsrat.
 
 ---
 
@@ -71,7 +75,7 @@ Costa-Gomes et al. (*Nature Health*, April 2026) analysierten über 500.000 Gesu
 - Jede siebte Anfrage wird für eine andere Person gestellt (Kind, Elternteil, Partner) — KI als Pflegehilfe
 - Abends und nachts steigen persönliche Gesundheitsanfragen deutlich an — genau wenn das Krankenhaus am schlechtesten erreichbar ist
 - Mobil = persönliche Gesundheitsanliegen; Desktop = professionelle/akademische Arbeit
-- LLMs bestehen medizinische Prüfungen, versagen aber in Triage-Situationen — starke Benchmark-Performance bedeutet keine reale Zuverlässigkeit
+- Kontext aus der Fachliteratur, kein Ergebnis dieser Auswertung von Nutzungsprotokollen: Sprachmodelle bestehen medizinische Prüfungen, sind in Triage-Situationen aber deutlich weniger verlässlich — starke Benchmark-Ergebnisse bedeuten keine Zuverlässigkeit im Einsatz
 
 **Implikation für A 2:** Die App würde reale Nutzernachfrage bedienen. Aber: Die Nutzungssituation (nachtaktiv, Caregiver, vulnerabel) erhöht die Anforderungen an Genauigkeit und Sicherheit erheblich.
 
@@ -86,7 +90,7 @@ Die folgenden Fälle sind öffentlich dokumentierte Entsprechungen zu den Initia
 | Initiative St. Ulrich | Entsprechung bei Memorial | Was dokumentiert ist | Belegstärke |
 |---|---|---|---|
 | **A 3** Verwaltungsautomatisierung (Entlassbriefe) | **Nuance DAX Copilot** — Dokumentation nebenher während der Visite *(deutsches Vergleichsangebot: myScribe, siehe unten)* | Reduzierte abendliche Nachdokumentation laut Aussage des Digitalchefs; **kein veröffentlichter Basiswert**, keine unabhängig geprüfte Produktivitätszahl | Führungsinterview, unquantifiziert |
-| **A 4** Diagnoseunterstützung (Bildauswertung) | **Aidoc** (Zufallsbefunde) und **RapidAI** (Schlaganfall-Alarme auf Diensthandy und Smartwatch) | RapidAI-Pilot ab 2017, später vier Häuser; Mitteilung vom Mai 2022: über 8.400 Schlaganfälle identifiziert | Organisationsmitteilung, zeitlich veraltet |
+| **A 4** Diagnoseunterstützung (Bildauswertung) | **Aidoc** (Zufallsbefunde) und **RapidAI** (Schlaganfall-Alarme auf Diensthandy und Smartwatch) | RapidAI-Pilot ab 2017, später vier Häuser; Mitteilung vom Mai 2022: über 8.400 Schlaganfall-Alarme (ohne Angabe bestätigter Fälle und Fehlalarme) | Organisationsmitteilung, zeitlich veraltet |
 | **A 2** Patienten-Onboarding-App | **Talkdesk** — Patientenkontakt; zuvor **12 getrennte Callcenter zu einem Patient Access Center konsolidiert**, dann automatisiert | Anbieter nennt niedrigere Abbruchquote und kürzere Bearbeitungszeit; **kein öffentlicher Basiswert, keine unabhängige Prüfung** | Anbieter-Kundenstory |
 | *(bisher keine Entsprechung)* | **Artsight** — kamerabasierte virtuelle Pflege und Sturzrisiko-Beobachtung, ergänzend zum Klinikinformationssystem | Zentrale Leitstelle mit 31 Arbeitsplätzen, eröffnet Oktober 2024; Baukosten 1,7 Mio. USD, **projizierte** Einsparung im ersten Jahr 1,6 Mio. USD | Fachpresse, Projektion — nicht als realisiert bestätigt |
 | *(bisher keine Entsprechung)* | **Atlas MAP** — Erkennung von Medikamenten-Hilfsprogrammen, Antragsautomatisierung | Anbieter nennt Fördersummen für eine begrenzte Patientenzahl in acht Monaten | Anbieter-Kundenstory |
@@ -115,7 +119,7 @@ Eine vierte Kategorie ist ausdrücklich **unbrauchbar**: Zu Memorial kursiert im
 
 **Und die Grenze der Übertragbarkeit:** Memorial arbeitet im US-Gesundheitssystem — anderes Abrechnungswesen, philanthropische Medikamentenhilfe, kein Betriebsrat, keine DSGVO, kein EU AI Act. Die Vorgehenslogik überträgt sich auf St. Ulrich, die Zahlen nicht.
 
-**Quelle:** Kamil Banc / AI Adopters Club — „Inside Memorial Healthcare System's AI Adoption“, Report AIAC-CSR-2026-016, Rev. 14. August 2026. Die Fallstudie stützt sich auf Fachpresse (Chief Healthcare Executive 27.08.2024, HFM Magazine 09.04.2025, Becker's Hospital Review 15.09.2025 und 29.06.2026), Pressemitteilungen von Memorial (28.10.2024, 12.05.2022) sowie herstellerpublizierte Kundenstories. Einzelautor, kein Peer Review, kein eigenes Interview mit Memorial. Registereintrag: Neue_Quellen_Intake #65.
+**Quelle:** Kamil Banc / AI Adopters Club — „Inside Memorial Healthcare System's AI Adoption“, Report AIAC-CSR-2026-016, Rev. 14. August 2026. Die Fallstudie stützt sich auf Fachpresse (Chief Healthcare Executive 27.08.2024, HFM Magazine 09.04.2025, Becker's Hospital Review 15.09.2025 und 29.06.2026), Pressemitteilungen von Memorial (28.10.2024, 12.05.2022) sowie herstellerpublizierte Kundenstories. Einzelautor, kein Peer Review, kein eigenes Interview mit Memorial.
 
 ---
 
@@ -179,13 +183,22 @@ Diese Fragen sind bewusst offen gestellt — sie gehören von den Teilnehmenden 
 
 Für den Kursraum ist das kein Nachteil, sondern der Zweck: Das Material eignet sich als **Anschauungsobjekt für Anbieterkommunikation**, nicht als Beleg. Die Frage lautet nicht, ob myScribe gut ist — sondern was St. Ulrich selbst erheben müsste, um das zu beurteilen.
 
-**Quelle:** myScribe, Anbieterwebsite — <https://www.myscribe.de/> (abgerufen August 2026). Tier 3, Herstellerangaben.
+**Quelle:** myScribe, Anbieterwebsite — <https://www.myscribe.de/> (abgerufen August 2026). Herstellerangaben, Belegstufe C.
 
 ---
 
 ## Regulatorische Einordnung der Initiativen — Praxisübung
 
-Die Kommission hat am 19. Mai 2026 Leitlinien-Entwürfe zu Art. 6 Abs. 3 KI-VO veröffentlicht. Danach können KI-Systeme, die zwar in Anhang III aufgeführt sind, aber **kein erhebliches Risiko** für Gesundheit, Sicherheit oder Grundrechte darstellen, von der Hochrisiko-Einstufung ausgenommen werden — sofern das System keine eigenständige Entscheidung trifft, die nicht durch menschliche Tätigkeit ersetzt wird, und keine Profilerstellung natürlicher Personen vornimmt.
+Die Kommission hat am 19. Mai 2026 Leitlinien-Entwürfe zu Art. 6 Abs. 3 KI-VO veröffentlicht. Die Leitlinien sind weiterhin ein Entwurf und nicht verbindlich; die endgültige Fassung steht aus. Nach Art. 6 Abs. 3 gilt ein in Anhang III aufgeführtes KI-System nicht als hochriskant, wenn es **kein erhebliches Risiko** für Gesundheit, Sicherheit oder Grundrechte birgt und das Ergebnis der Entscheidungsfindung nicht wesentlich beeinflusst. Dafür muss eine von vier Fallgruppen vorliegen. Das System ist dazu bestimmt,
+
+- a) eine eng gefasste Verfahrensaufgabe durchzuführen,
+- b) das Ergebnis einer zuvor abgeschlossenen menschlichen Tätigkeit zu verbessern,
+- c) Entscheidungsmuster oder Abweichungen von früheren Entscheidungsmustern zu erkennen, ohne die menschliche Bewertung ohne angemessene menschliche Überprüfung zu ersetzen oder zu beeinflussen, oder
+- d) eine vorbereitende Aufgabe für eine Bewertung durchzuführen, die für einen Anwendungsfall des Anhangs III relevant ist.
+
+Nimmt das System ein Profiling natürlicher Personen vor, gilt es immer als hochriskant.
+
+**Reihenfolge der Prüfung:** Zuerst klären, ob Anhang I (hier: Medizinprodukterecht) oder Anhang III einschlägig ist. Art. 6 Abs. 3 gilt nur für Anhang III. Das Ergebnis „kein Anhang-III-Fall, der Filter spielt keine Rolle“ ist eine richtige Antwort. Für KI in Medizinprodukten gelten die Hochrisiko-Pflichten ab 2.8.2028.
 
 **Übung:** Ordne jede der vier Initiativen ein:
 
@@ -193,7 +206,7 @@ Die Kommission hat am 19. Mai 2026 Leitlinien-Entwürfe zu Art. 6 Abs. 3 KI-VO v
 |---|---|---|---|---|
 | A 1 — Verbrauchsmaterial | ? | ? | ? | Keine personenbezogene Entscheidung — aber woher kommen die Verbrauchsdaten? |
 | A 2 — Onboarding-App | ? | ? | ? | Chatfunktion mit FAQ — aber was passiert, wenn Patienten Symptome schildern? |
-| A 3 — Entlassbriefe (Epikrise) | ? | ? | ? | Medizinisches Dokument mit Rechtswirkung — trifft das „ersetzt menschliche Tätigkeit“? |
+| A 3 — Entlassbriefe (Epikrise) | ? | ? | ? | Medizinisches Dokument mit Rechtswirkung — greift überhaupt Anhang III, oder führt der Weg über das Medizinprodukterecht? |
 | A 4 — Diagnoseunterstützung | ? | ? | ? | Bilddaten, Hosting in Indien, Gesundheitsentscheidung |
 
 Die Tabelle soll **nicht** vorab ausgefüllt werden — sie ist eine offene Praxisübung. Die Kommissions-Leitlinien geben kein Ja/Nein-Raster vor, sondern verlangen eine dokumentierte Einzelfallbewertung. Die vierte Spalte gehört zum folgenden Abschnitt.
@@ -210,27 +223,33 @@ Maßgeblich ist nicht, was die Software technisch tut, sondern **welchen Zweck d
 
 Daraus folgen Betreiberpflichten, die mit der KI-VO nichts zu tun haben: ordnungsgemäße Installation, Wartung und Überwachung · Schulung des Personals · regelmäßige Sicherheitsüberprüfungen · Meldepflichten bei Zwischenfällen.
 
-**Kommt KI hinzu, greifen beide Regelwerke.** Medizinprodukte mit KI-Anteil fallen regelmäßig in den Hochrisikobereich der KI-VO und erfordern eine Konformitätsbewertung durch eine **Benannte Stelle**. Für das Krankenhaus kommen dann laufendes Monitoring im Betrieb, Dokumentations- und Aufbewahrungspflichten sowie **Datenschutz-Folgenabschätzung und KI-Auswirkungsanalyse** zusammen.
+**Kommt KI hinzu, greifen beide Regelwerke.** Medizinprodukte mit KI-Anteil fallen in den Hochrisikobereich der KI-VO, wenn das Medizinprodukterecht für sie eine Konformitätsbewertung durch eine **Benannte Stelle** verlangt (Art. 6 Abs. 1). Für das Krankenhaus kommen dann laufendes Monitoring im Betrieb, Dokumentations- und Aufbewahrungspflichten sowie die **Datenschutz-Folgenabschätzung** nach Art. 35 DSGVO zusammen. Eine Grundrechte-Folgenabschätzung nach Art. 27 KI-VO gilt dagegen nur für bestimmte Betreiber von Anhang-III-Systemen, nicht für KI-Medizinprodukte.
 
-Für rein administrative KI-Systeme, die weder Medizinprodukt noch Sicherheitsbauteil sind, gelten dagegen nur die erleichterten Kompetenz- und Transparenzpflichten.
+Für administrative KI-Systeme, die weder Medizinprodukt noch Sicherheitsbauteil sind, ist zu prüfen, ob sie unter Anhang III fallen — im Krankenhaus zum Beispiel Dienst- und Schichtplanung oder Personalauswahl (Anhang III Nr. 4). Andernfalls gelten Art. 4 (KI-Kompetenz), die Verbote des Art. 5 und gegebenenfalls die Transparenzpflichten des Art. 50.
 
 **Übung:** Fülle die vierte Spalte der Tabelle oben aus. Leitfrage je Initiative: *Welchen Zweck hat der Hersteller angegeben — und deckt sich das mit dem, was St. Ulrich damit tut?*
 
 ### Der Rollenwechsel — die wichtigste Falle in diesem Fall
 
-**Bereits geringfügige Änderungen an der Software oder ihrer Zweckbestimmung können dazu führen, dass das Krankenhaus vom Betreiber zum Hersteller wird.** Ausdrücklich genannt wird dabei: **die Weiterentwicklung mit hausinternen Patientendaten.**
+**Wer die Zweckbestimmung ändert oder das System so verändert, dass die Konformität berührt sein kann, wird vom Betreiber zum Hersteller (Art. 16 MDR) beziehungsweise zum Anbieter (wesentliche Veränderung, Art. 25 KI-VO).** Ein naheliegender Fall ist **die Weiterentwicklung mit hausinternen Patientendaten.** Keine wesentliche Veränderung ist ein Nachtraining innerhalb eines Rahmens, den der Anbieter vorab festgelegt und in der Konformitätsbewertung berücksichtigt hat (Art. 43 Abs. 4 KI-VO).
 
-Das ist für St. Ulrich keine theoretische Konstellation, sondern die naheliegendste nächste Handlung. Der Satz „Wir trainieren das Diagnosesystem mit unseren eigenen Fällen nach, dann wird es besser“ klingt nach einer technischen Verbesserung. Er ist ein **Rollenwechsel mit vollen Herstellerpflichten**: Zertifizierungserfordernis, Aufbau eigener Risiko- und Qualitätsmanagementsysteme, behördliche Meldepflichten.
+Das ist für St. Ulrich keine theoretische Konstellation, sondern die naheliegendste nächste Handlung. Der Satz „Wir trainieren das Diagnosesystem mit unseren eigenen Fällen nach, dann wird es besser“ klingt nach einer technischen Verbesserung. Ohne einen solchen vorab festgelegten Rahmen ist er ein **Rollenwechsel mit vollen Herstellerpflichten**: Zertifizierungserfordernis, Aufbau eigener Risiko- und Qualitätsmanagementsysteme, behördliche Meldepflichten.
 
-> **Übung — Rollenspiel.** Dr. Weiss möchte das Diagnosesystem (A 4) mit den eigenen CT-Befunden der letzten drei Jahre nachtrainieren, weil die Genauigkeit bei der hiesigen Patientenstruktur schlechter ist als beim Anbieter versprochen. Fachlich ein guter Gedanke. **Was antwortest Du als KI-Beauftragte:r — und was schlägst Du stattdessen vor?**
+> **Übung — Rollenspiel.** Dr. Weiss möchte das Diagnosesystem (A 4) mit den eigenen CT-Befunden der letzten drei Jahre nachtrainieren, weil Sensitivität oder Spezifität bei der hiesigen Patientenstruktur schlechter sind als vom Anbieter angegeben. Fachlich ein guter Gedanke. **Was antwortest Du als KI-Beauftragte:r — und was schlägst Du stattdessen vor?** Denke dabei auch an zwei Alternativen: eine lokale Validierung ohne Nachtraining und ein Nachtraining durch oder gemeinsam mit dem Anbieter.
 
 ### Der legale Gegenweg: Eigenherstellung
 
-Krankenhäuser dürfen Medizinprodukte **selbst entwickeln und intern nutzen**, ohne ein vollständiges Konformitätsverfahren mit CE-Kennzeichnung zu durchlaufen — solange **keine vergleichbare Lösung am Markt verfügbar** ist und die **Nutzung auf den internen Bereich beschränkt** bleibt.
+Gesundheitseinrichtungen dürfen Medizinprodukte **selbst herstellen und intern verwenden**, ohne ein vollständiges Konformitätsverfahren mit CE-Kennzeichnung zu durchlaufen (Art. 5 Abs. 5 MDR). Das ist an enge Bedingungen geknüpft:
 
-Das ist der bewusst offengelassene Innovationspfad: intern entwickeln, im klinischen Alltag an realen Versorgungsdaten erproben, und bei erfolgreicher Validierung in ein zertifiziertes, marktfähiges Produkt überführen.
+- die grundlegenden Sicherheits- und Leistungsanforderungen (Anhang I MDR) sind erfüllt,
+- Herstellung und Verwendung laufen unter einem geeigneten Qualitätsmanagementsystem,
+- die Einrichtung begründet, dass kein gleichwertiges Produkt am Markt den Bedarf deckt,
+- sie dokumentiert Herstellung und Zweck und gibt eine öffentliche Erklärung ab,
+- das Produkt wird nicht an andere abgegeben und nicht im industriellen Maßstab hergestellt.
 
-**Zwei Wege aus derselben Ausgangslage, mit gegensätzlichen Folgen.** Nachtrainieren eines eingekauften Systems macht Dich zum Hersteller eines nicht zertifizierten Produkts. Eigenentwicklung unter den genannten Bedingungen ist zulässig. Der Unterschied liegt nicht in der Technik, sondern im rechtlichen Ausgangspunkt.
+Drei weitere Punkte gehören vor den Start geklärt: Ein Einsatz an Patientinnen und Patienten **vor** der Validierung kann eine genehmigungspflichtige klinische Prüfung sein. Die Nutzung von Patientendaten für die Entwicklung braucht eine eigene Rechtsgrundlage. Und wer ein KI-System selbst entwickelt, ist nach der KI-VO dessen **Anbieter**.
+
+**Zwei Wege aus derselben Ausgangslage, mit gegensätzlichen Folgen.** Nachtrainieren eines eingekauften Systems macht Dich zum Hersteller eines nicht zertifizierten Produkts. Eigenherstellung ist nur unter den genannten engen Bedingungen und nach regulatorischer und datenschutzrechtlicher Prüfung zulässig. Der Unterschied liegt nicht in der Technik, sondern im rechtlichen Ausgangspunkt.
 
 ### Cloud, KRITIS und Informationssicherheit — der Stand für ein Krankenhaus
 
@@ -240,7 +259,7 @@ Das ist der bewusst offengelassene Innovationspfad: intern entwickeln, im klinis
 |---|---|
 | **Verarbeitungsort** (Abs. 2) | Nur im Inland, in einem EU-Mitgliedstaat, einem gleichgestellten Staat oder einem Drittstaat **mit Angemessenheitsbeschluss** — und die datenverarbeitende Stelle muss eine **Niederlassung im Inland** haben |
 | **Technische und organisatorische Maßnahmen** (Abs. 3 Nr. 1) | Angemessen nach dem Stand der Technik. In **zugelassenen Krankenhäusern** gelten sie als angemessen, wenn die Voraussetzungen des **§ 391 SGB V** erfüllt sind (Abs. 5 Nr. 2) |
-| **C5-Testat** (Abs. 3 Nr. 2) | Aktuelles Testat **der datenverarbeitenden Stelle** für die eingesetzten Cloud-Systeme und die eingesetzte Technik. Seit **1. Juli 2025 ist ein C5-Typ-2-Testat** erforderlich; für nach dem 30.06.2025 erstmals in Verkehr gebrachte Systeme genügt in den ersten 18 Monaten ein Typ-1-Testat |
+| **C5-Testat** (Abs. 3 Nr. 2 i. V. m. Abs. 4) | Aktuelles Testat **der datenverarbeitenden Stelle** für die eingesetzten Cloud-Systeme und die eingesetzte Technik. Seit **1. Juli 2025 ist ein C5-Typ-2-Testat** erforderlich; für nach dem 30.06.2025 erstmals in Verkehr gebrachte Systeme genügt in den ersten 18 Monaten ein Typ-1-Testat |
 | **Kundenkriterien** (Abs. 3 Nr. 3) | **Die im Prüfbericht des Testats enthaltenen korrespondierenden Kriterien für Kunden müssen umgesetzt sein** |
 
 > **⚠️ Genau hier liegt ein verbreiteter Irrtum — und er kostet im Ernstfall die Rechtsgrundlage.** Man liest häufig, ein C5-testierter Anbieter genüge und das Krankenhaus müsse nichts weiter prüfen. **Der Gesetzestext sagt etwas anderes.** Absatz 3 nennt drei Voraussetzungen, und die dritte richtet sich ausdrücklich an den Kunden: Die im Prüfbericht enthaltenen **korrespondierenden Kriterien für Kunden** sind umzusetzen. Das Testat des Anbieters ist also **notwendig, aber nicht hinreichend** — es erzeugt eigene Hausaufgaben, die im Prüfbericht stehen. Wer den Bericht nicht gelesen hat, kann nicht wissen, ob er die Norm erfüllt.
@@ -251,7 +270,7 @@ Das ist der bewusst offengelassene Innovationspfad: intern entwickeln, im klinis
 
 > **Wichtig für die didaktische Verwendung:** **Das Profil existiert noch nicht.** Es gibt eine Ankündigung mit Beteiligungsaufruf, Projektstatus „laufend“ (Stand der Seite 17.07.2026). Zudem wird das zugrundeliegende AI RMF 1.0 derzeit selbst überarbeitet. Der Punkt taugt daher **als Ausblick, nicht als Handlungsanleitung** — und er ist ein brauchbarer Anlass, im Gespräch zu zeigen, dass sektorspezifische Übersetzung überall gebraucht wird, in Deutschland über den B3S, in den USA über Profile. Vor Verwendung im Unterricht den Stand prüfen: <https://www.nist.gov/programs-projects/concept-note-ai-rmf-profile-trustworthy-ai-critical-infrastructure>
 
-**Föderaler Datenschutz.** Neben der DSGVO gelten je nach Trägerschaft zusätzlich kirchliche, landeskrankenhaus- oder hochschulrechtliche Regelungen. In der Praxis führt das häufig zu Unsicherheit — und dazu, dass Häuser aus Vorsicht zurückhaltender agieren, als sie müssten. Das **Gesundheitsdatennutzungsgesetz (GDNG)** schafft für Forschungszwecke Erleichterungen: Pseudonymisierte Daten dürfen auch von externen Dienstleistern als Auftragsverarbeiter weiterverarbeitet werden, landesrechtliche Regelungen werden insoweit verdrängt.
+**Föderaler Datenschutz.** Neben der DSGVO gelten je nach Trägerschaft zusätzlich kirchliche, landeskrankenhaus- oder hochschulrechtliche Regelungen. In der Praxis führt das häufig zu Unsicherheit — und dazu, dass Häuser aus Vorsicht zurückhaltender agieren, als sie müssten. Das **Gesundheitsdatennutzungsgesetz (GDNG)** schafft Erleichterungen: § 6 GDNG erlaubt Gesundheitseinrichtungen, eigene Versorgungsdaten unter anderem zur Qualitätssicherung, zur Forschung und für statistische Zwecke weiterzuverarbeiten — pseudonymisiert und ohne Weitergabe an Dritte.
 
 ### Quellenkritischer Hinweis
 
@@ -280,7 +299,7 @@ Die dritte Abweichung entlastet das Krankenhaus. Ob Vereinfachung oder Interesse
 | Business Case / Belegbewertung | Reale Vorbilder oben — Übung: Welche der Memorial-Zahlen dürfen in eine Investitionsvorlage, welche nicht? |
 | Anbieterbewertung (UC-03c) | myScribe-Abschnitt — Übung 1 (Anbieter-Rechner) und Übung 2 (Überschlagsrechnung 2 h gegen 30 min) |
 | Governance-Entscheidung | myScribe On-Premise gegen Cloud — Rollenspiel mit Peter Miese (IT-Leitung) |
-| Risikoklassifizierung EU AI Act | Art. 6 Abs. 3 Filter-Mechanismus — welche der vier Initiativen ist Hochrisiko? |
+| Risikoklassifizierung EU AI Act | Erst Anhang I (Medizinprodukt) oder Anhang III prüfen, dann — nur bei Anhang III — den Filter des Art. 6 Abs. 3: Welche der vier Initiativen ist Hochrisiko, und auf welchem Weg? |
 | Art. 5 / Emotionserkennung | Artsight-Kameras als Gegenbeispiel: Sturzrisiko ≠ Emotion (Erwägungsgrund 18) |
 | Medizinprodukterecht | Zweckbestimmung als Weiche — vierte Spalte der Einordnungstabelle; zwei Regelwerke greifen gleichzeitig |
 | Rollenwechsel Betreiber → Hersteller | Rollenspiel mit Dr. Weiss: Nachtrainieren von A 4 mit eigenen CT-Befunden; Gegenweg Eigenherstellung |

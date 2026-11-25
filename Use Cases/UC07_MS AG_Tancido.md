@@ -1,5 +1,6 @@
 # UC-07 · Material Storage AG und Tancido S.A. — Kontext und Aufgabenpaket
 > ⚠️ Fiktive Unternehmen — alle Namen, Kennzahlen und Personen sind für Schulungszwecke erstellt und dienen ausschließlich der Lehre.
+> Die rechtlichen Hinweise sind allgemeine Information zu Schulungszwecken, keine Rechtsberatung im Einzelfall. Stand: 25.11.2026.
 
 ---
 
@@ -78,7 +79,7 @@ Das eigentliche Problem der Fusion ist nicht, dass die beiden Häuser unterschie
 |---|---|---|---|
 | **SAS** · *Servicio de Asistencia in Situ* | Vor einem Besuch im Tanklager erhält die Technikerin eine Übersicht bisheriger Instandhaltungen und Abnahmeprotokolle. Aus technischen und wirtschaftlichen Daten werden die Arbeitsaufgaben priorisiert. Vor Ort übermittelte Fotos von Ventilen, Steuerungselementen und Leitungen werden gegen eine Bilddatenbank abgeglichen, die maschinell erzeugte Zustandsprognosen liefert | Servicebereich, 2024 | Bilder von Kundenanlagen und eigenen Standorten; Rechtelage an den Trainingsdaten ungeklärt |
 | **OES** · *Ofertas en Segundos* | Erzeugt bei Bedarf Anfragen an Lieferanten, verschickt sie nach Freigabe und konsolidiert die Rückläufe mit einer Erfahrungsschätzung aus vergleichbaren Projekten zu einem unverbindlichen Angebot | Vertrieb, 2024 | Handelt nach außen — die Anfragen gehen an Dritte |
-| **PT** · *Planificación de Turnos* | Gleicht ab einer Auftragswahrscheinlichkeit von 75 % die Einträge einer Qualifikationsdatenbank, die Kalender der Technikerinnen und Techniker sowie die Liefertermine der Ersatzteile ab und erstellt daraus eine unverbindliche Personaleinsatzplanung | Disposition, 2025 | Verarbeitet Beschäftigtendaten und bewertet mittelbar Verfügbarkeit und Qualifikation Einzelner |
+| **PT** · *Planificación de Turnos* | Gleicht ab einer geschätzten (nicht überprüften) Auftragswahrscheinlichkeit von 75 % die Einträge einer Qualifikationsdatenbank, die Kalender der Technikerinnen und Techniker sowie die Liefertermine der Ersatzteile ab und erstellt daraus eine unverbindliche Personaleinsatzplanung | Disposition, 2025 | Verarbeitet Beschäftigtendaten und bewertet mittelbar Verfügbarkeit und Qualifikation Einzelner |
 
 **Keine dieser drei Anwendungen hat eine dokumentierte Risikoeinstufung.** Alle drei wären nach dem Freigabeprozess der MS AG zustimmungspflichtig gewesen — SAS wegen der Bilddaten von Kundenanlagen, OES wegen der Außenwirkung, PT wegen der Beschäftigtendaten.
 
@@ -129,10 +130,10 @@ Der Fall eignet sich für Themenfelder, in denen **Richtungsentscheidungen** ver
 
 ## 8 · Marktkontext
 
-Zwei belastbare Bezugspunkte für die Diskussion, beide mit dem Vorbehalt, dass es sich um Veröffentlichungen von Beratungshäusern mit eigenem Geschäftsinteresse handelt:
+Zwei viel zitierte Orientierungspunkte für die Diskussion. Beide stammen aus Veröffentlichungen von Beratungshäusern mit eigenem Geschäftsinteresse und beruhen auf Selbstauskünften der befragten Unternehmen:
 
-- Die **10-20-70-Regel** — rund 10 % des Aufwands entfallen auf Algorithmen, 20 % auf Daten und Technik, 70 % auf Menschen, Prozesse und Kultur. Für einen Integrationsfall ist das die zentrale Erwartungskorrektur. [BCG — From Potential to Profit](https://www.bcg.com/publications/2025/closing-the-ai-impact-gap)
-- Organisationen mit messbarem Ergebnisbeitrag aus KI haben **rund dreimal so häufig einzelne Arbeitsabläufe grundlegend neu zugeschnitten**, statt KI in bestehende einzusetzen. [McKinsey — The state of AI](https://www.mckinsey.com/capabilities/quantumblack/our-insights/the-state-of-ai)
+- Die **10-20-70-Regel** — rund 10 % des Aufwands entfallen auf Algorithmen, 20 % auf Daten und Technik, 70 % auf Menschen, Prozesse und Kultur. Das ist eine Faustregel ohne offengelegte Methode. Für einen Integrationsfall ist das die zentrale Erwartungskorrektur. [BCG — From Potential to Profit](https://www.bcg.com/publications/2025/closing-the-ai-impact-gap)
+- Organisationen, die nach eigener Angabe mindestens 5 % ihres Ergebnisses vor Zinsen und Steuern (EBIT) der KI zuschreiben, haben **rund dreimal so häufig einzelne Arbeitsabläufe grundlegend neu zugeschnitten**, statt KI in bestehende einzusetzen. Das ist ein Zusammenhang aus einer Umfrage, kein Wirkungsnachweis. [McKinsey — The state of AI in 2025](https://www.mckinsey.com/capabilities/quantumblack/our-insights/the-state-of-ai-2025)
 
 ---
 
@@ -142,10 +143,10 @@ Zwei belastbare Bezugspunkte für die Diskussion, beide mit dem Vorbehalt, dass 
 
 Beide Häuser lagern **strategische Reserven zweier Regierungen**. Damit ist das vereinigte Unternehmen nicht irgendein Industriedienstleister, sondern Teil einer Versorgungsstruktur, deren Ausfall staatliche Aufmerksamkeit erzeugt. Für die drei Tancido-Anwendungen ändert das die Vorzeichen:
 
-- **SAS sammelt Bilder von Sicherheitstechnik.** Ventile, Steuerungselemente, Leitungen — fotografiert an Kundenanlagen und an eigenen Standorten, abgelegt in einer Bilddatenbank, die ein Modell trainiert hat. Wo liegen diese Bilder, wer hat sie verarbeitet, und lässt sich das rückgängig machen?
-- **SAS erzeugt Zustandsprognosen und priorisiert daraufhin Arbeitsaufgaben.** Damit rückt es in die Nähe einer Schutzfunktion. Genau hier stellt sich die Frage nach Anhang I: Ist das eine Empfehlung vor der Prüfung — oder ersetzt es sie schrittweise?
+- **SAS sammelt Bilder von Sicherheitstechnik.** Ventile, Steuerungselemente, Leitungen — fotografiert an Kundenanlagen und an eigenen Standorten, abgelegt in einer Bilddatenbank, mit der ein Modell trainiert wurde. Wo liegen diese Bilder, wer hat sie verarbeitet, und lässt sich das rückgängig machen?
+- **SAS erzeugt Zustandsprognosen und priorisiert daraufhin Arbeitsaufgaben.** Damit rückt es in die Nähe einer Schutzfunktion. Genau hier stellt sich die Einstufungsfrage: Ist SAS ein Sicherheitsbauteil einer kritischen Infrastruktur (Anhang III Nr. 2 des EU AI Act) oder Teil eines Produkts nach Anhang I? Und bleibt es eine Empfehlung vor der Prüfung — oder ersetzt es sie schrittweise?
 - **OES verschickt Anfragen nach außen.** In einer Lieferantenanfrage steht, welches Bauteil an welchem Standort wann gebraucht wird. Wer diese Anfragen über Monate sammelt, kennt den Zustand der Anlagen.
-- **PT verarbeitet Kalender und Qualifikationen** und verknüpft sie mit Lieferterminen. Aus dem Einsatzplan lässt sich ablesen, wann welche Anlage stillsteht.
+- **PT verarbeitet Kalender und Qualifikationen** und verknüpft sie mit Lieferterminen. Aus dem Einsatzplan lässt sich ablesen, wann welche Anlage stillsteht. Unabhängig von der kritischen Infrastruktur ist zu prüfen, ob PT als System zur Aufgabenzuweisung an Beschäftigte unter Anhang III Nr. 4 Buchstabe b fällt — dass der Plan „unverbindlich“ ist, beantwortet diese Frage nicht.
 
 **Die Leitfrage für die Teilnehmenden:** Ändert die Einstufung als kritische Infrastruktur eure Antworten aus Abschnitt 6 — oder nur die Begründung? Bei mindestens zwei der sechs Entscheidungen ändert sie das Ergebnis.
 

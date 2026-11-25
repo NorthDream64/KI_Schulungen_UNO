@@ -1,6 +1,7 @@
 # IC 02 · Investment Case — cAIre - Your caring 24/7 robot
 > ⚠️ Fictional company — all names and figures are created for training purposes.
 > Status: working draft, developed step by step. Submitted to **AIktivInvest** for evaluation by the KI-Manager.
+> The legal remarks are general information for training purposes, not legal advice for an individual case. As of 25 November 2026.
 
 ---
 
@@ -8,7 +9,7 @@
 
 The following proposal has been submitted to AktivInvest for consideration and funding:
 
-**cAIre** is an AI-based robot which complements and enhances traditional human care-giving in hospitals, old-age pensioners homes and other institutions which a high ratio of cre-giver/care-taker interaction. It is built around an **agentic world model**, i.e. it is able to independently take appropriate actions in a wide variety of typical situation in a care-ginving context.
+**cAIre** is an AI-based robot which complements and enhances traditional human care-giving in hospitals, old-age pensioners homes and other institutions which a high ratio of cre-giver/care-taker interaction. According to the founders it is built around an **agentic world model** and can therefore independently take appropriate actions in a wide variety of typical situations in a care-giving context. (For the evaluation: a world model is a learned model of how the environment behaves, used for prediction and planning. Whether cAIre acts appropriately on that basis is the founders' claim and has yet to be shown.)
 
 ---
 
@@ -16,7 +17,7 @@ The following proposal has been submitted to AktivInvest for consideration and f
 
 - **Remind me** informs the recipient of care („human partner“) if and when medication or exercide needs to be taken. The signal is voice as well as optical and haptic.
 - **Talk to me** provides the human partner with conversation, reads favourite stories or recounts experiences from the human partner's past which have been programmed into the AI
-- **Fetch me something** can fetch particular objects (glass of water, newspaper, glasses etc.) for the human partner; cAIre has an understanding of the different parameter of „fetching“, for example if it is a fragile or dangerous object it is asked to fetch
+- **Fetch me something** can fetch particular objects (glass of water, newspaper, glasses etc.) for the human partner; according to the founders, cAIre distinguishes different kinds of „fetching“, for example whether the object is fragile or dangerous
 - **Help me** calls for assistance or even emergency help based on either the human partner's request or a certain pattern of their vital signs (heart beat, breathing, loss of balance etc.)
 
 All features are available in English, Spanish, Japanese, French, Italian, Portugese and Polish as a standard. Further language by request at extra cost.
@@ -71,7 +72,7 @@ cAIre positions in the *„advanced companion + light-assistive“* segment — 
 Three converging forces make 2026–2030 the defining window for AI-based caregiving robots:
 
 - **Demographic pressure.** In Japan, ~29 % of the population is 65+ (2024); Korea's old-age dependency ratio is projected to rise from 31 (2024) to ~80 by 2050 — the steepest ageing curve in the OECD. Germany faces an increase in long-term-care recipients from **~5.0 M (2021) to ~6.8 M by 2055** (Destatis).
-- **Caregiver shortage.** Germany's Federal Statistical Office projects a shortfall of up to **300,000 nurses by 2030** and an additional **~690,000 nursing staff needed by 2049** vs. 2019. Comparable gaps exist across Japan, Korea, and most of Europe.
+- **Caregiver shortage.** Germany's Federal Statistical Office projects that demand for nursing staff will rise from 1.62 m (2019) to 2.15 m (2049). Depending on the scenario, **280,000 to 690,000 nursing staff will be missing by 2049** (Destatis, 2024). Comparable gaps exist across Japan, Korea, and most of Europe.
 - **Technology inflection.** Agentic AI, low-cost humanoid hardware (Unitree, 1X, Neura) and multimodal vision-language-action models have shifted care-robots from research pilots to procurable products within 24 months.
 
 ### Market sizing (TAM → SAM → SOM)
@@ -81,8 +82,10 @@ Sizing logic: *addressable elder-care robot spend × cAIre-relevant institutiona
 | Level | Basis | Figure |
 |---|---|---|
 | **TAM** — Global eldercare-assistive robots market | Two independent estimates: USD 3.9 bn (2026) → USD 9.8 bn (2033) at ~14 % CAGR (The Business Research Company) and USD 3.7 bn (2026) → USD 9.4 bn (2033) at 14.2 % CAGR (Persistence Market Research). Adjacent healthcare-companion-robot segment tracks similarly. | **~USD 3.7–3.9 bn (2026)** rising to **~USD 9.5 bn (2033)** |
-| **SAM** — cAIre-eligible segment | *Physically-assistive + companion* robots for institutional care (nursing homes, assisted living, hospitals). Institutional demand ≈ 55 % of physically-assistive share × 28 % senior-living channel share of overall market. | **~USD 1.5–1.7 bn (2026)** |
-| **SOM** — realistic 5-year capture | 3 % of SAM by year 5, focused on DACH + selected APAC pilots | **~USD 45–50 m annual revenue by year 5** |
+| **SAM** — cAIre-eligible segment | *Physically-assistive + companion* robots for institutional care (nursing homes, assisted living, hospitals). Institutional demand ≈ 55 % of physically-assistive share × 28 % senior-living channel share of overall market, i.e. 0.55 × 0.28 ≈ 15 % of TAM. (The proposal stated ~USD 1.5–1.7 bn, which does not follow from its own formula.) | **~USD 0.6 bn (2026)** |
+| **SOM** — realistic 5-year capture | 3 % of SAM, focused on DACH + selected APAC pilots. Calculated on the 2026 SAM; for year 5 the SAM of that year would have to be used. | **~USD 17–18 m annual revenue** (the proposal stated USD 45–50 m) |
+
+**Open point for the committee:** the bottom-up plan below (10,000 units, EUR 42–55 m) is roughly three times the top-down SOM. It would require about 8 % of the SAM instead of 3 %. One of the two calculations has to give.
 
 **Revenue-mix sensitivity** (year-5 base case, ~10,000 active units in field):
 
@@ -91,6 +94,8 @@ Sizing logic: *addressable elder-care robot spend × cAIre-relevant institutiona
 | 30 / 50 / 20 (institutional-heavy) | ~EUR 4,800 | **~EUR 48 m** |
 | 15 / 40 / 45 (rental-heavy) | ~EUR 4,200 | ~EUR 42 m |
 | 50 / 30 / 20 (capex-heavy) | ~EUR 5,500 | ~EUR 55 m |
+
+The proposer's ARPU figures cannot be recalculated: the lease price is not stated, and one-off purchase prices (EUR 12,000–18,000) are mixed with recurring revenue per unit. Required before committee: revenue split into new business and recurring revenue (service, lease, rental), all prices, one currency (the SOM is in USD, revenue in EUR) and the unit ramp-up per year. 10,000 units in the field by year 5 presuppose EU market readiness in 2028, while the MDR path alone takes 18–30 months.
 
 > ⚠️ **Key assumptions to validate before committee:** (1) EU-market readiness by 2028 (MDR + AI Act conformity), (2) reimbursement or subsidy channel in DE/AT/CH, (3) hardware cost curve — a doubling of Unitree/Fourier-class output could pressure cAIre's price positioning within 24 months.
 
@@ -112,7 +117,7 @@ The AI care-robot space has moved from research to deployment in three regional 
 | **Neura Robotics 4NE1** | DE | General-purpose humanoid, ~USD 7 bn valuation | Deliveries late 2026 |
 | **Incumbent MedTech** (Stryker, Hillrom, Baxter) | Global | Traditional patient-handling equipment adding smart features | Slow AI adoption; distribution + reimbursement advantage |
 
-**Frontier trend (2026):** convergence of *agentic world models* + *soft-skin humanoid hardware* + *edge multimodal AI*. cAIre sits exactly at this intersection.
+**Frontier trend (2026):** convergence of *agentic world models* + *soft-skin humanoid hardware* + *edge multimodal AI*. cAIre claims to sit at this intersection; whether it delivers is unproven.
 
 **Differentiation cAIre must prove.** (1) An agentic world model that reliably handles the messy realities of a care setting — spilled liquids, unmarked objects, non-cooperative patients, cross-language interaction. (2) Measurable outcomes: falls prevented, medication-adherence uplift, staff-minutes recovered per resident-day, reduction of emergency-call latency. (3) Certifiable safety envelope — the difference between „companion“ and „physically-interacting“ is regulatory (see § 5).
 
@@ -124,23 +129,24 @@ The AI care-robot space has moved from research to deployment in three regional 
 
 **Product & pilots**
 
-- Clinical evidence: falls-prevented / medication-adherence / staff-time-recovered — needs at least 2 controlled pilot sites (recommended: 1 DACH LTC operator + 1 JP or KR partner) with independent measurement.
+- Clinical evidence: falls-prevented / medication-adherence / staff-time-recovered — needs controlled pilot sites (recommended: at least 1 DACH LTC operator + 1 JP or KR partner) with independent measurement. Two sites alone will not support a reliable statement on rare events such as falls: calculate the required number of cases in advance and include comparison wards. For „Help me“, define recall and the false-alarm rate per 1,000 resident-days as acceptance criteria — with rare emergencies, false alarms dominate and lead to alarm fatigue.
 - Human-in-the-loop model: for which actions is human confirmation mandatory (medication, physical interaction, emergency escalation)?
 - Fail-safe design: what happens if the agentic model loses connectivity, misidentifies an object, or receives contradictory instructions?
 - Multilingual voice: current 7 languages cover ~2.4 bn speakers; gaps for DE, DE-CH, Korean, Mandarin are commercially critical.
 
 **Regulatory & compliance**
 
-- **EU AI Act classification.** cAIre is almost certainly a **high-risk AI system** — its physical-safety component and medical-adjacent functions bring it under Annex III + MDR overlap. Compliance obligations: risk-management system, data-governance, transparency, human oversight, logging, post-market monitoring. Deadline: **2 August 2028** for AI systems that are, or are safety components of, medical devices requiring notified-body assessment under the MDR (Art. 6(1) + Annex I); **2 December 2027** for systems classified via Annex III (Art. 113(3)(c) as amended by the Digital Omnibus on AI, Regulation (EU) 2026/1744).
+- **EU AI Act classification.** cAIre is probably a **high-risk AI system** under Art. 6 (1) and Annex I (MDR) — provided „Help me“ makes it a medical device of class IIa or higher, because only then is a notified body involved. In that case the obligations apply from **2 August 2028**. Annex III is not the primary route for a care robot. Since the Digital Omnibus on AI (Regulation (EU) 2026/1744), the Machinery Regulation sits in Annex I Section B and no longer triggers a high-risk classification on its own. Compliance obligations for a high-risk system: risk-management system, data governance, transparency, human oversight, logging, post-market monitoring.
+- **Transparency and vulnerable users.** „Talk to me“ is a conversational function: users must be informed that they are interacting with an AI system (Art. 50 (1) AI Act). Because the target group includes people with dementia, the boundary to the prohibition on exploiting vulnerabilities (Art. 5 (1) (b)) has to be examined.
 - **MDR / IVDR.** If „Help me“ (vital-signs monitoring, emergency escalation) is a medical function, cAIre requires CE-marking as at least Class IIa medical device — notified-body conformity assessment, technical file, clinical evaluation. Path length: typically 18–30 months from readiness to CE.
-- **GDPR.** Care recipient data (voice, video, biometric, medical) is Art. 9 special-category data → explicit consent, DPIA (Art. 35) mandatory, purpose-limitation. Design decision: on-device inference vs. cloud, and where the training-data pipeline lives.
+- **GDPR.** Care recipient data (voice, video, biometric, medical) is Art. 9 special-category data. Check the legal basis for each processing operation: provision of health or social care (Art. 9 (2) (h) with (3)) or explicit consent (Art. 9 (2) (a)). Where residents lack the capacity to consent — frequent with dementia — legal representation has to be observed. A DPIA (Art. 35) is mandatory; purpose limitation applies. Design decision: on-device inference vs. cloud, and where the training-data pipeline lives.
 - **Product liability + Product-Liability Directive revision (2024).** The revised EU PLD explicitly extends strict liability to software and AI systems — this changes the risk-profile for cAIre from typical hardware to a software-plus-hardware liability model.
 
 **Go-to-market**
 
 - **Reimbursement lever.** JP + KR are subsidy-led; DE is fragmented (SGB XI Pflegehilfsmittel possible but limited). GTM in DACH probably starts with private LTC-operator groups (Korian, Alloheim, Pro Seniore) and Diakonie/Caritas, not with insurance.
 - **Distribution.** Direct sales to LTC operators, or partnership with med-tech distributors (Hartmann, Paul Hartmann, B. Braun for DACH)?
-- **Adoption bottleneck.** Staff training + resident consent + IT-integration are the practical gating factors, not model quality.
+- **Adoption bottleneck.** Alongside proven model reliability — a core condition for a robot that acts physically — staff training, resident consent and IT integration are the practical gating factors.
 
 **Unit economics & business plan**
 
@@ -154,13 +160,13 @@ The AI care-robot space has moved from research to deployment in three regional 
 
 - Ticket size vs. capital intensity (hardware manufacturing + regulatory approval is capital-heavy — comparable to a Class IIb medical device).
 - Exit thesis: strategic acquirer (med-tech incumbent) vs. IPO?
-- Timeline to break-even: **year 4–5** if EU MDR/AI-Act path executes on schedule, **year 6+** if delayed.
+- Timeline to break-even: **year 4–5** if EU MDR/AI-Act path executes on schedule, **year 6+** if delayed — founders' estimate; no cost plan, burn rate or funding requirement has been submitted yet, so it cannot be checked against AIktivInvest's target return.
 
 ---
 
 ## 6 · Organizational Structure
 
-**Rationale.** Because cAIre spans hardware, safety-critical software, clinical evidence and regulated go-to-market, the organisation is built around **five accountable pods** with a lean corporate centre. Total headcount target at Series A: ~35 FTE, growing to ~85 by end of year 3.
+**Rationale.** Because cAIre spans hardware, safety-critical software, clinical evidence and regulated go-to-market, the organisation is built around **five accountable pods** with a lean corporate centre. Total headcount target at Series A: ~35 FTE, growing to ~90 by end of year 3.
 
 ### Leadership (5 FTE)
 
@@ -201,11 +207,22 @@ xxxx *(to be developed)*
 
 ---
 
+## Glossary of financial terms
+
+- **TAM / SAM / SOM** — total addressable market / the part of it the company can actually serve (region, segment) / the share it can realistically win.
+- **ARPU (average revenue per unit)** — here: average revenue per robot in the field and year.
+- **CAGR (compound annual growth rate)** — (end value ÷ start value)^(1 ÷ years) − 1.
+- **BOM (bill of materials)** — material cost of one device.
+- **Break-even** — the point at which cumulative income covers cumulative cost.
+
+---
+
 ## Sources (market, demography, regulation, competition)
 
 **Tier-1 (government, statistical office, intergovernmental)**
 
 - Long-term care in Germany — [Destatis, Federal Statistical Office](https://www.destatis.de/EN/Themes/Society-Environment/Health/Long-Term-Care/_node.html)
+- Nursing staff projection to 2049 (press release PD24_033, 2024) — [Destatis](https://www.destatis.de/DE/Presse/Pressemitteilungen/2024/01/PD24_033_23_12.html)
 - Methodology & results, nursing and care staff projection — [Destatis WISTA (PDF)](https://www.destatis.de/EN/Methods/WISTAScientificJournal/Downloads/nursing-care-labour-market-demographic-change-022024.pdf?__blob=publicationFile&v=3)
 - Pensions at a Glance 2025, ageing outlook Japan/Korea — [OECD](https://www.oecd.org/en/publications/pensions-at-a-glance-2025_e40274c1-en/full-report/demographic-old-age-to-working-age-ratio_25476b96.html)
 - Japan: Priority Fields in the Use of Robot Technology for Long-term Care (June 2024 revision, operational since April 2025) — [METI, Ministry of Economy, Trade and Industry](https://www.meti.go.jp/english/press/2024/0628_004.html)
@@ -222,7 +239,7 @@ xxxx *(to be developed)*
 - Care-robot pricing — [Robotomated pricing guide](https://robotomated.com/learn/cost/eldercare-robot-cost-guide), [PARO review](https://robotomated.com/explore/medical/paro-therapeutic)
 - Humanoid landscape (1X NEO, Neura 4NE1) — [The Robot Report](https://www.therobotreport.com/1x-announces-pre-order-launch-neo-humanoid-robot/), [Neura Robotics](https://neura-robotics.com/products/4ne1/)
 
-*Confidence note. All market-size, deployment-count and pricing figures in §§ 3–4 are corroborated by at least two of the sources listed above. Regulatory statements (EU AI Act, MDR, GDPR) are backed by Tier-1 EU-institutional sources. Product deployment numbers (Hyodol 12,000+, PARO 5,000, China national pilot) reflect industry reporting as of the search date; before committee, cross-check with the manufacturer's most recent investor material or a Tier-1 government release.*
+*Confidence note. The market-size figures in § 4 rest on two commercial market-research reports; deployment counts and prices mostly on a single industry or press source each (not double-checked for Palro, Toyota HSR and Neura). Regulatory statements (EU AI Act, MDR, GDPR) rest on the legal texts. Product deployment numbers (Hyodol 12,000+, PARO 5,000, China national pilot) reflect industry reporting as of the search date; before committee, cross-check with the manufacturer's most recent investor material or a Tier-1 government release.*
 
 ---
 

@@ -1,5 +1,6 @@
 # UC-02 Unternehmensakte — Schiffszulieferer WellSeal GmbH
 > ⚠️ Fiktives Unternehmen — alle Namen und Details sind für Schulungszwecke erstellt
+> Die rechtlichen Hinweise sind allgemeine Information zu Schulungszwecken, keine Rechtsberatung im Einzelfall. Stand: 25.11.2026.
 
 ---
 
@@ -54,6 +55,8 @@ Die Teilnehmenden nehmen diese Rolle ein. Die Stelle wurde auf Initiative des Ju
 
 ## Die fünf KI-Initiativen des Juniors
 
+Die Angabe „Risikostufe“ ist jeweils eine vorläufige Einschätzung des Juniors ohne definierte Skala. Sie vermischt Regulierungsklasse und Risikohöhe — beides sauber zu trennen gehört zu Deiner Aufgabe.
+
 ### Initiative 1 — Wissensmanagement
 **Idee:** Erfassen des impliziten Wissens erfahrener Ingenieure (Reparaturerfahrungen, technische Kniffe, Fehlerdiagnosen), das bisher nirgends dokumentiert ist.  
 **Technologie:** M365 Copilot, SharePoint, Teams-Transkription  
@@ -64,7 +67,7 @@ Die Teilnehmenden nehmen diese Rolle ein. Die Stelle wurde auf Initiative des Ju
 **Idee:** Zentrales KI-System, das die 17 Vertriebsagenten weltweit bei komplexen Reparaturdiagnosen und technischen Fragen unterstützt.  
 **Technologie:** RAG-System mit technischer Dokumentation und Reparaturhistorie  
 **Risikostufe:** Mittel bis hoch  
-**Spannungsfeld:** Datenweitergabe an externe Dritte. Internationale Datenschutzgesetze (PIPL in China, APPI in Japan, US-Regularien). Kein klassischer AVV möglich — Agenten sind keine Auftragsverarbeiter.
+**Spannungsfeld:** Datenweitergabe an externe Dritte. Internationale Datenschutzgesetze (PIPL in China, APPI in Japan, US-Regularien). Die Agenten sind voraussichtlich eigene Verantwortliche; ein Auftragsverarbeitungsvertrag (AVV) passt dann nicht. Nötig sind trotzdem eine Rechtsgrundlage für die Übermittlung, Datenschutzklauseln und Garantien für Drittländer (z. B. Standardvertragsklauseln).
 
 ### Initiative 3 — Predictive Maintenance
 **Idee:** KI-System analysiert Betriebsdaten von Dichtungssystemen und prognostiziert Wartungsbedarf.  
@@ -82,7 +85,7 @@ Die Teilnehmenden nehmen diese Rolle ein. Die Stelle wurde auf Initiative des Ju
 **Idee:** KI-System erstellt automatisierte Kalkulationsvorschläge auf Basis historischer Projekte und Expertenwissen.  
 **Technologie:** RAG oder Fine-Tuning auf SAP-Daten und interne Kalkulations-Software  
 **Risikostufe:** Hoch  
-**Spannungsfeld:** Proprietäre Kalkulationsdaten verlassen das Unternehmen (Cloud). Möglicher Rollenwechsel Betreiber → Anbieter (Art. 25 EU AI Act). Geschäftsgeheimnisschutz. Wettbewerbsrecht.
+**Spannungsfeld:** Proprietäre Kalkulationsdaten verlassen das Unternehmen (Cloud). Wer ein eigenes System baut oder ein Modell nachtrainiert und unter eigenem Namen einsetzt, kann Anbieter werden (Art. 3 Nr. 3 KI-VO); Art. 25 gilt nur bei Hochrisiko-Systemen. Geschäftsgeheimnisschutz. Wettbewerbsrecht.
 
 ---
 
@@ -106,9 +109,9 @@ Die Kernaufgabe des KI-Beauftragten ist nicht technische Umsetzung, sondern **st
 |---|---|
 | **UC-02a/b/c (KI_UseCases.md)** | Technisch-regulatorische Prüfdimensionen |
 | **Longitudinal Assessment** | Roter Faden für den 100-Tage-Plan |
-| **Tag 8 (M365-Block)** | Copilot-Einführung als konkretes Szenario |
-| **Stakeholder-Analyse (Tag 13)** | CISO, DSB, IT-Leiter als Übungsobjekte |
-| **Woche 4 (Change Management)** | Spannungsfeld Junior vs. alte Garde |
+| **Microsoft 365** | Copilot-Einführung als konkretes Szenario |
+| **Stakeholder-Analyse** | CISO, DSB, IT-Leiter als Übungsobjekte |
+| **Change Management** | Spannungsfeld Junior vs. alte Garde |
 
 ---
 *Letzte Aktualisierung: November 2026 (Digital-Omnibus-Verordnung zur KI) — Ulrich Nord / Claude (Anthropic)*
