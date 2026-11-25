@@ -104,6 +104,7 @@ a{color:var(--accent);}
 .kpi-card{background:var(--card);border:1px solid var(--rule);border-radius:10px;padding:1rem;text-align:center;}
 .kpi-card.kpi-main{background:linear-gradient(135deg,#e8f5e8,#d4edda);border-color:#2a5c3f;}
 .kpi-card.kpi-warn{background:#fff8e1;border-color:#f0a500;}
+.kpi-card.kpi-bad{background:linear-gradient(135deg,#fdecea,#f8d7da);border-color:#a4262c;}
 .kpi-label{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:.3rem;}
 .kpi-value{font-size:1.7rem;font-weight:700;color:var(--ink);line-height:1.1;}
 .kpi-value.green{color:var(--green);}
@@ -512,13 +513,18 @@ a{color:var(--accent);}
   </div>
   <div class="kpi-card kpi-main">
     <div class="kpi-label">ROI im ersten vollen Jahr</div>
-    <div class="kpi-value green" id="kpi_roi_ho">—</div>
-    <div class="kpi-sub">Nettonutzen ÷ Investition &middot; die einzige ROI-Formel dieses Kurses</div>
+    <div class="kpi-value green" id="kpi_roi">—</div>
+    <div class="kpi-sub">Gewinn nach kalkulatorischer Abschreibung ÷ Investition &middot; die ROI-Formel dieses Kurses</div>
   </div>
   <div class="kpi-card">
     <div class="kpi-label">Gewinn je Jahr nach kalk. Abschreibung</div>
     <div class="kpi-value" id="kpi_gewinn1">—</div>
-    <div class="kpi-sub">Jahr 1 &middot; Ergebnissicht &middot; bewusst kein zweiter ROI-Wert</div>
+    <div class="kpi-sub">Jahr 1 &middot; Ergebnissicht &middot; der Zähler der ROI-Formel</div>
+  </div>
+  <div class="kpi-card">
+    <div class="kpi-label">Jährlicher Rückfluss der Investition</div>
+    <div class="kpi-value" id="kpi_rueck">—</div>
+    <div class="kpi-sub">(Nutzen − laufende Kosten) ÷ Investition &middot; vor Abschreibung — erklärt die Amortisationszeit, ist aber keine Rendite</div>
   </div>
   <div class="kpi-card">
     <div class="kpi-label">Kapazitätsgewinn, bewertet</div>
@@ -538,7 +544,7 @@ a{color:var(--accent);}
   <div class="kpi-card kpi-warn">
     <div class="kpi-label">Break-even der Zeitersparnis</div>
     <div class="kpi-value amber" id="kpi_be">—</div>
-    <div class="kpi-sub">Anteil der angenommenen Zeitersparnis, ab dem der Gewinn nach kalkulatorischer Abschreibung und verteilten Exit-Kosten null erreicht (nicht die ROI-Formel)</div>
+    <div class="kpi-sub" id="kpi_be_sub">Anteil der angenommenen Zeitersparnis, ab dem der Gewinn — und damit der ROI — null erreicht</div>
   </div>
   <div class="kpi-card">
     <div class="kpi-label">Angerechnete CAPEX</div>
@@ -557,11 +563,11 @@ a{color:var(--accent);}
   <div class="sec-title">Szenarien &middot; Was passiert, wenn die Annahmen nicht halten?</div>
   <div style="overflow-x:auto;">
   <table class="tbl">
-    <thead><tr><th style="text-align:left;">Szenario</th><th>Zeitersparnis Grob / Fein</th><th>budgetwirksam</th><th>ROI (Kursformel)</th><th>Amortisation</th><th>Gewinn Jahr 1 nach kalk. Abschreibung</th></tr></thead>
+    <thead><tr><th style="text-align:left;">Szenario</th><th>Zeitersparnis Grob / Fein</th><th>budgetwirksam</th><th>ROI (Gewinn ÷ Investition)</th><th>Amortisation</th><th>Gewinn Jahr 1 nach kalk. Abschreibung</th></tr></thead>
     <tbody id="scen_body"></tbody>
   </table>
   </div>
-  <p style="font-size:12px;color:var(--muted);margin:.6rem 0 0;">Pessimistisch und optimistisch verändern Zeitersparnis und budgetwirksamen Anteil um je ein Viertel ihres Werts (höchstens 95 % bzw. 100 %). Das sind gesetzte Bandbreiten, keine Erfahrungswerte — ersetze sie durch die Spanne aus Deinem Pilot. Der pessimistische Fall ist der Worst-Case-ROI für die Entscheidungsvorlage.</p>
+  <p style="font-size:12px;color:var(--muted);margin:.6rem 0 0;">Die äußeren beiden Zeilen verändern <strong>beide</strong> Annahmen gleichzeitig um je ein Viertel ihres Werts (höchstens 95 % bzw. 100 %) — die Wirkungen multiplizieren sich dort, der pessimistische Fall ist deshalb der Worst-Case-ROI für die Entscheidungsvorlage. Die beiden mittleren Zeilen bewegen jeweils <strong>nur eine</strong> Annahme — und liefern dasselbe Ergebnis. Das ist kein Anzeigefehler, sondern die eigentliche Aussage der Analyse: Beide Annahmen gehen <strong>multiplikativ</strong> in den Nutzen ein, ein Viertel weniger Zeitersparnis wirkt genauso wie ein Viertel weniger budgetwirksamer Anteil. Für den Piloten heißt das: Es genügt nicht, die auffälligere der beiden zu messen. Das sind gesetzte Bandbreiten, keine Erfahrungswerte — ersetze sie durch die Spanne aus Deinem Pilot.</p>
 </div>
 
 <!-- ─── BREAKDOWN ─────────────────────────────────────── -->
@@ -740,14 +746,18 @@ function compute(p){
   // Exit-Kosten: in der Ergebnissicht gleichmaessig verteilt, in der Zahlungssicht am Ende.
   const exit_erg     = exit_alloc / years.length;
   const gewinn       = years.map((y,i) => bens[i] - running_disp[i] - afa_disp[i] - exit_erg);
-  // ROI nach der Formel des Hand-Outs: Nettonutzen vor Abschreibung je Investitionssumme.
-  const roi_ho       = years.map((y,i) => capex_alloc > 0
+  // Jaehrlicher Rueckfluss: Nettonutzen VOR Abschreibung je Investitionssumme.
+  // Das ist keine Rendite, sondern eine Rueckflussquote — ihr Kehrwert ist ungefaehr
+  // die Amortisationszeit. Sie wird getrennt ausgewiesen, nicht als ROI.
+  const rueckfluss   = years.map((y,i) => capex_alloc > 0
     ? (bens[i] - running_disp[i]) / capex_alloc * 100 : 0);
 
-  // ── ROI je Jahr ──
+  // ── ROI je Jahr — die Kursformel ──
   // Klassische BWL-Definition (DuPont): Gewinn ÷ investiertes Kapital × 100.
-  // Bewusst NICHT über mehrere Jahre kumuliert: Der ROI ist — wie eine Verzinsung —
-  // eine Kennzahl je Periode. Im Gewinn ist die Abschreibung abgezogen.
+  // Im Zaehler steht der Gewinn, also NACH kalkulatorischer Abschreibung und nach
+  // den verteilten Exit-Kosten. Nur so tragen ROI und Gewinn dasselbe Vorzeichen.
+  // Bewusst NICHT ueber mehrere Jahre kumuliert: Der ROI ist — wie eine Verzinsung —
+  // eine Kennzahl je Periode.
   const roi_yr = gewinn.map(g => capex_alloc > 0 ? g / capex_alloc * 100 : 0);
 
   // Zahlungssicht. Erstinvestition in Jahr 0, Ersatzinvestition in Jahr N, 2N … (innerhalb des Zeitraums).
@@ -783,7 +793,7 @@ function compute(p){
     bl_h_gross_mo, bl_h_detail_mo, bl_h_mo, bl_cost_mo, bl_cost_case,
     sv_h_gross_mo, sv_h_detail_mo, sv_h_total_mo, sv_value_mo, sv_fte,
     capex_total, opex_total_yr, capex_alloc, opex_alloc_yr,
-    kapazitaet_yr, budget_yr, be_anteil, roi_ho, npv, exit_alloc, token_yr, restwert,
+    kapazitaet_yr, budget_yr, be_anteil, rueckfluss, npv, exit_alloc, token_yr, restwert,
     jahre_n: years.length - 1,
     capex_alloc_mo, opex_alloc_mo, ki_cost_mo,
     fs_h_gross_case, fs_h_detail_case, fs_h_mo, fs_personal_mo, fs_cost_mo, fs_cost_case, fs_delta_mo,
@@ -863,7 +873,8 @@ function calculate(){
   const jahre = n => n + (n === 1 ? ' Jahr' : ' Jahre');
   const pbText = x => isFinite(x) ? fmtMo(x) : 'keine bis Jahr 5';
   set('kpi_payback', pbText(r.payback_mo));
-  set('kpi_roi_ho', fmtPct(r.roi_ho[1]));
+  set('kpi_roi',     fmtPct(r.roi_yr[1]));
+  set('kpi_rueck',   fmtPct(r.rueckfluss[1]));
   set('kpi_gewinn1', fmtEur(r.gewinn[1]));
   set('kpi_kap',     fmtEur(r.kapazitaet_yr));
   set('kpi_kap_sub', 'davon budgetwirksam: ' + fmtEur(r.budget_yr) + ' je Jahr');
@@ -874,29 +885,47 @@ function calculate(){
     ? 'bei ' + fmt(p.zins*100,1) + ' % · Jahr 0 bis 5 (6 Perioden) · Jahr 0 nicht abgezinst'
     : 'undiskontiert · Jahr 0 bis 5 (6 Perioden) — für den Kapitalwert Zinssatz oben eintragen');
   set('kpi_be',      isFinite(r.be_anteil) ? fmt(r.be_anteil,0) + ' %' : '—');
+  set('kpi_be_sub',  (isFinite(r.be_anteil) && r.be_anteil > 100)
+    ? 'Über 100 %: Die angenommene Zeitersparnis reicht nicht aus — es müsste mehr eintreten, als Du angenommen hast, damit der Gewinn null erreicht.'
+    : 'Anteil der angenommenen Zeitersparnis, ab dem der Gewinn — und damit der ROI — null erreicht');
   set('kpi_invest',  fmtEur(r.capex_alloc));
   set('kpi_invest_sub', p.capex_years > 5 ? 'einmalig im Betrachtungszeitraum' : 'je Investition · Ersatz nach ' + p.capex_years + (p.capex_years === 1 ? ' Jahr' : ' Jahren'));
   set('kpi_afa',     fmtEur(r.afa_yr));
   set('kpi_afa_sub', 'je Jahr · CAPEX ÷ ' + jahre(p.capex_years) + ' · keine bilanzielle AfA');
-  const roiEl = document.getElementById('kpi_roi_ho');
-  if (roiEl) roiEl.className = 'kpi-value ' + (r.roi_ho[1] >= 0 ? 'green' : 'neg');
+  const roiEl = document.getElementById('kpi_roi');
+  if (roiEl) roiEl.className = 'kpi-value ' + (r.roi_yr[1] >= 0 ? 'green' : 'neg');
+  // Die hervorgehobene Karte darf bei negativem ROI nicht gruen bleiben.
+  const roiCard = roiEl && roiEl.closest('.kpi-card');
+  if (roiCard) roiCard.className = 'kpi-card ' + (r.roi_yr[1] >= 0 ? 'kpi-main' : 'kpi-bad');
+  const rfEl = document.getElementById('kpi_rueck');
+  if (rfEl) rfEl.className = 'kpi-value ' + (r.rueckfluss[1] >= 0 ? '' : 'neg');
   const gwEl = document.getElementById('kpi_gewinn1');
   if (gwEl) gwEl.className = 'kpi-value ' + (r.gewinn[1] >= 0 ? '' : 'neg');
+  const beEl = document.getElementById('kpi_be');
+  if (beEl) beEl.className = 'kpi-value ' + (isFinite(r.be_anteil) && r.be_anteil > 100 ? 'neg' : 'amber');
 
   // ── Szenarien (CR-132): gesetzte Bandbreite von einem Viertel um die Eingaben ──
-  const scen = [['Pessimistisch', 0.75], ['Basis (Eingaben)', 1], ['Optimistisch', 1.25]];
-  document.getElementById('scen_body').innerHTML = scen.map(([name, f]) => {
+  // fz = Faktor auf die Zeitersparnis, fb = Faktor auf den budgetwirksamen Anteil.
+  // Die mittleren beiden Zeilen bewegen jeweils nur eine Annahme (Sensitivitaet).
+  const scen = [
+    ['Pessimistisch · beide Annahmen −25 %',  0.75, 0.75],
+    ['nur Zeitersparnis −25 %',               0.75, 1   ],
+    ['Basis (Eingaben)',                      1,    1   ],
+    ['nur budgetwirksamer Anteil −25 %',      1,    0.75],
+    ['Optimistisch · beide Annahmen +25 %',   1.25, 1.25],
+  ];
+  document.getElementById('scen_body').innerHTML = scen.map(([name, fz, fb]) => {
     const q  = Object.assign({}, p, {
-      eff_gross:  Math.min(0.95, p.eff_gross  * f),
-      eff_detail: Math.min(0.95, p.eff_detail * f),
-      cash_share: Math.min(1,    p.cash_share * f)
+      eff_gross:  Math.min(0.95, p.eff_gross  * fz),
+      eff_detail: Math.min(0.95, p.eff_detail * fz),
+      cash_share: Math.min(1,    p.cash_share * fb)
     });
     const x  = compute(q);
     const cl = val => val < 0 ? 'neg' : val > 0 ? 'pos' : '';
-    return `<tr${f === 1 ? ' class="tr-result"' : ''}><td>${name}</td>`
+    return `<tr${fz === 1 && fb === 1 ? ' class="tr-result"' : ''}><td>${name}</td>`
       + `<td>${fmt(q.eff_gross*100,1)} % / ${fmt(q.eff_detail*100,1)} %</td>`
       + `<td>${fmt(q.cash_share*100,1)} %</td>`
-      + `<td class="${cl(x.roi_ho[1])}">${fmtPct(x.roi_ho[1])}</td>`
+      + `<td class="${cl(x.roi_yr[1])}">${fmtPct(x.roi_yr[1])}</td>`
       + `<td>${pbText(x.payback_mo)}</td>`
       + `<td class="${cl(x.gewinn[1])}">${fmtEur(x.gewinn[1])}</td></tr>`;
   }).join('');
@@ -964,10 +993,11 @@ function calculate(){
     {label:'= Budgetwirksamer Nutzen nach Dis-Benefits (€)', vals:r.bens,    bold:true, isNet:true},
     {sec:'Ergebnissicht — Gewinn und ROI'},
     {label:'− Laufende Kosten, angerechnet (€)',        vals:r.running_disp, isCost:true},
-    {label:'ROI / Jahr (%) — (Nutzen − laufende Kosten) ÷ Investition', vals:r.roi_ho, bold:true, isRoi:true},
     {label:'− Kalkulatorische Abschreibung (CAPEX ÷ Nutzungsdauer)', vals:r.afa_disp, isCost:true},
     {label:'− Exit-Kosten, über 6 Perioden verteilt (€)', vals:r.exit_disp,  isCost:true},
     {label:'= Gewinn / Jahr (€)',                       vals:r.gewinn,       bold:true, isNet:true},
+    {label:'ROI / Jahr (%) — Gewinn ÷ Investition',     vals:r.roi_yr,       bold:true, isRoi:true},
+    {label:'Jährlicher Rückfluss (%) — vor Abschreibung, erklärt die Amortisation', vals:r.rueckfluss, isRoi:true, isInfo:true},
     {sec:'Zahlungssicht — Amortisation (Nutzen − laufende Kosten − Investition − Exit + Restwert)'},
     {label:'− Investition und Ersatzinvestition (€)',   vals:r.invest_disp,  isCost:true},
     {label:'− Exit-Kosten am Ende (€)',                 vals:r.exit_cash,    isCost:true},
