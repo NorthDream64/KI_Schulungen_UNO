@@ -190,6 +190,15 @@ a{color:var(--accent);}
 
 /* ─── Gegenüberstellung ohne KI / mit KI (Tab 2) ───────────────────────── */
 .vier{display:grid;grid-template-columns:repeat(4,1fr);gap:.6rem;margin:.2rem 0 .2rem;}
+/* Vier Ergebnisfelder nebeneinander — die Huelle spannt ueber beide Spalten der
+   Karte und teilt sich selbst in vier. Auf schmalen Schirmen zwei, dann eines. */
+.vier-cf{display:grid;grid-template-columns:repeat(4,1fr);gap:0 .9rem;}
+.vier-cf .calc-field{display:flex;flex-direction:column;}
+/* Das Label waechst in die Hoehe, damit die Wertfelder auf einer Linie stehen,
+   auch wenn ein Titel zweizeilig umbricht. */
+.vier-cf .cf-label{font-size:12px;flex:1 0 auto;}
+.vier-cf .calc-out{padding-left:.6rem;padding-right:.6rem;}
+.vier-cf .cu{font-size:10px;}
 .vgl{border:1px solid var(--rule);border-radius:9px;padding:.65rem .75rem;background:#fbfaf7;}
 .vgl.mit{background:#2a5c3f;border-color:#1d4530;}
 .vgl.mit .vgl-k{color:#ffffff;font-weight:700;}
@@ -204,6 +213,11 @@ a{color:var(--accent);}
 .vgl-u{display:block;font-size:10px;color:var(--muted);margin-top:.2rem;line-height:1.35;}
 .vgl.eff{background:#2a5c3f;border-color:#1d4530;}
 .vgl.eff .vgl-v{white-space:pre-line;line-height:1.22;}
+
+/* Mittlere Stufe der Gegenüberstellung: operativ, noch ohne KI-Kosten */
+.vs-side.mid .vs-tag{color:var(--muted);}
+.vs-side.mid .vs-num{color:var(--ink);}
+.vs-body .vs-arrow{flex:0 0 auto;}
 
 /* Lizenzen: Anzahl mal Preis nebeneinander */
 .lic-paar{display:flex;align-items:flex-start;gap:.5rem;flex-wrap:nowrap;}
@@ -248,9 +262,9 @@ a{color:var(--accent);}
 .section-label .sl-add{font-family:'DM Sans',sans-serif;font-size:11px;font-weight:400;
   letter-spacing:0;text-transform:none;color:var(--muted);margin-left:.5rem;}
 .section-label .sl-add b{color:var(--ink);}
-@media(max-width:900px){.vier{grid-template-columns:repeat(2,1fr);}
+@media(max-width:900px){.vier,.vier-cf{grid-template-columns:repeat(2,1fr);}
   .vgl.eff.hoch{grid-row:auto;grid-column:span 2;}}
-@media(max-width:520px){.vier{grid-template-columns:1fr;}
+@media(max-width:520px){.vier,.vier-cf{grid-template-columns:1fr;}
   .vgl.eff.hoch{grid-column:auto;}}
 @media print{.vgl.eff,.vgl.mit{-webkit-print-color-adjust:exact;print-color-adjust:exact;}}
 
@@ -365,12 +379,12 @@ Der Rechner f&uuml;hrt in sieben Schritten zum Ergebnis:
 
     <div class="field">
       <label>Vorgänge pro Monat <span class="hint">Kreditanträge, Investitionsvorhaben</span></label>
-      <input type="number" id="vol" value="17" min="1" step="1">
+      <input type="number" id="vol" value="10" min="1" step="1">
       <div class="unit">Stück/Monat</div>
     </div>
     <div class="field">
       <label>Grobprüfung je Vorgang <span class="hint">Vorprüfung — die Entscheidung trifft ein Mensch</span></label>
-      <input type="number" id="h_gross" value="3.0" min="0" step="0.5">
+      <input type="number" id="h_gross" value="1" min="0" step="0.5">
       <div class="unit">Stunden/Vorgang</div>
     </div>
     <div class="field">
@@ -380,12 +394,12 @@ Der Rechner f&uuml;hrt in sieben Schritten zum Ergebnis:
     </div>
     <div class="field">
       <label>Feinprüfung je Vorgang</label>
-      <input type="number" id="h_detail" value="12.0" min="0" step="0.5">
+      <input type="number" id="h_detail" value="10" min="0" step="0.5">
       <div class="unit">Stunden/Vorgang</div>
     </div>
     <div class="field">
       <label>Vollkosten Analyst:in <span class="hint">inkl. Lohnnebenkosten — vom Controlling bestätigen lassen</span></label>
-      <input type="number" id="rate" value="120" min="1" step="5">
+      <input type="number" id="rate" value="150" min="1" step="5">
       <div class="unit">€/Stunde</div>
     </div>
 
@@ -433,6 +447,7 @@ Der Rechner f&uuml;hrt in sieben Schritten zum Ergebnis:
 
     <div class="cf-divider"></div>
 
+    <div class="vier-cf">
     <div class="calc-field">
       <span class="cf-label">Eingesparte Zeit Grobprüfung</span>
       <div class="calc-out is-save"><span class="cv" id="sv_h_gross">—</span><span class="cu">Stunden/Monat</span></div>
@@ -448,6 +463,7 @@ Der Rechner f&uuml;hrt in sieben Schritten zum Ergebnis:
     <div class="calc-field">
       <span class="cf-label">Wert der eingesparten Zeit <span class="cf-hint">vor KI-Kosten</span></span>
       <div class="calc-out is-save"><span class="cv" id="sv_value_mo">—</span><span class="cu">€/Monat</span></div>
+    </div>
     </div>
     <div class="cf-divider"></div>
     <div class="section-label">Operative Kosten: ohne KI und mit KI
@@ -582,10 +598,16 @@ Der Rechner f&uuml;hrt in sieben Schritten zum Ergebnis:
           <div class="vs-unit">€/Monat</div>
         </div>
         <div class="vs-arrow">→</div>
+        <div class="vs-side mid">
+          <div class="vs-tag">Operative Kosten mit KI</div>
+          <div class="vs-num" id="vs_mo_op">—</div>
+          <div class="vs-unit">€/Monat &middot; ohne KI-Kosten</div>
+        </div>
+        <div class="vs-arrow">→</div>
         <div class="vs-side fut">
-          <div class="vs-tag">Future State</div>
+          <div class="vs-tag">Future State mit KI</div>
           <div class="vs-num" id="vs_mo_fut">—</div>
-          <div class="vs-unit">€/Monat &middot; inkl. KI</div>
+          <div class="vs-unit">€/Monat &middot; inkl. KI-Kosten</div>
         </div>
       </div>
       <div class="vs-meter"><div class="m-base" id="vs_mo_meter_b" style="width:50%"></div><div class="m-fut" id="vs_mo_meter_f" style="width:50%"></div></div>
@@ -601,10 +623,16 @@ Der Rechner f&uuml;hrt in sieben Schritten zum Ergebnis:
           <div class="vs-unit">€/Vorgang</div>
         </div>
         <div class="vs-arrow">→</div>
+        <div class="vs-side mid">
+          <div class="vs-tag">Operative Kosten mit KI</div>
+          <div class="vs-num" id="vs_case_op">—</div>
+          <div class="vs-unit">€/Vorgang &middot; ohne KI-Kosten</div>
+        </div>
+        <div class="vs-arrow">→</div>
         <div class="vs-side fut">
-          <div class="vs-tag">Future State</div>
+          <div class="vs-tag">Future State mit KI</div>
           <div class="vs-num" id="vs_case_fut">—</div>
-          <div class="vs-unit">€/Vorgang &middot; inkl. KI</div>
+          <div class="vs-unit">€/Vorgang &middot; inkl. KI-Kosten</div>
         </div>
       </div>
       <div class="vs-meter"><div class="m-base" id="vs_case_meter_b" style="width:50%"></div><div class="m-fut" id="vs_case_meter_f" style="width:50%"></div></div>
@@ -614,19 +642,6 @@ Der Rechner f&uuml;hrt in sieben Schritten zum Ergebnis:
   </div>
 </div>
 <p id="vs_hinweis" style="font-size:12px;color:var(--muted);margin:.5rem 0 0;"></p>
-
-<div class="gauge-grid">
-  <div class="gauge-card">
-    <div class="g-label">ROI im ersten vollen Jahr <button type="button" class="info no-print" aria-label="Erläuterung">i<span class="tip"><b>ROI = Gewinn ÷ investiertes Kapital × 100.</b> Als Gewinn zählt der jährliche Nutzen abzüglich der laufenden Kosten <em>und</em> der kalkulatorischen Abschreibung — also der Investitionssumme, verteilt über die Nutzungsdauer. Lässt Du die Abschreibung weg, zehrst Du das Kapital auf, ohne dass die Zahl es zeigt. Gerechnet für das erste volle Jahr, unabgezinst. Die Herleitung Zeile für Zeile steht in Tab 5. Die Farbgrenzen (0 % und 5 %) sind <b>gesetzte Orientierungswerte</b>: Maßstab ist die interne Mindestrendite Deines Hauses, nicht diese Ampel.</span></button></div>
-    <svg viewBox="0 0 200 152" role="img" aria-labelledby="g_roi_t"><title id="g_roi_t">Tachometer</title><g id="g_roi_arcs"></g><text class="g-scale" id="g_roi_min" x="14" y="114" text-anchor="middle">—</text><text class="g-scale" id="g_roi_max" x="186" y="114" text-anchor="middle">—</text><line class="g-needle" id="g_roi_needle" x1="100" y1="100" x2="100" y2="42" transform="rotate(-90 100 100)"/><circle class="g-hub" cx="100" cy="100" r="5.5"/><text class="g-val" id="g_roi_val" x="100" y="134" text-anchor="middle">—</text><text class="g-unit" id="g_roi_unit" x="100" y="147" text-anchor="middle"></text></svg>
-    <div class="g-foot">rot unter 0 % · gelb bis 5 % · grün darüber</div>
-  </div>
-  <div class="gauge-card">
-    <div class="g-label">Amortisation <button type="button" class="info no-print" aria-label="Erläuterung">i<span class="tip">Ab wann ist die Investition zurückverdient? Gerechnet aus der <b>Zahlungssicht</b> ab Investitionsbeginn — nicht ab Go-Live — und einschließlich des Einführungsjahrs. Die Farbgrenzen (3 und 7 Jahre) sind <b>gesetzte Orientierungswerte</b>, keine Norm: Welche Amortisationsdauer akzeptabel ist, gibt Dein eigenes Haus vor. Prüf die interne Vorgabe, bevor Du die Ampel in eine Entscheidungsvorlage übernimmst.</span></button></div>
-    <svg viewBox="0 0 200 152" role="img" aria-labelledby="g_pay_t"><title id="g_pay_t">Tachometer</title><g id="g_pay_arcs"></g><text class="g-scale" id="g_pay_min" x="14" y="114" text-anchor="middle">—</text><text class="g-scale" id="g_pay_max" x="186" y="114" text-anchor="middle">—</text><line class="g-needle" id="g_pay_needle" x1="100" y1="100" x2="100" y2="42" transform="rotate(-90 100 100)"/><circle class="g-hub" cx="100" cy="100" r="5.5"/><text class="g-val" id="g_pay_val" x="100" y="134" text-anchor="middle">—</text><text class="g-unit" id="g_pay_unit" x="100" y="147" text-anchor="middle"></text></svg>
-    <div class="g-foot">grün unter 3 Jahren · gelb bis 7 · rot darüber</div>
-  </div>
-</div>
 
 </section>
 <section class="tab-panel" role="tabpanel" id="tab6" aria-labelledby="btn_tab6">
@@ -714,11 +729,11 @@ Der Rechner f&uuml;hrt in sieben Schritten zum Ergebnis:
   <div class="sec-title">Szenarien<button type="button" class="info no-print" aria-label="Erläuterung">i<span class="tip"><b>Zwei Fragen, die beide „Break-even“ heißen.</b> Die <em>Amortisation</em> fragt nach dem <em>Zeitpunkt</em>: ab wann ist die Investition zurückverdient? Sie steht in Monaten. Der <em>Break-even der Zeitersparnis</em> fragt nach der <em>Annahme</em>: wie viel davon muss eintreten, damit der Gewinn null erreicht? Er steht in Prozent. Über 100 % reicht die Annahme selbst dann nicht, wenn sie voll eintritt.</span></button> &middot; Was passiert, wenn die Annahmen nicht halten?</div>
   <div style="overflow-x:auto;">
   <table class="tbl">
-    <thead><tr><th style="text-align:left;">Szenario</th><th>Zeitersparnis Grob / Fein</th><th>budgetwirksam</th><th>Operativer Effizienzzuwachs<br><span style="font-weight:400;text-transform:none;">€/Jahr</span></th><th>Effizienzzuwachs nach Allokation aller Kosten<br><span style="font-weight:400;text-transform:none;">€/Jahr</span></th><th>ROI (Gewinn ÷ Investition)</th><th>Amortisation</th><th>Break-even der Zeitersparnis</th><th>Gewinn Jahr 1 nach kalk. Abschreibung</th></tr></thead>
+    <thead><tr><th style="text-align:left;">Szenario</th><th>Operativer Effizienzzuwachs<br><span style="font-weight:400;text-transform:none;">€/Jahr</span></th><th>ROI (Gewinn ÷ Investition)</th><th>Amortisation</th><th>Break-even der Zeitersparnis</th><th>Gewinn Jahr 1 nach kalk. Abschreibung</th></tr></thead>
     <tbody id="scen_body"></tbody>
   </table>
   </div>
-  <p style="font-size:12px;color:var(--muted);margin:.6rem 0 0;">Die äußeren beiden Zeilen verändern <strong>beide</strong> Annahmen gleichzeitig um je ein Viertel ihres Werts (höchstens 95 % bzw. 100 %) — die Wirkungen multiplizieren sich dort, der pessimistische Fall ist deshalb der Worst-Case-ROI für die Entscheidungsvorlage. Die beiden Effizienzspalten beantworten verschiedene Fragen: <strong>Operativ</strong> stellt die Bearbeitungskosten heute denen mit KI gegenüber, aufs Jahr gerechnet und mit der vollen bewerteten Kapazität. <strong>Nach Allokation aller Kosten</strong> rechnet nur mit dem budgetwirksamen Teil, abzüglich Dis-Benefits und abzüglich aller angerechneten Kosten einschließlich der kalkulatorischen Abschreibung. Der Abstand zwischen beiden ist der Betrag, der als Kapazität entsteht, aber nicht im Budget ankommt. Die beiden mittleren Zeilen bewegen jeweils <strong>nur eine</strong> Annahme — und liefern von der Allokationsspalte an dasselbe Ergebnis. Das ist kein Anzeigefehler, sondern die eigentliche Aussage der Analyse: Beide Annahmen gehen <strong>multiplikativ</strong> in den budgetwirksamen Nutzen ein, ein Viertel weniger Zeitersparnis wirkt genauso wie ein Viertel weniger budgetwirksamer Anteil. Nur die operative Spalte unterscheidet die beiden Zeilen, weil sie allein an der Zeitersparnis hängt und den budgetwirksamen Anteil gar nicht kennt. Für den Piloten heißt das: Es genügt nicht, die auffälligere der beiden zu messen. Das sind gesetzte Bandbreiten, keine Erfahrungswerte — ersetze sie durch die Spanne aus Deinem Pilot.</p>
+  <p style="font-size:12px;color:var(--muted);margin:.6rem 0 0;">Alle Zeilen rechnen mit <strong>denselben Eingaben</strong>. Verändert wird allein der operative Effizienzzuwachs — um je zehn und zwanzig Prozent nach unten und nach oben. Dahinter steht die Zeitersparnis: Sie geht linear in die Bearbeitungskosten ein, zehn Prozent weniger Effizienzzuwachs sind deshalb zehn Prozent weniger Zeitersparnis (gedeckelt bei 95 %). Investition und laufende Kosten bleiben in jeder Zeile gleich — die Spalten rechts zeigen also, wie empfindlich das Ergebnis auf diese <strong>eine</strong> Annahme reagiert. Je flacher der ROI über die Zeilen verläuft, desto robuster ist der Fall. Das sind gesetzte Bandbreiten, keine Erfahrungswerte — ersetze sie durch die Spanne aus Deinem Pilot.</p>
 </div>
 
 <div class="section-card">
@@ -982,8 +997,9 @@ function compute(p){
 }
 
 // Rendert einen Gegenüberstellungs-Block (Baseline vs. Future State)
-function renderVs(prefix, base, fut, unit){
+function renderVs(prefix, base, op, fut, unit){
   set(prefix + '_base', fmtEur(base));
+  set(prefix + '_op',   fmtEur(op));   // nur Personal, noch ohne KI-Kosten
   set(prefix + '_fut',  fmtEur(fut));
 
   const delta = base - fut;                       // positiv = Ersparnis
@@ -1043,37 +1059,24 @@ function calculate(){
 
 
   // ── Gegenüberstellung Baseline vs. Future State ──
-  renderVs('vs_mo',   r.bl_cost_mo,   r.fs_cost_mo,   '€/Monat');
+  renderVs('vs_mo',   r.bl_cost_mo,   r.fs_personal_mo,   r.fs_cost_mo,   '€/Monat');
   // Die Gegenueberstellung zeigt bewertete Kapazitaet. Die Kernkennzahlen rechnen auf dem
   // budgetwirksamen Teil - ohne diesen Hinweis widersprechen sich beide Bloecke.
   set('vs_hinweis', p.cash_share < 1
     ? 'Die Differenz oben ist bewertete Kapazität. Budgetwirksam davon: '
       + fmtEur(r.budget_yr / 12) + ' je Monat (' + fmt(p.cash_share * 100, 0)
-      + ' %). Die Tachometer darunter rechnen mit diesem Teil.'
+      + ' %). Die Kennzahlen im Reiter „Stellhebel“ rechnen mit diesem Teil.'
     : 'Die Differenz oben ist bewertete Kapazität und wird hier voll als budgetwirksam '
       + 'gerechnet — prüfe, ob das für Deinen Fall stimmt.');
-  renderVs('vs_case', r.bl_cost_case, r.fs_cost_case, '€/Vorgang');
+  renderVs('vs_case', r.bl_cost_case, p.vol > 0 ? r.fs_personal_mo / p.vol : 0, r.fs_cost_case, '€/Vorgang');
 
-  // ── Tachometer ──
-  const jahre = n => n + (n === 1 ? ' Jahr' : ' Jahre');
+  // ── Tachometer · stehen nur im Reiter „Stellhebel“ ──
   const pbText = x => isFinite(x) ? fmtMo(x) : 'keine bis Jahr 5';
-  // ROI: rot unter 0 %, gelb bis 5 %, gruen darueber. Skala -10 bis +30 %.
-  renderGauge('g_roi', r.roi_yr[1], -10, 30,
-    [[-10, 0, ROT], [0, 5, GELB], [5, 30, GRUEN]],
-    fmtPct(r.roi_yr[1]), isFinite(r.roi_yr[1]) ? 'je Jahr' : 'ohne Investition nicht berechenbar',
-    isFinite(r.roi_yr[1]) && r.roi_yr[1] < 0);
-  // Amortisation: gruen unter 3 Jahren, gelb bis 7, rot darueber. Skala 0 bis 10 Jahre.
   // Bei leerem CAPEX-Feld gibt es nichts zurueckzuverdienen. „0,0 Jahre“ las sich
-  // dort wie ein perfekter Fall — deshalb hier derselbe Strich wie beim ROI.
+  // dort wie ein perfekter Fall — deshalb derselbe Strich wie beim ROI.
   const ohneInvest = !(r.capex_alloc > 0);
   const payJ = ohneInvest ? NaN : (isFinite(r.payback_mo) ? r.payback_mo / 12 : 99);
-  renderGauge('g_pay', payJ, 0, 10,
-    [[0, 3, GRUEN], [3, 7, GELB], [7, 10, ROT]],
-    ohneInvest ? '—' : (isFinite(r.payback_mo) ? fmt(payJ, 1) : 'keine'),
-    ohneInvest ? 'noch keine Investition eingetragen'
-               : (isFinite(r.payback_mo) ? 'Jahre · ' + fmtMo(r.payback_mo) : 'bis Jahr 5'),
-    !ohneInvest && !isFinite(r.payback_mo));
-  // Dieselben beiden Kennzahlen im Reiter „Stellhebel“
+  // ROI: rot unter 0 %, gelb bis 5 %, gruen darueber. Skala -10 bis +30 %.
   renderGauge('h_roi', r.roi_yr[1], -10, 30,
     [[-10, 0, ROT], [0, 5, GELB], [5, 30, GRUEN]],
     fmtPct(r.roi_yr[1]), isFinite(r.roi_yr[1]) ? 'je Jahr' : 'ohne Investition nicht berechenbar',
@@ -1088,32 +1091,32 @@ function calculate(){
   // ── Szenarien (CR-132): gesetzte Bandbreite von einem Viertel um die Eingaben ──
   // fz = Faktor auf die Zeitersparnis, fb = Faktor auf den budgetwirksamen Anteil.
   // Die mittleren beiden Zeilen bewegen jeweils nur eine Annahme (Sensitivitaet).
+  // Variiert wird allein die Zeitersparnis; alle uebrigen Eingaben bleiben stehen.
+  // Weil der operative Effizienzzuwachs linear an der Zeitersparnis haengt, ist
+  // „Zeitersparnis mal 0,8" dasselbe wie „Effizienzzuwachs minus 20 %".
   const scen = [
-    ['Pessimistisch · beide Annahmen −25 %',  0.75, 0.75],
-    ['nur Zeitersparnis −25 %',               0.75, 1   ],
-    ['Basis (Eingaben)',                      1,    1   ],
-    ['nur budgetwirksamer Anteil −25 %',      1,    0.75],
-    ['Optimistisch · beide Annahmen +25 %',   1.25, 1.25],
+    ['Effizienzzuwachs −20 %', 0.8],
+    ['Effizienzzuwachs −10 %', 0.9],
+    ['Basis (Eingaben)',       1  ],
+    ['Effizienzzuwachs +10 %', 1.1],
+    ['Effizienzzuwachs +20 %', 1.2],
   ];
-  document.getElementById('scen_body').innerHTML = scen.map(([name, fz, fb]) => {
-    const q  = Object.assign({}, p, {
-      eff_gross:  Math.min(0.95, p.eff_gross  * fz),
-      eff_detail: Math.min(0.95, p.eff_detail * fz),
-      cash_share: Math.min(1,    p.cash_share * fb)
+  document.getElementById('scen_body').innerHTML = scen.map(([name, f]) => {
+    const q = Object.assign({}, p, {
+      eff_gross:  Math.min(0.95, p.eff_gross  * f),
+      eff_detail: Math.min(0.95, p.eff_detail * f)
     });
-    const x  = compute(q);
-    const cl = val => val < 0 ? 'neg' : val > 0 ? 'pos' : '';
-    return `<tr${fz === 1 && fb === 1 ? ' class="tr-result"' : ''}><td>${name}</td>`
-      + `<td>${fmt(q.eff_gross*100,1)} % / ${fmt(q.eff_detail*100,1)} %</td>`
-      + `<td>${fmt(q.cash_share*100,1)} %</td>`
-      // Operativ: Prozesssicht — Bearbeitungskosten heute gegen die mit KI, aufs Jahr.
-      // Nach Allokation: nur der budgetwirksame Teil, nach Dis-Benefits und nach allen
-      // angerechneten Kosten (laufende Kosten und kalkulatorische Abschreibung).
-      + `<td class="${cl((x.bl_cost_mo - x.fs_cost_mo) * 12)}">${fmtEur((x.bl_cost_mo - x.fs_cost_mo) * 12)}</td>`
-      + `<td class="${cl(x.bens[1] - x.running_disp[1] - x.afa_yr)}">${fmtEur(x.bens[1] - x.running_disp[1] - x.afa_yr)}</td>`
+    const x   = compute(q);
+    const cl  = val => val < 0 ? 'neg' : val > 0 ? 'pos' : '';
+    // Dieselbe Groesse wie im Reiter „Savings": Personalkosten heute gegen die mit KI,
+    // ohne die KI-Kosten. Sie haengt allein an der Zeitersparnis — genau das wird variiert.
+    const eff = (x.bl_cost_mo - x.fs_personal_mo) * 12;
+    return `<tr${f === 1 ? ' class="tr-result"' : ''}><td>${name}</td>`
+      + `<td class="${cl(eff)}">${fmtEur(eff)}</td>`
       + `<td class="${cl(x.roi_yr[1])}">${fmtPct(x.roi_yr[1])}</td>`
       + `<td>${pbText(x.payback_mo)}</td>`
-      + `<td class="${isFinite(x.be_anteil) && x.be_anteil > 100 ? 'neg' : ''}">${isFinite(x.be_anteil) ? fmt(x.be_anteil,0) + ' %' : '—'}</td>`
+      + `<td class="${isFinite(x.be_anteil) && x.be_anteil > 100 ? 'neg' : ''}">`
+      + `${isFinite(x.be_anteil) ? fmt(x.be_anteil,0) + ' %' : '—'}</td>`
       + `<td class="${cl(x.gewinn[1])}">${fmtEur(x.gewinn[1])}</td></tr>`;
   }).join('');
 
