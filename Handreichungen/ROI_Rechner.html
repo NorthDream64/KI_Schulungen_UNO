@@ -205,6 +205,13 @@ a{color:var(--accent);}
 .vgl.eff{background:#2a5c3f;border-color:#1d4530;}
 .vgl.eff .vgl-v{white-space:pre-line;line-height:1.22;}
 
+/* Lizenzen: Anzahl mal Preis nebeneinander */
+.lic-paar{display:flex;align-items:flex-start;gap:.5rem;flex-wrap:nowrap;}
+.lic-paar > span{display:flex;flex-direction:column;gap:.15rem;flex:1 1 0;min-width:0;}
+.lic-paar input{width:100%;}
+.lic-mal{flex:0 0 auto;font-size:15px;color:var(--muted);padding-top:.55rem;}
+.lic-u{font-size:10px;color:var(--muted);line-height:1.3;}
+
 /* Schieberegler im Reiter „Stellhebel" */
 .reg-grid{display:grid;grid-template-columns:1fr 1fr;gap:.9rem 1.4rem;margin:.3rem 0 .2rem;}
 .reg-kopf{display:flex;justify-content:space-between;align-items:baseline;gap:.5rem;margin-bottom:.3rem;}
@@ -327,8 +334,8 @@ a{color:var(--accent);}
 <div class="note-box howto" id="howto">
 Der Rechner ist in vier Schritten aufgebaut: <strong>① Baseline</strong> beschreibt den heutigen Prozess ohne KI.
   <strong>② Savings</strong> erfasst, wie stark die KI den Prozess beeinflusst.
-  <strong>③ Expenditure</strong> nimmt einmalige Investitionen (CAPEX, z. B. Entwicklung, Kauflizenzen und die externen Kosten für das KI-Projekt) und laufende Aufwendungen (OPEX, z. B. Lizenz-Abonnements, laufende Wartung, Help Desk, Monitoring) auf —
-  über den <em>Umlagefaktor</em> wird von den Plattformkosten (Entwicklung und Kauflizenzen, Lizenz-Abonnements, Cloud) nur der Anteil angerechnet, der diesem Vorhaben zuzurechnen ist, weil über dieselbe Plattform oft auch andere KI-Dienste laufen. Alle übrigen Posten entstehen nur durch dieses Vorhaben und zählen zu 100 %.
+  <strong>③ Expenditure</strong> nimmt einmalige Investitionen (CAPEX, z. B. Entwicklung und die externen Kosten für das KI-Projekt) und laufende Aufwendungen (OPEX, z. B. Lizenz-Abonnements, laufende Wartung, Help Desk, Monitoring) auf —
+  über den <em>Umlagefaktor</em> wird von den Plattformkosten (Entwicklung, Lizenz-Abonnements, Cloud) nur der Anteil angerechnet, der diesem Vorhaben zuzurechnen ist, weil über dieselbe Plattform oft auch andere KI-Dienste laufen. Alle übrigen Posten entstehen nur durch dieses Vorhaben und zählen zu 100 %.
   Die <em>Nutzungsdauer</em> legt fest, über wie viele Jahre die Einmalkosten kalkulatorisch verteilt werden und wann eine Ersatzinvestition angesetzt wird. Das ist eine kalkulatorische Abschreibung für die interne Wirtschaftlichkeitsrechnung, keine bilanzielle oder steuerliche AfA; die Aktivierung klärt das Rechnungswesen.
   Die <strong>Gegenüberstellung</strong> oben zeigt beide Zustände nebeneinander — heute und mit KI. Alle Werte aktualisieren sich sofort, während Du tippst.
   <br><br><strong>Zum Umgang mit Deinen Eingaben</strong>
@@ -491,7 +498,7 @@ Der Rechner ist in vier Schritten aufgebaut: <strong>① Baseline</strong> besch
 
     <div class="section-label">Einmalige Investitionen (CAPEX)</div>
     <div class="field">
-      <label>Entwicklung &amp; Kauflizenzen <span class="hint">Plattformkosten — Umlagefaktor gilt</span></label>
+      <label>Entwicklung <span class="hint">Plattformkosten — Umlagefaktor gilt</span></label>
       <input type="number" id="c_dev" value="" min="0" step="1000">
       <div class="unit">€</div>
     </div>
@@ -513,7 +520,7 @@ Der Rechner ist in vier Schritten aufgebaut: <strong>① Baseline</strong> besch
 
     <div class="cf-divider"></div>
     <div class="calc-field">
-      <span class="cf-label">Summe Einmal-Kosten <span class="cf-hint">die vier Posten oben, vor Umlage</span></span>
+      <span class="cf-label">Summe Einmal-Kosten</span>
       <div class="calc-out is-total"><span class="cv" id="sum_capex">—</span><span class="cu">&euro; einmalig</span></div>
     </div>
 
@@ -521,8 +528,14 @@ Der Rechner ist in vier Schritten aufgebaut: <strong>① Baseline</strong> besch
     <div class="section-label">Laufende Aufwendungen (OPEX)</div>
     <div class="field">
       <label>Lizenzen im Abonnement <span class="hint">Plattformkosten — Umlagefaktor gilt</span></label>
-      <input type="number" id="c_lizenz" value="" min="0" step="500">
-      <div class="unit">€/Jahr</div>
+      <div class="lic-paar">
+        <span><input type="number" id="lic_n" value="" min="0" step="1" placeholder="Anzahl">
+          <span class="lic-u">Lizenzen</span></span>
+        <span class="lic-mal">&times;</span>
+        <span><input type="number" id="lic_preis" value="" min="0" step="1" placeholder="je Monat">
+          <span class="lic-u">&euro; je Lizenz und Monat</span></span>
+      </div>
+      <div class="unit"><span id="lic_summe">—</span> &euro;/Jahr &middot; Anzahl &times; Preis &times; 12</div>
 <div class="unit" style="font-size:10.5px;color:var(--muted);">KI-Lizenzen sind meist laufende Abonnements und gehören dann hierher, nicht zu den Einmalkosten</div>    </div>
     <div class="field">
       <label>Cloud-Infrastruktur <span class="hint">Plattformkosten — Umlagefaktor gilt</span></label>
@@ -550,7 +563,7 @@ Der Rechner ist in vier Schritten aufgebaut: <strong>① Baseline</strong> besch
       <div class="unit">€/Jahr</div>
     </div>
     <div class="calc-field">
-      <span class="cf-label">Summe laufende Kosten <span class="cf-hint">je Jahr, vor Umlage &mdash; die nutzungsabh&auml;ngigen Modellkosten gehen mit dem Vorgangsvolumen ein</span></span>
+      <span class="cf-label">Summe laufende Kosten</span>
       <div class="calc-out is-total"><span class="cv" id="sum_opex">—</span><span class="cu">&euro;/Jahr</span></div>
     </div>
 
@@ -563,9 +576,9 @@ Der Rechner ist in vier Schritten aufgebaut: <strong>① Baseline</strong> besch
 <div class="cf-divider"></div>
     <div class="section-label">Zurechnung</div>
     <div class="field">
-      <label>Umlagefaktor<button type="button" class="info no-print" aria-label="Erläuterung">i<span class="tip">Plattformkosten (Entwicklung und Kauflizenzen, Lizenz-Abonnements, Cloud) kommen meist mehreren Vorhaben zugute — nur der zugerechnete Anteil belastet diesen Business Case. Alle übrigen Posten entstehen nur durch dieses Vorhaben und zählen zu 100 %.</span></button> <span class="hint">Anteil der Plattformkosten, der diesem Vorhaben zuzurechnen ist</span></label>
+      <label>Umlagefaktor<button type="button" class="info no-print" aria-label="Erläuterung">i<span class="tip">Plattformkosten (Entwicklung, Lizenz-Abonnements, Cloud) kommen meist mehreren Vorhaben zugute — nur der zugerechnete Anteil belastet diesen Business Case. Alle übrigen Posten entstehen nur durch dieses Vorhaben und zählen zu 100 %.</span></button> <span class="hint">Anteil der Plattformkosten, der diesem Vorhaben zuzurechnen ist</span></label>
       <input type="number" id="alloc" value="100" min="0" max="100" step="5">
-      <div class="unit">% (0–100) — gilt nur für Entwicklung &amp; Kauflizenzen, Lizenz-Abonnements und Cloud; alle übrigen Posten zählen zu 100 %</div>
+      <div class="unit">% (0–100) — gilt nur für Entwicklung, Lizenz-Abonnements und Cloud; alle übrigen Posten zählen zu 100 %</div>
     </div>
     <div class="field">
       <label>Nutzungsdauer CAPEX<button type="button" class="info no-print" aria-label="Erläuterung">i<span class="tip">Über wie viele Jahre die Einmalkosten kalkulatorisch verteilt werden — und wann eine Ersatzinvestition angesetzt wird. Das ist eine <b>kalkulatorische</b> Abschreibung für die interne Rechnung, keine bilanzielle oder steuerliche AfA; die Aktivierung klärt das Rechnungswesen.</span></button> <span class="hint">kalkulatorische Abschreibungsdauer; danach Ersatzinvestition</span></label>
@@ -726,7 +739,7 @@ Der Rechner ist in vier Schritten aufgebaut: <strong>① Baseline</strong> besch
           
         </div>
         <div class="reg">
-          <div class="reg-kopf"><span class="reg-name">Entwicklung &amp; Kauflizenzen</span>
+          <div class="reg-kopf"><span class="reg-name">Entwicklung</span>
             <span class="reg-wert" id="r_dev_v">—</span></div>
           <input type="range" id="r_dev" data-ziel="c_dev" data-einheit=" &euro;"
                  min="0" max="150000" step="5000">
@@ -789,7 +802,7 @@ Der Rechner ist in vier Schritten aufgebaut: <strong>① Baseline</strong> besch
   <div class="meth-body" id="meth_body">
 Dieses Modell rechnet die Zahlungsreihe standardmässig <strong>ohne Diskontierung</strong> und ist auf Plausibilitätsbewertung ausgelegt. Es ist eine Planungshilfe und ersetzt keine rechtliche, aufsichtsrechtliche oder steuerliche Prüfung des Einzelfalls. Im Beispielfall bereitet die KI die Prüfung vor; die Entscheidung über einen Antrag trifft ein Mensch. Trifft ein System Entscheidungen über natürliche Personen ohne inhaltliche menschliche Prüfung, gelten die Grenzen des Art. 22 DSGVO — diese Einordnung gehört vor den Business Case. Für eine Investitionsentscheidung trägst Du oben den von Finance vorgegebenen Kalkulationszins ein — dann weist der Rechner den <strong>Kapitalwert</strong> aus. Der Jahres-ROI bleibt in jedem Fall eine Grösse je Periode und ist mit einer Mindestrendite nicht unmittelbar vergleichbar.
   Berücksichtigt werden direkte Personalzeitersparnisse auf Basis des <em>aktuellen</em> Vorgangsvolumens.
-  Der <em>Umlagefaktor</em> bildet ab, dass die Kosten einer KI-Plattform (Entwicklung und Kauflizenzen, Lizenz-Abonnements, Cloud) meist mehreren Vorhaben zugutekommen —
+  Der <em>Umlagefaktor</em> bildet ab, dass die Kosten einer KI-Plattform (Entwicklung, Lizenz-Abonnements, Cloud) meist mehreren Vorhaben zugutekommen —
   nur der zugerechnete Anteil belastet diesen Business Case. Nutzungsabhängige Modellkosten und alle vorhabenspezifischen Posten (Daten und Integration, Schulung, interne Zeit, Updates, Monitoring, Support, Exit) zählen immer voll.<br>
   <strong>Zwei Sichten auf dieselbe Investition:</strong> Die <em>Ergebnissicht</em> verteilt die angerechnete CAPEX als kalkulatorische Abschreibung linear über die Nutzungsdauer (CAPEX &divide; Nutzungsdauer je Jahr) und die Exit-Kosten gleichmäßig über die sechs Perioden (Konvention: Der Ausstieg wird über die Laufzeit angespart). Daraus ergibt sich der Gewinn je Jahr. Das ist keine Ergebnisrechnung im Sinne des Rechnungswesens und keine bilanzielle oder steuerliche AfA; genauso geht die CAPEX in die annualisierten, allokierten Kosten KI des Future State ein.
   Die <em>Zahlungssicht</em> setzt die CAPEX als Auszahlung in Jahr 0 an und nach Ablauf der Nutzungsdauer als Ersatzinvestition in gleicher Höhe — eine vorsichtige Annahme, denn Schulung und Projektzeit fallen beim Ersatz selten in voller Höhe erneut an. Die Exit-Kosten stehen am Ende von Jahr 5, der nicht aufgebrauchte Teil der letzten Investition wird dort als Restwert gutgeschrieben. Beim Kapitalwert zählt Jahr 0 als Zeitpunkt 0 (nicht abgezinst), jedes weitere Jahr wird um ein Jahr mehr abgezinst. Daraus ergeben sich der kumulierte Zahlungsüberschuss und die Amortisation.
@@ -868,7 +881,9 @@ function getInputs(){
     dis_benefit: da('dis_benefit') ? v('dis_benefit') : 0,
     ramp:        da('ramp')        ? Math.min(1, Math.max(0, v('ramp')/100))      : 1,
     zins:        da('zins')        ? v('zins')/100                                : 0,
-    c_lizenz:    v('c_lizenz'),
+    // Lizenzen werden als Anzahl mal Monatspreis erfasst; der Rechner braucht
+    // sie als Jahresbetrag.
+    c_lizenz:    v('lic_n') * v('lic_preis') * 12,
   };
 }
 
@@ -894,7 +909,7 @@ function compute(p){
   const sv_fte         = (sv_h_total_mo * 12) / (220 * 8) * 100;
 
   // ── ③ Expenditure ──
-  // Der Umlagefaktor gilt nur fuer Plattformkosten (Entwicklung/Kauflizenzen, Lizenz-Abos, Cloud).
+  // Der Umlagefaktor gilt nur fuer Plattformkosten (Entwicklung, Lizenz-Abos, Cloud).
   // Vorhabenspezifische Posten und nutzungsabhaengige Modellkosten zaehlen immer zu 100 %.
   const capex_total    = p.c_dev + p.c_data + p.c_train + p.c_intern;
   const token_yr       = p.c_token * p.vol * 12;
@@ -1072,6 +1087,7 @@ function calculate(){
   // ── ③ Expenditure ──
   set('sum_capex', fmtEur(r.capex_total));
   set('sum_opex',  fmtEur(r.opex_total_yr));
+  set('lic_summe', fmtEur(v('lic_n') * v('lic_preis') * 12));
   set('ex_capex', fmt(r.capex_total)   + ' € → ' + fmt(r.capex_alloc)   + ' €');
   set('ex_opex',  fmt(r.opex_total_yr) + ' € → ' + fmt(r.opex_alloc_yr) + ' €');
 
