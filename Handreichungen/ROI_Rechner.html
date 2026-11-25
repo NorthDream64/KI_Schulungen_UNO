@@ -172,6 +172,18 @@ a{color:var(--accent);}
 .tab-panel{display:none;}
 .tab-panel.is-on{display:block;}
 
+/* ─── Eingabefelder zweispaltig (Tabs 1–4; Tab 5 bleibt einspaltig) ─────
+   Die Karte wird zum Raster: Überschriften, Trenner und alles andere
+   nehmen beide Spalten, nur Eingabe- und Rechenfelder je eine. */
+.tab-panel:not(#tab5) .section-card{display:grid;grid-template-columns:1fr 1fr;
+  gap:0 1.4rem;align-content:start;}
+.tab-panel:not(#tab5) .section-card > *{grid-column:1 / -1;}
+.tab-panel:not(#tab5) .section-card > .field,
+.tab-panel:not(#tab5) .section-card > .calc-field{grid-column:span 1;}
+@media(max-width:760px){
+  .tab-panel:not(#tab5) .section-card{grid-template-columns:1fr;}
+}
+
 /* ─── Tachometer ───────────────────────────────────────── */
 .gauge-grid{display:grid;grid-template-columns:1fr 1fr;gap:.9rem;margin-top:.9rem;}
 .gauge-card{background:var(--card);border:1px solid var(--rule);border-radius:10px;padding:.9rem .8rem .8rem;
@@ -511,12 +523,12 @@ Der Rechner ist in vier Schritten aufgebaut: <strong>① Baseline</strong> besch
     <div class="cf-divider"></div>
     <div class="section-label">Zurechnung</div>
     <div class="field">
-      <label><button type="button" class="info no-print" aria-label="Erläuterung">i<span class="tip">Plattformkosten (Entwicklung und Kauflizenzen, Lizenz-Abonnements, Cloud) kommen meist mehreren Vorhaben zugute — nur der zugerechnete Anteil belastet diesen Business Case. Alle übrigen Posten entstehen nur durch dieses Vorhaben und zählen zu 100 %.</span></button>Umlagefaktor <span class="hint">Anteil der Plattformkosten, der diesem Vorhaben zuzurechnen ist</span></label>
+      <label>Umlagefaktor<button type="button" class="info no-print" aria-label="Erläuterung">i<span class="tip">Plattformkosten (Entwicklung und Kauflizenzen, Lizenz-Abonnements, Cloud) kommen meist mehreren Vorhaben zugute — nur der zugerechnete Anteil belastet diesen Business Case. Alle übrigen Posten entstehen nur durch dieses Vorhaben und zählen zu 100 %.</span></button> <span class="hint">Anteil der Plattformkosten, der diesem Vorhaben zuzurechnen ist</span></label>
       <input type="number" id="alloc" value="100" min="0" max="100" step="5">
       <div class="unit">% (0–100) — gilt nur für Entwicklung &amp; Kauflizenzen, Lizenz-Abonnements und Cloud; alle übrigen Posten zählen zu 100 %</div>
     </div>
     <div class="field">
-      <label><button type="button" class="info no-print" aria-label="Erläuterung">i<span class="tip">Über wie viele Jahre die Einmalkosten kalkulatorisch verteilt werden — und wann eine Ersatzinvestition angesetzt wird. Das ist eine <b>kalkulatorische</b> Abschreibung für die interne Rechnung, keine bilanzielle oder steuerliche AfA; die Aktivierung klärt das Rechnungswesen.</span></button>Nutzungsdauer CAPEX <span class="hint">kalkulatorische Abschreibungsdauer; danach Ersatzinvestition</span></label>
+      <label>Nutzungsdauer CAPEX<button type="button" class="info no-print" aria-label="Erläuterung">i<span class="tip">Über wie viele Jahre die Einmalkosten kalkulatorisch verteilt werden — und wann eine Ersatzinvestition angesetzt wird. Das ist eine <b>kalkulatorische</b> Abschreibung für die interne Rechnung, keine bilanzielle oder steuerliche AfA; die Aktivierung klärt das Rechnungswesen.</span></button> <span class="hint">kalkulatorische Abschreibungsdauer; danach Ersatzinvestition</span></label>
       <input type="number" id="capex_years" value="3" min="1" max="10" step="1">
       <div class="unit">Jahre</div>
     </div>
