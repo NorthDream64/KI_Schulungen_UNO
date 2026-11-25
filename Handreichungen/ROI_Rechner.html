@@ -559,28 +559,8 @@ Der Rechner ist in vier Schritten aufgebaut: <strong>① Baseline</strong> besch
 <section class="tab-panel" role="tabpanel" id="tab4" aria-labelledby="btn_tab4">
 <div class="section-card">
     <div class="sec-title t-amber">Zurechnung &amp; Nachweis</div>
-    <div class="section-label">Belastbarkeit des Nutzens</div>
-    <div class="field">
-      <label>davon <strong>budgetwirksam</strong><button type="button" class="info no-print" aria-label="Erläuterung">i<span class="tip">Eingesparte Stunden sind noch kein Geld. Budgetwirksam ist nur, was sich tatsächlich im Budget niederschlägt — und dafür muss sich eine Umsetzungsmaßnahme benennen lassen. Trag hier nur ein, wofür Du diese Maßnahme nennen kannst.</span></button></label>
-      <input type="number" id="cash_share" value="50" min="0" max="100" step="5">
-      <div class="unit">%</div>
-<div class="unit" style="font-size:10.5px;color:var(--muted);">Gesparte Stunden sind zunächst Kapazität. Geld wird daraus nur, soweit Stellen abgebaut, Fremdleistung ersetzt oder messbar Mehrvolumen bewältigt wird. <strong>Trage hier nur ein, wofür Du die Maßnahme benennen kannst</strong> — die Vorgabe 50 % ist eine Beispielannahme, kein Erfahrungswert.</div>    </div>
-    <div class="field">
-      <label>Dis-Benefits: Fehler- und Nacharbeitskosten</label>
-      <input type="number" id="dis_benefit" value="5000" min="0" step="500">
-      <div class="unit">€/Jahr</div>
-<div class="unit" style="font-size:10.5px;color:var(--muted);">Was das Vorhaben an anderer Stelle kostet — Nachprüfung, Korrekturen</div>    </div>
-    <div class="field">
-      <label>Nutzungsgrad im Einführungsjahr</label>
-      <input type="number" id="ramp" value="25" min="0" max="100" step="5">
-      <div class="unit">%</div>
-<div class="unit" style="font-size:10.5px;color:var(--muted);">Hochlauf: Nutzen und nutzungsabhängige Modellkosten fallen im Jahr 0 nur zu diesem Anteil an</div>    </div>
-    <div class="field">
-      <label>Kalkulationszins für den Kapitalwert</label>
-      <input type="number" id="zins" value="0" min="0" step="0.5">
-      <div class="unit">%</div>
-<div class="unit" style="font-size:10.5px;color:var(--muted);">von Finance vorgeben lassen; 0 % ergibt die undiskontierte Übersicht</div>    </div>
-    <div class="cf-divider"></div>
+
+<div class="cf-divider"></div>
     <div class="section-label">Zurechnung</div>
     <div class="field">
       <label>Umlagefaktor<button type="button" class="info no-print" aria-label="Erläuterung">i<span class="tip">Plattformkosten (Entwicklung und Kauflizenzen, Lizenz-Abonnements, Cloud) kommen meist mehreren Vorhaben zugute — nur der zugerechnete Anteil belastet diesen Business Case. Alle übrigen Posten entstehen nur durch dieses Vorhaben und zählen zu 100 %.</span></button> <span class="hint">Anteil der Plattformkosten, der diesem Vorhaben zuzurechnen ist</span></label>
@@ -732,14 +712,6 @@ Der Rechner ist in vier Schritten aufgebaut: <strong>① Baseline</strong> besch
           <div class="reg-skala"><span>0</span><span>95</span></div>
           
         </div>
-        <div class="reg">
-          <div class="reg-kopf"><span class="reg-name">davon budgetwirksam</span>
-            <span class="reg-wert" id="r_cash_v">—</span></div>
-          <input type="range" id="r_cash" data-ziel="cash_share" data-einheit=" %"
-                 min="0" max="100" step="5">
-          <div class="reg-skala"><span>0</span><span>100</span></div>
-          <div class="reg-hint">Nur was sich im Budget niederschl&auml;gt, z&auml;hlt f&uuml;r den ROI.</div>
-        </div>
   </div>
 
   <div class="cf-divider"></div>
@@ -827,6 +799,19 @@ Dieses Modell rechnet die Zahlungsreihe standardmässig <strong>ohne Diskontieru
   <strong>Zwei Fragen, die beide „Break-even“ genannt werden:</strong> Die <em>Amortisation</em> beantwortet eine Frage nach dem <em>Zeitpunkt</em> — ab wann ist die Investition zurückverdient? Sie steht in Monaten und ist in der Zeitreihe markiert. Der <em>Break-even der Zeitersparnis</em> beantwortet eine Frage nach der <em>Annahme</em> — wie viel der angenommenen Zeitersparnis muss eintreten, damit der Gewinn null erreicht? Er steht in Prozent. Die beiden rechnen mit verschiedenen Größen: die Amortisation mit den Zahlungen (Zahlungssicht), der Break-even mit dem Gewinn nach kalkulatorischer Abschreibung (Ergebnissicht). Deshalb können sie unterschiedlich ausfallen. Liegt der Break-even über 100 %, reicht die Annahme selbst dann nicht, wenn sie voll eintritt.<br>
   <strong>Annahmen für Jahr 0 (Einführungsjahr):</strong> Die Lösung läuft in diesem Jahr noch nicht durchgängig. Angesetzt werden daher <strong>50 % der festen laufenden Kosten</strong> (der Betrieb startet erst im Jahresverlauf) sowie für den Nutzen und die nutzungsabhängigen Modellkosten der Anteil aus dem Feld <strong>„Nutzungsgrad im Einführungsjahr“</strong> (Vorgabe 25 %; Einführung, Schulung und Anlaufkurve verzögern die Nutzung). Ab Jahr 1 werden alle Werte voll angesetzt. Beide Anteile sind gesetzte Planungsannahmen, keine empirischen Werte — für einen realen Business Case sind sie durch eigene Erfahrungswerte zu ersetzen. Die Amortisation wird aus der Zahlungssicht abgeleitet und berücksichtigt damit auch das Einführungsjahr. Investitionen fallen zu Jahresbeginn an, Ersparnis und OPEX verteilen sich gleichmäßig über das Jahr.<br>
   Quellen: <a href="https://welt-der-bwl.de/ROI-Return-on-Investment" target="_blank">Welt der BWL</a> &middot; <a href="https://www.gabler-banklexikon.de/definition/return-investment-roi-60969" target="_blank">Gabler Banklexikon</a> &middot; <a href="https://wiki.hslu.ch/controlling/DuPont-Kennzahlensystem" target="_blank">Hochschule Luzern — DuPont-Kennzahlensystem</a>
+  <strong>Was dieser Rechner bewusst weglässt</strong>
+  Vier Größen gehören in einen vollständigen Business Case, stehen hier aber nicht als Eingabefeld —
+  sie würden den Einstieg überfrachten. Der Rechner setzt sie auf die neutrale Annahme; wer sie braucht, rechnet sie daneben.
+  <em>Budgetwirksamer Anteil:</em> Eingesparte Stunden sind zunächst nur Kapazität. Geld wird daraus erst, soweit Stellen
+  abgebaut, Fremdleistung ersetzt oder messbar Mehrvolumen bewältigt wird. Hier werden 100 % angesetzt — in der Praxis
+  liegt der Wert oft bei der Hälfte, und für jeden Prozentpunkt sollte sich eine Umsetzungsmaßnahme benennen lassen.
+  <em>Dis-Benefits:</em> Was das Vorhaben an anderer Stelle kostet — Nachprüfung, Korrekturen, Fehlerfolgen. Hier null.
+  <em>Nutzungsgrad im Einführungsjahr:</em> Eine neue Lösung läuft im ersten Jahr selten voll. Hier rechnet Jahr 0 wie
+  jedes andere; realistisch ist ein Hochlauf über die ersten Quartale, der den Nutzen entsprechend später anfallen lässt.
+  <em>Kalkulationszins:</em> Ohne Zinssatz zeigt die Tabelle die Summe der Zahlungsüberschüsse, nicht den Kapitalwert.
+  Für eine Investitionsentscheidung gibt das Controlling einen Satz vor; der Jahres-ROI bleibt in jedem Fall eine Größe
+  je Periode und ist mit einer Mindestrendite nicht unmittelbar vergleichbar.
+
   </div>
 </div>
 
@@ -850,6 +835,7 @@ const fmt = (n, dec=0) => isFinite(n)
 const fmtEur  = n => isFinite(n) ? fmt(n) + ' €' : '—';
 const fmtPct  = n => isFinite(n) ? fmt(n,1) + ' %' : '—';
 const fmtMo   = n => isFinite(n) ? fmt(n,1) + ' Mo.' : '—';
+const da = id => !!document.getElementById(id);   // steht das Feld in dieser Fassung?
 const v = id  => { const e = document.getElementById(id);
   return e ? (parseFloat(e.value) || 0) : 0; };   // entfernte Felder zaehlen als 0
 const set = (id, txt) => { const el = document.getElementById(id); if(el) el.textContent = txt; };
@@ -875,10 +861,13 @@ function getInputs(){
     c_monitor:   v('c_monitor'),
     c_support:   v('c_support'),
     c_exit:      v('c_exit'),
-    cash_share:  Math.min(1, Math.max(0, v('cash_share')/100)),
-    dis_benefit: v('dis_benefit'),
-    ramp:        Math.min(1, Math.max(0, v('ramp')/100)),
-    zins:        v('zins')/100,
+    // Diese vier Felder sind aus der Eingabe genommen (siehe Methodische Hinweise).
+    // Fehlt das Feld, gilt die neutrale Annahme: voll budgetwirksam, keine
+    // Dis-Benefits, kein Hochlauf, keine Diskontierung.
+    cash_share:  da('cash_share') ? Math.min(1, Math.max(0, v('cash_share')/100)) : 1,
+    dis_benefit: da('dis_benefit') ? v('dis_benefit') : 0,
+    ramp:        da('ramp')        ? Math.min(1, Math.max(0, v('ramp')/100))      : 1,
+    zins:        da('zins')        ? v('zins')/100                                : 0,
     c_lizenz:    v('c_lizenz'),
   };
 }
@@ -947,7 +936,9 @@ function compute(p){
   // ── Zeitreihe ──
   // Jahr 0 ist das Einführungsjahr: Die Lösung läuft noch nicht das volle Jahr.
   // Deshalb werden dort nur anteilige Werte angesetzt (Annahmen, siehe Fußnote):
-  const Y0_OPEX_ANTEIL = 0.50;  // 50 % der umgelegten OPEX
+  // Ohne Hochlauf-Feld rechnet auch Jahr 0 voll; sonst stuenden volle Ertraege
+  // halben Kosten gegenueber.
+  const Y0_OPEX_ANTEIL = da('ramp') ? 0.50 : 1;
   const Y0_NUTZEN_ANTEIL = p.ramp;  // Hochlauf im Einführungsjahr, Eingabefeld
   const years        = [0,1,2,3,4,5];
   // Feste laufende Kosten im Jahr 0 zu 50 %; nutzungsabhaengige Modellkosten folgen dem Hochlauf.
