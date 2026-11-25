@@ -421,12 +421,41 @@ Der Rechner ist in vier Schritten aufgebaut: <strong>① Baseline</strong> besch
       <div class="calc-out is-total"><span class="cv" id="sv_h_total">—</span><span class="cu">Stunden/Monat</span></div>
     </div>
     <div class="calc-field">
-      <span class="cf-label">Entspricht <span class="cf-hint">Annahme: Sollarbeitszeit 220 Arbeitstage × 8 h — Nettojahresarbeitszeit beim Controlling erfragen</span></span>
-      <div class="calc-out is-carry"><span class="cv" id="sv_fte">—</span><span class="cu">% einer Vollzeitstelle</span></div>
-    </div>
-    <div class="calc-field">
       <span class="cf-label">Wert der eingesparten Zeit <span class="cf-hint">vor KI-Kosten</span></span>
       <div class="calc-out is-save"><span class="cv" id="sv_value_mo">—</span><span class="cu">€/Monat</span></div>
+    </div>
+    <div class="cf-divider"></div>
+    <div class="section-label">Ausgangswerte aus Reiter 1</div>
+    <div class="calc-field">
+      <span class="cf-label">Bearbeitungszeit <span class="cf-hint">Grob- und Feinprüfung, ohne KI</span></span>
+      <div class="calc-out"><span class="cv" id="sv_bl_h">—</span><span class="cu">Stunden/Monat</span></div>
+    </div>
+    <div class="calc-field">
+      <span class="cf-label">Stundensatz <span class="cf-hint">Vollkosten Analyst:in</span></span>
+      <div class="calc-out"><span class="cv" id="sv_rate">—</span><span class="cu">€/Stunde</span></div>
+    </div>
+
+    <div class="cf-divider"></div>
+    <div class="section-label">Mit KI</div>
+    <div class="calc-field">
+      <span class="cf-label">Bearbeitungszeit mit KI</span>
+      <div class="calc-out is-save"><span class="cv" id="sv_fs_h">—</span><span class="cu">Stunden/Monat</span></div>
+    </div>
+    <div class="calc-field">
+      <span class="cf-label">Vorgangsbearbeitung (mit KI) <span class="cf-hint">inklusive der angerechneten KI-Kosten</span></span>
+      <div class="calc-out is-save"><span class="cv" id="sv_fs_mo">—</span><span class="cu">€/Monat</span></div>
+    </div>
+    <div class="calc-field">
+      <span class="cf-label">Kosten je Vorgang (mit KI)</span>
+      <div class="calc-out is-save"><span class="cv" id="sv_fs_case">—</span><span class="cu">€/Vorgang</span></div>
+    </div>
+    <div class="calc-field">
+      <span class="cf-label">Effizienzzuwachs Zeit <span class="cf-hint">weniger Bearbeitungsstunden — je Vorgang und insgesamt derselbe Wert</span></span>
+      <div class="calc-out is-total"><span class="cv" id="sv_eff_zeit">—</span><span class="cu">% gegenüber Baseline</span></div>
+    </div>
+    <div class="calc-field">
+      <span class="cf-label">Effizienzzuwachs Kosten <span class="cf-hint">nach Abzug der KI-Kosten — je Vorgang und insgesamt derselbe Wert</span></span>
+      <div class="calc-out is-total"><span class="cv" id="sv_eff_kosten">—</span><span class="cu">% gegenüber Baseline</span></div>
     </div>
   </div>
 </section>
@@ -843,7 +872,21 @@ function calculate(){
   set('sv_h_detail', fmt(r.sv_h_detail_mo, 1));
   set('sv_h_total',  fmt(r.sv_h_total_mo, 1));
   set('sv_value_mo', fmtEur(r.sv_value_mo));
-  set('sv_fte',      fmt(r.sv_fte, 1));
+  // Ausgangswerte aus Reiter 1, zum Vergleich wiederholt
+  set('sv_bl_h',    fmt(r.bl_h_mo, 1));
+  set('sv_rate',    fmtEur(p.rate));
+  // Mit KI
+  set('sv_fs_h',    fmt(r.fs_h_mo, 1));
+  set('sv_fs_mo',   fmtEur(r.fs_cost_mo));
+  set('sv_fs_case', fmtEur(r.fs_cost_case));
+  // Effizienzzuwachs. Je Vorgang und insgesamt ergeben denselben Prozentsatz,
+  // weil die Vorgangszahl in beiden Zustaenden gleich bleibt — deshalb wird
+  // stattdessen nach Zeit und Kosten getrennt: Die Zeit sinkt staerker als die
+  // Kosten, weil die KI selbst Geld kostet.
+  const effZeit   = r.bl_h_mo    > 0 ? (r.bl_h_mo    - r.fs_h_mo)    / r.bl_h_mo    * 100 : 0;
+  const effKosten = r.bl_cost_mo > 0 ? (r.bl_cost_mo - r.fs_cost_mo) / r.bl_cost_mo * 100 : 0;
+  set('sv_eff_zeit',   fmtPct(effZeit));
+  set('sv_eff_kosten', fmtPct(effKosten));
 
   // ── ③ Expenditure ──
   set('ex_capex', fmt(r.capex_total)   + ' € → ' + fmt(r.capex_alloc)   + ' €');
