@@ -213,6 +213,12 @@ a{color:var(--accent);}
 .herleitung tr.summe td{border-bottom:none;border-top:2px solid var(--ink);font-weight:700;padding-top:.55rem;}
 .herleitung tr.summe td.wert{color:var(--green);font-size:15px;}
 @media(max-width:560px){.herleitung .quelle{display:block;}}
+/* Zwei Herleitungen nebeneinander: ROI und Amortisation. */
+.herl-paar{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;margin-top:.5rem;}
+.herl-titel{font-family:'DM Mono',monospace;font-size:10.5px;letter-spacing:1.6px;text-transform:uppercase;
+  color:var(--muted);margin-bottom:.35rem;}
+.herl-fuss{font-size:12px;color:var(--muted);margin:.7rem 0 0;line-height:1.55;}
+@media(max-width:860px){.herl-paar{grid-template-columns:1fr;}}
 .vier-cf{display:grid;grid-template-columns:repeat(4,1fr);gap:0 .9rem;}
 .vier-cf .calc-field{display:flex;flex-direction:column;}
 /* Das Label waechst in die Hoehe, damit die Wertfelder auf einer Linie stehen,
@@ -381,13 +387,12 @@ a{color:var(--accent);}
 Der Rechner f&uuml;hrt in sieben Schritten zum Ergebnis:
   <strong>&#9312; Baseline</strong> h&auml;lt den heutigen Prozess ohne KI fest.
   <strong>&#9313; Savings</strong> erfasst, wie stark die KI ihn entlastet, und stellt die operativen Kosten gegen&uuml;ber.
-  <strong>&#9314; CAPEX &amp; OPEX</strong> nimmt auf, was die L&ouml;sung einmalig und was sie laufend kostet.
-  <strong>&#9315; Nachweis</strong> h&auml;lt fest, woher die Zahlen stammen und wer f&uuml;r sie geradesteht &mdash; dieser Teil wird mitgedruckt.
-  <strong>&#9316; Ergebnis</strong> zeigt beide Zust&auml;nde nebeneinander und daraus die Kennzahlen ROI und Amortisation.
-  <strong>&#9317; Stellhebel</strong> macht dieselben Gr&ouml;&szlig;en zu Reglern: Du siehst unmittelbar, woran das Ergebnis h&auml;ngt.
-  <strong>&#9318; Szenarien &amp; Kosten-Nutzen</strong> pr&uuml;ft, was passiert, wenn die Annahmen nicht halten, und rechnet Jahr 0 bis 5 durch.
-  Alle Werte aktualisieren sich sofort, w&auml;hrend Du tippst. Welche Gr&ouml;&szlig;en dieser Rechner bewusst wegl&auml;sst,
-  steht in den Methodischen Hinweisen am Ende von Reiter 7.
+  <strong>&#9314; CAPEX &amp; OPEX</strong> nimmt auf, was die L&ouml;sung einmalig und was sie laufend kostet, und &uuml;ber wie viele Jahre die Einmal-Kosten verteilt werden.
+  <strong>&#9315; Ergebnis</strong> stellt die Prozesskosten in drei Stufen gegen&uuml;ber und rechnet vor, wie der Future State zustande kommt.
+  <strong>&#9316; Stellhebel</strong> zeigt ROI und Amortisation, leitet beide Kennzahlen her und macht die wichtigsten Gr&ouml;&szlig;en zu Reglern: Du siehst unmittelbar, woran das Ergebnis h&auml;ngt.
+  <strong>&#9317; Szenarien</strong> pr&uuml;ft, was passiert, wenn der Effizienzzuwachs kleiner oder gr&ouml;&szlig;er ausf&auml;llt als angenommen.
+  <strong>&#9318; Methodische Hinweise</strong> sagt, wie gerechnet wird und welche Gr&ouml;&szlig;en dieser Rechner bewusst wegl&auml;sst.
+  Alle Werte aktualisieren sich sofort, w&auml;hrend Du tippst.
   <br><br><strong>Zum Umgang mit Deinen Eingaben</strong>
   Titel und Fallbeschreibung sind direkt überschreibbar — klicke hinein und ersetze den Text durch deinen eigenen Fall. Titel und Fallbeschreibung bleiben in diesem Browser gespeichert; die Zahlen nicht — bitte drucken oder als PDF sichern. Auf fremden oder gemeinsam genutzten Geräten keine vertraulichen oder personenbezogenen Angaben eintragen und am Ende „Beispielfall“ wiederherstellen.
 </div>
@@ -398,7 +403,8 @@ Der Rechner f&uuml;hrt in sieben Schritten zum Ergebnis:
   <button type="button" class="tab-btn" role="tab" id="btn_tab3" aria-controls="tab3" aria-selected="false"><span class="tnum">3</span>CAPEX &amp; OPEX</button>
   <button type="button" class="tab-btn" role="tab" id="btn_tab5" aria-controls="tab5" aria-selected="false"><span class="tnum">4</span>Ergebnis</button>
   <button type="button" class="tab-btn" role="tab" id="btn_tab6" aria-controls="tab6" aria-selected="false"><span class="tnum">5</span>Stellhebel</button>
-  <button type="button" class="tab-btn" role="tab" id="btn_tab7" aria-controls="tab7" aria-selected="false"><span class="tnum">6</span>Szenarien &amp; Kosten-Nutzen</button>
+  <button type="button" class="tab-btn" role="tab" id="btn_tab7" aria-controls="tab7" aria-selected="false"><span class="tnum">6</span>Szenarien</button>
+  <button type="button" class="tab-btn" role="tab" id="btn_tab8" aria-controls="tab8" aria-selected="false"><span class="tnum">7</span>Methodische Hinweise</button>
 </nav>
 <section class="tab-panel" role="tabpanel" id="tab1" aria-labelledby="btn_tab1">
   <!-- ① BASELINE -->
@@ -696,6 +702,45 @@ Der Rechner f&uuml;hrt in sieben Schritten zum Ergebnis:
   </div>
 
   <div class="cf-divider"></div>
+  <div class="section-label">Wie die beiden Kennzahlen entstehen</div>
+  <div class="herl-paar">
+    <div>
+      <div class="herl-titel">ROI im ersten vollen Jahr</div>
+      <table class="herleitung">
+        <tbody>
+          <tr><td class="op"></td><td>Prozesskosten ohne KI</td><td class="wert" id="hr_bl">&mdash;</td></tr>
+          <tr><td class="op">&minus;</td><td>Prozesskosten mit KI<span class="quelle"> &mdash; enth&auml;lt laufende Kosten und die Allokation des CAPEX</span></td>
+              <td class="wert" id="hr_fs">&mdash;</td></tr>
+          <tr><td class="op">=</td><td>Vorteil je Monat</td><td class="wert" id="hr_delta">&mdash;</td></tr>
+          <tr><td class="op">&times;</td><td>zw&ouml;lf Monate<span class="quelle"> &mdash; das ist der Gewinn nach kalkulatorischer Abschreibung</span></td>
+              <td class="wert" id="hr_jahr">&mdash;</td></tr>
+          <tr><td class="op">&divide;</td><td>Summe Einmal-Kosten</td><td class="wert" id="hr_capex">&mdash;</td></tr>
+          <tr class="summe"><td class="op">=</td><td>ROI</td><td class="wert" id="hr_roi">&mdash;</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div>
+      <div class="herl-titel">Amortisation</div>
+      <table class="herleitung">
+        <tbody>
+          <tr><td class="op"></td><td>Wert der eingesparten Zeit</td><td class="wert" id="ha_kap">&mdash;</td></tr>
+          <tr><td class="op">&minus;</td><td>Laufende Kosten<span class="quelle"> &mdash; ohne Abschreibung: sie ist keine Auszahlung</span></td>
+              <td class="wert" id="ha_opex">&mdash;</td></tr>
+          <tr><td class="op">=</td><td>R&uuml;ckfluss je Monat</td><td class="wert" id="ha_rueck">&mdash;</td></tr>
+          <tr><td class="op">&divide;</td><td>Summe Einmal-Kosten<span class="quelle"> &mdash; umgestellt: Einmal-Kosten geteilt durch den R&uuml;ckfluss</span></td>
+              <td class="wert" id="ha_capex">&mdash;</td></tr>
+          <tr class="summe"><td class="op">=</td><td>Amortisation</td><td class="wert" id="ha_pay">&mdash;</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <p class="herl-fuss">Beide Kennzahlen stehen auf demselben Fall und kommen doch zu verschiedenen Zahlen, weil sie
+  verschiedene Fragen beantworten. Der <strong>ROI</strong> rechnet <strong>nach</strong> kalkulatorischer Abschreibung &mdash;
+  er fragt, was das Vorhaben im Ergebnis verdient. Die <strong>Amortisation</strong> rechnet <strong>vor</strong> Abschreibung,
+  weil sie fragt, wann das Geld zur&uuml;ck ist, und eine Abschreibung keine Auszahlung ist.
+  <span id="ha_hinweis"></span></p>
+
+  <div class="cf-divider"></div>
   <div class="section-label">Was den Nutzen treibt</div>
   <div class="reg-grid">
         <div class="reg">
@@ -774,38 +819,11 @@ Der Rechner f&uuml;hrt in sieben Schritten zum Ergebnis:
   </div>
   <p style="font-size:12px;color:var(--muted);margin:.6rem 0 0;">Alle Zeilen rechnen mit <strong>denselben Eingaben</strong>. Verändert wird allein der operative Effizienzzuwachs — um je zehn und zwanzig Prozent nach unten und nach oben. Dahinter steht die Zeitersparnis: Sie geht linear in die Bearbeitungskosten ein, zehn Prozent weniger Effizienzzuwachs sind deshalb zehn Prozent weniger Zeitersparnis (gedeckelt bei 95 %). Investition und laufende Kosten bleiben in jeder Zeile gleich — die Spalten rechts zeigen also, wie empfindlich das Ergebnis auf diese <strong>eine</strong> Annahme reagiert. Je flacher der ROI über die Zeilen verläuft, desto robuster ist der Fall. Das sind gesetzte Bandbreiten, keine Erfahrungswerte — ersetze sie durch die Spanne aus Deinem Pilot.</p>
 </div>
-
+</section>
+<section class="tab-panel" role="tabpanel" id="tab8" aria-labelledby="btn_tab8">
 <div class="section-card">
-<div class="section-card">
-  <div class="sec-title">Kosten-Nutzen-Rechnung &middot; Jahr 0 bis 5</div>
-  <div style="overflow-x:auto;">
-  <table class="tbl" id="timeline_tbl">
-    <thead>
-      <tr>
-        <th style="text-align:left;">Posten</th>
-        <th>Jahr 0</th><th>Jahr 1</th><th>Jahr 2</th><th>Jahr 3</th><th>Jahr 4</th><th>Jahr 5</th>
-      </tr>
-    </thead>
-    <tbody id="timeline_body"></tbody>
-  </table>
-  </div>
-</div>
-</div>
-
-<div class="note-box" style="margin-top:1.3rem;">
-  <button type="button" class="meth-head" id="meth_btn" aria-expanded="false" aria-controls="meth_body">
-    <span class="chev">▶</span> Methodische Hinweise
-  </button>
-  <div class="meth-body" id="meth_body">
-Dieses Modell rechnet die Zahlungsreihe standardmässig <strong>ohne Diskontierung</strong> und ist auf Plausibilitätsbewertung ausgelegt. Es ist eine Planungshilfe und ersetzt keine rechtliche, aufsichtsrechtliche oder steuerliche Prüfung des Einzelfalls. Im Beispielfall bereitet die KI die Prüfung vor; die Entscheidung über einen Antrag trifft ein Mensch. Trifft ein System Entscheidungen über natürliche Personen ohne inhaltliche menschliche Prüfung, gelten die Grenzen des Art. 22 DSGVO — diese Einordnung gehört vor den Business Case. Für eine Investitionsentscheidung trägst Du oben den von Finance vorgegebenen Kalkulationszins ein — dann weist der Rechner den <strong>Kapitalwert</strong> aus. Der Jahres-ROI bleibt in jedem Fall eine Grösse je Periode und ist mit einer Mindestrendite nicht unmittelbar vergleichbar.
-  Berücksichtigt werden direkte Personalzeitersparnisse auf Basis des <em>aktuellen</em> Vorgangsvolumens.<br>
-  <strong>Zwei Sichten auf dieselbe Investition:</strong> Die <em>Ergebnissicht</em> verteilt die angerechnete CAPEX als kalkulatorische Abschreibung linear über die Nutzungsdauer (CAPEX &divide; Nutzungsdauer je Jahr). Daraus ergibt sich der Gewinn je Jahr. Das ist keine Ergebnisrechnung im Sinne des Rechnungswesens und keine bilanzielle oder steuerliche AfA; genauso geht die CAPEX in die annualisierten, allokierten Kosten KI des Future State ein.
-  Die <em>Zahlungssicht</em> setzt die CAPEX als Auszahlung in Jahr 0 an und nach Ablauf der Nutzungsdauer als Ersatzinvestition in gleicher Höhe — eine vorsichtige Annahme, denn Schulung und Projektzeit fallen beim Ersatz selten in voller Höhe erneut an. Beim Kapitalwert zählt Jahr 0 als Zeitpunkt 0 (nicht abgezinst), jedes weitere Jahr wird um ein Jahr mehr abgezinst. Daraus ergeben sich der kumulierte Zahlungsüberschuss und die Amortisation.
-  Beide Sichten werden getrennt geführt — es gibt keine Doppelzählung. Die Nutzungsdauer beginnt mit Jahr 0; weil nach ihrem Ablauf ersetzt wird, läuft die Abschreibung in jedem Jahr weiter.
-  Strategische Zusatznutzen (Skalierung, Qualität, Time-to-Decision) sind nicht eingerechnet.
-  ROI-Formel: <strong>(jährlicher Nutzen &minus; laufende Kosten &minus; kalkulatorische Abschreibung) &divide; Investitionssumme &times; 100</strong> — angewendet je Jahr, nicht kumuliert: Der ROI ist wie eine Verzinsung eine Kennzahl je Periode. Im Zähler steht der Gewinn nach kalkulatorischer Abschreibung, im Nenner das eingesetzte Kapital und nicht die Summe aller Kosten.
-  <strong>Zwei Fragen, die beide „Break-even“ genannt werden:</strong> Die <em>Amortisation</em> beantwortet eine Frage nach dem <em>Zeitpunkt</em> — ab wann ist die Investition zurückverdient? Sie steht in Monaten und ist in der Zeitreihe markiert. Der <em>Break-even der Zeitersparnis</em> beantwortet eine Frage nach der <em>Annahme</em> — wie viel der angenommenen Zeitersparnis muss eintreten, damit der Gewinn null erreicht? Er steht in Prozent. Die beiden rechnen mit verschiedenen Größen: die Amortisation mit den Zahlungen (Zahlungssicht), der Break-even mit dem Gewinn nach kalkulatorischer Abschreibung (Ergebnissicht). Deshalb können sie unterschiedlich ausfallen. Liegt der Break-even über 100 %, reicht die Annahme selbst dann nicht, wenn sie voll eintritt.<br><br>
-  Quellen: <a href="https://welt-der-bwl.de/ROI-Return-on-Investment" target="_blank">Welt der BWL</a> &middot; <a href="https://www.gabler-banklexikon.de/definition/return-investment-roi-60969" target="_blank">Gabler Banklexikon</a> &middot; <a href="https://wiki.hslu.ch/controlling/DuPont-Kennzahlensystem" target="_blank">Hochschule Luzern — DuPont-Kennzahlensystem</a>
+  <div class="sec-title t-green">Methodische Hinweise</div>
+Dieses Modell rechnet <strong>ohne Diskontierung</strong> und ist auf Plausibilitätsbewertung ausgelegt. Es ist eine Planungshilfe und ersetzt keine rechtliche, aufsichtsrechtliche oder steuerliche Prüfung des Einzelfalls. Im Beispielfall bereitet die KI die Prüfung vor; die Entscheidung über einen Antrag trifft ein Mensch. Trifft ein System Entscheidungen über natürliche Personen ohne inhaltliche menschliche Prüfung, gelten die Grenzen des Art. 22 DSGVO — diese Einordnung gehört vor den Business Case. Der Jahres-ROI bleibt in jedem Fall eine Grösse je Periode und ist mit einer Mindestrendite nicht unmittelbar vergleichbar. Berücksichtigt werden direkte Personalzeitersparnisse auf Basis des <em>aktuellen</em> Vorgangsvolumens.<br> <strong>Zwei Sichten auf dieselbe Investition:</strong> Die <em>Ergebnissicht</em> verteilt die angerechnete CAPEX als kalkulatorische Abschreibung linear über die Nutzungsdauer (CAPEX &divide; Nutzungsdauer je Jahr). Daraus ergibt sich der Gewinn je Jahr. Das ist keine Ergebnisrechnung im Sinne des Rechnungswesens und keine bilanzielle oder steuerliche AfA; genauso geht die CAPEX in die annualisierten, allokierten Kosten KI des Future State ein. Die <em>Zahlungssicht</em> setzt die CAPEX als Auszahlung in Jahr 0 an und nach Ablauf der Nutzungsdauer als Ersatzinvestition in gleicher Höhe — eine vorsichtige Annahme, denn Schulung und Projektzeit fallen beim Ersatz selten in voller Höhe erneut an. Daraus ergibt sich die Amortisation: der Zeitpunkt, an dem die Summe der Rückflüsse die Investition erreicht. Beide Sichten werden getrennt geführt — es gibt keine Doppelzählung. Die Nutzungsdauer beginnt mit Jahr 0; weil nach ihrem Ablauf ersetzt wird, läuft die Abschreibung in jedem Jahr weiter. Strategische Zusatznutzen (Skalierung, Qualität, Time-to-Decision) sind nicht eingerechnet. ROI-Formel: <strong>(jährlicher Nutzen &minus; laufende Kosten &minus; kalkulatorische Abschreibung) &divide; Investitionssumme &times; 100</strong> — angewendet je Jahr, nicht kumuliert: Der ROI ist wie eine Verzinsung eine Kennzahl je Periode. Im Zähler steht der Gewinn nach kalkulatorischer Abschreibung, im Nenner das eingesetzte Kapital und nicht die Summe aller Kosten. <strong>Zwei Fragen, die beide „Break-even“ genannt werden:</strong> Die <em>Amortisation</em> beantwortet eine Frage nach dem <em>Zeitpunkt</em> — ab wann ist die Investition zurückverdient? Sie steht in Monaten. Der <em>Break-even der Zeitersparnis</em> beantwortet eine Frage nach der <em>Annahme</em> — wie viel der angenommenen Zeitersparnis muss eintreten, damit der Gewinn null erreicht? Er steht in Prozent. Die beiden rechnen mit verschiedenen Größen: die Amortisation mit den Zahlungen (Zahlungssicht), der Break-even mit dem Gewinn nach kalkulatorischer Abschreibung (Ergebnissicht). Deshalb können sie unterschiedlich ausfallen. Liegt der Break-even über 100 %, reicht die Annahme selbst dann nicht, wenn sie voll eintritt.<br><br> Quellen: <a href="https://welt-der-bwl.de/ROI-Return-on-Investment" target="_blank">Welt der BWL</a> &middot; <a href="https://www.gabler-banklexikon.de/definition/return-investment-roi-60969" target="_blank">Gabler Banklexikon</a> &middot; <a href="https://wiki.hslu.ch/controlling/DuPont-Kennzahlensystem" target="_blank">Hochschule Luzern — DuPont-Kennzahlensystem</a>
   <strong>Was dieser Rechner bewusst weglässt</strong>
   Vier Größen gehören in einen vollständigen Business Case, stehen hier aber nicht als Eingabefeld —
   sie würden den Einstieg überfrachten. Der Rechner setzt sie auf die neutrale Annahme; wer sie braucht, rechnet sie daneben.
@@ -822,11 +840,11 @@ Dieses Modell rechnet die Zahlungsreihe standardmässig <strong>ohne Diskontieru
   und damit den ROI unmittelbar. Hier sind <strong>drei Jahre</strong> fest angesetzt; nach Ablauf wird eine
   Ersatzinvestition in gleicher Höhe unterstellt. Eine längere Nutzungsdauer senkt die jährliche Belastung, bindet
   aber länger an die Lösung.
-  <em>Kalkulationszins:</em> Ohne Zinssatz zeigt die Tabelle die Summe der Zahlungsüberschüsse, nicht den Kapitalwert.
-  Für eine Investitionsentscheidung gibt das Controlling einen Satz vor; der Jahres-ROI bleibt in jedem Fall eine Größe
-  je Periode und ist mit einer Mindestrendite nicht unmittelbar vergleichbar.
+  <em>Kalkulationszins:</em> Dieser Rechner zinst nicht ab — ein Euro in fünf Jahren zählt ihm so viel wie ein Euro
+  heute. Für eine Investitionsentscheidung gibt das Controlling einen Satz vor und rechnet daraus den Kapitalwert;
+  der Jahres-ROI bleibt in jedem Fall eine Größe je Periode und ist mit einer Mindestrendite nicht unmittelbar
+  vergleichbar.
 
-  </div>
 </div>
 
 </section>
@@ -1099,6 +1117,7 @@ function calculate(){
   set('hl_fut',    fmtEur(r.fs_cost_mo));
   set('hl_jahre',  fmtEur(r.afa_yr) + ' je Jahr, verteilt auf '
                    + p.capex_years + (p.capex_years === 1 ? ' Jahr' : ' Jahre') + ', geteilt durch zwölf');
+  herleitungKennzahlen(p, r);
   set('ex_capex', fmt(r.capex_total)   + ' € → ' + fmt(r.capex_alloc)   + ' €');
   set('ex_opex',  fmt(r.opex_total_yr) + ' € → ' + fmt(r.opex_alloc_yr) + ' €');
 
@@ -1165,52 +1184,6 @@ function calculate(){
       + `<td class="${cl(x.gewinn[1])}">${fmtEur(x.gewinn[1])}</td></tr>`;
   }).join('');
 
-  // ── Zeitreihen-Tabelle ──
-  // Amortisation: Spalte des Jahres, in dem der kumulierte Zahlungsüberschuss null erreicht.
-  const beIdx = isFinite(r.payback_mo) ? Math.max(0, Math.ceil(r.payback_mo / 12) - 1) : -1;
-  const rows = [
-    {sec:'Nutzen'},
-    {label:'Bewertete Kapazität (€)',                   vals:r.kap_disp,     isInfo:true},
-    {label:'davon budgetwirksam (€)',                   vals:r.bud_disp},
-    {label:'− Dis-Benefits (€)',                        vals:r.dis_disp,     isCost:true},
-    {label:'= Budgetwirksamer Nutzen nach Dis-Benefits (€)', vals:r.bens,    bold:true, isNet:true},
-    {sec:'Ergebnissicht — Gewinn und ROI'},
-    {label:'− Laufende Kosten, angerechnet (€)',        vals:r.running_disp, isCost:true},
-    {label:'− Kalkulatorische Abschreibung (CAPEX ÷ Nutzungsdauer)', vals:r.afa_disp, isCost:true},
-    ...(r.exit_alloc > 0 ? [{label:'− Exit-Kosten, über 6 Perioden verteilt (€)', vals:r.exit_disp, isCost:true}] : []),
-    {label:'= Gewinn / Jahr (€)',                       vals:r.gewinn,       bold:true, isNet:true},
-    {label:'ROI / Jahr (%) — Gewinn ÷ Investition',     vals:r.roi_yr,       bold:true, isRoi:true},
-    {label:'Jährlicher Rückfluss (%) — vor Abschreibung, erklärt die Amortisation', vals:r.rueckfluss, isRoi:true, isInfo:true},
-    {sec:'Zahlungssicht — Amortisation (Nutzen − laufende Kosten − Investition'
-        + (r.exit_alloc > 0 ? ' − Exit' : '') + ' + Restwert)'},
-    {label:'− Investition und Ersatzinvestition (€)',   vals:r.invest_disp,  isCost:true},
-    ...(r.exit_alloc > 0 ? [{label:'− Exit-Kosten am Ende (€)', vals:r.exit_cash, isCost:true}] : []),
-    {label:'+ Restwert der letzten Investition (€)',    vals:r.rest_cash},
-    {label:'Zahlungsüberschuss / Jahr (€)',             vals:r.cash,         bold:true, isNet:true},
-    {label:'Kumulierter Zahlungsüberschuss (€)',        vals:r.cumul,        bold:true, isCumul:true},
-  ];
-  const tbody = document.getElementById('timeline_body');
-  tbody.innerHTML = '';
-  rows.forEach(row => {
-    const tr = document.createElement('tr');
-    if (row.sec){
-      tr.className = 'tr-sec';
-      tr.innerHTML = `<td colspan="7">${row.sec}</td>`;
-      tbody.appendChild(tr);
-      return;
-    }
-    if(row.isNet || row.isRoi) tr.className='tr-result';
-    if(row.isCumul) tr.className='tr-good';
-    tr.innerHTML = `<td style="font-weight:${row.bold?'600':'400'}">${row.label}</td>` +
-      row.vals.map((val,i) => {
-        // Kostenzeilen rot, Ergebniszeilen nach Vorzeichen
-        const cls = row.isInfo ? '' : row.isCost ? (val > 0 ? 'neg' : '') : (val < 0 ? 'neg' : val > 0 ? 'pos' : '');
-        const mk  = row.isCumul && i === beIdx ? '<span class="be-marker">Amortisation ↑</span>' : '';
-        const txt = row.isRoi ? fmtPct(val) : fmtEur(val);
-        return `<td class="${cls}">${txt}${mk}</td>`;
-      }).join('');
-    tbody.appendChild(tr);
-  });
 }
 
 /* ── Eigener Fall: Titel und Beschreibung sind überschreibbar ──────────
@@ -1272,6 +1245,33 @@ loadCase();
 
 // initial calculation
 calculate();
+
+/* ─── Herleitung der beiden Kennzahlen ───────────────────────────────────── */
+function herleitungKennzahlen(p, r){
+  // ROI: (Baseline − Future State) × 12 ÷ Einmal-Kosten.
+  const delta_mo = r.bl_cost_mo - r.fs_cost_mo;
+  set('hr_bl',    fmtEur(r.bl_cost_mo) + ' je Monat');
+  set('hr_fs',    fmtEur(r.fs_cost_mo) + ' je Monat');
+  set('hr_delta', fmtEur(delta_mo) + ' je Monat');
+  set('hr_jahr',  fmtEur(delta_mo * 12) + ' je Jahr');
+  set('hr_capex', r.capex_alloc > 0 ? fmtEur(r.capex_alloc) : 'noch nichts eingetragen');
+  set('hr_roi',   fmtPct(r.roi_yr[1]) + (isFinite(r.roi_yr[1]) ? ' je Jahr' : ''));
+
+  // Amortisation: Einmal-Kosten ÷ Rückfluss je Monat, vor Abschreibung.
+  const rueck_mo = (r.kapazitaet_yr - r.opex_alloc_yr) / 12;
+  set('ha_kap',   fmtEur(r.kapazitaet_yr) + ' je Jahr');
+  set('ha_opex',  fmtEur(r.opex_alloc_yr) + ' je Jahr');
+  set('ha_rueck', fmtEur(rueck_mo) + ' je Monat');
+  set('ha_capex', r.capex_alloc > 0 ? fmtEur(r.capex_alloc) : 'noch nichts eingetragen');
+  set('ha_pay',   isFinite(r.payback_mo) ? fmtMo(r.payback_mo) : '—');
+  // Liegt die Amortisation jenseits der Nutzungsdauer, rechnet der Rechner die
+  // Ersatzinvestition mit und weicht von dieser Ueberschlagsrechnung ab.
+  const grob = rueck_mo > 0 ? r.capex_alloc / rueck_mo : Infinity;
+  set('ha_hinweis', (isFinite(r.payback_mo) && isFinite(grob) && Math.abs(grob - r.payback_mo) > 0.1)
+    ? ' Hier weicht der Rechner von dieser Überschlagsrechnung ab: Die Amortisation liegt jenseits der '
+      + 'Nutzungsdauer, deshalb ist die Ersatzinvestition mitgerechnet.'
+    : '');
+}
 
 /* ─── Tachometer ──────────────────────────────────────────────────────────
    Halbkreis: 180° links bis 0° rechts, Mittelpunkt (100,100), Radius 76.
@@ -1337,7 +1337,6 @@ function klapp(btnId, boxId){
   b.addEventListener('click', () => setzen(b.getAttribute('aria-expanded') !== 'true'));
   return setzen;
 }
-klapp('meth_btn', 'meth_body');
 
 /* Die Info-Box oeffnet beim Darueberfahren und bleibt nach einem Klick stehen.
    Ein eigener Zustand "fest" ist noetig: Sonst wuerde der Klick die Box, die
@@ -1358,14 +1357,11 @@ klapp('meth_btn', 'meth_body');
 /* ─── Druck: alle Tabs und Klappbereiche zeigen ─────────────────────────── */
 window.addEventListener('beforeprint', () => {
   document.querySelectorAll('.tab-panel').forEach(p => p.classList.add('is-on'));
-  document.getElementById('meth_body')?.classList.add('is-on');
   document.getElementById('howto')?.classList.add('is-on');
 });
 window.addEventListener('afterprint', () => {
   const an = document.querySelector('.tab-btn[aria-selected="true"]');
   if (an) zeigeTab(an.getAttribute('aria-controls'));
-  document.getElementById('meth_body')?.classList.toggle('is-on',
-    document.getElementById('meth_btn')?.getAttribute('aria-expanded') === 'true');
   document.getElementById('howto')?.classList.toggle('is-on',
     document.getElementById('howto_btn')?.getAttribute('aria-expanded') === 'true');
 });
