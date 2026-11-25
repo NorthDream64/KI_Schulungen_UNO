@@ -175,19 +175,19 @@ a{color:var(--accent);}
 /* ─── Eingabefelder zweispaltig (Tabs 1–4; Tab 5 bleibt einspaltig) ─────
    Die Karte wird zum Raster: Überschriften, Trenner und alles andere
    nehmen beide Spalten, nur Eingabe- und Rechenfelder je eine. */
-.tab-panel:not(#tab5) .section-card{display:grid;grid-template-columns:1fr 1fr;
+.tab-panel:not(#tab5):not(#tab8) .section-card{display:grid;grid-template-columns:1fr 1fr;
   gap:0 1.4rem;align-content:start;}
-.tab-panel:not(#tab5) .section-card > *{grid-column:1 / -1;}
-.tab-panel:not(#tab5) .section-card > .field,
-.tab-panel:not(#tab5) .section-card > .calc-field{grid-column:span 1;}
+.tab-panel:not(#tab5):not(#tab8) .section-card > *{grid-column:1 / -1;}
+.tab-panel:not(#tab5):not(#tab8) .section-card > .field,
+.tab-panel:not(#tab5):not(#tab8) .section-card > .calc-field{grid-column:span 1;}
 /* Jedes Label ist mindestens zwei Zeilen hoch. Dadurch beginnen die Eingabe- und
    Wertfelder zweier nebeneinanderstehender Felder auf derselben Linie, gleich ob
    ein Titel umbricht oder nicht. Die Zeile wird dadurch nicht hoeher als noetig:
    bei einzeiligen Titeln steht ueberall dieselbe halbe Leerzeile. */
-.tab-panel:not(#tab5) .section-card > .field > label,
-.tab-panel:not(#tab5) .section-card > .calc-field > .cf-label{min-height:3.2em;margin-bottom:4px;}
+.tab-panel:not(#tab5):not(#tab8) .section-card > .field > label,
+.tab-panel:not(#tab5):not(#tab8) .section-card > .calc-field > .cf-label{min-height:3.2em;margin-bottom:4px;}
 @media(max-width:760px){
-  .tab-panel:not(#tab5) .section-card{grid-template-columns:1fr;}
+  .tab-panel:not(#tab5):not(#tab8) .section-card{grid-template-columns:1fr;}
 }
 
 /* Szenarientabelle: Zahlen nicht umbrechen (die Tabelle scrollt ohnehin),
@@ -200,9 +200,20 @@ a{color:var(--accent);}
    Karte und teilt sich selbst in vier. Auf schmalen Schirmen zwei, dann eines. */
 /* Summenzeilen beginnen eine eigene Zeile und stehen damit untereinander,
    auch wenn sich die Zahl der Felder darueber aendert. */
-.tab-panel:not(#tab5) .section-card > .calc-field.sum-row,
-.tab-panel:not(#tab5) .section-card > .field.zeilenstart{grid-column:1;}
+.tab-panel:not(#tab5):not(#tab8) .section-card > .calc-field.sum-row,
+.tab-panel:not(#tab5):not(#tab8) .section-card > .field.zeilenstart{grid-column:1;}
 .vs-grid.eins{grid-template-columns:1fr;}
+/* Methodische Hinweise: Fliesstext mit Absaetzen, nicht als Block am Stueck */
+#tab8 .section-card p{font-size:13.5px;line-height:1.65;margin:0 0 .8rem;max-width:74ch;}
+#tab8 .meth-ueber{font-weight:700;color:var(--ink);margin:1.3rem 0 .35rem;}
+#tab8 .meth-ueber strong{font-weight:700;}
+#tab8 .meth-punkt{margin:0 0 .55rem;padding-left:1rem;border-left:2px solid var(--rule);}
+#tab8 .meth-formel{background:var(--bg-soft,#f6f5f1);border:1px solid var(--rule);border-radius:8px;
+  padding:.7rem .9rem;margin:.2rem 0 .9rem;font-size:13px;}
+@media(max-width:600px){#tab8 .section-card p{font-size:13px;}}
+
+/* Markierung des Basisfalls auf dem Zifferblatt */
+.g-marke{stroke:var(--ink);stroke-width:2.5;stroke-linecap:round;}
 .tbl-wrap{overflow-x:auto;}
 /* Herleitung des Future State: drei Summanden, eine Summe. */
 .herleitung{width:100%;border-collapse:collapse;font-size:13.5px;}
@@ -730,13 +741,13 @@ Der Rechner f&uuml;hrt in sieben Schritten zum Ergebnis:
   <div class="gauge-grid">
     <div class="gauge-card">
       <div class="g-label">ROI im ersten vollen Jahr <button type="button" class="info no-print" aria-label="Erläuterung">i<span class="tip"><b>ROI = Gewinn ÷ investiertes Kapital × 100.</b> Als Gewinn zählt der jährliche Nutzen abzüglich der laufenden Kosten <em>und</em> der kalkulatorischen Abschreibung — also der Investitionssumme, verteilt über die Nutzungsdauer. Lässt Du die Abschreibung weg, zehrst Du das Kapital auf, ohne dass die Zahl es zeigt. Gerechnet für das erste volle Jahr, unabgezinst. Die Herleitung Zeile für Zeile steht in Tab 5. Die Farbgrenzen (0 % und 5 %) sind <b>gesetzte Orientierungswerte</b>: Maßstab ist die interne Mindestrendite Deines Hauses, nicht diese Ampel.</span></button></div>
-      <svg viewBox="0 0 200 152" role="img" aria-labelledby="h_roi_t"><title id="h_roi_t">Tachometer</title><g id="h_roi_arcs"></g><text class="g-scale" id="h_roi_min" x="14" y="114" text-anchor="middle">—</text><text class="g-scale" id="h_roi_max" x="186" y="114" text-anchor="middle">—</text><line class="g-needle" id="h_roi_needle" x1="100" y1="100" x2="100" y2="42" transform="rotate(-90 100 100)"/><circle class="g-hub" cx="100" cy="100" r="5.5"/><text class="g-val" id="h_roi_val" x="100" y="134" text-anchor="middle">—</text><text class="g-unit" id="h_roi_unit" x="100" y="147" text-anchor="middle"></text></svg>
-      <div class="g-foot">rot unter 0 % &middot; gelb bis 5 % &middot; gr&uuml;n dar&uuml;ber</div>
+      <svg viewBox="0 0 200 152" role="img" aria-labelledby="h_roi_t"><title id="h_roi_t">Tachometer</title><g id="h_roi_arcs"></g><text class="g-scale" id="h_roi_min" x="14" y="114" text-anchor="middle">—</text><text class="g-scale" id="h_roi_max" x="186" y="114" text-anchor="middle">—</text><line class="g-needle" id="h_roi_needle" x1="100" y1="100" x2="100" y2="42" transform="rotate(-90 100 100)"/><line class="g-marke" id="h_roi_marke" x1="100" y1="31" x2="100" y2="17" transform="rotate(0 100 100)" style="display:none"/><circle class="g-hub" cx="100" cy="100" r="5.5"/><text class="g-val" id="h_roi_val" x="100" y="134" text-anchor="middle">—</text><text class="g-unit" id="h_roi_unit" x="100" y="147" text-anchor="middle"></text></svg>
+      <div class="g-foot" id="h_roi_foot">&mdash;</div>
     </div>
     <div class="gauge-card">
       <div class="g-label">Amortisation <button type="button" class="info no-print" aria-label="Erläuterung">i<span class="tip">Ab wann ist die Investition zurückverdient? Gerechnet aus der <b>Zahlungssicht</b> ab Investitionsbeginn — nicht ab Go-Live — und einschließlich des Einführungsjahrs. Die Farbgrenzen (3 und 7 Jahre) sind <b>gesetzte Orientierungswerte</b>, keine Norm: Welche Amortisationsdauer akzeptabel ist, gibt Dein eigenes Haus vor. Prüf die interne Vorgabe, bevor Du die Ampel in eine Entscheidungsvorlage übernimmst.</span></button></div>
-      <svg viewBox="0 0 200 152" role="img" aria-labelledby="h_pay_t"><title id="h_pay_t">Tachometer</title><g id="h_pay_arcs"></g><text class="g-scale" id="h_pay_min" x="14" y="114" text-anchor="middle">—</text><text class="g-scale" id="h_pay_max" x="186" y="114" text-anchor="middle">—</text><line class="g-needle" id="h_pay_needle" x1="100" y1="100" x2="100" y2="42" transform="rotate(-90 100 100)"/><circle class="g-hub" cx="100" cy="100" r="5.5"/><text class="g-val" id="h_pay_val" x="100" y="134" text-anchor="middle">—</text><text class="g-unit" id="h_pay_unit" x="100" y="147" text-anchor="middle"></text></svg>
-      <div class="g-foot">gr&uuml;n unter 3 Jahren &middot; gelb bis 7 &middot; rot dar&uuml;ber</div>
+      <svg viewBox="0 0 200 152" role="img" aria-labelledby="h_pay_t"><title id="h_pay_t">Tachometer</title><g id="h_pay_arcs"></g><text class="g-scale" id="h_pay_min" x="14" y="114" text-anchor="middle">—</text><text class="g-scale" id="h_pay_max" x="186" y="114" text-anchor="middle">—</text><line class="g-needle" id="h_pay_needle" x1="100" y1="100" x2="100" y2="42" transform="rotate(-90 100 100)"/><line class="g-marke" id="h_pay_marke" x1="100" y1="31" x2="100" y2="17" transform="rotate(0 100 100)" style="display:none"/><circle class="g-hub" cx="100" cy="100" r="5.5"/><text class="g-val" id="h_pay_val" x="100" y="134" text-anchor="middle">—</text><text class="g-unit" id="h_pay_unit" x="100" y="147" text-anchor="middle"></text></svg>
+      <div class="g-foot" id="h_pay_foot">&mdash;</div>
     </div>
   </div>
 
@@ -823,28 +834,36 @@ Der Rechner f&uuml;hrt in sieben Schritten zum Ergebnis:
 <section class="tab-panel" role="tabpanel" id="tab8" aria-labelledby="btn_tab8">
 <div class="section-card">
   <div class="sec-title t-green">Methodische Hinweise</div>
-Dieses Modell rechnet <strong>ohne Diskontierung</strong> und ist auf Plausibilitätsbewertung ausgelegt. Es ist eine Planungshilfe und ersetzt keine rechtliche, aufsichtsrechtliche oder steuerliche Prüfung des Einzelfalls. Im Beispielfall bereitet die KI die Prüfung vor; die Entscheidung über einen Antrag trifft ein Mensch. Trifft ein System Entscheidungen über natürliche Personen ohne inhaltliche menschliche Prüfung, gelten die Grenzen des Art. 22 DSGVO — diese Einordnung gehört vor den Business Case. Der Jahres-ROI bleibt in jedem Fall eine Grösse je Periode und ist mit einer Mindestrendite nicht unmittelbar vergleichbar. Berücksichtigt werden direkte Personalzeitersparnisse auf Basis des <em>aktuellen</em> Vorgangsvolumens.<br> <strong>Zwei Sichten auf dieselbe Investition:</strong> Die <em>Ergebnissicht</em> verteilt die angerechnete CAPEX als kalkulatorische Abschreibung linear über die Nutzungsdauer (CAPEX &divide; Nutzungsdauer je Jahr). Daraus ergibt sich der Gewinn je Jahr. Das ist keine Ergebnisrechnung im Sinne des Rechnungswesens und keine bilanzielle oder steuerliche AfA; genauso geht die CAPEX in die annualisierten, allokierten Kosten KI des Future State ein. Die <em>Zahlungssicht</em> setzt die CAPEX als Auszahlung in Jahr 0 an und nach Ablauf der Nutzungsdauer als Ersatzinvestition in gleicher Höhe — eine vorsichtige Annahme, denn Schulung und Projektzeit fallen beim Ersatz selten in voller Höhe erneut an. Daraus ergibt sich die Amortisation: der Zeitpunkt, an dem die Summe der Rückflüsse die Investition erreicht. Beide Sichten werden getrennt geführt — es gibt keine Doppelzählung. Die Nutzungsdauer beginnt mit Jahr 0; weil nach ihrem Ablauf ersetzt wird, läuft die Abschreibung in jedem Jahr weiter. Strategische Zusatznutzen (Skalierung, Qualität, Time-to-Decision) sind nicht eingerechnet. ROI-Formel: <strong>(jährlicher Nutzen &minus; laufende Kosten &minus; kalkulatorische Abschreibung) &divide; Investitionssumme &times; 100</strong> — angewendet je Jahr, nicht kumuliert: Der ROI ist wie eine Verzinsung eine Kennzahl je Periode. Im Zähler steht der Gewinn nach kalkulatorischer Abschreibung, im Nenner das eingesetzte Kapital und nicht die Summe aller Kosten. <strong>Zwei Fragen, die beide „Break-even“ genannt werden:</strong> Die <em>Amortisation</em> beantwortet eine Frage nach dem <em>Zeitpunkt</em> — ab wann ist die Investition zurückverdient? Sie steht in Monaten. Der <em>Break-even der Zeitersparnis</em> beantwortet eine Frage nach der <em>Annahme</em> — wie viel der angenommenen Zeitersparnis muss eintreten, damit der Gewinn null erreicht? Er steht in Prozent. Die beiden rechnen mit verschiedenen Größen: die Amortisation mit den Zahlungen (Zahlungssicht), der Break-even mit dem Gewinn nach kalkulatorischer Abschreibung (Ergebnissicht). Deshalb können sie unterschiedlich ausfallen. Liegt der Break-even über 100 %, reicht die Annahme selbst dann nicht, wenn sie voll eintritt.<br><br> Quellen: <a href="https://welt-der-bwl.de/ROI-Return-on-Investment" target="_blank">Welt der BWL</a> &middot; <a href="https://www.gabler-banklexikon.de/definition/return-investment-roi-60969" target="_blank">Gabler Banklexikon</a> &middot; <a href="https://wiki.hslu.ch/controlling/DuPont-Kennzahlensystem" target="_blank">Hochschule Luzern — DuPont-Kennzahlensystem</a>
-  <strong>Was dieser Rechner bewusst weglässt</strong>
-  Vier Größen gehören in einen vollständigen Business Case, stehen hier aber nicht als Eingabefeld —
+  <p>Dieses Modell rechnet <strong>ohne Diskontierung</strong> und ist auf Plausibilitätsbewertung ausgelegt. Es ist eine Planungshilfe und ersetzt keine rechtliche, aufsichtsrechtliche oder steuerliche Prüfung des Einzelfalls. Im Beispielfall bereitet die KI die Prüfung vor; die Entscheidung über einen Antrag trifft ein Mensch. Trifft ein System Entscheidungen über natürliche Personen ohne inhaltliche menschliche Prüfung, gelten die Grenzen des Art. 22 DSGVO — diese Einordnung gehört vor den Business Case. Der Jahres-ROI bleibt in jedem Fall eine Grösse je Periode und ist mit einer Mindestrendite nicht unmittelbar vergleichbar. Berücksichtigt werden direkte Personalzeitersparnisse auf Basis des <em>aktuellen</em> Vorgangsvolumens.<br> </p>
+  <p class="meth-ueber"><strong>Zwei Sichten auf dieselbe Investition:</strong></p>
+  <p> Die <em>Ergebnissicht</em> verteilt die angerechnete CAPEX als kalkulatorische Abschreibung linear über die Nutzungsdauer (CAPEX &divide; Nutzungsdauer je Jahr). Daraus ergibt sich der Gewinn je Jahr. Das ist keine Ergebnisrechnung im Sinne des Rechnungswesens und keine bilanzielle oder steuerliche AfA; genauso geht die CAPEX in die annualisierten, allokierten Kosten KI des Future State ein. Die <em>Zahlungssicht</em> setzt die CAPEX als Auszahlung in Jahr 0 an und nach Ablauf der Nutzungsdauer als Ersatzinvestition in gleicher Höhe — eine vorsichtige Annahme, denn Schulung und Projektzeit fallen beim Ersatz selten in voller Höhe erneut an. Daraus ergibt sich die Amortisation: der Zeitpunkt, an dem die Summe der Rückflüsse die Investition erreicht. Beide Sichten werden getrennt geführt — es gibt keine Doppelzählung. Die Nutzungsdauer beginnt mit Jahr 0; weil nach ihrem Ablauf ersetzt wird, läuft die Abschreibung in jedem Jahr weiter. Strategische Zusatznutzen (Skalierung, Qualität, Time-to-Decision) sind nicht eingerechnet. <strong>Verteilung der Einmal-Kosten:</strong> Über wie viele Jahre sie verteilt werden, bestimmt die jährliche Abschreibung und damit den ROI unmittelbar. Das Feld steht im Reiter „CAPEX &amp; OPEX"; vorgegeben sind drei Jahre, nach Ablauf wird eine Ersatzinvestition in gleicher Höhe unterstellt. Eine längere Nutzungsdauer senkt die jährliche Belastung, bindet aber länger an die Lösung. ROI-Formel: </p>
+  <p class="meth-formel"><strong>(jährlicher Nutzen &minus; laufende Kosten &minus; kalkulatorische Abschreibung) &divide; Investitionssumme &times; 100</strong></p>
+  <p> — angewendet je Jahr, nicht kumuliert: Der ROI ist wie eine Verzinsung eine Kennzahl je Periode. Im Zähler steht der Gewinn nach kalkulatorischer Abschreibung, im Nenner das eingesetzte Kapital und nicht die Summe aller Kosten. </p>
+  <p class="meth-ueber"><strong>Zwei Fragen, die beide „Break-even“ genannt werden:</strong></p>
+  <p> Die <em>Amortisation</em> beantwortet eine Frage nach dem <em>Zeitpunkt</em> — ab wann ist die Investition zurückverdient? Sie steht in Monaten. Der <em>Break-even der Zeitersparnis</em> beantwortet eine Frage nach der <em>Annahme</em> — wie viel der angenommenen Zeitersparnis muss eintreten, damit der Gewinn null erreicht? Er steht in Prozent. Die beiden rechnen mit verschiedenen Größen: die Amortisation mit den Zahlungen (Zahlungssicht), der Break-even mit dem Gewinn nach kalkulatorischer Abschreibung (Ergebnissicht). Deshalb können sie unterschiedlich ausfallen. Liegt der Break-even über 100 %, reicht die Annahme selbst dann nicht, wenn sie voll eintritt.<br><br> Quellen: <a href="https://welt-der-bwl.de/ROI-Return-on-Investment" target="_blank">Welt der BWL</a> &middot; <a href="https://www.gabler-banklexikon.de/definition/return-investment-roi-60969" target="_blank">Gabler Banklexikon</a> &middot; <a href="https://wiki.hslu.ch/controlling/DuPont-Kennzahlensystem" target="_blank">Hochschule Luzern — DuPont-Kennzahlensystem</a>
+  </p>
+  <p class="meth-ueber"><strong>Was dieser Rechner bewusst weglässt</strong></p>
+  <p>
+  Diese Größen gehören in einen vollständigen Business Case, stehen hier aber nicht als Eingabefeld —
   sie würden den Einstieg überfrachten. Der Rechner setzt sie auf die neutrale Annahme; wer sie braucht, rechnet sie daneben.
-  <em>Budgetwirksamer Anteil:</em> Eingesparte Stunden sind zunächst nur Kapazität. Geld wird daraus erst, soweit Stellen
+  </p>
+  <p class="meth-punkt"><em>Budgetwirksamer Anteil:</em> Eingesparte Stunden sind zunächst nur Kapazität. Geld wird daraus erst, soweit Stellen
   abgebaut, Fremdleistung ersetzt oder messbar Mehrvolumen bewältigt wird. Hier werden 100 % angesetzt — in der Praxis
   liegt der Wert oft bei der Hälfte, und für jeden Prozentpunkt sollte sich eine Umsetzungsmaßnahme benennen lassen.
-  <em>Dis-Benefits:</em> Was das Vorhaben an anderer Stelle kostet — Nachprüfung, Korrekturen, Fehlerfolgen. Hier null.
-  <em>Nutzungsgrad im Einführungsjahr:</em> Eine neue Lösung läuft im ersten Jahr selten voll. Hier rechnet Jahr 0 wie
+  </p>
+  <p class="meth-punkt"><em>Dis-Benefits:</em> Was das Vorhaben an anderer Stelle kostet — Nachprüfung, Korrekturen, Fehlerfolgen. Hier null.
+  </p>
+  <p class="meth-punkt"><em>Nutzungsgrad im Einführungsjahr:</em> Eine neue Lösung läuft im ersten Jahr selten voll. Hier rechnet Jahr 0 wie
   jedes andere; realistisch ist ein Hochlauf über die ersten Quartale, der den Nutzen entsprechend später anfallen lässt.
-  <em>Umlagefaktor:</em> Die Kosten einer KI-Plattform kommen meist mehreren Vorhaben zugute. In einer vollständigen
+  </p>
+  <p class="meth-punkt"><em>Umlagefaktor:</em> Die Kosten einer KI-Plattform kommen meist mehreren Vorhaben zugute. In einer vollständigen
   Rechnung wird deshalb nur der Anteil angerechnet, der diesem Vorhaben zuzuordnen ist — hier zählen alle Posten zu
   100 %. Wer eine Plattform mit anderen teilt, rechnet den Anteil daneben und kommt zu niedrigeren Kosten.
-  <em>Nutzungsdauer:</em> Über wie viele Jahre die Einmal-Kosten verteilt werden, bestimmt die jährliche Abschreibung
-  und damit den ROI unmittelbar. Hier sind <strong>drei Jahre</strong> fest angesetzt; nach Ablauf wird eine
-  Ersatzinvestition in gleicher Höhe unterstellt. Eine längere Nutzungsdauer senkt die jährliche Belastung, bindet
-  aber länger an die Lösung.
-  <em>Kalkulationszins:</em> Dieser Rechner zinst nicht ab — ein Euro in fünf Jahren zählt ihm so viel wie ein Euro
+  </p>
+  <p class="meth-punkt"><em>Kalkulationszins:</em> Dieser Rechner zinst nicht ab — ein Euro in fünf Jahren zählt ihm so viel wie ein Euro
   heute. Für eine Investitionsentscheidung gibt das Controlling einen Satz vor und rechnet daraus den Kapitalwert;
   der Jahres-ROI bleibt in jedem Fall eine Größe je Periode und ist mit einer Mindestrendite nicht unmittelbar
-  vergleichbar.
-
+  vergleichbar.</p>
 </div>
 
 </section>
@@ -860,6 +879,9 @@ Dieses Modell rechnet <strong>ohne Diskontierung</strong> und ist auf Plausibili
 <script>
 /* Farben der Tachometer-Bögen */
 const ROT = '#c0392b', GELB = '#e0a526', GRUEN = '#2f8f54';
+/* Basisfall der Tachoskalen — hier oben, weil calculate() einmal laeuft,
+   bevor der Funktionsblock am Skriptende ausgewertet ist. */
+let basisROI = NaN, basisPay = NaN, reglerLaeuft = false;
 // ── helpers ──────────────────────────────────────────────
 const fmt = (n, dec=0) => isFinite(n)
   ? n.toLocaleString('de-DE', {minimumFractionDigits:dec,maximumFractionDigits:dec})
@@ -1135,22 +1157,25 @@ function calculate(){
       + 'gerechnet — prüfe, ob das für Deinen Fall stimmt.');
 
   // ── Tachometer · stehen nur im Reiter „Stellhebel“ ──
+  basisMerken(r);
   const pbText = x => isFinite(x) ? fmtMo(x) : 'keine bis Jahr 5';
   // Bei leerem CAPEX-Feld gibt es nichts zurueckzuverdienen. „0,0 Jahre“ las sich
   // dort wie ein perfekter Fall — deshalb derselbe Strich wie beim ROI.
   const ohneInvest = !(r.capex_alloc > 0);
   const payJ = ohneInvest ? NaN : (isFinite(r.payback_mo) ? r.payback_mo / 12 : 99);
   // ROI: rot unter 0 %, gelb bis 5 %, gruen darueber. Skala -10 bis +30 %.
-  renderGauge('h_roi', r.roi_yr[1], -10, 30,
-    [[-10, 0, ROT], [0, 5, GELB], [5, 30, GRUEN]],
+  const sR = skalaROI(r.roi_yr[1]);
+  renderGauge('h_roi', r.roi_yr[1], sR.min, sR.max, sR.baender,
     fmtPct(r.roi_yr[1]), isFinite(r.roi_yr[1]) ? 'je Jahr' : 'ohne Investition nicht berechenbar',
-    isFinite(r.roi_yr[1]) && r.roi_yr[1] < 0);
-  renderGauge('h_pay', payJ, 0, 10,
-    [[0, 3, GRUEN], [3, 7, GELB], [7, 10, ROT]],
+    isFinite(r.roi_yr[1]) && r.roi_yr[1] < 0, sR.marke);
+  set('h_roi_foot', sR.fuss);
+  const sP = skalaPay(payJ);
+  renderGauge('h_pay', payJ, sP.min, sP.max, sP.baender,
     ohneInvest ? '—' : (isFinite(r.payback_mo) ? fmt(payJ, 1) : 'keine'),
     ohneInvest ? 'noch keine Investition eingetragen'
                : (isFinite(r.payback_mo) ? 'Jahre · ' + fmtMo(r.payback_mo) : 'bis Jahr 5'),
-    !ohneInvest && !isFinite(r.payback_mo));
+    !ohneInvest && !isFinite(r.payback_mo), sP.marke);
+  set('h_pay_foot', sP.fuss);
 
   // ── Szenarien (CR-132): gesetzte Bandbreite von einem Viertel um die Eingaben ──
   // fz = Faktor auf die Zeitersparnis, fb = Faktor auf den budgetwirksamen Anteil.
@@ -1233,11 +1258,14 @@ function resetDefaults(){
   // Alle Zahlenfelder auf die Vorgabe aus dem HTML zuruecksetzen — so bleibt das Beispiel
   // reproduzierbar, auch wenn spaeter Felder hinzukommen. Die Nachweisfelder bleiben stehen.
   document.querySelectorAll('input[type=number]').forEach(el => { el.value = el.defaultValue; });
+  basisROI = NaN; basisPay = NaN;   // Basisfall neu bestimmen
   calculate();
 }
 
 // live recalc on any input change
-document.querySelectorAll('input').forEach(el =>
+// Die Regler haben einen eigenen Handler (er friert den Basisfall ein) — ohne diese
+// Einschraenkung liefe calculate() beim Schieben zweimal, einmal davon ohne Flagge.
+document.querySelectorAll('input:not([type=range])').forEach(el =>
   el.addEventListener('input', calculate));
 
 // gespeicherten eigenen Fall laden (falls vorhanden)
@@ -1247,6 +1275,55 @@ loadCase();
 calculate();
 
 /* ─── Herleitung der beiden Kennzahlen ───────────────────────────────────── */
+/* Der Basisfall ist der zuletzt ueber die Eingabefelder gerechnete Stand.
+   Waehrend ein Regler bewegt wird, bleibt er stehen — sonst verschoebe sich
+   der Vergleichspunkt mit jedem Schieben und der Zeiger stuende immer mittig. */
+function basisMerken(r){
+  if (reglerLaeuft) return;
+  if (isFinite(r.roi_yr[1])) basisROI = r.roi_yr[1];
+  const pj = (r.capex_alloc > 0 && isFinite(r.payback_mo)) ? r.payback_mo / 12 : NaN;
+  if (isFinite(pj)) basisPay = pj;
+}
+
+/* Obergrenze der Skala: normalerweise das Doppelte des Basisfalls — dann sitzt der
+   Ausgangsfall genau in der Mitte. Fuehrt ein Regler darueber hinaus, verdoppelt sich
+   der Rahmen stufenweise, statt stufenlos mitzuwachsen: So bewegt sich der Zeiger
+   innerhalb einer Stufe wirklich, und die Skala springt nur gelegentlich. */
+function rahmen(basis, wert){
+  let max = basis * 2;
+  if (isFinite(wert)) while (wert > max * 0.97 && max < basis * 1024) max *= 2;
+  return max;
+}
+
+/* Skala und Baender aus dem Basiswert. Rueckfall auf die feste Skala, solange
+   kein brauchbarer Basisfall vorliegt (kein CAPEX eingetragen, Basis <= 0). */
+function skalaROI(wert){
+  if (!(basisROI > 0)) return {min: -10, max: 30,
+    baender: [[-10, 0, ROT], [0, 5, GELB], [5, 30, GRUEN]], marke: NaN,
+    fuss: 'rot unter 0 % · gelb bis 5 % · grün darüber'};
+  // Die Obergrenze liegt beim Doppelten des Basisfalls, waechst aber mit, sobald ein
+  // Regler darueber hinausfuehrt — sonst stuende der Zeiger wieder am Anschlag und
+  // bewegte sich beim Schieben nicht mehr. Die Farbschwellen bleiben am Basisfall.
+  const halb = basisROI / 2;
+  const max = rahmen(basisROI, wert);
+  return {min: 0, max, marke: basisROI,
+    baender: [[0, halb, ROT], [halb, basisROI, GELB], [basisROI, max, GRUEN]],
+    fuss: 'rot unter ' + fmtPct(halb) + ' · gelb bis ' + fmtPct(basisROI)
+        + ' · grün darüber — Strich: Ausgangsfall'};
+}
+function skalaPay(wert){
+  // Bei der Amortisation ist klein gut, die Farben laufen deshalb andersherum.
+  if (!(basisPay > 0)) return {min: 0, max: 10,
+    baender: [[0, 3, GRUEN], [3, 7, GELB], [7, 10, ROT]], marke: NaN,
+    fuss: 'grün unter 3 Jahren · gelb bis 7 · rot darüber'};
+  const anderthalb = basisPay * 1.5;
+  const max = rahmen(basisPay, wert);
+  return {min: 0, max, marke: basisPay,
+    baender: [[0, basisPay, GRUEN], [basisPay, anderthalb, GELB], [anderthalb, max, ROT]],
+    fuss: 'grün unter ' + fmtMo(basisPay * 12) + ' · gelb bis ' + fmtMo(anderthalb * 12)
+        + ' · rot darüber — Strich: Ausgangsfall'};
+}
+
 function herleitungKennzahlen(p, r){
   // ROI: (Baseline − Future State) × 12 ÷ Einmal-Kosten.
   const delta_mo = r.bl_cost_mo - r.fs_cost_mo;
@@ -1285,7 +1362,7 @@ function gaugeArc(a1, a2, r){
   return `M ${x1.toFixed(2)} ${y1.toFixed(2)} A ${r} ${r} 0 0 ${a1 > a2 ? 1 : 0} ${x2.toFixed(2)} ${y2.toFixed(2)}`;
 }
 
-function renderGauge(id, wert, min, max, baender, text, unit, istSchlecht){
+function renderGauge(id, wert, min, max, baender, text, unit, istSchlecht, marke){
   const arcs = document.getElementById(id + '_arcs');
   if (!arcs) return;
   const nadelAus = !isFinite(wert);
@@ -1300,8 +1377,21 @@ function renderGauge(id, wert, min, max, baender, text, unit, istSchlecht){
   const v = document.getElementById(id + '_val');
   if (v){ v.textContent = text; v.setAttribute('class', 'g-val' + (istSchlecht ? ' neg' : '')); }
   set(id + '_unit', unit || '');
-  set(id + '_min', String(min));
-  set(id + '_max', String(max));
+  set(id + '_min', skalaText(min));
+  set(id + '_max', skalaText(max));
+  // Strich fuer den Basisfall auf dem Zifferblatt
+  const mk = document.getElementById(id + '_marke');
+  if (mk){
+    const zeigen = isFinite(marke) && marke > min && marke < max;
+    mk.style.display = zeigen ? '' : 'none';
+    if (zeigen) mk.setAttribute('transform', `rotate(${(90 - winkel(marke)).toFixed(1)} 100 100)`);
+  }
+}
+
+/* Skalenenden bleiben kurz: 188 statt 187,6, 1.000 statt 1000,4. */
+function skalaText(x){
+  if (!isFinite(x)) return '—';
+  return Math.abs(x) >= 100 ? fmt(Math.round(x), 0) : fmt(x, Math.abs(x) < 10 ? 1 : 0);
 }
 
 /* ─── Tabs ──────────────────────────────────────────────────────────────── */
@@ -1376,7 +1466,8 @@ document.querySelectorAll('input[type=range][data-ziel]').forEach(reg => {
   const anz = document.getElementById(reg.id + '_v');
   const zeigen = () => { if (anz) anz.textContent = fmt(parseFloat(reg.value) || 0,
     (parseFloat(reg.step) || 1) < 1 ? 1 : 0) + (reg.dataset.einheit || ''); };
-  reg.addEventListener('input', () => { ziel.value = reg.value; zeigen(); calculate(); });
+  reg.addEventListener('input', () => { ziel.value = reg.value; zeigen();
+    reglerLaeuft = true; calculate(); reglerLaeuft = false; });
   ziel.addEventListener('input', () => { reg.value = ziel.value; zeigen(); });
   reg.value = ziel.value; zeigen();
 });
