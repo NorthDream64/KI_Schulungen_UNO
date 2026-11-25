@@ -184,6 +184,10 @@ a{color:var(--accent);}
   .tab-panel:not(#tab5) .section-card{grid-template-columns:1fr;}
 }
 
+/* Szenarientabelle: Zahlen nicht umbrechen (die Tabelle scrollt ohnehin),
+   nur die Szenariobezeichnung in der ersten Spalte darf es. */
+#scen_body td:not(:first-child){white-space:nowrap;}
+
 /* ─── Tachometer ───────────────────────────────────────── */
 .gauge-grid{display:grid;grid-template-columns:1fr 1fr;gap:.9rem;margin-top:.9rem;}
 .gauge-card{background:var(--card);border:1px solid var(--rule);border-radius:10px;padding:.9rem .8rem .8rem;
@@ -598,11 +602,11 @@ Der Rechner ist in vier Schritten aufgebaut: <strong>① Baseline</strong> besch
   <div class="sec-title">Szenarien<button type="button" class="info no-print" aria-label="Erläuterung">i<span class="tip"><b>Zwei Fragen, die beide „Break-even“ heißen.</b> Die <em>Amortisation</em> fragt nach dem <em>Zeitpunkt</em>: ab wann ist die Investition zurückverdient? Sie steht in Monaten. Der <em>Break-even der Zeitersparnis</em> fragt nach der <em>Annahme</em>: wie viel davon muss eintreten, damit der Gewinn null erreicht? Er steht in Prozent. Über 100 % reicht die Annahme selbst dann nicht, wenn sie voll eintritt.</span></button> &middot; Was passiert, wenn die Annahmen nicht halten?</div>
   <div style="overflow-x:auto;">
   <table class="tbl">
-    <thead><tr><th style="text-align:left;">Szenario</th><th>Zeitersparnis Grob / Fein</th><th>budgetwirksam</th><th>ROI (Gewinn ÷ Investition)</th><th>Amortisation</th><th>Break-even der Zeitersparnis</th><th>Gewinn Jahr 1 nach kalk. Abschreibung</th></tr></thead>
+    <thead><tr><th style="text-align:left;">Szenario</th><th>Zeitersparnis Grob / Fein</th><th>budgetwirksam</th><th>Operativer Effizienzzuwachs<br><span style="font-weight:400;text-transform:none;">€/Jahr</span></th><th>Effizienzzuwachs nach Allokation aller Kosten<br><span style="font-weight:400;text-transform:none;">€/Jahr</span></th><th>ROI (Gewinn ÷ Investition)</th><th>Amortisation</th><th>Break-even der Zeitersparnis</th><th>Gewinn Jahr 1 nach kalk. Abschreibung</th></tr></thead>
     <tbody id="scen_body"></tbody>
   </table>
   </div>
-  <p style="font-size:12px;color:var(--muted);margin:.6rem 0 0;">Die äußeren beiden Zeilen verändern <strong>beide</strong> Annahmen gleichzeitig um je ein Viertel ihres Werts (höchstens 95 % bzw. 100 %) — die Wirkungen multiplizieren sich dort, der pessimistische Fall ist deshalb der Worst-Case-ROI für die Entscheidungsvorlage. Die beiden mittleren Zeilen bewegen jeweils <strong>nur eine</strong> Annahme — und liefern dasselbe Ergebnis. Das ist kein Anzeigefehler, sondern die eigentliche Aussage der Analyse: Beide Annahmen gehen <strong>multiplikativ</strong> in den Nutzen ein, ein Viertel weniger Zeitersparnis wirkt genauso wie ein Viertel weniger budgetwirksamer Anteil. Für den Piloten heißt das: Es genügt nicht, die auffälligere der beiden zu messen. Das sind gesetzte Bandbreiten, keine Erfahrungswerte — ersetze sie durch die Spanne aus Deinem Pilot.</p>
+  <p style="font-size:12px;color:var(--muted);margin:.6rem 0 0;">Die äußeren beiden Zeilen verändern <strong>beide</strong> Annahmen gleichzeitig um je ein Viertel ihres Werts (höchstens 95 % bzw. 100 %) — die Wirkungen multiplizieren sich dort, der pessimistische Fall ist deshalb der Worst-Case-ROI für die Entscheidungsvorlage. Die beiden Effizienzspalten beantworten verschiedene Fragen: <strong>Operativ</strong> stellt die Bearbeitungskosten heute denen mit KI gegenüber, aufs Jahr gerechnet und mit der vollen bewerteten Kapazität. <strong>Nach Allokation aller Kosten</strong> rechnet nur mit dem budgetwirksamen Teil, abzüglich Dis-Benefits und abzüglich aller angerechneten Kosten einschließlich der kalkulatorischen Abschreibung. Der Abstand zwischen beiden ist der Betrag, der als Kapazität entsteht, aber nicht im Budget ankommt. Die beiden mittleren Zeilen bewegen jeweils <strong>nur eine</strong> Annahme — und liefern von der Allokationsspalte an dasselbe Ergebnis. Das ist kein Anzeigefehler, sondern die eigentliche Aussage der Analyse: Beide Annahmen gehen <strong>multiplikativ</strong> in den budgetwirksamen Nutzen ein, ein Viertel weniger Zeitersparnis wirkt genauso wie ein Viertel weniger budgetwirksamer Anteil. Nur die operative Spalte unterscheidet die beiden Zeilen, weil sie allein an der Zeitersparnis hängt und den budgetwirksamen Anteil gar nicht kennt. Für den Piloten heißt das: Es genügt nicht, die auffälligere der beiden zu messen. Das sind gesetzte Bandbreiten, keine Erfahrungswerte — ersetze sie durch die Spanne aus Deinem Pilot.</p>
 </div>
 
 <div class="section-card">
@@ -941,6 +945,11 @@ function calculate(){
     return `<tr${fz === 1 && fb === 1 ? ' class="tr-result"' : ''}><td>${name}</td>`
       + `<td>${fmt(q.eff_gross*100,1)} % / ${fmt(q.eff_detail*100,1)} %</td>`
       + `<td>${fmt(q.cash_share*100,1)} %</td>`
+      // Operativ: Prozesssicht — Bearbeitungskosten heute gegen die mit KI, aufs Jahr.
+      // Nach Allokation: nur der budgetwirksame Teil, nach Dis-Benefits und nach allen
+      // angerechneten Kosten (laufende Kosten und kalkulatorische Abschreibung).
+      + `<td class="${cl((x.bl_cost_mo - x.fs_cost_mo) * 12)}">${fmtEur((x.bl_cost_mo - x.fs_cost_mo) * 12)}</td>`
+      + `<td class="${cl(x.bens[1] - x.running_disp[1] - x.afa_yr)}">${fmtEur(x.bens[1] - x.running_disp[1] - x.afa_yr)}</td>`
       + `<td class="${cl(x.roi_yr[1])}">${fmtPct(x.roi_yr[1])}</td>`
       + `<td>${pbText(x.payback_mo)}</td>`
       + `<td class="${isFinite(x.be_anteil) && x.be_anteil > 100 ? 'neg' : ''}">${isFinite(x.be_anteil) ? fmt(x.be_anteil,0) + ' %' : '—'}</td>`
