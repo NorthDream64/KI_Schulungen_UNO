@@ -150,7 +150,7 @@ a{color:var(--accent);}
 .section-label{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:.8rem;padding-bottom:.3rem;border-bottom:1px solid var(--rule);}
 
 
-/* break-even marker */
+/* Marker fuer das Amortisationsjahr */
 .be-row{background:#fff8e1!important;}
 .be-marker{display:inline-block;font-size:9px;background:#f0a500;color:white;border-radius:3px;padding:1px 5px;margin-left:4px;letter-spacing:.5px;}
 
@@ -509,7 +509,7 @@ a{color:var(--accent);}
   <div class="kpi-card kpi-warn">
     <div class="kpi-label">Amortisation</div>
     <div class="kpi-value amber" id="kpi_payback">—</div>
-    <div class="kpi-sub">Monate bis Break-even &middot; Zahlungssicht</div>
+    <div class="kpi-sub">Monate bis zur Amortisation &middot; Zahlungssicht</div>
   </div>
   <div class="kpi-card kpi-main">
     <div class="kpi-label">ROI im ersten vollen Jahr</div>
@@ -609,7 +609,8 @@ a{color:var(--accent);}
   Die <em>Zahlungssicht</em> setzt die CAPEX als Auszahlung in Jahr 0 an und nach Ablauf der Nutzungsdauer als Ersatzinvestition in gleicher Höhe — eine vorsichtige Annahme, denn Schulung und Projektzeit fallen beim Ersatz selten in voller Höhe erneut an. Die Exit-Kosten stehen am Ende von Jahr 5, der nicht aufgebrauchte Teil der letzten Investition wird dort als Restwert gutgeschrieben. Beim Kapitalwert zählt Jahr 0 als Zeitpunkt 0 (nicht abgezinst), jedes weitere Jahr wird um ein Jahr mehr abgezinst. Daraus ergeben sich der kumulierte Zahlungsüberschuss und die Amortisation.
   Beide Sichten werden getrennt geführt — es gibt keine Doppelzählung. Die Nutzungsdauer beginnt mit Jahr 0; weil nach ihrem Ablauf ersetzt wird, läuft die Abschreibung in jedem Jahr weiter.
   Strategische Zusatznutzen (Skalierung, Qualität, Time-to-Decision) sind nicht eingerechnet.
-  ROI-Formel: <strong>(jährlicher Nutzen &minus; laufende Kosten) &divide; Investitionssumme &times; 100</strong> — angewendet je Jahr, nicht kumuliert: Der ROI ist wie eine Verzinsung eine Kennzahl je Periode. Im Nenner steht das eingesetzte Kapital, nicht die Summe aller Kosten.<br>
+  ROI-Formel: <strong>(jährlicher Nutzen &minus; laufende Kosten &minus; kalkulatorische Abschreibung) &divide; Investitionssumme &times; 100</strong> — angewendet je Jahr, nicht kumuliert: Der ROI ist wie eine Verzinsung eine Kennzahl je Periode. Im Zähler steht der Gewinn nach kalkulatorischer Abschreibung, im Nenner das eingesetzte Kapital und nicht die Summe aller Kosten.
+  <strong>Zwei Fragen, die beide „Break-even“ genannt werden:</strong> Die <em>Amortisation</em> beantwortet eine Frage nach dem <em>Zeitpunkt</em> — ab wann ist die Investition zurückverdient? Sie steht in Monaten und ist in der Zeitreihe markiert. Der <em>Break-even der Zeitersparnis</em> beantwortet eine Frage nach der <em>Annahme</em> — wie viel der angenommenen Zeitersparnis muss eintreten, damit der Gewinn null erreicht? Er steht in Prozent. Die beiden rechnen mit verschiedenen Größen: die Amortisation mit den Zahlungen (Zahlungssicht), der Break-even mit dem Gewinn nach kalkulatorischer Abschreibung (Ergebnissicht). Deshalb können sie unterschiedlich ausfallen. Liegt der Break-even über 100 %, reicht die Annahme selbst dann nicht, wenn sie voll eintritt.<br>
   <strong>Annahmen für Jahr 0 (Einführungsjahr):</strong> Die Lösung läuft in diesem Jahr noch nicht durchgängig. Angesetzt werden daher <strong>50 % der festen laufenden Kosten</strong> (der Betrieb startet erst im Jahresverlauf) sowie für den Nutzen und die nutzungsabhängigen Modellkosten der Anteil aus dem Feld <strong>„Nutzungsgrad im Einführungsjahr“</strong> (Vorgabe 25 %; Einführung, Schulung und Anlaufkurve verzögern die Nutzung). Ab Jahr 1 werden alle Werte voll angesetzt. Beide Anteile sind gesetzte Planungsannahmen, keine empirischen Werte — für einen realen Business Case sind sie durch eigene Erfahrungswerte zu ersetzen. Die Amortisation wird aus der Zahlungssicht abgeleitet und berücksichtigt damit auch das Einführungsjahr. Investitionen fallen zu Jahresbeginn an, Ersparnis und OPEX verteilen sich gleichmäßig über das Jahr.<br>
   Quellen: <a href="https://welt-der-bwl.de/ROI-Return-on-Investment" target="_blank">Welt der BWL</a> &middot; <a href="https://www.gabler-banklexikon.de/definition/return-investment-roi-60969" target="_blank">Gabler Banklexikon</a> &middot; <a href="https://wiki.hslu.ch/controlling/DuPont-Kennzahlensystem" target="_blank">Hochschule Luzern — DuPont-Kennzahlensystem</a>
 </div>
@@ -983,7 +984,7 @@ function calculate(){
   `;
 
   // ── Zeitreihen-Tabelle ──
-  // Break-even: Spalte des Jahres, in dem der kumulierte Zahlungsüberschuss null erreicht.
+  // Amortisation: Spalte des Jahres, in dem der kumulierte Zahlungsüberschuss null erreicht.
   const beIdx = isFinite(r.payback_mo) ? Math.max(0, Math.ceil(r.payback_mo / 12) - 1) : -1;
   const rows = [
     {sec:'Nutzen'},
@@ -1021,7 +1022,7 @@ function calculate(){
       row.vals.map((val,i) => {
         // Kostenzeilen rot, Ergebniszeilen nach Vorzeichen
         const cls = row.isInfo ? '' : row.isCost ? (val > 0 ? 'neg' : '') : (val < 0 ? 'neg' : val > 0 ? 'pos' : '');
-        const mk  = row.isCumul && i === beIdx ? '<span class="be-marker">Break-even ↑</span>' : '';
+        const mk  = row.isCumul && i === beIdx ? '<span class="be-marker">Amortisation ↑</span>' : '';
         const txt = row.isRoi ? fmtPct(val) : fmtEur(val);
         return `<td class="${cls}">${txt}${mk}</td>`;
       }).join('');
