@@ -191,26 +191,33 @@ a{color:var(--accent);}
 /* ─── Gegenüberstellung ohne KI / mit KI (Tab 2) ───────────────────────── */
 .vier{display:grid;grid-template-columns:repeat(4,1fr);gap:.6rem;margin:.2rem 0 .2rem;}
 .vgl{border:1px solid var(--rule);border-radius:9px;padding:.65rem .75rem;background:#fbfaf7;}
-.vgl.mit{background:#eef6f0;border-color:#9ec7a8;}
+.vgl.mit{background:#1a3a7a;border-color:#132b5c;}
+.vgl.mit .vgl-k{color:#ffffff;font-weight:700;}
+.vgl.mit .vgl-u{color:#c3d2ee;}
 .vgl-k{display:block;font-size:11.5px;color:var(--ink);font-weight:600;line-height:1.25;}
 .vgl-t{display:block;font-family:'DM Mono',monospace;font-size:8.5px;letter-spacing:1.6px;
   text-transform:uppercase;color:var(--muted);margin:.2rem 0 .25rem;}
-.vgl.mit .vgl-t{color:var(--green);}
+.vgl.mit .vgl-t{color:#9fb6e0;}
 .vgl-v{display:block;font-family:'DM Sans',sans-serif;font-size:21px;font-weight:700;
   color:var(--ink);line-height:1.1;}
-.vgl.mit .vgl-v{color:var(--green);}
+.vgl.mit .vgl-v{color:#ffffff;font-weight:800;}
 .vgl-u{display:block;font-size:10px;color:var(--muted);margin-top:.2rem;line-height:1.35;}
-.vgl.eff{grid-column:span 2;background:#2a5c3f;border-color:#1d4530;}
+.vgl.eff{background:#2a5c3f;border-color:#1d4530;}
+.vgl.eff .vgl-v{white-space:pre-line;line-height:1.22;}
+/* Der Effizienzblock steht rechts und reicht über beide Reihen. */
+.vgl.eff.hoch{grid-row:span 2;grid-column:4;display:flex;flex-direction:column;justify-content:center;}
 .vgl.eff .vgl-k{color:#ffffff;font-weight:700;}
 .vgl.eff .vgl-t{color:#a8d0b6;}
-.vgl.eff .vgl-v{color:#ffffff;font-weight:800;font-size:23px;}
+.vgl.eff .vgl-v{color:#ffffff;font-weight:800;font-size:19px;}
 .vgl.eff .vgl-u{color:#bfdcc8;}
 .section-label .sl-add{font-family:'DM Sans',sans-serif;font-size:11px;font-weight:400;
   letter-spacing:0;text-transform:none;color:var(--muted);margin-left:.5rem;}
 .section-label .sl-add b{color:var(--ink);}
-@media(max-width:900px){.vier{grid-template-columns:repeat(2,1fr);}}
-@media(max-width:520px){.vier{grid-template-columns:1fr;}.vgl.eff{grid-column:auto;}}
-@media print{.vgl.eff{background:#2a5c3f!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}}
+@media(max-width:900px){.vier{grid-template-columns:repeat(2,1fr);}
+  .vgl.eff.hoch{grid-row:auto;grid-column:span 2;}}
+@media(max-width:520px){.vier{grid-template-columns:1fr;}
+  .vgl.eff.hoch{grid-column:auto;}}
+@media print{.vgl.eff,.vgl.mit{-webkit-print-color-adjust:exact;print-color-adjust:exact;}}
 
 /* ─── Tachometer ───────────────────────────────────────── */
 .gauge-grid{display:grid;grid-template-columns:1fr 1fr;gap:.9rem;margin-top:.9rem;}
@@ -310,7 +317,7 @@ Der Rechner ist in vier Schritten aufgebaut: <strong>① Baseline</strong> besch
   <div class="vs-grid">
 
     <div class="vs-block">
-      <div class="vs-head">Kosten der Vorgangsbearbeitung</div>
+      <div class="vs-head">Prozesskosten</div>
       <div class="vs-body">
         <div class="vs-side base">
           <div class="vs-tag">Baseline</div>
@@ -403,19 +410,29 @@ Der Rechner ist in vier Schritten aufgebaut: <strong>① Baseline</strong> besch
     </div>
 
     <div class="cf-divider"></div>
+    <div class="cf-divider"></div>
+    <div class="section-label">Ohne KI</div>
+    <div class="vier">
+      <div class="vgl">
+        <span class="vgl-k">Bearbeitungszeit</span>
+        <span class="vgl-t">ohne KI</span>
+        <span class="vgl-v" id="bl_h_mo">—</span>
+        <span class="vgl-u">Stunden/Monat &middot; Grob- und Feinpr&uuml;fung</span>
+      </div>
+      <div class="vgl">
+        <span class="vgl-k">Prozesskosten</span>
+        <span class="vgl-t">ohne KI</span>
+        <span class="vgl-v" id="bl_cost_mo">—</span>
+        <span class="vgl-u">&euro;/Monat</span>
+      </div>
+      <div class="vgl">
+        <span class="vgl-k">Kosten je Vorgang</span>
+        <span class="vgl-t">ohne KI</span>
+        <span class="vgl-v" id="bl_cost_case">—</span>
+        <span class="vgl-u">&euro;/Vorgang</span>
+      </div>
+    </div>
 
-    <div class="calc-field">
-      <span class="cf-label">Bearbeitungszeit gesamt <span class="cf-hint">Grob- + Feinprüfung</span></span>
-      <div class="calc-out"><span class="cv" id="bl_h_mo">—</span><span class="cu">Stunden/Monat</span></div>
-    </div>
-    <div class="calc-field">
-      <span class="cf-label">Kosten der Vorgangsbearbeitung <span class="cf-hint">je Monat</span></span>
-      <div class="calc-out is-total"><span class="cv" id="bl_cost_mo">—</span><span class="cu">€/Monat</span></div>
-    </div>
-    <div class="calc-field">
-      <span class="cf-label">Kosten je Vorgang</span>
-      <div class="calc-out is-carry"><span class="cv" id="bl_cost_case">—</span><span class="cu">€/Vorgang</span></div>
-    </div>
   </div>
 </section>
 <section class="tab-panel" role="tabpanel" id="tab2" aria-labelledby="btn_tab2">
@@ -453,49 +470,50 @@ Der Rechner ist in vier Schritten aufgebaut: <strong>① Baseline</strong> besch
       <div class="calc-out is-save"><span class="cv" id="sv_value_mo">—</span><span class="cu">€/Monat</span></div>
     </div>
     <div class="cf-divider"></div>
-    <div class="section-label">Ohne KI und mit KI <span class="sl-add">Stundensatz <b id="sv_rate">—</b> je Stunde, aus Reiter 1</span></div>
+    <div class="section-label">Mit KI <span class="sl-add">dieselben Werte wie in Reiter 1 &mdash; obere Reihe rein
+      operativ, untere Reihe mit den angerechneten KI-Kosten. Stundensatz <b id="sv_rate">—</b> je Stunde</span></div>
     <div class="vier">
-      <div class="vgl">
-        <span class="vgl-k">Bearbeitungszeit</span>
-        <span class="vgl-t">ohne KI</span>
-        <span class="vgl-v" id="sv_bl_h">—</span>
-        <span class="vgl-u">Stunden/Monat</span>
-      </div>
       <div class="vgl mit">
         <span class="vgl-k">Bearbeitungszeit</span>
         <span class="vgl-t">mit KI</span>
         <span class="vgl-v" id="sv_fs_h">—</span>
         <span class="vgl-u">Stunden/Monat</span>
       </div>
-      <div class="vgl">
-        <span class="vgl-k">Vorgangsbearbeitung</span>
-        <span class="vgl-t">ohne KI</span>
-        <span class="vgl-v" id="sv_bl_mo">—</span>
-        <span class="vgl-u">€/Monat</span>
+      <div class="vgl mit">
+        <span class="vgl-k">Operative Kosten</span>
+        <span class="vgl-t">mit KI</span>
+        <span class="vgl-v" id="sv_op_mo">—</span>
+        <span class="vgl-u">&euro;/Monat &middot; nur Personal, ohne KI-Kosten</span>
       </div>
       <div class="vgl mit">
-        <span class="vgl-k">Vorgangsbearbeitung</span>
+        <span class="vgl-k">Operative Kosten je Vorgang</span>
         <span class="vgl-t">mit KI</span>
-        <span class="vgl-v" id="sv_fs_mo">—</span>
-        <span class="vgl-u">€/Monat &middot; inkl. KI-Kosten</span>
+        <span class="vgl-v" id="sv_op_case">—</span>
+        <span class="vgl-u">&euro;/Vorgang &middot; ohne KI-Kosten</span>
+      </div>
+      <div class="vgl eff hoch">
+        <span class="vgl-k">Operativer Effizienzzuwachs</span>
+        <span class="vgl-t">ohne KI &rarr; mit KI</span>
+        <span class="vgl-v" id="sv_eff">—</span>
+        <span class="vgl-u">oben: nur der Prozess. unten: nachdem die KI-Kosten angerechnet sind</span>
       </div>
       <div class="vgl">
-        <span class="vgl-k">Kosten je Vorgang</span>
-        <span class="vgl-t">ohne KI</span>
-        <span class="vgl-v" id="sv_bl_case">—</span>
-        <span class="vgl-u">€/Vorgang</span>
+        <span class="vgl-k">KI-Kosten, angerechnet</span>
+        <span class="vgl-t">je Monat</span>
+        <span class="vgl-v" id="sv_ki_mo">—</span>
+        <span class="vgl-u">Abschreibung der Investition und laufende Kosten</span>
+      </div>
+      <div class="vgl mit">
+        <span class="vgl-k">Prozesskosten</span>
+        <span class="vgl-t">mit KI</span>
+        <span class="vgl-v" id="sv_fs_mo">—</span>
+        <span class="vgl-u">&euro;/Monat &middot; inkl. KI-Kosten</span>
       </div>
       <div class="vgl mit">
         <span class="vgl-k">Kosten je Vorgang</span>
         <span class="vgl-t">mit KI</span>
         <span class="vgl-v" id="sv_fs_case">—</span>
-        <span class="vgl-u">€/Vorgang &middot; inkl. KI-Kosten</span>
-      </div>
-      <div class="vgl eff">
-        <span class="vgl-k">Effizienzzuwachs</span>
-        <span class="vgl-t">ohne KI &rarr; mit KI</span>
-        <span class="vgl-v" id="sv_eff">—</span>
-        <span class="vgl-u">je Vorgang und insgesamt derselbe Wert</span>
+        <span class="vgl-u">&euro;/Vorgang &middot; inkl. KI-Kosten</span>
       </div>
     </div>
   </div>
@@ -916,10 +934,11 @@ function calculate(){
   // Ausgangswerte aus Reiter 1, zum Vergleich wiederholt
   set('sv_bl_h',    fmt(r.bl_h_mo, 1));
   set('sv_rate',    fmtEur(p.rate));
-  set('sv_bl_mo',   fmtEur(r.bl_cost_mo));
-  set('sv_bl_case', fmtEur(r.bl_cost_case));
-  // Mit KI
+  // Mit KI — obere Reihe rein operativ (nur Personal), untere mit KI-Kosten
   set('sv_fs_h',    fmt(r.fs_h_mo, 1));
+  set('sv_op_mo',   fmtEur(r.fs_personal_mo));
+  set('sv_op_case', fmtEur(p.vol > 0 ? r.fs_personal_mo / p.vol : 0));
+  set('sv_ki_mo',   fmtEur(r.ki_cost_mo));
   set('sv_fs_mo',   fmtEur(r.fs_cost_mo));
   set('sv_fs_case', fmtEur(r.fs_cost_case));
   // Effizienzzuwachs in einem Feld. Je Vorgang und insgesamt ergeben denselben
@@ -927,7 +946,11 @@ function calculate(){
   // Zeit und Kosten unterscheiden sich dagegen — die Differenz sind die KI-Kosten.
   const effZeit   = r.bl_h_mo    > 0 ? (r.bl_h_mo    - r.fs_h_mo)    / r.bl_h_mo    * 100 : 0;
   const effKosten = r.bl_cost_mo > 0 ? (r.bl_cost_mo - r.fs_cost_mo) / r.bl_cost_mo * 100 : 0;
-  set('sv_eff', fmt(effKosten, 1) + ' % Kosten · ' + fmt(effZeit, 1) + ' % Zeit');
+  // Operativ: nur Personalkosten — derselbe Prozentsatz wie bei der Zeit, weil die
+  // Personalkosten linear in den Stunden sind. Darunter derselbe Vergleich, nachdem
+  // die KI-Kosten angerechnet sind.
+  const effOperativ = r.bl_cost_mo > 0 ? (r.bl_cost_mo - r.fs_personal_mo) / r.bl_cost_mo * 100 : 0;
+  set('sv_eff', fmt(effOperativ, 1) + ' % operativ\n' + fmt(effKosten, 1) + ' % nach KI-Kosten');
 
   // ── ③ Expenditure ──
   set('ex_capex', fmt(r.capex_total)   + ' € → ' + fmt(r.capex_alloc)   + ' €');
