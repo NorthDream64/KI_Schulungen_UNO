@@ -192,6 +192,9 @@ a{color:var(--accent);}
 .vier{display:grid;grid-template-columns:repeat(4,1fr);gap:.6rem;margin:.2rem 0 .2rem;}
 /* Vier Ergebnisfelder nebeneinander — die Huelle spannt ueber beide Spalten der
    Karte und teilt sich selbst in vier. Auf schmalen Schirmen zwei, dann eines. */
+/* Summenzeilen beginnen eine eigene Zeile und stehen damit untereinander,
+   auch wenn sich die Zahl der Felder darueber aendert. */
+.tab-panel:not(#tab5) .section-card > .calc-field.sum-row{grid-column:1;}
 .vier-cf{display:grid;grid-template-columns:repeat(4,1fr);gap:0 .9rem;}
 .vier-cf .calc-field{display:flex;flex-direction:column;}
 /* Das Label waechst in die Hoehe, damit die Wertfelder auf einer Linie stehen,
@@ -542,7 +545,7 @@ Der Rechner f&uuml;hrt in sieben Schritten zum Ergebnis:
 <div class="unit" style="font-size:10.5px;color:var(--muted);">Stunden × Vollkostensatz — eine echte Ressource, kein Nulltarif</div>    </div>
 
     <div class="cf-divider"></div>
-    <div class="calc-field">
+    <div class="calc-field sum-row">
       <span class="cf-label">Summe Einmal-Kosten</span>
       <div class="calc-out is-total"><span class="cv" id="sum_capex">—</span><span class="cu">&euro; einmalig</span></div>
     </div>
@@ -561,15 +564,10 @@ Der Rechner f&uuml;hrt in sieben Schritten zum Ergebnis:
         <span><span class="lic-out" id="lic_summe">—</span>
           <span class="lic-u">&euro;/Jahr &middot; Anzahl &times; Preis &times; 12</span></span>
       </div>
-<div class="unit" style="font-size:10.5px;color:var(--muted);">KI-Lizenzen sind meist laufende Abonnements und gehören dann hierher, nicht zu den Einmalkosten</div>    </div>
+<div class="unit" style="font-size:10.5px;color:var(--muted);">KI-Lizenzen sind meist laufende Abonnements und gehören dann hierher, nicht zu den Einmalkosten. Sie umfassen alle anbieterseitigen Kosten wie Support, Re-Training, Monitoring und Updates</div>    </div>
     <div class="field">
       <label>anteilige Infrastrukturkosten</label>
       <input type="number" id="c_infra" value="" min="0" step="500">
-      <div class="unit">€/Jahr</div>
-    </div>
-    <div class="field">
-      <label>Updates, Re-Training &amp; Fine-Tuning</label>
-      <input type="number" id="c_maint" value="" min="0" step="500">
       <div class="unit">€/Jahr</div>
     </div>
     <div class="field">
@@ -577,7 +575,7 @@ Der Rechner f&uuml;hrt in sieben Schritten zum Ergebnis:
       <input type="number" id="c_support" value="" min="0" step="500">
       <div class="unit">€/Jahr</div>
     </div>
-    <div class="calc-field">
+    <div class="calc-field sum-row">
       <span class="cf-label">Summe laufende Kosten</span>
       <div class="calc-out is-total"><span class="cv" id="sum_opex">—</span><span class="cu">&euro;/Jahr</span></div>
     </div>
@@ -828,14 +826,11 @@ function getInputs(){
     c_data:      v('c_data'),
     c_train:     v('c_train'),
     c_infra:     v('c_infra'),
-    c_maint:     v('c_maint'),
     // Ohne Feld: volle Zurechnung (siehe Methodische Hinweise).
     alloc:       da('alloc') ? v('alloc')/100 : 1,
     // Ohne Feld: drei Jahre Nutzungsdauer. Null waere eine Division durch null.
     capex_years: da('capex_years') ? Math.max(1, Math.round(v('capex_years'))) : 3,
     c_intern:    v('c_intern'),
-    c_token:     v('c_token'),
-    c_monitor:   v('c_monitor'),
     c_support:   v('c_support'),
     c_exit:      v('c_exit'),
     // Diese vier Felder sind aus der Eingabe genommen (siehe Methodische Hinweise).
@@ -876,12 +871,13 @@ function compute(p){
   // Der Umlagefaktor gilt nur fuer Plattformkosten (Entwicklung, Lizenz-Abos, Cloud).
   // Vorhabenspezifische Posten und nutzungsabhaengige Modellkosten zaehlen immer zu 100 %.
   const capex_total    = p.c_dev + p.c_data + p.c_train + p.c_intern;
-  const token_yr       = p.c_token * p.vol * 12;
-  const opex_fix_total = p.c_lizenz + p.c_infra + p.c_maint + p.c_monitor + p.c_support;
+  // Nutzungsabhaengige Modellkosten, Monitoring und Updates sind mit den Lizenzen abgedeckt.
+  const token_yr       = 0;
+  const opex_fix_total = p.c_lizenz + p.c_infra + p.c_support;
   const opex_total_yr  = opex_fix_total + token_yr;
   const exit_alloc     = p.c_exit;
   const capex_alloc    = p.c_dev * p.alloc + p.c_data + p.c_train + p.c_intern;
-  const opex_fix_alloc = (p.c_lizenz + p.c_infra) * p.alloc + p.c_maint + p.c_monitor + p.c_support;
+  const opex_fix_alloc = (p.c_lizenz + p.c_infra) * p.alloc + p.c_support;
   const opex_alloc_yr  = opex_fix_alloc + token_yr;
   const capex_alloc_mo = capex_alloc / (p.capex_years * 12);
   const opex_alloc_mo  = opex_alloc_yr / 12;
