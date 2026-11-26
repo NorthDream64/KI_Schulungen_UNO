@@ -121,7 +121,7 @@ Wähle mindestens eines der fünf Szenarien. Der Prompt-Text beschreibt, *was* d
 - **Zulässigkeit der Quellen** — erlauben Nutzungsbedingungen, Urheber- und Datenbankrecht (einschließlich Nutzungsvorbehalt gegen Text- und Data-Mining) den Abruf? Gibt es bei Personenprofilen eine Rechtsgrundlage und werden die Betroffenen informiert?
 - **Kostenrahmen und Abbruchkriterium** — was darf ein Lauf kosten (Tokens, API-Aufrufe), und wann wird der Agent gestoppt oder abgeschaltet?
 
-Die ersten acht Angaben stehen mit Checklisten im *Praxisbeispiel KI-Agentenbau* (Reiter Bauvorlage); der Reiter Startprompt hilft, sie im Gespräch mit einer KI zu erarbeiten.
+Die ersten acht Angaben stehen mit Checklisten in der Handreichung *Management agentischer KI-Systeme*, Reiter Einsatz, Schritt 04 „Spezifizieren — die acht Angaben“.
 
 Viele Anbieter von KI-Modellen (OpenAI, Anthropic usw.) bieten an, Agenten entweder aus Vorlagen zu nutzen oder selbst zu erstellen. Die Vorlagen — selbst wenn Du sie nicht nutzen möchtest — geben Dir häufig einen Eindruck der Quellen, Schnittstellen und Ausgabeformate, die sinnvoll in einen Agenten integriert werden können.
 
@@ -129,7 +129,7 @@ Viele Anbieter von KI-Modellen (OpenAI, Anthropic usw.) bieten an, Agenten entwe
 
 1. Könnte ein anderes Team Euren Agenten allein aus Eurer Konkretisierung nachbauen?
 2. Ist an jeder Stelle klar, wo der Mensch entscheidet und wo der Agent nur vorbereitet?
-3. Welche Grundlagen aus der Handreichung *KI-Management (Standard und Agenten)* (Agent oder Workflow, Eignungssignale, die drei Bausteine Modell, Werkzeuge und Anweisungen) erkennt Ihr in Eurem Szenario wieder — und wo fehlt im Original-Prompt noch eine Leitplanke?
+3. Welche Grundlagen aus der Handreichung *Management agentischer KI-Systeme* (Agent oder Workflow, Eignungssignale, die drei Bausteine Modell, Werkzeuge und Anweisungen) erkennt Ihr in Eurem Szenario wieder — und wo fehlt im Original-Prompt noch eine Leitplanke?
 4. Wodurch wird eine Anweisung wie „verifiziere“ technisch umgesetzt (Abruf der Quelle, Abgleich, Freigabe durch einen Menschen)? Eine Anweisung im Prompt ist noch keine Kontrolle — ein Modell kann Links und Status erfinden.
 
 ---
