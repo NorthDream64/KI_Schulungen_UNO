@@ -347,7 +347,7 @@ function refreshLabels(){
   }
   for(const sc of [fab,src,main,trn,top])if(sc.hints)sc.hints.forEach(h=>{const ks=h.keys||[h.key];h.t.style.opacity=(state.practice&&!ks.every(k=>state.unlocked.has(k)))?0:1;});
   const cnt=a=>a.filter(k=>state.unlocked.has(k)).length;
-  const v=state.view,K={src:['ext','sens','anon'],fab:['ka','kb','kc','ks','raw','st2'],trn:['st3','st4','ttest'],top:['b0','b1','b2','b3','b4'],dep:['dreg','dtest','dfrei','dprod']};
+  const v=state.view,K={src:['ext','sens','anon'],fab:['ka','kb','kc','ks','raw','st2'],trn:['st3','st4','ttest'],top:['b0','b1','b2','b3','b4'],dep:['dreg','dtest','dfrei','dprod','st5'],val:['k1','k2','k3'],mon:['st6']};
   const AWS='<a href="https://docs.aws.amazon.com/wellarchitected/latest/machine-learning-lens/machine-learning-lifecycle.html" target="_blank" rel="noopener">AWS Well-Architected Machine Learning Lens</a>';
   let h;
   if(v==='top')h=state.practice?'Übungsmodus: '+cnt(K.top)+'/5 Stufen benannt. Tippe auf ein Fragezeichen und wähle den passenden Begriff. Benannte Blöcke öffnen per Klick ihre Detailseite – dort warten weitere Fragen.':'Klicke auf einen Block, um die Detailseite zu öffnen. Fahre mit der Maus über „Datenverarbeitung“ (oder das ⓘ): Dort steht der Unterschied zwischen ETL und ELT. Die Begriffe der Blöcke folgen der '+AWS+'.';
@@ -655,7 +655,7 @@ main.tick=(sc,dt)=>{tickSources(sc,dt,locked('st1')||locked('ext'));updateClocks
   const ng=el('g',{transform:'translate('+cx+' '+cy+')'},U);
   el('line',{class:'needle',id:'needle',x1:0,y1:0,x2:0,y2:-34,stroke:'#e8eef5','stroke-width':2.6,style:'transform:rotate(-45deg)'},ng);
   el('circle',{r:4,fill:'#e8eef5'},ng);
-  el('text',{x:1275,y:714,class:'tk2'},U).textContent='Rückkopplung: Drift-Alarm → Retraining (Continuous Training)';
+  el('text',{x:1275,y:714,class:'tk2'},U).textContent='Rückkopplung: Drift-Alarm → Prüfung → Retraining (Continuous Training)';
 })();
 
 /* ============ DETAILANSICHT: Fabrik ============ */
@@ -824,7 +824,7 @@ const TIP_ETL='<p><b>ETL oder ELT – der Unterschied in Kürze</b></p>'
  +'<p><b>Gemeinsam:</b> Beide beginnen mit <b>Extract</b>: Rohdaten werden aus den Quellen kopiert, die Quellen bleiben unverändert.</p>'
  +'<p><b>ETL</b> (Extract → Transform → Load): Die Daten werden <i>vor</i> dem Laden auf einem Zwischenserver aufbereitet. Ins Zielsystem gelangen nur bereinigte Daten.</p>'
  +'<p><b>ELT</b> (Extract → Load → Transform): Die Rohdaten werden <i>zuerst</i> ins Zielsystem geladen (hier: Rohdatenspeicher / Raw Layer) und erst dort aufbereitet. Die Rohdaten bleiben erhalten und können später neu ausgewertet werden.</p>'
- +'<p>Dieses Diagramm folgt <b>ELT</b>. Ausnahme: Personenbezogene Stechuhr-Daten werden schon vor dem Load anonymisiert (Datenminimierung).</p>'
+ +'<p>Dieses Diagramm folgt <b>ELT</b>. Ausnahme: Personenbezogene Angaben werden schon vor dem Load verändert – Stechuhr-Daten anonymisiert, bei Lieferanten- und Schichtplandaten die Namen entfernt oder gehasht (Datenminimierung).</p>'
  +'<small>Quellen: <a href="https://aws.amazon.com/compare/the-difference-between-etl-and-elt/" target="_blank" rel="noopener">AWS: ETL vs. ELT</a> · <a href="https://www.ibm.com/think/topics/etl" target="_blank" rel="noopener">IBM: Was ist ETL?</a> · <a href="https://docs.aws.amazon.com/prescriptive-guidance/latest/defining-bucket-names-data-lakes/introduction.html" target="_blank" rel="noopener">AWS Prescriptive Guidance: Data-Lake-Schichten</a></small>';
 const TIP_FE='<p><b>Feature Engineering – drei Tätigkeiten</b></p>'
  +'<p>Feature Engineering ist keine Phase zwischen Daten und Training, sondern der Sammelbegriff für drei Tätigkeiten, die an unterschiedlichen Stellen stattfinden.</p>'
@@ -890,7 +890,7 @@ const TIP_PREP='<p><b>Datenvorbereitung: Bereinigung, Transformation, Selektion<
  +'<p>Vollautomatisch klappt das selten: Unsichere Ergebnisse prüft ein Mensch, und seine Korrekturen verbessern das Verfahren beim nächsten Durchlauf.</p>'
  +'<small>Quellen: <a href="https://www.tensorflow.org/tfx/guide/tft_bestpractices" target="_blank" rel="noopener">Google/TensorFlow: Data preprocessing for ML</a> · <a href="https://cloud.google.com/blog/products/gcp/preparing-and-curating-your-data-for-machine-learning" target="_blank" rel="noopener">Google Cloud: Preparing and curating your data for ML</a> · <a href="https://cloud.google.com/discover/unstructured-data" target="_blank" rel="noopener">Google Cloud: What is unstructured data?</a> · <a href="https://scikit-learn.org/stable/modules/feature_extraction.html" target="_blank" rel="noopener">scikit-learn: Feature extraction</a></small>';
 const TIP_INT='<p><b>Datenintegration – aus vielen Quellen ein einheitlicher Datenbestand</b></p>'
- +'<p><b>Was der Begriff umfasst:</b> Datenintegration ist der Oberbegriff für den ganzen Weg der Daten aus den einzelnen Quellsystemen in einen zentralen, einheitlichen Bestand. AWS beschreibt sie als Prozess, der allen Beteiligten einheitlichen Zugriff auf die Daten des Unternehmens verschafft – umgesetzt mit Extract, Load und Transform (ETL oder ELT). <strong>Achtung:</strong> Nicht mit "Datenintegrität" verwechseln, das die Unversehrtheit und den Manipulationsschutz der Daten umfasst.</p>'
+ +'<p><b>Was der Begriff umfasst:</b> Datenintegration ist der Oberbegriff für den ganzen Weg der Daten aus den einzelnen Quellsystemen in einen zentralen, einheitlichen Bestand. AWS beschreibt sie als Prozess, der allen Beteiligten einheitlichen Zugriff auf die Daten des Unternehmens verschafft – umgesetzt mit Extract, Load und Transform (ETL oder ELT). <strong>Achtung:</strong> Nicht mit „Datenintegrität“ verwechseln, die die Unversehrtheit der Daten und den Schutz vor Manipulation meint.</p>'
  +'<p><b>Ziel im KI-Projekt:</b> Daten aus verschiedenen internen Quellen – im Beispiel Kasse, Warenwirtschaft und Schichtplanung – werden aufeinander abgestimmt und in ein gemeinsames Format gebracht. Erst dieser vereinheitlichte Bestand ist eine verlässliche Grundlage für das Training.</p>'
  +'<p><b>Im Diagramm:</b> Die Arbeit der Datenintegration geschieht in Extract und Load & Transform. Hier am Eingang der Modellentwicklung kommt ihr Ergebnis an. Bevor es ins Training geht, lohnen zwei Fragen:</p>'
  +'<p><b>Nutzt ihr nur Daten, die zum Entscheidungszeitpunkt vorliegen?</b> Sonst droht Zukunftswissen im Training (Look-ahead Bias bzw. Data Leakage): Im Test glänzt das Modell, in der Praxis versagt es. Nicht zu verwechseln mit Datenabfluss – dort verlassen Daten unkontrolliert das Unternehmen.</p>'
@@ -904,7 +904,7 @@ const TIP_MLOPS='<p><b>MLOps – Machine Learning Operations</b></p>'
  +'<li>Monitoring und automatisiertes Nachtrainieren bei Leistungsverlust (Model Drift).</li>'
  +'<li>Versionierung und Protokollierung von Daten, Modellen und Entscheidungen.</li></ul>'
  +'<p>Einheitliche, protokollierte Abläufe machen das KI-System auditierbar und nachvollziehbar (Traceability) und unterstützen Compliance-Anforderungen, z. B. nach ISO/IEC 42001.</p>'
- +'<small>Quellen: <a href="https://docs.cloud.google.com/architecture/mlops-continuous-delivery-and-automation-pipelines-in-machine-learning" target="_blank" rel="noopener">Google Cloud: MLOps</a> · <a href="https://learn.microsoft.com/en-us/azure/architecture/ai-ml/guide/machine-learning-operations-v2" target="_blank" rel="noopener">Microsoft: MLOps v2</a> · <a href="https://docs.aws.amazon.com/sagemaker/latest/dg/model-monitor.html" target="_blank" rel="noopener">AWS: SageMaker Model Monitor</a></small>';
+ +'<small>Quellen: <a href="https://docs.cloud.google.com/architecture/mlops-continuous-delivery-and-automation-pipelines-in-machine-learning" target="_blank" rel="noopener">Google Cloud: MLOps</a> · <a href="https://learn.microsoft.com/en-us/azure/architecture/ai-ml/guide/machine-learning-operations-v2" target="_blank" rel="noopener">Microsoft: MLOps v2</a> · <a href="https://docs.aws.amazon.com/sagemaker/latest/dg/model-monitor.html" target="_blank" rel="noopener">AWS: SageMaker Model Monitor</a> (steht Neukunden nicht mehr offen; Bestandskunden nutzen ihn weiter)</small>';
 const TIP_LOG='<p><b>Protokollierung und Versionierung</b></p>'
  +'<p>Jede Anfrage und jede Prognose wird mit Zeitpunkt, Eingangsdaten und <b>Modellversion</b> protokolliert. Modelle liegen versioniert im Modellregister, die Rohdaten im schreibgeschützten Rohdatenspeicher. So lässt sich jede Modellentscheidung später nachvollziehen – Grundlage für Audits und Compliance (z. B. ISO/IEC 42001).</p>'
  +'<p>Google empfiehlt zudem, die im Betrieb verwendeten Merkmale zu protokollieren und für das Training wiederzuverwenden – so trainiert man, wie man betreibt.</p>'
@@ -917,6 +917,7 @@ const TIP_SPLIT='<p><b>Training · Validierung · Test</b></p>'
  +'<tr><td>Testdaten</td><td>Einmalige, abschließende Prüfung des ausgewählten Modells – für eine unvoreingenommene Bewertung.</td></tr></table>'
  +'<p>Bei Zeitreihen wie Absatzdaten wird zeitlich getrennt, nicht zufällig gemischt. Statt eines festen Validierungsanteils kann man auch eine <b>Kreuzvalidierung</b> innerhalb der Trainingsdaten nutzen. Auch Validierungs- und Testdaten „nutzen sich ab“, wenn man sie immer wieder für Entscheidungen verwendet.</p>'
  +'<p><b>Vor dem Training prüfen:</b> Ist die Aufteilung korrekt und repräsentativ? Kein Datensatz liegt in zwei Teilen, die Zeiträume folgen aufeinander, und alle Filialen sind in allen drei Teilen vertreten. Den Testbestand legt man am besten schon bei der Datenbeschaffung fest und schaut ihn danach nicht mehr an.</p>'
+ +'<p><b>Warum so früh?</b> Jeder Aufbereitungsschritt, der aus den Daten lernt, überträgt sonst Wissen aus dem Testbestand ins Training: Mittelwerte zum Füllen fehlender Werte, Grenzen für Ausreißer, Skalierungen, die Auswahl von Merkmalen. Das Ergebnis sieht dann besser aus, als das Modell im Betrieb ist (Datenleck). Unkritisch sind Schritte, die nichts aus den Daten ableiten – Formate vereinheitlichen, Dubletten auflösen, Felder zusammenführen. Als Regel: <b>Was aus den Daten lernt, wird nur auf dem Trainingsbestand bestimmt</b> und danach unverändert auf Validierung und Test angewendet.</p>'
  +'<p><b>Achtung, Doppelbedeutung:</b> Im maschinellen Lernen kommt die Validierung <b>vor</b> dem Test – so definiert es auch die KI-Verordnung (Art. 3 Nr. 30 und 32): Validierungsdaten dienen der Bewertung und Feinabstimmung während der Entwicklung, Testdaten der unabhängigen Bestätigung vor der Inbetriebnahme. Im Qualitätsmanagement und in der Softwareentwicklung (z. B. V-Modell) bezeichnet „Validierung“ dagegen den abschließenden Nachweis, dass ein Produkt für seinen Zweck taugt – dort steht sie am Ende. Gemeint ist im Diagramm immer die erste Bedeutung.</p>'
  +'<small>Quellen: <a href="https://developers.google.com/machine-learning/crash-course/overfitting/dividing-datasets" target="_blank" rel="noopener">Google: Dividing the original dataset</a> · <a href="https://eur-lex.europa.eu/legal-content/DE/TXT/?uri=CELEX%3A32024R1689" target="_blank" rel="noopener">KI-Verordnung, Art. 3 (EUR-Lex)</a></small>';
 const TIP_OVER='<p><b>Overfitting vermeiden</b></p>'
@@ -925,7 +926,7 @@ const TIP_OVER='<p><b>Overfitting vermeiden</b></p>'
  +'<tr><td>Regularisierung</td><td>bestraft zu komplexe Modelle („Budgetdeckel“ für Komplexität)</td></tr>'
  +'<tr><td>Dropout</td><td>nur bei neuronalen Netzen: In jedem Trainingsschritt fällt ein zufälliger Teil der Neuronen aus.</td></tr>'
  +'<tr><td>Early Stopping</td><td>Training stoppt, sobald sich die Güte auf den Validierungsdaten wieder verschlechtert.</td></tr>'
- +'<tr><td>Kreuzvalidierung</td><td>Daten in mehrere Teile zerlegen, jeder Teil prüft einmal – zeigt, wie stabil die Leistung ist.</td></tr></table>'
+ +'<tr><td>Kreuzvalidierung</td><td>Daten in mehrere Teile zerlegen, jeder Teil prüft einmal – zeigt, wie stabil die Leistung ist. Sie <b>erkennt</b> Overfitting, sie verhindert es nicht; die Gegenmaßnahme folgt aus dem Befund.</td></tr></table>'
  +'<p>Ziel ist <b>Generalisierungsfähigkeit</b>: gute Ergebnisse auf Daten, die das Modell nie gesehen hat.</p>'
  +'<small>Quellen: <a href="https://developers.google.com/machine-learning/crash-course/overfitting" target="_blank" rel="noopener">Google: Generalization and overfitting</a> · <a href="https://developers.google.com/machine-learning/crash-course/overfitting/regularization" target="_blank" rel="noopener">Google: Regularization, Early Stopping</a> · <a href="https://developers.google.com/machine-learning/crash-course/training-neural-networks/best-practices" target="_blank" rel="noopener">Google: Dropout</a></small>';
 const TIP_DS='<p><b>Best Practice: acht Stationen einer Modellentwicklung</b></p>'
@@ -939,13 +940,13 @@ const TIP_DEPLOY='<p><b>Deployment-Strategien – vier Wege in den Betrieb</b></
  +'<tr><td>Shadow Mode</td><td>Vier Wochen lang rechnet die neue Version zu jeder Anfrage eine eigene Prognose. Die Filialen sehen sie nicht, bestellt wird wie bisher. Danach: Tausende Schattenprognosen gegen den tatsächlichen Absatz.</td><td>Wie gut die Prognosen gegen die Wirklichkeit abschneiden – und bei welchen Filialen oder Warengruppen sie danebenliegen.</td></tr>'
  +'<tr><td>Canary Release</td><td>Nur zwei kleine Filialen erhalten die Prognosen der neuen Version, die übrigen acht weiter die alte. Abbruchkriterium vorher festgelegt, z. B.: mehr als drei Tage mit ausverkauften Artikeln in einer Woche – dann zurück.</td><td>Ob die Version im echten Ablauf standhält – Schnittstelle, Antwortzeit, Sonderfälle – und ob die Filialleitungen mit den Vorschlägen zurechtkommen.</td></tr>'
  +'<tr><td>Blue-Green</td><td>Zwei nahezu gleiche Produktionsumgebungen laufen parallel („Grün“ = neue Version). Umgeschaltet wird für alle Filialen auf einmal, „Blau“ bleibt als Rückfallebene.</td><td>Über die Qualität nichts. Der Gewinn: Bei einem Problem ist man in Minuten zurück, nicht in Tagen.</td></tr>'
- +'<tr><td>A/B-Vergleich</td><td>Zwölf Wochen, die Filialen zufällig in zwei Gruppen geteilt: „Alt“ gegen „Neu“. Kennzahl vorher festgelegt, z. B. Abschriften verderblicher Ware je Filiale.</td><td>Ob die neue Version dem Unternehmen etwas bringt – und wie viel. Als einzige der vier Strategien beantwortet sie diese Frage.</td></tr></table>'
+ +'<tr><td>A/B-Vergleich</td><td>Zwölf Wochen, die Filialen zufällig in zwei Gruppen geteilt: „Alt“ gegen „Neu“. Kennzahl vorher festgelegt, z. B. Abschriften verderblicher Ware je Filiale. Bei zehn Filialen stehen fünf gegen fünf – damit lassen sich nur grobe Unterschiede erkennen, kleine Effekte verschwinden im Rauschen zwischen den Standorten. Wer genauer messen will, vergleicht dieselbe Filiale über die Zeit mit sich selbst oder verlängert den Zeitraum.</td><td>Ob die neue Version dem Unternehmen etwas bringt – und wie viel. Als einzige der vier Strategien beantwortet sie diese Frage.</td></tr></table>'
  +'<p><b>Im Diagramm:</b> Test (Staging) → Freigabe → Produktion zeigt die einfachste Form – nach dem Ja geht die neue Version für alle Filialen in Betrieb.</p>'
  +'<small>Quellen: <a href="https://docs.aws.amazon.com/wellarchitected/latest/machine-learning-lens/mlrel-11.html" target="_blank" rel="noopener">AWS ML Lens: Deployment- und Teststrategie (MLREL-11)</a> · <a href="https://docs.aws.amazon.com/sagemaker/latest/dg/model-shadow-deployment.html" target="_blank" rel="noopener">AWS SageMaker: Shadow Variants</a> · <a href="https://docs.aws.amazon.com/sagemaker/latest/dg/deployment-guardrails-blue-green-canary.html" target="_blank" rel="noopener">AWS SageMaker: Canary Traffic Shifting</a> · <a href="https://docs.aws.amazon.com/sagemaker/latest/dg/deployment-guardrails-blue-green.html" target="_blank" rel="noopener">AWS SageMaker: Blue/Green Deployments</a></small>';
 const TIP_TESTS='<p><b>Testverfahren</b></p>'
  +'<table><tr><th>Testart</th><th>Was wird geprüft?</th></tr>'
  +'<tr><td>Black-Box-Test</td><td>nur das Verhalten von außen: Passt die Ausgabe zur Eingabe – ohne Blick in das Modell. Auch die einmalige Messung mit dem unangetasteten Testdatensatz ist ein Black-Box-Test: Sie zeigt unvoreingenommen, wie gut das Modell auf Daten abschneidet, die es nie gesehen hat (<b>Generalisierungsfähigkeit</b>). In der Bereitstellung gehört der Probelauf im Test (Staging) dazu.</td></tr>'
- +'<tr><td>White-Box-Test</td><td>Logik und Struktur des Algorithmus, mit Zugriff auf Code, Architektur, Einstellungen und gelernte Parameter. Wie weit der Blick reicht, hängt vom Modell ab: Bei einem Entscheidungsbaum oder einer logistischen Regression lässt sich die Entscheidungslogik direkt ablesen. Bei einem großen neuronalen Netz sind die Millionen oder Milliarden gelernten Gewichte zwar zugänglich, aber nicht verständlich. Geprüft werden dann Aufbau und Verarbeitungsweg – etwa ob jeder Zweig des Codes getestet ist oder wie empfindlich das Modell auf kleine Änderungen der Eingabe reagiert. So werden Schwachstellen sichtbar, bevor sie im Betrieb auffallen; das stärkt Robustheit und Sicherheit. Erklärverfahren wie SHAP brauchen diesen Zugriff übrigens nicht: Sie arbeiten modellunabhängig und liefern Näherungen (siehe Erklärbarkeit).</td></tr>'
+ +'<tr><td>White-Box-Test</td><td>Logik und Struktur des Algorithmus, mit Zugriff auf Code, Architektur, Einstellungen und gelernte Parameter. Wie weit der Blick reicht, hängt vom Modell ab: Bei einem Entscheidungsbaum oder einer logistischen Regression lässt sich die Entscheidungslogik direkt ablesen. Bei einem großen neuronalen Netz sind die Millionen oder Milliarden gelernten Gewichte zwar zugänglich, aber nicht verständlich. Geprüft werden dann Aufbau und Verarbeitungsweg – etwa ob jeder Zweig des Codes getestet ist oder wie empfindlich das Modell auf kleine Änderungen der Eingabe reagiert. So werden Schwachstellen sichtbar, bevor sie im Betrieb auffallen; das stärkt Robustheit und Sicherheit. Erklärverfahren wie SHAP kommen teilweise ohne diesen Zugriff aus: KernelSHAP arbeitet modellunabhängig und liefert Näherungen, TreeSHAP und DeepSHAP nutzen dagegen die Struktur des Modells (siehe Erklärbarkeit).</td></tr>'
  +'<tr><td>Unit-Test</td><td>einzelne Code-Bausteine der Datenverarbeitungspipeline, jeweils für sich: Wandelt die Standardisierung jedes Datumsformat richtig um? Liegen alle Werte nach der Aufbereitung im erwarteten Bereich?</td></tr></table>'
  +'<p><b>Robustheit</b> ist eine eigene Leistungskennzahl neben Genauigkeit, Precision und Recall: Bleibt die Leistung stabil, wenn Eingaben fehlen, gestört oder ungewöhnlich sind? Man misst sie, indem man die Kennzahlen auf gezielt veränderten oder seltenen Testfällen wiederholt. Die <a href="https://eur-lex.europa.eu/legal-content/DE/TXT/?uri=CELEX%3A32024R1689" target="_blank" rel="noopener">KI-Verordnung</a> nennt Genauigkeit, Robustheit und Cybersicherheit für Hochrisiko-Systeme in einem Atemzug (Art. 15).</p>'
  +'<small>Quellen: <a href="https://developers.google.com/machine-learning/crash-course/production-ml-systems/monitoring" target="_blank" rel="noopener">Google: Testing and monitoring pipelines (Unit-Tests)</a> · <a href="https://learn.microsoft.com/en-us/azure/machine-learning/concept-responsible-ai?view=azureml-api-2" target="_blank" rel="noopener">Microsoft: Reliability and safety (Robustheit)</a> · <a href="https://learn.microsoft.com/en-us/azure/machine-learning/how-to-machine-learning-interpretability?view=azureml-api-2" target="_blank" rel="noopener">Microsoft: Model interpretability</a> · <a href="https://learn.microsoft.com/en-us/azure/well-architected/ai/test" target="_blank" rel="noopener">Microsoft: Test and evaluate AI workloads</a></small>';
@@ -979,12 +980,12 @@ const TIP_DRIFT='<p><b>Drift technisch erkennen – was der angezeigte Wert bede
 const TIP_MON='<p><b>Was das Monitoring im Betrieb überwacht</b></p>'
  +'<table><tr><th>Bereich</th><th>Worum es geht</th></tr>'
  +'<tr><td>Modellleistung</td><td>Verschlechtert sich die Leistung (<b>Model Drift</b>)? Bei Prognosen von Mengen: Abweichung Prognose ↔ Ist. Bei Ja/Nein-Entscheidungen (z. B. Coupon ja/nein): Precision, Recall oder F1-Score, der beide zu einem Wert zusammenfasst.</td></tr>'
- +'<tr><td>Datenintegrität</td><td>Kommen die Eingabedaten vollständig und im richtigen Format an – fehlen Felder, fällt eine Filiale aus? "Datenintegrität" beschreibt die Unversehrtheit und Manipulationsschutz der Daten (Achtung: nicht mit "Datenintegration" verwechseln).</td></tr>'
+ +'<tr><td>Vollständigkeit der Eingangsdaten</td><td>Kommen die Eingabedaten vollständig und im richtigen Format an – fehlen Felder, fällt eine Filiale aus? Zwei ähnlich klingende Begriffe meinen etwas anderes: „Datenintegrität“ die Unversehrtheit der Daten und den Schutz vor Manipulation, „Datenintegration“ das Zusammenführen aus mehreren Quellen.</td></tr>'
  +'<tr><td>Input- oder Datendrift</td><td>Haben sich die Eigenschaften der Eingabedaten verändert (z. B. neue Preise)? Frühwarnung – oft lange bevor die tatsächlichen Verkäufe die Prognose widerlegen.</td></tr>'
  +'<tr><td>Bias</td><td>Ist das Modell für alle Gruppen gleich gut (z. B. Filialen in Gebieten mit hoher und niedriger Kaufkraft)?</td></tr></table>'
  +'<p><b>Model Drift</b> hat zwei Ursachen: veränderte Eingabedaten (Input- oder Datendrift) oder eine veränderte Realität – etwa ein neues Kaufverhalten bei gleichen Eingaben.</p>'
  +'<p><b>Feedback-Schleife:</b> Die tatsächlichen Verkäufe fließen zurück und werden mit den Prognosen verglichen; daraus entsteht automatisch oder nach menschlicher Prüfung ein Retraining. Diese Schleife ist zugleich der Nachweis kontinuierlicher Verbesserung, die ein KI-Managementsystem (ISO/IEC 42001) verlangt. Dazu kommen regelmäßige Robustheits- und Leistungsprüfungen im Betrieb.</p>'
- +'<small>Quellen: <a href="https://learn.microsoft.com/en-us/azure/machine-learning/concept-model-monitoring?view=azureml-api-2" target="_blank" rel="noopener">Microsoft: Model monitoring in production</a> · <a href="https://docs.aws.amazon.com/sagemaker/latest/dg/model-monitor.html" target="_blank" rel="noopener">AWS: SageMaker Model Monitor</a></small>';
+ +'<small>Quellen: <a href="https://learn.microsoft.com/en-us/azure/machine-learning/concept-model-monitoring?view=azureml-api-2" target="_blank" rel="noopener">Microsoft: Model monitoring in production</a> · <a href="https://docs.aws.amazon.com/sagemaker/latest/dg/model-monitor.html" target="_blank" rel="noopener">AWS: SageMaker Model Monitor</a> (steht Neukunden nicht mehr offen; Bestandskunden nutzen ihn weiter)</small>';
 const TIP_TERMS='<p><b>Fachbegriffe der Modellentwicklung</b></p>'
  +'<table><tr><th>Begriff</th><th>Bedeutung</th></tr>'
  +'<tr><td>Zielvariable (Label)</td><td>das Ergebnis, das das Modell vorhersagen soll – z. B. „kauft Grillkohle: ja/nein“.</td></tr>'
@@ -1002,7 +1003,7 @@ const TIP_TERMS='<p><b>Fachbegriffe der Modellentwicklung</b></p>'
 function LTX(p,x,y,t,url,st){const a=el('a',{href:url,target:'_blank',rel:'noopener',class:'lnk'},p);const e=el('text',{x,y,class:'tk2',style:'text-anchor:start;'+(st||'')},a);e.textContent=t;return a;}
 const TIP_DQ='<p><b>Datenqualität: sechs Dimensionen</b></p><table><tr><th>Dimension</th><th>Leitfrage</th></tr><tr><td>Vollständigkeit</td><td>Fehlen Einträge, die da sein müssten?</td></tr><tr><td>Konsistenz</td><td>Sind die Daten über alle Quellen hinweg widerspruchsfrei?</td></tr><tr><td>Genauigkeit</td><td>Entsprechen die Werte der Realität?</td></tr><tr><td>Aktualität</td><td>Taugen sie als Basis für heutige Entscheidungen?</td></tr><tr><td>Relevanz</td><td>Helfen sie bei genau dieser Frage?</td></tr><tr><td>Eindeutigkeit</td><td>Ist jedes Objekt genau einmal erfasst?</td></tr></table><p>Die Dimensionen werden an <b>Quality Gates</b> geprüft – Entscheidungspunkten, an denen ein Vorhaben nur weiterläuft, wenn eine überprüfbare Bedingung erfüllt ist. Im Diagramm stehen sie als Schild mit Nummer (Gate 0 bis 3).</p><small>Quellen: <a href="https://dama-nl.org/wp-content/uploads/2020/11/How-to-Select-the-Right-Dimensions-of-Data-Quality-v1.1-d.d.-14-Nov-2020.pdf" target="_blank" rel="noopener">DAMA NL: Dimensions of Data Quality</a> · <a href="https://docs.cloud.google.com/dataplex/docs/auto-data-quality-overview" target="_blank" rel="noopener">Google Cloud: Data quality dimensions</a></small>';
 const TIP_G0='<p><b>Gate 0 · vor Projektfreigabe · Dateninventur</b></p><p><b>Gibt es die Daten überhaupt?</b> Bestandsaufnahme: welche Daten es gibt, wo sie liegen, wem sie gehören. Das billigste Gate, weil noch nichts gebaut wurde.</p><table><tr><th>Dimension</th><th>Leitfrage</th></tr><tr><td>Relevanz</td><td>Helfen sie bei genau dieser Frage?</td></tr><tr><td>Vollständigkeit</td><td>Fehlen Einträge, die da sein müssten?</td></tr></table><p><b>Beispiel:</b> Weiter, wenn für alle zehn Filialen mindestens zwei Jahre Kassendaten vorliegen und weniger als 1 % der Tage fehlen.</p><small>Quellen: <a href="https://dama-nl.org/wp-content/uploads/2020/11/How-to-Select-the-Right-Dimensions-of-Data-Quality-v1.1-d.d.-14-Nov-2020.pdf" target="_blank" rel="noopener">DAMA NL: Dimensions of Data Quality</a> · <a href="https://cloud.google.com/blog/products/gcp/preparing-and-curating-your-data-for-machine-learning" target="_blank" rel="noopener">Google Cloud: Preparing and curating your data for ML</a></small>';
-const TIP_G1='<p><b>Gate 1 · Bronze → Silber · Bereinigbarkeit</b></p><p><b>Ist der Bestand bereinigbar – und zu welchem Aufwand?</b> Bronze sind die Rohdaten, so wie sie ankommen (hier: Rohdatenspeicher). Silber sind geprüfte, bereinigte und vereinheitlichte Daten (nach Standardisierung, Bereinigung und Dubletten auflösen).</p><table><tr><th>Dimension</th><th>Leitfrage</th></tr><tr><td>Genauigkeit</td><td>Entsprechen die Werte der Realität?</td></tr><tr><td>Eindeutigkeit</td><td>Ist jedes Objekt genau einmal erfasst?</td></tr><tr><td>Konsistenz</td><td>Sind die Daten über alle Quellen hinweg widerspruchsfrei?</td></tr></table><p><b>Beispiel:</b> Weiter, wenn höchstens 2 % der Bons in der Quarantäne landen und keine Dubletten mehr enthalten sind.</p><small>Quellen: <a href="https://learn.microsoft.com/en-us/azure/databricks/lakehouse/medallion" target="_blank" rel="noopener">Microsoft: Medallion-Architektur</a> · <a href="https://dama-nl.org/wp-content/uploads/2020/11/How-to-Select-the-Right-Dimensions-of-Data-Quality-v1.1-d.d.-14-Nov-2020.pdf" target="_blank" rel="noopener">DAMA NL: Dimensions of Data Quality</a></small>';
+const TIP_G1='<p><b>Gate 1 · Bronze → Silber · Bereinigbarkeit</b></p><p><b>Ist der Bestand bereinigbar – und zu welchem Aufwand?</b> Bronze sind die Rohdaten, so wie sie ankommen (hier: Rohdatenspeicher). Silber sind geprüfte, bereinigte und vereinheitlichte Daten (nach Standardisierung, Bereinigung und Dubletten auflösen).</p><table><tr><th>Dimension</th><th>Leitfrage</th></tr><tr><td>Genauigkeit</td><td>Entsprechen die Werte der Realität?</td></tr><tr><td>Eindeutigkeit</td><td>Ist jedes Objekt genau einmal erfasst?</td></tr><tr><td>Konsistenz</td><td>Sind die Daten über alle Quellen hinweg widerspruchsfrei?</td></tr></table><p><b>Beispiel:</b> Weiter, wenn höchstens 2 % der Bons in der Quarantäne landen und keine Dubletten mehr enthalten sind. Die Simulation liegt bewusst darüber – sieh nach, wie hoch die Quote im Quarantänetank steht: Ein Gate, das niemand prüft, hält nichts auf.</p><small>Quellen: <a href="https://learn.microsoft.com/en-us/azure/databricks/lakehouse/medallion" target="_blank" rel="noopener">Microsoft: Medallion-Architektur</a> · <a href="https://dama-nl.org/wp-content/uploads/2020/11/How-to-Select-the-Right-Dimensions-of-Data-Quality-v1.1-d.d.-14-Nov-2020.pdf" target="_blank" rel="noopener">DAMA NL: Dimensions of Data Quality</a></small>';
 const TIP_G2='<p><b>Gate 2 · Silber → Gold · Zwecktauglichkeit</b></p><p><b>Taugt der Bestand für genau diese Frage?</b> Gold sind die für den Zweck zugeschnittenen Daten, mit denen das Modell trainiert wird (nach der Selektion).</p><table><tr><th>Dimension</th><th>Leitfrage</th></tr><tr><td>Aktualität</td><td>Taugen sie als Basis für heutige Entscheidungen?</td></tr><tr><td>Relevanz</td><td>Helfen sie bei genau dieser Frage?</td></tr></table><p>Dazu die <b>Repräsentativität</b>: Bildet der Datensatz alle Filialen ab, für die das Modell später Prognosen liefert – auch die in Gebieten mit niedriger Kaufkraft?</p><p><b>Beispiel:</b> Weiter, wenn die Daten nicht älter als eine Woche sind und jede Filiale mit mindestens 5 % vertreten ist.</p><small>Quellen: <a href="https://learn.microsoft.com/en-us/azure/databricks/lakehouse/medallion" target="_blank" rel="noopener">Microsoft: Medallion-Architektur</a> · <a href="https://dama-nl.org/wp-content/uploads/2020/11/How-to-Select-the-Right-Dimensions-of-Data-Quality-v1.1-d.d.-14-Nov-2020.pdf" target="_blank" rel="noopener">DAMA NL: Dimensions of Data Quality</a></small>';
 const TIP_G3='<p><b>Gate 3 · vor Go-Live · laufende Sicherung</b></p><p><b>Wer merkt es, wenn die Qualität kippt?</b> Datenqualität ist kein Projektzustand, sondern ein Betriebszustand. Vor dem Go-Live wird festgelegt, was laufend überwacht wird, mit welcher Alarmschwelle – und wer dann was tut.</p><p><b>Beispiel:</b> Täglich prüfen, ob alle Filialen Kassendaten geliefert haben (Vollständigkeit); bei mehr als einem fehlenden Tag geht ein Alarm an das MLOps-Team, das die Lieferung nachfordert.</p><small>Quellen: <a href="https://learn.microsoft.com/en-us/azure/machine-learning/concept-model-monitoring?view=azureml-api-2" target="_blank" rel="noopener">Microsoft: Model monitoring in production</a> · <a href="https://docs.cloud.google.com/dataplex/docs/auto-data-quality-overview" target="_blank" rel="noopener">Google Cloud: Data quality dimensions</a></small>';
 function gateMark(sc,x,y,n,getHtml,up){
@@ -1099,7 +1100,7 @@ const top=mkScene('scTop');top.st={in:0};
   infoI(top,A-24,680,()=>TIP_MLOPS,true);
   el('text',{x:790,y:70,class:'btxt',style:'font-size:24px'},U).textContent='Überblick: Der Weg der Daten – von der Herkunft bis zur Prognose';
   el('text',{x:790,y:100,class:'sub'},U).textContent='Klicke auf einen Block, um die Details zu öffnen';
-  el('text',{x:(lx+gx)/2,y:BY+BH+60,class:'tk',style:'font-size:13px'},U).textContent='Retraining (Continuous Training) – ausgelöst durch Drift-Alarm';
+  el('text',{x:(lx+gx)/2,y:BY+BH+60,class:'tk',style:'font-size:13px'},U).textContent='Retraining (Continuous Training) – nach dem Drift-Alarm, automatisch oder nach menschlicher Prüfung';
   (()=>{const x=BX(0),y=BY+BH+30,w=BX(1)+BW-BX(0),g=el('g',{style:'cursor:pointer'},U);el('rect',{class:'ipill',x,y,width:w,height:30,rx:15},g);el('text',{x:x+w/2,y:y+20,class:'tk',style:'font-size:13px'},g).textContent='ⓘ Datenqualität: sechs Dimensionen und vier Quality Gates';const h=el('rect',{class:'vhit',x,y,width:w,height:30,rx:15,fill:'transparent'},g);const sh=()=>showTip(x+w/2,y-6,TIP_DQ,true);h.addEventListener('mouseenter',sh);h.addEventListener('mouseleave',hideTipSoon);h.addEventListener('click',e=>{e.stopPropagation();sh();});})();
   (()=>{const x=BX(0),y=BY-102,w=BX(1)+BW-BX(0),g=el('g',{style:'cursor:pointer'},U);el('rect',{class:'ipill',x,y,width:w,height:30,rx:15},g);el('text',{x:x+w/2,y:y+20,class:'tk',style:'font-size:13px'},g).textContent='ⓘ Data Observability: fünf Signale für eine verlässliche Datenpipeline';const h=el('rect',{class:'vhit',x,y,width:w,height:30,rx:15,fill:'transparent'},g);const sh=()=>showTip(x+w/2,y+36,TIP_OBS,false);h.addEventListener('mouseenter',sh);h.addEventListener('mouseleave',hideTipSoon);h.addEventListener('click',e=>{e.stopPropagation();sh();});})();
   // Klickflächen
@@ -1164,7 +1165,7 @@ const trn=mkScene('scTrn');trn.g.classList.add('off');trn.st={in:0};
 const TP=(id,pts,w,o)=>addPipe(trn,Object.assign({id,pts,w},o||{}));
 let regCount=0;
 TP('tIn',[[30,190],[330,190]],22,{next:'tSplit'});
-TP('tSplit',[[330,190],[470,190]],22,{route:()=>{const r=Math.random();return r<.7?'train':r<.85?'val':'test';},to:{train:'tTr',val:'tTe',test:'tTs'}});
+TP('tSplit',[[330,190],[470,190]],22,{route:(()=>{let n=0;return ()=>{const i=n++%20;return i<14?'train':i<17?'val':'test';};})(),to:{train:'tTr',val:'tTe',test:'tTs'}});
 TP('tTr',[[470,190],[700,190]],18,{next:'tGear'});
 TP('tGear',[[700,190],[820,190]],16,{next:'tM',gate:'st3',enter:(p,sc,pi)=>{
   if(p.kind==='model')return;
@@ -1316,7 +1317,7 @@ const val=mkScene('scVal');val.g.classList.add('off');val.st={in:0};
   // Wirtschaftlichkeit
   TX(U,1190,452,'Wirtschaftlichkeit (Beispielannahmen)','lbl','text-anchor:start;font-size:15px');
   const ecoM=TX(U,1190,474,'','tk','text-anchor:start;fill:#4cc9f0');
-  const ecoRows=[['Annahmen','15 € zusätzlicher Umsatz je Kauf, 2 € Kosten je Anschreiben'],['Zusätzlicher Umsatz',''],['./. Kosten',''],['= Zusätzlicher Deckungsbeitrag','']].map((r,i)=>{
+  const ecoRows=[['Annahmen','15 € Deckungsbeitrag je Kauf, 2 € je Anschreiben'],['Deckungsbeitrag aus Käufen',''],['./. Anschreibekosten',''],['= Beitrag der Kampagne','']].map((r,i)=>{
     const y=500+i*40;
     const t1=TX(U,1190,y,r[0],'tk','text-anchor:start;'+(i===3?'fill:#fde047':''));
     const t2=TX(U,1190,y+17,r[1],'tk2','text-anchor:start;font-size:12px');
@@ -1324,6 +1325,15 @@ const val=mkScene('scVal');val.g.classList.add('off');val.st={in:0};
     return {t2,v};});
   el('line',{x1:1190,x2:1545,y1:603,y2:603,stroke:'#4b6f8c'},U);
   const ecoB=TX(U,1190,676,'','tk2','text-anchor:start;font-size:12px');
+  para(U,1190,700,15,'font-size:11.5px;fill:#9fb3c8;').set([
+    'Der Deckungsbeitrag ist der Umsatz abzüglich',
+    'Wareneinsatz und Couponwert.',
+    'Nicht enthalten: Entwicklung, Betrieb, Überwachung',
+    'und Retraining des Modells — sie fallen auch dann an,',
+    'wenn niemand angeschrieben wird.',
+    'Unterstellt ist zudem, dass ohne Coupon kein Kauf',
+    'zustande gekommen wäre. Wer ohnehin gekauft hätte,',
+    'bringt keinen zusätzlichen Beitrag (Mitnahmeeffekt).']);
   // Kennzahlen-Balken
   const rows=[['Accuracy (Genauigkeit)','(richtig angeschrieben + richtig nicht angeschrieben) ÷ alle 100','#38bdf8',['TP','TN']],['Precision (Präzision)','Käufer:innen ÷ alle Angeschriebenen','#a78bfa',['TP','FP']],['Recall (Sensitivität)','erreichte Käufer:innen ÷ alle potenziellen + tatsächlichen Käufer:innen','#4ade80',['TP','FN']],['F1-Score','fasst Precision und Recall zu einem Wert zusammen (harmonisches Mittel)','#f472b6',['TP','FP','FN']]];
   const bars=rows.map((r,i)=>{
@@ -1363,12 +1373,12 @@ const val=mkScene('scVal');val.g.classList.add('off');val.st={in:0};
     const eur=v=>(v<0?'−':'')+Math.abs(Math.round(v))+' €';
     const pNow=prof(TP,FP);
     ecoM.textContent=mode==='none'?'Benchmark: Niemanden anschreiben':mode==='all'?'Benchmark: Alle anschreiben':'Modell, aktuelle Reglerstellung';
-    ecoRows[1].t2.textContent='15 € × '+TP+' Käufer:innen';ecoRows[1].v.textContent=(TP*MARGIN)+' €';
+    ecoRows[1].t2.textContent='15 € Deckungsbeitrag × '+TP+' Käufer:innen';ecoRows[1].v.textContent=(TP*MARGIN)+' €';
     ecoRows[2].t2.textContent='2 € × '+(TP+FP)+' angeschriebene Kund:innen';ecoRows[2].v.textContent='− '+((TP+FP)*COST)+' €';
-    ecoRows[3].t2.textContent='Umsatz abzüglich Kosten';ecoRows[3].v.textContent=eur(pNow);
+    ecoRows[3].t2.textContent='Deckungsbeitrag abzüglich Anschreibekosten';ecoRows[3].v.textContent=eur(pNow);
     ecoB.textContent='Vergleich: niemanden 0 € · alle '+eur(pAll);
     if(mode==='all')msg.set(['Alle werden angeschrieben: Der Recall ist 100 %,','aber die Precision nur '+pct(pre)+' – 90 Coupons gehen an','Menschen, die nicht kaufen. Das kostet mehr, als es bringt.','Der F1-Score bleibt mit '+pct(f1)+' niedrig: Ein perfekter Recall','gleicht die schwache Precision nicht aus.']);
-    else if(mode==='none')msg.set(['Niemand wird angeschrieben: Die Genauigkeit sieht mit '+pct(acc),'gut aus, aber der Recall ist 0 %. Alle Käufer:innen','werden verpasst. Die Precision ist nicht definiert (0 ÷ 0),','und damit auch der F1-Score. Er entlarvt, was die','Genauigkeit verdeckt: Das Modell findet niemanden.']);
+    else if(mode==='none')msg.set(['Niemand wird angeschrieben: Die Genauigkeit sieht mit '+pct(acc),'gut aus, aber der Recall ist 0 %. Alle Käufer:innen','werden verpasst. Die Precision ist nicht definiert (0 ÷ 0),','und damit auch der F1-Score – Auswertungswerkzeuge','setzen beide hier üblicherweise auf 0. Er entlarvt, was die','Genauigkeit verdeckt: Das Modell findet niemanden.']);
     else msg.set([(TP+FP)+' Kund:innen werden angeschrieben, '+TP+' davon kaufen','(Precision '+pct(pre)+'). '+FN+' von '+(TP+FN)+' Käufer:innen werden verpasst','(Recall '+pct(rec)+'). Regler nach links: Recall','steigt, Precision sinkt – und umgekehrt.'].concat(f1===null?[]:Math.abs(pre-rec)>.25?['F1-Score '+pct(f1)+': Der schwächere der beiden Werte zieht','ihn nach unten – Precision und Recall sind unausgewogen.']:['F1-Score '+pct(f1)+': ein ausgewogener Kompromiss aus Precision','und Recall. Ob er sich rechnet, zeigt die Wirtschaftlichkeit.']));
   }
   const mv=e=>{const x=Math.max(SX0,Math.min(SX1,svgX(e)));thr=Math.round((.1+.8*(x-SX0)/(SX1-SX0))*100)/100;mode=null;upd();};
@@ -1383,6 +1393,9 @@ const val=mkScene('scVal');val.g.classList.add('off');val.st={in:0};
   val.thr=v=>{thr=v;mode=null;_u();};
   upd();
   // Regeln der Validierung
+  pillGate(val,'k1',24,726,300,'Kennzahl: Accuracy als Falle');
+  pillGate(val,'k2',344,726,300,'Kennzahl: niemanden übersehen');
+  pillGate(val,'k3',664,726,300,'Kennzahl: Anschreiben kostet');
   TX(U0,24,518,'Worauf es bei der Validierung ankommt','lbl','text-anchor:start;font-size:18px');
   const RU=[
    ['Testdaten bleiben unangetastet',['Geprüft wird auf Daten, die das Modell nie gesehen','hat. Wer immer wieder auf das Testergebnis schaut','und nachbessert, lernt den Test auswendig.']],
@@ -1479,6 +1492,7 @@ function startTest(){D_.phase='testing';D_.tn=0;D_.q=0;dep.tm.setAttribute('opac
   // Filialen unten: fragen an
   for(let i=0;i<10;i++){bigHouse(dep,DBX(i),660,SRC.kasse);TX(U,DBX(i),692,'F'+(i+1),'tk2');}
   TX(U,DBX(0)-20,722,'Filialen fragen Prognosen an – manche häufig, manche selten','sub','text-anchor:start');
+  pillGate(dep,'st5',24,48,300,'Name dieser Stufe');
   // Filialen oben: erhalten Antworten
   dep.cnt=[];
   for(let i=0;i<10;i++){
@@ -1510,7 +1524,7 @@ function startTest(){D_.phase='testing';D_.tn=0;D_.q=0;dep.tm.setAttribute('opac
     }else sc.tacc=0;
     const h=82*D_.q,c=D_.q>=QMIN?'#4ade80':'#f59e0b';
     thF.setAttribute('height',h);thF.setAttribute('y',418-h);thF.setAttribute('fill',c);thB.setAttribute('fill',D_.q>0?c:'#22384d');
-    qT.textContent=D_.q>0?Math.round(D_.q*100)+' % (Ziel ≥ 85 %)':'–';
+    qT.textContent=D_.q>0?'Trefferquote '+Math.round(D_.q*100)+' % (Ziel ≥ 85 %)':'–';
     // Filialen fragen an; ohne Modell in Produktion stauen sich die Anfragen
     let held=0;if(!D_.prod)for(const p of sc.parts)if(p.pipe.id==='rq'||p.pipe.id==='rqUp'||p.pipe.id.startsWith('rq'))held++;
     for(let i=0;i<10;i++){sc.acc[i]+=dt*DRATE[i];while(sc.acc[i]>=1){sc.acc[i]--;if(held<70){mkP(sc,sc.pipes['rq'+i],{col:SRC.kasse,st:i,s:rnd(0,2),off:0});held+=D_.prod?0:1;}}}
@@ -1535,6 +1549,7 @@ mon.sources=MXs.map((x,i)=>({pipe:'MS'+i,rate:.9,col:SRC.kasse}));
 (()=>{
   const U=mon.L.ui,D=mon.L.deco;
   TX(U,24,32,'Modellüberwachung im Detail','lbl','text-anchor:start;font-size:20px');
+  pillGate(mon,'st6',24,706,376,'Name dieser Stufe');
   // Filialen
   const bars=[],fcs=[];
   MXs.forEach((x,i)=>{
@@ -1583,7 +1598,7 @@ mon.sources=MXs.map((x,i)=>({pipe:'MS'+i,rate:.9,col:SRC.kasse}));
   infoI(mon,1328,161,()=>TIP_DRIFT,false,1150,80);
   (()=>{const x=24,y=672,w=376,g=el('g',{style:'cursor:pointer'},U);el('rect',{class:'ipill',x,y,width:w,height:28,rx:14},g);el('text',{x:x+w/2,y:y+19,class:'tk',style:'font-size:13px'},g).textContent='ⓘ Drift technisch erkennen (PSI, Feature Importance)';const h=el('rect',{class:'vhit',x,y,width:w,height:28,rx:14,fill:'transparent'},g);const sh=()=>showTip(640,80,TIP_DRIFT,false);h.addEventListener('mouseenter',sh);h.addEventListener('mouseleave',hideTipSoon);h.addEventListener('click',e=>{e.stopPropagation();sh();});})();
   (()=>{const x=24,y=482,w=376,g=el('g',{style:'cursor:pointer'},U);el('rect',{class:'ipill',x,y,width:w,height:28,rx:14},g);el('text',{x:x+w/2,y:y+19,class:'tk',style:'font-size:13px'},g).textContent='ⓘ Bias und sozio-demografische Merkmale';const h=el('rect',{class:'vhit',x,y,width:w,height:28,rx:14,fill:'transparent'},g);const sh=()=>showTip(640,80,TIP_BIAS,false);h.addEventListener('mouseenter',sh);h.addEventListener('mouseleave',hideTipSoon);h.addEventListener('click',e=>{e.stopPropagation();sh();});})();
-  const sig=[['Prognosegüte','Abweichung Prognose ↔ Ist',15,25,40],['Input- oder Datendrift','Eingabedaten weichen von Trainingsdaten ab',40,60,100],['Bias','Fehlerlücke zwischen den Kaufkraft-Gruppen',8,15,30]];
+  const sig=[['Prognosegüte','Abweichung Prognose ↔ Ist',15,25,40],['Input- oder Datendrift','Eingabedaten weichen von Trainingsdaten ab',40,60,100],['Bias','Fehlerlücke zwischen den Kaufkraft-Gruppen, in Prozentpunkten (pp)',8,15,30]];
   const sg=sig.map((s,i)=>{
     const y=96+i*70;
     TX(U,1150,y,s[0],'lbl','text-anchor:start;font-size:15px');TX(U,1150,y+16,s[1],'tk2','text-anchor:start');
@@ -1620,7 +1635,7 @@ mon.sources=MXs.map((x,i)=>({pipe:'MS'+i,rate:.9,col:SRC.kasse}));
   const AGT='KI-Agent: Bewertung und Empfehlung (Beispiel)';
   const MSG={
     karneval:[AGT,AG('Die Sonderaktion läuft wie prognostiziert: Karnevalsartikel verkaufen sich in F1–F3 stark, in F4–F10 kaum.','Karnevalsartikel nur in F1–F3 nachbestellen, Restmengen nach Aschermittwoch reduzieren; in F1–F3 zusätzliche Kassenschicht einplanen.',null)],
-    mall:[AGT,AG('Der Umsatz in Filiale F6 liegt rund 18 % unter Vorjahr, wie vom Modell prognostiziert. Der Rückgang beginnt mit der Eröffnung des Einkaufszentrums.','Sortiment in F6 auf Nahversorgung und Frische schärfen, Öffnungszeiten und Schichtplan anpassen, Bestellmengen senken, Stammkunden-Aktion starten.',null)],
+    mall:[AGT,AG('Der Umsatz in Filiale F6 liegt rund 40 % unter Vorjahr, in der benachbarten F5 rund 15 % – beides wie vom Modell prognostiziert. Der Rückgang beginnt mit der Eröffnung des Einkaufszentrums.','Sortiment in F6 auf Nahversorgung und Frische schärfen, Öffnungszeiten und Schichtplan anpassen, Bestellmengen senken, Stammkunden-Aktion starten.',null)],
     price:[AGT,AG('Die neuen Preise haben zu einer Kaufzurückhaltung bei den Produktgruppen A, F und K geführt. Die geringeren Volumina werden durch höhere Umsätze je Stück ausgeglichen.','Regalfläche für A, F und K verringern und Produktgruppe M stärker platzieren.','Prognosegüte unter Schwellenwert – Retraining mit Daten der neuen Preisliste.')],
     bias:[AGT,AG('In F7–F10 (Einzugsgebiet mit niedriger Kaufkraft) waren Eigenmarken und Grundnahrungsmittel wiederholt ausverkauft. Die Prognosen liegen dort zu niedrig (Fehler 24 % gegenüber 6 % in F1–F6); im Durchschnitt fällt das kaum auf.','Bis zum Retraining Bestellmengen in F7–F10 anheben; Trainingsdaten ausbalancieren lassen und ausverkaufte Tage nicht als echte Nachfrage werten.','Bias-Alarm – Retraining, danach Validierung je Filialgruppe.')]
   };
@@ -1677,7 +1692,7 @@ mon.sources=MXs.map((x,i)=>({pipe:'MS'+i,rate:.9,col:SRC.kasse}));
     const vals=[CUR.err,CUR.drift,CUR.gap];
     sg.forEach((s,i)=>{const v=vals[i];s.b.setAttribute('width',Math.min(300,300*v/s.s[4]));const c=col(v,s.s[2],s.s[3]);s.b.setAttribute('fill',c);s.lamp.setAttribute('fill',c);
       s.v.textContent=i===1?(v>=60?'stark':v>=40?'erhöht':'gering'):v.toFixed(0)+' %';});
-    sg[2].v.textContent=Math.round(CUR.gap)+' %';
+    sg[2].v.textContent=Math.round(CUR.gap)+' pp';
     const worst=Math.max(...sg.map((s,i)=>vals[i]>=s.s[3]?2:vals[i]>=s.s[2]?1:0));
     if(phase!=='retrain'){
       const eL=vals[0]>=sig[0][3]?2:vals[0]>=sig[0][2]?1:0,gL=vals[2]>=sig[2][3]?2:vals[2]>=sig[2][2]?1:0,dL=vals[1]>=sig[1][3]?2:vals[1]>=sig[1][2]?1:0;
