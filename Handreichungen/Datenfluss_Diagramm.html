@@ -1186,7 +1186,8 @@ trn.sources=[{pipe:'tIn',rate:4,col:COL.clean}];
 (()=>{
   const U=trn.L.ui,D=trn.L.deco;
   TX(U,24,32,'Modellentwicklung im Detail','lbl','text-anchor:start;font-size:20px');
-  TX(U,30,150,'aufbereitete Daten (aus Transform)','sub','text-anchor:start');
+  TX(U,30,150,'Daten aus Transform: feste Regeln angewandt','sub','text-anchor:start');
+  TX(U,30,166,'Formate, Dubletten, Zusammenführen','tk2','text-anchor:start;font-size:11px');
   // Eingangstor Datenintegration
   (()=>{const cx=225,gp=el('g',{style:'cursor:pointer'},U);
     el('path',{d:'M'+(cx-22)+',222 V178 Q'+cx+',158 '+(cx+22)+',178 V222',fill:'none',stroke:'#4cc9f0','stroke-width':3,'stroke-linecap':'round'},gp);
@@ -1203,6 +1204,8 @@ trn.sources=[{pipe:'tIn',rate:4,col:COL.clean}];
   TX(U,400,214,'Training · Validierung · Test','tk2');TX(U,400,228,'z. B. 70 / 15 / 15 %, zeitlich','tk2');
   infoI(trn,488,128,()=>TIP_SPLIT,false);
   TX(U,585,170,'Trainingsdaten','sub');
+  TX(U,585,216,'Erst hier: Ausreißergrenzen, Skalierung,','tk2','font-size:11px;fill:#fde047');
+  TX(U,585,230,'Auffüllen, Merkmalsauswahl','tk2','font-size:11px;fill:#fde047');
   trn.hints=[];const HT=(k,e)=>{trn.hints.push({key:k,t:e});return e;};
   HT('st4',TX(U,560,292,'Validierungsdaten: Feinabstimmung, Overfitting früh erkennen','tk2','text-anchor:start'));
   HT('ttest',TX(U,560,368,'Testdaten: bleiben bis zum Schluss unangetastet','tk2','text-anchor:start'));
@@ -1234,7 +1237,7 @@ trn.sources=[{pipe:'tIn',rate:4,col:COL.clean}];
   infoI(trn,676,407,()=>TIP_DS,true,700,400);
   const ST=[
    ['Problem rahmen',['Geschäftsziel, Zielvariable','und Messgröße festlegen.','Und: Wie löst man es heute','ohne KI? Diese Regel ist die','Baseline – die Messlatte','für jedes Modell.'],['„Verkauft F3 morgen mehr','Grillkohle als üblich?“'],null],
-   ['Daten beschaffen',['Welche Daten, woher, wie','viel – mit Rechtsprüfung','und Freigaben. Gleich hier','den Testbestand abzweigen,','bei Zeitreihen den','jüngsten Zeitraum.'],['Kassendaten aus zwei Jahren; die letzten','drei bis vier Monate sind Test.'],['Extract ⊕','src']],
+   ['Daten beschaffen',['Welche Daten, woher, wie','viel – mit Rechtsprüfung','und Freigaben. Gleich hier','den Testbestand abzweigen,','bei Zeitreihen den','jüngsten Zeitraum.'],['Kassendaten aus zwei Jahren;','die letzten drei bis vier','Monate sind Test.'],['Extract ⊕','src']],
    ['Daten erkunden',['Je Merkmal: Typ, fehlende','Werte, Ausreißer, Vertei-','lung, Nutzen für die Auf-','gabe. Nur auf den Trai-','ningsdaten – und alles','dokumentieren.'],['Wie oft fehlt die Wetter-','prognose einer Filiale?'],null],
    ['Daten aufbereiten',['Bereinigen und Merkmale','bilden (Feature Construc-','tion) – als wiederholbare','Schritte. Nur nutzen, was','am Prognosetag bekannt ist,','sonst droht ein Datenleck.'],['Wochentag, Wetterprognose,','Absatz der letzten 7 Tage'],['Load & Transform ⊕','fab']],
    ['Modelle sichten',['Mehrere einfache Modelle','trainieren, z. B. logistische','Regression und Entschei-','dungsbaum. Auf den Vali-','dierungsdaten vergleichen:','Wer schlägt die Baseline?'],['Baseline: „wie am gleichen','Wochentag letzte Woche“'],null],
